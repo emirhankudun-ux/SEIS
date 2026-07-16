@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/repository-ownership.schema.json",
+  "title": "Ecosystem repository ownership registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registry", "repositories", "modules", "pending_decisions"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "canonical_coordinator_repo", "source_of_truth"],
+      "properties": {
+        "id": { "type": "string", "const": "ecosystem-repository-ownership" },
+        "status": { "type": "string", "enum": ["bootstrap", "active", "deprecated"] },
+        "canonical_coordinator_repo": { "type": "string", "minLength": 1 },
+        "source_of_truth": { "type": "string", "const": "data/repository-ownership.yaml" }
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "canonical",
+          "verification",
+          "verification_method",
+          "observed_at",
+          "verification_evidence",
+          "remote",
+          "default_branch",
+          "visibility",
+          "local_worktree",
+          "manifest_status",
+          "manifest_path"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "display_name": { "type": "string", "minLength": 1 },
+          "canonical": { "type": "boolean" },
+          "verification": {
+            "type": "string",
+            "enum": [
+              "observed-local-and-remote",
+              "observed-remote",
+              "repository-metadata-invalid",
+              "proposed"
+            ]
+          },
+          "verification_method": {
+            "type": "string",
+            "enum": [
+              "local-git-and-authenticated-github-connector",
+              "authenticated-github-connector",
+              "local-git",
+              "not-observed"
+            ]
+          },
+          "observed_at": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "verification_evidence": { "type": "string", "minLength": 1 },
+          "remote": { "type": "string", "minLength": 1 },
+          "default_branch": { "type": "string", "minLength": 1 },
+          "visibility": { "type": "string", "enum": ["public", "private"] },
+          "local_worktree": {
+            "type": "string",
+            "enum": ["valid", "invalid", "not-present"]
+          },
+          "manifest_status": {
+            "type": "string",
+            "enum": ["present-validated", "missing"]
+          },
+          "manifest_path": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "canonical_repo",
+          "decision_status",
+          "decision_record",
+          "paths",
+          "consumers",
+          "sync_direction"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "canonical_repo": { "type": "string", "minLength": 1 },
+          "decision_status": { "type": "string", "enum": ["accepted", "proposed"] },
+          "decision_record": { "type": "string", "minLength": 1 },
+          "paths": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "consumers": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "sync_direction": {
+            "type": "string",
+            "enum": ["canonical-only", "canonical-to-consumers-after-approval"]
+          }
+        }
+      }
+    },
+    "pending_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "reason", "unblock_condition"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "description": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 },
+          "unblock_condition": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

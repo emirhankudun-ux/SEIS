@@ -172,6 +172,36 @@ Route families should include:
 No model call should be hardcoded without configuration, backend/credential
 boundary, evidence, and fallback policy.
 
+## Multi-project foundation bootstrap
+
+`ECO-GOAL-0001` starts the additive transition from SEIS-only operational
+records to the ecosystem namespaces required for SEIS, Eleni-Neferi,
+Pantechnoesis, websites, and future projects. Its active source record is
+[`goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml`](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml).
+The schema, lifecycle, evidence, and CI enforcement slice is tracked separately
+as
+[`ECO-GOAL-0003`](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml).
+
+The first locally validated project manifest is
+[`project.ecosystem.yaml`](../project.ecosystem.yaml). Canonical repository and
+module ownership is stored in
+[`data/repository-ownership.yaml`](../data/repository-ownership.yaml) and
+explained in [`REPOSITORY_OWNERSHIP.md`](REPOSITORY_OWNERSHIP.md).
+
+Run the dependency-free bootstrap validation with:
+
+```bash
+npm run check:ecosystem-foundation
+npm run test:ecosystem-foundation
+```
+
+Existing SEIS JSON goal registries remain historical and operational SEIS
+records. This bootstrap does not rewrite their identifiers or claim that they
+already satisfy the ecosystem Goal schema v2. The local checks are wired into
+the foundation workflow, and all seven workflows for pull request 177 passed.
+Cross-project migration remains follow-up work after the missing canonical
+manifests and ownership inventory are reviewed.
+
 ## Definition Of Done
 
 A SEIS task is not complete until architecture, docs, validation, accessibility,

@@ -181,6 +181,8 @@ apps/web/content/
 # Documentation
 docs/*
 !docs/SEIS_GOAL_TRACKING.md
+!docs/ECOSYSTEM_GOAL_TRACKING.md
+!docs/REPOSITORY_OWNERSHIP.md
 !docs/ARCHITECTURE.md
 !docs/AI_CORE.md
 !docs/MCP_REGISTRY.md
@@ -232,6 +234,15 @@ docs/*
 !schemas/
 schemas/*
 !schemas/seis-goal-execution.schema.json
+!schemas/project-ecosystem.schema.json
+!schemas/repository-ownership.schema.json
+!schemas/ecosystem-goal.schema.json
+!schemas/goal-tracking-mega-prompt-pack.schema.json
+
+# Reviewed Goal Tracking prompt-pack contracts. The 5M generated corpus stays
+# under ignored build/ and is never added to Git.
+!prompts/goal-tracking-update-v1/pack.json
+!prompts/goal-tracking-update-v1/expected-build.json
 
 # Local accidental artifacts from monorepo preparation
 SEİS/

@@ -1,0 +1,461 @@
+schema_version: 2
+
+id: ECO-GOAL-0007
+project: ecosystem
+program: governance
+initiative: goal-tracking-prompt-compiler
+parent_goal: null
+
+title: Compile a deterministic five-million-character Goal Tracking update prompt
+summary: >-
+  Create a versioned, public-safe prompt pack and deterministic compiler that
+  produces an exact five-million-Unicode-code-point Goal Tracking update corpus,
+  bounded contextual chunks, and reproducible integrity evidence without committing
+  the generated corpus or pretending it fits a single model request.
+
+category:
+  - governance
+  - prompt-engineering
+  - automation
+  - testing
+  - documentation
+
+priority: high
+status: review
+maturity: prototype
+confidence: medium
+
+owner_agent: goal-tracking
+accountable_human: project-owner
+supporting_agents:
+  - prompt-engineering
+  - testing
+  - documentation
+  - security
+
+horizon: now
+start_after: null
+target_window:
+  start: '2026-07-14'
+  end: null
+
+scope:
+  repositories:
+    - seis
+  paths:
+    - goals/active/ECO-GOAL-0007--five-million-character-goal-tracking-prompt.yaml
+    - prompts/goal-tracking-update-v1
+    - schemas/goal-tracking-mega-prompt-pack.schema.json
+    - scripts/lib/goal-tracking-mega-prompt.mjs
+    - scripts/build-goal-tracking-mega-prompt.mjs
+    - scripts/check-goal-tracking-mega-prompt.mjs
+    - scripts/test-goal-tracking-mega-prompt.mjs
+    - docs/ECOSYSTEM_GOAL_TRACKING.md
+    - docs/ai/prompt-engine.md
+    - docs/reviews/ECO-GOAL-0007-INDEPENDENT-REVIEW.md
+    - docs/reviews/ECO-GOAL-0007-PROMPT-INVENTORY.md
+    - docs/STATUS.md
+    - .github/workflows/foundation-check.yml
+    - .gitignore
+    - package.json
+
+canonical_owner_repo: seis
+
+platforms:
+  - repository
+  - cli
+  - github
+
+architecture_layers:
+  - governance
+  - application
+  - integration
+
+security_classification: public-safe
+privacy_impact: none
+
+requirements:
+  - Compile only reviewed, versioned, public-safe source modules without third-party dependencies.
+  - Define character as a Unicode code point after NFC and LF newline normalization.
+  - Produce exactly 5,000,000 code points and record UTF-8 bytes, UTF-16 code units, lines, chunks, and SHA-256 digests separately.
+  - Cover authority, repository inspection, Goal selection, lifecycle, evidence, dependencies, risk, rollback, GitHub mapping, blockers, completion audit, and final reporting.
+  - Give every generated scenario and exact-fit directive a deterministic unique identifier and semantic purpose.
+  - Reject unsafe source paths, untracked files, symlinks, configured prohibited secret-like patterns, private paths, hidden controls, CRLF drift, arbitrary padding, and truncation.
+
+non_goals:
+  - Replacing AGENTS.md or any canonical Goal record with the generated corpus.
+  - Executing the five-year roadmap or claiming hidden background execution.
+  - Claiming five million characters equals five million tokens or one provider-compatible context window.
+  - Connecting providers, importing private repositories, using SSH, deploying, merging, or writing to the protected default branch.
+  - Copying private chain-of-thought, private memory, credentials, or proprietary system prompts.
+
+acceptance_criteria:
+  - A local ignored artifact contains exactly 5,000,000 normalized Unicode code points and one final LF.
+  - Two clean in-memory compiler runs are byte-identical and match the committed golden SHA-256 contract.
+  - Payload chunks reconstruct the canonical prompt byte-for-byte and contextual chunks identify their partial-corpus boundary.
+  - The checker rejects one-character size drift, output tampering, manifest drift, duplicate semantic identifiers, unsafe sources, CRLF, NUL, and prohibited secret patterns.
+  - No filler-only section, whitespace padding, repeated-character padding, or mid-sentence truncation is used to hit the target.
+  - Ecosystem foundation, legacy Goal Tracking, Master Prompt compatibility, prompt-pack tests, and diff checks pass.
+
+definition_of_ready:
+  - Root AGENTS.md and project.ecosystem.yaml have been read.
+  - Existing prompt and Goal systems have been inventoried and their boundaries documented.
+  - A non-default stacked branch and clean worktree exist.
+  - The output directory is already ignored and no live provider is required.
+
+definition_of_done:
+  - Prompt sources, schema, compiler, checker, tests, golden contract, documentation, and Goal evidence are committed on the focused branch.
+  - Exact character count, deterministic hashes, semantic coverage, source policy, chunks, and tamper rejection are reproducibly validated.
+  - Required quality gates have evidence and failed or skipped checks remain visible.
+  - A focused issue and stacked pull request document risks, rollback, generated-output policy, and the parent branch.
+
+dependencies:
+  - ECO-GOAL-0003
+blocked_by: []
+related_goals:
+  - ECO-GOAL-0001
+  - ECO-GOAL-0003
+
+validation:
+  commands:
+    - npm run build:goal-tracking-mega-prompt
+    - npm run check:goal-tracking-mega-prompt
+    - npm run test:goal-tracking-mega-prompt
+    - npm run check:ecosystem-foundation
+    - npm run test:ecosystem-foundation
+    - npm run check:goal-tracking
+    - npm run check:seis-master-prompt
+    - npm run check:foundation
+    - git diff --check
+  manual:
+    - semantic coverage and anti-padding review
+    - prompt-injection and public-private boundary review
+    - independent reproducibility review
+  evidence:
+    - generated local prompt package
+    - exact-size and SHA-256 manifest
+    - adversarial fixture output
+    - pull-request workflow URL
+
+status_history:
+  - status: planned
+    at: '2026-07-14'
+    reason: The user approved creating and Goal-tracking the exact five-million-character prompt package after a read-only architecture inventory.
+    evidence_refs:
+      - ECO7-EVIDENCE-001
+  - status: in-progress
+    at: '2026-07-14'
+    reason: Implementation began on the focused stacked branch after scope, non-goals, source policy, character metric, validation, and rollback were defined.
+    evidence_refs:
+      - ECO7-EVIDENCE-001
+  - status: review
+    at: '2026-07-14'
+    reason: The exact corpus compiler, adversarial tests, local validation, substantive commit, issue, and stacked ready-for-review pull request exist; hosted Guardian, branch-policy, and human review remain unresolved.
+    evidence_refs:
+      - ECO7-EVIDENCE-002
+      - ECO7-EVIDENCE-003
+      - ECO7-EVIDENCE-004
+      - ECO7-EVIDENCE-012
+      - ECO7-EVIDENCE-014
+      - ECO7-EVIDENCE-015
+      - ECO7-EVIDENCE-016
+      - ECO7-EVIDENCE-017
+      - ECO7-EVIDENCE-018
+      - ECO7-EVIDENCE-019
+      - ECO7-EVIDENCE-021
+      - ECO7-EVIDENCE-025
+
+evidence_records:
+  - id: ECO7-EVIDENCE-001
+    type: audit
+    description: The existing Prompt Engine and parallel Goal systems were inventoried before implementation; no versioned prompt registry or five-million-character compiler existed.
+    status: passed
+    command: git show 78e19058:docs/ai/prompt-engine.md
+    exit_code: 0
+    artifact: docs/reviews/ECO-GOAL-0007-PROMPT-INVENTORY.md
+  - id: ECO7-EVIDENCE-002
+    type: validation
+    description: The compiler produced exactly 5,000,000 normalized Unicode code points and the committed golden output, source-set, compiler-set, manifest, and chunk-count contract.
+    status: passed
+    command: npm run build:goal-tracking-mega-prompt
+    exit_code: 0
+    artifact: prompts/goal-tracking-update-v1/expected-build.json
+  - id: ECO7-EVIDENCE-003
+    type: testing
+    description: Eight adversarial groups passed for normalization, public-safe scanning, Git-index source policy, schema drift, exact fit, deterministic corpus generation, artifact tampering, and symlinked output roots.
+    status: passed
+    command: npm run test:goal-tracking-mega-prompt
+    exit_code: 0
+    artifact: scripts/test-goal-tracking-mega-prompt.mjs
+  - id: ECO7-EVIDENCE-004
+    type: validation
+    description: Two clean in-memory compiles were byte-identical and the complete on-disk prompt, manifest, payload, contextual chunks, and closed inventory matched the golden contract.
+    status: passed
+    command: npm run check:goal-tracking-mega-prompt
+    exit_code: 0
+    artifact: scripts/check-goal-tracking-mega-prompt.mjs
+  - id: ECO7-EVIDENCE-005
+    type: compatibility-validation
+    description: The schema-v2 ecosystem Goal validator accepted all three Goal records including ECO-GOAL-0007.
+    status: passed
+    command: npm run check:ecosystem-foundation
+    exit_code: 0
+    artifact: schemas/ecosystem-goal.schema.json
+  - id: ECO7-EVIDENCE-006
+    type: testing
+    description: Ecosystem Goal lifecycle, evidence, path, schema, and Git-index negative fixtures remained green.
+    status: passed
+    command: npm run test:ecosystem-foundation
+    exit_code: 0
+    artifact: scripts/test-ecosystem-foundation.rb
+  - id: ECO7-EVIDENCE-007
+    type: compatibility-validation
+    description: The legacy SEIS Goal Tracking registry remained green after the additive prompt-pack work.
+    status: passed
+    command: npm run check:goal-tracking
+    exit_code: 0
+    artifact: scripts/check-goal-tracking.mjs
+  - id: ECO7-EVIDENCE-008
+    type: compatibility-validation
+    description: Master Prompt governance compatibility remained green without changing its canonical contract.
+    status: passed
+    command: npm run check:seis-master-prompt
+    exit_code: 0
+    artifact: docs/ECOSYSTEM_GOAL_TRACKING.md
+  - id: ECO7-EVIDENCE-009
+    type: validation
+    description: The repository foundation check passed with the new prompt-pack build, test, checker, documentation, and workflow integration.
+    status: passed
+    command: npm run check:foundation
+    exit_code: 0
+    artifact: package.json
+  - id: ECO7-EVIDENCE-010
+    type: security-validation
+    description: The repository AI provider audit completed for 21 providers with zero secret findings; generated audit refreshes were restored because they were outside this Goal scope.
+    status: passed
+    command: npm run audit:ai-providers
+    exit_code: 0
+    artifact: scripts/audit-ai-providers.mjs
+  - id: ECO7-EVIDENCE-011
+    type: security-validation
+    description: A local GitLeaks scan could not run because the gitleaks executable is not installed; hosted Guardian evidence remains required and no pass is claimed.
+    status: skipped
+    command: gitleaks version
+    exit_code: 127
+    artifact: null
+  - id: ECO7-EVIDENCE-012
+    type: review-hardening
+    description: Three independent read-only specialist reviews identified and closed source TOCTOU, symlink escape, artifact inventory, schema drift, anti-padding, context-contract, and evidence gaps.
+    status: passed
+    command: git show :docs/reviews/ECO-GOAL-0007-INDEPENDENT-REVIEW.md
+    exit_code: 0
+    artifact: docs/reviews/ECO-GOAL-0007-INDEPENDENT-REVIEW.md
+  - id: ECO7-EVIDENCE-013
+    type: github-handoff
+    description: Issue 187 records the approved objective, scope, non-goals, validation plan, rollback boundary, and stacked delivery strategy.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/issues/187
+  - id: ECO7-EVIDENCE-014
+    type: implementation-commit
+    description: Substantive commit 5d095fcb adds the exact corpus compiler, modular prompt pack, closed artifact verifier, adversarial tests, Goal evidence, documentation, and CI integration.
+    status: passed
+    command: git show --stat --oneline 5d095fcb9d5a442ccd0e6ad2fe6cc5ae5e7c766a
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/commit/5d095fcb9d5a442ccd0e6ad2fe6cc5ae5e7c766a
+  - id: ECO7-EVIDENCE-015
+    type: github-handoff
+    description: Ready-for-review pull request 188 maps ECO-GOAL-0007 to the focused branch, parent Goal branch, validation evidence, risks, rollback, and explicit no-merge condition.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/188
+  - id: ECO7-EVIDENCE-016
+    type: policy-observation
+    description: GitHub accepted feature-branch creation through administrator bypass despite restricted ref creation, an inherited merge commit, and an unverified substantive commit signature; repository-owner review is required before merge.
+    status: failed
+    command: git push -u origin docs/goal-tracking-mega-prompt-v1
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/188
+  - id: ECO7-EVIDENCE-017
+    type: security-hardening
+    description: Final security hardening rejects decoded prompt-metadata secrets, private paths including Unicode home segments, unsafe Unicode controls and separators, and redacts schema failures; commit 4b73129a pins the resulting reviewed integrity contract.
+    status: passed
+    command: npm run test:goal-tracking-mega-prompt
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/commit/4b73129a236680ed5c0942af1d051f4dd063c60c
+  - id: ECO7-EVIDENCE-018
+    type: remote-ci
+    description: Foundation Check run 29342588925 passed on final code head 4b73129a, including exact corpus build, eight adversarial prompt tests, deterministic checking, ecosystem Goal fixtures, compatibility checks, and repository gates.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342588925
+  - id: ECO7-EVIDENCE-019
+    type: remote-ci
+    description: SEIS System Gates run 29342586061 passed the Enterprise gates on final code head 4b73129a.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342586061
+  - id: ECO7-EVIDENCE-020
+    type: security-validation
+    description: Socket pull-request alerts and project-report checks passed for final code head 4b73129a.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://socket.dev/dashboard/org/emirhan-kudun/sbom/b56b1345-564b-4475-847a-d1a2e202157d
+  - id: ECO7-EVIDENCE-021
+    type: security-validation
+    description: Manually dispatched CodeQL JavaScript and TypeScript job 87118276742 passed on final code head 4b73129a and uploaded validated SARIF.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342683412/job/87118276742
+  - id: ECO7-EVIDENCE-022
+    type: security-validation
+    description: Manually dispatched CodeQL Python job 87118276668 passed on final code head 4b73129a and uploaded validated SARIF.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342683412/job/87118276668
+  - id: ECO7-EVIDENCE-023
+    type: security-validation
+    description: The manual CodeQL Swift lane was cancelled after applicable JavaScript and Python lanes passed because ECO-GOAL-0007 changes no Swift paths; no Swift pass is claimed.
+    status: skipped
+    command: gh run cancel 29342683412 --repo emirhankudun-ux/SEIS
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29342683412
+  - id: ECO7-EVIDENCE-024
+    type: review
+    description: CodeRabbit did not review pull request 188 because automated reviews are disabled for its stacked non-default base branch; no review pass is claimed.
+    status: skipped
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/188
+  - id: ECO7-EVIDENCE-025
+    type: security-validation
+    description: Guardian cannot run on the stacked base and parent pull request 177 remains blocked by a full-history GitLeaks candidate from unrelated open pull request 154; this dependency blocks security completion without weakening the scanner.
+    status: failed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29335647966
+
+quality_gates:
+  architecture: passed
+  product: passed
+  brand_creative_direction: not-applicable
+  design_system: not-applicable
+  ui_ux: not-applicable
+  engineering: passed
+  ai_integrity: passed
+  model_provider_routing: not-applicable
+  agent_permission: passed
+  mcp_plugin_tool: not-applicable
+  security: blocked
+  privacy: passed
+  accessibility: not-applicable
+  performance: passed
+  data: not-applicable
+  documentation: passed
+  devops: failed
+  testing: passed
+  release: not-applicable
+  public_readiness: blocked
+
+risks:
+  - id: ECO7-RISK-001
+    description: A five-megacharacter tracked artifact would create a review-hostile repository diff and encourage source duplication.
+    likelihood: high
+    impact: high
+    owner: repository-hygiene
+    mitigation: Commit only modular sources, compiler, tests, and golden hashes; write the generated corpus only below ignored build/.
+    trigger: Git status shows the generated prompt or chunks as trackable files.
+    contingency: Stop, remove the generated files from the index without deleting user work, and tighten the exact ignore contract.
+    status: closed
+  - id: ECO7-RISK-002
+    description: Exact length could be reached with meaningless padding, repeated paragraphs, or destructive truncation.
+    likelihood: medium
+    impact: high
+    owner: prompt-engineering
+    mitigation: Use unique scenario blocks plus a fail-closed semantic exact-fit solver and adversarial anti-padding checks.
+    trigger: Duplicate semantic IDs, duplicate long paragraphs, whitespace padding, repeated-character runs, or a partial final instruction are detected.
+    contingency: Fail the build and revise source dimensions or semantic micro-directives; never fall back to filler.
+    status: closed
+  - id: ECO7-RISK-003
+    description: Operators may mistake five million characters for a supported single-request provider context.
+    likelihood: high
+    impact: medium
+    owner: documentation
+    mitigation: Label the output as a corpus, emit bounded contextual chunks, and make no token or provider-capacity claim.
+    trigger: Documentation or output calls the full corpus directly consumable by one model request.
+    contingency: Block review and correct the contract before publication.
+    status: mitigated
+  - id: ECO7-RISK-004
+    description: Source expansion could accidentally include credentials, private paths, or lower-authority prompt injection.
+    likelihood: medium
+    impact: critical
+    owner: security
+    mitigation: Use an exact tracked-file allowlist, public-safe scanner, authority router, and redacted error messages.
+    trigger: A source is untracked, symlinked, outside the repository, secret-like, private-path-bearing, or contains unsafe controls.
+    contingency: Fail closed, disclose only the path and rule identifier, and require private provenance review before any exception.
+    status: mitigated
+  - id: ECO7-RISK-005
+    description: GitHub accepted the new feature branch through administrator bypass while the inherited history contains a merge commit and the substantive commit lacks a verified signature.
+    likelihood: high
+    impact: high
+    owner: devops
+    mitigation: Keep the pull request unmerged, disclose the bypass, and require repository-owner review of a policy-compliant signed history strategy.
+    trigger: The push response reports branch-creation, merge-commit, or signature rule violations.
+    contingency: Recreate or rebase the branch through the approved signed workflow only after explicit owner direction; do not force-push or rewrite history autonomously.
+    status: open
+
+rollback:
+  strategy: revert
+  steps:
+    - Revert the focused Goal, sources, schema, compiler, checker, tests, workflow, package-script, documentation, and golden-contract commits.
+    - Leave ignored generated build artifacts outside Git history or delete them manually only with explicit operator approval.
+    - Restore the previous Prompt Engine and Ecosystem Goal Tracking documentation links.
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: docs/goal-tracking-mega-prompt-v1
+  suggested_commit: 'feat(governance): compile exact 5m goal-tracking prompt'
+  issue_url: https://github.com/emirhankudun-ux/SEIS/issues/187
+  branch_name: docs/goal-tracking-mega-prompt-v1
+  commit_sha: 4b73129a236680ed5c0942af1d051f4dd063c60c
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/188
+  release_note_url: null
+
+observability:
+  metrics:
+    - goal_tracking_prompt_code_points
+    - goal_tracking_prompt_source_count
+    - goal_tracking_prompt_scenario_count
+    - goal_tracking_prompt_chunk_count
+    - goal_tracking_prompt_duplicate_semantic_id_count
+  logs:
+    - redacted source-policy failure rule and repository-relative path
+
+outputs:
+  - versioned Goal Tracking update prompt pack
+  - exact five-million-code-point compiler
+  - semantic exact-fit solver
+  - payload integrity chunks and bounded contextual chunk package
+  - deterministic manifest and golden SHA-256 contract
+  - adversarial checker and tests
+  - focused Goal and GitHub handoff evidence
+
+notes:
+  - The branch is intentionally stacked on architecture/ecosystem-goal-tracking-v1 at commit 78e19058 and must target that branch until pull request 177 is merged.
+  - The generated corpus is a provenance and retrieval artifact, not a claim that one provider request can consume it.
+  - Root AGENTS.md remains authoritative; authored modules summarize operating actions and tell the runtime to reread current canonical records instead of embedding stale copies.
+  - The user explicitly approved creating the missing Goal record and proceeding under it on 2026-07-14.
+  - Pull request 188 is ready for review and stacked on pull request 177; it must not merge while hosted Guardian, branch-policy, and required human review evidence remain unresolved.
+  - Final code head 4b73129a includes security hardening and the reviewed integrity contract; earlier 5d095fcb remains the substantive feature implementation commit.

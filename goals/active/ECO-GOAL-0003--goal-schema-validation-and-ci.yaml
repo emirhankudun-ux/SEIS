@@ -1,0 +1,386 @@
+schema_version: 2
+
+id: ECO-GOAL-0003
+project: ecosystem
+program: governance
+initiative: goal-validation-ci
+parent_goal: null
+
+title: Establish Goal schema validation and CI enforcement
+summary: >-
+  Make ecosystem Goal YAML, project manifests, repository ownership, lifecycle
+  rules, evidence, and GitHub handoff fields deterministically validatable in a
+  least-privilege pull-request gate.
+
+category:
+  - governance
+  - testing
+  - devops
+  - documentation
+
+priority: critical
+status: review
+maturity: prototype
+confidence: medium
+
+owner_agent: goal-tracking
+accountable_human: project-owner
+supporting_agents:
+  - testing
+  - devops
+  - documentation
+  - security
+
+horizon: now
+start_after: null
+target_window:
+  start: '2026-07-13'
+  end: null
+
+scope:
+  repositories:
+    - seis
+  paths:
+    - schemas/ecosystem-goal.schema.json
+    - schemas/project-ecosystem.schema.json
+    - schemas/repository-ownership.schema.json
+    - scripts/validate-ecosystem-foundation.rb
+    - scripts/test-ecosystem-foundation.rb
+    - .github/workflows/foundation-check.yml
+    - .github/PULL_REQUEST_TEMPLATE.md
+    - goals
+
+canonical_owner_repo: seis
+
+platforms:
+  - repository
+  - github
+
+architecture_layers:
+  - governance
+  - integration
+
+security_classification: public-safe
+privacy_impact: none
+
+requirements:
+  - Goal schema v2 records validate structurally and semantically.
+  - Invalid ownership, lifecycle, evidence, blocker, and Goal-reference states fail deterministically.
+  - Pull requests and main-branch pushes run real foundation checks.
+  - Legacy SEIS JSON goals remain explicitly separate until migrated.
+
+non_goals:
+  - Migrating every historical SEIS JSON goal in this slice.
+  - Marking ECO-GOAL-0001 completed.
+  - Creating or publishing branches in other canonical repositories.
+  - Adding third-party runtime dependencies.
+
+acceptance_criteria:
+  - The validator rejects session-observed repositories with unknown metadata.
+  - The validator rejects dangling Goal references and invalid status-directory mappings.
+  - Blocked goals require blockers and completed goals require passed evidence and GitHub state.
+  - Negative fixtures prove the high-risk rejection paths.
+  - The existing foundation workflow invokes both the validator and its negative tests.
+  - The pull-request template contains every canonical reporting section.
+
+definition_of_ready:
+  - ECO-GOAL-0001 bootstrap files exist.
+  - A non-default SEIS branch is active.
+  - Validation can run without network access or new dependencies.
+
+definition_of_done:
+  - Schema, semantic validator, and negative fixtures pass locally.
+  - CI workflow syntax is reviewed and the checks run successfully on a pull request.
+  - Required quality gates record passed or not-applicable outcomes.
+  - Issue, branch, commit, pull request, validation, risk, and rollback evidence is recorded.
+
+dependencies: []
+blocked_by: []
+related_goals:
+  - ECO-GOAL-0001
+
+validation:
+  commands:
+    - npm run check:ecosystem-foundation
+    - npm run test:ecosystem-foundation
+    - npm run check:goal-tracking
+    - git diff --check
+  manual:
+    - lifecycle invariant review
+    - pull-request workflow review
+    - public-private boundary review
+  evidence:
+    - validator output
+    - negative fixture output
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360711
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360734
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360739
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360709
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360727
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360716
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360706
+    - https://github.com/emirhankudun-ux/SEIS/pull/177
+    - https://github.com/emirhankudun-ux/SEIS/commit/cf972f6f9275fec305019fdc33b0bf5cda2d5cbe
+    - https://github.com/emirhankudun-ux/SEIS/commit/14989f439439a59a03fc19db23887dc2bee4602e
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272295
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272335
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272479
+
+status_history:
+  - status: planned
+    at: '2026-07-13'
+    reason: ECO-GOAL-0001 identified deterministic validation and CI as a required dependency.
+    evidence_refs: []
+  - status: in-progress
+    at: '2026-07-13'
+    reason: Schema hardening, negative tests, and CI integration started on the focused SEIS branch.
+    evidence_refs:
+      - ECO3-EVIDENCE-001
+  - status: review
+    at: '2026-07-13'
+    reason: The focused branch, issue, ready pull request, and all seven workflow families passed for substantive implementation commit cf972f6f; architecture review remains required before completion.
+    evidence_refs:
+      - ECO3-EVIDENCE-005
+      - ECO3-EVIDENCE-006
+      - ECO3-EVIDENCE-007
+      - ECO3-EVIDENCE-008
+      - ECO3-EVIDENCE-009
+      - ECO3-EVIDENCE-010
+      - ECO3-EVIDENCE-011
+      - ECO3-EVIDENCE-012
+      - ECO3-EVIDENCE-013
+      - ECO3-EVIDENCE-014
+      - ECO3-EVIDENCE-015
+
+evidence_records:
+  - id: ECO3-EVIDENCE-001
+    type: audit
+    description: A read-only audit identified CI, lifecycle, evidence, blocker, and Goal-reference gaps in the bootstrap validator.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml
+  - id: ECO3-EVIDENCE-002
+    type: validation
+    description: Ecosystem foundation validation after schema hardening.
+    status: passed
+    command: npm run check:ecosystem-foundation
+    exit_code: 0
+    artifact: scripts/validate-ecosystem-foundation.rb
+  - id: ECO3-EVIDENCE-003
+    type: validation
+    description: Negative lifecycle, ownership, and evidence fixtures.
+    status: passed
+    command: npm run test:ecosystem-foundation
+    exit_code: 0
+    artifact: scripts/test-ecosystem-foundation.rb
+  - id: ECO3-EVIDENCE-004
+    type: compatibility-validation
+    description: The legacy SEIS goal registry check remained green after the additive Goal v2 work.
+    status: passed
+    command: npm run check:goal-tracking
+    exit_code: 0
+    artifact: scripts/check-goal-tracking.mjs
+  - id: ECO3-EVIDENCE-005
+    type: remote-ci
+    description: Foundation Check run 784 executed the pull-request workflow on substantive implementation commit cf972f6f and passed, including the ecosystem validator and adversarial fixtures.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360711
+  - id: ECO3-EVIDENCE-006
+    type: remote-ci
+    description: Core CI run 736 passed for substantive implementation commit cf972f6f.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360734
+  - id: ECO3-EVIDENCE-007
+    type: security-validation
+    description: CodeQL run 455 passed for substantive implementation commit cf972f6f.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360739
+  - id: ECO3-EVIDENCE-008
+    type: security-validation
+    description: SEIS Guardian Security Scan run 543 passed for substantive implementation commit cf972f6f.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360709
+  - id: ECO3-EVIDENCE-009
+    type: github-handoff
+    description: Issue 176 and ready-for-review pull request 177 map the Goal to the focused branch and commits without merging or deploying.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/177
+  - id: ECO3-EVIDENCE-010
+    type: review-hardening
+    description: Gemini Code Assist review feedback was implemented with YAML-root, nested-scope, and package-script guards, Array uniqueness simplification, and regression fixtures; unquoted dates remain intentionally and safely rejected as invalid YAML.
+    status: passed
+    command: npm run test:ecosystem-foundation
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/177
+  - id: ECO3-EVIDENCE-011
+    type: remote-ci
+    description: SEIS System Gates run 283 passed for substantive implementation commit cf972f6f.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360727
+  - id: ECO3-EVIDENCE-012
+    type: remote-ci
+    description: Open Source Governance run 606 passed for substantive implementation commit cf972f6f.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360716
+  - id: ECO3-EVIDENCE-013
+    type: remote-ci
+    description: Master Prompt Governance run 84 passed for substantive implementation commit cf972f6f.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29212360706
+  - id: ECO3-EVIDENCE-014
+    type: review
+    description: CodeRabbit completed its review of commit f89918fc with commented findings rather than a changes-requested decision.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/177#pullrequestreview-4680890797
+  - id: ECO3-EVIDENCE-015
+    type: implementation-commit
+    description: Commit cf972f6f closes the reviewed Goal validator evidence, lifecycle, identity, and path-boundary bypasses with adversarial fixtures.
+    status: passed
+    command: git show --stat --oneline cf972f6f9275fec305019fdc33b0bf5cda2d5cbe
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/commit/cf972f6f9275fec305019fdc33b0bf5cda2d5cbe
+  - id: ECO3-EVIDENCE-016
+    type: review-hardening
+    description: Commit 14989f43 rejects untracked or nondurable Git-index evidence, malformed schema definitions and references, unsafe Goal scope paths, and invalid observed-repository metadata with adversarial regression fixtures.
+    status: passed
+    command: npm run test:ecosystem-foundation
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/commit/14989f439439a59a03fc19db23887dc2bee4602e
+  - id: ECO3-EVIDENCE-017
+    type: remote-ci
+    description: Foundation Check run 805 passed on review-hardening head c1abec61, including the ecosystem validator and adversarial fixture suite.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272295
+  - id: ECO3-EVIDENCE-018
+    type: security-validation
+    description: CodeQL run 458 passed for JavaScript, Python, and Swift on review-hardening head c1abec61.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272335
+  - id: ECO3-EVIDENCE-019
+    type: security-validation
+    description: Guardian run 547 failed because full-history GitLeaks found one redacted generic credential candidate in commit 1fb90357 from unrelated open PR 154; that commit is not an ancestor of this Goal branch or main.
+    status: failed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29334272479
+
+quality_gates:
+  architecture: required
+  product: not-applicable
+  brand_creative_direction: not-applicable
+  design_system: not-applicable
+  ui_ux: not-applicable
+  engineering: passed
+  ai_integrity: not-applicable
+  model_provider_routing: not-applicable
+  agent_permission: not-applicable
+  mcp_plugin_tool: not-applicable
+  security: failed
+  privacy: passed
+  accessibility: not-applicable
+  performance: not-applicable
+  data: not-applicable
+  documentation: passed
+  devops: passed
+  testing: passed
+  release: not-applicable
+  public_readiness: blocked
+
+risks:
+  - id: ECO3-RISK-001
+    description: A permissive partial JSON Schema implementation may accept unsupported schema keywords silently.
+    likelihood: medium
+    impact: high
+    owner: testing
+    mitigation: Pair structural validation with explicit semantic checks and negative fixtures for every enforced invariant.
+    trigger: A malformed fixture exits successfully.
+    contingency: Keep the goal in progress, add the missing semantic rule, and add a regression fixture.
+    status: closed
+  - id: ECO3-RISK-002
+    description: CI integration may appear complete before a remote pull-request run supplies evidence.
+    likelihood: medium
+    impact: medium
+    owner: devops
+    mitigation: Distinguish local workflow validation from remote GitHub Actions evidence.
+    trigger: Documentation says CI passed without a checks URL.
+    contingency: Retain required gates and CI evidence as pending until the remote run exists.
+    status: closed
+  - id: ECO3-RISK-003
+    description: Full-history security scanning may expose a credential candidate from another open branch even when the current Goal diff is clean.
+    likelihood: high
+    impact: critical
+    owner: security
+    mitigation: Preserve redaction, keep full-history scanning enabled, and require private provenance review before rotation or a narrowly bounded synthetic-fixture exception.
+    trigger: The Guardian full-history GitLeaks job reports a finding outside the current Goal ancestry.
+    contingency: Block public readiness, rotate if potentially real, or constrain an exception by exact commit, path, and nonsecret fixture pattern after proof.
+    status: open
+
+rollback:
+  strategy: revert
+  steps:
+    - Revert the focused schema, validator, fixture, workflow, and template commit.
+    - Restore ECO-GOAL-0001 validation to the last passing bootstrap contract.
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: architecture/ecosystem-goal-tracking-v1
+  suggested_commit: 'test(governance): enforce ecosystem goal validation in ci'
+  issue_url: https://github.com/emirhankudun-ux/SEIS/issues/176
+  branch_name: architecture/ecosystem-goal-tracking-v1
+  commit_sha: 14989f439439a59a03fc19db23887dc2bee4602e
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/177
+  release_note_url: null
+
+observability:
+  metrics:
+    - ecosystem_goal_validation_success
+    - invalid_goal_reference_count
+    - invalid_completed_goal_count
+  logs: []
+
+outputs:
+  - Goal schema v2 lifecycle and evidence contract
+  - deterministic semantic validator
+  - negative fixture suite
+  - pull-request CI gate
+  - canonical pull-request template
+
+notes:
+  - github.commit_sha records substantive review-hardening commit 14989f43; evidence-only follow-ups may be newer without creating a self-reference.
+  - Review hardening rejects non-object or structurally unsafe schemas, scalar or cyclic references, invalid regular expressions, non-stage-zero and missing-blob index entries, intent-to-add artifacts, symlink chains, hostile Git helper configuration, unsafe Goal paths, and malformed GitHub repository metadata.
+  - Independent read-only reviews identified adjacent schema and Git-index bypasses that were incorporated; the final fixture review found no remaining actionable issue, while the committed tests and hosted checks remain the durable evidence.
+  - Hosted review-hardening checks passed Foundation Check, CodeQL, CI, governance, system gates, and Socket checks; Guardian alone failed on a redacted candidate from unrelated PR 154 history.
+  - The candidate value was never printed or copied into repository records. Its provenance must be reviewed privately; broad path allowlisting and PR-range-only scanning were rejected as unsafe shortcuts.
+  - The Goal reached review after all seven pull-request workflows passed; completion still requires the architecture gate and review decision.
+  - Local actionlint was unavailable, but GitHub parsed and executed the changed workflow successfully; the skipped local check remains disclosed in the pull request.
+  - Branch publication reported administrative bypasses for branch-creation and signature rules; no protected default-branch write occurred.
+  - Review threads remain unresolved because no explicit authorization was given to reply or resolve them; the code and adversarial fixtures address the actionable validator behaviors, including an intentional strict-date decision.
+  - Existing SEIS JSON goal checks remain valid only for their legacy registry scope.

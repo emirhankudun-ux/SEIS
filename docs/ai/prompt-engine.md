@@ -16,10 +16,10 @@ and compact context packages.
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Prompt registry | Planned | No versioned prompt registry exists in this branch. | No schema or fixtures. | Define prompt-pack schema. |
-| Prompt versioning | Documented | This document and `docs/ai/seis-ai-core.md`. | No regression suite. | Add golden conversation fixtures later. |
-| Context budget | Planned | No prompt budget records found. | No runtime tokenizer/counter. | Start with static budgets and manual review. |
-| Safety prompts | Documented | `AGENTS.md`, `SECURITY.md`, this contract. | No prompt injection regression tests. | Add repository-content injection fixtures. |
+| Prompt registry | Prototype | `schemas/goal-tracking-mega-prompt-pack.schema.json` and `prompts/goal-tracking-update-v1/`. | One reviewed pack is not a general registry. | Add two more capability-specific packs and registry discovery. |
+| Prompt versioning | Prototype | Pinned source, compiler, output, manifest, and chunk SHA-256 records for Goal Tracking v1. | No golden conversation suite across capabilities. | Add reviewed golden conversations later. |
+| Context budget | Prototype | Exact Unicode code-point count and bounded semantic chunks for the Goal Tracking corpus. | No provider tokenizer or model-specific token budget. | Add provider-neutral compact-context evaluation. |
+| Safety prompts | Prototype | Tracked-source allowlist, redacted secret/private-path checks, authority router, and adversarial fixtures. | Broader repository-content injection suite remains missing. | Add cross-pack prompt-injection fixtures. |
 
 ## Rules / Policy
 
@@ -61,6 +61,25 @@ Before the prompt engine is marked implemented, add:
 - redaction test
 - archive promotion review notes
 
+## Goal Tracking Update Prototype
+
+`ECO-GOAL-0007` adds the first versioned pack under
+`prompts/goal-tracking-update-v1/`. A standard-library Node compiler produces a
+canonical corpus of exactly 5,000,000 Unicode code points after NFC and LF
+normalization. It emits semantic payload chunks, contextual envelopes, and a
+stable manifest under ignored `build/`; the reviewed golden hash contract is
+committed at `prompts/goal-tracking-update-v1/expected-build.json`.
+
+The exact-fit algorithm expands unique Goal scenarios and selects unique
+semantic micro-directives through a fail-closed subset solver. Whitespace,
+repeated-character, copied-paragraph, hash, and truncation padding are forbidden.
+The corpus is a provenance and retrieval artifact; it is not claimed to fit one
+provider request, and no live model or credential is connected.
+
+This prototype does not complete the Prompt Engine. The broader completion bar
+above still requires three reviewed prompt fixtures, golden conversations,
+cross-pack injection and redaction coverage, and archive-promotion review.
+
 ## Related Documents
 
 - [seis-ai-core.md](seis-ai-core.md)
@@ -70,5 +89,6 @@ Before the prompt engine is marked implemented, add:
 
 ## Next Safe Action
 
-Create a small prompt-pack schema and fixture set without connecting any live
-provider.
+Review the Goal Tracking v1 pack, then add two small capability-specific packs
+and cross-pack golden, injection, compact-context, and redaction fixtures without
+connecting any live provider.

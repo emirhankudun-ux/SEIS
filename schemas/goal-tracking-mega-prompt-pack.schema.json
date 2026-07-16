@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/goal-tracking-mega-prompt-pack.schema.json",
+  "title": "SEIS Goal Tracking Mega Prompt Pack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "compilerVersion",
+    "targetCodePoints",
+    "characterMetric",
+    "chunkTargetCodePoints",
+    "minimumExactFitCodePoints",
+    "outputRoot",
+    "expectedBuildPath",
+    "contextCapsulePath",
+    "modulePaths",
+    "authorityPaths",
+    "requiredMarkers",
+    "dimensions"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "title": { "type": "string", "minLength": 1 },
+    "compilerVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "targetCodePoints": { "const": 5000000 },
+    "characterMetric": { "const": "nfc-unicode-code-points-lf" },
+    "chunkTargetCodePoints": { "type": "integer", "minimum": 1000, "maximum": 100000 },
+    "minimumExactFitCodePoints": { "type": "integer", "minimum": 5000, "maximum": 50000 },
+    "outputRoot": { "$ref": "#/$defs/repositoryPath" },
+    "expectedBuildPath": { "$ref": "#/$defs/repositoryPath" },
+    "contextCapsulePath": { "$ref": "#/$defs/repositoryPath" },
+    "modulePaths": {
+      "type": "array",
+      "minItems": 8,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/repositoryPath" }
+    },
+    "authorityPaths": {
+      "type": "array",
+      "minItems": 5,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/repositoryPath" }
+    },
+    "requiredMarkers": {
+      "type": "array",
+      "minItems": 8,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "projects",
+        "horizons",
+        "statuses",
+        "roles",
+        "qualityGates",
+        "evidenceTypes",
+        "riskClasses",
+        "platformSurfaces",
+        "reviewCadences"
+      ],
+      "properties": {
+        "projects": { "$ref": "#/$defs/dimension" },
+        "horizons": { "$ref": "#/$defs/dimension" },
+        "statuses": { "$ref": "#/$defs/dimension" },
+        "roles": { "$ref": "#/$defs/dimension" },
+        "qualityGates": { "$ref": "#/$defs/dimension" },
+        "evidenceTypes": { "$ref": "#/$defs/dimension" },
+        "riskClasses": { "$ref": "#/$defs/dimension" },
+        "platformSurfaces": { "$ref": "#/$defs/dimension" },
+        "reviewCadences": { "$ref": "#/$defs/dimension" }
+      }
+    }
+  },
+  "$defs": {
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*\\u0000).+$"
+    },
+    "dimension": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$"
+      }
+    }
+  }
+}

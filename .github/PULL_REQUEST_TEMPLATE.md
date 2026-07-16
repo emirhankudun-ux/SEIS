@@ -2,19 +2,27 @@
 
 ## Why
 
+## Project
+
 ## Goal ID
 
 ## Scope
+
+## Non-Goals
+
+## Changes
 
 ## Changed Files
 
 ## Architecture Impact
 
+## Design Impact
+
 ## Apple Impact
 
 ## AI Impact
 
-## Security
+## Security and Privacy
 
 ## Accessibility
 

@@ -1,0 +1,281 @@
+schema_version: 2
+
+id: ECO-GOAL-0001
+project: ecosystem
+program: governance
+initiative: repository-foundation
+parent_goal: null
+
+title: Establish project manifests and canonical repository ownership
+summary: >-
+  Give each canonical ecosystem repository a machine-readable identity and assign
+  every shared module exactly one canonical owner without moving code or
+  creating bidirectional synchronization.
+
+category:
+  - architecture
+  - governance
+  - repository-hygiene
+
+priority: critical
+status: blocked
+maturity: specification
+confidence: medium
+
+owner_agent: lead-architect
+accountable_human: project-owner
+supporting_agents:
+  - repository-hygiene
+  - documentation
+  - security
+
+horizon: now
+start_after: null
+target_window:
+  start: '2026-07-12'
+  end: null
+
+scope:
+  repositories:
+    - seis
+    - eleni-neferi
+    - pantechnoesis
+  paths:
+    - AGENTS.md
+    - .github/workflows/foundation-check.yml
+    - .github/PULL_REQUEST_TEMPLATE.md
+    - project.ecosystem.yaml
+    - schemas/project-ecosystem.schema.json
+    - schemas/repository-ownership.schema.json
+    - schemas/ecosystem-goal.schema.json
+    - data/repository-ownership.yaml
+    - docs/ECOSYSTEM_GOAL_TRACKING.md
+    - docs/REPOSITORY_OWNERSHIP.md
+    - docs/adr/0002-ecosystem-governance-bootstrap-ownership.md
+    - goals
+    - scripts/validate-ecosystem-foundation.rb
+    - scripts/test-ecosystem-foundation.rb
+    - package.json
+
+canonical_owner_repo: seis
+
+platforms:
+  - repository
+  - github
+
+architecture_layers:
+  - governance
+  - integration
+
+security_classification: public-safe
+privacy_impact: none
+
+requirements:
+  - Every canonical repository contains project.ecosystem.yaml.
+  - Every shared module has exactly one canonical owner repository.
+  - Remote identity, visibility, local-worktree state, and manifest state are explicit and evidence-bound.
+
+non_goals:
+  - Moving all production code into one repository.
+  - Enabling bidirectional repository synchronization.
+  - Repairing, deleting, or replacing invalid Git metadata in this slice.
+
+acceptance_criteria:
+  - Project manifests validate against the approved schema.
+  - The ownership registry lists every observed shared module.
+  - Synchronization direction is explicit for each owned module.
+  - Duplicate module ownership or overlapping paths within a canonical repository are rejected by validation.
+  - Invalid local worktrees remain classified separately from session-observed canonical remotes.
+
+definition_of_ready:
+  - Candidate project roots are inventoried.
+  - A clean isolated SEIS worktree exists on a non-default branch.
+  - Canonical remote identity and visibility are observed read-only with an explicit evidence method and date.
+  - No destructive repository move is required.
+
+definition_of_done:
+  - SEIS, Eleni-Neferi, and Pantechnoesis each have a validated manifest in their observed canonical repositories.
+  - The ownership registry covers all shared modules with no conflicts.
+  - Validation runs in CI and passes.
+  - A focused pull request includes evidence, risks, and rollback instructions.
+
+dependencies:
+  - ECO-GOAL-0003
+blocked_by:
+  - type: repository-content
+    reference: eleni-neferi
+    reason: The canonical private repository was observed in the authenticated session, but project.ecosystem.yaml is absent and the local candidate is not a valid worktree.
+    unblock_condition: Create a focused non-default branch in the canonical repository, add a private-accurate manifest, validate it, and obtain review.
+  - type: repository-content
+    reference: pantechnoesis
+    reason: The canonical private repository was observed in the authenticated session, but project.ecosystem.yaml is absent and local candidates are not valid worktrees.
+    unblock_condition: Obtain the repository-required publication authorization, create a focused non-default branch, add a private-accurate manifest, validate it, and obtain review.
+  - type: inventory
+    reference: shared-module-inventory
+    reason: The current registry records the product-family ownership baseline but does not prove complete cross-repository shared-module coverage.
+    unblock_condition: Inspect all three valid repositories and accept a complete module and consumer mapping through an ADR.
+related_goals:
+  - ECO-GOAL-0003
+
+validation:
+  commands:
+    - npm run check:ecosystem-foundation
+    - npm run test:ecosystem-foundation
+    - git diff --check
+  manual:
+    - architecture review
+    - public-private boundary review
+  evidence:
+    - validator output
+    - focused branch diff
+    - https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+    - https://github.com/emirhankudun-ux/SEIS/pull/177
+
+status_history:
+  - status: planned
+    at: '2026-07-12'
+    reason: The owner supplied the ecosystem Goal Tracking System and authorized goal creation.
+    evidence_refs: []
+  - status: in-progress
+    at: '2026-07-12'
+    reason: A clean SEIS branch, manifest, ownership registry, schemas, and deterministic validators were started.
+    evidence_refs:
+      - ECO-EVIDENCE-001
+  - status: blocked
+    at: '2026-07-13'
+    reason: The SEIS bootstrap slice and remote CI are validated, but the two private manifests, repository-specific publication authorization, full shared-module inventory, and accepted ADR are still required.
+    evidence_refs:
+      - ECO-EVIDENCE-001
+      - ECO-EVIDENCE-004
+
+evidence_records:
+  - id: ECO-EVIDENCE-001
+    type: repository-inspection
+    description: SEIS, Eleni-Neferi, and Pantechnoesis canonical remotes, default branches, visibility, and local-worktree boundaries were inspected without mutation.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: data/repository-ownership.yaml
+  - id: ECO-EVIDENCE-002
+    type: validation
+    description: Ecosystem foundation schema and semantic validation.
+    status: passed
+    command: npm run check:ecosystem-foundation
+    exit_code: 0
+    artifact: scripts/validate-ecosystem-foundation.rb
+  - id: ECO-EVIDENCE-003
+    type: validation
+    description: Ecosystem foundation negative fixture tests.
+    status: passed
+    command: npm run test:ecosystem-foundation
+    exit_code: 0
+    artifact: scripts/test-ecosystem-foundation.rb
+  - id: ECO-EVIDENCE-004
+    type: remote-ci
+    description: Foundation Check run 781 invoked both ecosystem foundation commands on pull request 177 and passed.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29210762538
+  - id: ECO-EVIDENCE-005
+    type: github-handoff
+    description: Issue 176 and draft pull request 177 map the blocked ownership Goal and its active CI dependency to the focused branch and commit.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/177
+
+quality_gates:
+  architecture: required
+  product: not-applicable
+  brand_creative_direction: not-applicable
+  design_system: not-applicable
+  ui_ux: not-applicable
+  engineering: passed
+  ai_integrity: not-applicable
+  model_provider_routing: not-applicable
+  agent_permission: not-applicable
+  mcp_plugin_tool: not-applicable
+  security: passed
+  privacy: required
+  accessibility: not-applicable
+  performance: not-applicable
+  data: not-applicable
+  documentation: passed
+  devops: not-applicable
+  testing: passed
+  release: not-applicable
+  public_readiness: required
+
+risks:
+  - id: ECO-RISK-001
+    description: Two repositories may claim canonical ownership of the same module or path.
+    likelihood: medium
+    impact: high
+    owner: lead-architect
+    mitigation: Reject duplicate module identifiers and owned paths in deterministic validation.
+    trigger: A second ownership entry reuses an existing module id or path.
+    contingency: Keep the conflicting entry proposed and require an ADR before promotion.
+    status: open
+  - id: ECO-RISK-002
+    description: Invalid local Git folders may be mistaken for valid worktrees of session-observed canonical repositories.
+    likelihood: high
+    impact: high
+    owner: repository-hygiene
+    mitigation: Track remote verification and local-worktree validity as separate fields and prohibit writes through invalid local metadata.
+    trigger: A manifest is proposed through an invalid local folder.
+    contingency: Use a fresh valid clone or an owner-authorized non-default remote branch and leave the invalid folder untouched.
+    status: open
+  - id: ECO-RISK-003
+    description: A manifest may claim public visibility for a repository that is currently private.
+    likelihood: medium
+    impact: high
+    owner: security
+    mitigation: Require manifest visibility to match session-observed repository metadata before publication.
+    trigger: A proposed manifest sets security.public_repo to true for Eleni-Neferi or Pantechnoesis.
+    contingency: Reject the manifest and retain the repository's private boundary until the owner changes visibility explicitly.
+    status: open
+
+rollback:
+  strategy: revert
+  steps:
+    - Revert the focused governance commit.
+    - Restore the previous documentation links and package script.
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: architecture/ecosystem-goal-tracking-v1
+  suggested_commit: 'feat(governance): bootstrap ecosystem ownership foundation'
+  issue_url: https://github.com/emirhankudun-ux/SEIS/issues/176
+  branch_name: architecture/ecosystem-goal-tracking-v1
+  commit_sha: f772b6f364e49d438113b2d51f2e20027ae9f6b4
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/177
+  release_note_url: null
+
+observability:
+  metrics:
+    - manifest_validation_success
+    - duplicate_owner_count
+    - unobserved_repository_count
+  logs: []
+
+outputs:
+  - SEIS project manifest
+  - repository ownership registry
+  - canonical remote identity and visibility evidence
+  - ecosystem ownership ADR
+  - deterministic foundation validator
+  - CI foundation gate
+  - ownership documentation
+
+notes:
+  - github.commit_sha records the substantive ECO-GOAL-0001 bootstrap implementation commit; later evidence-only or ECO-GOAL-0003 hardening commits may be newer.
+  - This first slice does not claim ecosystem-wide completion.
+  - Eleni-Neferi and Pantechnoesis remotes were observed through an authenticated read-only connector and are canonical by repository identity, but their manifests are still missing.
+  - Scope expanded to CI and an ADR because both are explicit Definition of Done and ownership-decision requirements.
+  - All seven pull-request workflows passed; the Goal remains blocked only on the private manifests, publication authorization, complete ownership inventory, and architecture decision.

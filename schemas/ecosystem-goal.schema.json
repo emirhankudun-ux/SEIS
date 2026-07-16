@@ -1,0 +1,388 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/ecosystem-goal.schema.json",
+  "title": "Ecosystem goal record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "project",
+    "program",
+    "initiative",
+    "parent_goal",
+    "title",
+    "summary",
+    "category",
+    "priority",
+    "status",
+    "maturity",
+    "confidence",
+    "owner_agent",
+    "accountable_human",
+    "supporting_agents",
+    "horizon",
+    "start_after",
+    "target_window",
+    "scope",
+    "canonical_owner_repo",
+    "platforms",
+    "architecture_layers",
+    "security_classification",
+    "privacy_impact",
+    "requirements",
+    "non_goals",
+    "acceptance_criteria",
+    "definition_of_ready",
+    "definition_of_done",
+    "dependencies",
+    "blocked_by",
+    "related_goals",
+    "validation",
+    "quality_gates",
+    "risks",
+    "rollback",
+    "github",
+    "observability",
+    "outputs",
+    "notes",
+    "status_history",
+    "evidence_records"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 2 },
+    "id": {
+      "type": "string",
+      "pattern": "^(?:ECO|SEIS|ELENI|PANTECH|WEB|OPS|SEC|DATA|[A-Z0-9]+)-GOAL-[0-9]{4}$"
+    },
+    "project": { "$ref": "#/$defs/text" },
+    "program": { "$ref": "#/$defs/text" },
+    "initiative": { "$ref": "#/$defs/text" },
+    "parent_goal": { "$ref": "#/$defs/nullableGoalId" },
+    "title": { "$ref": "#/$defs/text" },
+    "summary": { "$ref": "#/$defs/text" },
+    "category": { "$ref": "#/$defs/nonEmptyStrings" },
+    "priority": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+    "status": {
+      "type": "string",
+      "enum": [
+        "backlog",
+        "proposed",
+        "planned",
+        "in-progress",
+        "review",
+        "blocked",
+        "completed",
+        "archived",
+        "cancelled"
+      ]
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "idea",
+        "research",
+        "specification",
+        "prototype",
+        "experimental",
+        "beta",
+        "release-candidate",
+        "stable",
+        "deprecated",
+        "removed"
+      ]
+    },
+    "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+    "owner_agent": { "$ref": "#/$defs/text" },
+    "accountable_human": { "$ref": "#/$defs/text" },
+    "supporting_agents": { "$ref": "#/$defs/strings" },
+    "horizon": {
+      "type": "string",
+      "enum": ["now", "30-days", "90-days", "1-year", "3-years", "5-years"]
+    },
+    "start_after": { "type": ["string", "null"] },
+    "target_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": ["string", "null"] },
+        "end": { "type": ["string", "null"] }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repositories", "paths"],
+      "properties": {
+        "repositories": { "$ref": "#/$defs/nonEmptyStrings" },
+        "paths": { "$ref": "#/$defs/nonEmptyStrings" }
+      }
+    },
+    "canonical_owner_repo": { "$ref": "#/$defs/text" },
+    "platforms": { "$ref": "#/$defs/nonEmptyStrings" },
+    "architecture_layers": { "$ref": "#/$defs/nonEmptyStrings" },
+    "security_classification": {
+      "type": "string",
+      "enum": ["public-safe", "internal", "private", "restricted"]
+    },
+    "privacy_impact": { "type": "string", "enum": ["none", "low", "medium", "high"] },
+    "requirements": { "$ref": "#/$defs/nonEmptyStrings" },
+    "non_goals": { "$ref": "#/$defs/nonEmptyStrings" },
+    "acceptance_criteria": { "$ref": "#/$defs/nonEmptyStrings" },
+    "definition_of_ready": { "$ref": "#/$defs/nonEmptyStrings" },
+    "definition_of_done": { "$ref": "#/$defs/nonEmptyStrings" },
+    "dependencies": { "$ref": "#/$defs/goalIds" },
+    "blocked_by": { "type": "array", "items": { "$ref": "#/$defs/blocker" } },
+    "related_goals": { "$ref": "#/$defs/goalIds" },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commands", "manual", "evidence"],
+      "properties": {
+        "commands": { "$ref": "#/$defs/nonEmptyStrings" },
+        "manual": { "$ref": "#/$defs/nonEmptyStrings" },
+        "evidence": { "$ref": "#/$defs/nonEmptyStrings" }
+      }
+    },
+    "quality_gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "architecture",
+        "product",
+        "brand_creative_direction",
+        "design_system",
+        "ui_ux",
+        "engineering",
+        "ai_integrity",
+        "model_provider_routing",
+        "agent_permission",
+        "mcp_plugin_tool",
+        "security",
+        "privacy",
+        "accessibility",
+        "performance",
+        "data",
+        "documentation",
+        "devops",
+        "testing",
+        "release",
+        "public_readiness"
+      ],
+      "properties": {
+        "architecture": { "$ref": "#/$defs/gate" },
+        "product": { "$ref": "#/$defs/gate" },
+        "brand_creative_direction": { "$ref": "#/$defs/gate" },
+        "design_system": { "$ref": "#/$defs/gate" },
+        "ui_ux": { "$ref": "#/$defs/gate" },
+        "engineering": { "$ref": "#/$defs/gate" },
+        "ai_integrity": { "$ref": "#/$defs/gate" },
+        "model_provider_routing": { "$ref": "#/$defs/gate" },
+        "agent_permission": { "$ref": "#/$defs/gate" },
+        "mcp_plugin_tool": { "$ref": "#/$defs/gate" },
+        "security": { "$ref": "#/$defs/gate" },
+        "privacy": { "$ref": "#/$defs/gate" },
+        "accessibility": { "$ref": "#/$defs/gate" },
+        "performance": { "$ref": "#/$defs/gate" },
+        "data": { "$ref": "#/$defs/gate" },
+        "documentation": { "$ref": "#/$defs/gate" },
+        "devops": { "$ref": "#/$defs/gate" },
+        "testing": { "$ref": "#/$defs/gate" },
+        "release": { "$ref": "#/$defs/gate" },
+        "public_readiness": { "$ref": "#/$defs/gate" }
+      }
+    },
+    "risks": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/risk" } },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "steps", "data_migration_required"],
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": ["revert", "feature-flag", "restore-backup", "manual"]
+        },
+        "steps": { "$ref": "#/$defs/nonEmptyStrings" },
+        "data_migration_required": { "type": "boolean" }
+      }
+    },
+    "github": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "issue_required",
+        "branch_required",
+        "commit_required",
+        "pull_request_required",
+        "release_note_required",
+        "suggested_branch",
+        "suggested_commit",
+        "issue_url",
+        "branch_name",
+        "commit_sha",
+        "pull_request_url",
+        "release_note_url"
+      ],
+      "properties": {
+        "issue_required": { "type": "boolean" },
+        "branch_required": { "type": "boolean" },
+        "commit_required": { "type": "boolean" },
+        "pull_request_required": { "type": "boolean" },
+        "release_note_required": { "type": "boolean" },
+        "suggested_branch": { "$ref": "#/$defs/text" },
+        "suggested_commit": { "$ref": "#/$defs/text" },
+        "issue_url": { "$ref": "#/$defs/nullableGithubIssueUrl" },
+        "branch_name": { "$ref": "#/$defs/nullableText" },
+        "commit_sha": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-fA-F]{7,40}$",
+          "description": "Latest substantive implementation commit evidenced for this Goal; a metadata-only evidence commit may be newer."
+        },
+        "pull_request_url": { "$ref": "#/$defs/nullableGithubPullUrl" },
+        "release_note_url": { "$ref": "#/$defs/nullableHttpsUrl" }
+      }
+    },
+    "observability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metrics", "logs"],
+      "properties": {
+        "metrics": { "$ref": "#/$defs/strings" },
+        "logs": { "$ref": "#/$defs/strings" }
+      }
+    },
+    "outputs": { "$ref": "#/$defs/nonEmptyStrings" },
+    "notes": { "$ref": "#/$defs/strings" },
+    "status_history": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/statusHistoryEntry" }
+    },
+    "evidence_records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidenceRecord" }
+    }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1 },
+    "nullableText": { "type": ["string", "null"], "minLength": 1 },
+    "goalId": {
+      "type": "string",
+      "pattern": "^(?:ECO|SEIS|ELENI|PANTECH|WEB|OPS|SEC|DATA|[A-Z0-9]+)-GOAL-[0-9]{4}$"
+    },
+    "nullableGoalId": {
+      "type": ["string", "null"],
+      "pattern": "^(?:ECO|SEIS|ELENI|PANTECH|WEB|OPS|SEC|DATA|[A-Z0-9]+)-GOAL-[0-9]{4}$"
+    },
+    "goalIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/goalId" }
+    },
+    "nullableGithubIssueUrl": {
+      "type": ["string", "null"],
+      "pattern": "^https://github\\.com/[^/]+/[^/]+/issues/[0-9]+$"
+    },
+    "nullableGithubPullUrl": {
+      "type": ["string", "null"],
+      "pattern": "^https://github\\.com/[^/]+/[^/]+/pull/[0-9]+$"
+    },
+    "nullableHttpsUrl": {
+      "type": ["string", "null"],
+      "pattern": "^https://[^\\s]+$"
+    },
+    "strings": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/text" }
+    },
+    "gate": {
+      "type": "string",
+      "enum": ["required", "optional", "not-applicable", "blocked", "passed", "failed"]
+    },
+    "statusHistoryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "at", "reason", "evidence_refs"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "backlog",
+            "proposed",
+            "planned",
+            "in-progress",
+            "review",
+            "blocked",
+            "completed",
+            "archived",
+            "cancelled"
+          ]
+        },
+        "at": { "$ref": "#/$defs/text" },
+        "reason": { "$ref": "#/$defs/text" },
+        "evidence_refs": { "$ref": "#/$defs/strings" }
+      }
+    },
+    "evidenceRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "description", "status", "command", "exit_code", "artifact"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]+-EVIDENCE-[0-9]{3}$"
+        },
+        "type": { "$ref": "#/$defs/text" },
+        "description": { "$ref": "#/$defs/text" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "passed", "failed", "skipped"]
+        },
+        "command": { "$ref": "#/$defs/nullableText" },
+        "exit_code": { "type": ["integer", "null"] },
+        "artifact": { "$ref": "#/$defs/nullableText" }
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "reference", "reason", "unblock_condition"],
+      "properties": {
+        "type": { "$ref": "#/$defs/text" },
+        "reference": { "$ref": "#/$defs/text" },
+        "reason": { "$ref": "#/$defs/text" },
+        "unblock_condition": { "$ref": "#/$defs/text" }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "likelihood",
+        "impact",
+        "owner",
+        "mitigation",
+        "trigger",
+        "contingency",
+        "status"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z0-9]+-RISK-[0-9]{3}$" },
+        "description": { "$ref": "#/$defs/text" },
+        "likelihood": { "type": "string", "enum": ["low", "medium", "high"] },
+        "impact": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "owner": { "$ref": "#/$defs/text" },
+        "mitigation": { "$ref": "#/$defs/text" },
+        "trigger": { "$ref": "#/$defs/text" },
+        "contingency": { "$ref": "#/$defs/text" },
+        "status": { "type": "string", "enum": ["open", "mitigated", "accepted", "closed"] }
+      }
+    }
+  }
+}
