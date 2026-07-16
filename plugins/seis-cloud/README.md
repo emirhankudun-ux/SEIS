@@ -20,15 +20,16 @@ SEIS Cloud is the dedicated cloud, deployment, and infrastructure-readiness lane
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-cloud
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis-cloud/skills/seis-cloud
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seis-cloud
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seis-cloud/skills/seis-cloud
 node plugins/seis-cloud/scripts/seis-cloud-status.mjs
 npm run check:cloud-access-policy
 ```
 
-## Embedded Use
+## Embedded Module Use
 
-The repository marketplace publishes SEIS-Agent only. This lane is embedded at
-`plugins/seis-ai-agent/skills/seis-cloud/SKILL.md` and installed through
-`seis-ai-agent@seis-repo`; this directory remains the source mirror for focused
-lane development and validation.
+The repository preserves this source module and embeds its lane at
+`plugins/seis-ai-agent/skills/seis-cloud/SKILL.md`. Install
+`seis-ai-agent@seis-repo` to use it; there is no standalone public cloud plugin
+card. Public agent installation does not imply live cloud authentication,
+deployment, SSH access, or secret availability; those remain approval-gated.

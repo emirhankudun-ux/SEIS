@@ -1,6 +1,6 @@
 {
   "name": "seis-design",
-  "version": "0.1.0",
+  "version": "0.3.0+codex.20260712",
   "description": "SEIS-Design product and design-system lane for UI/UX, accessibility, motion, visual QA, and design-governed app surfaces.",
   "author": {
     "name": "emirhankudun-ux",
@@ -8,7 +8,7 @@
   },
   "homepage": "https://github.com/emirhankudun-ux/SEIS",
   "repository": "https://github.com/emirhankudun-ux/SEIS",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "keywords": [
     "seis",
     "design",

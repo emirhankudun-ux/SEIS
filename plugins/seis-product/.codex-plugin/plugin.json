@@ -1,0 +1,44 @@
+{
+  "name": "seis-product",
+  "version": "0.3.0+codex.20260712",
+  "description": "SEIS Product gives Codex a public SEIS plugin lane for product requirements, roadmap slices, acceptance criteria, UX outcomes, launch readiness, open-source positioning, prioritization, and validation-backed delivery plans under SEIS-Agent governance.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "product",
+    "roadmap",
+    "launch",
+    "codex",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Product",
+    "shortDescription": "Product scope and launch-readiness lane.",
+    "longDescription": "SEIS Product gives Codex a public SEIS plugin lane for product requirements, roadmap slices, acceptance criteria, UX outcomes, launch readiness, open-source positioning, prioritization, and validation-backed delivery plans under SEIS-Agent governance.",
+    "developerName": "emirhankudun-ux",
+    "category": "Productivity",
+    "capabilities": [
+      "Product requirements",
+      "Roadmap slice planning",
+      "Acceptance criteria",
+      "Launch-readiness scope",
+      "Open-source positioning",
+      "Validation-backed delivery plans"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Product to scope this roadmap slice.",
+      "Turn this SEIS idea into acceptance criteria.",
+      "Review launch readiness for this product surface."
+    ],
+    "brandColor": "#0F766E"
+  }
+}

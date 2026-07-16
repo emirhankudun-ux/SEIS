@@ -135,6 +135,9 @@ ios/
 *.json
 *.config.json
 !content/development/seis-*.json
+!plugins/**/.codex-plugin/*.json
+!plugins/**/assets/*.json
+!plugins/**/assets/**/*.json
 !apps/seis-demo-web/data/seis-ai-core-version-promotion-map.json
 !apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json
 !apps/web/wow-pages/*.json

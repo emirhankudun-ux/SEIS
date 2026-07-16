@@ -1,47 +1,59 @@
 # SEIS Installed Plugin Operating Model
 
-Date: 2026-06-15
+Date: 2026-07-11
 
 Google Drive companion document: https://docs.google.com/document/d/10A-Ld9TBu6HSsB0W1dJ3p6Y14Hqr3VMLeMgYJ89mX64
 
 SEIS uses installed and enabled Codex plugins first. Mentioned plugin URIs are
 not treated as active unless they appear as installed and enabled in
-`data/installed-codex-plugins-2026-06-15.json`.
+`data/installed-codex-plugins-2026-07-11.json`.
 
 ## Summary
 
-- Installed and enabled plugins after SEIS consolidation audit: 187
-- Not installed plugins after SEIS consolidation audit: 5
-- Canonical SEIS plugin: `seis-ai-agent@seis-repo`
-- Legacy SEIS mirror: `seis@personal` compatibility only
+- Installed and enabled plugins after marketplace install pass: 196
+- Not installed plugins after marketplace install pass: 0
+- Canonical SEIS plugin: `seis-ai-agent@seis-repo` (`0.2.0+codex.20260712`)
+- Default install: one unified SEIS-Agent suite
+- Compatibility lanes: explicit `--with-standalone-lanes` only
+- Legacy SEIS mirrors: five preserved `@personal` aliases to the canonical suite
 - Duplicate SEIS lane cards: not installed by default
 - Canonical repository: `emirhankudun-ux/SEIS`
 - Primary plugin policy: OpenAI-first
 - Governance registry closure is `npm run quality:governance`.
 
-## 2026-06-29 Skill Install Pass
+## 2026-07-11 Microsoft-Free Marketplace Activation Plan
 
-The Google, Kimi, Claude, Apple, Windows, and major-platform install pass added
-curated local Codex skills for
-OpenAI, GitHub, Figma, Cloudflare, Vercel, Netlify, Render, Linear, Sentry,
-Microsoft app frameworks, Jupyter, Notion, PDF/screenshot/speech/transcription,
-Playwright, and security review support. The detailed inventory is recorded in
-`docs/platform/big-tech-mcp-skill-inventory.md` and
-`content/development/seis-big-tech-mcp-skill-inventory.json`.
+SEIS now tracks the operator's current preference for useful installable and
+OAuth/account-login marketplace plugins while excluding Microsoft-family
+plugins from the useful activation set. The activation plan groups software
+plugins into Creativity, Develop Tools, Data & Analytics, Productivity, and
+Security packs.
 
-This pass did not install project dependencies, execute SSH, deploy, call live
-providers, create secrets, mutate Google Workspace data, or change GitHub.
-BigQuery appeared as a Google connector candidate, but the user did not confirm
-the connector install/auth flow. The follow-up pass installed and verified the
-official Kimi Code CLI, added SEIS project-local Kimi MCP and Skill config,
-verified Claude Code CLI, and registered XcodeBuildMCP in Claude and Kimi
-project MCP configs. Kimi provider login, official Kimi marketplace plugin
-installation, and Claude MCP approval remain explicit user-owned actions.
-Restart Codex to pick up new skills.
+- Activation data: `content/development/marketplace-plugin-activation-plan.json`
+- Review report: `reports/marketplace-plugin-activation-plan.md`
+- Validator: `npm run check:marketplace-plugin-activation-plan`
 
-The safe development focus for applying installed plugins, MCP servers, skills,
-and connectors to SEIS work is documented in
-`docs/platform/mcp-plugin-development-focus.md`.
+The plan is source-visible only. It does not start OAuth, install plugins, write
+to external accounts, or store tokens. Live use still requires task scope,
+account authentication when needed, and explicit user approval.
+
+## 2026-07-11 ChatGPT Apps And GPT Companion Plan
+
+SEIS also tracks the requested ChatGPT Apps and GPT Store layer separately from
+the local Codex plugin install audit. The companion plan contains 20 ChatGPT
+Apps SDK candidates and 20 GPT Store candidates across Creativity, Develop
+Tools, Data & Analytics, Productivity, and Security, with Microsoft-family
+candidates excluded by preference.
+
+- Companion data:
+  `content/development/chatgpt-apps-gpts-activation-plan.json`
+- Review report: `reports/chatgpt-apps-gpts-activation-plan.md`
+- Validator: `npm run check:chatgpt-apps-gpts-activation-plan`
+
+Codex cannot programmatically select GPT Store items or connect ChatGPT
+workspace apps inside the user's account. Those remain manual ChatGPT or
+workspace/admin actions. ChatGPT Apps require a real MCP endpoint, metadata,
+and user/workspace authorization before live use.
 
 ## OpenAI-First Rule
 
@@ -79,28 +91,39 @@ Policy records:
 
 ## Install Pass
 
-The 2026-06-05 install pass installed every plugin that the local Codex listing exposed as available but not installed. The 36 successful installs are recorded in `data/plugin-install-pass-2026-06-05.json`.
+The 2026-06-05 install pass installed every plugin that the local Codex listing
+exposed as available but not installed. The 36 successful installs are recorded
+in `data/plugin-install-pass-2026-06-05.json`.
 
-The 2026-06-15 consolidation audit records the active post-merge state in
-`data/installed-codex-plugins-2026-06-15.json`: `seis-ai-agent@seis-repo` is
-installed and enabled; `seis`, `seis-cloud`, `seis-code`, `seis-design`, and
-`seis-data` are not installed in either the `personal` or `seis-repo`
-marketplaces.
+The 2026-07-11 install pass corrected the local `seis-repo` marketplace path,
+installed `seis-ai-agent@seis-repo`, then installed all remaining non-Microsoft
+OpenAI-curated marketplace plugins that were still listed as not installed:
+`hex`, `chronograph-lp`, `glean`, `chronograph-gp`,
+`openai-ads-conversions`, `boltz-api-cli`, `replayio`, and `digitalocean`.
+The active audit is `data/installed-codex-plugins-2026-07-11.json` and records
+196 installed/enabled plugins with 0 not installed plugins.
+
+Custom ChatGPT GPTs are tracked in
+`content/development/chatgpt-apps-gpts-activation-plan.json` because this local
+Codex marketplace does not expose a programmatic GPT Store install command. GPT
+companion packs remain manual ChatGPT workspace actions until the user chooses
+them in ChatGPT.
 
 ## Operating Rules
 
 1. Start SEIS work with `seis-ai-agent@seis-repo` for repo orientation, lane routing, and safety gates.
-2. Use the OpenAI/Codex category plugin before falling back to generic shell, external plugin URI families, or manual steps.
-3. Write durable outcomes back to SEIS docs, data files, or integration manifests.
-4. Keep Google Drive, Calendar, Sheets, Docs, and external tools linked from `integrations/google-workspace.json`.
-5. Do not delete old repositories or branch refs based only on plugin availability. Deletion still requires verified import evidence.
+2. Keep every current and future `plugins/seis-*` package registered in `plugins/seis-ai-agent/assets/unified-suite.json`; it must route through SEIS AI before becoming an install surface.
+3. Use the OpenAI/Codex category plugin before falling back to generic shell, external plugin URI families, or manual steps.
+4. Write durable outcomes back to SEIS docs, data files, or integration manifests.
+5. Keep Google Drive, Calendar, Sheets, Docs, and external tools linked from `integrations/google-workspace.json`.
+6. Do not delete old repositories, branch refs, personal marketplace entries, or plugin source folders based only on unified-suite availability. Deletion still requires verified import evidence and explicit approval.
 
 ## Refresh Command
 
 Run this from the local machine when plugin availability changes:
 
 ```bash
-WORKDIR=/tmp/seis-installed-plugin-audit /Users/emirhankudun/plugins/seis/scripts/seis-installed-plugin-audit.sh
+WORKDIR=/tmp/seis-installed-plugin-audit bash plugins/seis/scripts/seis-installed-plugin-audit.sh
 ```
 
 Then update `data/installed-codex-plugins-YYYY-MM-DD.json` and this document if the lane map changes.

@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github}"
-PLUGIN_ROOT="${PLUGIN_ROOT:-/Users/emirhankudun/plugins/seis}"
-MARKETPLACE_JSON="${MARKETPLACE_JSON:-/Users/emirhankudun/.agents/plugins/marketplace.json}"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-${SEIS_ROOT:-${REPO_ROOT}}}"
+PLUGIN_ROOT="${PLUGIN_ROOT:-${REPO_ROOT}/plugins/seis}"
+MARKETPLACE_JSON="${MARKETPLACE_JSON:-${HOME}/.agents/plugins/marketplace.json}"
 SEIS_REPO="${SEIS_REPO:-emirhankudun-ux/SEIS}"
-SEIS_BRANCH="${SEIS_BRANCH:-UIXAppTTR}"
+SEIS_BRANCH="${SEIS_BRANCH:-main}"
 
 echo "SEIS Codex Plugin Status"
 echo "Workspace: ${WORKSPACE_ROOT}"

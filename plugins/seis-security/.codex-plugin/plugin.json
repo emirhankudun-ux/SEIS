@@ -1,0 +1,44 @@
+{
+  "name": "seis-security",
+  "version": "0.3.0+codex.20260712",
+  "description": "SEIS Security gives Codex a public SEIS plugin lane for threat modeling, secret-safety review, dependency and permission risk, CI/security gates, cloud access safety, SSH/VPN hardening, and release-blocking security checks under SEIS-Agent governance.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "security",
+    "threat-modeling",
+    "secrets",
+    "codex",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Security",
+    "shortDescription": "Security, secrets, and release-risk lane.",
+    "longDescription": "SEIS Security gives Codex a public SEIS plugin lane for threat modeling, secret-safety review, dependency and permission risk, CI/security gates, cloud access safety, SSH/VPN hardening, and release-blocking security checks under SEIS-Agent governance.",
+    "developerName": "emirhankudun-ux",
+    "category": "Security",
+    "capabilities": [
+      "Threat modeling",
+      "Secret-safety review",
+      "Dependency and permission risk",
+      "Cloud and SSH access safety",
+      "Release security gates",
+      "Rollback security review"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Security to review this release risk.",
+      "Check this SEIS change for secrets and access risk.",
+      "Plan security validation for this SEIS workflow."
+    ],
+    "brandColor": "#DC2626"
+  }
+}

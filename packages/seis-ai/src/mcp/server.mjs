@@ -41,6 +41,8 @@ import {
   MCP_RUNTIME_CONTRACT_PATH,
   PERSONAL_PLUGIN_LANE_TOOLS,
   PLUGIN_INTEGRATION_PATH,
+  PUBLIC_PLUGIN_FAMILY_PATH,
+  PUBLIC_PLUGIN_LIFECYCLE_PATH,
   SUBAGENT_APPROVAL_FIXTURE_PATH,
   SUBAGENT_CANCELLATION_FIXTURE_PATH,
   SUBAGENT_DRY_RUN_QUEUE_PATH,
@@ -63,6 +65,7 @@ import {
   personalPluginLanePlan,
   personalPluginLaneStatus,
   pluginIntegrationStatus,
+  publicPluginFamilyStatus,
   subagentDryRunTaskDecision,
   subagentOperatingModelStatus,
   subagentReviewLedgerStatus,
@@ -498,13 +501,28 @@ export function buildServer() {
 
   server.tool(
     "seis_plugin_integration",
-    "Read the canonical SEIS-Agent plugin integration manifest for personal SEIS plugins, embedded lanes, helper plugin universe, quality gates, and runtime/app integration surfaces.",
+    "Read the single-public-plugin SEIS-Agent suite and canonical integration manifest for the embedded SEIS source-module inventory, non-destructive legacy personal aliases, embedded lanes, helper plugin universe, quality gates, and runtime/app integration surfaces.",
     {
       includeFullManifest: z.boolean().optional().describe("Return the full manifest in addition to the compact status summary"),
     },
     async ({ includeFullManifest }) => {
       try {
         return jsonResult(pluginIntegrationStatus(repoRoot, { includeFullManifest: includeFullManifest === true }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    "seis_public_plugin_family",
+    "Read the one-public-SEIS-Agent distribution and lifecycle status for unified-suite availability, embedded module discovery, canonical alias resolution, SEIS AI connection, install/MCP smoke gates, release channel, support tiers, and approval boundaries.",
+    {
+      includeFullContracts: z.boolean().optional().describe("Return the full family and lifecycle contracts in addition to the compact status summary"),
+    },
+    async ({ includeFullContracts }) => {
+      try {
+        return jsonResult(publicPluginFamilyStatus(repoRoot, { includeFullContracts: includeFullContracts === true }));
       } catch (error) {
         return errorResult(error);
       }
@@ -816,6 +834,36 @@ Steps:
           uri: "seis://agent/plugin-integration.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...PLUGIN_INTEGRATION_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "public-plugin-family",
+    "seis://agent/public-plugin-family.json",
+    { description: "SEIS public plugin family contract", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://agent/public-plugin-family.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...PUBLIC_PLUGIN_FAMILY_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "public-plugin-lifecycle",
+    "seis://agent/public-plugin-lifecycle.json",
+    { description: "SEIS public plugin lifecycle contract", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://agent/public-plugin-lifecycle.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...PUBLIC_PLUGIN_LIFECYCLE_PATH.split("/")), "utf8"),
         },
       ],
     })

@@ -1,0 +1,102 @@
+{
+  "id": "seis-public-plugin-external-install-proof",
+  "version": 1,
+  "generatedAt": "2026-07-12",
+  "status": "repo-local-clean-artifact-staged-external-proof-pending",
+  "decision": "not-ready-for-public-preview",
+  "sourcePath": "content/development/seis-public-plugin-external-install-proof.json",
+  "reportPath": "reports/seis-public-plugin-external-install-proof.md",
+  "publicPluginFamily": "content/development/seis-public-plugin-family.json",
+  "marketplace": ".agents/plugins/marketplace.json",
+  "independentRunnerEvidenceContract": "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+  "independentRunnerEvidenceContractReport": "reports/seis-public-plugin-independent-runner-evidence-contract.md",
+  "unifiedSuite": {
+    "path": "plugins/seis-ai-agent/assets/unified-suite.json",
+    "status": "active-single-public-plugin",
+    "releaseVersion": "0.3.0+codex.20260712",
+    "canonicalInstallId": "seis-ai-agent@seis-repo",
+    "defaultInstallMode": "single-public-plugin",
+    "componentCount": 10,
+    "publicPluginCount": 1,
+    "embeddedModuleCount": 10
+  },
+  "publicReleaseAllowed": false,
+  "purpose": "Stage the single public SEIS-Agent artifact in a disposable clean directory, verify its embedded source-module suite, and retain independent runner/public installation proof as an explicit release gate.",
+  "repoLocalArtifactStaging": {
+    "ok": true,
+    "mode": "temporary-local-clean-artifact-staging",
+    "externalNetworkAccessUsed": false,
+    "existingCodexCacheUsed": false,
+    "publicMarketplacePublished": false,
+    "expectedPluginCount": 1,
+    "embeddedModuleCount": 10,
+    "embeddedModuleFindings": [],
+    "stagedPluginCount": 1,
+    "stagedManifestCount": 1,
+    "stagedMcpEntryScriptCount": 1,
+    "stagedFileCount": 35,
+    "excludedSourceArtifactCount": 0,
+    "excludedSourceArtifacts": [],
+    "disallowedSourceArtifactCount": 0,
+    "disallowedSourceArtifacts": [],
+    "stagedForbiddenArtifactCount": 0,
+    "stagedForbiddenArtifacts": [],
+    "stageDeletedAfterValidation": true,
+    "plugins": [
+      {
+        "name": "seis-ai-agent",
+        "sourcePath": "./plugins/seis-ai-agent",
+        "sourceFileCount": 34,
+        "stagedFileCount": 34,
+        "excludedArtifactCount": 0,
+        "disallowedArtifactCount": 0,
+        "mcpEntryScriptCount": 1,
+        "stageReady": true,
+        "findings": []
+      }
+    ],
+    "failures": []
+  },
+  "externalCleanRunnerEvidence": {
+    "status": "pending-independent-clean-runner-or-public-install",
+    "evidencePath": "content/development/seis-public-plugin-independent-runner-evidence.json",
+    "evidenceRecorded": false,
+    "evidenceValid": false,
+    "validationFailures": [],
+    "repoLocalStagingIsNotIndependentProof": true,
+    "requiredEvidence": [
+      "A clean runner or machine that cannot read the original working tree or existing Codex plugin cache.",
+      "The public SEIS marketplace source or published package revision used for the install, including its immutable revision identifier.",
+      "Installation evidence for the single seis-ai-agent@seis-repo plugin and its embedded module inventory from that runner.",
+      "MCP initialization, tools/list, and representative tool-call evidence from the independent runner.",
+      "A newly opened Codex task after the independent installation, with the SEIS AI public-plugin-family bridge visible.",
+      "Sanitized runner metadata: operating system, Node major version, Codex version, and command exit summaries only."
+    ],
+    "prohibitedEvidence": [
+      "API keys, tokens, cookies, credentials, private keys, .env contents, or private repository data.",
+      "Claims that repo-local staging, a local cache, or a static manifest alone proves an external installation."
+    ]
+  },
+  "releaseBoundary": {
+    "externalNetworkAccessUsed": false,
+    "publicMarketplacePublicationUsed": false,
+    "liveProviderAccessUsed": false,
+    "liveSshUsed": false,
+    "publicReleaseAllowed": false
+  },
+  "remainingReleaseBlockers": [
+    "Independent clean-runner or public package installation proof has not been recorded.",
+    "Human approval for public preview, release, publish, push, merge, tag, deploy, live SSH, or provider credentials has not been recorded."
+  ],
+  "qualityGates": [
+    "npm run check:seis-public-plugin-external-install-proof",
+    "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+    "npm run check:seis-public-plugin-independent-runner-evidence",
+    "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
+    "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-public-plugin-security-provenance-review",
+    "npm run check:seis-public-plugin-install-smoke:local:mcp",
+    "npm run check:seis-agent-plugin-integration"
+  ],
+  "completionRule": "This record is complete for internal review when the disposable clean artifact stage validates every public plugin and the independent-runner evidence intake is available while publicReleaseAllowed remains false. Public preview remains blocked until strict independent clean-runner/public installation evidence and human approval are recorded."
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-product": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-product-mcp-server.mjs"
+      ]
+    }
+  }
+}

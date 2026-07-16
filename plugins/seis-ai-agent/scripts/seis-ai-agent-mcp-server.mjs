@@ -8,6 +8,7 @@ const AGENT = {
   id: "seis-ai-agent",
   identity: "SEIS-Agent",
   profilePath: "assets/agent-profile.json",
+  unifiedSuitePath: "assets/unified-suite.json",
   skillPath: "skills/seis-ai-agent/SKILL.md",
 };
 
@@ -207,6 +208,20 @@ const LANES = [
   },
 ];
 
+const PUBLIC_MARKETPLACE_PLUGIN = "seis-ai-agent";
+const EMBEDDED_SOURCE_MODULES = [
+  "seis-ai-agent",
+  "seis",
+  "seis-cloud",
+  "seis-code",
+  "seis-design",
+  "seis-data",
+  "seis-security",
+  "seis-research",
+  "seis-automation",
+  "seis-product",
+];
+
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 let pending = Buffer.alloc(0);
 
@@ -268,7 +283,9 @@ function repoRoot() {
 function status() {
   const root = pluginRoot();
   const repo = repoRoot();
+  const manifest = readJson(path.join(root, ".codex-plugin", "plugin.json"));
   const profile = readJson(path.join(root, AGENT.profilePath));
+  const unifiedSuite = readJson(path.join(root, AGENT.unifiedSuitePath));
   const identities = repo ? readJson(path.join(repo, "data", "seis-operating-identities.json")) : null;
   const marketplace = repo ? readJson(path.join(repo, ".agents", "plugins", "marketplace.json")) : null;
   const laneReadiness = Object.fromEntries(LANES.map((lane) => [lane.id, laneStatus(lane).status === "ready"]));
@@ -277,8 +294,19 @@ function status() {
     skill: fs.existsSync(path.join(root, AGENT.skillPath)),
     mcpManifest: fs.existsSync(path.join(root, ".mcp.json")),
     mcpServer: fs.existsSync(path.join(root, "scripts", "seis-ai-agent-mcp-server.mjs")),
+    unifiedSuite: Boolean(
+      unifiedSuite?.status === "active-single-public-plugin" &&
+        unifiedSuite?.canonicalInstall?.installId === "seis-ai-agent@seis-repo" &&
+        unifiedSuite?.componentCount >= EMBEDDED_SOURCE_MODULES.length &&
+        unifiedSuite?.publicDistribution?.publicPluginCount === 1 &&
+        unifiedSuite?.publicDistribution?.embeddedModuleCount >= EMBEDDED_SOURCE_MODULES.length
+    ),
     operatingIdentities: Boolean((identities?.identities || []).find((item) => item.name === AGENT.identity)),
-    marketplace: Boolean(marketplace?.plugins?.length === 1 && marketplace.plugins?.[0]?.name === AGENT.id && marketplace.plugins?.[0]?.source?.path === "./plugins/seis-ai-agent"),
+    marketplace: Boolean(
+      marketplace?.plugins?.length === 1 &&
+        marketplace.plugins?.[0]?.name === PUBLIC_MARKETPLACE_PLUGIN &&
+        marketplace.plugins?.[0]?.source?.path === `./plugins/${PUBLIC_MARKETPLACE_PLUGIN}`
+    ),
     installer: repo ? fs.existsSync(path.join(repo, "scripts", "install-seis-ai-agent.mjs")) : false,
     embeddedLanes: Object.values(laneReadiness).every(Boolean),
   };
@@ -287,11 +315,26 @@ function status() {
     status: Object.values(readiness).every(Boolean) ? "ready" : "partial",
     agent: AGENT.id,
     identity: AGENT.identity,
+    version: manifest?.version || null,
     pluginRoot: root,
     repoRoot: repo,
     readiness,
     laneReadiness,
     profile,
+    unifiedSuite: unifiedSuite
+      ? {
+          status: unifiedSuite.status,
+          releaseVersion: unifiedSuite.releaseVersion,
+          canonicalInstallId: unifiedSuite.canonicalInstall?.installId ?? null,
+          defaultInstallMode: unifiedSuite.canonicalInstall?.defaultInstallMode ?? null,
+          componentCount: unifiedSuite.componentCount ?? null,
+          publicPluginCount: unifiedSuite.publicDistribution?.publicPluginCount ?? null,
+          embeddedModuleCount: unifiedSuite.publicDistribution?.embeddedModuleCount ?? null,
+          legacyAliasCount: unifiedSuite.compatibility?.legacyAliasCount ?? null,
+          standaloneLaneInstallMode: unifiedSuite.compatibility?.standaloneLaneInstallMode ?? null,
+          personalMarketplaceMutation: unifiedSuite.compatibility?.personalMarketplaceMutation === true,
+        }
+      : null,
     operatingIdentities: identities?.identities?.map((item) => item.name) || [],
   };
 }
@@ -383,7 +426,7 @@ function plan(input) {
 function handle(message) {
   if (!message || typeof message !== "object") return;
   if (message.method === "initialize") {
-    send({ jsonrpc: "2.0", id: message.id, result: { protocolVersion: "2024-11-05", capabilities: { tools: { listChanged: false } }, serverInfo: { name: AGENT.identity, version: "0.1.0" } } });
+    send({ jsonrpc: "2.0", id: message.id, result: { protocolVersion: "2024-11-05", capabilities: { tools: { listChanged: false } }, serverInfo: { name: AGENT.identity, version: agentVersion(pluginRoot()) } } });
     return;
   }
   if (message.method === "tools/list") {
@@ -425,6 +468,10 @@ function send(message) {
 function readJson(filePath) {
   if (!filePath || !fs.existsSync(filePath)) return null;
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
+
+function agentVersion(root) {
+  return readJson(path.join(root, ".codex-plugin", "plugin.json"))?.version || "unknown";
 }
 
 function parseBody(bodyBuffer) {

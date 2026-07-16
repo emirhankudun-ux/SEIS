@@ -1,6 +1,6 @@
 {
   "name": "seis",
-  "version": "0.1.0+codex.20260613134714",
+  "version": "0.3.0+codex.20260712",
   "description": "SEIS-centered Codex development workflow for the emirhankudun-ux ecosystem.",
   "author": {
     "name": "emirhankudun-ux",
@@ -8,7 +8,7 @@
   },
   "homepage": "https://github.com/emirhankudun-ux/SEIS",
   "repository": "https://github.com/emirhankudun-ux/SEIS",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "keywords": [
     "seis",
     "codex",
@@ -23,7 +23,7 @@
     "shortDescription": "Develop SEIS-centered GitHub and Codex workflows.",
     "longDescription": "SEIS keeps the emirhankudun-ux GitHub ecosystem organized around one canonical hub. This plugin gives Codex a local SEIS development workflow for repository consolidation, plugin iteration, migration safety, project governance, MCP source proof, governed LLM package lanes, security review, Focus Mode AGI operating behavior, and the SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA specialist lanes.",
     "developerName": "emirhankudun-ux",
-    "category": "Productivity",
+    "category": "Developer Tools",
     "capabilities": [
       "Repository workflow",
       "Plugin development",

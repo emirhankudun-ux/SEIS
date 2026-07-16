@@ -1,0 +1,225 @@
+{
+  "version": 3,
+  "id": "seis-public-plugin-family",
+  "generatedAt": "2026-07-12",
+  "mode": "single_public_seis_agent_with_embedded_modules",
+  "summary": "SEIS exposes only SEIS-Agent as a public repo marketplace plugin. SEIS, Cloud, Code, Design, Data, Security, Research, Automation, and Product remain preserved source modules embedded inside SEIS-Agent rather than separate public installs.",
+  "defaultInstall": {
+    "installId": "seis-ai-agent@seis-repo",
+    "mode": "single-public-plugin",
+    "unifiedSuite": "plugins/seis-ai-agent/assets/unified-suite.json",
+    "standaloneLaneInstallMode": "source-module-only"
+  },
+  "marketplace": {
+    "path": ".agents/plugins/marketplace.json",
+    "name": "seis-repo",
+    "installationPolicy": "AVAILABLE",
+    "authenticationPolicy": "ON_INSTALL",
+    "publicAudience": "everyone",
+    "publicPluginCount": 1,
+    "entries": [
+      {
+        "name": "seis-ai-agent",
+        "sourcePath": "./plugins/seis-ai-agent",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      }
+    ]
+  },
+  "seisAiConnection": {
+    "orchestrator": "seis-ai-agent@seis-repo",
+    "mcpServer": "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
+    "connectedLanes": [
+      "seis-ai-agent",
+      "seis",
+      "seis-cloud",
+      "seis-code",
+      "seis-design",
+      "seis-data",
+      "seis-security",
+      "seis-research",
+      "seis-automation",
+      "seis-product"
+    ],
+    "embeddedSkillSource": "plugins/seis-ai-agent/skills",
+    "embeddedLaneProfiles": "plugins/seis-ai-agent/assets/lanes"
+  },
+  "securityModel": {
+    "secrets": "no_secrets_credentials_tokens_env_values_private_keys_or_cookies_are_committed_or_required_for_core_demo",
+    "cloud": "public_plugin_availability_does_not_grant_cloud_deploy_ssh_or_provider_access",
+    "data": "public_plugin_availability_does_not_grant_private_dataset_connector_or_export_access",
+    "auth": "oauth_account_login_and_live_integrations_require_explicit_user_action",
+    "destructiveActions": "delete_force_push_deploy_merge_and_live_ssh_actions_remain_approval_gated"
+  },
+  "longHorizonGovernance": [
+    "Keep SEIS-Agent as the only public installation and orchestration layer for cross-lane work.",
+    "Keep source modules under plugins/seis-* embedded in SEIS-Agent, not exposed as separate public marketplace plugins.",
+    "Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.",
+    "Validate manifests, MCP tools, marketplace entries, and SEIS-AI lane wiring before claiming public readiness.",
+    "Record mock, disabled, planned, and connected states honestly.",
+    "Do not treat marketplace availability as authenticated runtime access."
+  ],
+  "publicPlugins": [
+    {
+      "name": "seis-ai-agent",
+      "displayName": "SEIS-Agent",
+      "role": "orchestrator",
+      "category": "Developer",
+      "sourcePath": "./plugins/seis-ai-agent",
+      "installId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    }
+  ],
+  "embeddedModules": [
+    {
+      "name": "seis-ai-agent",
+      "displayName": "SEIS-Agent",
+      "role": "orchestrator",
+      "category": "Developer",
+      "sourcePath": "./plugins/seis-ai-agent",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "public-plugin",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis",
+      "displayName": "SEIS",
+      "role": "governance",
+      "category": "Developer",
+      "sourcePath": "./plugins/seis",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "role": "cloud",
+      "category": "Developer",
+      "sourcePath": "./plugins/seis-cloud",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-cloud",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-code",
+      "displayName": "SEIS-Code",
+      "role": "code",
+      "category": "Developer",
+      "sourcePath": "./plugins/seis-code",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-code",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-design",
+      "displayName": "SEIS-Design",
+      "role": "design",
+      "category": "Design",
+      "sourcePath": "./plugins/seis-design",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-design",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-data",
+      "displayName": "SEIS-DATA",
+      "role": "data",
+      "category": "Data",
+      "sourcePath": "./plugins/seis-data",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-data",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-security",
+      "displayName": "SEIS Security",
+      "role": "security",
+      "category": "Security",
+      "sourcePath": "./plugins/seis-security",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-security",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-research",
+      "displayName": "SEIS Research",
+      "role": "research",
+      "category": "Research",
+      "sourcePath": "./plugins/seis-research",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-research",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-automation",
+      "displayName": "SEIS Automation",
+      "role": "automation",
+      "category": "Developer",
+      "sourcePath": "./plugins/seis-automation",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-automation",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-product",
+      "displayName": "SEIS Product",
+      "role": "product",
+      "category": "Productivity",
+      "sourcePath": "./plugins/seis-product",
+      "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-product",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "license": "MIT",
+      "publicStatus": "embedded-source-module",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true
+    }
+  ],
+  "validation": [
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-specialist-plugins",
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-plugin-bundle -- --no-local",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-cloud",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-code",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-design",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-data",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-security",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-research",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-automation",
+    "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-product"
+  ]
+}

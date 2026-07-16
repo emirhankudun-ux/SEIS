@@ -14,14 +14,15 @@ SEIS-Code is the dedicated engineering lane for SEIS. It focuses Codex on archit
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-code
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis-code/skills/seis-code
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seis-code
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seis-code/skills/seis-code
 node plugins/seis-code/scripts/seis-code-status.mjs
 ```
 
-## Embedded Use
+## Embedded Module Use
 
-The repository marketplace publishes SEIS-Agent only. This lane is embedded at
-`plugins/seis-ai-agent/skills/seis-code/SKILL.md` and installed through
-`seis-ai-agent@seis-repo`; this directory remains the source mirror for focused
-lane development and validation.
+The repository preserves this source module and embeds its lane at
+`plugins/seis-ai-agent/skills/seis-code/SKILL.md`. Install
+`seis-ai-agent@seis-repo` to use it; there is no standalone public code plugin
+card. Public agent installation does not imply write access, GitHub
+authentication, dependency installation, or deployment approval.

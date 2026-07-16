@@ -1,6 +1,7 @@
 # SEIS-Agent
 
-SEIS-Agent is the unified orchestration plugin for the SEIS repository. It
+SEIS-Agent 0.3.0 is the unified orchestration plugin and the only public
+installation surface for the SEIS repository. It
 combines `seis-governance`, `seis`, `seis-cloud`, `seis-code`, `seis-design`,
 `seis-data`, `seis-security`, `seis-research`, `seis-automation`, and
 `seis-product` into one long-running agent direction across memory, context,
@@ -10,8 +11,11 @@ and automation.
 The package id remains `seis-ai-agent` for install stability. The operating
 identity is `SEIS-Agent`.
 
-The agent is repo-contained. Website, app packaging, and release surfaces happen
-only after an explicit release decision.
+The single suite record is `assets/unified-suite.json`. It records the ten
+embedded components, shared release version, canonical install id, and the five
+preserved `@personal` compatibility aliases. Website, app
+packaging, live authentication, and deployment surfaces happen only after an
+explicit release decision.
 
 ## Install
 
@@ -19,10 +23,11 @@ only after an explicit release decision.
 npm run install:seis-ai-agent
 ```
 
-This installs only the unified `seis-ai-agent@seis-repo` surface by default.
-Standalone `seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data`
-directories remain repo-contained source mirrors; they are not published as
-separate repo marketplace plugin cards.
+The repo preserves `seis`, `seis-cloud`, `seis-code`, `seis-design`,
+`seis-data`, `seis-security`, `seis-research`, `seis-automation`, and
+`seis-product` as source modules. Their skills, lane profiles, and validation
+contracts are embedded in this public package; they do not have separate public
+marketplace entries or install commands.
 
 ## MCP Tools
 

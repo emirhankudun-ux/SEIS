@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 29 resources", async () => {
+  it("initializes and lists 35 tools, 3 prompts, 31 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -117,6 +117,7 @@ describe("seis-mcp stdio smoke", () => {
       "seis_hub_plan",
       "seis_hub_status",
       "seis_plugin_integration",
+      "seis_public_plugin_family",
       "seo_audit",
       "site_config_get",
       "style_audit",
@@ -128,6 +129,8 @@ describe("seis-mcp stdio smoke", () => {
     const resources = responses.get(3).result.resources.map((r) => r.uri).sort();
     assert.deepEqual(resources, [
       "seis://agent/plugin-integration.json",
+      "seis://agent/public-plugin-family.json",
+      "seis://agent/public-plugin-lifecycle.json",
       "seis://ai/150b-frontier-model-program.json",
       "seis://ai/20b-dataset-card-template.json",
       "seis://ai/20b-model-card-template.json",
@@ -224,6 +227,36 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.primaryInstallId, "seis-ai-agent@seis-repo");
   });
 
+  it("executes seis_public_plugin_family through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      { jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "seis_public_plugin_family", arguments: {} } },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-public-plugin-family");
+    assert.equal(payload.lifecycleId, "seis-public-plugin-lifecycle");
+    assert.equal(payload.publicPluginCount, 1);
+    assert.equal(payload.embeddedModuleCount, 10);
+    assert.equal(payload.connectedPluginCount, 1);
+    assert.equal(payload.connectedModuleCount, 10);
+    assert.equal(payload.runtimeConnected, true);
+    assert.ok(payload.publicPreviewRequires.includes("fresh task reload proof"));
+  });
+
   it("reads the SEIS AI Core MCP runtime contract resource through the protocol", async () => {
     const responses = await rpcSession([
       {
@@ -251,7 +284,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 29);
+    assert.equal(payload.resourceCount, 31);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 

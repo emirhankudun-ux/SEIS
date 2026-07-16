@@ -1,0 +1,242 @@
+{
+  "id": "seis-public-plugin-fresh-task-proof",
+  "version": 1,
+  "generatedAt": "2026-07-12",
+  "status": "pending-fresh-task-reload-proof",
+  "decision": "not-ready-for-public-preview",
+  "sourcePath": "content/development/seis-public-plugin-fresh-task-proof.json",
+  "reportPath": "reports/seis-public-plugin-fresh-task-proof.md",
+  "publicPluginFamily": "content/development/seis-public-plugin-family.json",
+  "lifecycleContract": "content/development/seis-public-plugin-lifecycle.json",
+  "integrationManifest": "content/development/seis-agent-plugin-integration.json",
+  "reloadEvidencePath": "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
+  "reloadEvidenceReportPath": "reports/seis-public-plugin-fresh-task-reload-evidence.md",
+  "securityReviewPath": "content/development/seis-public-plugin-security-provenance-review.json",
+  "securityReviewReportPath": "reports/seis-public-plugin-security-provenance-review.md",
+  "canonicalizationPath": "content/development/seis-plugin-canonicalization.json",
+  "canonicalizationReportPath": "reports/seis-plugin-canonicalization.md",
+  "independentRunnerEvidenceContractPath": "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+  "independentRunnerEvidenceContractReportPath": "reports/seis-public-plugin-independent-runner-evidence-contract.md",
+  "unifiedSuitePath": "plugins/seis-ai-agent/assets/unified-suite.json",
+  "publicReleaseAllowed": false,
+  "purpose": "Define the evidence required to prove the single public SEIS-Agent plugin and its embedded source modules survive a fresh Codex task reload before any public-preview or release claim.",
+  "publicDistribution": {
+    "publicPluginCount": 1,
+    "embeddedModuleCount": 10,
+    "canonicalInstallId": "seis-ai-agent@seis-repo"
+  },
+  "localProofAlreadyAvailable": {
+    "repoContract": "npm run check:seis-public-plugin-family",
+    "lifecycleContract": "npm run check:seis-public-plugin-lifecycle",
+    "runtimeIntegration": "npm run check:seis-agent-plugin-integration",
+    "installedCacheAndMcp": "npm run check:seis-public-plugin-install-smoke:local:mcp",
+    "cleanArtifactStaging": "npm run check:seis-public-plugin-external-install-proof",
+    "canonicalization": "npm run check:seis-plugin-canonicalization",
+    "unifiedSuite": "npm run check:seis-unified-plugin-suite",
+    "independentRunnerEvidenceIntake": "npm run check:seis-public-plugin-independent-runner-evidence",
+    "seisAiPackage": "npm test --prefix packages/seis-ai",
+    "freshTaskReloadEvidence": "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+    "securityProvenanceReview": "npm run check:seis-public-plugin-security-provenance-review"
+  },
+  "reloadEvidence": {
+    "status": "recorded-local-fresh-task-evidence",
+    "taskIdRecorded": true,
+    "taskStartRecorded": true,
+    "commandOutputRecorded": true,
+    "installSmokeRecorded": true,
+    "seisAiBridgeRecorded": true,
+    "mcpInventoryRecorded": true,
+    "packageTestsRecorded": true,
+    "threadIdSource": "CODEX_THREAD_ID",
+    "observedDate": "2026-07-12",
+    "publicReleaseAllowed": false
+  },
+  "securityProvenanceReview": {
+    "status": "repo-local-security-provenance-reviewed",
+    "recorded": true,
+    "secretFindingCount": 0,
+    "blockingFindingCount": 0,
+    "hygieneFindingCount": 0,
+    "publicReleaseAllowed": false
+  },
+  "freshTaskReloadProtocol": {
+    "trigger": "Open a new Codex task after the public plugin family is installed in the local Codex plugin cache.",
+    "requiredTaskProperties": [
+      "The task starts after the plugin cache contains the public seis-ai-agent@seis-repo plugin.",
+      "The task does not rely on this thread's already loaded tool surface.",
+      "The task can inspect the same SEIS checkout and local Codex plugin cache."
+    ],
+    "requiredCommands": [
+      "npm run check:seis-public-plugin-install-smoke:local:mcp",
+      "npm run check:seis-plugin-canonicalization",
+      "npm run check:seis-unified-plugin-suite",
+      "npm run check:seis-agent-plugin-integration",
+      "npm test --prefix packages/seis-ai"
+    ],
+    "requiredRuntimeObservations": [
+      "SEIS AI exposes seis_public_plugin_family in the tool loop.",
+      "The SEIS MCP server lists 35 tools, 3 prompts, and 31 resources.",
+      "seis_public_plugin_family returns publicPluginCount=1, embeddedModuleCount=10, effectivePluginCount=1, legacyAliasCount=5, connectedPluginCount=1, connectedModuleCount=10, runtimeConnected=true, and the single public suite default install.",
+      "The installed SEIS-Agent MCP server initializes, lists required tools, and answers representative embedded-lane calls."
+    ]
+  },
+  "requiredEvidenceToCloseGate": [
+    {
+      "id": "fresh-task-id",
+      "status": "recorded",
+      "requirement": "Record the new Codex task/thread identifier used for reload proof.",
+      "evidence": "content/development/seis-public-plugin-fresh-task-reload-evidence.json"
+    },
+    {
+      "id": "fresh-task-start-time",
+      "status": "recorded",
+      "requirement": "Record the fresh task start time after local plugin cache installation.",
+      "evidence": "content/development/seis-public-plugin-fresh-task-reload-evidence.json"
+    },
+    {
+      "id": "fresh-task-install-smoke-output",
+      "status": "recorded",
+      "requirement": "Attach or summarize the passing local installed-cache MCP smoke output from the fresh task.",
+      "evidence": "reports/seis-public-plugin-fresh-task-reload-evidence.md"
+    },
+    {
+      "id": "fresh-task-seis-ai-output",
+      "status": "recorded",
+      "requirement": "Attach or summarize the SEIS AI public-family status output from the fresh task.",
+      "evidence": "content/development/seis-public-plugin-fresh-task-reload-evidence.json"
+    },
+    {
+      "id": "fresh-task-mcp-inventory",
+      "status": "recorded",
+      "requirement": "Record the fresh task MCP inventory showing the public plugin family and SEIS AI bridge.",
+      "evidence": "reports/seis-public-plugin-fresh-task-reload-evidence.md"
+    }
+  ],
+  "blockers": [
+    "External clean-runner or public package installation proof has not been recorded.",
+    "Human approval for public preview, release, publish, push, merge, tag, deploy, SSH, or live provider access has not been recorded."
+  ],
+  "approvalBoundary": {
+    "publicPreview": "blocked_until_canonicalization_fresh_task_reload_security_provenance_strict_independent_install_and_human_approval",
+    "allowedNow": [
+      "repo-local docs",
+      "repo-local JSON contracts",
+      "repo-local validators",
+      "local installed-cache smoke tests",
+      "local MCP smoke tests",
+      "fresh-task reload evidence capture",
+      "repo-local security/provenance review",
+      "canonical alias resolution",
+      "independent-runner evidence intake contract",
+      "one-file unified suite validation"
+    ],
+    "approvalRequiredFor": [
+      "push",
+      "merge",
+      "tag",
+      "release",
+      "deploy",
+      "publish marketplace listing",
+      "execute live SSH",
+      "use provider credentials",
+      "claim live cloud or AI provider connectivity"
+    ]
+  },
+  "acceptanceCriteria": [
+    "The 1 current public plugin and all 10 embedded source modules are visible in the fresh task context.",
+    "The fresh task can run the local installed-cache MCP smoke successfully.",
+    "The fresh task can call or verify the SEIS AI public plugin family bridge.",
+    "The proof records distinguish local proof from public release approval.",
+    "The proof records do not contain secrets, credentials, private keys, cookies, or provider tokens."
+  ],
+  "plugins": [
+    {
+      "name": "seis-ai-agent",
+      "installId": "seis-ai-agent@seis-repo",
+      "role": "orchestrator",
+      "sourcePath": "./plugins/seis-ai-agent",
+      "connectedToSeisAi": true,
+      "freshTaskRequiredEvidence": [
+        "seis-ai-agent is visible as an installed public plugin in a newly opened Codex task",
+        "seis-ai-agent MCP server initializes in the newly opened task",
+        "seis-ai-agent representative status or plan tool returns without an MCP protocol error"
+      ]
+    }
+  ],
+  "embeddedModules": [
+    {
+      "name": "seis-ai-agent",
+      "sourcePath": "./plugins/seis-ai-agent",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis",
+      "sourcePath": "./plugins/seis",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-cloud",
+      "sourcePath": "./plugins/seis-cloud",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-code",
+      "sourcePath": "./plugins/seis-code",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-design",
+      "sourcePath": "./plugins/seis-design",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-data",
+      "sourcePath": "./plugins/seis-data",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-security",
+      "sourcePath": "./plugins/seis-security",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-research",
+      "sourcePath": "./plugins/seis-research",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-automation",
+      "sourcePath": "./plugins/seis-automation",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-product",
+      "sourcePath": "./plugins/seis-product",
+      "canonicalInstallId": "seis-ai-agent@seis-repo",
+      "connectedToSeisAi": true
+    }
+  ],
+  "qualityGates": [
+    "npm run check:seis-public-plugin-fresh-task-proof",
+    "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+    "npm run check:seis-public-plugin-security-provenance-review",
+    "npm run check:seis-public-plugin-external-install-proof",
+    "npm run check:seis-plugin-canonicalization",
+    "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-public-plugin-independent-runner-evidence-contract",
+    "npm run check:seis-public-plugin-independent-runner-evidence",
+    "npm run check:seis-public-plugin-install-smoke:local:mcp",
+    "npm run check:seis-agent-plugin-integration",
+    "npm test --prefix packages/seis-ai"
+  ],
+  "completionRule": "This contract is complete for internal review when it validates canonical alias resolution, the fresh-task proof protocol, clean artifact staging, and any recorded reload evidence while keeping publicReleaseAllowed=false until security/provenance review, strict independent installation evidence, and human approval are recorded."
+}

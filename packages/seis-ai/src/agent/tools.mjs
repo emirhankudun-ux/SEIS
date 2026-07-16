@@ -18,6 +18,7 @@ import {
   personalPluginLanePlan,
   personalPluginLaneStatus,
   pluginIntegrationStatus,
+  publicPluginFamilyStatus,
   resolvePersonalPluginLaneTool,
   subagentDryRunTaskDecision,
   subagentOperatingModelStatus,
@@ -99,11 +100,22 @@ export function toolDefinitions({ allowWrite = false } = {}) {
     {
       name: "seis_plugin_integration",
       description:
-        "Read the canonical SEIS-Agent plugin integration manifest. Use for SEIS plugin, MCP, cloud/code/design/data lane, helper plugin, or SEIS-Agent routing work before making integration claims.",
+        "Read the single-public-plugin SEIS-Agent suite, canonical integration manifest, embedded source-module inventory, and non-destructive legacy alias resolution. Use for SEIS plugin, MCP, cloud/code/design/data lane, helper plugin, or SEIS-Agent routing work before making integration claims.",
       input_schema: {
         type: "object",
         properties: {
           includeFullManifest: { type: "boolean", description: "Return the full manifest in addition to the compact status summary." },
+        },
+      },
+    },
+    {
+      name: "seis_public_plugin_family",
+      description:
+        "Read the one-public-SEIS-Agent distribution, embedded module inventory, lifecycle, unified suite, and canonical/legacy alias status. Use before public plugin release, install-smoke, MCP-smoke, support-tier, duplicate-resolution, or SEIS AI readiness claims.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeFullContracts: { type: "boolean", description: "Return the full family and lifecycle contracts in addition to the compact status summary." },
         },
       },
     },
@@ -330,6 +342,13 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
     case "seis_plugin_integration": {
       return JSON.stringify(
         pluginIntegrationStatus(repoRoot, { includeFullManifest: input.includeFullManifest === true }),
+        null,
+        2
+      );
+    }
+    case "seis_public_plugin_family": {
+      return JSON.stringify(
+        publicPluginFamilyStatus(repoRoot, { includeFullContracts: input.includeFullContracts === true }),
         null,
         2
       );
