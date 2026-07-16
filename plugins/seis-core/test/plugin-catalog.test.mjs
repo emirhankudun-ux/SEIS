@@ -6,6 +6,9 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
+  APP_PLUGIN_EXPANSION_TARGET,
+} from "../runtime/plugin-audit-definitions.mjs";
+import {
   buildApplicationPluginCatalog,
   createApplicationPluginActivationPlan,
   inspectApplicationPlugin,
@@ -17,15 +20,16 @@ const repoRoot = path.resolve(pluginRoot, "../..");
 const cliPath = path.join(pluginRoot, "bin", "seis-core-plugins.mjs");
 const releaseTrain = JSON.parse(readFileSync(path.join(repoRoot, "content/development/seis-core-plugin-release-train.json"), "utf8"));
 
-test("application catalog is sourced from exactly 50 SEIS Core plugins", () => {
+test("application catalog is sourced from the complete SEIS Core plugin expansion", () => {
   const catalog = buildApplicationPluginCatalog(repoRoot);
   assert.equal(catalog.application, "apps/seis-core");
   assert.equal(catalog.sourceRoot, "plugins/seis-core");
-  assert.equal(catalog.counts.discovered, 50);
-  assert.equal(catalog.counts.returned, 50);
-  assert.equal(catalog.counts.contractValid, 50);
+  assert.equal(catalog.counts.discovered, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.counts.returned, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.counts.contractValid, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.policy.sourceMutation, false);
   assert.deepEqual(catalog.policy.allowedInspectionActions, ["inspect", "status"]);
+  assert.deepEqual(catalog.policy.allowedReportActions, ["report"]);
   assert.ok(catalog.plugins.every((plugin) => plugin.sourcePath.startsWith("plugins/seis-core/")));
 });
 
@@ -41,11 +45,19 @@ test("catalog search and inspection expose app-owned plugin metadata", () => {
   assert.equal(plugin.activation.status.executes, false);
   assert.equal(plugin.activation.run.ok, false);
   assert.equal(plugin.activation.run.mode, "approval-required");
+
+  const auditPlugin = inspectApplicationPlugin(repoRoot, "seis-approval-gate-review");
+  assert.equal(auditPlugin.audit.mode, "read-only-report");
+  assert.equal(auditPlugin.activation.report.ok, true);
+  assert.deepEqual(auditPlugin.activation.report.command.slice(1), ["--report"]);
+  const statusOnlyReport = inspectApplicationPlugin(repoRoot, "seis-release-readiness");
+  assert.equal(statusOnlyReport.activation.report.ok, false);
+  assert.equal(statusOnlyReport.activation.report.approvalRequired, true);
 });
 
 test("status mode executes only the bounded local status contract", () => {
-  const catalog = buildApplicationPluginCatalog(repoRoot, { includeStatus: true, limit: 50 });
-  assert.equal(catalog.counts.statusReady, 50);
+  const catalog = buildApplicationPluginCatalog(repoRoot, { includeStatus: true, limit: APP_PLUGIN_EXPANSION_TARGET });
+  assert.equal(catalog.counts.statusReady, APP_PLUGIN_EXPANSION_TARGET);
   assert.ok(catalog.plugins.every((plugin) => plugin.status.execution === "status-only"));
   assert.ok(catalog.plugins.every((plugin) => plugin.permissions.write.length === 0));
   assert.ok(catalog.plugins.every((plugin) => plugin.permissions.network.length === 0));

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-tool-permission-audit": {
+      "command": "node",
+      "args": [
+        "scripts/seis-tool-permission-audit-mcp-server.mjs"
+      ]
+    }
+  }
+}

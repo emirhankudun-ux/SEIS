@@ -1,0 +1,38 @@
+{
+  "stableId": "seis-approval-gate-review",
+  "slug": "seis-approval-gate-review",
+  "version": "0.0.12",
+  "releaseMicroUnits": 12,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.000000012",
+  "category": "governance",
+  "owner": "@seis-core",
+  "publisher": "emirhankudun-ux",
+  "sourceClassification": "original-SEIS-local",
+  "license": "UNLICENSED-LOCAL",
+  "status": "approved-local-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-approval-gate-review-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "bounded SEIS repository evidence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "audit": {
+    "mode": "read-only-report",
+    "checkCount": 3
+  },
+  "validation": [
+    "node scripts/seis-approval-gate-review-mcp-server.mjs --status",
+    "node scripts/seis-approval-gate-review-mcp-server.mjs --report --path /path/to/tree"
+  ],
+  "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
+  "reviewState": "local-development",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+}

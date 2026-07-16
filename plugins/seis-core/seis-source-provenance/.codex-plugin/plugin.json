@@ -1,7 +1,7 @@
 {
   "id": "seis-source-provenance",
   "name": "seis-source-provenance",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Read-only file hashing and source, rights, and classification metadata for SEIS.",
   "author": {
     "name": "emirhankudun-ux"

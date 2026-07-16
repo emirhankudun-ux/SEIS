@@ -1,0 +1,35 @@
+{
+  "id": "seis-rollback-readiness",
+  "name": "seis-rollback-readiness",
+  "version": "0.0.12",
+  "description": "Verify that release and operational surfaces retain a documented rollback path before handoff.",
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": [
+    "seis",
+    "local",
+    "readonly",
+    "release"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Rollback Readiness",
+    "shortDescription": "Verify that release and operational surfaces retain a documented rollback path before handoff.",
+    "longDescription": "Verify that release and operational surfaces retain a documented rollback path before handoff. It reads bounded SEIS evidence only and never performs external writes.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": [
+      "Rollback evidence",
+      "Release train audit",
+      "Recovery handoff"
+    ],
+    "defaultPrompt": [
+      "Run SEIS Rollback Readiness in read-only mode.",
+      "Summarize evidence and separate limitations."
+    ],
+    "brandColor": "#38BDF8"
+  }
+}

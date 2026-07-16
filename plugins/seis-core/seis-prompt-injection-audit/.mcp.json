@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-prompt-injection-audit": {
+      "command": "node",
+      "args": [
+        "scripts/seis-prompt-injection-audit-mcp-server.mjs"
+      ]
+    }
+  }
+}

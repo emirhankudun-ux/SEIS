@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-contract-compatibility": {
+      "command": "node",
+      "args": [
+        "scripts/seis-contract-compatibility-mcp-server.mjs"
+      ]
+    }
+  }
+}

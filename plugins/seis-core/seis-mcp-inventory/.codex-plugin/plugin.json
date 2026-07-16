@@ -1,6 +1,6 @@
 {
   "name": "seis-mcp-inventory",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Inventory local MCP manifests and declared capabilities without starting servers.",
   "author": { "name": "Emirhan Kudun" },
   "license": "UNLICENSED-LOCAL",

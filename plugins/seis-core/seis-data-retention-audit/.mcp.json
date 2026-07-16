@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-data-retention-audit": {
+      "command": "node",
+      "args": [
+        "scripts/seis-data-retention-audit-mcp-server.mjs"
+      ]
+    }
+  }
+}

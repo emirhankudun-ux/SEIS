@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const root = process.cwd();
 const failures = [];
 const manifestPath = path.join(root, "content", "development", "seis-agent-plugin-integration.json");
@@ -20,7 +22,10 @@ const appPluginCatalogPath = path.join(root, "apps", "seis-core", "data", "seis-
 const appPluginReadinessPath = path.join(root, "apps", "seis-core", "data", "seis-core-plugin-release-readiness.json");
 const releaseTrainPath = path.join(root, "content", "development", "seis-core-plugin-release-train.json");
 const appPluginCatalogScriptPath = path.join(root, "scripts", "create-seis-core-plugin-catalog.mjs");
+const appPluginExpansionScriptPath = path.join(root, "scripts", "create-seis-core-plugin-expansion.mjs");
 const appPluginCatalogRuntimePath = path.join(root, "plugins", "seis-core", "runtime", "plugin-catalog.mjs");
+const appPluginAuditRuntimePath = path.join(root, "plugins", "seis-core", "runtime", "plugin-audit-runtime.mjs");
+const appPluginAuditDefinitionsPath = path.join(root, "plugins", "seis-core", "runtime", "plugin-audit-definitions.mjs");
 const appPluginCliPath = path.join(root, "plugins", "seis-core", "bin", "seis-core-plugins.mjs");
 const appPluginChangeEvidenceScriptPath = path.join(root, "scripts", "create-seis-core-plugin-change-evidence.mjs");
 const appPluginReadinessScriptPath = path.join(root, "scripts", "create-seis-core-plugin-release-readiness.mjs");
@@ -117,7 +122,10 @@ for (const [filePath, label] of [
   [appPluginReadinessPath, "SEIS Command Center app plugin release readiness"],
   [releaseTrainPath, "SEIS Command Center app plugin release train"],
   [appPluginCatalogScriptPath, "SEIS Core app plugin catalog generator"],
+  [appPluginExpansionScriptPath, "SEIS Core app plugin expansion generator"],
   [appPluginCatalogRuntimePath, "SEIS Core app plugin catalog runtime"],
+  [appPluginAuditRuntimePath, "SEIS Core app plugin audit runtime"],
+  [appPluginAuditDefinitionsPath, "SEIS Core app plugin audit definitions"],
   [appPluginCliPath, "SEIS Core app plugin CLI"],
   [appPluginChangeEvidenceScriptPath, "SEIS Core app plugin change evidence generator"],
   [appPluginReadinessScriptPath, "SEIS Core app plugin release readiness generator"],
@@ -176,6 +184,9 @@ const appReleaseSemver = appRelease.semver || null;
 const pluginRegistryHelper = readText(pluginRegistryHelperPath, "SEIS AI Core plugin registry helper");
 const pluginSourceCheck = readText(pluginSourceCheckPath, "SEIS AI Core plugin source checker");
 const appPluginCatalogScript = readText(appPluginCatalogScriptPath, "SEIS Core app plugin catalog generator");
+const appPluginExpansionScript = readText(appPluginExpansionScriptPath, "SEIS Core app plugin expansion generator");
+const appPluginAuditRuntime = readText(appPluginAuditRuntimePath, "SEIS Core app plugin audit runtime");
+const appPluginAuditDefinitions = readText(appPluginAuditDefinitionsPath, "SEIS Core app plugin audit definitions");
 const appPluginCatalogRuntime = readText(appPluginCatalogRuntimePath, "SEIS Core app plugin catalog runtime");
 const appPluginCli = readText(appPluginCliPath, "SEIS Core app plugin CLI");
 const appPluginChangeEvidenceScript = readText(appPluginChangeEvidenceScriptPath, "SEIS Core app plugin change evidence generator");
@@ -242,7 +253,7 @@ if (manifest) {
   ensure(manifest.helperPluginUniverse?.applicationPluginReleaseSemver === appReleaseSemver, "helper plugin universe app release semver is stale");
   ensure(manifest.helperPluginUniverse?.applicationPluginReleaseMajor === appRelease.major, "helper plugin universe app release major is stale");
   ensure(manifest.helperPluginUniverse?.applicationPluginReleaseRevision === appRelease.revision, "helper plugin universe app release revision is stale");
-  ensure(manifest.helperPluginUniverse?.applicationOwnedPluginCount === 50, "helper plugin universe must expose 50 app-owned plugins");
+  ensure(manifest.helperPluginUniverse?.applicationOwnedPluginCount === APP_PLUGIN_EXPANSION_TARGET, "helper plugin universe app-owned count is stale");
   ensure(manifest.runtimeIntegration?.toolLoopTool === "seis_plugin_integration", "runtimeIntegration must expose the tool-loop tool");
   ensure(manifest.runtimeIntegration?.publicPluginFamilyTool === "seis_public_plugin_family", "runtimeIntegration must expose the public plugin family tool-loop tool");
   ensure(manifest.runtimeIntegration?.providerRegistryTool === "seis_ai_core_provider_status", "runtimeIntegration must expose the SEIS AI Core provider status tool");
@@ -370,6 +381,7 @@ if (manifest) {
     "npm run check:seis-core-plugin-release",
     "npm run check:seis-core-plugin-release-policy",
     "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-expansion",
     "npm run check:seis-core-plugin-release-readiness",
     "npm run check:seis-core-plugin-change-evidence",
     "npm run check:seis-core-plugin-matrix",
@@ -406,7 +418,7 @@ if (manifest) {
   ensure(pluginRegistry?.id === "seis-ai-core-plugin-registry", "AI Core plugin registry id must be stable");
   ensure(pluginRegistry?.goalId === "SEIS-GOAL-021", "AI Core plugin registry must bind to SEIS-GOAL-021");
   ensure(pluginRegistry?.target?.registryEntryCount === 5000, "AI Core plugin registry must contain exactly 5000 entries");
-  ensure(pluginRegistry?.target?.appOwnedPluginCount === 50, "AI Core plugin registry must record 50 app-owned personal plugins");
+  ensure(pluginRegistry?.target?.appOwnedPluginCount === APP_PLUGIN_EXPANSION_TARGET, "AI Core plugin registry app-owned count is stale");
   ensure(pluginRegistry?.applicationRelease?.releaseTrainPath === "content/development/seis-core-plugin-release-train.json", "AI Core plugin registry must expose the app plugin release train");
   ensure(pluginRegistry?.applicationRelease?.label === appReleaseLabel, "AI Core plugin registry app release label is stale");
   ensure(pluginRegistry?.applicationRelease?.semver === appReleaseSemver, "AI Core plugin registry app release semver is stale");
@@ -423,11 +435,11 @@ if (manifest) {
   ensure(personalPluginCoverage?.personalMarketplace?.pluginCount === 55, "personal plugin coverage must include 55 marketplace plugins");
   ensure(personalPluginCoverage?.repository?.counterpartCount === 55, "personal plugin coverage must include 55 repository counterparts");
   ensure(personalPluginCoverage?.repository?.migratedCount === 50, "personal plugin coverage must include 50 migrated packages");
-  ensure(personalPluginCoverage?.repository?.applicationOwnedCount === 50, "personal plugin coverage must include 50 app-owned packages");
+  ensure(personalPluginCoverage?.repository?.applicationOwnedCount === APP_PLUGIN_EXPANSION_TARGET, "personal plugin coverage app-owned count is stale");
   ensure(personalPluginCoverage?.repository?.applicationSourceRoot === "plugins/seis-core", "personal plugin coverage must point at the app-owned source root");
   ensure(personalPluginCoverage?.repository?.missingRepoCounterparts?.length === 0, "personal plugin coverage must have no missing repository counterparts");
   ensure(appPluginSources?.owner === "apps/seis-core", "app plugin source manifest must be owned by apps/seis-core");
-  ensure(appPluginSources?.pluginCount === 50, "app plugin source manifest must list 50 packages");
+  ensure(appPluginSources?.pluginCount === APP_PLUGIN_EXPANSION_TARGET, "app plugin source manifest count is stale");
   ensure(appPluginSources?.releaseTrainPath === "content/development/seis-core-plugin-release-train.json", "app plugin source manifest must expose the release train");
   ensure(appPluginSources?.releaseTrainVersion === appReleaseLabel, "app plugin source manifest release label is stale");
   ensure(appPluginSources?.releaseSemver === appReleaseSemver, "app plugin source manifest release semver is stale");
@@ -435,12 +447,12 @@ if (manifest) {
   ensure(appPluginSources?.releaseRevision === appRelease.revision, "app plugin source manifest release revision is stale");
   ensure(appPluginCatalog?.id === "seis-core-application-plugin-catalog", "app plugin catalog id must be stable");
   ensure(appPluginCatalog?.sourceRoot === "plugins/seis-core", "app plugin catalog source root is invalid");
-  ensure(appPluginCatalog?.counts?.discovered === 50, "app plugin catalog must discover 50 packages");
-  ensure(appPluginCatalog?.plugins?.length === 50, "app plugin catalog must contain 50 packages");
+  ensure(appPluginCatalog?.counts?.discovered === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog discovered count is stale");
+  ensure(appPluginCatalog?.plugins?.length === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog length is stale");
   ensure(appPluginCatalog?.release?.label === appReleaseLabel, "app plugin catalog release label is stale");
   ensure(appPluginCatalog?.policy?.sourceMutation === false, "app plugin catalog must not mutate source");
   ensure(appPluginCatalog?.policy?.executableAction === "status-only", "app plugin catalog executable action must be status-only");
-  ensure(appPluginCatalog?.counts?.statusReady === 50, "app plugin catalog must expose 50 ready status checks");
+  ensure(appPluginCatalog?.counts?.statusReady === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog status-ready count is stale");
   ensure(appPluginReadiness?.id === "seis-core-plugin-release-readiness", "app plugin release readiness id must be stable");
   ensure(appPluginReadiness?.currentRelease?.label === appReleaseLabel, "app plugin release readiness current label is stale");
   ensure(appPluginReadiness?.next?.largeCode?.label, "app plugin release readiness must expose the next large-code label");
@@ -456,6 +468,10 @@ if (manifest) {
   ensure(!fs.existsSync(corePluginRoot) || !Array.from(fs.readdirSync(corePluginRoot, { withFileTypes: true })).some((entry) => entry.isDirectory()), "AI Core must not own personal plugin source directories");
   ensure(pluginSourceCheck.includes("--status"), "AI Core plugin source checker must execute bounded status validation");
   ensure(appPluginCatalogScript.includes("buildApplicationPluginCatalog"), "app plugin catalog generator must use the app runtime catalog");
+  ensure(appPluginExpansionScript.includes("APP_PLUGIN_EXPANSION_TARGET"), "app plugin expansion generator must declare the expansion target");
+  ensure(appPluginAuditRuntime.includes("runAudit"), "app plugin audit runtime must expose bounded reports");
+  ensure(appPluginAuditRuntime.includes("permissions: { write: [], network: [], secrets: [] }"), "app plugin audit runtime must keep permissions empty");
+  ensure(appPluginAuditDefinitions.includes("seis-prompt-injection-audit"), "app plugin audit definitions must include the prompt safety plugin");
   ensure(appPluginChangeEvidenceScript.includes("SEIS_CORE_PLUGIN_CHANGE_EVIDENCE_THRESHOLD"), "change evidence generator must declare the code threshold");
   ensure(appPluginReadinessScript.includes("collectSeisCorePluginChangeEvidence"), "release readiness generator must use code evidence");
   ensure(appPluginCatalogRuntime.includes("APP_PLUGIN_ALLOWED_INSPECTION_ACTIONS"), "app plugin catalog runtime must declare bounded inspection actions");

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-offline-mode-check": {
+      "command": "node",
+      "args": [
+        "scripts/seis-offline-mode-check-mcp-server.mjs"
+      ]
+    }
+  }
+}

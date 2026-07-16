@@ -6,12 +6,12 @@
   "mode": "local-read-only",
   "sourceRoot": "plugins/seis-core",
   "release": {
-    "label": "0.000000011",
-    "semver": "0.0.11",
+    "label": "0.000000012",
+    "semver": "0.0.12",
     "kind": "large-code-change",
     "major": 0,
     "revision": 0,
-    "microUnits": 11
+    "microUnits": 12
   },
   "policy": {
     "sourceOwnership": "apps/seis-core",
@@ -24,6 +24,9 @@
       "inspect",
       "status"
     ],
+    "allowedReportActions": [
+      "report"
+    ],
     "approvalRequiredActions": [
       "run",
       "write",
@@ -32,11 +35,11 @@
     ]
   },
   "counts": {
-    "discovered": 50,
-    "returned": 50,
-    "contractValid": 50,
+    "discovered": 60,
+    "returned": 60,
+    "contractValid": 60,
     "contractInvalid": 0,
-    "statusReady": 50,
+    "statusReady": 60,
     "statusNotChecked": 0
   },
   "query": null,
@@ -55,16 +58,17 @@
       "sourcePath": "plugins/seis-core/seis-a11y-regression",
       "entrypoint": "scripts/seis-a11y-regression-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local accessibility JSON declarations"
@@ -103,16 +107,17 @@
       "sourcePath": "plugins/seis-core/seis-action-pin-audit",
       "entrypoint": "scripts/seis-action-pin-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local workflow files"
@@ -151,16 +156,17 @@
       "sourcePath": "plugins/seis-core/seis-agent-audit",
       "entrypoint": "scripts/seis-agent-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local agent JSON metadata"
@@ -200,16 +206,17 @@
       "sourcePath": "plugins/seis-core/seis-agent-contract-validator",
       "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local JSON agent contracts"
@@ -235,6 +242,112 @@
       "rollback": "Disable or remove the local plugin; no source data is mutated."
     },
     {
+      "id": "seis-approval-gate-review",
+      "name": "seis-approval-gate-review",
+      "displayName": "SEIS Approval Gate Review",
+      "description": "Review human approval boundaries and release-gate evidence without executing gated work.",
+      "category": "Developer",
+      "capabilities": [
+        "Approval boundary review",
+        "Gate evidence summary",
+        "Human handoff"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-approval-gate-review",
+      "entrypoint": "scripts/seis-approval-gate-review-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-approval-gate-review-mcp-server.mjs --status",
+        "node scripts/seis-approval-gate-review-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-architecture-drift",
+      "name": "seis-architecture-drift",
+      "displayName": "SEIS Architecture Drift",
+      "description": "Detect local source-boundary drift between the Command Center application and AI Core metadata.",
+      "category": "Developer",
+      "capabilities": [
+        "Source boundary audit",
+        "Canonical ownership check",
+        "Drift report"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-architecture-drift",
+      "entrypoint": "scripts/seis-architecture-drift-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-architecture-drift-mcp-server.mjs --status",
+        "node scripts/seis-architecture-drift-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
       "id": "seis-artifact-attestation",
       "name": "seis-artifact-attestation",
       "displayName": "Seis Artifact Attestation",
@@ -248,16 +361,17 @@
       "sourcePath": "plugins/seis-core/seis-artifact-attestation",
       "entrypoint": "scripts/seis-artifact-attestation-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local artifact and provenance evidence"
@@ -298,16 +412,17 @@
       "sourcePath": "plugins/seis-core/seis-branch-protection-audit",
       "entrypoint": "scripts/seis-branch-protection-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local branch and ruleset policy files"
@@ -350,16 +465,17 @@
       "sourcePath": "plugins/seis-core/seis-canonical-registry-validator",
       "entrypoint": "scripts/seis-canonical-registry-validator-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded JSON registry and catalog projections"
@@ -398,16 +514,17 @@
       "sourcePath": "plugins/seis-core/seis-changelog-validator",
       "entrypoint": "scripts/seis-changelog-validator-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local changelog files"
@@ -446,16 +563,17 @@
       "sourcePath": "plugins/seis-core/seis-codeowners-audit",
       "entrypoint": "scripts/seis-codeowners-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local CODEOWNERS files"
@@ -494,16 +612,17 @@
       "sourcePath": "plugins/seis-core/seis-community-health",
       "entrypoint": "scripts/seis-community-health-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local contribution and community documents"
@@ -541,16 +660,17 @@
       "sourcePath": "plugins/seis-core/seis-context-efficiency",
       "entrypoint": "scripts/seis-context-efficiency-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local context usage JSON"
@@ -578,6 +698,59 @@
       "rollback": "Disable or remove the local plugin; no prompt or source data is mutated."
     },
     {
+      "id": "seis-contract-compatibility",
+      "name": "seis-contract-compatibility",
+      "displayName": "SEIS Contract Compatibility",
+      "description": "Compare release, source inventory, catalog, and status matrix contracts for compatibility.",
+      "category": "Developer",
+      "capabilities": [
+        "Release contract check",
+        "Generated artifact comparison",
+        "Compatibility report"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-contract-compatibility",
+      "entrypoint": "scripts/seis-contract-compatibility-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-contract-compatibility-mcp-server.mjs --status",
+        "node scripts/seis-contract-compatibility-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
       "id": "seis-contributor-map",
       "name": "seis-contributor-map",
       "displayName": "Seis Contributor Map",
@@ -591,16 +764,17 @@
       "sourcePath": "plugins/seis-core/seis-contributor-map",
       "entrypoint": "scripts/seis-contributor-map-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local contributor and ownership JSON"
@@ -628,6 +802,112 @@
       "rollback": "Disable or remove the local plugin; no source data is mutated."
     },
     {
+      "id": "seis-cost-latency-budget",
+      "name": "seis-cost-latency-budget",
+      "displayName": "SEIS Cost and Latency Budget",
+      "description": "Verify that routing metadata keeps cost and latency considerations visible without calling providers.",
+      "category": "Developer",
+      "capabilities": [
+        "Cost metadata audit",
+        "Latency metadata audit",
+        "Provider-free report"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-cost-latency-budget",
+      "entrypoint": "scripts/seis-cost-latency-budget-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-cost-latency-budget-mcp-server.mjs --status",
+        "node scripts/seis-cost-latency-budget-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-data-retention-audit",
+      "name": "seis-data-retention-audit",
+      "displayName": "SEIS Data Retention Audit",
+      "description": "Review data-contract and privacy documentation presence without reading private data or mutating schemas.",
+      "category": "Developer",
+      "capabilities": [
+        "Schema registry audit",
+        "Privacy boundary check",
+        "Retention handoff"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-data-retention-audit",
+      "entrypoint": "scripts/seis-data-retention-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-data-retention-audit-mcp-server.mjs --status",
+        "node scripts/seis-data-retention-audit-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
       "id": "seis-dependency-freshness",
       "name": "seis-dependency-freshness",
       "displayName": "SEIS Dependency Freshness",
@@ -641,16 +921,17 @@
       "sourcePath": "plugins/seis-core/seis-dependency-freshness",
       "entrypoint": "scripts/seis-dependency-freshness-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local dependency manifests and lockfiles"
@@ -690,16 +971,17 @@
       "sourcePath": "plugins/seis-core/seis-design-token-audit",
       "entrypoint": "scripts/seis-design-token-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local JSON token and theme files"
@@ -739,16 +1021,17 @@
       "sourcePath": "plugins/seis-core/seis-doc-indexer",
       "entrypoint": "scripts/seis-doc-indexer-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local Markdown and text files"
@@ -787,16 +1070,17 @@
       "sourcePath": "plugins/seis-core/seis-docs-freshness",
       "entrypoint": "scripts/seis-docs-freshness-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local Markdown metadata"
@@ -834,16 +1118,17 @@
       "sourcePath": "plugins/seis-core/seis-dora-metrics",
       "entrypoint": "scripts/seis-dora-metrics-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local delivery JSON"
@@ -884,16 +1169,17 @@
       "sourcePath": "plugins/seis-core/seis-download-anomaly",
       "entrypoint": "scripts/seis-download-anomaly-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local download metrics JSON"
@@ -934,16 +1220,17 @@
       "sourcePath": "plugins/seis-core/seis-github-metrics-collector",
       "entrypoint": "scripts/seis-github-metrics-collector-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local recorded GitHub-style metrics"
@@ -971,6 +1258,59 @@
       "rollback": "Disable or remove the local plugin; no source data is mutated."
     },
     {
+      "id": "seis-goal-dependency-map",
+      "name": "seis-goal-dependency-map",
+      "displayName": "SEIS Goal Dependency Map",
+      "description": "Summarize goal, evidence, and architecture dependencies before a plugin or release handoff.",
+      "category": "Developer",
+      "capabilities": [
+        "Goal dependency review",
+        "Evidence linkage",
+        "Handoff map"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-goal-dependency-map",
+      "entrypoint": "scripts/seis-goal-dependency-map-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-goal-dependency-map-mcp-server.mjs --status",
+        "node scripts/seis-goal-dependency-map-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
       "id": "seis-goal-integrity",
       "name": "seis-goal-integrity",
       "displayName": "SEIS Goal Integrity",
@@ -986,16 +1326,17 @@
       "sourcePath": "plugins/seis-core/seis-goal-integrity",
       "entrypoint": "scripts/seis-goal-integrity-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded goal files"
@@ -1033,16 +1374,17 @@
       "sourcePath": "plugins/seis-core/seis-issue-triage",
       "entrypoint": "scripts/seis-issue-triage-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local issue JSON"
@@ -1083,16 +1425,17 @@
       "sourcePath": "plugins/seis-core/seis-license-compatibility",
       "entrypoint": "scripts/seis-license-compatibility-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local package and license files"
@@ -1131,16 +1474,17 @@
       "sourcePath": "plugins/seis-core/seis-localization-coverage",
       "entrypoint": "scripts/seis-localization-coverage-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local locale JSON dictionaries"
@@ -1179,16 +1523,17 @@
       "sourcePath": "plugins/seis-core/seis-maintainer-risk",
       "entrypoint": "scripts/seis-maintainer-risk-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local maintainer and activity JSON"
@@ -1229,16 +1574,17 @@
       "sourcePath": "plugins/seis-core/seis-mcp-inventory",
       "entrypoint": "scripts/seis-mcp-inventory-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local MCP and plugin JSON manifests"
@@ -1277,16 +1623,17 @@
       "sourcePath": "plugins/seis-core/seis-migration-guide-check",
       "entrypoint": "scripts/seis-migration-guide-check-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local migration documentation"
@@ -1325,16 +1672,17 @@
       "sourcePath": "plugins/seis-core/seis-model-fallback",
       "entrypoint": "scripts/seis-model-fallback-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local route and fallback JSON"
@@ -1360,6 +1708,59 @@
       "rollback": "Disable or remove the local plugin; no source data is mutated."
     },
     {
+      "id": "seis-offline-mode-check",
+      "name": "seis-offline-mode-check",
+      "displayName": "SEIS Offline Mode Check",
+      "description": "Confirm local-first and offline-safe surfaces remain explicit before any provider-backed activation.",
+      "category": "Developer",
+      "capabilities": [
+        "Offline posture audit",
+        "Local fallback check",
+        "Degraded-state report"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-offline-mode-check",
+      "entrypoint": "scripts/seis-offline-mode-check-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-offline-mode-check-mcp-server.mjs --status",
+        "node scripts/seis-offline-mode-check-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
       "id": "seis-package-adoption",
       "name": "seis-package-adoption",
       "displayName": "Seis Package Adoption",
@@ -1373,16 +1774,17 @@
       "sourcePath": "plugins/seis-core/seis-package-adoption",
       "entrypoint": "scripts/seis-package-adoption-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local package adoption JSON"
@@ -1423,16 +1825,17 @@
       "sourcePath": "plugins/seis-core/seis-performance-budget",
       "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local performance JSON"
@@ -1471,16 +1874,17 @@
       "sourcePath": "plugins/seis-core/seis-personal-plugin-discovery",
       "entrypoint": "scripts/seis-personal-plugin-discovery-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "explicitly selected local plugin metadata"
@@ -1521,16 +1925,17 @@
       "sourcePath": "plugins/seis-core/seis-plugin-migration",
       "entrypoint": "scripts/seis-plugin-migration-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "selected local plugin metadata"
@@ -1570,16 +1975,17 @@
       "sourcePath": "plugins/seis-core/seis-pr-cycle-time",
       "entrypoint": "scripts/seis-pr-cycle-time-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local pull-request JSON"
@@ -1607,6 +2013,59 @@
       "rollback": "Disable or remove the local plugin; no source data is mutated."
     },
     {
+      "id": "seis-prompt-injection-audit",
+      "name": "seis-prompt-injection-audit",
+      "displayName": "SEIS Prompt Injection Audit",
+      "description": "Check that prompt safety documentation and approval boundaries remain present without executing untrusted content.",
+      "category": "Developer",
+      "capabilities": [
+        "Prompt safety evidence",
+        "Untrusted-content boundary",
+        "Injection audit"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-prompt-injection-audit",
+      "entrypoint": "scripts/seis-prompt-injection-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-prompt-injection-audit-mcp-server.mjs --status",
+        "node scripts/seis-prompt-injection-audit-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
       "id": "seis-provider-health",
       "name": "seis-provider-health",
       "displayName": "SEIS Provider Health",
@@ -1620,16 +2079,17 @@
       "sourcePath": "plugins/seis-core/seis-provider-health",
       "entrypoint": "scripts/seis-provider-health-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local provider and capability JSON records"
@@ -1668,16 +2128,17 @@
       "sourcePath": "plugins/seis-core/seis-public-safe-scan",
       "entrypoint": "scripts/seis-public-safe-scan-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local text files and path names"
@@ -1716,16 +2177,17 @@
       "sourcePath": "plugins/seis-core/seis-rag-citation-coverage",
       "entrypoint": "scripts/seis-rag-citation-coverage-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local retrieval JSON records"
@@ -1764,16 +2226,17 @@
       "sourcePath": "plugins/seis-core/seis-release-cadence",
       "entrypoint": "scripts/seis-release-cadence-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local changelog files"
@@ -1813,16 +2276,17 @@
       "sourcePath": "plugins/seis-core/seis-release-readiness",
       "entrypoint": "scripts/seis-release-readiness-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "recorded local JSON release-check evidence"
@@ -1863,16 +2327,17 @@
       "sourcePath": "plugins/seis-core/seis-repository-health",
       "entrypoint": "scripts/seis-repository-health-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "explicit repository metadata",
@@ -1912,16 +2377,17 @@
       "sourcePath": "plugins/seis-core/seis-repository-scorecard",
       "entrypoint": "scripts/seis-repository-scorecard-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local repository metadata"
@@ -1947,6 +2413,59 @@
       "rollback": "Disable or remove the local plugin; no source data is mutated."
     },
     {
+      "id": "seis-rollback-readiness",
+      "name": "seis-rollback-readiness",
+      "displayName": "SEIS Rollback Readiness",
+      "description": "Verify that release and operational surfaces retain a documented rollback path before handoff.",
+      "category": "Developer",
+      "capabilities": [
+        "Rollback evidence",
+        "Release train audit",
+        "Recovery handoff"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-rollback-readiness",
+      "entrypoint": "scripts/seis-rollback-readiness-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-rollback-readiness-mcp-server.mjs --status",
+        "node scripts/seis-rollback-readiness-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
       "id": "seis-route-explainer",
       "name": "seis-route-explainer",
       "displayName": "SEIS Route Explainer",
@@ -1961,16 +2480,17 @@
       "sourcePath": "plugins/seis-core/seis-route-explainer",
       "entrypoint": "scripts/seis-route-explainer-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "task route parameters"
@@ -2009,16 +2529,17 @@
       "sourcePath": "plugins/seis-core/seis-sbom-generator",
       "entrypoint": "scripts/seis-sbom-generator-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local package manifests and lockfiles"
@@ -2058,16 +2579,17 @@
       "sourcePath": "plugins/seis-core/seis-secret-boundary-scan",
       "entrypoint": "scripts/seis-secret-boundary-scan-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local text files and path names"
@@ -2106,16 +2628,17 @@
       "sourcePath": "plugins/seis-core/seis-semver-audit",
       "entrypoint": "scripts/seis-semver-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local package.json files"
@@ -2156,16 +2679,17 @@
       "sourcePath": "plugins/seis-core/seis-source-provenance",
       "entrypoint": "scripts/seis-source-provenance-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded regular files under an explicit workspace"
@@ -2205,16 +2729,17 @@
       "sourcePath": "plugins/seis-core/seis-technology-ontology",
       "entrypoint": "scripts/seis-technology-ontology-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bundled ontology profile"
@@ -2253,16 +2778,17 @@
       "sourcePath": "plugins/seis-core/seis-test-flakiness",
       "entrypoint": "scripts/seis-test-flakiness-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local test result JSON"
@@ -2288,6 +2814,59 @@
       "rollback": "Disable or remove the local plugin; no source data is mutated."
     },
     {
+      "id": "seis-tool-permission-audit",
+      "name": "seis-tool-permission-audit",
+      "displayName": "SEIS Tool Permission Audit",
+      "description": "Audit tool, plugin, and agent permission defaults without enabling external writes.",
+      "category": "Developer",
+      "capabilities": [
+        "Permission matrix",
+        "Deny-by-default review",
+        "Tool scope report"
+      ],
+      "owner": "@seis-core",
+      "sourcePath": "plugins/seis-core/seis-tool-permission-audit",
+      "entrypoint": "scripts/seis-tool-permission-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.000000012",
+        "semver": "0.0.12",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 12
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-local-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 3
+      },
+      "permissions": {
+        "read": [
+          "bounded SEIS repository evidence"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-tool-permission-audit-mcp-server.mjs --status",
+        "node scripts/seis-tool-permission-audit-mcp-server.mjs --report --path /path/to/tree"
+      ],
+      "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
       "id": "seis-vulnerability-triage",
       "name": "seis-vulnerability-triage",
       "displayName": "SEIS Vulnerability Triage",
@@ -2301,16 +2880,17 @@
       "sourcePath": "plugins/seis-core/seis-vulnerability-triage",
       "entrypoint": "scripts/seis-vulnerability-triage-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local vulnerability JSON reports"
@@ -2350,16 +2930,17 @@
       "sourcePath": "plugins/seis-core/seis-workflow-linter",
       "entrypoint": "scripts/seis-workflow-linter-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local JSON workflow definitions"
@@ -2398,16 +2979,17 @@
       "sourcePath": "plugins/seis-core/seis-workflow-permission-audit",
       "entrypoint": "scripts/seis-workflow-permission-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "bounded local workflow JSON and YAML-like files"
@@ -2448,16 +3030,17 @@
       "sourcePath": "plugins/seis-core/seis-workspace-inspector",
       "entrypoint": "scripts/seis-workspace-inspector-mcp-server.mjs",
       "release": {
-        "label": "0.000000011",
-        "semver": "0.0.11",
+        "label": "0.000000012",
+        "semver": "0.0.12",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 11
+        "microUnits": 12
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-local-readonly",
       "risk": "low",
+      "audit": null,
       "permissions": {
         "read": [
           "explicit workspace root metadata"

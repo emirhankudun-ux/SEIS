@@ -12,6 +12,7 @@ import {
   nextMajorRelease,
   parseReleaseLabel,
 } from "./seis-core-plugin-release-policy.mjs";
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 
 const root = process.cwd();
 const appManifestPath = "apps/seis-core/data/seis-core-plugin-sources.json";
@@ -34,7 +35,7 @@ ensure(releaseTrain.goalId === "SEIS-GOAL-021", "release train must bind to SEIS
 ensure(releaseTrain.schemaVersion === 2, "release train schema must be version 2");
 ensure(releaseTrain.scope?.application === "apps/seis-core", "release train must target apps/seis-core");
 ensure(releaseTrain.scope?.sourceRoot === sourceRoot, "release train source root is invalid");
-ensure(releaseTrain.scope?.pluginCount === 50, "release train must scope 50 app-owned plugins");
+ensure(releaseTrain.scope?.pluginCount === APP_PLUGIN_EXPANSION_TARGET, "release train app-owned plugin scope is stale");
 ensure(releaseTrain.policy?.minimumLabel === APP_PLUGIN_RELEASE_SEED_LABEL, "release train minimum label is invalid");
 ensure(releaseTrain.policy?.initialLabel === APP_PLUGIN_RELEASE_INITIAL_LABEL, "release train initial label is invalid");
 ensure(releaseTrain.policy?.maximumLabel === APP_PLUGIN_RELEASE_MAX_LABEL, "release train maximum label is invalid");
@@ -73,7 +74,7 @@ try {
 }
 
 const plugins = listPlugins();
-ensure(plugins.length === 50, `expected 50 app-owned plugins, found ${plugins.length}`);
+ensure(plugins.length === APP_PLUGIN_EXPANSION_TARGET, `expected ${APP_PLUGIN_EXPANSION_TARGET} app-owned plugins, found ${plugins.length}`);
 if (parsedCurrent) {
   for (const plugin of plugins) {
     const manifest = readJson(path.join(sourceRoot, plugin, ".codex-plugin", "plugin.json"));
@@ -94,7 +95,7 @@ ensure(appManifest.releaseKind === current.kind, "app source manifest release ki
 ensure(appManifest.releaseMajor === current.major, "app source manifest release major is stale");
 ensure(appManifest.releaseRevision === current.revision, "app source manifest release revision is stale");
 ensure(appManifest.releaseMicroUnits === (parsedCurrent?.microUnits ?? null), "app source manifest release micro units are stale");
-ensure(appManifest.pluginCount === 50, "app source manifest must contain 50 plugins");
+ensure(appManifest.pluginCount === APP_PLUGIN_EXPANSION_TARGET, "app source manifest plugin count is stale");
 for (const plugin of appManifest.plugins || []) {
   ensure(plugin.version === current.semver, `${plugin.name}: app source manifest version is stale`);
   ensure(plugin.releaseTrainVersion === current.label, `${plugin.name}: app source manifest release label is stale`);
@@ -105,13 +106,13 @@ for (const plugin of appManifest.plugins || []) {
 
 ensure(appCatalog.id === "seis-core-application-plugin-catalog", "app plugin catalog id is invalid");
 ensure(appCatalog.sourceRoot === sourceRoot, "app plugin catalog source root is invalid");
-ensure(appCatalog.counts?.discovered === 50, "app plugin catalog must discover 50 plugins");
-ensure(appCatalog.plugins?.length === 50, "app plugin catalog must contain 50 plugins");
+ensure(appCatalog.counts?.discovered === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog discovered count is stale");
+ensure(appCatalog.plugins?.length === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog length is stale");
 ensure(appCatalog.release?.label === current.label, "app plugin catalog release label is stale");
 ensure(appCatalog.release?.semver === current.semver, "app plugin catalog release semver is stale");
 ensure(appCatalog.policy?.sourceMutation === false, "app plugin catalog must not mutate source");
 ensure(appCatalog.policy?.executableAction === "status-only", "app plugin catalog executable action must be status-only");
-ensure(appCatalog.counts?.statusReady === 50, "app plugin catalog status matrix must have 50 ready plugins");
+ensure(appCatalog.counts?.statusReady === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog status-ready count is stale");
 for (const plugin of appCatalog.plugins || []) {
   ensure(plugin.sourcePath?.startsWith(`${sourceRoot}/`), `${plugin.name}: app plugin catalog source path is invalid`);
   ensure(plugin.release?.label === current.label, `${plugin.name}: app plugin catalog release label is stale`);
@@ -142,7 +143,7 @@ ensure(registry.target?.appReleaseMicroUnits === (parsedCurrent?.microUnits ?? n
 
 const appEntries = (registry.entries || []).filter((entry) => entry.sourcePath?.startsWith(`${sourceRoot}/`));
 const catalogEntries = (registry.entries || []).filter((entry) => entry.recordType === "capability-plugin-slot");
-ensure(appEntries.length === 50, "registry must contain 50 app-owned physical entries");
+ensure(appEntries.length === APP_PLUGIN_EXPANSION_TARGET, "registry app-owned physical entry count is stale");
 for (const entry of appEntries) {
   ensure(entry.version === current.semver, `${entry.id}: registry semver is stale`);
   ensure(entry.releaseSemver === current.semver, `${entry.id}: registry release semver is stale`);

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-architecture-drift": {
+      "command": "node",
+      "args": [
+        "scripts/seis-architecture-drift-mcp-server.mjs"
+      ]
+    }
+  }
+}

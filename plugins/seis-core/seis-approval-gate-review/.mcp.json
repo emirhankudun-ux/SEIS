@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-approval-gate-review": {
+      "command": "node",
+      "args": [
+        "scripts/seis-approval-gate-review-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-cost-latency-budget": {
+      "command": "node",
+      "args": [
+        "scripts/seis-cost-latency-budget-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # SEIS Core personal plugin source boundary
 
-`plugins/seis-core/` is the canonical source boundary for the 50 local plugins
+`plugins/seis-core/` is the canonical source boundary for the 60 app-owned plugins
 used by the SEIS Command Center application. The directory is connected to the
 SEIS repository and is intentionally separate from the ten public source
 modules directly under `plugins/`.
@@ -11,14 +11,14 @@ does not grant network, secret, or write permissions by default.
 
 ## Release policy
 
-All 50 packages move together on the gradual release train:
+All 60 packages move together on the gradual release train:
 
 ```text
 0.000000001 -> 0.00000001 -> 0.000000011 -> ... -> 1.0000 -> 1.0001 -> ... -> 45.0000
 ```
 
-The current baseline is `0.00000001`, represented as strict package semver
-`0.0.10`. A large, measured code change advances exactly one micro/revision
+The current release is `0.000000012`, represented as strict package semver
+`0.0.12`. A large, measured code change advances exactly one micro/revision
 step. An approved annual update advances exactly one major step. A bulk jump
 to `45.0000` is prohibited.
 
@@ -42,6 +42,13 @@ application-owned discovery surface for list/search/inspect/status workflows.
 An activation plan can describe a read-only status check, while run/write,
 network, and secret actions return `approval-required` without executing.
 
+The ten expansion packages are declared read-only audit plugins. Their shared
+`runtime/plugin-audit-runtime.mjs` exposes a bounded `--report --path <workspace>`
+mode and two MCP tools (status and report); reports read only the declared
+repository evidence checks, reject paths outside the SEIS workspace, and never
+call providers or mutate source files. The remaining packages stay
+status-only until a separate permission review approves another capability.
+
 ```bash
 npm run automation:seis-core-plugin-matrix
 npm run check:seis-core-plugin-matrix
@@ -58,7 +65,7 @@ packages under this directory.
 
 The Command Center reads the generated app catalog at
 `apps/seis-core/data/seis-core-plugin-catalog.json`; this keeps the UI backed
-by the same 50 local manifests instead of a second static source of truth.
+by the same 60 local manifests instead of a second static source of truth.
 Its release panel reads
 `apps/seis-core/data/seis-core-plugin-release-readiness.json`, which reports
 the next large-code and annual transitions plus measured working-tree code

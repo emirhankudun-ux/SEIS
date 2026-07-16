@@ -3,9 +3,12 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { APP_PLUGIN_EXPANSION_TARGET } from "../../../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 
 const pkgRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const serverBin = path.join(pkgRoot, "bin", "seis-mcp.mjs");
+const EXPECTED_PHYSICAL_PLUGIN_COUNT = APP_PLUGIN_EXPANSION_TARGET + 10;
+const EXPECTED_CATALOG_ONLY_ENTRY_COUNT = 5000 - EXPECTED_PHYSICAL_PLUGIN_COUNT;
 
 /**
  * Drive the MCP server over its real stdio transport: spawn the bin, perform
@@ -264,11 +267,11 @@ describe("seis-mcp stdio smoke", () => {
     const status = JSON.parse(toolCall.result.content[0].text);
     assert.equal(status.ok, true);
     assert.equal(status.registryEntryCount, 5000);
-    assert.equal(status.physicalPluginCount, 60);
-    assert.equal(status.catalogOnlyEntryCount, 4940);
+    assert.equal(status.physicalPluginCount, EXPECTED_PHYSICAL_PLUGIN_COUNT);
+    assert.equal(status.catalogOnlyEntryCount, EXPECTED_CATALOG_ONLY_ENTRY_COUNT);
     assert.equal(status.personalPluginCount, 55);
     assert.equal(status.personalRepoCounterpartCount, 55);
-    assert.equal(status.appOwnedPluginCount, 50);
+    assert.equal(status.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.applicationPluginSourceRoot, "plugins/seis-core");
     assert.equal(status.applicationPluginManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
     assert.equal(status.applicationPluginReleaseTrain, "content/development/seis-core-plugin-release-train.json");
@@ -286,7 +289,7 @@ describe("seis-mcp stdio smoke", () => {
     const registry = JSON.parse(resource.result.contents[0].text);
     assert.equal(registry.id, "seis-ai-core-plugin-registry");
     assert.equal(registry.entries.length, 5000);
-    assert.equal(registry.target.appOwnedPluginCount, 50);
+    assert.equal(registry.target.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(registry.target.appReleaseLabel, status.applicationPluginReleaseLabel);
     assert.equal(registry.target.appReleaseSemver, status.applicationPluginReleaseSemver);
     assert.equal(registry.target.appReleaseRevision, status.applicationPluginReleaseRevision);

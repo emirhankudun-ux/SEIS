@@ -18,6 +18,7 @@ import {
   collectSeisCorePluginChangeEvidence,
   SEIS_CORE_PLUGIN_CHANGE_EVIDENCE_ID,
 } from "./seis-core-plugin-change-evidence.mjs";
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 
 const root = process.cwd();
 const sourceRoot = "plugins/seis-core";
@@ -71,8 +72,8 @@ if (requiresLargeCodeEvidence && apply && (measuredCodeLines === null || measure
 }
 const plugins = listPlugins();
 
-if (plugins.length !== 50) {
-  throw new Error(`Expected 50 app-owned plugins, found ${plugins.length}.`);
+if (plugins.length !== APP_PLUGIN_EXPANSION_TARGET) {
+  throw new Error(`Expected ${APP_PLUGIN_EXPANSION_TARGET} app-owned plugins, found ${plugins.length}.`);
 }
 
 const evidence = {

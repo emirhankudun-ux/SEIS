@@ -13,6 +13,7 @@ export const APP_PLUGIN_CATALOG_ID = "seis-core-application-plugin-catalog";
 export const APP_PLUGIN_CATALOG_MODE = "local-read-only";
 export const APP_PLUGIN_CATALOG_LIMIT = 100;
 export const APP_PLUGIN_ALLOWED_INSPECTION_ACTIONS = Object.freeze(["inspect", "status"]);
+export const APP_PLUGIN_ALLOWED_REPORT_ACTIONS = Object.freeze(["report"]);
 export const APP_PLUGIN_APPROVAL_REQUIRED_ACTIONS = Object.freeze(["run", "write", "network", "secrets"]);
 
 export function buildApplicationPluginCatalog(repoRoot, options = {}) {
@@ -44,6 +45,7 @@ export function buildApplicationPluginCatalog(repoRoot, options = {}) {
       write: "approval-required",
       executableAction: "status-only",
       allowedInspectionActions: APP_PLUGIN_ALLOWED_INSPECTION_ACTIONS,
+      allowedReportActions: APP_PLUGIN_ALLOWED_REPORT_ACTIONS,
       approvalRequiredActions: APP_PLUGIN_APPROVAL_REQUIRED_ACTIONS,
     },
     counts: {
@@ -88,7 +90,8 @@ export function createApplicationPluginActivationPlan(repoRoot, name, action = "
 
   const normalizedAction = String(action || "status").trim().toLowerCase();
   const inspectionAllowed = APP_PLUGIN_ALLOWED_INSPECTION_ACTIONS.includes(normalizedAction);
-  if (!inspectionAllowed) {
+  const reportAllowed = APP_PLUGIN_ALLOWED_REPORT_ACTIONS.includes(normalizedAction) && plugin.audit?.mode === "read-only-report";
+  if (!inspectionAllowed && !reportAllowed) {
     return {
       ok: false,
       mode: "approval-required",
@@ -97,24 +100,26 @@ export function createApplicationPluginActivationPlan(repoRoot, name, action = "
       action: normalizedAction,
       executes: false,
       approvalRequired: true,
-      reason: `The app-local boundary permits inspect/status only; ${normalizedAction} requires an explicit approval workflow.`,
+      reason: `The app-local boundary permits inspect/status and declared read-only reports only; ${normalizedAction} requires an explicit approval workflow.`,
       permissions: plugin.permissions,
     };
   }
 
   return {
     ok: true,
-    mode: "read-only-plan",
+    mode: reportAllowed ? "read-only-report-plan" : "read-only-plan",
     goalId: APP_PLUGIN_GOAL_ID,
     plugin: plugin.name,
     action: normalizedAction,
     executes: false,
     approvalRequired: false,
-    command: [plugin.entrypoint, "--status"],
+    command: [plugin.entrypoint, reportAllowed ? "--report" : "--status"],
     sourcePath: plugin.sourcePath,
     release: plugin.release,
     permissions: plugin.permissions,
-    reason: "The plan is evidence-only and does not activate a write, network, or secret capability.",
+    reason: reportAllowed
+      ? "The plan reads bounded evidence through the plugin report contract and does not activate a write, network, or secret capability."
+      : "The plan is evidence-only and does not activate a write, network, or secret capability.",
   };
 }
 
@@ -125,6 +130,7 @@ export function inspectApplicationPlugin(repoRoot, name, options = {}) {
     ...plugin,
     activation: {
       status: createApplicationPluginActivationPlan(repoRoot, plugin.name, "status"),
+      report: createApplicationPluginActivationPlan(repoRoot, plugin.name, "report"),
       run: createApplicationPluginActivationPlan(repoRoot, plugin.name, "run"),
     },
   };
@@ -153,6 +159,7 @@ function toCatalogEntry(bundle, repoRoot, currentRelease, { includeStatus }) {
     implementationState: profile.implementationState || "unknown",
     lifecycleStatus: profile.status || "unknown",
     risk: profile.risk || "unclassified",
+    audit: profile.audit || null,
     permissions: {
       read: Array.isArray(profile.permissions?.read) ? profile.permissions.read : [],
       write: Array.isArray(profile.permissions?.write) ? profile.permissions.write : [],

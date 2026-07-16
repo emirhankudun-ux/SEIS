@@ -447,15 +447,15 @@ let seisRouterArtifact = {
 
 let seisCorePluginArtifact = {
   sourceRoot: "plugins/seis-core",
-  release: { label: "0.00000001", semver: "0.0.10", kind: "initial" },
-  counts: { discovered: 50, returned: 0, contractValid: 50, statusReady: 0 },
+  release: { label: "0.000000012", semver: "0.0.12", kind: "large-code-change" },
+  counts: { discovered: 60, returned: 0, contractValid: 60, statusReady: 0 },
   plugins: [],
   loadError: "Application plugin catalog has not loaded yet."
 };
 
 let seisCorePluginReleaseReadinessArtifact = {
-  currentRelease: { label: "0.00000001", semver: "0.0.10" },
-  next: { largeCode: { label: "0.000000011" }, annual: { label: "1.0000", year: 2027 } },
+  currentRelease: { label: "0.000000012", semver: "0.0.12" },
+  next: { largeCode: { label: "0.000000013" }, annual: { label: "1.0000", year: 2027 } },
   policy: { maximumLabel: "45.0000", largeCodeChangeThreshold: 500 },
   workingTree: { codeLinesChanged: 0, changedCodeFileCount: 0, largeCodeEligible: false },
   decision: "loading",
@@ -795,7 +795,7 @@ const pluginFamilies = [
     name: "SEIS Command Center App Plugins",
     health: "Local Demo",
     permissions: "Read-only, task-scoped",
-    summary: "50 personal plugin packages owned by plugins/seis-core at app release 0.000000011; AI Core indexes metadata without owning their source."
+    summary: "60 app-owned plugin packages under plugins/seis-core at app release 0.000000012; AI Core indexes metadata without owning their source."
   }
 ];
 
@@ -2074,7 +2074,7 @@ async function loadSeisCorePluginArtifact() {
     const response = await fetch("data/seis-core-plugin-catalog.json", { cache: "no-store" });
     if (!response.ok) throw new Error(`plugin catalog request failed with ${response.status}`);
     const artifact = await response.json();
-    if (artifact.sourceRoot !== "plugins/seis-core" || artifact.counts?.discovered !== 50 || !Array.isArray(artifact.plugins)) {
+    if (artifact.sourceRoot !== "plugins/seis-core" || artifact.counts?.discovered !== 60 || !Array.isArray(artifact.plugins)) {
       throw new Error("plugin catalog contract is invalid");
     }
     seisCorePluginArtifact = artifact;
@@ -2369,7 +2369,7 @@ function renderPlugins() {
             <span class="meta-chip">${escapeHtml(plugin.name)}</span>
             <span class="meta-chip">${escapeHtml(plugin.category)}</span>
             <span class="meta-chip">${escapeHtml(plugin.release?.semver || "unknown")}</span>
-            <span class="meta-chip">local status-only</span>
+            <span class="meta-chip">${plugin.audit?.mode === "read-only-report" ? "read-only report" : "local status-only"}</span>
           </div>
         </div>
         <div class="app-plugin-row-side">

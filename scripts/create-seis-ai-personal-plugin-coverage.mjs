@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const root = process.cwd();
 const checkMode = process.argv.includes("--check");
 const outputPath = "content/development/seis-ai-core-personal-plugin-coverage.json";
@@ -38,6 +40,7 @@ function buildCoverage(sourceRoot, marketplacePath) {
   const personalNames = uniqueSeisNames(marketplace.plugins || []);
   const sourceNames = listPluginNames(sourceRoot);
   const applicationNames = listPluginNames(path.join(root, ...applicationSourceRoot.split("/")));
+  const applicationOnlyNames = applicationNames.filter((name) => !personalNames.includes(name));
   const repoNames = new Set([...listPluginNames(path.join(root, "plugins")), ...applicationNames]);
   const overlapNames = personalNames.filter((name) => listPluginNames(path.join(root, "plugins")).includes(name));
   const applicationOwnedNames = personalNames.filter((name) => applicationNames.includes(name));
@@ -77,8 +80,10 @@ function buildCoverage(sourceRoot, marketplacePath) {
       migratedCount: applicationOwnedNames.length,
       migratedPluginIds: applicationOwnedNames,
       applicationSourceRoot,
-      applicationOwnedCount: applicationOwnedNames.length,
-      applicationOwnedPluginIds: applicationOwnedNames,
+      applicationOwnedCount: applicationNames.length,
+      applicationOwnedPluginIds: applicationNames,
+      applicationOnlyCount: applicationOnlyNames.length,
+      applicationOnlyPluginIds: applicationOnlyNames,
     },
     safety: {
       sourceCodeExecutedDuringAudit: false,
@@ -109,13 +114,14 @@ function validateCoverage(record) {
   if (!Array.isArray(marketplace?.pluginIds) || new Set(marketplace.pluginIds).size !== marketplace.pluginCount) failures.push("personal marketplace plugin IDs must be unique");
   if (source?.pluginCount !== marketplace?.pluginCount) failures.push("personal source and marketplace counts must match");
   if (source?.missingFromSourceRoot?.length !== 0) failures.push("personal source root is missing marketplace plugins");
-  if (source?.unlistedSourcePlugins?.length !== 0) failures.push("personal source root contains unlisted SEIS plugins");
+  if (source?.unlistedSourcePlugins?.length !== 0) failures.push("personal source root contains unlisted personal plugins");
   if (repository?.counterpartCount !== marketplace?.pluginCount) failures.push("every personal plugin must have a repository counterpart");
   if (repository?.missingRepoCounterparts?.length !== 0) failures.push("repository is missing personal plugin counterparts");
   if (repository?.overlapCount !== 5) failures.push("five personal lane plugins must resolve to existing repository modules");
   if (repository?.migratedCount !== 50) failures.push("50 personal-only plugins must be migrated into the SEIS Command Center app source root");
   if (repository?.applicationSourceRoot !== applicationSourceRoot) failures.push("personal plugin sources must be owned by apps/seis-core");
-  if (repository?.applicationOwnedCount !== 50) failures.push("the SEIS Command Center app must own 50 personal-only plugins");
+  if (repository?.applicationOwnedCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push(`the SEIS Command Center app must own ${APP_PLUGIN_EXPANSION_TARGET} plugins`);
+  if (repository?.applicationOnlyCount !== APP_PLUGIN_EXPANSION_TARGET - 50) failures.push("the SEIS Command Center app must record ten app-only expansion plugins");
   const serialized = JSON.stringify(record);
   if (/\/Users\/|\/home\/|[A-Za-z]:\\/.test(serialized)) failures.push("coverage must not store machine-specific absolute paths");
   if (failures.length) {

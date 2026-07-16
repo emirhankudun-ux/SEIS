@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const root = process.cwd();
 const checkMode = process.argv.includes("--check");
 const generatedAt = "2026-07-15";
@@ -326,7 +328,7 @@ function validateRegistry(record) {
   if (new Set(record.entries.map((entry) => entry.slug)).size !== targetCount) failures.push("plugin slugs must be unique");
   if (record.target.catalogOnlyEntryCount + record.target.physicalPluginCount !== targetCount) failures.push("physical and catalog counts must add to target");
   if (record.target.publicMarketplacePluginCount !== 1) failures.push("registry must preserve one public marketplace plugin");
-  if (record.target.appOwnedPluginCount !== 50) failures.push("registry must record 50 app-owned personal plugins");
+  if (record.target.appOwnedPluginCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push("registry app-owned plugin count is stale");
   if (record.target.appReleaseLabel !== currentRelease.label) failures.push("registry target app release label is stale");
   if (record.target.appReleaseSemver !== currentRelease.semver) failures.push("registry target app release semver is stale");
   if (record.target.appReleaseMajor !== currentRelease.major) failures.push("registry target app release major is stale");

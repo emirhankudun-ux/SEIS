@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { nextLargeCodeRelease } from "../../../scripts/seis-core-plugin-release-policy.mjs";
+import { APP_PLUGIN_EXPANSION_TARGET } from "../../../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 
 const root = new URL("../", import.meta.url);
 
@@ -42,6 +43,7 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /loadSeisCorePluginArtifact/);
   assert.match(script, /loadSeisCorePluginReleaseReadiness/);
   assert.match(script, /renderPluginReleaseReadiness/);
+  assert.match(script, /read-only report/);
   assert.match(script, /at app release \d+\.\d{4}/);
   assert.match(script, /automationWorkflows/);
   assert.match(script, /godModeLanes/);
@@ -99,10 +101,10 @@ test("SEIS Command Center owns the personal plugin source boundary", async () =>
   const releaseTrain = JSON.parse(await readFile(new URL("../../content/development/seis-core-plugin-release-train.json", root), "utf8"));
   assert.equal(manifest.owner, "apps/seis-core");
   assert.equal(manifest.sourceRoot, "plugins/seis-core");
-  assert.equal(manifest.pluginCount, 50);
+  assert.equal(manifest.pluginCount, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.sourceRoot, "plugins/seis-core");
-  assert.equal(catalog.counts.discovered, 50);
-  assert.equal(catalog.plugins.length, 50);
+  assert.equal(catalog.counts.discovered, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.plugins.length, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(readiness.sourceRoot, "plugins/seis-core");
   assert.equal(readiness.currentRelease.label, releaseTrain.currentRelease.label);
   assert.equal(readiness.next.largeCode.label, nextLargeCodeRelease(releaseTrain.currentRelease.label).label);

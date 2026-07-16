@@ -1,0 +1,35 @@
+{
+  "id": "seis-contract-compatibility",
+  "name": "seis-contract-compatibility",
+  "version": "0.0.12",
+  "description": "Compare release, source inventory, catalog, and status matrix contracts for compatibility.",
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": [
+    "seis",
+    "local",
+    "readonly",
+    "engineering"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Contract Compatibility",
+    "shortDescription": "Compare release, source inventory, catalog, and status matrix contracts for compatibility.",
+    "longDescription": "Compare release, source inventory, catalog, and status matrix contracts for compatibility. It reads bounded SEIS evidence only and never performs external writes.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": [
+      "Release contract check",
+      "Generated artifact comparison",
+      "Compatibility report"
+    ],
+    "defaultPrompt": [
+      "Run SEIS Contract Compatibility in read-only mode.",
+      "Summarize evidence and separate limitations."
+    ],
+    "brandColor": "#38BDF8"
+  }
+}

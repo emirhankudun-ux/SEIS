@@ -1,0 +1,35 @@
+{
+  "id": "seis-approval-gate-review",
+  "name": "seis-approval-gate-review",
+  "version": "0.0.12",
+  "description": "Review human approval boundaries and release-gate evidence without executing gated work.",
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "UNLICENSED-LOCAL",
+  "keywords": [
+    "seis",
+    "local",
+    "readonly",
+    "governance"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Approval Gate Review",
+    "shortDescription": "Review human approval boundaries and release-gate evidence without executing gated work.",
+    "longDescription": "Review human approval boundaries and release-gate evidence without executing gated work. It reads bounded SEIS evidence only and never performs external writes.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": [
+      "Approval boundary review",
+      "Gate evidence summary",
+      "Human handoff"
+    ],
+    "defaultPrompt": [
+      "Run SEIS Approval Gate Review in read-only mode.",
+      "Summarize evidence and separate limitations."
+    ],
+    "brandColor": "#38BDF8"
+  }
+}

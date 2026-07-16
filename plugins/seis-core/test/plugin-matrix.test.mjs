@@ -11,13 +11,14 @@ import {
   readCurrentRelease,
   validatePluginContract,
 } from "../runtime/plugin-contract.mjs";
+import { APP_PLUGIN_EXPANSION_TARGET } from "../runtime/plugin-audit-definitions.mjs";
 
 const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = path.resolve(pluginRoot, "../..");
 
-test("SEIS Core owns exactly 50 local plugins inside plugins/seis-core", () => {
+test("SEIS Core owns the complete local plugin expansion inside plugins/seis-core", () => {
   const plugins = discoverApplicationPlugins(repoRoot);
-  assert.equal(plugins.length, 50);
+  assert.equal(plugins.length, APP_PLUGIN_EXPANSION_TARGET);
   assert.ok(plugins.every((plugin) => plugin.root.startsWith(path.join(repoRoot, APP_PLUGIN_SOURCE_ROOT))));
   assert.ok(plugins.every((plugin) => validatePluginContract(plugin, readCurrentRelease(repoRoot)).length === 0));
 });
@@ -42,7 +43,7 @@ test("status matrix is deterministic and does not mutate plugin sources", () => 
   });
   const matrix = JSON.parse(output);
   assert.equal(matrix.sourceRoot, APP_PLUGIN_SOURCE_ROOT);
-  assert.equal(matrix.pluginCount, 50);
+  assert.equal(matrix.pluginCount, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(matrix.failureCount, 0);
   for (const plugin of discoverApplicationPlugins(repoRoot)) {
     assert.equal(fs.statSync(plugin.manifestPath).mtimeMs, before.get(plugin.name));

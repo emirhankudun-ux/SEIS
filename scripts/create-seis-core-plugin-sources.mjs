@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const root = process.cwd();
 const checkMode = process.argv.includes("--check");
 const sourceRoot = "plugins/seis-core";
@@ -99,6 +101,8 @@ function buildRecord() {
       "npm run check:seis-core-plugin-release",
       "npm run check:seis-core-plugin-release-policy",
       "npm run check:seis-core-plugin-catalog",
+      "npm run check:seis-core-plugin-expansion",
+      "npm run check:seis-core-plugin-audits",
       "npm run check:seis-core-plugin-release-readiness",
       "npm run check:seis-core-plugin-change-evidence",
       "npm run check:seis-core-plugin-matrix",
@@ -123,7 +127,7 @@ function validateRecord(record) {
   if (record?.releaseRevision !== currentRelease.revision) failures.push("app manifest release revision is stale");
   if ((record?.releaseMicroUnits ?? null) !== (currentRelease.microUnits ?? null)) failures.push("app manifest release micro units are stale");
   if (record?.sourceRoot !== sourceRoot) failures.push("app plugin source root is invalid");
-  if (record?.pluginCount !== 50) failures.push("app plugin source manifest must contain 50 personal plugins");
+  if (record?.pluginCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push(`app plugin source manifest must contain ${APP_PLUGIN_EXPANSION_TARGET} app-owned plugins`);
   if (!Array.isArray(record?.plugins) || record.plugins.length !== record.pluginCount) failures.push("app plugin source list is incomplete");
   if (new Set((record?.plugins || []).map((plugin) => plugin.name)).size !== record?.pluginCount) failures.push("app plugin names must be unique");
   if (record?.coreBoundary?.package !== "packages/seis-ai") failures.push("core boundary package is invalid");

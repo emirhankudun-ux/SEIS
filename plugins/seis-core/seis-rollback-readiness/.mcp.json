@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-rollback-readiness": {
+      "command": "node",
+      "args": [
+        "scripts/seis-rollback-readiness-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-goal-dependency-map": {
+      "command": "node",
+      "args": [
+        "scripts/seis-goal-dependency-map-mcp-server.mjs"
+      ]
+    }
+  }
+}

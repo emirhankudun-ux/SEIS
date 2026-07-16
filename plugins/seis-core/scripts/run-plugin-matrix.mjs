@@ -4,6 +4,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  APP_PLUGIN_EXPANSION_TARGET,
+} from "../runtime/plugin-audit-definitions.mjs";
+import {
   APP_PLUGIN_GOAL_ID,
   APP_PLUGIN_SOURCE_ROOT,
   discoverApplicationPlugins,
@@ -90,7 +93,7 @@ function buildMatrix() {
       timeoutMs,
     },
     pluginCount: plugins.length,
-    expectedPluginCount: 50,
+    expectedPluginCount: APP_PLUGIN_EXPANSION_TARGET,
     readyCount: plugins.filter((plugin) => plugin.ok && plugin.status === "ready").length,
     attentionCount: plugins.filter((plugin) => plugin.ok && plugin.status === "attention").length,
     failureCount: failures.length,

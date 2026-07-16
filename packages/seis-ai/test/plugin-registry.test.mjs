@@ -7,8 +7,11 @@ import {
   aiCorePluginRegistryStatus,
   readAiCorePluginRegistry,
 } from "../src/lib/plugin-registry.mjs";
+import { APP_PLUGIN_EXPANSION_TARGET } from "../../../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 
 const root = fileURLToPath(new URL("../../..", import.meta.url));
+const EXPECTED_PHYSICAL_PLUGIN_COUNT = APP_PLUGIN_EXPANSION_TARGET + 10;
+const EXPECTED_CATALOG_ONLY_ENTRY_COUNT = AI_CORE_PLUGIN_REGISTRY_TARGET_COUNT - EXPECTED_PHYSICAL_PLUGIN_COUNT;
 
 describe("SEIS AI Core plugin registry", () => {
   it("keeps exactly 5000 canonical registry entries under SEIS", () => {
@@ -29,8 +32,10 @@ describe("SEIS AI Core plugin registry", () => {
 
     assert.equal(registry.target.physicalPluginCount, physical.length);
     assert.equal(registry.target.catalogOnlyEntryCount, catalog.length);
-    assert.equal(registry.target.appOwnedPluginCount, 50);
-    assert.equal(registry.target.functionalLocalDemoCount, 50);
+    assert.equal(registry.target.physicalPluginCount, EXPECTED_PHYSICAL_PLUGIN_COUNT);
+    assert.equal(registry.target.catalogOnlyEntryCount, EXPECTED_CATALOG_ONLY_ENTRY_COUNT);
+    assert.equal(registry.target.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
+    assert.equal(registry.target.functionalLocalDemoCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(registry.target.publicMarketplacePluginCount, 1);
     assert.equal(registry.target.personalPluginCount, 55);
     assert.equal(registry.target.personalRepoCounterpartCount, 55);
@@ -55,7 +60,9 @@ describe("SEIS AI Core plugin registry", () => {
     assert.equal(status.ok, true);
     assert.equal(status.requestedPluginCount, 5000);
     assert.equal(status.registryEntryCount, 5000);
-    assert.equal(status.appOwnedPluginCount, 50);
+    assert.equal(status.physicalPluginCount, EXPECTED_PHYSICAL_PLUGIN_COUNT);
+    assert.equal(status.catalogOnlyEntryCount, EXPECTED_CATALOG_ONLY_ENTRY_COUNT);
+    assert.equal(status.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.applicationPluginSourceRoot, "plugins/seis-core");
     assert.equal(status.applicationPluginManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
     assert.equal(status.applicationPluginReleaseTrain, "content/development/seis-core-plugin-release-train.json");
