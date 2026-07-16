@@ -8,6 +8,7 @@ redaksiyon, yerel fallback ve claim kapilaridir.
 
 - Contract status: contract-defined-not-indexed
 - Retrieval source provenance manifest accepted: true
+- Retrieval evaluation fixtures accepted: true
 - Retrieval index built: false
 - Embedding model installed: false
 - Provider embedding calls: false
@@ -36,6 +37,7 @@ redaksiyon, yerel fallback ve claim kapilaridir.
 
 - path allowlist for source files
 - source provenance manifest accepted
+- retrieval evaluation fixtures accepted
 - secret and credential scan
 - private data exclusion policy
 - chunk schema and source URI policy
@@ -61,6 +63,7 @@ redaksiyon, yerel fallback ve claim kapilaridir.
 ```bash
 npm run report:seis-knowledge-retrieval-training
 npm run check:seis-retrieval-source-provenance
+npm run check:seis-retrieval-evaluation-fixtures
 npm run check:seis-knowledge-retrieval-training
 ```
 

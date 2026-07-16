@@ -1,0 +1,309 @@
+{
+  "id": "seis-redacted-answer-log-schema",
+  "version": "2026.07.01",
+  "generatedAt": "2026-07-01T03:29:05.582Z",
+  "status": "redacted-answer-log-schema-ready-no-real-logs",
+  "qualityGate": "npm run check:seis-redacted-answer-log-schema",
+  "reportCommand": "npm run report:seis-redacted-answer-log-schema",
+  "resourceUri": "seis://ai/redacted-answer-log-schema.json",
+  "truthBoundary": [
+    "This is a schema contract for future answer-log records only.",
+    "It does not collect or persist real answer logs.",
+    "It does not store prompt bodies or answer bodies.",
+    "It does not generate answers.",
+    "It does not query a retrieval index.",
+    "It does not call external providers.",
+    "It runs no benchmarks, trains no model, grants no 512B route eligibility, and proves no AGI."
+  ],
+  "sourceOfTruth": {
+    "noSecretAnswerLogScan": "content/development/seis-no-secret-answer-log-scan.json",
+    "citationScorer": "content/development/seis-retrieval-citation-scorer-dry-run.json",
+    "retrievalDryRun": "content/development/seis-retrieval-evaluation-dry-run.json",
+    "retrievalSourceProvenance": "content/development/seis-retrieval-source-provenance-manifest.json",
+    "docs": "docs/ai/seis-redacted-answer-log-schema.md"
+  },
+  "internetResearchBaseline": [
+    {
+      "id": "github-secret-scanning",
+      "sourceType": "official-docs",
+      "url": "https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning",
+      "usedFor": "Credential-shaped value categories and GitHub review readiness."
+    },
+    {
+      "id": "owasp-sensitive-information-disclosure",
+      "sourceType": "official-guidance",
+      "url": "https://genai.owasp.org/llmrisk/llm02-sensitive-information-disclosure/",
+      "usedFor": "Sensitive information disclosure controls for answer logs."
+    },
+    {
+      "id": "nist-ai-rmf",
+      "sourceType": "official-guidance",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "usedFor": "Measurement, governance, and risk-management framing."
+    }
+  ],
+  "approvedToday": {
+    "schemaDefinition": true,
+    "metadataOnlySampleRecords": true,
+    "realAnswerLogCollection": false,
+    "logPersistence": false,
+    "promptBodyStorage": false,
+    "answerBodyStorage": false,
+    "answerGeneration": false,
+    "retrievalIndexQuery": false,
+    "providerCall": false,
+    "benchmarkRun": false,
+    "trainingRun": false,
+    "runtimeAuthority": false
+  },
+  "allowedFields": [
+    {
+      "id": "recordId",
+      "type": "opaque-id",
+      "required": true,
+      "boundary": "Opaque local record id; no user id, email, IP, or account identifier."
+    },
+    {
+      "id": "schemaVersion",
+      "type": "semver-like-string",
+      "required": true,
+      "boundary": "Schema version for future migrations."
+    },
+    {
+      "id": "createdAt",
+      "type": "iso-8601-timestamp",
+      "required": true,
+      "boundary": "Timestamp only; no timezone-derived location inference."
+    },
+    {
+      "id": "runtimeMode",
+      "type": "enum",
+      "required": true,
+      "boundary": "Allowed values: local-demo, approval-needed, blocked."
+    },
+    {
+      "id": "questionIntent",
+      "type": "enum",
+      "required": true,
+      "boundary": "Coarse intent label only; prompt body is forbidden."
+    },
+    {
+      "id": "promptHash",
+      "type": "sha256",
+      "required": true,
+      "boundary": "Hash of prompt text if logging is approved; prompt body is forbidden."
+    },
+    {
+      "id": "answerHash",
+      "type": "sha256",
+      "required": true,
+      "boundary": "Hash of answer text if logging is approved; answer body is forbidden."
+    },
+    {
+      "id": "sourceUris",
+      "type": "seis-source-uri-array",
+      "required": true,
+      "boundary": "Reviewed source URIs only, never raw source content."
+    },
+    {
+      "id": "citationIds",
+      "type": "opaque-id-array",
+      "required": false,
+      "boundary": "Citation record ids without quoted answer text."
+    },
+    {
+      "id": "redactionSummary",
+      "type": "category-counts",
+      "required": true,
+      "boundary": "Counts by redaction category only."
+    },
+    {
+      "id": "safetyDecision",
+      "type": "enum",
+      "required": true,
+      "boundary": "Allowed values: allowed, refused, blocked, needs-human-review."
+    },
+    {
+      "id": "claimBoundary",
+      "type": "enum-array",
+      "required": true,
+      "boundary": "Explicit claim boundaries such as no-agi, no-512b-route, local-demo-only."
+    }
+  ],
+  "forbiddenFields": [
+    "promptBody",
+    "answerBody",
+    "rawConversation",
+    "providerApiKey",
+    "providerToken",
+    "password",
+    "cookie",
+    "sshPrivateKey",
+    "envFileContents",
+    "privateSourceText",
+    "unredactedStackTrace",
+    "userEmail",
+    "ipAddress",
+    "paymentIdentifier"
+  ],
+  "redactionRules": [
+    {
+      "id": "secret-shaped-values",
+      "description": "Reject token-shaped, password-shaped, key-shaped, and credential assignment values."
+    },
+    {
+      "id": "private-key-material",
+      "description": "Reject private key headers and any key body material."
+    },
+    {
+      "id": "env-and-config",
+      "description": "Reject environment file contents and local credential config values."
+    },
+    {
+      "id": "private-user-data",
+      "description": "Reject direct personal identifiers and private source text."
+    },
+    {
+      "id": "claim-boundary",
+      "description": "Require no-AGI and no-512B route boundaries for every local-demo answer log record."
+    }
+  ],
+  "sampleRecords": [
+    {
+      "recordId": "supported-citation-metadata",
+      "schemaVersion": "2026.07.01",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "runtimeMode": "local-demo",
+      "questionIntent": "retrieval-query",
+      "promptHash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "answerHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+      "sourceUris": [
+        "seis://retrieval/source/ai-docs/examplehash001"
+      ],
+      "citationIds": [
+        "citation-1"
+      ],
+      "redactionSummary": {
+        "secretShapedValues": 0,
+        "privateKeyMaterial": 0,
+        "privateUserData": 0
+      },
+      "safetyDecision": "allowed",
+      "claimBoundary": [
+        "local-demo-only",
+        "no-agi",
+        "no-512b-route"
+      ]
+    },
+    {
+      "recordId": "env-refusal-metadata",
+      "schemaVersion": "2026.07.01",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "runtimeMode": "local-demo",
+      "questionIntent": "secret-request",
+      "promptHash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "answerHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+      "sourceUris": [],
+      "citationIds": [],
+      "redactionSummary": {
+        "secretShapedValues": 0,
+        "privateKeyMaterial": 0,
+        "privateUserData": 0
+      },
+      "safetyDecision": "refused",
+      "claimBoundary": [
+        "local-demo-only",
+        "no-agi",
+        "no-512b-route"
+      ]
+    },
+    {
+      "recordId": "agi-claim-block-metadata",
+      "schemaVersion": "2026.07.01",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "runtimeMode": "local-demo",
+      "questionIntent": "claim-boundary",
+      "promptHash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "answerHash": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+      "sourceUris": [],
+      "citationIds": [],
+      "redactionSummary": {
+        "secretShapedValues": 0,
+        "privateKeyMaterial": 0,
+        "privateUserData": 0
+      },
+      "safetyDecision": "blocked",
+      "claimBoundary": [
+        "local-demo-only",
+        "no-agi",
+        "no-512b-route"
+      ]
+    }
+  ],
+  "schemaChecks": [
+    {
+      "id": "allowed-fields-present",
+      "status": "passed",
+      "evidence": "12 allowed metadata fields defined"
+    },
+    {
+      "id": "forbidden-fields-present",
+      "status": "passed",
+      "evidence": "14 forbidden fields defined"
+    },
+    {
+      "id": "no-body-fields-allowed",
+      "status": "passed",
+      "evidence": "promptBody and answerBody are not allowed fields"
+    },
+    {
+      "id": "sample-records-metadata-only",
+      "status": "passed",
+      "evidence": "all sample records are metadata-only"
+    },
+    {
+      "id": "no-secret-scan-linked",
+      "status": "passed",
+      "evidence": "no-secret-answer-log-scan-passed-no-answers"
+    },
+    {
+      "id": "citation-scorer-linked",
+      "status": "passed",
+      "evidence": "citation-scorer-dry-run-passed-not-measured"
+    }
+  ],
+  "linkedStatuses": {
+    "noSecretAnswerLogScan": "no-secret-answer-log-scan-passed-no-answers",
+    "noSecretFindings": 0,
+    "citationScorer": "citation-scorer-dry-run-passed-not-measured",
+    "retrievalDryRun": "dry-run-passed-no-index-no-model",
+    "retrievalSourceProvenance": "manifest-defined-index-blocked",
+    "retrievalSourceSecretFindings": 0
+  },
+  "requiredBeforeRealLogPersistence": [
+    "human security review accepts this schema",
+    "log retention window accepted",
+    "redaction implementation reviewed",
+    "real answer logging explicitly approved",
+    "provider and retrieval logging separately approved",
+    "delete/export policy accepted",
+    "human approval recorded"
+  ],
+  "publicClaims": {
+    "canClaimRedactedSchemaDefined": true,
+    "canClaimRealAnswerLogsCollected": false,
+    "canClaimPromptBodiesStored": false,
+    "canClaimAnswerBodiesStored": false,
+    "canClaimNoSecretRealAnswerLogs": false,
+    "canClaimAnswerSafetyProven": false,
+    "canClaimEvaluationRun": false,
+    "canClaimBenchmarkPassed": false,
+    "canClaimFullyKnowledgeableAI": false,
+    "canClaimAGI": false,
+    "canClaim512BRouteEligible": false
+  },
+  "packageScripts": {
+    "check": "node scripts/create-seis-redacted-answer-log-schema.mjs",
+    "report": "node scripts/create-seis-redacted-answer-log-schema.mjs --write"
+  }
+}

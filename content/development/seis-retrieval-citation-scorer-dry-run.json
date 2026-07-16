@@ -1,0 +1,145 @@
+{
+  "id": "seis-retrieval-citation-scorer-dry-run",
+  "version": "2026.07.01",
+  "generatedAt": "2026-07-01T03:28:55.187Z",
+  "status": "citation-scorer-dry-run-passed-not-measured",
+  "qualityGate": "npm run check:seis-retrieval-citation-scorer-dry-run",
+  "reportCommand": "npm run report:seis-retrieval-citation-scorer-dry-run",
+  "resourceUri": "seis://ai/retrieval-citation-scorer-dry-run.json",
+  "truthBoundary": [
+    "This is a citation scorer dry-run harness only.",
+    "It checks citation rule coverage and source record structure.",
+    "It does not generate answers.",
+    "It does not score live answer quality.",
+    "It does not query a retrieval index.",
+    "It does not call external providers.",
+    "It does not run benchmarks, train models, grant 512B route eligibility, or prove AGI."
+  ],
+  "sourceOfTruth": {
+    "dryRun": "content/development/seis-retrieval-evaluation-dry-run.json",
+    "fixtures": "content/development/seis-retrieval-evaluation-fixtures.json",
+    "retrievalSourceProvenance": "content/development/seis-retrieval-source-provenance-manifest.json",
+    "docs": "docs/ai/seis-retrieval-citation-scorer-dry-run.md"
+  },
+  "internetResearchBaseline": [
+    {
+      "id": "ragas",
+      "sourceType": "primary-paper",
+      "url": "https://arxiv.org/abs/2309.15217",
+      "usedFor": "RAG faithfulness and context-use evaluation framing."
+    },
+    {
+      "id": "helm",
+      "sourceType": "primary-paper",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "usedFor": "Scenario-based evaluation and metric reporting discipline."
+    },
+    {
+      "id": "nist-ai-rmf",
+      "sourceType": "official-guidance",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "usedFor": "Measurement, governance, and promotion-gate discipline."
+    }
+  ],
+  "approvedToday": {
+    "citationRuleDryRun": true,
+    "sourceUriCoverageCheck": true,
+    "sha256CoverageCheck": true,
+    "liveCitationScoring": false,
+    "answerGeneration": false,
+    "retrievalIndexQuery": false,
+    "providerCall": false,
+    "benchmarkRun": false,
+    "trainingRun": false,
+    "runtimeAuthority": false
+  },
+  "scoringRules": [
+    {
+      "id": "source-uri-required",
+      "description": "Every supported answer citation must carry a source URI."
+    },
+    {
+      "id": "source-hash-required",
+      "description": "Every supported answer citation must resolve to a SHA-256 source record."
+    },
+    {
+      "id": "unsupported-claim-block",
+      "description": "Unsupported claims must be flagged, not silently scored as supported."
+    },
+    {
+      "id": "answerless-dry-run",
+      "description": "This dry-run must not generate answers or score live answer quality."
+    },
+    {
+      "id": "redacted-log-required",
+      "description": "Future scorer logs must preserve source ids without secret values or private data."
+    }
+  ],
+  "citationChecks": [
+    {
+      "id": "citation-policy-query-present",
+      "status": "passed",
+      "evidence": "Require source URI, source hash continuity, and unsupported-claim handling."
+    },
+    {
+      "id": "source-uri-coverage",
+      "status": "passed",
+      "evidence": "54/54 records include sourceUri"
+    },
+    {
+      "id": "sha256-coverage",
+      "status": "passed",
+      "evidence": "54/54 records include SHA-256"
+    },
+    {
+      "id": "dry-run-answerless",
+      "status": "passed",
+      "evidence": "dry-run answer generation and retrieval index query remain false"
+    },
+    {
+      "id": "metric-not-measured",
+      "status": "passed",
+      "evidence": "citationCoverage is defined but not measured"
+    }
+  ],
+  "fileRecordSummary": {
+    "totalRecords": 54,
+    "sourceUriPresent": 54,
+    "sha256Present": 54,
+    "mediaTypePresent": 54
+  },
+  "metricsPreview": {
+    "status": "rules-defined-not-measured",
+    "citationCoverage": "not-measured",
+    "sourceFaithfulness": "not-measured",
+    "unsupportedClaimRate": "not-measured"
+  },
+  "requiredBeforeLiveCitationScoring": [
+    "local retrieval index query approved",
+    "answer generation harness approved",
+    "citation scorer implementation reviewed",
+    "redacted logs implemented",
+    "no-secret answer scan implemented",
+    "human approval recorded"
+  ],
+  "publicClaims": {
+    "canClaimCitationScorerDryRunPassed": true,
+    "canClaimCitationCoverageMeasured": false,
+    "canClaimSourceFaithfulnessMeasured": false,
+    "canClaimEvaluationRun": false,
+    "canClaimBenchmarkPassed": false,
+    "canClaimFullyKnowledgeableAI": false,
+    "canClaimAGI": false,
+    "canClaim512BRouteEligible": false
+  },
+  "linkedStatuses": {
+    "dryRun": "dry-run-passed-no-index-no-model",
+    "fixtures": "fixtures-defined-not-run",
+    "retrievalSourceProvenance": "manifest-defined-index-blocked",
+    "retrievalSourceSecretFindings": 0
+  },
+  "packageScripts": {
+    "check": "node scripts/create-seis-retrieval-citation-scorer-dry-run.mjs",
+    "report": "node scripts/create-seis-retrieval-citation-scorer-dry-run.mjs --write"
+  }
+}

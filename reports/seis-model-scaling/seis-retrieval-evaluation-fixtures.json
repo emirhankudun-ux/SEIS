@@ -1,0 +1,34 @@
+{
+  "id": "seis-retrieval-evaluation-fixtures-report",
+  "generatedAt": "2026-07-01T03:28:42.948Z",
+  "status": "fixtures-ready-evaluation-not-run",
+  "sourceFixtures": "content/development/seis-retrieval-evaluation-fixtures.json",
+  "summary": {
+    "fixtureSuiteCount": 5,
+    "goldenQueryCount": 8,
+    "negativeControlCount": 5,
+    "metricCount": 5,
+    "evaluationRun": false,
+    "retrievalIndexQuery": false,
+    "providerCall": false,
+    "benchmarkRun": false,
+    "trainingRun": false
+  },
+  "safeNextCommands": [
+    "npm run report:seis-retrieval-evaluation-fixtures",
+    "npm run check:seis-retrieval-evaluation-fixtures",
+    "npm run check:seis-retrieval-evaluation-dry-run",
+    "npm run check:seis-retrieval-source-provenance",
+    "npm run check:seis-knowledge-retrieval-training",
+    "npm run check:seis-ai-public-readiness"
+  ],
+  "humanApprovalNeededBefore": [
+    "retrieval source provenance manifest accepted",
+    "secretScan.findingsCount stays 0 on the target commit",
+    "fixture reviewer accepts golden queries and negative controls",
+    "local-only evaluation runner implemented",
+    "redacted logs implemented",
+    "retrieval index build separately approved",
+    "human approval recorded"
+  ]
+}

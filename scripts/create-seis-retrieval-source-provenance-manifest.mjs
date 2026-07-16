@@ -11,9 +11,27 @@ const failures = [];
 
 const generatedArtifactExclusions = new Set([
   "docs/ai/seis-retrieval-source-provenance.md",
+  "docs/ai/seis-retrieval-evaluation-fixtures.md",
+  "docs/ai/seis-retrieval-evaluation-dry-run.md",
+  "docs/ai/seis-retrieval-citation-scorer-dry-run.md",
+  "docs/ai/seis-no-secret-answer-log-scan.md",
+  "docs/ai/seis-redacted-answer-log-schema.md",
+  "docs/ai/seis-security-blocker-diagnostic.md",
   "docs/ai/seis-knowledge-retrieval-training.md",
   "reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.json",
   "reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md",
+  "reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.json",
+  "reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md",
+  "reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.json",
+  "reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.md",
+  "reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.json",
+  "reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md",
+  "reports/seis-model-scaling/seis-no-secret-answer-log-scan.json",
+  "reports/seis-model-scaling/seis-no-secret-answer-log-scan.md",
+  "reports/seis-model-scaling/seis-redacted-answer-log-schema.json",
+  "reports/seis-model-scaling/seis-redacted-answer-log-schema.md",
+  "reports/seis-model-scaling/seis-security-blocker-diagnostic.json",
+  "reports/seis-model-scaling/seis-security-blocker-diagnostic.md",
   "reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.json",
   "reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md"
 ]);
