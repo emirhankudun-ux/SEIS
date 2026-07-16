@@ -1,0 +1,59 @@
+schema_version: 1
+
+project:
+  id: seis-plugin-root
+  display_name: SEIS Core App-Owned Plugins
+  symbolic_name: SEIS
+  aliases:
+    - seis-core-plugins
+  kind: application-plugin-root
+  lifecycle: active
+  visibility: public-repo-internal-local
+  horizon: 5-years
+
+ecosystem:
+  role:
+    - app-owned-plugin-source
+    - command-center-extension
+    - ai-core-consumer
+  related_projects:
+    - seis
+    - pantechnoesis
+  canonical_owner_repo: SEIS
+
+plugin_boundary:
+  application: apps/seis-core
+  source_root: plugins/seis-core
+  release_train: content/development/seis-core-plugin-release-train.json
+  marketplace_mutation: false
+  public_suite_release_track: plugins/seis-ai-agent
+
+platforms:
+  primary:
+    - repository
+    - cli
+  planned:
+    - macos
+    - ipados
+    - ios
+
+architecture:
+  mode: modular-monolith
+  shared_packages:
+    - packages/seis-ai
+  source_of_truth: plugins/seis-core
+
+security:
+  secrets_policy: local-or-managed-only
+  public_repo: true
+  default_plugin_permissions:
+    write: []
+    network: []
+    secrets: []
+
+commands:
+  install: null
+  lint: null
+  test: "npm test --prefix packages/seis-ai"
+  build: null
+  validate: "npm run check:seis-core-plugin-release"
