@@ -537,7 +537,8 @@ struct SeisAppleNativeShellFreshDemoHomeView: View {
                 routeSummaryStrip
 
                 if activePanel == .applePlatform {
-                    AppleContinuationWindow()
+                    SeisApplePlatformWorkspaceView()
+                        .frame(minHeight: 760)
                         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
                 } else {
                     routeContent

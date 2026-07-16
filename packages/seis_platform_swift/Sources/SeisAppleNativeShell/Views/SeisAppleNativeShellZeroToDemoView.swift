@@ -14,7 +14,17 @@ struct SeisAppleNativeShellZeroToDemoView: View {
             activePanel: $activePanel
         )
         #else
-        SeisDemoNativeShellView(state: demoShellState)
+        TabView {
+            SeisDemoNativeShellView(state: demoShellState)
+                .tabItem {
+                    Label("Demo", systemImage: "play.rectangle")
+                }
+
+            SeisAppleConversationContinuityView()
+                .tabItem {
+                    Label("Süreklilik", systemImage: "bubble.left.and.bubble.right")
+                }
+        }
         #endif
     }
 }
