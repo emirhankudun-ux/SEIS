@@ -41,6 +41,7 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /seis-core-plugin-release-readiness\.json/);
   assert.match(script, /app-plugin-filter/);
   assert.match(script, /loadSeisCorePluginArtifact/);
+  assert.match(script, /direct SEIS repo source/);
   assert.match(script, /loadSeisCorePluginReleaseReadiness/);
   assert.match(script, /renderPluginReleaseReadiness/);
   assert.match(script, /read-only report/);
@@ -103,6 +104,12 @@ test("SEIS Command Center owns the personal plugin source boundary", async () =>
   assert.equal(manifest.sourceRoot, "plugins/seis-core");
   assert.equal(manifest.pluginCount, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.sourceRoot, "plugins/seis-core");
+  assert.equal(catalog.distribution.repository, "SEIS");
+  assert.equal(catalog.distribution.sourceAvailableInRepository, true);
+  assert.equal(catalog.distribution.sourceManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
+  assert.equal(catalog.distribution.installSurface, "repo-source-app");
+  assert.equal(catalog.distribution.marketplaceEntryCount, 0);
+  assert.equal(catalog.distribution.coreSourceOwner, false);
   assert.equal(catalog.counts.discovered, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.plugins.length, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(readiness.sourceRoot, "plugins/seis-core");

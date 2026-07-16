@@ -27,6 +27,14 @@ plugin_boundary:
   release_train: content/development/seis-core-plugin-release-train.json
   marketplace_mutation: false
   public_suite_release_track: plugins/seis-ai-agent
+  direct_repo_distribution:
+    enabled: true
+    source_manifest: apps/seis-core/data/seis-core-plugin-sources.json
+    catalog: apps/seis-core/data/seis-core-plugin-catalog.json
+    unified_suite: plugins/seis-ai-agent/assets/unified-suite.json
+    marketplace_entry_count: 0
+    core_source_owner: false
+    future_plugin_path: plugins/seis-core/<plugin-name>
 
 platforms:
   primary:

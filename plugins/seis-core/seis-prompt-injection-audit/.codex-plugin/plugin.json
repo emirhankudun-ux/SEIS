@@ -1,7 +1,7 @@
 {
   "id": "seis-prompt-injection-audit",
   "name": "seis-prompt-injection-audit",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Check that prompt safety documentation and approval boundaries remain present without executing untrusted content.",
   "author": {
     "name": "emirhankudun-ux"

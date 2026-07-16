@@ -36,11 +36,11 @@
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "applicationPluginReleaseLabel": "0.000000012",
-    "applicationPluginReleaseSemver": "0.0.12",
+    "applicationPluginReleaseLabel": "0.000000013",
+    "applicationPluginReleaseSemver": "0.0.13",
     "applicationPluginReleaseMajor": 0,
     "applicationPluginReleaseRevision": 0,
-    "applicationPluginReleaseMicroUnits": 12
+    "applicationPluginReleaseMicroUnits": 13
   },
   "auditedSnapshot": {
     "auditedAt": "2026-06-19",
@@ -79,7 +79,8 @@
     "releaseVersion": "0.3.0+codex.20260712",
     "minimumComponentCount": 10,
     "futureSourcePluginPattern": "plugins/seis-*",
-    "futurePluginRule": "Every new public SEIS module must enter plugins/seis-* and be registered in plugins/seis-ai-agent/assets/unified-suite.json; personal local packages must enter plugins/seis-core and the AI Core metadata projection before they become a SEIS capability.",
+    "futureApplicationPluginPattern": "plugins/seis-core/*/.codex-plugin/plugin.json",
+    "futurePluginRule": "Every new public SEIS module must enter plugins/seis-* and be registered in plugins/seis-ai-agent/assets/unified-suite.json; every new Command Center application package must enter plugins/seis-core, be regenerated into the apps/seis-core inventory and catalog, and be covered by the app-owned section of the unified suite.",
     "legacyAliasCount": 5,
     "personalMarketplaceMutation": false,
     "aiCorePluginRegistry": "content/development/seis-ai-core-plugin-registry.json",
@@ -89,12 +90,17 @@
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "applicationPluginReleaseLabel": "0.000000012",
-    "applicationPluginReleaseSemver": "0.0.12",
+    "applicationPluginReleaseLabel": "0.000000013",
+    "applicationPluginReleaseSemver": "0.0.13",
     "applicationPluginReleaseMajor": 0,
     "applicationPluginReleaseRevision": 0,
     "applicationOwnedPluginCount": 60,
-    "applicationPluginReleaseMicroUnits": 12
+    "applicationPluginReleaseMicroUnits": 13,
+    "applicationPluginInstallSurface": "repo-source-app",
+    "applicationPluginSourceAvailableInRepository": true,
+    "applicationPluginMarketplaceEntryCount": 0,
+    "applicationPluginPublicReleaseAllowed": false,
+    "applicationPluginCoreSourceOwner": false
   },
   "publicPlugins": [
     {
@@ -387,12 +393,17 @@
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "applicationPluginReleaseLabel": "0.000000012",
-    "applicationPluginReleaseSemver": "0.0.12",
+    "applicationPluginReleaseLabel": "0.000000013",
+    "applicationPluginReleaseSemver": "0.0.13",
     "applicationPluginReleaseMajor": 0,
     "applicationPluginReleaseRevision": 0,
     "applicationOwnedPluginCount": 60,
-    "applicationPluginReleaseMicroUnits": 12
+    "applicationPluginReleaseMicroUnits": 13,
+    "applicationPluginInstallSurface": "repo-source-app",
+    "applicationPluginSourceAvailableInRepository": true,
+    "applicationPluginMarketplaceEntryCount": 0,
+    "applicationPluginPublicReleaseAllowed": false,
+    "applicationPluginCoreSourceOwner": false
   },
   "runtimeIntegration": {
     "aiPackage": "packages/seis-ai",
@@ -414,10 +425,16 @@
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "applicationPluginReleaseLabel": "0.000000012",
-    "applicationPluginReleaseSemver": "0.0.12",
+    "applicationPluginReleaseLabel": "0.000000013",
+    "applicationPluginReleaseSemver": "0.0.13",
     "applicationPluginReleaseMajor": 0,
     "applicationPluginReleaseRevision": 0,
+    "applicationPluginReleaseMicroUnits": 13,
+    "applicationPluginInstallSurface": "repo-source-app",
+    "applicationPluginSourceAvailableInRepository": true,
+    "applicationPluginMarketplaceEntryCount": 0,
+    "applicationPluginPublicReleaseAllowed": false,
+    "applicationPluginCoreSourceOwner": false,
     "pluginSourceCheck": "scripts/check-seis-ai-core-plugin-sources.mjs",
     "appPluginSourceManifestCheck": "scripts/create-seis-core-plugin-sources.mjs",
     "providerRegistryTool": "seis_ai_core_provider_status",
@@ -468,8 +485,7 @@
       "seis_design_plan",
       "seis_data_status",
       "seis_data_plan"
-    ],
-    "applicationPluginReleaseMicroUnits": 12
+    ]
   },
   "lifecycle": {
     "contract": "content/development/seis-public-plugin-lifecycle.json",
@@ -501,15 +517,21 @@
   "applicationIntegration": {
     "surface": "apps/seis-core",
     "panel": "Plugins & Extensions",
+    "pluginSourceRoot": "plugins/seis-core",
+    "pluginSourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "pluginSourceInstallSurface": "repo-source-app",
+    "pluginSourceAvailableInRepository": true,
+    "pluginSourceCount": 60,
+    "pluginMarketplaceEntryCount": 0,
     "pluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "pluginReleaseLabel": "0.000000012",
-    "pluginReleaseSemver": "0.0.12",
+    "pluginReleaseLabel": "0.000000013",
+    "pluginReleaseSemver": "0.0.13",
     "pluginReleaseMajor": 0,
     "pluginReleaseRevision": 0,
     "secondarySurface": "apps/seis-demo-web",
     "qualityPanelCommand": "npm run check:seis-agent-plugin-integration",
     "serviceWorkerCache": "seis-demo-web-v20",
-    "pluginReleaseMicroUnits": 12
+    "pluginReleaseMicroUnits": 13
   },
   "repoIntegration": {
     "docs": [

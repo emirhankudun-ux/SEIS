@@ -15,6 +15,7 @@ const unifiedSuite = readJsonIfExists(unifiedSuitePath);
 const primaryInstallId = canonicalization?.canonicalOrchestrator || "seis-ai-agent@seis-repo";
 const embeddedModules = Array.isArray(unifiedSuite?.components) ? unifiedSuite.components : [];
 const embeddedLanes = embeddedModules.map((module) => module.moduleId || module.id).filter((id) => id && id !== "seis-ai-agent");
+const applicationDistribution = unifiedSuite?.applicationDistribution || {};
 const canonicalFamilyTargets = Array.isArray(canonicalization?.canonicalPluginIds) && canonicalization.canonicalPluginIds.length
   ? canonicalization.canonicalPluginIds
   : [primaryInstallId];
@@ -53,6 +54,21 @@ const readiness = {
     componentCount: unifiedSuite?.componentCount || 0,
     publicPluginCount: unifiedSuite?.publicDistribution?.publicPluginCount || 0,
   },
+  applicationSource: {
+    application: applicationDistribution.applicationId || "seis-core",
+    applicationPath: applicationDistribution.applicationPath || "apps/seis-core",
+    ownership: applicationDistribution.ownership || null,
+    sourceRoot: applicationDistribution.sourceRoot || null,
+    sourceManifest: applicationDistribution.sourceManifest || null,
+    releaseTrain: applicationDistribution.releaseTrain || null,
+    releaseLabel: applicationDistribution.releaseLabel || null,
+    releaseSemver: applicationDistribution.releaseSemver || null,
+    pluginCount: applicationDistribution.pluginCount || 0,
+    sourceAvailableInRepository: applicationDistribution.sourceAvailableInRepository === true,
+    installSurface: applicationDistribution.installSurface || null,
+    marketplaceEntryCount: applicationDistribution.marketplaceEntryCount ?? null,
+    publicReleaseAllowed: applicationDistribution.publicReleaseAllowed === true,
+  },
   embeddedLanes,
   canonicalization: {
     contractPath: "content/development/seis-plugin-canonicalization.json",
@@ -66,7 +82,7 @@ const readiness = {
       allowedWithoutHumanApproval: canonicalization?.globalMarketplaceMutation?.allowedWithoutHumanApproval === true,
     },
   },
-  consolidationPolicy: "SEIS-Agent is the only public install target; duplicate @personal SEIS plugins are preserved as legacy aliases and all SEIS source modules run through the embedded suite",
+  consolidationPolicy: "SEIS-Agent is the only public install target; duplicate @personal SEIS plugins are preserved as legacy aliases, public source modules run through the embedded suite, and app-owned plugins remain directly available from plugins/seis-core for apps/seis-core",
   embeddedModuleCount: embeddedModules.length,
   embeddedModuleIds: embeddedModules.map((module) => module.moduleId || module.id).filter(Boolean),
   targets,

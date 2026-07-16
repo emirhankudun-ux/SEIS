@@ -21,6 +21,9 @@ source mirrors behind the unified agent.
 - Default install mode: one visible SEIS-Agent plugin
 - Unified suite: `assets/unified-suite.json`
 - Composed lanes: `seis`, `seis-governance`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`, `seis-security`, `seis-research`, `seis-automation`, `seis-product`
+- App-owned source boundary: `plugins/seis-core` for `apps/seis-core` (60 local packages)
+- App source inventory: `apps/seis-core/data/seis-core-plugin-sources.json`
+- App source surface: `repo-source-app` (direct repo use; no separate marketplace cards)
 - Operating identity: `SEIS-Agent`
 - Legacy personal marketplace: compatibility mirror only
 
@@ -45,6 +48,9 @@ source mirrors behind the unified agent.
 - Treat focused lane packages as embedded source modules, never as separate public installs.
 - Do not remove, disable, replace, or rewrite the old `personal` SEIS plugin family without explicit human approval.
 - Keep specialist source mirrors in `plugins/` so their skills, MCP servers, lane profiles, and validation contracts stay testable inside the repo.
+- Keep the user's application plugins under `plugins/seis-core`; the Command Center owns their source, catalog, activation plans, and gradual release train.
+- Keep `packages/seis-ai` limited to contracts, registry projections, permission policy, and read-only inspection; it must not become the source root for app plugins.
+- For every new app plugin, regenerate the app source inventory/catalog and `assets/unified-suite.json` so direct-repo coverage is complete.
 - If duplicate plugin cards are already installed, keep them preserved and route new work through the canonical SEIS-Agent suite.
 
 ## Validation

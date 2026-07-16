@@ -47,6 +47,20 @@
       "assets/lanes/seis-product.json"
     ]
   },
+  "applicationSourceBoundary": {
+    "application": "apps/seis-core",
+    "displayName": "SEIS Command Center",
+    "sourceRoot": "plugins/seis-core",
+    "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "releaseTrain": "content/development/seis-core-plugin-release-train.json",
+    "installSurface": "repo-source-app",
+    "sourceAvailableInRepository": true,
+    "applicationOwnedPluginCount": 60,
+    "publicMarketplaceEntryCount": 0,
+    "publicReleaseAllowed": false,
+    "coreSourceOwner": false,
+    "futureIntake": "New plugins for the SEIS Command Center are created under plugins/seis-core/<plugin-name>, regenerated into the app inventory/catalog, and covered by the unified suite without entering packages/seis-ai or becoming separate marketplace cards."
+  },
   "composedLanes": [
     "seis",
     "seis-governance",

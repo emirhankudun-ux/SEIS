@@ -36,6 +36,14 @@ export function buildApplicationPluginCatalog(repoRoot, options = {}) {
     application: "apps/seis-core",
     mode: APP_PLUGIN_CATALOG_MODE,
     sourceRoot: APP_PLUGIN_SOURCE_ROOT,
+    distribution: {
+      repository: "SEIS",
+      sourceAvailableInRepository: true,
+      sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
+      installSurface: "repo-source-app",
+      marketplaceEntryCount: 0,
+      coreSourceOwner: false,
+    },
     release: compactRelease(currentRelease),
     policy: {
       sourceOwnership: "apps/seis-core",

@@ -8,6 +8,10 @@ import {
   createApplicationPluginActivationPlan,
   inspectApplicationPlugin,
 } from "../runtime/plugin-catalog.mjs";
+import {
+  createApplicationPluginInstallPlan,
+  readApplicationPluginSurface,
+} from "../runtime/plugin-surface.mjs";
 
 const binRoot = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(binRoot, "../../..");
@@ -58,7 +62,15 @@ function executeCommand() {
     return { command, ...createApplicationPluginActivationPlan(repoRoot, name, action) };
   }
 
-  return { ok: false, command, error: `Unknown command: ${command}. Use list, search, inspect, or activation-plan.` };
+  if (command === "surface-status") {
+    return { command, ...readApplicationPluginSurface(repoRoot, { includeCatalog: args.includes("--catalog"), includeStatus: args.includes("--status") }) };
+  }
+
+  if (command === "install-plan") {
+    return { command, ...createApplicationPluginInstallPlan(repoRoot) };
+  }
+
+  return { ok: false, command, error: `Unknown command: ${command}. Use list, search, inspect, activation-plan, surface-status, or install-plan.` };
 }
 
 function printHuman(result) {
@@ -74,6 +86,21 @@ function printHuman(result) {
     console.log(`${plugin.displayName} (${plugin.name})`);
     console.log(`Release: ${plugin.release.label} / ${plugin.release.semver}; status: ${plugin.status.state}.`);
     console.log(`Source: ${plugin.sourcePath}; permissions: read=${plugin.permissions.read.length}, write=${plugin.permissions.write.length}, network=${plugin.permissions.network.length}, secrets=${plugin.permissions.secrets.length}.`);
+    return;
+  }
+
+  if (result.command === "surface-status") {
+    console.log(`SEIS Core direct repo surface: ${result.ok ? "ready" : "blocked"}.`);
+    console.log(`Application: ${result.application}; source: ${result.sourceRoot}; plugins: ${result.counts.source}.`);
+    console.log(`Release: ${result.release.label} / ${result.release.semver}; marketplace cards: ${result.counts.marketplaceEntries}.`);
+    if (result.failures.length) console.log(`Failures: ${result.failures.join("; ")}`);
+    return;
+  }
+
+  if (result.command === "install-plan") {
+    console.log(`SEIS Core direct repo install plan: ${result.ok ? "ready" : "blocked"}.`);
+    console.log(`Mode: ${result.mode}; executes: ${result.executes}; plugins: ${result.pluginCount}.`);
+    console.log(result.reason);
     return;
   }
 
@@ -100,8 +127,12 @@ Usage:
   node plugins/seis-core/bin/seis-core-plugins.mjs search term [--status] [--limit 20] [--json]
   node plugins/seis-core/bin/seis-core-plugins.mjs inspect <plugin-name> [--status] [--json]
   node plugins/seis-core/bin/seis-core-plugins.mjs activation-plan <plugin-name> [--action status|inspect|run] [--json]
+  node plugins/seis-core/bin/seis-core-plugins.mjs surface-status [--catalog] [--status] [--json]
+  node plugins/seis-core/bin/seis-core-plugins.mjs install-plan [--json]
 
 The app boundary is read-only by default. Status plans may be inspected; run,
 write, network, and secret actions return an approval-required plan and never execute.
+The direct repo surface never copies app-owned packages into packages/seis-ai or
+creates separate marketplace cards.
 `);
 }

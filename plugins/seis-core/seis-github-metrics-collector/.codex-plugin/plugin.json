@@ -1,6 +1,6 @@
 {
   "name": "seis-github-metrics-collector",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Normalize recorded GitHub-style metrics from local evidence without live API access.",
   "author": {
     "name": "Local developer"

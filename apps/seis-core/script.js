@@ -795,7 +795,7 @@ const pluginFamilies = [
     name: "SEIS Command Center App Plugins",
     health: "Local Demo",
     permissions: "Read-only, task-scoped",
-    summary: "60 app-owned plugin packages under plugins/seis-core at app release 0.000000012; AI Core indexes metadata without owning their source."
+    summary: "60 app-owned plugin packages under plugins/seis-core at app release 0.000000013; AI Core indexes metadata without owning their source."
   }
 ];
 
@@ -2074,7 +2074,16 @@ async function loadSeisCorePluginArtifact() {
     const response = await fetch("data/seis-core-plugin-catalog.json", { cache: "no-store" });
     if (!response.ok) throw new Error(`plugin catalog request failed with ${response.status}`);
     const artifact = await response.json();
-    if (artifact.sourceRoot !== "plugins/seis-core" || artifact.counts?.discovered !== 60 || !Array.isArray(artifact.plugins)) {
+    if (
+      artifact.sourceRoot !== "plugins/seis-core" ||
+      artifact.counts?.discovered !== 60 ||
+      artifact.distribution?.repository !== "SEIS" ||
+      artifact.distribution?.sourceAvailableInRepository !== true ||
+      artifact.distribution?.installSurface !== "repo-source-app" ||
+      artifact.distribution?.marketplaceEntryCount !== 0 ||
+      artifact.distribution?.coreSourceOwner !== false ||
+      !Array.isArray(artifact.plugins)
+    ) {
       throw new Error("plugin catalog contract is invalid");
     }
     seisCorePluginArtifact = artifact;
@@ -2344,6 +2353,7 @@ function renderPlugins() {
     catalogMeta.innerHTML = [
       `release ${escapeHtml(catalog.release?.label || "unknown")}`,
       `${catalog.counts.discovered || 0} app-owned`,
+      "direct SEIS repo source",
       "status-only",
       "write/network/secrets: empty"
     ].map((value) => `<span class="meta-chip">${escapeHtml(value)}</span>`).join("");

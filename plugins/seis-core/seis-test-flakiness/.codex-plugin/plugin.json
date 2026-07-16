@@ -1,6 +1,6 @@
 {
   "name": "seis-test-flakiness",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Analyze recorded local test results for flaky or nondeterministic patterns without rerunning tests.",
   "author": { "name": "Emirhan Kudun" },
   "license": "UNLICENSED-LOCAL",

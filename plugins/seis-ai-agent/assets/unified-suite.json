@@ -44,6 +44,136 @@
       "seis-product"
     ],
     "uncoveredSourcePlugins": [],
+    "applicationPattern": "plugins/seis-core/*/.codex-plugin/plugin.json",
+    "discoveredApplicationPluginNames": [
+      "seis-a11y-regression",
+      "seis-action-pin-audit",
+      "seis-agent-audit",
+      "seis-agent-contract-validator",
+      "seis-approval-gate-review",
+      "seis-architecture-drift",
+      "seis-artifact-attestation",
+      "seis-branch-protection-audit",
+      "seis-canonical-registry-validator",
+      "seis-changelog-validator",
+      "seis-codeowners-audit",
+      "seis-community-health",
+      "seis-context-efficiency",
+      "seis-contract-compatibility",
+      "seis-contributor-map",
+      "seis-cost-latency-budget",
+      "seis-data-retention-audit",
+      "seis-dependency-freshness",
+      "seis-design-token-audit",
+      "seis-doc-indexer",
+      "seis-docs-freshness",
+      "seis-dora-metrics",
+      "seis-download-anomaly",
+      "seis-github-metrics-collector",
+      "seis-goal-dependency-map",
+      "seis-goal-integrity",
+      "seis-issue-triage",
+      "seis-license-compatibility",
+      "seis-localization-coverage",
+      "seis-maintainer-risk",
+      "seis-mcp-inventory",
+      "seis-migration-guide-check",
+      "seis-model-fallback",
+      "seis-offline-mode-check",
+      "seis-package-adoption",
+      "seis-performance-budget",
+      "seis-personal-plugin-discovery",
+      "seis-plugin-migration",
+      "seis-pr-cycle-time",
+      "seis-prompt-injection-audit",
+      "seis-provider-health",
+      "seis-public-safe-scan",
+      "seis-rag-citation-coverage",
+      "seis-release-cadence",
+      "seis-release-readiness",
+      "seis-repository-health",
+      "seis-repository-scorecard",
+      "seis-rollback-readiness",
+      "seis-route-explainer",
+      "seis-sbom-generator",
+      "seis-secret-boundary-scan",
+      "seis-semver-audit",
+      "seis-source-provenance",
+      "seis-technology-ontology",
+      "seis-test-flakiness",
+      "seis-tool-permission-audit",
+      "seis-vulnerability-triage",
+      "seis-workflow-linter",
+      "seis-workflow-permission-audit",
+      "seis-workspace-inspector"
+    ],
+    "applicationPluginNames": [
+      "seis-a11y-regression",
+      "seis-action-pin-audit",
+      "seis-agent-audit",
+      "seis-agent-contract-validator",
+      "seis-approval-gate-review",
+      "seis-architecture-drift",
+      "seis-artifact-attestation",
+      "seis-branch-protection-audit",
+      "seis-canonical-registry-validator",
+      "seis-changelog-validator",
+      "seis-codeowners-audit",
+      "seis-community-health",
+      "seis-context-efficiency",
+      "seis-contract-compatibility",
+      "seis-contributor-map",
+      "seis-cost-latency-budget",
+      "seis-data-retention-audit",
+      "seis-dependency-freshness",
+      "seis-design-token-audit",
+      "seis-doc-indexer",
+      "seis-docs-freshness",
+      "seis-dora-metrics",
+      "seis-download-anomaly",
+      "seis-github-metrics-collector",
+      "seis-goal-dependency-map",
+      "seis-goal-integrity",
+      "seis-issue-triage",
+      "seis-license-compatibility",
+      "seis-localization-coverage",
+      "seis-maintainer-risk",
+      "seis-mcp-inventory",
+      "seis-migration-guide-check",
+      "seis-model-fallback",
+      "seis-offline-mode-check",
+      "seis-package-adoption",
+      "seis-performance-budget",
+      "seis-personal-plugin-discovery",
+      "seis-plugin-migration",
+      "seis-pr-cycle-time",
+      "seis-prompt-injection-audit",
+      "seis-provider-health",
+      "seis-public-safe-scan",
+      "seis-rag-citation-coverage",
+      "seis-release-cadence",
+      "seis-release-readiness",
+      "seis-repository-health",
+      "seis-repository-scorecard",
+      "seis-rollback-readiness",
+      "seis-route-explainer",
+      "seis-sbom-generator",
+      "seis-secret-boundary-scan",
+      "seis-semver-audit",
+      "seis-source-provenance",
+      "seis-technology-ontology",
+      "seis-test-flakiness",
+      "seis-tool-permission-audit",
+      "seis-vulnerability-triage",
+      "seis-workflow-linter",
+      "seis-workflow-permission-audit",
+      "seis-workspace-inspector"
+    ],
+    "uncoveredApplicationSourcePlugins": [],
+    "directRepoSourceRoots": [
+      "plugins",
+      "plugins/seis-core"
+    ],
     "rule": "Every current or future SEIS plugin manifest must be registered as an embedded module in this single SEIS-Agent suite before it can be treated as a SEIS capability."
   },
   "publicDistribution": {
@@ -51,7 +181,10 @@
     "publicInstallIds": [
       "seis-ai-agent@seis-repo"
     ],
-    "embeddedModuleCount": 10
+    "embeddedModuleCount": 10,
+    "applicationOwnedPluginCount": 60,
+    "applicationSourceRoot": "plugins/seis-core",
+    "applicationSourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json"
   },
   "componentCount": 10,
   "components": [
@@ -156,6 +289,1754 @@
       "sourceModuleStatus": "embedded-source-module"
     }
   ],
+  "applicationDistribution": {
+    "applicationId": "seis-core",
+    "applicationPath": "apps/seis-core",
+    "displayName": "SEIS Command Center",
+    "ownership": "apps/seis-core",
+    "sourceRoot": "plugins/seis-core",
+    "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "releaseTrain": "content/development/seis-core-plugin-release-train.json",
+    "releaseLabel": "0.000000013",
+    "releaseSemver": "0.0.13",
+    "pluginCount": 60,
+    "sourceAvailableInRepository": true,
+    "marketplaceEntryCount": 0,
+    "installSurface": "repo-source-app",
+    "executionMode": "task-scoped-local-demo-only",
+    "publicReleaseAllowed": false,
+    "coreSourceOwner": false,
+    "plugins": [
+      {
+        "moduleId": "seis-a11y-regression",
+        "displayName": "SEIS A11y Regression",
+        "category": "Design",
+        "sourcePath": "plugins/seis-core/seis-a11y-regression",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local accessibility JSON declarations"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-action-pin-audit",
+        "displayName": "SEIS Action Pin Audit",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-action-pin-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local workflow files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-agent-audit",
+        "displayName": "SEIS Agent Audit",
+        "category": "AI",
+        "sourcePath": "plugins/seis-core/seis-agent-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local agent JSON metadata"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-agent-contract-validator",
+        "displayName": "SEIS Agent Contract Validator",
+        "category": "AI",
+        "sourcePath": "plugins/seis-core/seis-agent-contract-validator",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local JSON agent contracts"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-approval-gate-review",
+        "displayName": "SEIS Approval Gate Review",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-approval-gate-review",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-architecture-drift",
+        "displayName": "SEIS Architecture Drift",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-architecture-drift",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-artifact-attestation",
+        "displayName": "Seis Artifact Attestation",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-artifact-attestation",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local artifact and provenance evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-branch-protection-audit",
+        "displayName": "Seis Branch Protection Audit",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-branch-protection-audit",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local branch and ruleset policy files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-canonical-registry-validator",
+        "displayName": "SEIS Canonical Registry Validator",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-canonical-registry-validator",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded JSON registry and catalog projections"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-changelog-validator",
+        "displayName": "SEIS Changelog Validator",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-changelog-validator",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local changelog files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-codeowners-audit",
+        "displayName": "SEIS CODEOWNERS Audit",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-codeowners-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local CODEOWNERS files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-community-health",
+        "displayName": "SEIS Community Health",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-community-health",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local contribution and community documents"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-context-efficiency",
+        "displayName": "Seis Context Efficiency",
+        "category": "AI",
+        "sourcePath": "plugins/seis-core/seis-context-efficiency",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local context usage JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-contract-compatibility",
+        "displayName": "SEIS Contract Compatibility",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-contract-compatibility",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-contributor-map",
+        "displayName": "Seis Contributor Map",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-contributor-map",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local contributor and ownership JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-cost-latency-budget",
+        "displayName": "SEIS Cost and Latency Budget",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-cost-latency-budget",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-data-retention-audit",
+        "displayName": "SEIS Data Retention Audit",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-data-retention-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-dependency-freshness",
+        "displayName": "SEIS Dependency Freshness",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-dependency-freshness",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local dependency manifests and lockfiles"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-design-token-audit",
+        "displayName": "SEIS Design Token Audit",
+        "category": "Design",
+        "sourcePath": "plugins/seis-core/seis-design-token-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local JSON token and theme files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-doc-indexer",
+        "displayName": "SEIS Doc Indexer",
+        "category": "Data",
+        "sourcePath": "plugins/seis-core/seis-doc-indexer",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local Markdown and text files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-docs-freshness",
+        "displayName": "SEIS Docs Freshness",
+        "category": "Data",
+        "sourcePath": "plugins/seis-core/seis-docs-freshness",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local Markdown metadata"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-dora-metrics",
+        "displayName": "Seis Dora Metrics",
+        "category": "Observability",
+        "sourcePath": "plugins/seis-core/seis-dora-metrics",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local delivery JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-download-anomaly",
+        "displayName": "Seis Download Anomaly",
+        "category": "Data",
+        "sourcePath": "plugins/seis-core/seis-download-anomaly",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local download metrics JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-github-metrics-collector",
+        "displayName": "Seis Github Metrics Collector",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-github-metrics-collector",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local recorded GitHub-style metrics"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-goal-dependency-map",
+        "displayName": "SEIS Goal Dependency Map",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-goal-dependency-map",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-goal-integrity",
+        "displayName": "SEIS Goal Integrity",
+        "category": "Productivity",
+        "sourcePath": "plugins/seis-core/seis-goal-integrity",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded goal files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-issue-triage",
+        "displayName": "Seis Issue Triage",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-issue-triage",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local issue JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-license-compatibility",
+        "displayName": "SEIS License Compatibility",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-license-compatibility",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local package and license files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-localization-coverage",
+        "displayName": "SEIS Localization Coverage",
+        "category": "Data",
+        "sourcePath": "plugins/seis-core/seis-localization-coverage",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local locale JSON dictionaries"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-maintainer-risk",
+        "displayName": "Seis Maintainer Risk",
+        "category": "Governance",
+        "sourcePath": "plugins/seis-core/seis-maintainer-risk",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local maintainer and activity JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-mcp-inventory",
+        "displayName": "SEIS MCP Inventory",
+        "category": "AI",
+        "sourcePath": "plugins/seis-core/seis-mcp-inventory",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local MCP and plugin JSON manifests"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-migration-guide-check",
+        "displayName": "SEIS Migration Guide Check",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-migration-guide-check",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local migration documentation"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-model-fallback",
+        "displayName": "SEIS Model Fallback",
+        "category": "AI",
+        "sourcePath": "plugins/seis-core/seis-model-fallback",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local route and fallback JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-offline-mode-check",
+        "displayName": "SEIS Offline Mode Check",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-offline-mode-check",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-package-adoption",
+        "displayName": "Seis Package Adoption",
+        "category": "Data",
+        "sourcePath": "plugins/seis-core/seis-package-adoption",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local package adoption JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-performance-budget",
+        "displayName": "SEIS Performance Budget",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-performance-budget",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local performance JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-personal-plugin-discovery",
+        "displayName": "Seis Personal Plugin Discovery",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-personal-plugin-discovery",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "explicitly selected local plugin metadata"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-plugin-migration",
+        "displayName": "Seis Plugin Migration",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-plugin-migration",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "selected local plugin metadata"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-pr-cycle-time",
+        "displayName": "Seis Pr Cycle Time",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-pr-cycle-time",
+        "version": "0.0.13",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local pull-request JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-prompt-injection-audit",
+        "displayName": "SEIS Prompt Injection Audit",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-prompt-injection-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-provider-health",
+        "displayName": "SEIS Provider Health",
+        "category": "AI",
+        "sourcePath": "plugins/seis-core/seis-provider-health",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local provider and capability JSON records"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-public-safe-scan",
+        "displayName": "SEIS Public-Safe Scan",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-public-safe-scan",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local text files and path names"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-rag-citation-coverage",
+        "displayName": "SEIS RAG Citation Coverage",
+        "category": "Data",
+        "sourcePath": "plugins/seis-core/seis-rag-citation-coverage",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local retrieval JSON records"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-release-cadence",
+        "displayName": "SEIS Release Cadence",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-release-cadence",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local changelog files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-release-readiness",
+        "displayName": "SEIS Release Readiness",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-release-readiness",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "recorded local JSON release-check evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-repository-health",
+        "displayName": "SEIS Repository Health",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-repository-health",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "explicit repository metadata",
+            "non-destructive Git status"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-repository-scorecard",
+        "displayName": "SEIS Repository Scorecard",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-repository-scorecard",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local repository metadata"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-rollback-readiness",
+        "displayName": "SEIS Rollback Readiness",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-rollback-readiness",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-route-explainer",
+        "displayName": "SEIS Route Explainer",
+        "category": "AI",
+        "sourcePath": "plugins/seis-core/seis-route-explainer",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "task route parameters"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-sbom-generator",
+        "displayName": "SEIS SBOM Generator",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-sbom-generator",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local package manifests and lockfiles"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-secret-boundary-scan",
+        "displayName": "SEIS Secret Boundary Scan",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-secret-boundary-scan",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local text files and path names"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-semver-audit",
+        "displayName": "SEIS Semver Audit",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-semver-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local package.json files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-source-provenance",
+        "displayName": "SEIS Source Provenance",
+        "category": "Productivity",
+        "sourcePath": "plugins/seis-core/seis-source-provenance",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded regular files under an explicit workspace"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-technology-ontology",
+        "displayName": "SEIS Technology Ontology",
+        "category": "Data",
+        "sourcePath": "plugins/seis-core/seis-technology-ontology",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bundled ontology profile"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-test-flakiness",
+        "displayName": "SEIS Test Flakiness",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-test-flakiness",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local test result JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-tool-permission-audit",
+        "displayName": "SEIS Tool Permission Audit",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-tool-permission-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-vulnerability-triage",
+        "displayName": "SEIS Vulnerability Triage",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-vulnerability-triage",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local vulnerability JSON reports"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-workflow-linter",
+        "displayName": "SEIS Workflow Linter",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-workflow-linter",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local JSON workflow definitions"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-workflow-permission-audit",
+        "displayName": "SEIS Workflow Permission Audit",
+        "category": "Security",
+        "sourcePath": "plugins/seis-core/seis-workflow-permission-audit",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "bounded local workflow JSON and YAML-like files"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-workspace-inspector",
+        "displayName": "SEIS Workspace Inspector",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-workspace-inspector",
+        "version": "0.0.13",
+        "license": "UNLICENSED-LOCAL",
+        "sourceClassification": "original-SEIS-local",
+        "lifecycleStatus": "approved-local-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": null,
+        "installSurface": "repo-source-app",
+        "publicMarketplace": false,
+        "publicStatus": "repo-source-available",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "application-owned-source-module",
+        "permissions": {
+          "read": [
+            "explicit workspace root metadata"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      }
+    ]
+  },
   "compatibility": {
     "standaloneLaneInstallMode": "source-module-only",
     "legacyAliasCount": 5,
@@ -203,13 +2084,15 @@
   "futurePluginIntake": {
     "owner": "seis-ai-agent",
     "requiredOrder": [
-      "create or update the source plugin under plugins/seis-*",
-      "add the plugin to the embedded module generator and canonical route",
-      "update the shared SEIS-Agent suite release version when the module is released",
+      "create or update a public source module under plugins/seis-* or an app-owned source package under plugins/seis-core/<plugin-name>",
+      "regenerate the apps/seis-core source inventory and catalog for every app-owned package",
+      "register the package in this suite's generated source coverage and canonical route",
+      "update the app-owned release train or shared SEIS-Agent suite release version only on its own evidence-gated track",
       "regenerate assets/unified-suite.json",
-      "validate SEIS AI status, MCP routing, installer plan, and compatibility smoke"
+      "validate app catalog status, SEIS AI status, MCP routing, installer plan, and compatibility smoke"
     ],
-    "defaultInstallRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets."
+    "defaultInstallRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets.",
+    "applicationDefaultInstallRule": "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned source packages, and become available directly from this repository without entering packages/seis-ai or becoming separate marketplace cards."
   },
   "releaseBoundary": {
     "publicReleaseAllowed": false,

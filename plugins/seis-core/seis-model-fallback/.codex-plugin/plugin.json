@@ -1,6 +1,6 @@
 {
   "name": "seis-model-fallback",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Audit local route fallback declarations without selecting or calling models.",
   "author": { "name": "Emirhan Kudun" },
   "license": "UNLICENSED-LOCAL",

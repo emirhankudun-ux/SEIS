@@ -1,7 +1,7 @@
 {
   "id": "seis-offline-mode-check",
   "name": "seis-offline-mode-check",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Confirm local-first and offline-safe surfaces remain explicit before any provider-backed activation.",
   "author": {
     "name": "emirhankudun-ux"

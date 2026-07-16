@@ -1,6 +1,6 @@
 {
   "name": "seis-a11y-regression",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Audit declared local accessibility coverage without running a UI.",
   "author": { "name": "Emirhan Kudun" },
   "license": "UNLICENSED-LOCAL",

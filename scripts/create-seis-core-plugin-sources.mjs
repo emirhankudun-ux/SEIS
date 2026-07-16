@@ -106,6 +106,8 @@ function buildRecord() {
       "npm run check:seis-core-plugin-release-readiness",
       "npm run check:seis-core-plugin-change-evidence",
       "npm run check:seis-core-plugin-matrix",
+      "npm run check:seis-core-requested-plugin-coverage",
+      "npm run check:seis-core-plugin-surface",
       "npm run check:seis-ai-core-plugin-registry",
       "node --test plugins/seis-core/test/plugin-catalog.test.mjs",
       "npm test --prefix packages/seis-ai",

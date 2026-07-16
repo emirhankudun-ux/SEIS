@@ -1,6 +1,6 @@
 {
   "name": "seis-artifact-attestation",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Review local artifact provenance evidence without signing or publishing artifacts.",
   "author": {
     "name": "Local developer"

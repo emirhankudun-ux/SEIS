@@ -1,6 +1,6 @@
 {
   "name": "seis-docs-freshness",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Report bounded local documentation freshness from file metadata.",
   "author": { "name": "Emirhan Kudun" },
   "license": "UNLICENSED-LOCAL",

@@ -72,6 +72,32 @@ the next large-code and annual transitions plus measured working-tree code
 evidence. Large-code application is refused until the 500-line evidence gate
 is met.
 
+## Direct repository distribution
+
+This directory is the direct repository source for the SEIS Command Center
+application. The public repo marketplace intentionally keeps one install card,
+`seis-ai-agent@seis-repo`; the 60 app-owned packages are not copied into
+`packages/seis-ai` and do not become separate marketplace cards. They are
+available to the application from this repo through the generated source
+inventory and catalog:
+
+```bash
+npm run automation:seis-core-plugin-sources
+npm run automation:seis-core-plugin-catalog
+npm run automation:seis-unified-plugin-suite
+npm run seis:core:surface
+npm run check:seis-agent-plugin-integration
+```
+
+Every new app package must be created under
+`plugins/seis-core/<plugin-name>`, pass the app plugin contract, appear in
+`apps/seis-core/data/seis-core-plugin-sources.json` and the catalog, and then
+appear in `plugins/seis-ai-agent/assets/unified-suite.json`. This keeps the
+repository as the source of truth while preserving the app-owned boundary.
+`seis:core:surface` is a read-only status and install-plan entrypoint for
+anyone working from the repository; it never copies packages into
+`packages/seis-ai`, changes marketplace entries, or performs external writes.
+
 ## Ownership and publication
 
 - canonical owner: `SEIS` repository, `plugins/seis-core/`

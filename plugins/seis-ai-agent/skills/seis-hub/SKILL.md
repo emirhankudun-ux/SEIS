@@ -16,6 +16,8 @@ Use this skill whenever the user wants to work on SEIS, consolidate repositories
 - Repo marketplace: `.agents/plugins/marketplace.json`
 - Public install id: `seis-ai-agent@seis-repo`
 - Embedded module id: `seis`
+- Command Center app source root: `plugins/seis-core`
+- Command Center app source inventory: `apps/seis-core/data/seis-core-plugin-sources.json`
 - Personal marketplace: `~/.agents/plugins/marketplace.json` (compatibility mirror only)
 
 SEIS-Agent is the normal user-facing entrypoint. This SEIS hub skill remains
@@ -61,6 +63,12 @@ decisions.
    - shell scripts with `bash -n`
    - SEIS repo scripts with dry-run defaults first
 5. Summarize what changed, what was verified, and what still needs authentication or user confirmation.
+
+For app-owned plugin work, keep every source package inside the SEIS repo under
+`plugins/seis-core`, regenerate the app inventory/catalog, and keep the package
+out of `packages/seis-ai` and separate marketplace cards. The repository is the
+shared source surface; the Command Center application is the owner and runtime
+consumer.
 
 ## Important Commands
 

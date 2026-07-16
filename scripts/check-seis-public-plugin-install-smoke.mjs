@@ -6,6 +6,7 @@ import os from "node:os";
 import path from "node:path";
 
 import { pluginIntegrationStatus } from "../packages/seis-ai/src/lib/plugin-integration.mjs";
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 
 const root = process.cwd();
 const args = new Set(process.argv.slice(2));
@@ -44,6 +45,12 @@ ensure(integration.publicPluginCount === expectedNames.length, "SEIS AI integrat
 ensure(integration.embeddedModuleCount === expectedEmbeddedModuleNames.length, "SEIS AI integration must expose every embedded source module");
 ensure(integration.unifiedSuite?.canonicalInstallId === "seis-ai-agent@seis-repo", "SEIS AI integration must expose the unified suite canonical install");
 ensure(integration.unifiedSuite?.componentCount >= expectedEmbeddedModuleNames.length, "SEIS AI unified suite must contain every embedded source module");
+ensure(integration.applicationOwnedPluginCount === APP_PLUGIN_EXPANSION_TARGET, "SEIS AI integration must expose every app-owned plugin");
+ensure(integration.applicationPluginSourceRoot === "plugins/seis-core", "SEIS AI integration must expose the app-owned source root");
+ensure(integration.applicationPluginManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "SEIS AI integration must expose the app-owned source manifest");
+ensure(integration.applicationPluginInstallSurface === "repo-source-app", "SEIS AI integration must expose the direct repo app surface");
+ensure(integration.applicationPluginSourceAvailableInRepository === true, "SEIS AI integration must mark app-owned sources as repo-available");
+ensure(integration.applicationPluginMarketplaceEntryCount === 0, "app-owned plugins must not create separate marketplace entries");
 
 for (const name of expectedNames) {
   const entry = entries.find((candidate) => candidate.name === name);
@@ -95,6 +102,14 @@ const report = {
   status: cacheComplete ? "repo-and-local-cache-ready" : "repo-ready-local-cache-partial-or-missing",
   publicPluginCount: expectedNames.length,
   embeddedModuleCount: expectedEmbeddedModuleNames.length,
+  applicationOwnedPluginCount: integration.applicationOwnedPluginCount,
+  applicationPluginSourceRoot: integration.applicationPluginSourceRoot,
+  applicationPluginManifest: integration.applicationPluginManifest,
+  applicationPluginReleaseLabel: integration.applicationPluginReleaseLabel,
+  applicationPluginReleaseSemver: integration.applicationPluginReleaseSemver,
+  applicationPluginInstallSurface: integration.applicationPluginInstallSurface,
+  applicationPluginSourceAvailableInRepository: integration.applicationPluginSourceAvailableInRepository,
+  applicationPluginMarketplaceEntryCount: integration.applicationPluginMarketplaceEntryCount,
   installedCount,
   currentInstalledCount,
   requireInstalled,

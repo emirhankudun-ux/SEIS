@@ -14,6 +14,10 @@ import {
   inspectApplicationPlugin,
   searchApplicationPlugins,
 } from "../runtime/plugin-catalog.mjs";
+import {
+  createApplicationPluginInstallPlan,
+  readApplicationPluginSurface,
+} from "../runtime/plugin-surface.mjs";
 
 const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = path.resolve(pluginRoot, "../..");
@@ -24,6 +28,12 @@ test("application catalog is sourced from the complete SEIS Core plugin expansio
   const catalog = buildApplicationPluginCatalog(repoRoot);
   assert.equal(catalog.application, "apps/seis-core");
   assert.equal(catalog.sourceRoot, "plugins/seis-core");
+  assert.equal(catalog.distribution.repository, "SEIS");
+  assert.equal(catalog.distribution.sourceAvailableInRepository, true);
+  assert.equal(catalog.distribution.sourceManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
+  assert.equal(catalog.distribution.installSurface, "repo-source-app");
+  assert.equal(catalog.distribution.marketplaceEntryCount, 0);
+  assert.equal(catalog.distribution.coreSourceOwner, false);
   assert.equal(catalog.counts.discovered, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.counts.returned, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.counts.contractValid, APP_PLUGIN_EXPANSION_TARGET);
@@ -86,4 +96,51 @@ test("CLI search returns the application catalog without invoking the core packa
   assert.equal(result.sourceRoot, "plugins/seis-core");
   assert.equal(result.counts.returned, 3);
   assert.ok(result.plugins.every((plugin) => plugin.sourcePath.startsWith("plugins/seis-core/")));
+});
+
+test("direct repository surface covers the app source, catalog, and unified suite", () => {
+  const surface = readApplicationPluginSurface(repoRoot);
+  assert.equal(surface.ok, true);
+  assert.equal(surface.repository, "SEIS");
+  assert.equal(surface.application, "apps/seis-core");
+  assert.equal(surface.installSurface, "repo-source-app");
+  assert.equal(surface.counts.source, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(surface.counts.catalog, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(surface.counts.unifiedSuite, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(surface.counts.marketplaceEntries, 0);
+  assert.equal(surface.policy.coreSourceOwner, false);
+  assert.deepEqual(surface.failures, []);
+});
+
+test("direct repository install plan is non-mutating and validates all app sources", () => {
+  const plan = createApplicationPluginInstallPlan(repoRoot);
+  assert.equal(plan.ok, true);
+  assert.equal(plan.mode, "repo-source-plan");
+  assert.equal(plan.executes, false);
+  assert.equal(plan.approvalRequired, false);
+  assert.equal(plan.pluginCount, APP_PLUGIN_EXPANSION_TARGET);
+  assert.ok(plan.commands.includes("npm run check:seis-core-requested-plugin-coverage"));
+  assert.ok(plan.commands.includes("npm run check:seis-core-plugin-sources"));
+  assert.ok(plan.reason.includes("packages/seis-ai"));
+});
+
+test("CLI exposes direct repository surface and install plan", () => {
+  const surfaceOutput = execFileSync(process.execPath, [cliPath, "surface-status", "--json"], {
+    cwd: repoRoot,
+    encoding: "utf8",
+    env: { PATH: process.env.PATH || "", LANG: "C", TZ: "UTC" },
+  });
+  const surface = JSON.parse(surfaceOutput);
+  assert.equal(surface.command, "surface-status");
+  assert.equal(surface.ok, true);
+  assert.equal(surface.counts.source, APP_PLUGIN_EXPANSION_TARGET);
+  const planOutput = execFileSync(process.execPath, [cliPath, "install-plan", "--json"], {
+    cwd: repoRoot,
+    encoding: "utf8",
+    env: { PATH: process.env.PATH || "", LANG: "C", TZ: "UTC" },
+  });
+  const plan = JSON.parse(planOutput);
+  assert.equal(plan.command, "install-plan");
+  assert.equal(plan.executes, false);
+  assert.equal(plan.pluginCount, APP_PLUGIN_EXPANSION_TARGET);
 });
