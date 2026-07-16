@@ -71,6 +71,7 @@ embedding runtime, provider integration, training run, 512B route, or AGI proof.
 ```bash
 npm run report:seis-retrieval-evaluation-fixtures
 npm run check:seis-retrieval-evaluation-fixtures
+npm run check:seis-retrieval-evaluation-dry-run
 ```
 
 ## Report
