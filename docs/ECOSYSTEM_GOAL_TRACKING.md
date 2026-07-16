@@ -2,7 +2,7 @@
 
 Status: active bootstrap specification; not yet complete across repositories
 
-Goals: `ECO-GOAL-0001`, `ECO-GOAL-0003`
+Goals: `ECO-GOAL-0001`, `ECO-GOAL-0003`, `ECO-GOAL-0007`
 
 Root [`AGENTS.md`](../AGENTS.md) remains the highest repository authority. This
 document is the operational entrypoint for the ecosystem Goal schema and does
@@ -35,10 +35,26 @@ another project's identity.
 | [`schemas/ecosystem-goal.schema.json`](../schemas/ecosystem-goal.schema.json)                                                                                   | Goal YAML contract                       | Schema version 2 bootstrap.                                                 |
 | [`goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml`](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml) | Blocked ownership record                 | Blocked on private-repository manifests, authorization, and full inventory. |
 | [`goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml`](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml)                           | Active validation and CI record          | In review; dated workflow evidence is recorded below.                       |
+| [`goals/active/ECO-GOAL-0007--five-million-character-goal-tracking-prompt.yaml`](../goals/active/ECO-GOAL-0007--five-million-character-goal-tracking-prompt.yaml) | Goal Tracking prompt compiler record      | In review; generated corpus remains local and ignored.                      |
 | [`adr/0002-ecosystem-governance-bootstrap-ownership.md`](adr/0002-ecosystem-governance-bootstrap-ownership.md)                                                  | Coordination and ownership decision      | Proposed; requires review before promotion.                                 |
 
 Existing SEIS JSON goal records remain valid SEIS operational history. They are
 not silently rewritten, renumbered, or presented as Goal schema v2 records.
+
+## Goal Tracking update prompt package
+
+`ECO-GOAL-0007` owns a compact, reviewed prompt pack and deterministic compiler
+for Goal Tracking updates. It produces exactly 5,000,000 Unicode code points
+after NFC and LF normalization, plus payload and contextual chunks, a manifest,
+and SHA-256 evidence. The generated corpus lives only below ignored `build/`;
+Git tracks the modular sources, compiler, tests, and golden hashes instead of a
+review-hostile five-megacharacter diff.
+
+The corpus does not replace root `AGENTS.md`, the selected Goal, ownership, or
+current Git evidence. It routes the operator back to those current authorities
+and keeps schema-v2 YAML, legacy SEIS JSON Goals, operational trackers, Omega
+records, roadmap queues, and generated views distinct. Five million characters
+are not a claim about tokens or any provider's single-request context window.
 
 ## Repository truth
 
@@ -108,6 +124,8 @@ Run from the SEIS repository root:
 ```bash
 npm run check:ecosystem-foundation
 npm run test:ecosystem-foundation
+npm run test:goal-tracking-mega-prompt
+npm run check:goal-tracking-mega-prompt
 git diff --check
 ```
 
