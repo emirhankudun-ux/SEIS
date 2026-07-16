@@ -1,0 +1,109 @@
+{
+  "version": "2026.07.developer-roadmap-milestones.1",
+  "status": "draft-review",
+  "purpose": "Convert the SEIS developer role roadmap into a 90-day milestone matrix with project outputs and validation gates.",
+  "cadence": {
+    "week_1_to_2": "Foundation and Git review habits",
+    "week_3_to_4": "Role-specific contracts and small artifacts",
+    "week_5_to_8": "Cross-role integration slices",
+    "week_9_to_12": "Enterprise readiness, validation, and PR polish"
+  },
+  "milestones": [
+    {
+      "id": "m1-repo-foundation",
+      "weeks": "1-2",
+      "title": "Repository foundation and review habits",
+      "roles": ["frontend-developer", "backend-developer", "full-stack-developer", "devops-engineer", "database-administrator", "ai-developer", "data-engineer"],
+      "outputs": [
+        "Read README and architecture entry points",
+        "Identify local, mock, planned, disabled, and live state labels",
+        "Run the developer role roadmap validation script",
+        "Create one small scoped issue from the roadmap"
+      ],
+      "validation": [
+        "python3 scripts/check-seis-developer-role-roadmap.py",
+        "Manual review of issue scope and rollback note"
+      ]
+    },
+    {
+      "id": "m2-product-surface-literacy",
+      "weeks": "3-4",
+      "title": "Product surface literacy",
+      "roles": ["frontend-developer", "full-stack-developer", "ai-developer"],
+      "outputs": [
+        "Map one product surface to state labels",
+        "Write accessibility and responsive review notes",
+        "Document one local-demo AI boundary"
+      ],
+      "validation": [
+        "State-label review",
+        "Accessibility note exists",
+        "Provider boundary is documented"
+      ]
+    },
+    {
+      "id": "m3-contracts-and-data",
+      "weeks": "3-6",
+      "title": "Contracts and data safety",
+      "roles": ["backend-developer", "database-administrator", "data-engineer", "ai-developer"],
+      "outputs": [
+        "Draft one API or data contract",
+        "Add one schema or data quality checklist",
+        "Document backup, restore, privacy, and migration assumptions"
+      ],
+      "validation": [
+        "Contract has inputs, outputs, failure states, and rollback notes",
+        "Private data is excluded from public examples",
+        "Database safety notes are present"
+      ]
+    },
+    {
+      "id": "m4-automation-and-devops",
+      "weeks": "5-8",
+      "title": "Automation and DevOps readiness",
+      "roles": ["devops-engineer", "full-stack-developer", "backend-developer"],
+      "outputs": [
+        "Create one dry-run automation plan",
+        "Document CI or local validation expectations",
+        "Describe cloud, SSH, and deployment approval gates"
+      ],
+      "validation": [
+        "No live mutation is required",
+        "Dry-run and live actions are separated",
+        "Rollback path is clear"
+      ]
+    },
+    {
+      "id": "m5-full-stack-slice",
+      "weeks": "7-10",
+      "title": "Full-stack vertical slice",
+      "roles": ["frontend-developer", "backend-developer", "full-stack-developer", "database-administrator", "ai-developer", "data-engineer"],
+      "outputs": [
+        "One thin SEIS feature slice is planned end-to-end",
+        "UI, API, data, AI, validation, and rollback notes are linked",
+        "PR summary explains what is real, planned, mocked, or disabled"
+      ],
+      "validation": [
+        "Roadmap role alignment check",
+        "Manual product coherence review",
+        "Security and privacy boundary review"
+      ]
+    },
+    {
+      "id": "m6-enterprise-readiness-review",
+      "weeks": "9-12",
+      "title": "Enterprise readiness review",
+      "roles": ["full-stack-developer", "devops-engineer", "database-administrator", "ai-developer", "data-engineer"],
+      "outputs": [
+        "Map the role roadmap to enterprise readiness gates",
+        "Identify missing evidence for strong claims",
+        "Create a reviewer-friendly handoff note"
+      ],
+      "validation": [
+        "python3 scripts/check-seis-developer-role-roadmap.py",
+        "python3 scripts/check-seis-developer-role-milestones.py",
+        "Enterprise claim language stays evidence-gated"
+      ]
+    }
+  ]
+}

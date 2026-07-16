@@ -1,0 +1,106 @@
+{
+  "version": "2026.07.developer-role-skill-matrix.1",
+  "status": "draft-review",
+  "purpose": "Define measurable skill bands for each SEIS developer role lane so contributors can move from learning to small validated project work.",
+  "levels": [
+    {
+      "id": "level-1-foundation",
+      "title": "Foundation",
+      "definition": "Understands the role vocabulary and can review existing SEIS docs or surfaces without changing production behavior."
+    },
+    {
+      "id": "level-2-contributor",
+      "title": "Contributor",
+      "definition": "Can create a small artifact, contract, checklist, or issue package with validation and rollback notes."
+    },
+    {
+      "id": "level-3-integrator",
+      "title": "Integrator",
+      "definition": "Can connect the role lane to at least one adjacent lane while preserving security, truth labels, and scope control."
+    },
+    {
+      "id": "level-4-review-ready",
+      "title": "Review-ready",
+      "definition": "Can prepare a PR-ready package with evidence, validation, risks, rollback, and next decision."
+    }
+  ],
+  "role_matrix": [
+    {
+      "role": "frontend-developer",
+      "core_skills": ["UI state labels", "accessibility", "responsive review", "design-system literacy", "Git review"],
+      "adjacent_lanes": ["full-stack-developer", "ai-developer", "devops-engineer"],
+      "level_outputs": {
+        "level-1-foundation": "Review one existing product surface for state labels.",
+        "level-2-contributor": "Write one accessibility or responsive checklist.",
+        "level-3-integrator": "Connect one surface to API, AI, or validation notes.",
+        "level-4-review-ready": "Prepare a product-surface PR with validation and rollback."
+      }
+    },
+    {
+      "role": "backend-developer",
+      "core_skills": ["API contracts", "Python or Java service thinking", "SQL boundaries", "error states", "secret safety"],
+      "adjacent_lanes": ["full-stack-developer", "database-administrator", "ai-developer", "data-engineer"],
+      "level_outputs": {
+        "level-1-foundation": "Explain one API or service boundary.",
+        "level-2-contributor": "Draft one backend contract with errors and rollback.",
+        "level-3-integrator": "Connect the contract to data, AI, or frontend expectations.",
+        "level-4-review-ready": "Prepare a backend-contract PR with validation and security notes."
+      }
+    },
+    {
+      "role": "full-stack-developer",
+      "core_skills": ["vertical slices", "Git workflow", "release gates", "validation commands", "rollback planning"],
+      "adjacent_lanes": ["frontend-developer", "backend-developer", "devops-engineer", "database-administrator"],
+      "level_outputs": {
+        "level-1-foundation": "Map one feature from UI to data or API.",
+        "level-2-contributor": "Plan one thin vertical slice.",
+        "level-3-integrator": "Connect UI, contract, data, AI boundary, validation, and rollback.",
+        "level-4-review-ready": "Prepare a small full-stack slice PR package."
+      }
+    },
+    {
+      "role": "devops-engineer",
+      "core_skills": ["CI/CD", "dry-run planning", "Linux basics", "cloud readiness", "SSH approval gates"],
+      "adjacent_lanes": ["backend-developer", "full-stack-developer", "data-engineer"],
+      "level_outputs": {
+        "level-1-foundation": "Identify whether an operation is dry-run or live.",
+        "level-2-contributor": "Write one no-mutation readiness checklist.",
+        "level-3-integrator": "Connect validation, deployment planning, and rollback evidence.",
+        "level-4-review-ready": "Prepare a DevOps readiness PR with no live mutation."
+      }
+    },
+    {
+      "role": "database-administrator",
+      "core_skills": ["SQL", "backup planning", "restore planning", "performance notes", "privacy and least privilege"],
+      "adjacent_lanes": ["backend-developer", "data-engineer", "devops-engineer"],
+      "level_outputs": {
+        "level-1-foundation": "Describe one schema or data safety concern.",
+        "level-2-contributor": "Draft one database safety checklist.",
+        "level-3-integrator": "Connect schema, backup, migration, privacy, and API expectations.",
+        "level-4-review-ready": "Prepare a data-store readiness PR with validation notes."
+      }
+    },
+    {
+      "role": "ai-developer",
+      "core_skills": ["prompt governance", "AI API boundaries", "LLM route decisions", "RAG safety", "evaluation basics"],
+      "adjacent_lanes": ["backend-developer", "frontend-developer", "data-engineer"],
+      "level_outputs": {
+        "level-1-foundation": "Explain local, mock, planned, disabled, and live AI states.",
+        "level-2-contributor": "Draft one provider-neutral route decision.",
+        "level-3-integrator": "Connect prompt, RAG, data, provider boundary, and evaluation notes.",
+        "level-4-review-ready": "Prepare an AI route PR with claim-safety and validation notes."
+      }
+    },
+    {
+      "role": "data-engineer",
+      "core_skills": ["SQL", "ETL", "Python validation", "warehouse modeling", "lineage and quality"],
+      "adjacent_lanes": ["database-administrator", "backend-developer", "ai-developer", "devops-engineer"],
+      "level_outputs": {
+        "level-1-foundation": "Explain one source-transform-output data path.",
+        "level-2-contributor": "Draft one local-first pipeline contract.",
+        "level-3-integrator": "Connect lineage, quality, privacy, warehouse, and AI readiness.",
+        "level-4-review-ready": "Prepare a data-pipeline PR package with validation and rollback."
+      }
+    }
+  ]
+}

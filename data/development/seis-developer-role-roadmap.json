@@ -1,0 +1,98 @@
+{
+  "version": "2026.07.developer-roadmap.1",
+  "status": "draft-review",
+  "source_context": "Roadmap image listing Frontend, Backend, Full-Stack, DevOps, DBA, AI Developer, and Data Engineer skill paths.",
+  "purpose": "Turn common software career roadmap roles into a SEIS-aligned capability map for contributors, agents, learning plans, and GitHub issues.",
+  "principles": [
+    "Do not reduce SEIS to a single web stack.",
+    "Keep Apple-first and polyglot platform depth visible.",
+    "Treat frontend, backend, data, AI, DevOps, and database work as connected lanes.",
+    "Use validation and evidence before claiming mastery.",
+    "Prefer project milestones over passive course lists."
+  ],
+  "roles": [
+    {
+      "id": "frontend-developer",
+      "title": "Frontend Developer",
+      "image_prompt_stack": ["HTML", "CSS", "JavaScript", "React", "Git"],
+      "seis_expansion": ["UI engineering", "accessibility", "design systems", "motion boundaries", "responsive product surfaces", "local demo truth labels"],
+      "primary_outputs": ["browser demo surfaces", "product pages", "component documentation", "accessibility review notes"],
+      "validation": ["responsive check", "keyboard focus review", "reduced motion review", "static route check"],
+      "next_project": "Create one SEIS route or product surface with clear local, mock, planned, disabled, and live state labels."
+    },
+    {
+      "id": "backend-developer",
+      "title": "Backend Developer",
+      "image_prompt_stack": ["Java", "Python", "SQL", "MongoDB", "APIs"],
+      "seis_expansion": ["API contracts", "service boundaries", "auth planning", "provider-safe routing", "data validation", "backend-only secrets"],
+      "primary_outputs": ["API schema", "service contract", "validation script", "backend runbook"],
+      "validation": ["schema check", "contract check", "secret-safety review", "error-handling review"],
+      "next_project": "Define a SEIS backend contract that explicitly separates public demo data from live provider or private data access."
+    },
+    {
+      "id": "full-stack-developer",
+      "title": "Full-Stack Developer",
+      "image_prompt_stack": ["Frontend", "Backend", "Git", "Deploy"],
+      "seis_expansion": ["end-to-end product slices", "rollback planning", "PR review", "release gates", "demo go/no-go evidence"],
+      "primary_outputs": ["thin vertical slice", "PR description", "rollback plan", "local validation commands"],
+      "validation": ["frontend check", "backend contract check", "static build check", "release readiness check"],
+      "next_project": "Ship a small SEIS feature from data contract to interface documentation with a rollback path."
+    },
+    {
+      "id": "devops-engineer",
+      "title": "DevOps Engineer",
+      "image_prompt_stack": ["Docker", "Kubernetes", "CI/CD", "Linux", "Cloud"],
+      "seis_expansion": ["local-first deployment plans", "CI checks", "dry-run automation", "cloud readiness", "SSH approval gates", "observability"],
+      "primary_outputs": ["CI workflow", "dry-run plan", "deployment checklist", "runtime health report"],
+      "validation": ["CI dry run", "cloud readiness check", "no live mutation check", "rollback drill"],
+      "next_project": "Create a no-mutation deployment readiness plan that documents what would be checked before any live cloud action."
+    },
+    {
+      "id": "database-administrator",
+      "title": "DBA / Database Administrator",
+      "image_prompt_stack": ["SQL", "Backup", "Performance", "Security", "Database Administration"],
+      "seis_expansion": ["schema governance", "migration safety", "backup strategy", "performance budget", "privacy review", "least privilege"],
+      "primary_outputs": ["schema contract", "migration checklist", "backup and restore plan", "query performance notes"],
+      "validation": ["schema consistency check", "backup plan review", "privacy review", "least-privilege review"],
+      "next_project": "Write a SEIS data-store readiness contract that includes schema, backup, restore, privacy, and migration gates."
+    },
+    {
+      "id": "ai-developer",
+      "title": "AI Developer",
+      "image_prompt_stack": ["Prompt Engineering", "AI APIs", "LLM Integration", "RAG"],
+      "seis_expansion": ["model router policy", "prompt governance", "RAG boundaries", "provider status labels", "evaluation", "human approval"],
+      "primary_outputs": ["prompt contract", "model route decision", "evaluation rubric", "RAG safety boundary"],
+      "validation": ["prompt safety review", "provider boundary check", "evaluation check", "private data exclusion check"],
+      "next_project": "Create a provider-neutral AI route decision that explains local, mock, planned, disabled, and live states without exposing keys."
+    },
+    {
+      "id": "data-engineer",
+      "title": "Data Engineer",
+      "image_prompt_stack": ["SQL", "ETL", "Python", "Data Warehouse", "Cloud"],
+      "seis_expansion": ["data contracts", "ETL dry runs", "warehouse modeling", "lineage", "quality checks", "privacy-aware analytics"],
+      "primary_outputs": ["data pipeline contract", "lineage report", "quality check", "warehouse model"],
+      "validation": ["data quality check", "lineage review", "privacy review", "ETL dry-run check"],
+      "next_project": "Build a SEIS data pipeline plan that can be validated locally before any cloud or warehouse integration."
+    }
+  ],
+  "learning_sequence": [
+    "Git and repository review basics",
+    "Frontend product surface literacy",
+    "Backend API and data contracts",
+    "Database safety and SQL fundamentals",
+    "Python automation and validation scripts",
+    "AI prompt and provider boundary governance",
+    "DevOps dry-run and CI/CD readiness",
+    "Full-stack vertical slice delivery",
+    "Enterprise readiness and claim evidence mapping"
+  ],
+  "seis_issue_templates_to_create_later": [
+    "frontend-surface-task",
+    "backend-contract-task",
+    "ai-route-decision-task",
+    "data-pipeline-contract-task",
+    "devops-readiness-task",
+    "database-safety-task",
+    "full-stack-slice-task"
+  ]
+}
