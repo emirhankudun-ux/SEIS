@@ -1,0 +1,440 @@
+schema_version: 2
+
+id: SEIS-GOAL-0001
+project: seis
+program: apple-platform
+initiative: native-architecture-foundation
+parent_goal: null
+
+title: Ratify the SEIS Apple-native architecture foundation
+summary: >-
+  Convert the existing Apple-platform direction and SwiftPM package surface
+  into one reviewed architecture decision, exact platform and package map,
+  web-demo boundary, build and test strategy, and deterministic drift gate
+  without implementing new native product features.
+
+category:
+  - apple-native
+  - architecture
+  - documentation
+  - testing
+  - accessibility
+
+priority: high
+status: proposed
+maturity: specification
+confidence: medium
+
+owner_agent: native-apple
+accountable_human: project-owner
+supporting_agents:
+  - lead-architect
+  - product-strategy
+  - accessibility
+  - performance
+  - security
+  - testing
+  - documentation
+  - devops
+
+horizon: 90-days
+start_after: null
+target_window:
+  start: null
+  end: null
+
+scope:
+  repositories:
+    - seis
+  paths:
+    - .gitignore
+    - .github/workflows/apple-platform-foundation.yml
+    - .github/workflows/foundation-check.yml
+    - apps/seis-demo-web/README.md
+    - data/seis-apple-platform-architecture.json
+    - docs/APPLE_PLATFORM_STRATEGY.md
+    - docs/INDEX.md
+    - docs/architecture/SEIS_APPLE_PLATFORM_MAP.md
+    - docs/architecture/seis-command-center.md
+    - docs/architecture/web-mobile-foundation.md
+    - docs/adr/0003-seis-apple-native-architecture-foundation.md
+    - docs/deployment/seis-demo-native-web-deploy-plan.md
+    - docs/roadmap/NEXT_PR_QUEUE.md
+    - goals/backlog/SEIS-GOAL-0001--apple-native-architecture-foundation.yaml
+    - package.json
+    - packages/seis_platform_swift/Package.swift
+    - scripts/check-seis-apple-platform-architecture.mjs
+    - scripts/test-ecosystem-foundation.rb
+    - scripts/test-seis-apple-platform-architecture.mjs
+    - scripts/validate-ecosystem-foundation.rb
+
+canonical_owner_repo: seis
+
+platforms:
+  - macos
+  - ipados
+  - ios
+  - web
+  - repository
+  - github
+
+architecture_layers:
+  - presentation
+  - application
+  - domain
+  - data
+  - infrastructure
+  - integration
+  - observability
+  - governance
+
+security_classification: public-safe
+privacy_impact: none
+
+requirements:
+  - A proposed ADR defines macOS, iPadOS, iOS, visionOS-research, and web roles without claiming unimplemented applications.
+  - The platform map inventories current SwiftPM platforms, products, targets, dependencies, and ownership separately from planned surfaces.
+  - The current SeisPlatformKit domain, application/runtime, data/infrastructure, observability, and conditional Apple-presentation layers are recorded, with separation deferred to focused child Goals before stable maturity.
+  - The current SeisAppleNativeShell presentation, application state/routing, scenario orchestration, resource-loading, local-process integration, and observability responsibilities are recorded rather than described as presentation-only.
+  - Web remains the no-key public demo and onboarding surface rather than the long-term architectural center.
+  - The build and test strategy names exact portable, Darwin SwiftPM, accessibility, performance, privacy, and release evidence required for later implementation.
+  - A deterministic checker rejects drift between Package.swift, the machine-readable contract, ADR, platform map, strategy, Goal, and CI invocation.
+  - Existing ready labels are classified as declarative prototype metadata rather than runtime, build, provider, CloudKit, or release proof.
+  - Toolchain unavailability or skipped native tests remains explicit and cannot satisfy the engineering gate.
+
+non_goals:
+  - Adding or changing production Swift, SwiftUI, AppKit, UIKit, Core Data, CloudKit, or Metal implementation.
+  - Creating an Xcode project or standalone macOS, iPadOS, iOS, or visionOS application.
+  - Changing the web demo, native-shell runtime behavior, AI providers, MCPs, SSH, deployment, signing, or secrets.
+  - Adding dependencies or changing SwiftPM minimum platform versions.
+  - Migrating, renumbering, or aliasing legacy SEIS-GOAL-001.
+
+acceptance_criteria:
+  - The ADR, contract, and platform map match Package.swift name SeisPlatformKit, macOS 13 and iOS 16 minimums, two products, three targets, and zero external dependencies.
+  - The exact manifest gate rejects added or removed platforms, products, targets, target dependencies, resources, and external package dependencies.
+  - The map identifies the conditional SwiftUI, AppKit, and UIKit continuation surface inside SeisPlatformKit as current technical debt rather than claiming domain and presentation are already separated.
+  - The map records current application/runtime, Core Data/infrastructure, observability, and overloaded readiness semantics instead of reducing the debt to presentation alone.
+  - The map records the executable target's mixed presentation, application, resource, local-process, and telemetry layers as prototype debt.
+  - Current evidence identifies SeisPlatformKit and SeisAppleNativeShell as existing package surfaces without describing them as stable released applications.
+  - macOS is the primary native Command Center; iPadOS and iOS remain planned review and companion roles; visionOS remains research-only.
+  - The iPadOS role explains that SwiftPM currently represents compatibility through the iOS platform declaration and does not claim a separate app target.
+  - The web boundary preserves no-key demo, onboarding, public documentation, and GitHub showcase behavior.
+  - Negative fixtures prove that platform, package, product, target, maturity, web-boundary, Goal-status, and validation-command drift is rejected.
+  - A macOS CI lane describes the package, builds both the library and SeisAppleNativeShell product, and runs all package tests.
+  - Focused architecture checks, ecosystem validation, Foundation validation, platform-kernel validation, and git diff checks pass.
+  - Swift package tests pass on a verified Darwin Swift toolchain; an interrupted, unavailable, or skipped toolchain keeps the engineering gate open.
+  - The pull-request diff contains no production Swift source, application UI, provider, credential, deployment, signing, or data-migration change.
+
+definition_of_ready:
+  - ECO-GOAL-0001, ECO-GOAL-0002, and ECO-GOAL-0003 are completed or archived with canonical evidence.
+  - The SEIS project manifest is present on canonical main and ADR-0002 ownership is accepted or replaced.
+  - A clean non-default SEIS branch can be created from the canonical reviewed base.
+  - The current SwiftPM manifest and native documentation have been audited without changing implementation.
+  - A Darwin Swift toolchain or explicit external native-test evidence path is available.
+
+definition_of_done:
+  - The focused ADR, platform map, contract, strategy update, checker, negative tests, and CI invocation are committed in one pull request.
+  - Every acceptance criterion has reproducible local or remote evidence.
+  - Swift package test evidence is recorded from a verified Darwin toolchain.
+  - Required quality gates pass and the proposed ADR receives accountable human review.
+  - Issue, branch, substantive commit, pull request, risks, rollback, failed or skipped checks, and remaining implementation gaps are recorded.
+  - No production native source, application behavior, provider, secret, deployment, signing, or migration is changed.
+
+dependencies:
+  - ECO-GOAL-0001
+  - ECO-GOAL-0002
+  - ECO-GOAL-0003
+
+blocked_by: []
+
+related_goals: []
+
+validation:
+  commands:
+    - npm run check:seis-apple-platform-architecture
+    - npm run test:seis-apple-platform-architecture
+    - npm run check:ecosystem-foundation
+    - npm run test:ecosystem-foundation
+    - npm run check:foundation
+    - npm run check:seis-platform-kernel
+    - swift package --package-path packages/seis_platform_swift describe
+    - swift build --package-path packages/seis_platform_swift --target SeisPlatformKit
+    - swift build --package-path packages/seis_platform_swift --product SeisAppleNativeShell
+    - swift test --package-path packages/seis_platform_swift
+    - git diff --check
+  manual:
+    - Apple-platform architecture review
+    - product-role and maturity review
+    - web and native boundary review
+    - accessibility and reduced-motion review
+    - native performance-budget review
+    - public-private boundary review
+  evidence:
+    - data/seis-apple-platform-architecture.json
+    - packages/seis_platform_swift/Package.swift
+    - docs/adr/0003-seis-apple-native-architecture-foundation.md
+    - docs/architecture/SEIS_APPLE_PLATFORM_MAP.md
+    - scripts/check-seis-apple-platform-architecture.mjs
+    - scripts/test-seis-apple-platform-architecture.mjs
+    - pull-request CI URL
+    - Darwin Swift test output
+
+status_history:
+  - status: proposed
+    at: '2026-07-13'
+    reason: >-
+      Existing Apple strategy and SwiftPM surfaces were inspected and a
+      reviewable specification was prepared, but ecosystem ownership, security,
+      and Goal-validation dependencies are not complete: ownership is blocked,
+      while security and Goal validation are in review.
+    evidence_refs:
+      - SEIS1-EVIDENCE-001
+      - SEIS1-EVIDENCE-003
+      - SEIS1-EVIDENCE-007
+
+evidence_records:
+  - id: SEIS1-EVIDENCE-001
+    type: repository-inspection
+    description: >-
+      The tracked SwiftPM manifest was inspected and records Swift tools 6.0,
+      macOS 13, iOS 16, two products, three targets, two executable resources,
+      and no external package dependencies; this does not prove build or runtime
+      readiness.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: packages/seis_platform_swift/Package.swift
+  - id: SEIS1-EVIDENCE-002
+    type: architecture-review
+    description: The Apple-native foundation ADR and platform map receive accountable human review.
+    status: pending
+    command: null
+    exit_code: null
+    artifact: null
+  - id: SEIS1-EVIDENCE-003
+    type: deterministic-validation
+    description: Focused architecture and adversarial drift checks pass.
+    status: passed
+    command: npm run check:seis-apple-platform-architecture && npm run test:seis-apple-platform-architecture
+    exit_code: 0
+    artifact: scripts/test-seis-apple-platform-architecture.mjs
+  - id: SEIS1-EVIDENCE-004
+    type: native-package-validation
+    description: Swift package describe, library build, executable-product build, and tests pass on a verified Darwin Swift toolchain.
+    status: passed
+    command: >-
+      swift package --package-path packages/seis_platform_swift describe &&
+      swift build --package-path packages/seis_platform_swift --target
+      SeisPlatformKit && swift build --package-path
+      packages/seis_platform_swift --product SeisAppleNativeShell && swift test
+      --package-path packages/seis_platform_swift
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/actions/runs/29235195720
+  - id: SEIS1-EVIDENCE-005
+    type: remote-ci
+    description: The focused pull-request head passes the required repository workflows.
+    status: passed
+    command: gh pr checks 182 --repo emirhankudun-ux/SEIS
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/182/checks
+  - id: SEIS1-EVIDENCE-006
+    type: native-library-build-attempt
+    description: >-
+      The clean-scratch SwiftPM library build began and wrote build metadata but
+      produced no further progress during a 150-second observation window and
+      was manually interrupted; it is not accepted as build or test evidence
+      and the native engineering gate remains open.
+    status: failed
+    command: >-
+      swift build --disable-sandbox --package-path
+      packages/seis_platform_swift --scratch-path
+      /tmp/seis-swift-build-20260713-final --target SeisPlatformKit
+    exit_code: 130
+    artifact: null
+  - id: SEIS1-EVIDENCE-007
+    type: compatibility-validation
+    description: Ecosystem schema, adversarial fixtures, syntax, and diff checks pass with the proposed Apple Goal present.
+    status: passed
+    command: >-
+      npm run check:ecosystem-foundation && npm run test:ecosystem-foundation &&
+      node --check scripts/check-seis-apple-platform-architecture.mjs &&
+      node --check scripts/test-seis-apple-platform-architecture.mjs &&
+      ruby -c scripts/test-ecosystem-foundation.rb && git diff --check
+    exit_code: 0
+    artifact: scripts/test-ecosystem-foundation.rb
+  - id: SEIS1-EVIDENCE-008
+    type: foundation-compatibility
+    description: Foundation, governance, security-boundary, Goal-tracking, and open-source checks pass after the specification and ignore exceptions were added.
+    status: passed
+    command: >-
+      npm run check:foundation && npm run check:seis-governance-foundation &&
+      npm run check:security-boundary && npm run test:security-boundary &&
+      npm run check:goal-tracking && npm run check:open-source-governance
+    exit_code: 0
+    artifact: .github/workflows/foundation-check.yml
+  - id: SEIS1-EVIDENCE-009
+    type: native-package-inventory
+    description: >-
+      SwiftPM described the package from a clean scratch directory and confirmed
+      Swift tools 6.0, macOS 13, iOS 16, no external dependencies, two products,
+      and the library, executable, and test targets recorded by the contract.
+    status: passed
+    command: >-
+      swift package --disable-sandbox --package-path
+      packages/seis_platform_swift --scratch-path
+      /tmp/seis-swift-describe-build-20260713-final describe
+    exit_code: 0
+    artifact: packages/seis_platform_swift/Package.swift
+  - id: SEIS1-EVIDENCE-010
+    type: native-toolchain-preflight
+    description: >-
+      Apple Swift 6.1.2 is installed, but xcodebuild reported that the active
+      developer directory is CommandLineTools rather than a full Xcode
+      installation; application, simulator, signing, and notarization gates
+      therefore remain unavailable.
+    status: failed
+    command: swift --version && xcodebuild -version
+    exit_code: 1
+    artifact: null
+  - id: SEIS1-EVIDENCE-011
+    type: platform-kernel-validation-attempt
+    description: >-
+      The platform-kernel check reached its Darwin swift test subprocess, then
+      produced no output during an approximately 70-second observation window
+      and was manually interrupted; it is not passing platform-kernel or native
+      test evidence.
+    status: failed
+    command: npm run check:seis-platform-kernel
+    exit_code: 1
+    artifact: null
+
+quality_gates:
+  architecture: required
+  product: required
+  brand_creative_direction: not-applicable
+  design_system: not-applicable
+  ui_ux: not-applicable
+  engineering: required
+  ai_integrity: required
+  model_provider_routing: not-applicable
+  agent_permission: not-applicable
+  mcp_plugin_tool: not-applicable
+  security: required
+  privacy: required
+  accessibility: required
+  performance: required
+  data: not-applicable
+  documentation: required
+  devops: required
+  testing: required
+  release: not-applicable
+  public_readiness: required
+
+risks:
+  - id: SEIS1-RISK-001
+    description: Architecture documentation may drift from the actual SwiftPM manifest.
+    likelihood: medium
+    impact: high
+    owner: native-apple
+    mitigation: Compare the package contract and documentation in deterministic checks with adversarial fixtures.
+    trigger: A platform, product, target, or dependency changes without the contract, ADR, and platform map changing.
+    contingency: Fail the gate and keep the Goal proposed until all contracts agree.
+    status: open
+  - id: SEIS1-RISK-002
+    description: Existing experimental package surfaces may be mistaken for stable released Apple applications.
+    likelihood: medium
+    impact: high
+    owner: product-strategy
+    mitigation: Record current and planned surfaces separately and require explicit maturity labels and non-claims.
+    trigger: Documentation calls an iPadOS, iOS, or released macOS application available without runtime evidence.
+    contingency: Revert the claim, retain prototype or planned maturity, and require platform-specific evidence.
+    status: open
+  - id: SEIS1-RISK-003
+    description: Architecture work may expand into an unreviewable native implementation or web rewrite.
+    likelihood: medium
+    impact: high
+    owner: lead-architect
+    mitigation: Restrict the pull request to the declared specification, validator, test, workflow, and package-script paths.
+    trigger: Production Swift, app UI, provider, credential, deployment, signing, or web behavior enters the diff.
+    contingency: Remove the unrelated change and create a child Goal with independent acceptance and rollback.
+    status: open
+  - id: SEIS1-RISK-004
+    description: The four-digit schema-v2 Goal ID may be confused with legacy SEIS-GOAL-001.
+    likelihood: medium
+    impact: medium
+    owner: goal-tracking
+    mitigation: State that SEIS-GOAL-0001 is not an alias, migration, or replacement for the legacy AI Core record.
+    trigger: A document or generated view maps the two identifiers to one capability.
+    contingency: Block promotion and repair the reference before review.
+    status: open
+  - id: SEIS1-RISK-005
+    description: The Apple branch may be reviewed against the wrong base and expose unrelated security-stack changes as Apple scope.
+    likelihood: medium
+    impact: high
+    owner: lead-architect
+    mitigation: Open the draft pull request against security/ecosystem-local-secret-boundary and record the post-merge retarget order.
+    trigger: The Apple pull request diff includes the four ECO-GOAL-0002 security commits or targets main before its stacked dependencies merge.
+    contingency: Change only the pull-request base after dependency merges, re-audit the diff, and rerun all required checks; do not rewrite shared history.
+    status: open
+  - id: SEIS1-RISK-006
+    description: Declarative ready labels in existing Swift contracts may be mistaken for verified CloudKit, persistence, provider, build, or release capability.
+    likelihood: high
+    impact: high
+    owner: product-strategy
+    mitigation: Classify current labels as prototype metadata and require distinct evidence-backed operational states in a child Goal.
+    trigger: A UI, document, Goal, or release decision uses aggregate ready booleans as runtime or release proof.
+    contingency: Revert the capability claim, keep the affected gate open, and require planned/configured/verified/unavailable/failed evidence before promotion.
+    status: open
+
+rollback:
+  strategy: revert
+  steps:
+    - Revert the focused Apple-platform architecture commit.
+    - Restore the previous strategy, documentation index, ignore rules, package scripts, and Foundation workflow.
+    - Leave the existing Swift package and all application behavior unchanged.
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: apple/seis-native-architecture-foundation
+  suggested_commit: 'docs(apple): define the SEIS native architecture foundation'
+  issue_url: https://github.com/emirhankudun-ux/SEIS/issues/181
+  branch_name: apple/seis-native-architecture-foundation
+  commit_sha: c756ce43477e1e7b53fc1eb48d96d0336ee17804
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/182
+  release_note_url: null
+
+observability:
+  metrics:
+    - apple_platform_architecture_validation_success
+    - apple_platform_contract_drift_count
+    - swift_package_test_success
+    - unsupported_native_capability_claim_count
+  logs:
+    - path-and-rule-only validation errors
+
+outputs:
+  - proposed Apple-native architecture ADR
+  - exact current and planned platform map
+  - machine-readable SwiftPM platform, product, target, dependency, resource, and layer inventory
+  - web and native boundary contract
+  - declarative-versus-verified readiness boundary
+  - native build and test strategy
+  - macOS SwiftPM library, executable, and test workflow
+  - deterministic architecture drift checker
+  - adversarial drift fixtures
+  - pull-request CI evidence
+
+notes:
+  - This schema-v2 ID is distinct from legacy SEIS-GOAL-001 and must not be treated as its alias or migration.
+  - Package.swift is a read-only validation input in this Goal; changing it requires a child implementation Goal.
+  - Proposed status must not advance to planned until all three ecosystem dependencies satisfy Definition of Ready.
+  - Swift build or test interruption, skipping, or toolchain unavailability is disclosed evidence, not a passing engineering result.
+  - This Goal establishes architecture truth only; it does not claim released native applications.
+  - The branch is stacked on security/ecosystem-local-secret-boundary at b9155025; its draft pull request must use that branch as the base.
+  - After ECO-GOAL-0003 and ECO-GOAL-0002 merge in order, retarget this draft to canonical main, re-audit the diff, and rerun every required check before promotion or merge.
+  - Proposed ADR and Goal status are intentionally enforced only for this draft specification; it is not merge-ready while its Definition of Ready dependencies remain open.

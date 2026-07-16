@@ -30,8 +30,15 @@ rescue StandardError => error
 end
 
 def read_yaml(relative_path)
+  text = read_text(relative_path)
+  stream = Psych.parse_stream(text)
+  unless stream.children.length == 1
+    ERRORS << "invalid YAML in #{relative_path}: expected exactly one document"
+    return nil
+  end
+
   YAML.safe_load(
-    read_text(relative_path),
+    text,
     permitted_classes: [],
     permitted_symbols: [],
     aliases: false

@@ -23,6 +23,25 @@ history or rotate secrets from an automation agent without explicit owner
 approval. Keep supplied ZIP/folder-derived demo assets preserved unless the
 owner explicitly requests removal.
 
+## Proposed Apple-Native Architecture Stack - 2026-07-13
+
+| Field | Value |
+| --- | --- |
+| Goal | `SEIS-GOAL-0001` |
+| Status | `proposed` / `specification`; draft-only and not merge-ready |
+| Suggested branch | `apple/seis-native-architecture-foundation` |
+| Required draft base | `security/ecosystem-local-secret-boundary` |
+| Scope | Proposed ADR, exact SwiftPM/platform map, web/native boundary, build-and-test strategy, macOS SwiftPM CI lane, deterministic drift validator, adversarial fixtures, and evidence records. No production Swift or application behavior changes. |
+| Validation | `npm run check:seis-apple-platform-architecture`, `npm run test:seis-apple-platform-architecture`, `npm run check:ecosystem-foundation`, `npm run test:ecosystem-foundation`, `npm run check:foundation`, `npm run check:seis-platform-kernel`, `swift package --package-path packages/seis_platform_swift describe`, `swift build --package-path packages/seis_platform_swift --target SeisPlatformKit`, `swift build --package-path packages/seis_platform_swift --product SeisAppleNativeShell`, `swift test --package-path packages/seis_platform_swift`, `git diff --check`. |
+| Current native gaps | The clean-scratch `SeisPlatformKit` build was manually interrupted after 150 seconds with exit 130 and is not passing evidence. `swift test` was not run after that incomplete build. `xcodebuild -version` is unavailable because the active developer directory is CommandLineTools rather than full Xcode, so application, simulator, signing, and notarization gates remain open. |
+| Dependency order | Human review and merge of the goal-validation foundation PR must precede the security-boundary PR. After both land, retarget this Apple draft to canonical `main`, re-audit the complete diff, and rerun every required check. Do not force-push or rewrite shared history. |
+| Approval needed | Accountable-human ADR acceptance; protected-branch merge or retarget decisions; full Xcode installation or developer-directory changes; signing identities, entitlements, notarization, deployment, release, or other protected writes. |
+
+The proposed Goal must remain `proposed` until `ECO-GOAL-0001`,
+`ECO-GOAL-0002`, and `ECO-GOAL-0003` are completed or archived with accepted
+ownership and validation evidence. Remote macOS CI may supply missing SwiftPM
+evidence, but it cannot substitute for the dependency and human-review gates.
+
 ## Current Recommended Product Demo Stack
 
 | Order | Suggested PR title | Scope | Validation | Approval needed |
@@ -446,6 +465,12 @@ owner explicitly requests removal.
 
 ## Human Approval Needed
 
+- Accept ADR-0003 and decide when `SEIS-GOAL-0001` may advance beyond
+  `proposed`; merge the goal-validation and security-boundary PRs in order,
+  then retarget and re-review the Apple draft without rewriting shared history.
+- Install or select full Xcode, configure signing identities or entitlements,
+  notarize, deploy, release, or write to protected branches for Apple-native
+  delivery.
 - Push to `main`, merge, force-push, branch deletion, or history rewrite.
 - File deletion.
 - Cross-worktree cherry-pick, bulk copy, or branch reconciliation.

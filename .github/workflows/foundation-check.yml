@@ -32,19 +32,22 @@ jobs:
 
       - name: Run lightweight checks
         run: |
-          npm run check:seis-governance-foundation
-          npm run check:open-source-governance
-          npm run seis:check
-          npm run check:workspace
-          npm run check:seis-platform-language-policy
-          npm run check:foundation
-          npm run check:goal-tracking
-          npm run check:ecosystem-foundation
-          npm run test:ecosystem-foundation
-          npm run check:security-boundary
-          npm run test:security-boundary
-          npm run check:plugin-interface-roadmap
-          npm run check:seis-code
-          npm run check:mythic-gacha
-          npm run check:video-hero-showcase
-          npm run audit:ai-providers
+          npm run check:seis-apple-platform-architecture --ignore-scripts
+          npm run test:seis-apple-platform-architecture --ignore-scripts
+          npm run check:seis-platform-kernel --ignore-scripts
+          npm run check:seis-governance-foundation --ignore-scripts
+          npm run check:open-source-governance --ignore-scripts
+          npm run seis:check --ignore-scripts
+          npm run check:workspace --ignore-scripts
+          npm run check:seis-platform-language-policy --ignore-scripts
+          npm run check:foundation --ignore-scripts
+          npm run check:goal-tracking --ignore-scripts
+          npm run check:ecosystem-foundation --ignore-scripts
+          npm run test:ecosystem-foundation --ignore-scripts
+          npm run check:security-boundary --ignore-scripts
+          npm run test:security-boundary --ignore-scripts
+          npm run check:plugin-interface-roadmap --ignore-scripts
+          npm run check:seis-code --ignore-scripts
+          npm run check:mythic-gacha --ignore-scripts
+          npm run check:video-hero-showcase --ignore-scripts
+          npm run audit:ai-providers --ignore-scripts

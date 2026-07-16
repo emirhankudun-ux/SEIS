@@ -15,6 +15,7 @@ Date: 2026-06-23
 | [AGENT_REGISTRY.md](AGENT_REGISTRY.md) | Supervised specialist roles, permissions, and handoff evidence. |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | SEIS tokens, icon language, motion, and accessibility direction. |
 | [APPLE_PLATFORM_STRATEGY.md](APPLE_PLATFORM_STRATEGY.md) | macOS, iPadOS, iOS, visionOS research, and Swift package strategy. |
+| [architecture/SEIS_APPLE_PLATFORM_MAP.md](architecture/SEIS_APPLE_PLATFORM_MAP.md) | Proposed exact SwiftPM inventory, Apple product roles, web boundary, and validation strategy. |
 | [SECURITY.md](SECURITY.md) | Focused secrets, permission, supply-chain, and public-review rules. |
 | [security/SECRET_STORAGE.md](security/SECRET_STORAGE.md) | Approved secret stores, runtime injection boundaries, redaction, rotation ownership, and local/CI/server rules. |
 | [security/CREDENTIAL_INCIDENT_RESPONSE.md](security/CREDENTIAL_INCIDENT_RESPONSE.md) | Path-only credential exposure containment, revocation, recovery, disclosure, and closure runbook. |
@@ -130,6 +131,7 @@ Date: 2026-06-23
 | [SEIS_GOAL_TRACKING.md](SEIS_GOAL_TRACKING.md) | Active SEIS goal-tracking constitution and cross-project bootstrap boundary. |
 | [REPOSITORY_OWNERSHIP.md](REPOSITORY_OWNERSHIP.md) | Evidence-bound canonical repository and module ownership map. |
 | [adr/0002-ecosystem-governance-bootstrap-ownership.md](adr/0002-ecosystem-governance-bootstrap-ownership.md) | Proposed decision keeping SEIS coordination separate from Eleni and Pantechnoesis product ownership. |
+| [adr/0003-seis-apple-native-architecture-foundation.md](adr/0003-seis-apple-native-architecture-foundation.md) | Proposed Apple-native platform roles, package boundary, maturity, and web-demo decision. |
 | [../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml) | Blocked ecosystem manifest and ownership goal with explicit unblock conditions. |
 | [../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml) | Active Goal schema, semantic validation, negative-test, and CI-enforcement goal. |
 | [goals/seis-vision.md](goals/seis-vision.md) | Long-term SEIS vision and guardrails. |

@@ -19,6 +19,7 @@ FIXTURE_FILES = [
   "schemas/project-ecosystem.schema.json",
   "schemas/repository-ownership.schema.json",
   "schemas/ecosystem-goal.schema.json",
+  "packages/seis_platform_swift/Package.swift",
   "scripts/validate-ecosystem-foundation.rb",
   "package.json"
 ].freeze
@@ -179,6 +180,12 @@ end
 
 assert_rejected("Goal with empty YAML document", "expected YAML object/hash at root") do |directory|
   File.write(File.join(directory, GOAL_RELATIVE_PATH), "")
+end
+
+assert_rejected("Goal with multiple YAML documents", "expected exactly one document") do |directory|
+  path = File.join(directory, GOAL_RELATIVE_PATH)
+  canonical = File.read(path)
+  File.write(path, "#{canonical.rstrip}\n---\n#{canonical}")
 end
 
 assert_rejected("Goal with malformed scope", ".scope: expected object, got String") do |directory|

@@ -5,7 +5,7 @@
 ### Vercel
 
 1. Repository içinde çalışma dizini:
-   - `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/apps/seis-demo-web`
+   - repository root'tan `apps/seis-demo-web`
 2. Deploy ayarları:
    - `Framework` seçimi: **Other / Static**
    - `Output Directory`: `.`
@@ -29,13 +29,18 @@
 
 Native shell, `packages/seis_platform_swift` paketinde `SeisAppleNativeShell` ürününde yer alır.
 
+Current state: Bu ürün SwiftPM executable prototype kanıtıdır; signed/notarized
+app bundle, dedicated iOS target, simulator scheme veya dağıtım kanıtı değildir.
+`docs/architecture/SEIS_APPLE_PLATFORM_MAP.md` canonical maturity ve platform
+sınırını tanımlar.
+
 ### Test build hedefleri
 
 - macOS test build:
   - `swift build -c debug --product SeisAppleNativeShell`
-- iOS simulasyon test build:
-  - Xcode’da paketi açıp `SeisAppleNativeShell` ürününü iOS destination’da `Run` edin
-  - veya `xcodebuild -scheme SeisAppleNativeShell -destination 'platform=iOS Simulator,name=iPhone 16'`
+- iOS simulator build bu sürümde unavailable'dır: dedicated iOS app target ve
+  doğrulanmış Xcode scheme yoktur. Bu komutlar ancak child implementation Goal
+  target/scheme ekleyip CI evidence ürettikten sonra tanımlanmalıdır.
 
 ### Deep link entegrasyonu (seisdemo://)
 
@@ -49,18 +54,15 @@ Native shell, `packages/seis_platform_swift` paketinde `SeisAppleNativeShell` ü
   - `xcrun simctl openurl booted "seisdemo://demo/agent-orchestration"`
   - `xcrun simctl openurl booted "seisdemo://results/demo-home"`
 
-Tek komutluk doğrulama (seisdemo şeması + gerçek cihaz/sim openurl):
+Gelecek doğrulama taslağı (şu an çalıştığı iddia edilmez):
 
-1. Xcode build:
-   - `xcodebuild -scheme SeisAppleNativeShell -destination 'platform=iOS Simulator,name=iPhone 16' -configuration Debug install`
+1. Child Goal, gerçek app target ve scheme için Xcode build komutunu kaydeder.
 2. URL types şablonunu `packages/seis_platform_swift/Sources/SeisAppleNativeShell/Resources/seisdemo-urlscheme-template.plist` ile karşılaştırın.
-3. Simülatörü hazırla:
-   - `xcrun simctl boot <iPhone 16 UDID>`
-4. Deep link:
-   - `xcrun simctl openurl booted "seisdemo://demo/agent-orchestration"`
-   - `xcrun simctl openurl booted "seisdemo://results/demo-home"`
+3. Child Goal, fixture-backed simulator destination ve boot evidence kaydeder.
+4. Child Goal, gerçek app bundle üzerinde `simctl openurl` deep-link evidence
+   üretir.
 
-### Runtime doğrulama checklist
+### Gelecek runtime doğrulama checklist
 
 - App içinde route tabanlı ekran:
   - `/demo`
@@ -78,4 +80,6 @@ Tek komutluk doğrulama (seisdemo şeması + gerçek cihaz/sim openurl):
 
 - Ana branch `main` sabitlenmiş kalır.
 - `docs/deployment`, web deploy URL ve netlify/vercel deployment ID’leri release notuna eklenir.
-- `seis-demo-native` için App Store dağıtımı planı ayrı bir adımda, testflight ile ilerletilmeli.
+- `seis-demo-native` için App Store/TestFlight dağıtımı mevcut bir capability
+  değildir; ayrı Goal, app target, signing, privacy, test ve rollback evidence
+  sonrasında planlanabilir.
