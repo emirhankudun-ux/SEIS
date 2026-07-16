@@ -1,9 +1,10 @@
-# SEIS Core personal plugin source boundary
+# SEIS Core public repository plugin source boundary
 
-`plugins/seis-core/` is the canonical source boundary for the 60 app-owned plugins
-used by the SEIS Command Center application. The directory is connected to the
-SEIS repository and is intentionally separate from the ten public source
-modules directly under `plugins/`.
+`plugins/seis-core/` is the public, canonical repository source boundary for the
+60 app-owned plugins used by the SEIS Command Center application. Everyone can
+read and reuse these MIT-licensed source packages directly from the SEIS repo.
+The directory remains separate from the ten public source modules directly
+under `plugins/` so ownership and runtime boundaries stay explicit.
 
 Each package contains a strict `plugin.json`, a local profile, a read-only MCP
 entrypoint, and a skill contract. The application runtime in this directory
@@ -17,8 +18,8 @@ All 60 packages move together on the gradual release train:
 0.000000001 -> 0.00000001 -> 0.000000011 -> ... -> 1.0000 -> 1.0001 -> ... -> 45.0000
 ```
 
-The current release is `0.000000012`, represented as strict package semver
-`0.0.12`. A large, measured code change advances exactly one micro/revision
+The current release is `0.000000013`, represented as strict package semver
+`0.0.13`. A large, measured code change advances exactly one micro/revision
 step. An approved annual update advances exactly one major step. A bulk jump
 to `45.0000` is prohibited.
 
@@ -65,7 +66,7 @@ packages under this directory.
 
 The Command Center reads the generated app catalog at
 `apps/seis-core/data/seis-core-plugin-catalog.json`; this keeps the UI backed
-by the same 60 local manifests instead of a second static source of truth.
+by the same 60 public repository manifests instead of a second static source of truth.
 Its release panel reads
 `apps/seis-core/data/seis-core-plugin-release-readiness.json`, which reports
 the next large-code and annual transitions plus measured working-tree code
@@ -74,15 +75,17 @@ is met.
 
 ## Direct repository distribution
 
-This directory is the direct repository source for the SEIS Command Center
-application. The public repo marketplace intentionally keeps one install card,
-`seis-ai-agent@seis-repo`; the 60 app-owned packages are not copied into
-`packages/seis-ai` and do not become separate marketplace cards. They are
-available to the application from this repo through the generated source
-inventory and catalog:
+This directory is the direct public repository source for the SEIS Command
+Center application. The canonical public install card remains
+`seis-ai-agent@seis-repo`; the 60 app-owned packages are not personal plugins,
+are not copied into `packages/seis-ai`, and are also published as individual
+MIT packages in the public `seis-repo` marketplace. Each package is available
+to everyone directly from this repository through the generated marketplace,
+source inventory, and catalog:
 
 ```bash
 npm run automation:seis-core-plugin-sources
+npm run check:seis-core-plugin-public-repository
 npm run automation:seis-core-plugin-catalog
 npm run automation:seis-unified-plugin-suite
 npm run seis:core:surface
@@ -90,19 +93,23 @@ npm run check:seis-agent-plugin-integration
 ```
 
 Every new app package must be created under
-`plugins/seis-core/<plugin-name>`, pass the app plugin contract, appear in
-`apps/seis-core/data/seis-core-plugin-sources.json` and the catalog, and then
-appear in `plugins/seis-ai-agent/assets/unified-suite.json`. This keeps the
-repository as the source of truth while preserving the app-owned boundary.
+`plugins/seis-core/<plugin-name>`, pass the public app plugin contract, appear in
+`apps/seis-core/data/seis-core-plugin-sources.json` and the catalog, receive a
+`<plugin-name>@seis-repo` marketplace entry, and then appear in
+`plugins/seis-ai-agent/assets/unified-suite.json`. This keeps the public
+repository as the source of truth while preserving the app-owned runtime boundary.
 `seis:core:surface` is a read-only status and install-plan entrypoint for
 anyone working from the repository; it never copies packages into
-`packages/seis-ai`, changes marketplace entries, or performs external writes.
+`packages/seis-ai`, creates personal ownership, or performs external writes.
 
 ## Ownership and publication
 
 - canonical owner: `SEIS` repository, `plugins/seis-core/`
 - application surface: `apps/seis-core`
 - AI Core role: registry, contracts, permission policy, and read-only inspection
-- public marketplace: unchanged
+- public audience: everyone
+- public source license: MIT
+- public marketplace: one canonical orchestrator card plus 60 public app package cards
+- marketplace identity: `seis-repo` (audience: everyone)
 - public `seis-ai-agent` suite: separate release lifecycle
-- source status: internal local demo until license, provenance, and public-release reviews pass
+- live runtime status: local demo/auth-gated; network, secrets, writes, and provider calls remain approval-gated

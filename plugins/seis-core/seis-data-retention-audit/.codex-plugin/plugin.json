@@ -6,11 +6,11 @@
   "author": {
     "name": "emirhankudun-ux"
   },
-  "license": "UNLICENSED-LOCAL",
+  "license": "MIT",
   "keywords": [
     "seis",
-    "local",
-    "readonly",
+    "public-repository",
+    "read-only",
     "data",
     "and",
     "privacy"

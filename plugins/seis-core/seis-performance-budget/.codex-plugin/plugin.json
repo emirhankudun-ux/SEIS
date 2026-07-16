@@ -2,9 +2,18 @@
   "name": "seis-performance-budget",
   "version": "0.0.13",
   "description": "Audit bounded local performance budget declarations without running benchmarks.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "performance", "budget", "latency", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "performance",
+    "budget",
+    "latency",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Performance Budget",
@@ -12,7 +21,10 @@
     "longDescription": "Reads bounded local JSON budget declarations and reports missing or exceeded recorded values. It does not run benchmarks or claim measured runtime performance.",
     "developerName": "Emirhan Kudun",
     "category": "Developer",
-    "capabilities": ["local-read-only", "performance-review"],
+    "capabilities": [
+      "local-read-only",
+      "performance-review"
+    ],
     "defaultPrompt": "Audit performance budget declarations in this local repository."
   },
   "mcpServers": "./.mcp.json"

@@ -2,9 +2,18 @@
   "name": "seis-a11y-regression",
   "version": "0.0.13",
   "description": "Audit declared local accessibility coverage without running a UI.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "accessibility", "a11y", "regression", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "accessibility",
+    "a11y",
+    "regression",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS A11y Regression",
@@ -12,7 +21,10 @@
     "longDescription": "Audits bounded local JSON accessibility declarations. It does not launch a browser, inspect rendered pixels, or certify compliance.",
     "developerName": "Emirhan Kudun",
     "category": "Design",
-    "capabilities": ["local-read-only", "accessibility-review"],
+    "capabilities": [
+      "local-read-only",
+      "accessibility-review"
+    ],
     "defaultPrompt": "Audit declared accessibility coverage in this local repository."
   },
   "mcpServers": "./.mcp.json"

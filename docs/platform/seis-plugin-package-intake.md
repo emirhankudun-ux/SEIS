@@ -11,7 +11,7 @@ The submitted folder is a local evidence package of 75 images and screenshots. I
 | Group | Count | Use |
 |---|---:|---|
 | Codex marketplace category screens | 7 | High-level helper families for design, developer tools, productivity, research, security, and workflow routing. |
-| Codex plugin list screens | 45 | Detailed installed/visible plugin inventory, including the personal SEIS plugin and many helper plugin cards. |
+| Codex plugin list screens | 45 | Detailed installed/visible plugin inventory, including the legacy personal SEIS plugin alias and many helper plugin cards. |
 | Technology taxonomy screens | 3 | Language, AI/data, cloud/DevOps, web/mobile, database, tooling, and design-suite capability map. |
 | Reference education images | 20 | Programming language and learning-roadmap references for long-horizon SEIS capability planning. |
 

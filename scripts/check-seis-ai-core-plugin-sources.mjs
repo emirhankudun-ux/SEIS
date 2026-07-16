@@ -43,7 +43,12 @@ for (const entry of entries) {
     if (profile.releaseRevision !== currentRelease.revision) fail(`${entry.name}: profile releaseRevision is not the active app release revision`);
     if ((profile.releaseMicroUnits ?? null) !== (currentRelease.microUnits ?? null)) fail(`${entry.name}: profile releaseMicroUnits is not the active app release micro units`);
     if (profile.implementationState !== "functional-local-demo") fail(`${entry.name}: implementation state is not functional-local-demo`);
-    if (profile.status !== "approved-local-readonly") fail(`${entry.name}: status is not approved-local-readonly`);
+    if (profile.status !== "approved-public-readonly") fail(`${entry.name}: status is not approved-public-readonly`);
+    if (manifest.license !== "MIT") fail(`${entry.name}: manifest must use the public MIT license`);
+    if (profile.license !== "MIT") fail(`${entry.name}: profile must use the public MIT license`);
+    if (profile.publicRepositoryAvailable !== true) fail(`${entry.name}: profile must be public-repository available`);
+    if (profile.publicAudience !== "everyone") fail(`${entry.name}: profile public audience must be everyone`);
+    if (profile.publicMarketplace !== true) fail(`${entry.name}: app-owned plugin must be available in the public seis-repo marketplace`);
     if (!Array.isArray(profile.permissions?.write) || profile.permissions.write.length !== 0) fail(`${entry.name}: write permissions are not empty`);
     if (!Array.isArray(profile.permissions?.network) || profile.permissions.network.length !== 0) fail(`${entry.name}: network permissions are not empty`);
     if (!Array.isArray(profile.permissions?.secrets) || profile.permissions.secrets.length !== 0) fail(`${entry.name}: secret permissions are not empty`);

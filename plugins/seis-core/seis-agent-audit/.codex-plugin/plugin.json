@@ -2,9 +2,18 @@
   "name": "seis-agent-audit",
   "version": "0.0.13",
   "description": "Audit local agent evidence, cancellation and handoff metadata without executing agents.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "agent", "audit", "permissions", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "agent",
+    "audit",
+    "permissions",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Agent Audit",
@@ -12,7 +21,10 @@
     "longDescription": "Inspects bounded local agent JSON contracts for cancellation, evidence, audit and handoff fields. It never starts an agent or grants permission.",
     "developerName": "Emirhan Kudun",
     "category": "AI",
-    "capabilities": ["local-read-only", "agent-governance"],
+    "capabilities": [
+      "local-read-only",
+      "agent-governance"
+    ],
     "defaultPrompt": "Audit agent evidence and handoff metadata in this local repository."
   },
   "mcpServers": "./.mcp.json"

@@ -85,14 +85,14 @@ function buildRegistry() {
       pluginCount: physicalEntries.filter((entry) => entry.sourcePath.startsWith(`${applicationPluginSourceRoot}/`)).length,
     },
     purpose:
-      "Keep every SEIS AI plugin record in the SEIS repository and expose a deterministic 5000-entry capability catalog to the AI Core without creating 5000 artificial source folders or public marketplace cards. Personal plugin source packages remain owned by the SEIS Command Center application.",
+      "Keep every SEIS AI plugin record in the public SEIS repository and expose a deterministic 5000-entry capability catalog to the AI Core without creating 5000 artificial source folders. Public app plugin source packages remain owned by the SEIS Command Center application.",
     canonicalOwnership: {
       repository: "SEIS",
       repositoryRole: "canonical-source-of-truth",
       registryPath,
       runtimePackage: "packages/seis-ai",
       runtimeEntryPoint: "packages/seis-ai/src/lib/plugin-registry.mjs",
-      coreSourcePolicy: "packages/seis-ai owns registry, contracts, permission policy, and read-only inspection; it does not own personal plugin source packages",
+      coreSourcePolicy: "packages/seis-ai owns registry, contracts, permission policy, and read-only inspection; it does not own public app plugin source packages",
       applicationPluginSourceRoot,
       applicationPluginManifest,
       applicationPluginReleaseTrain: releaseTrainPath,
@@ -103,8 +103,10 @@ function buildRegistry() {
       applicationPluginReleaseMicroUnits: currentRelease.microUnits ?? null,
       personalPluginCoverage: personalCoveragePath,
       orchestrator: canonicalInstallId,
-      publicMarketplacePolicy: "seis-ai-agent-is-the-only-public-plugin-with-embedded-source-modules",
+      publicMarketplacePolicy: "seis-ai-agent-is-the-canonical-orchestrator-and-app-sources-are-public-seis-repo-marketplace-packages",
       publicMarketplacePath: ".agents/plugins/marketplace.json",
+      publicRepositoryAvailable: true,
+      publicAudience: "everyone",
     },
     target: {
       requestedPluginCount: targetCount,
@@ -118,19 +120,24 @@ function buildRegistry() {
       appReleaseMicroUnits: currentRelease.microUnits ?? null,
       catalogOnlyEntryCount: catalogEntries.length,
       functionalLocalDemoCount: physicalEntries.filter((entry) => entry.implementationState === "functional-local-demo").length,
-      publicMarketplacePluginCount: 1,
+      publicMarketplacePluginCount: APP_PLUGIN_EXPANSION_TARGET + 1,
+      applicationMarketplacePluginCount: physicalEntries.filter((entry) => entry.sourcePath.startsWith(`${applicationPluginSourceRoot}/`)).length,
+      publicRepositoryPluginCount: physicalEntries.filter((entry) => entry.sourcePath.startsWith(`${applicationPluginSourceRoot}/`)).length,
       personalPluginCount: personalCoverage.personalMarketplace?.pluginCount ?? null,
       personalRepoCounterpartCount: personalCoverage.repository?.counterpartCount ?? null,
       countRule: "registryEntryCount must equal requestedPluginCount; physical and catalog-only states must remain distinct",
     },
     sourceRoots,
     migration: {
-      sourceClass: "user-selected-local-plugin-root",
+      sourceClass: "public-repository-plugin-source",
       destinationRoot: applicationPluginSourceRoot,
       destinationOwner: "apps/seis-core",
       applicationPluginManifest,
       migratedOn: generatedAt,
       migratedPluginCount: physicalEntries.filter((entry) => entry.sourcePath.startsWith(`${applicationPluginSourceRoot}/`)).length,
+      legacyCompatibilityCount: personalCoverage.personalMarketplace?.pluginCount ?? null,
+      legacyRepoCounterpartCount: personalCoverage.repository?.counterpartCount ?? null,
+      legacyCompatibilityCoveragePath: personalCoveragePath,
       personalPluginCount: personalCoverage.personalMarketplace?.pluginCount ?? null,
       personalRepoCounterpartCount: personalCoverage.repository?.counterpartCount ?? null,
       personalPluginCoveragePath: personalCoveragePath,
@@ -139,7 +146,7 @@ function buildRegistry() {
       copiedSecrets: false,
       publicReleaseAllowed: false,
       licensePolicy:
-        "UNLICENSED-LOCAL, missing-license, or local-developer packages remain repo-internal until ownership, license, provenance, and public-release review passes.",
+        "Public app packages use MIT metadata; live external capability release remains separately approval-gated.",
     },
     catalogModel: {
       recordType: "capability-plugin-slot",
@@ -224,8 +231,10 @@ function createPhysicalEntry({ sourcePath, manifest }) {
     availability: implementationState === "functional-local-demo" ? "local-demo" : "source-module",
     sourcePath,
     entrypoint: profile?.entrypoint || null,
-    canonicalInstallId,
-    publicMarketplace: false,
+    canonicalInstallId: isApplicationPlugin ? `${manifest.name || manifest.id}@seis-repo` : canonicalInstallId,
+    publicMarketplace: sourcePath === "plugins/seis-ai-agent" || (isApplicationPlugin && license === "MIT"),
+    publicRepositoryAvailable: sourcePath.startsWith(`${applicationPluginSourceRoot}/`) && license === "MIT",
+    publicAudience: sourcePath.startsWith(`${applicationPluginSourceRoot}/`) ? "everyone" : null,
     routeEligible: implementationState === "functional-local-demo" && license === "MIT",
     permissions: profile?.permissions || { read: ["declared local SEIS scope"], write: [], network: [], secrets: [] },
     privacyClass: "repo-internal-public-safe-boundary",
@@ -234,7 +243,7 @@ function createPhysicalEntry({ sourcePath, manifest }) {
     rollback: profile?.rollback || "Disable the registry record or revert the repository source-module commit.",
     reviewState: profile?.reviewState || "repository-source-review",
     provenance: sourcePath.startsWith(`${applicationPluginSourceRoot}/`)
-      ? "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted."
+      ? "Public SEIS repository source owned by the SEIS Command Center application boundary."
       : "SEIS repository-owned source module.",
     relatedGoalIds: ["SEIS-GOAL-021"],
     declaredMcpServerCount: Object.keys(mcp?.mcpServers || {}).length,
@@ -327,7 +336,11 @@ function validateRegistry(record) {
   if (new Set(record.entries.map((entry) => entry.id)).size !== targetCount) failures.push("plugin ids must be unique");
   if (new Set(record.entries.map((entry) => entry.slug)).size !== targetCount) failures.push("plugin slugs must be unique");
   if (record.target.catalogOnlyEntryCount + record.target.physicalPluginCount !== targetCount) failures.push("physical and catalog counts must add to target");
-  if (record.target.publicMarketplacePluginCount !== 1) failures.push("registry must preserve one public marketplace plugin");
+  if (record.target.publicMarketplacePluginCount !== APP_PLUGIN_EXPANSION_TARGET + 1) failures.push("registry public marketplace plugin count is stale");
+  if (record.target.applicationMarketplacePluginCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push("registry app marketplace plugin count is stale");
+  if (record.target.publicRepositoryPluginCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push("registry public repository plugin count is stale");
+  if (record.canonicalOwnership?.publicRepositoryAvailable !== true) failures.push("registry must mark the public repository source boundary");
+  if (record.canonicalOwnership?.publicAudience !== "everyone") failures.push("registry public audience must be everyone");
   if (record.target.appOwnedPluginCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push("registry app-owned plugin count is stale");
   if (record.target.appReleaseLabel !== currentRelease.label) failures.push("registry target app release label is stale");
   if (record.target.appReleaseSemver !== currentRelease.semver) failures.push("registry target app release semver is stale");

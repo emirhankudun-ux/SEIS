@@ -12,8 +12,16 @@
     "longDescription": "Inspect an explicitly selected directory without executing code, following symlinks, copying data, or scanning the device.",
     "developerName": "Local developer",
     "category": "Developer",
-    "capabilities": ["metadata-only", "symlink-refusal"],
+    "capabilities": [
+      "metadata-only",
+      "symlink-refusal"
+    ],
     "defaultPrompt": "Discover plugins in this explicitly selected directory."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

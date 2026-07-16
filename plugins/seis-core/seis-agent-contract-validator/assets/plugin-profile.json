@@ -10,13 +10,15 @@
   "category": "agent-governance",
   "owner": "@seis-ai-agent",
   "publisher": "emirhankudun-ux",
-  "sourceClassification": "original-SEIS-local",
-  "license": "UNLICENSED-LOCAL",
-  "status": "approved-local-readonly",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
   "implementationState": "functional-local-demo",
   "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
   "permissions": {
-    "read": ["bounded local JSON agent contracts"],
+    "read": [
+      "bounded local JSON agent contracts"
+    ],
     "write": [],
     "network": [],
     "secrets": []
@@ -27,6 +29,10 @@
     "node scripts/seis-agent-contract-validator-mcp-server.mjs --validate --path /path/to/tree"
   ],
   "rollback": "Disable or remove the local plugin; no source data is mutated.",
-  "reviewState": "local-development",
-  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+  "reviewState": "public-repository-preview",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
 }

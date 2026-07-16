@@ -20,7 +20,7 @@ Use this skill when a SEIS registry, plugin inventory, agent inventory, provider
 - Inspect JSON files in bounded paths containing `registry`, `registries`, or `catalog`.
 - JSON-only bounded inspection; YAML, databases, and remote registries require native validators.
 - No registry edits, generated-file rewrites, dependency execution, network, secrets, or external writes.
-- `approved-local-readonly` and `functional-local-demo` describe this plugin's local scope only.
+- `approved-public-readonly` and `functional-local-demo` describe this plugin's public repository/read-only scope; live external actions remain gated.
 
 ## MCP
 

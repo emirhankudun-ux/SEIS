@@ -36,7 +36,8 @@ describe("SEIS AI Core plugin registry", () => {
     assert.equal(registry.target.catalogOnlyEntryCount, EXPECTED_CATALOG_ONLY_ENTRY_COUNT);
     assert.equal(registry.target.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(registry.target.functionalLocalDemoCount, APP_PLUGIN_EXPANSION_TARGET);
-    assert.equal(registry.target.publicMarketplacePluginCount, 1);
+    assert.equal(registry.target.publicMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET + 1);
+    assert.equal(registry.target.applicationMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(registry.target.personalPluginCount, 55);
     assert.equal(registry.target.personalRepoCounterpartCount, 55);
     assert.equal(registry.canonicalOwnership.applicationPluginSourceRoot, "plugins/seis-core");
@@ -73,9 +74,11 @@ describe("SEIS AI Core plugin registry", () => {
     assert.equal(status.applicationPluginReleaseMicroUnits, registry.applicationRelease.microUnits);
     assert.equal(status.personalPluginCount, 55);
     assert.equal(status.personalRepoCounterpartCount, 55);
+    assert.equal(status.publicMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET + 1);
+    assert.equal(status.applicationMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.personalPluginCoveragePath, "content/development/seis-ai-core-personal-plugin-coverage.json");
     assert.equal(status.migration.personalMarketplaceMutation, false);
     assert.ok(status.matches.length <= 5);
-    assert.equal(status.routeEligibleCount, 0);
+    assert.equal(status.routeEligibleCount, APP_PLUGIN_EXPANSION_TARGET);
   });
 });

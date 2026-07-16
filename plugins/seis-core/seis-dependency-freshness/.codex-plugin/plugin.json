@@ -2,9 +2,18 @@
   "name": "seis-dependency-freshness",
   "version": "0.0.13",
   "description": "Audit local dependency declaration and lockfile coverage without registry access.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "dependency", "lockfile", "supply-chain", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "dependency",
+    "lockfile",
+    "supply-chain",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Dependency Freshness",
@@ -12,7 +21,10 @@
     "longDescription": "Reports declared package dependencies and whether a matching local lockfile is present. It does not query registries or claim vulnerability freshness.",
     "developerName": "Emirhan Kudun",
     "category": "Security",
-    "capabilities": ["local-read-only", "supply-chain-review"],
+    "capabilities": [
+      "local-read-only",
+      "supply-chain-review"
+    ],
     "defaultPrompt": "Audit dependency and lockfile coverage in this local repository."
   },
   "mcpServers": "./.mcp.json"

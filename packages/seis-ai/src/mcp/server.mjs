@@ -537,7 +537,7 @@ export function buildServer() {
 
   server.tool(
     AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL,
-    "Read the canonical SEIS AI Core Plugin Registry for the exact 5000-entry target, repo-owned physical plugins, app-owned personal sources, catalog-only capability slots, permission boundaries, and bounded search. Read-only; catalog presence never claims an implemented or connected plugin.",
+    "Read the canonical SEIS AI Core Plugin Registry for the exact 5000-entry target, repo-owned physical plugins, public app-owned repository sources, legacy compatibility coverage, catalog-only capability slots, permission boundaries, and bounded search. Read-only; catalog presence never claims an implemented or connected plugin.",
     {
       query: z.string().optional().describe("Optional search across ids, names, owners, categories, domains, and operations"),
       limit: z.number().optional().int().min(1).max(100).describe("Maximum search results from 1 to 100"),

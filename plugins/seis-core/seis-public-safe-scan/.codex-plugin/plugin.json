@@ -2,9 +2,18 @@
   "name": "seis-public-safe-scan",
   "version": "0.0.13",
   "description": "Scan bounded local text for redacted public-private boundary findings.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "security", "privacy", "public-safe", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "security",
+    "privacy",
+    "public-safe",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Public-Safe Scan",
@@ -12,7 +21,10 @@
     "longDescription": "Performs a bounded local heuristic scan and emits pattern codes and relative paths only. It never prints matched values, uploads files, or certifies public readiness.",
     "developerName": "Emirhan Kudun",
     "category": "Security",
-    "capabilities": ["local-read-only", "redacted-findings"],
+    "capabilities": [
+      "local-read-only",
+      "redacted-findings"
+    ],
     "defaultPrompt": "Run a redacted public-private boundary scan on this local repository."
   },
   "mcpServers": "./.mcp.json"

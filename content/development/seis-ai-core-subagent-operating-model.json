@@ -2,7 +2,7 @@
   "id": "seis-ai-core-subagent-operating-model",
   "version": "2026.06.23",
   "status": "active",
-  "purpose": "Define the bounded SEIS AI Core sub-agent operating model for the personal SEIS plugin lanes and the five-year development cadence.",
+  "purpose": "Define the bounded SEIS AI Core sub-agent operating model for the public SEIS plugin lanes, legacy compatibility aliases, and the five-year development cadence.",
   "qualityGate": "npm run check:seis-ai-core-subagent-operating-model",
   "sourceOfTruth": {
     "aiCoreDoc": "docs/ai/seis-ai-core.md",

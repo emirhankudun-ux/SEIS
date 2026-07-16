@@ -23,7 +23,7 @@ test("SEIS Core owns the complete local plugin expansion inside plugins/seis-cor
   assert.ok(plugins.every((plugin) => validatePluginContract(plugin, readCurrentRelease(repoRoot)).length === 0));
 });
 
-test("all personal plugin profiles remain deny-by-default", () => {
+test("all public repository app plugin profiles remain deny-by-default", () => {
   const plugins = discoverApplicationPlugins(repoRoot);
   for (const plugin of plugins) {
     assert.deepEqual(plugin.profile.permissions.write, []);

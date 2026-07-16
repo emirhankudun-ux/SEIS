@@ -12,8 +12,16 @@
     "longDescription": "Read saved repository metrics and report their provenance and coverage; no GitHub API call is made.",
     "developerName": "Local developer",
     "category": "Developer",
-    "capabilities": ["local-readonly-analysis", "provenance-reporting"],
+    "capabilities": [
+      "local-readonly-analysis",
+      "provenance-reporting"
+    ],
     "defaultPrompt": "Review recorded GitHub-style metrics locally."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

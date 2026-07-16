@@ -91,9 +91,13 @@ ensure(missingSourcePaths.length === 0, `requested app source paths missing: ${m
 ensure(appSources.owner === "apps/seis-core", "app source inventory must remain owned by apps/seis-core");
 ensure(appCatalog.distribution?.sourceAvailableInRepository === true, "app catalog must expose direct repo availability");
 ensure(appCatalog.distribution?.installSurface === "repo-source-app", "app catalog must expose the direct repo app surface");
-ensure(appCatalog.distribution?.marketplaceEntryCount === 0, "app-owned plugins must not become marketplace cards");
+ensure(appCatalog.distribution?.marketplaceName === "seis-repo", "app catalog must identify the public seis-repo marketplace");
+ensure(appCatalog.distribution?.publicMarketplace === true, "app-owned plugins must be public marketplace cards");
+ensure(appCatalog.distribution?.marketplaceEntryCount === appSources.pluginCount, "app catalog marketplace count must match app source count");
 ensure(suite.applicationDistribution?.sourceAvailableInRepository === true, "suite must expose direct repo app availability");
-ensure(suite.applicationDistribution?.marketplaceEntryCount === 0, "suite app-owned distribution must not create marketplace cards");
+ensure(suite.applicationDistribution?.marketplaceName === "seis-repo", "suite must identify the public seis-repo marketplace");
+ensure(suite.applicationDistribution?.publicMarketplace === true, "suite app-owned distribution must be public marketplace cards");
+ensure(suite.applicationDistribution?.marketplaceEntryCount === appSources.pluginCount, "suite marketplace count must match app source count");
 
 const report = {
   ok: failures.length === 0,
@@ -115,7 +119,9 @@ const report = {
     sourceRoot: "plugins/seis-core",
     sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
     installSurface: "repo-source-app",
-    marketplaceEntryCount: 0,
+    marketplaceName: "seis-repo",
+    publicMarketplace: true,
+    marketplaceEntryCount: appSources.pluginCount,
   },
   failures,
 };

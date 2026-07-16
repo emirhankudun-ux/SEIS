@@ -1,7 +1,7 @@
 # SEIS Public Plugin Family
 
 - Generated: 2026-07-12
-- Mode: single_public_seis_agent_with_embedded_modules
+- Mode: public_seis_agent_with_public_app_repository_plugins
 - Marketplace: seis-repo
 - Public audience: everyone
 - SEIS AI orchestrator: seis-ai-agent@seis-repo
@@ -9,16 +9,24 @@
 ## Public Distribution
 
 - Canonical install: seis-ai-agent@seis-repo
-- Public plugin count: 1
+- Public plugin count: 61
 - Mode: single-public-plugin
 - Unified suite: plugins/seis-ai-agent/assets/unified-suite.json
 - Standalone lanes: source-module-only
 
-## Public Plugin
+## Canonical Public Plugin
 
 | plugin | role | source | category | install policy | auth policy | runtime state | SEIS AI |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | seis-ai-agent | orchestrator | ./plugins/seis-ai-agent | Developer | AVAILABLE | ON_INSTALL | local_demo_or_auth_gated | connected |
+
+## Public SEIS Core Repository Packages
+
+- Marketplace entries: 60
+- Source root: plugins/seis-core
+- Audience: everyone
+- License: MIT
+- Runtime: local demo or auth-gated; live external capabilities remain approval-gated.
 
 ## Embedded Modules
 
@@ -51,8 +59,9 @@
 
 ## Long-Horizon Rules
 
-- Keep SEIS-Agent as the only public installation and orchestration layer for cross-lane work.
+- Keep SEIS-Agent as the canonical orchestration layer for cross-lane work.
 - Keep source modules under plugins/seis-* embedded in SEIS-Agent, not exposed as separate public marketplace plugins.
+- Keep every app-owned package under plugins/seis-core available as a public MIT package in the seis-repo marketplace.
 - Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.
 - Validate manifests, MCP tools, marketplace entries, and SEIS-AI lane wiring before claiming public readiness.
 - Record mock, disabled, planned, and connected states honestly.

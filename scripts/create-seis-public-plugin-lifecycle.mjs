@@ -49,6 +49,8 @@ const publicPlugins = (publicFamily.publicPlugins || []).map((plugin) => {
     mcpServers: Object.keys(mcp.mcpServers || {}),
   };
 });
+const applicationPluginCount = publicFamily.applicationPlugins?.length || 0;
+const repoMarketplaceEntryCount = marketplace.plugins?.length || 0;
 const embeddedModules = (publicFamily.embeddedModules || publicFamily.plugins || []).map((module) => {
   const manifest = readJson(path.join(module.sourcePath, ".codex-plugin", "plugin.json"));
   const mcp = readJson(path.join(module.sourcePath, ".mcp.json"));
@@ -126,7 +128,7 @@ const phases = [
       "npm run check:seis-public-plugin-external-install-proof",
       "disposable local stage excludes macOS metadata and forbidden artifact classes",
     ],
-    exitRule: "A disposable local artifact stage contains the sole marketplace plugin plus its embedded module suite without forbidden release artifacts. This does not prove an independent installation.",
+    exitRule: "A disposable local artifact stage contains the canonical suite and every public app package from the repo marketplace without forbidden release artifacts. This does not prove an independent installation.",
   },
   {
     id: "fresh-task-reload",
@@ -226,7 +228,7 @@ const lifecycle = {
   independentRunnerEvidenceIntake,
   marketplace: marketplacePath,
   purpose:
-    "Keep the single public SEIS-Agent plugin and its embedded SEIS source modules maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+    "Keep the canonical public SEIS-Agent suite, its embedded SEIS source modules, and the 60 public app package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
   publicAudience: "everyone",
   orchestrator: "seis-ai-agent@seis-repo",
   publicDistribution: {
@@ -234,6 +236,9 @@ const lifecycle = {
     embeddedModuleCount: embeddedModules.length,
     canonicalInstallId: "seis-ai-agent@seis-repo",
     mode: "single-public-plugin",
+    marketplaceName: publicFamily.marketplace?.name || "seis-repo",
+    repoMarketplaceEntryCount,
+    applicationPluginCount,
   },
   releasePolicy: {
     currentChannel: "internal-review-local-proof",
@@ -338,7 +343,7 @@ const lifecycle = {
     "npm run check:seis-repo-marketplace",
   ],
   completionRule:
-    "The lifecycle is ready for internal review when the single public SEIS-Agent suite, embedded module discovery, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval.",
+    "The lifecycle is ready for internal review when the canonical public SEIS-Agent suite, its embedded module discovery, all public seis-repo app package cards, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval.",
 };
 
 const report = renderReport(lifecycle);
@@ -362,6 +367,9 @@ function validateLifecycle(contract) {
   if (contract.embeddedModules.length < 10) failures.push("lifecycle must track every current embedded SEIS source module");
   if (contract.publicDistribution?.publicPluginCount !== 1) failures.push("lifecycle public distribution must expose one public plugin");
   if (contract.publicDistribution?.embeddedModuleCount !== contract.embeddedModules.length) failures.push("lifecycle embedded module count must match its module matrix");
+  if (contract.publicDistribution?.marketplaceName !== "seis-repo") failures.push("lifecycle must identify the seis-repo marketplace");
+  if (contract.publicDistribution?.repoMarketplaceEntryCount !== repoMarketplaceEntryCount) failures.push("lifecycle marketplace count must match the repo marketplace");
+  if (contract.publicDistribution?.applicationPluginCount !== applicationPluginCount) failures.push("lifecycle app package count must match the public family");
   if (contract.orchestrator !== "seis-ai-agent@seis-repo") failures.push("orchestrator must be seis-ai-agent@seis-repo");
   if (contract.freshTaskProofContract !== freshTaskProofPath) failures.push("lifecycle must point at the fresh-task proof contract");
   if (contract.freshTaskReloadEvidence !== freshTaskReloadEvidencePath) failures.push("lifecycle must point at the fresh-task reload evidence contract");
@@ -459,6 +467,13 @@ ${moduleRows}
 - Component count: ${contract.unifiedSuiteSummary.componentCount}
 - Default install mode: ${contract.unifiedSuiteSummary.defaultInstallMode}
 - Source module install mode: ${contract.unifiedSuiteSummary.standaloneLaneInstallMode}
+
+## Public SEIS Repo Marketplace
+
+- Marketplace: ${contract.publicDistribution.marketplaceName}
+- Total entries: ${contract.publicDistribution.repoMarketplaceEntryCount}
+- Canonical orchestrator entries: ${contract.publicDistribution.publicPluginCount}
+- App package entries: ${contract.publicDistribution.applicationPluginCount}
 
 ## Independent Runner Evidence
 

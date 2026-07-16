@@ -2,8 +2,8 @@
   "version": 3,
   "id": "seis-public-plugin-family",
   "generatedAt": "2026-07-12",
-  "mode": "single_public_seis_agent_with_embedded_modules",
-  "summary": "SEIS exposes only SEIS-Agent as a public repo marketplace plugin. SEIS, Cloud, Code, Design, Data, Security, Research, Automation, and Product remain preserved source modules embedded inside SEIS-Agent rather than separate public installs.",
+  "mode": "public_seis_agent_with_public_app_repository_plugins",
+  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes the 60 app-owned MIT packages directly from the public SEIS repository marketplace. The specialist lanes remain embedded source modules inside SEIS-Agent.",
   "defaultInstall": {
     "installId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
@@ -16,7 +16,9 @@
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL",
     "publicAudience": "everyone",
-    "publicPluginCount": 1,
+    "publicPluginCount": 61,
+    "canonicalOrchestratorCount": 1,
+    "applicationPluginCount": 60,
     "entries": [
       {
         "name": "seis-ai-agent",
@@ -24,9 +26,971 @@
         "category": "Developer",
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-a11y-regression",
+        "sourcePath": "./plugins/seis-core/seis-a11y-regression",
+        "category": "Design",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-action-pin-audit",
+        "sourcePath": "./plugins/seis-core/seis-action-pin-audit",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-agent-audit",
+        "sourcePath": "./plugins/seis-core/seis-agent-audit",
+        "category": "AI",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-agent-contract-validator",
+        "sourcePath": "./plugins/seis-core/seis-agent-contract-validator",
+        "category": "AI",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-approval-gate-review",
+        "sourcePath": "./plugins/seis-core/seis-approval-gate-review",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-architecture-drift",
+        "sourcePath": "./plugins/seis-core/seis-architecture-drift",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-artifact-attestation",
+        "sourcePath": "./plugins/seis-core/seis-artifact-attestation",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-branch-protection-audit",
+        "sourcePath": "./plugins/seis-core/seis-branch-protection-audit",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-canonical-registry-validator",
+        "sourcePath": "./plugins/seis-core/seis-canonical-registry-validator",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-changelog-validator",
+        "sourcePath": "./plugins/seis-core/seis-changelog-validator",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-codeowners-audit",
+        "sourcePath": "./plugins/seis-core/seis-codeowners-audit",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-community-health",
+        "sourcePath": "./plugins/seis-core/seis-community-health",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-context-efficiency",
+        "sourcePath": "./plugins/seis-core/seis-context-efficiency",
+        "category": "AI",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-contract-compatibility",
+        "sourcePath": "./plugins/seis-core/seis-contract-compatibility",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-contributor-map",
+        "sourcePath": "./plugins/seis-core/seis-contributor-map",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-cost-latency-budget",
+        "sourcePath": "./plugins/seis-core/seis-cost-latency-budget",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-data-retention-audit",
+        "sourcePath": "./plugins/seis-core/seis-data-retention-audit",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-dependency-freshness",
+        "sourcePath": "./plugins/seis-core/seis-dependency-freshness",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-design-token-audit",
+        "sourcePath": "./plugins/seis-core/seis-design-token-audit",
+        "category": "Design",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-doc-indexer",
+        "sourcePath": "./plugins/seis-core/seis-doc-indexer",
+        "category": "Data",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-docs-freshness",
+        "sourcePath": "./plugins/seis-core/seis-docs-freshness",
+        "category": "Data",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-dora-metrics",
+        "sourcePath": "./plugins/seis-core/seis-dora-metrics",
+        "category": "Observability",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-download-anomaly",
+        "sourcePath": "./plugins/seis-core/seis-download-anomaly",
+        "category": "Data",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-github-metrics-collector",
+        "sourcePath": "./plugins/seis-core/seis-github-metrics-collector",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-goal-dependency-map",
+        "sourcePath": "./plugins/seis-core/seis-goal-dependency-map",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-goal-integrity",
+        "sourcePath": "./plugins/seis-core/seis-goal-integrity",
+        "category": "Productivity",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-issue-triage",
+        "sourcePath": "./plugins/seis-core/seis-issue-triage",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-license-compatibility",
+        "sourcePath": "./plugins/seis-core/seis-license-compatibility",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-localization-coverage",
+        "sourcePath": "./plugins/seis-core/seis-localization-coverage",
+        "category": "Data",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-maintainer-risk",
+        "sourcePath": "./plugins/seis-core/seis-maintainer-risk",
+        "category": "Governance",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-mcp-inventory",
+        "sourcePath": "./plugins/seis-core/seis-mcp-inventory",
+        "category": "AI",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-migration-guide-check",
+        "sourcePath": "./plugins/seis-core/seis-migration-guide-check",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-model-fallback",
+        "sourcePath": "./plugins/seis-core/seis-model-fallback",
+        "category": "AI",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-offline-mode-check",
+        "sourcePath": "./plugins/seis-core/seis-offline-mode-check",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-package-adoption",
+        "sourcePath": "./plugins/seis-core/seis-package-adoption",
+        "category": "Data",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-performance-budget",
+        "sourcePath": "./plugins/seis-core/seis-performance-budget",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-personal-plugin-discovery",
+        "sourcePath": "./plugins/seis-core/seis-personal-plugin-discovery",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-plugin-migration",
+        "sourcePath": "./plugins/seis-core/seis-plugin-migration",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-pr-cycle-time",
+        "sourcePath": "./plugins/seis-core/seis-pr-cycle-time",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-prompt-injection-audit",
+        "sourcePath": "./plugins/seis-core/seis-prompt-injection-audit",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-provider-health",
+        "sourcePath": "./plugins/seis-core/seis-provider-health",
+        "category": "AI",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-public-safe-scan",
+        "sourcePath": "./plugins/seis-core/seis-public-safe-scan",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-rag-citation-coverage",
+        "sourcePath": "./plugins/seis-core/seis-rag-citation-coverage",
+        "category": "Data",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-release-cadence",
+        "sourcePath": "./plugins/seis-core/seis-release-cadence",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-release-readiness",
+        "sourcePath": "./plugins/seis-core/seis-release-readiness",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-repository-health",
+        "sourcePath": "./plugins/seis-core/seis-repository-health",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-repository-scorecard",
+        "sourcePath": "./plugins/seis-core/seis-repository-scorecard",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-rollback-readiness",
+        "sourcePath": "./plugins/seis-core/seis-rollback-readiness",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-route-explainer",
+        "sourcePath": "./plugins/seis-core/seis-route-explainer",
+        "category": "AI",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-sbom-generator",
+        "sourcePath": "./plugins/seis-core/seis-sbom-generator",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-secret-boundary-scan",
+        "sourcePath": "./plugins/seis-core/seis-secret-boundary-scan",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-semver-audit",
+        "sourcePath": "./plugins/seis-core/seis-semver-audit",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-source-provenance",
+        "sourcePath": "./plugins/seis-core/seis-source-provenance",
+        "category": "Productivity",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-technology-ontology",
+        "sourcePath": "./plugins/seis-core/seis-technology-ontology",
+        "category": "Data",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-test-flakiness",
+        "sourcePath": "./plugins/seis-core/seis-test-flakiness",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-tool-permission-audit",
+        "sourcePath": "./plugins/seis-core/seis-tool-permission-audit",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-vulnerability-triage",
+        "sourcePath": "./plugins/seis-core/seis-vulnerability-triage",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-workflow-linter",
+        "sourcePath": "./plugins/seis-core/seis-workflow-linter",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-workflow-permission-audit",
+        "sourcePath": "./plugins/seis-core/seis-workflow-permission-audit",
+        "category": "Security",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-workspace-inspector",
+        "sourcePath": "./plugins/seis-core/seis-workspace-inspector",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
       }
     ]
   },
+  "applicationPlugins": [
+    {
+      "name": "seis-a11y-regression",
+      "sourcePath": "./plugins/seis-core/seis-a11y-regression",
+      "category": "Design",
+      "installId": "seis-a11y-regression@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-action-pin-audit",
+      "sourcePath": "./plugins/seis-core/seis-action-pin-audit",
+      "category": "Security",
+      "installId": "seis-action-pin-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-agent-audit",
+      "sourcePath": "./plugins/seis-core/seis-agent-audit",
+      "category": "AI",
+      "installId": "seis-agent-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-agent-contract-validator",
+      "sourcePath": "./plugins/seis-core/seis-agent-contract-validator",
+      "category": "AI",
+      "installId": "seis-agent-contract-validator@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-approval-gate-review",
+      "sourcePath": "./plugins/seis-core/seis-approval-gate-review",
+      "category": "Developer",
+      "installId": "seis-approval-gate-review@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-architecture-drift",
+      "sourcePath": "./plugins/seis-core/seis-architecture-drift",
+      "category": "Developer",
+      "installId": "seis-architecture-drift@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-artifact-attestation",
+      "sourcePath": "./plugins/seis-core/seis-artifact-attestation",
+      "category": "Security",
+      "installId": "seis-artifact-attestation@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-branch-protection-audit",
+      "sourcePath": "./plugins/seis-core/seis-branch-protection-audit",
+      "category": "Security",
+      "installId": "seis-branch-protection-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-canonical-registry-validator",
+      "sourcePath": "./plugins/seis-core/seis-canonical-registry-validator",
+      "category": "Developer",
+      "installId": "seis-canonical-registry-validator@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-changelog-validator",
+      "sourcePath": "./plugins/seis-core/seis-changelog-validator",
+      "category": "Developer",
+      "installId": "seis-changelog-validator@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-codeowners-audit",
+      "sourcePath": "./plugins/seis-core/seis-codeowners-audit",
+      "category": "Developer",
+      "installId": "seis-codeowners-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-community-health",
+      "sourcePath": "./plugins/seis-core/seis-community-health",
+      "category": "Developer",
+      "installId": "seis-community-health@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-context-efficiency",
+      "sourcePath": "./plugins/seis-core/seis-context-efficiency",
+      "category": "AI",
+      "installId": "seis-context-efficiency@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-contract-compatibility",
+      "sourcePath": "./plugins/seis-core/seis-contract-compatibility",
+      "category": "Developer",
+      "installId": "seis-contract-compatibility@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-contributor-map",
+      "sourcePath": "./plugins/seis-core/seis-contributor-map",
+      "category": "Developer",
+      "installId": "seis-contributor-map@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-cost-latency-budget",
+      "sourcePath": "./plugins/seis-core/seis-cost-latency-budget",
+      "category": "Developer",
+      "installId": "seis-cost-latency-budget@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-data-retention-audit",
+      "sourcePath": "./plugins/seis-core/seis-data-retention-audit",
+      "category": "Developer",
+      "installId": "seis-data-retention-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-dependency-freshness",
+      "sourcePath": "./plugins/seis-core/seis-dependency-freshness",
+      "category": "Security",
+      "installId": "seis-dependency-freshness@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-design-token-audit",
+      "sourcePath": "./plugins/seis-core/seis-design-token-audit",
+      "category": "Design",
+      "installId": "seis-design-token-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-doc-indexer",
+      "sourcePath": "./plugins/seis-core/seis-doc-indexer",
+      "category": "Data",
+      "installId": "seis-doc-indexer@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-docs-freshness",
+      "sourcePath": "./plugins/seis-core/seis-docs-freshness",
+      "category": "Data",
+      "installId": "seis-docs-freshness@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-dora-metrics",
+      "sourcePath": "./plugins/seis-core/seis-dora-metrics",
+      "category": "Observability",
+      "installId": "seis-dora-metrics@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-download-anomaly",
+      "sourcePath": "./plugins/seis-core/seis-download-anomaly",
+      "category": "Data",
+      "installId": "seis-download-anomaly@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-github-metrics-collector",
+      "sourcePath": "./plugins/seis-core/seis-github-metrics-collector",
+      "category": "Developer",
+      "installId": "seis-github-metrics-collector@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-goal-dependency-map",
+      "sourcePath": "./plugins/seis-core/seis-goal-dependency-map",
+      "category": "Developer",
+      "installId": "seis-goal-dependency-map@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-goal-integrity",
+      "sourcePath": "./plugins/seis-core/seis-goal-integrity",
+      "category": "Productivity",
+      "installId": "seis-goal-integrity@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-issue-triage",
+      "sourcePath": "./plugins/seis-core/seis-issue-triage",
+      "category": "Developer",
+      "installId": "seis-issue-triage@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-license-compatibility",
+      "sourcePath": "./plugins/seis-core/seis-license-compatibility",
+      "category": "Security",
+      "installId": "seis-license-compatibility@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-localization-coverage",
+      "sourcePath": "./plugins/seis-core/seis-localization-coverage",
+      "category": "Data",
+      "installId": "seis-localization-coverage@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-maintainer-risk",
+      "sourcePath": "./plugins/seis-core/seis-maintainer-risk",
+      "category": "Governance",
+      "installId": "seis-maintainer-risk@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-mcp-inventory",
+      "sourcePath": "./plugins/seis-core/seis-mcp-inventory",
+      "category": "AI",
+      "installId": "seis-mcp-inventory@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-migration-guide-check",
+      "sourcePath": "./plugins/seis-core/seis-migration-guide-check",
+      "category": "Developer",
+      "installId": "seis-migration-guide-check@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-model-fallback",
+      "sourcePath": "./plugins/seis-core/seis-model-fallback",
+      "category": "AI",
+      "installId": "seis-model-fallback@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-offline-mode-check",
+      "sourcePath": "./plugins/seis-core/seis-offline-mode-check",
+      "category": "Developer",
+      "installId": "seis-offline-mode-check@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-package-adoption",
+      "sourcePath": "./plugins/seis-core/seis-package-adoption",
+      "category": "Data",
+      "installId": "seis-package-adoption@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-performance-budget",
+      "sourcePath": "./plugins/seis-core/seis-performance-budget",
+      "category": "Developer",
+      "installId": "seis-performance-budget@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-personal-plugin-discovery",
+      "sourcePath": "./plugins/seis-core/seis-personal-plugin-discovery",
+      "category": "Developer",
+      "installId": "seis-personal-plugin-discovery@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-plugin-migration",
+      "sourcePath": "./plugins/seis-core/seis-plugin-migration",
+      "category": "Developer",
+      "installId": "seis-plugin-migration@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-pr-cycle-time",
+      "sourcePath": "./plugins/seis-core/seis-pr-cycle-time",
+      "category": "Developer",
+      "installId": "seis-pr-cycle-time@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-prompt-injection-audit",
+      "sourcePath": "./plugins/seis-core/seis-prompt-injection-audit",
+      "category": "Developer",
+      "installId": "seis-prompt-injection-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-provider-health",
+      "sourcePath": "./plugins/seis-core/seis-provider-health",
+      "category": "AI",
+      "installId": "seis-provider-health@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-public-safe-scan",
+      "sourcePath": "./plugins/seis-core/seis-public-safe-scan",
+      "category": "Security",
+      "installId": "seis-public-safe-scan@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-rag-citation-coverage",
+      "sourcePath": "./plugins/seis-core/seis-rag-citation-coverage",
+      "category": "Data",
+      "installId": "seis-rag-citation-coverage@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-release-cadence",
+      "sourcePath": "./plugins/seis-core/seis-release-cadence",
+      "category": "Developer",
+      "installId": "seis-release-cadence@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-release-readiness",
+      "sourcePath": "./plugins/seis-core/seis-release-readiness",
+      "category": "Developer",
+      "installId": "seis-release-readiness@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-repository-health",
+      "sourcePath": "./plugins/seis-core/seis-repository-health",
+      "category": "Developer",
+      "installId": "seis-repository-health@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-repository-scorecard",
+      "sourcePath": "./plugins/seis-core/seis-repository-scorecard",
+      "category": "Developer",
+      "installId": "seis-repository-scorecard@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-rollback-readiness",
+      "sourcePath": "./plugins/seis-core/seis-rollback-readiness",
+      "category": "Developer",
+      "installId": "seis-rollback-readiness@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-route-explainer",
+      "sourcePath": "./plugins/seis-core/seis-route-explainer",
+      "category": "AI",
+      "installId": "seis-route-explainer@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-sbom-generator",
+      "sourcePath": "./plugins/seis-core/seis-sbom-generator",
+      "category": "Security",
+      "installId": "seis-sbom-generator@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-secret-boundary-scan",
+      "sourcePath": "./plugins/seis-core/seis-secret-boundary-scan",
+      "category": "Security",
+      "installId": "seis-secret-boundary-scan@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-semver-audit",
+      "sourcePath": "./plugins/seis-core/seis-semver-audit",
+      "category": "Developer",
+      "installId": "seis-semver-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-source-provenance",
+      "sourcePath": "./plugins/seis-core/seis-source-provenance",
+      "category": "Productivity",
+      "installId": "seis-source-provenance@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-technology-ontology",
+      "sourcePath": "./plugins/seis-core/seis-technology-ontology",
+      "category": "Data",
+      "installId": "seis-technology-ontology@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-test-flakiness",
+      "sourcePath": "./plugins/seis-core/seis-test-flakiness",
+      "category": "Developer",
+      "installId": "seis-test-flakiness@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-tool-permission-audit",
+      "sourcePath": "./plugins/seis-core/seis-tool-permission-audit",
+      "category": "Developer",
+      "installId": "seis-tool-permission-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-vulnerability-triage",
+      "sourcePath": "./plugins/seis-core/seis-vulnerability-triage",
+      "category": "Security",
+      "installId": "seis-vulnerability-triage@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-workflow-linter",
+      "sourcePath": "./plugins/seis-core/seis-workflow-linter",
+      "category": "Developer",
+      "installId": "seis-workflow-linter@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-workflow-permission-audit",
+      "sourcePath": "./plugins/seis-core/seis-workflow-permission-audit",
+      "category": "Security",
+      "installId": "seis-workflow-permission-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-workspace-inspector",
+      "sourcePath": "./plugins/seis-core/seis-workspace-inspector",
+      "category": "Developer",
+      "installId": "seis-workspace-inspector@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    }
+  ],
   "seisAiConnection": {
     "orchestrator": "seis-ai-agent@seis-repo",
     "mcpServer": "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
@@ -53,8 +1017,9 @@
     "destructiveActions": "delete_force_push_deploy_merge_and_live_ssh_actions_remain_approval_gated"
   },
   "longHorizonGovernance": [
-    "Keep SEIS-Agent as the only public installation and orchestration layer for cross-lane work.",
+    "Keep SEIS-Agent as the canonical orchestration layer for cross-lane work.",
     "Keep source modules under plugins/seis-* embedded in SEIS-Agent, not exposed as separate public marketplace plugins.",
+    "Keep every app-owned package under plugins/seis-core available as a public MIT package in the seis-repo marketplace.",
     "Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.",
     "Validate manifests, MCP tools, marketplace entries, and SEIS-AI lane wiring before claiming public readiness.",
     "Record mock, disabled, planned, and connected states honestly.",

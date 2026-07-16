@@ -2,9 +2,18 @@
   "name": "seis-codeowners-audit",
   "version": "0.0.13",
   "description": "Audit local CODEOWNERS coverage without changing GitHub settings.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "codeowners", "ownership", "github", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "codeowners",
+    "ownership",
+    "github",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS CODEOWNERS Audit",
@@ -12,7 +21,10 @@
     "longDescription": "Reads local CODEOWNERS files and reports malformed or ownerless rules. It does not query GitHub, change branch protection, or verify external accounts.",
     "developerName": "Emirhan Kudun",
     "category": "Developer",
-    "capabilities": ["local-read-only", "ownership-review"],
+    "capabilities": [
+      "local-read-only",
+      "ownership-review"
+    ],
     "defaultPrompt": "Audit CODEOWNERS coverage in this local repository."
   },
   "mcpServers": "./.mcp.json"

@@ -41,7 +41,7 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /seis-core-plugin-release-readiness\.json/);
   assert.match(script, /app-plugin-filter/);
   assert.match(script, /loadSeisCorePluginArtifact/);
-  assert.match(script, /direct SEIS repo source/);
+  assert.match(script, /public SEIS repo source/);
   assert.match(script, /loadSeisCorePluginReleaseReadiness/);
   assert.match(script, /renderPluginReleaseReadiness/);
   assert.match(script, /read-only report/);
@@ -95,7 +95,7 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /openCommandPalette/);
 });
 
-test("SEIS Command Center owns the personal plugin source boundary", async () => {
+test("SEIS Command Center owns the public repository plugin source boundary", async () => {
   const manifest = JSON.parse(await readFile(new URL("data/seis-core-plugin-sources.json", root), "utf8"));
   const catalog = JSON.parse(await readFile(new URL("data/seis-core-plugin-catalog.json", root), "utf8"));
   const readiness = JSON.parse(await readFile(new URL("data/seis-core-plugin-release-readiness.json", root), "utf8"));
@@ -106,9 +106,14 @@ test("SEIS Command Center owns the personal plugin source boundary", async () =>
   assert.equal(catalog.sourceRoot, "plugins/seis-core");
   assert.equal(catalog.distribution.repository, "SEIS");
   assert.equal(catalog.distribution.sourceAvailableInRepository, true);
+  assert.equal(catalog.distribution.publicRepositoryAvailable, true);
+  assert.equal(catalog.distribution.publicAudience, "everyone");
+  assert.equal(catalog.distribution.distributionScope, "direct-repository-source");
   assert.equal(catalog.distribution.sourceManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
   assert.equal(catalog.distribution.installSurface, "repo-source-app");
-  assert.equal(catalog.distribution.marketplaceEntryCount, 0);
+  assert.equal(catalog.distribution.marketplaceName, "seis-repo");
+  assert.equal(catalog.distribution.publicMarketplace, true);
+  assert.equal(catalog.distribution.marketplaceEntryCount, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.distribution.coreSourceOwner, false);
   assert.equal(catalog.counts.discovered, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.plugins.length, APP_PLUGIN_EXPANSION_TARGET);

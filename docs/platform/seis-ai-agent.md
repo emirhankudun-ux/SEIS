@@ -31,14 +31,17 @@ repo-contained lanes.
 
 The old `personal` marketplace is a compatibility mirror only. The `seis`,
 `seis-cloud`, `seis-code`, `seis-design`, and `seis-data` directories remain
-source mirrors for lane development, but the repo marketplace publishes only the
-single `seis-ai-agent` plugin card.
+source mirrors for lane development. The repo marketplace publishes the
+canonical `seis-ai-agent` card plus one `seis-repo` card for each of the 60
+public app-owned packages under `plugins/seis-core`.
 
 The AI Core registry keeps exactly 5000 entries inside the SEIS repository. It
-indexes 50 personal source packages owned by the SEIS Command Center under
-`plugins/seis-core` and separates them from plan-only catalog slots.
+indexes 60 public MIT-licensed app-owned source packages under
+`plugins/seis-core` and separates them from plan-only catalog slots. Historical
+personal marketplace coverage remains a compatibility audit record, not active
+source ownership.
 `packages/seis-ai` remains the metadata, contract, permission, and read-only
-inspection layer; it does not own the personal source packages. Catalog
+inspection layer; it does not own the public app source packages. Catalog
 presence never claims a working provider, MCP server, external integration, or
 public release.
 
@@ -53,7 +56,7 @@ public release.
 
 The active integration contract is
 [`content/development/seis-agent-plugin-integration.json`](../../content/development/seis-agent-plugin-integration.json).
-It binds the installed personal plugin family into SEIS-Agent, exposes the
+It binds the legacy compatibility aliases and public repository sources into SEIS-Agent, exposes the
 `seis_plugin_integration` tool in the SEIS AI runtime, and connects the demo app
 God Mode ecosystem lanes to the same source of truth.
 

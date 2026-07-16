@@ -12,8 +12,15 @@
     "longDescription": "Read bounded, recorded deployment and change evidence without network access, provider calls, or repository writes.",
     "developerName": "Local developer",
     "category": "Observability",
-    "capabilities": ["local-readonly-analysis"],
+    "capabilities": [
+      "local-readonly-analysis"
+    ],
     "defaultPrompt": "Analyze recorded delivery evidence with DORA-style metrics."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

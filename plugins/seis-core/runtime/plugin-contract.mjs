@@ -54,7 +54,12 @@ export function validatePluginContract(bundle, currentRelease) {
   if (profile.releaseRevision !== currentRelease.revision) failures.push("release-revision-mismatch");
   if ((profile.releaseMicroUnits ?? null) !== (currentRelease.microUnits ?? null)) failures.push("release-micro-units-mismatch");
   if (profile.implementationState !== "functional-local-demo") failures.push("implementation-state-not-functional-local-demo");
-  if (profile.status !== "approved-local-readonly") failures.push("profile-not-approved-local-readonly");
+  if (profile.status !== "approved-public-readonly") failures.push("profile-not-approved-public-readonly");
+  if (manifest.license !== "MIT") failures.push("manifest-not-public-mit");
+  if (profile.license !== "MIT") failures.push("profile-not-public-mit");
+  if (profile.publicRepositoryAvailable !== true) failures.push("public-repository-availability-missing");
+  if (profile.publicAudience !== "everyone") failures.push("public-audience-not-everyone");
+  if (profile.publicMarketplace !== true) failures.push("public-marketplace-availability-missing");
   for (const permission of ["write", "network", "secrets"]) {
     if (!Array.isArray(profile.permissions?.[permission]) || profile.permissions[permission].length !== 0) {
       failures.push(`permission-${permission}-not-empty`);

@@ -3,13 +3,13 @@
   "version": 3,
   "updatedAt": "2026-07-12",
   "mode": "single-public-seis-agent-with-embedded-modules",
-  "summary": "SEIS exposes only SEIS-Agent as a public repo marketplace plugin. SEIS, Cloud, Code, Design, Data, Security, Research, Automation, and Product stay preserved as embedded source modules with lane parity and repo validation.",
+  "summary": "SEIS-Agent is the canonical public repo marketplace orchestrator for the specialist lanes. The SEIS Core application packages are separately published as public MIT repo marketplace entries, while SEIS, Cloud, Code, Design, Data, Security, Research, Automation, and Product remain embedded source modules with lane parity and repo validation.",
   "consolidation": {
     "primaryInstallId": "seis-ai-agent@seis-repo",
     "defaultInstallMode": "single-public-plugin",
     "legacyPersonalMarketplace": "compatibility-mirror-only",
     "standaloneLaneInstallMode": "source-module-only",
-    "marketplacePolicy": "seis-agent-is-the-only-public-plugin-with-embedded-source-modules"
+    "marketplacePolicy": "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages"
   },
   "sourceEvidence": [
     "content/development/seis-public-plugin-family.json",

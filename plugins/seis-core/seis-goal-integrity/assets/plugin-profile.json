@@ -10,15 +10,29 @@
   "category": "goal-governance",
   "owner": "@seis-governance",
   "publisher": "emirhankudun-ux",
-  "sourceClassification": "original-SEIS-local",
-  "license": "UNLICENSED-LOCAL",
-  "status": "approved-local-readonly",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
   "implementationState": "functional-local-demo",
   "entrypoint": "scripts/seis-goal-integrity-mcp-server.mjs",
-  "permissions": { "read": ["bounded goal files"], "write": [], "network": [], "secrets": [] },
+  "permissions": {
+    "read": [
+      "bounded goal files"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
   "risk": "low",
-  "validation": ["node scripts/seis-goal-integrity-mcp-server.mjs --status", "node scripts/seis-goal-integrity-mcp-server.mjs --validate --path <workspace>"],
+  "validation": [
+    "node scripts/seis-goal-integrity-mcp-server.mjs --status",
+    "node scripts/seis-goal-integrity-mcp-server.mjs --validate --path <workspace>"
+  ],
   "rollback": "Disable or remove the local plugin; goal records are never auto-completed or rewritten.",
-  "reviewState": "local-development",
-  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+  "reviewState": "public-repository-preview",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
 }

@@ -10,15 +10,30 @@
   "category": "repository-hygiene",
   "owner": "@seis-code",
   "publisher": "emirhankudun-ux",
-  "sourceClassification": "original-SEIS-local",
-  "license": "UNLICENSED-LOCAL",
-  "status": "approved-local-readonly",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
   "implementationState": "functional-local-demo",
   "entrypoint": "scripts/seis-repository-health-mcp-server.mjs",
-  "permissions": { "read": ["explicit repository metadata", "non-destructive Git status"], "write": [], "network": [], "secrets": [] },
+  "permissions": {
+    "read": [
+      "explicit repository metadata",
+      "non-destructive Git status"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
   "risk": "low",
-  "validation": ["node scripts/seis-repository-health-mcp-server.mjs --status", "node scripts/seis-repository-health-mcp-server.mjs --scan --path <repository>"],
+  "validation": [
+    "node scripts/seis-repository-health-mcp-server.mjs --status",
+    "node scripts/seis-repository-health-mcp-server.mjs --scan --path <repository>"
+  ],
   "rollback": "Disable or remove the local plugin; Git and repository files are never mutated.",
-  "reviewState": "local-development",
-  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+  "reviewState": "public-repository-preview",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
 }

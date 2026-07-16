@@ -148,7 +148,7 @@ if (!history.some((entry) => entry.label === previousParsed.label)) {
 history.push(releaseRecord(promotion.parsed, promotion.kind, {
   ...evidence,
   date: "2026-07-15",
-  status: "internal-local-app-release",
+  status: "public-repository-preview",
 }));
 
 const updatedTrain = {
@@ -157,7 +157,7 @@ const updatedTrain = {
   updatedAt: "2026-07-15",
   currentRelease: releaseRecord(promotion.parsed, promotion.kind, {
     maturity: "functional-local-demo",
-    status: "internal-local-app-release",
+    status: "public-repository-preview",
     previousLabel: previousRelease?.label !== promotion.parsed.label ? (previousRelease?.label || null) : (previousRelease?.previousLabel || null),
     previousSemver: previousRelease?.semver !== promotion.parsed.semver ? (previousRelease?.semver || null) : (previousRelease?.previousSemver || null),
     ...currentEvidence,

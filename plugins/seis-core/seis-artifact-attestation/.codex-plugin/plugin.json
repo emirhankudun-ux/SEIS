@@ -12,8 +12,16 @@
     "longDescription": "Inspect bounded artifact manifests and digest evidence without writing signatures, contacting registries, or publishing artifacts.",
     "developerName": "Local developer",
     "category": "Security",
-    "capabilities": ["local-readonly-analysis", "provenance-review"],
+    "capabilities": [
+      "local-readonly-analysis",
+      "provenance-review"
+    ],
     "defaultPrompt": "Review local artifact provenance evidence."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

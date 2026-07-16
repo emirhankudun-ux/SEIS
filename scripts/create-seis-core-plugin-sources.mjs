@@ -54,7 +54,7 @@ function buildRecord() {
     id: "seis-core-plugin-sources",
     generatedAt: "2026-07-15",
     goalId: "SEIS-GOAL-021",
-    status: "active-local-app-boundary",
+    status: "active-public-repository-boundary",
     owner: "apps/seis-core",
     releaseTrainPath,
     releaseTrainVersion: releaseTrain.currentRelease?.label || null,
@@ -66,8 +66,11 @@ function buildRecord() {
     application: {
       id: "seis-core",
       displayName: "SEIS Command Center",
-      role: "personal-plugin-host",
+      role: "public-repository-plugin-host",
       sourceExecution: "task-scoped-local-demo-only",
+      publicAudience: "everyone",
+      publicRepositoryAvailable: true,
+      publicReleaseMode: "repo-source-public; live external capabilities approval-gated",
     },
     sourceRoot,
     pluginCount: plugins.length,
@@ -83,7 +86,19 @@ function buildRecord() {
       personalPluginSourcePolicy: "No personal plugin source packages are owned under packages/seis-ai/plugins.",
     },
     registryProjection: registryPath,
-    personalCoverage: coveragePath,
+    legacyCompatibilityCoverage: coveragePath,
+    publicDistribution: {
+      repository: "SEIS",
+      marketplace: ".agents/plugins/marketplace.json",
+      marketplaceName: "seis-repo",
+      sourceRoot,
+      audience: "everyone",
+      directRepoSource: true,
+      publicMarketplace: true,
+      marketplaceEntryCount: plugins.length,
+      separateMarketplaceCards: true,
+      liveExternalCapabilities: "approval-gated",
+    },
     activationPolicy: {
       mode: "task-scoped",
       defaultPermissions: { read: ["declared local SEIS scope"], write: [], network: [], secrets: [] },
@@ -93,6 +108,7 @@ function buildRecord() {
     safety: {
       sourceCodeExecutedDuringInventory: false,
       sourceCodeExecutedByThisManifest: false,
+      publicRepositoryMutation: false,
       personalMarketplaceMutation: false,
       absoluteSourcePathsStored: false,
     },
@@ -108,6 +124,7 @@ function buildRecord() {
       "npm run check:seis-core-plugin-matrix",
       "npm run check:seis-core-requested-plugin-coverage",
       "npm run check:seis-core-plugin-surface",
+      "npm run check:seis-core-plugin-public-repository",
       "npm run check:seis-ai-core-plugin-registry",
       "node --test plugins/seis-core/test/plugin-catalog.test.mjs",
       "npm test --prefix packages/seis-ai",
@@ -135,7 +152,16 @@ function validateRecord(record) {
   if (record?.coreBoundary?.package !== "packages/seis-ai") failures.push("core boundary package is invalid");
   if (record?.coreBoundary?.personalPluginSourcePolicy?.includes("No personal plugin source") !== true) failures.push("core boundary must forbid personal source ownership");
   if (record?.registryProjection !== registryPath) failures.push("app manifest must point to the canonical registry projection");
-  if (record?.personalCoverage !== coveragePath) failures.push("app manifest must point to personal coverage evidence");
+  if (record?.legacyCompatibilityCoverage !== coveragePath) failures.push("app manifest must point to legacy compatibility coverage evidence");
+  if (record?.status !== "active-public-repository-boundary") failures.push("app manifest must declare the public repository boundary");
+  if (record?.application?.role !== "public-repository-plugin-host") failures.push("app manifest must declare the public repository host role");
+  if (record?.application?.publicAudience !== "everyone") failures.push("app manifest public audience must be everyone");
+  if (record?.application?.publicRepositoryAvailable !== true) failures.push("app manifest must mark app plugins as public-repository available");
+  if (record?.publicDistribution?.directRepoSource !== true) failures.push("app manifest must mark direct repo source distribution");
+  if (record?.publicDistribution?.marketplaceName !== "seis-repo") failures.push("app manifest must identify the public seis-repo marketplace");
+  if (record?.publicDistribution?.publicMarketplace !== true) failures.push("app manifest must mark app packages as public marketplace entries");
+  if (record?.publicDistribution?.marketplaceEntryCount !== record?.pluginCount) failures.push("app manifest marketplace count must match app plugin count");
+  if (record?.publicDistribution?.separateMarketplaceCards !== true) failures.push("app manifest must expose one public repo marketplace card per app package");
   if (record?.activationPolicy?.defaultPermissions?.write?.length !== 0) failures.push("app plugin writes must be empty by default");
   if (record?.activationPolicy?.defaultPermissions?.network?.length !== 0) failures.push("app plugin network permissions must be empty by default");
   if (record?.activationPolicy?.defaultPermissions?.secrets?.length !== 0) failures.push("app plugin secret permissions must be empty by default");

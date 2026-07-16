@@ -239,7 +239,9 @@ if (manifest) {
   ensure(manifest.unifiedPluginSuite?.applicationPluginReleaseRevision === appRelease.revision, "manifest unified suite app release revision is stale");
   ensure(manifest.unifiedPluginSuite?.applicationPluginInstallSurface === "repo-source-app", "manifest unified suite must expose the direct repo app surface");
   ensure(manifest.unifiedPluginSuite?.applicationPluginSourceAvailableInRepository === true, "manifest unified suite must mark app sources repo-available");
-  ensure(manifest.unifiedPluginSuite?.applicationPluginMarketplaceEntryCount === 0, "manifest unified suite must keep app plugins out of marketplace cards");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginPublicRepositoryAvailable === true, "manifest unified suite must mark app sources public-repository available");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginPublicAudience === "everyone", "manifest unified suite app public audience must be everyone");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "manifest unified suite must expose all app plugins in the public marketplace");
   ensure(manifest.unifiedPluginSuite?.applicationPluginPublicReleaseAllowed === false, "manifest unified suite must keep app public release gated");
   ensure(manifest.unifiedPluginSuite?.applicationPluginCoreSourceOwner === false, "manifest unified suite must keep core out of app source ownership");
   ensureArrayIncludesAll(manifest.canonicalAgent?.publishedPluginFamily, requiredPublicPlugins.map((id) => id.replace("@seis-repo", "")), "canonicalAgent.publishedPluginFamily");
@@ -296,7 +298,9 @@ if (manifest) {
   ensure(manifest.runtimeIntegration?.applicationPluginReleaseMicroUnits === appRelease.microUnits, "runtimeIntegration app release micro units are stale");
   ensure(manifest.runtimeIntegration?.applicationPluginInstallSurface === "repo-source-app", "runtimeIntegration must expose the direct repo app surface");
   ensure(manifest.runtimeIntegration?.applicationPluginSourceAvailableInRepository === true, "runtimeIntegration must mark app sources repo-available");
-  ensure(manifest.runtimeIntegration?.applicationPluginMarketplaceEntryCount === 0, "runtimeIntegration must keep app plugins out of marketplace cards");
+  ensure(manifest.runtimeIntegration?.applicationPluginPublicRepositoryAvailable === true, "runtimeIntegration must mark app sources public-repository available");
+  ensure(manifest.runtimeIntegration?.applicationPluginPublicAudience === "everyone", "runtimeIntegration app public audience must be everyone");
+  ensure(manifest.runtimeIntegration?.applicationPluginMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "runtimeIntegration must expose all app plugins in the public marketplace");
   ensure(manifest.runtimeIntegration?.applicationPluginPublicReleaseAllowed === false, "runtimeIntegration must keep app public release gated");
   ensure(manifest.runtimeIntegration?.applicationPluginCoreSourceOwner === false, "runtimeIntegration must keep core out of app source ownership");
   ensureArrayIncludesAll(manifest.runtimeIntegration?.mcpResources, [
@@ -471,7 +475,7 @@ if (manifest) {
   ensure(appPluginCatalog?.distribution?.sourceAvailableInRepository === true, "app plugin catalog must mark source as repo-available");
   ensure(appPluginCatalog?.distribution?.sourceManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "app plugin catalog source manifest is stale");
   ensure(appPluginCatalog?.distribution?.installSurface === "repo-source-app", "app plugin catalog must expose the direct repo app surface");
-  ensure(appPluginCatalog?.distribution?.marketplaceEntryCount === 0, "app plugin catalog must keep app plugins out of marketplace cards");
+  ensure(appPluginCatalog?.distribution?.marketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog must expose all app plugins in the public marketplace");
   ensure(appPluginCatalog?.distribution?.coreSourceOwner === false, "app plugin catalog must keep core out of app source ownership");
   ensure(appPluginCatalog?.counts?.discovered === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog discovered count is stale");
   ensure(appPluginCatalog?.plugins?.length === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog length is stale");
@@ -488,8 +492,10 @@ if (manifest) {
   ensure(manifest.applicationIntegration?.pluginSourceManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "applicationIntegration must expose the app source manifest");
   ensure(manifest.applicationIntegration?.pluginSourceInstallSurface === "repo-source-app", "applicationIntegration must expose the direct repo app surface");
   ensure(manifest.applicationIntegration?.pluginSourceAvailableInRepository === true, "applicationIntegration must mark app sources repo-available");
+  ensure(manifest.applicationIntegration?.pluginSourcePublicRepositoryAvailable === true, "applicationIntegration must mark app sources public-repository available");
+  ensure(manifest.applicationIntegration?.pluginSourcePublicAudience === "everyone", "applicationIntegration public audience must be everyone");
   ensure(manifest.applicationIntegration?.pluginSourceCount === APP_PLUGIN_EXPANSION_TARGET, "applicationIntegration app source count is stale");
-  ensure(manifest.applicationIntegration?.pluginMarketplaceEntryCount === 0, "applicationIntegration must keep app plugins out of marketplace cards");
+  ensure(manifest.applicationIntegration?.pluginMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "applicationIntegration must expose all app plugins in the public marketplace");
   const appSourceNames = (appPluginSources?.plugins || []).map((plugin) => plugin.name).sort();
   const suiteAppPlugins = unifiedSuite?.applicationDistribution?.plugins || [];
   const suiteAppNames = suiteAppPlugins.map((plugin) => plugin.moduleId).sort();
@@ -504,14 +510,14 @@ if (manifest) {
   ensure(unifiedSuite?.applicationDistribution?.pluginCount === APP_PLUGIN_EXPANSION_TARGET, "unified suite app-owned plugin count is stale");
   ensure(unifiedSuite?.publicDistribution?.applicationOwnedPluginCount === APP_PLUGIN_EXPANSION_TARGET, "unified suite public distribution app-owned count is stale");
   ensure(unifiedSuite?.applicationDistribution?.sourceAvailableInRepository === true, "unified suite app sources must be repo-available");
-  ensure(unifiedSuite?.applicationDistribution?.marketplaceEntryCount === 0, "app-owned plugins must not become separate marketplace entries");
+  ensure(unifiedSuite?.applicationDistribution?.marketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "app-owned plugins must become public seis-repo marketplace entries");
   ensure(unifiedSuite?.applicationDistribution?.publicReleaseAllowed === false, "app-owned plugins must remain public-release gated");
   ensure(suiteAppPlugins.length === APP_PLUGIN_EXPANSION_TARGET, "unified suite must list every app-owned plugin");
   ensure(JSON.stringify(suiteAppNames) === JSON.stringify(appSourceNames), "unified suite app-owned list must match the app source manifest");
   ensure(unifiedSuite?.sourceDiscovery?.applicationPattern === "plugins/seis-core/*/.codex-plugin/plugin.json", "unified suite must define app-owned source discovery");
   ensure(unifiedSuite?.sourceDiscovery?.discoveredApplicationPluginNames?.length === APP_PLUGIN_EXPANSION_TARGET, "unified suite app discovery count is stale");
   ensure(unifiedSuite?.sourceDiscovery?.uncoveredApplicationSourcePlugins?.length === 0, "unified suite must not leave app-owned sources uncovered");
-  ensure(suiteAppPlugins.every((plugin) => plugin.publicMarketplace === false && plugin.canonicalApplicationId === "seis-core" && plugin.sourcePath.startsWith("plugins/seis-core/")), "unified suite app modules must remain app-owned repo sources");
+  ensure(suiteAppPlugins.every((plugin) => plugin.publicMarketplace === true && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === `${plugin.moduleId}@seis-repo` && plugin.sourcePath.startsWith("plugins/seis-core/")), "unified suite app modules must remain app-owned public seis-repo sources");
   ensure(packageJson.scripts?.["check:seis-core-plugin-catalog"] === "node scripts/create-seis-core-plugin-catalog.mjs --check", "package scripts must expose the app plugin catalog check");
   ensure(packageJson.scripts?.["check:seis-core-requested-plugin-coverage"] === "node scripts/check-seis-core-requested-plugin-coverage.mjs", "package scripts must expose requested plugin coverage");
   ensure(packageJson.scripts?.["seis:core:plugins"] === "node plugins/seis-core/bin/seis-core-plugins.mjs", "package scripts must expose the app plugin CLI");

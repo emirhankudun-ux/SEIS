@@ -12,8 +12,16 @@
     "longDescription": "Inspect selected plugin metadata and produce a dry-run readiness plan; no source copy, execution, or registry mutation occurs.",
     "developerName": "Local developer",
     "category": "Developer",
-    "capabilities": ["metadata-only", "dry-run"],
+    "capabilities": [
+      "metadata-only",
+      "dry-run"
+    ],
     "defaultPrompt": "Create a dry-run plan for selected local plugins."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

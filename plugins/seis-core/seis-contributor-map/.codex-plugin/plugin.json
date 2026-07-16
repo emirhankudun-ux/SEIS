@@ -12,8 +12,16 @@
     "longDescription": "Read bounded contributor, CODEOWNERS, and ownership records and report redacted public-safe aggregates.",
     "developerName": "Local developer",
     "category": "Developer",
-    "capabilities": ["local-readonly-analysis", "redacted-aggregation"],
+    "capabilities": [
+      "local-readonly-analysis",
+      "redacted-aggregation"
+    ],
     "defaultPrompt": "Summarize recorded contributor ownership evidence."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

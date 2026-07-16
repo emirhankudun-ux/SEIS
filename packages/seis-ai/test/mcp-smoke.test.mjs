@@ -271,6 +271,8 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(status.catalogOnlyEntryCount, EXPECTED_CATALOG_ONLY_ENTRY_COUNT);
     assert.equal(status.personalPluginCount, 55);
     assert.equal(status.personalRepoCounterpartCount, 55);
+    assert.equal(status.publicMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET + 1);
+    assert.equal(status.applicationMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.applicationPluginSourceRoot, "plugins/seis-core");
     assert.equal(status.applicationPluginManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
@@ -282,7 +284,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(Number.isInteger(status.applicationPluginReleaseMicroUnits));
     assert.equal(status.personalPluginCoveragePath, "content/development/seis-ai-core-personal-plugin-coverage.json");
     assert.equal(status.matches.length, 2);
-    assert.equal(status.routeEligibleCount, 0);
+    assert.equal(status.routeEligibleCount, APP_PLUGIN_EXPANSION_TARGET);
 
     const resource = responses.get(3);
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);

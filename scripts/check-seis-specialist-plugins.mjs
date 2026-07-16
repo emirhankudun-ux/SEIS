@@ -4,6 +4,8 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const ROOT = process.cwd();
 const args = parseArgs(process.argv.slice(2));
 const failures = [];
@@ -159,7 +161,7 @@ if (specialistManifest) {
   ensure(specialistManifest.consolidation?.defaultInstallMode === "single-public-plugin", "specialist plugin manifest must use the single public install mode");
   ensure(specialistManifest.consolidation?.legacyPersonalMarketplace === "compatibility-mirror-only", "specialist plugin manifest must mark personal marketplace as compatibility mirror only");
   ensure(specialistManifest.consolidation?.standaloneLaneInstallMode === "source-module-only", "specialist plugin manifest must retain lanes as source modules only");
-  ensure(specialistManifest.consolidation?.marketplacePolicy === "seis-agent-is-the-only-public-plugin-with-embedded-source-modules", "specialist plugin manifest must publish only SEIS-Agent");
+  ensure(specialistManifest.consolidation?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages", "specialist plugin manifest must publish the canonical orchestrator and public app packages");
   for (const entry of publicMarketplaceEntries) {
     ensure(specialistManifest.marketplace?.publishedPlugins?.includes(entry.name), `specialist plugin manifest marketplace missing ${entry.name}`);
   }
@@ -507,7 +509,9 @@ function validateMarketplace(marketplacePath, label, expectedName) {
   ensure(Array.isArray(marketplace.plugins), `${label}: plugins must be an array`);
 
   if (expectedName === "seis-repo") {
-    ensure(marketplace.plugins.length === publicMarketplaceEntries.length, `${label}: must publish only SEIS-Agent`);
+    const applicationEntries = marketplace.plugins.filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/"));
+    ensure(applicationEntries.length === APP_PLUGIN_EXPANSION_TARGET, `${label}: must publish all app-owned public packages`);
+    ensure(marketplace.plugins.length === publicMarketplaceEntries.length + APP_PLUGIN_EXPANSION_TARGET, `${label}: must publish SEIS-Agent plus all app-owned public packages`);
     for (const expected of publicMarketplaceEntries) {
       const entry = marketplace.plugins?.find((plugin) => plugin.name === expected.name);
       ensure(entry, `${label}: entry missing: ${expected.name}`);
@@ -517,6 +521,18 @@ function validateMarketplace(marketplacePath, label, expectedName) {
       ensure(entry.policy?.installation === "AVAILABLE", `${label} ${expected.name}: installation must be AVAILABLE`);
       ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${expected.name}: authentication must be ON_INSTALL`);
       ensure(entry.category === expected.category, `${label} ${expected.name}: category must be ${expected.category}`);
+    }
+    for (const entry of applicationEntries) {
+      const sourcePath = entry.source?.path || "";
+      ensure(fs.existsSync(path.join(ROOT, sourcePath)), `${label} ${entry.name}: public app source path must exist`);
+      ensure(entry.source?.source === "local", `${label} ${entry.name}: source must be local`);
+      ensure(entry.policy?.installation === "AVAILABLE", `${label} ${entry.name}: installation must be AVAILABLE`);
+      ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${entry.name}: authentication must be ON_INSTALL`);
+      const manifest = readJson(path.join(ROOT, sourcePath, ".codex-plugin", "plugin.json"));
+      const profile = readJson(path.join(ROOT, sourcePath, "assets", "plugin-profile.json"));
+      ensure(manifest?.license === "MIT", `${label} ${entry.name}: manifest must be MIT`);
+      ensure(profile?.publicMarketplace === true, `${label} ${entry.name}: profile must mark public marketplace availability`);
+      ensure(profile?.publicAudience === "everyone", `${label} ${entry.name}: profile audience must be everyone`);
     }
     return;
   }
@@ -530,7 +546,7 @@ function validateEmbeddedAgentPlugin() {
   ensureFile(path.join(agentRoot, ".codex-plugin", "plugin.json"), "embedded SEIS-Agent manifest");
   ensureFile(path.join(agentRoot, "scripts", "seis-ai-agent-mcp-server.mjs"), "embedded SEIS-Agent MCP server");
   ensure(profile?.consolidationPolicy?.standaloneLaneInstallMode === "source-module-only", "SEIS-Agent profile must retain lanes as source modules only");
-  ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-only-public-plugin-with-embedded-source-modules", "SEIS-Agent profile must expose the single public plugin policy");
+  ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages", "SEIS-Agent profile must expose the canonical orchestrator and public app marketplace policy");
 
   for (const skill of ["seis-ai-agent", "seis-hub", ...lanes.map((lane) => lane.name)]) {
     ensureFile(path.join(agentRoot, "skills", skill, "SKILL.md"), `embedded ${skill} skill`);

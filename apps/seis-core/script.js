@@ -1003,7 +1003,7 @@ const dependencyScans = [
   {
     target: "Plugin Bundle",
     scanner: "plugin bundle and specialist plugin checks",
-    coverage: "Manifest, specialist skills, marketplace policy, legacy personal plugins",
+    coverage: "Manifest, specialist skills, public repository packages, legacy personal aliases",
     status: "Ready",
     evidence: "check:seis-repo-marketplace and check:seis-specialist-plugins",
     risk: "Provider capability drift requires periodic review."
@@ -2079,8 +2079,13 @@ async function loadSeisCorePluginArtifact() {
       artifact.counts?.discovered !== 60 ||
       artifact.distribution?.repository !== "SEIS" ||
       artifact.distribution?.sourceAvailableInRepository !== true ||
+      artifact.distribution?.publicRepositoryAvailable !== true ||
+      artifact.distribution?.publicAudience !== "everyone" ||
+      artifact.distribution?.distributionScope !== "direct-repository-source" ||
       artifact.distribution?.installSurface !== "repo-source-app" ||
-      artifact.distribution?.marketplaceEntryCount !== 0 ||
+      artifact.distribution?.marketplaceName !== "seis-repo" ||
+      artifact.distribution?.publicMarketplace !== true ||
+      artifact.distribution?.marketplaceEntryCount !== 60 ||
       artifact.distribution?.coreSourceOwner !== false ||
       !Array.isArray(artifact.plugins)
     ) {
@@ -2353,7 +2358,7 @@ function renderPlugins() {
     catalogMeta.innerHTML = [
       `release ${escapeHtml(catalog.release?.label || "unknown")}`,
       `${catalog.counts.discovered || 0} app-owned`,
-      "direct SEIS repo source",
+      "public SEIS repo source",
       "status-only",
       "write/network/secrets: empty"
     ].map((value) => `<span class="meta-chip">${escapeHtml(value)}</span>`).join("");

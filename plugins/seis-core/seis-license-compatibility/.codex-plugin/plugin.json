@@ -2,9 +2,18 @@
   "name": "seis-license-compatibility",
   "version": "0.0.13",
   "description": "Audit local package and repository license declarations without legal approval claims.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "license", "compatibility", "compliance", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "license",
+    "compatibility",
+    "compliance",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS License Compatibility",
@@ -12,7 +21,10 @@
     "longDescription": "Reads local package license fields and license files and reports unknown or incompatible declarations. It is not legal advice or an approval.",
     "developerName": "Emirhan Kudun",
     "category": "Security",
-    "capabilities": ["local-read-only", "license-review"],
+    "capabilities": [
+      "local-read-only",
+      "license-review"
+    ],
     "defaultPrompt": "Audit license compatibility evidence in this local repository."
   },
   "mcpServers": "./.mcp.json"

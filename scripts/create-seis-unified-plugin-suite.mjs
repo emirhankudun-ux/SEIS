@@ -51,7 +51,7 @@ const suite = {
   releaseVersion: agentManifest.version,
   publicReleaseAllowed: false,
   purpose:
-    "Define the one public SEIS-Agent install surface that embeds every SEIS source module while preserving older personal installations as non-destructive aliases.",
+    "Define the canonical public SEIS-Agent install surface, preserve public repository source packages under SEIS, and keep live external capabilities approval-gated.",
   canonicalInstall: {
     installId: "seis-ai-agent@seis-repo",
     pluginName: "seis-ai-agent",
@@ -80,6 +80,7 @@ const suite = {
     publicInstallIds: publicPlugins.map((plugin) => plugin.installId),
     embeddedModuleCount: components.length,
     applicationOwnedPluginCount: applicationPlugins.length,
+    applicationMarketplacePluginCount: applicationPlugins.length,
     applicationSourceRoot: applicationPluginSources.sourceRoot,
     applicationSourceManifest: applicationPluginSourcesPath,
   },
@@ -97,10 +98,16 @@ const suite = {
     releaseSemver: applicationReleaseTrain.currentRelease?.semver || null,
     pluginCount: applicationPlugins.length,
     sourceAvailableInRepository: true,
-    marketplaceEntryCount: 0,
+    publicRepositoryAvailable: true,
+    publicAudience: "everyone",
+    publicDistribution: "direct-repository-source",
+    marketplaceName: "seis-repo",
+    publicMarketplace: true,
+    marketplaceEntryCount: applicationPlugins.length,
     installSurface: "repo-source-app",
     executionMode: applicationPluginSources.application?.sourceExecution || "task-scoped-local-demo-only",
     publicReleaseAllowed: false,
+    liveExternalCapabilities: "approval-gated",
     coreSourceOwner: false,
     plugins: applicationPlugins,
   },
@@ -133,10 +140,13 @@ const suite = {
       "validate app catalog status, SEIS AI status, MCP routing, installer plan, and compatibility smoke",
     ],
     defaultInstallRule: "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets.",
-    applicationDefaultInstallRule: "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned source packages, and become available directly from this repository without entering packages/seis-ai or becoming separate marketplace cards.",
+    applicationDefaultInstallRule: "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and become available directly from this repository as individual seis-repo marketplace entries without entering packages/seis-ai.",
   },
   releaseBoundary: {
     publicReleaseAllowed: false,
+    publicRepositoryAvailable: true,
+    publicAudience: "everyone",
+    publicRepositoryRule: "Repository source is public and MIT-licensed; live external capabilities remain approval-gated.",
     forbiddenWithoutHumanApproval: [
       "removing or rewriting personal marketplace entries",
       "deleting embedded source-module directories",
@@ -188,7 +198,8 @@ function validateSuite(record) {
   if (record.compatibility.standaloneLaneInstallMode !== "source-module-only") failures.push("standalone lanes must remain source modules only");
   if (record.compatibility.personalAliases.length !== 5) failures.push("suite must expose five personal aliases");
   if (!record.compatibility.personalAliases.every((alias) => alias.userPluginPreserved === true)) failures.push("suite must preserve every personal alias");
-  if (record.publicDistribution.publicPluginCount !== 1 || record.publicDistribution.publicInstallIds[0] !== "seis-ai-agent@seis-repo") failures.push("only SEIS-Agent may be public");
+  if (record.publicDistribution.publicPluginCount !== 1 || record.publicDistribution.publicInstallIds[0] !== "seis-ai-agent@seis-repo") failures.push("SEIS-Agent must remain the canonical public orchestrator");
+  if (record.publicDistribution.applicationMarketplacePluginCount !== applicationPlugins.length) failures.push("public distribution app marketplace count is stale");
   if (record.publicDistribution.embeddedModuleCount !== record.componentCount) failures.push("public distribution must expose every embedded module");
   if (!Array.isArray(record.sourceDiscovery?.discoveredPluginNames) || record.sourceDiscovery.discoveredPluginNames.length !== record.componentCount) failures.push("suite discovery must cover every current SEIS plugin manifest");
   if (record.sourceDiscovery.uncoveredSourcePlugins.length !== 0) failures.push(`unified suite is missing source plugins: ${record.sourceDiscovery.uncoveredSourcePlugins.join(", ")}`);
@@ -202,14 +213,19 @@ function validateSuite(record) {
   if (record.applicationDistribution?.releaseLabel !== applicationReleaseTrain.currentRelease?.label) failures.push("application distribution release label is stale");
   if (record.applicationDistribution?.releaseSemver !== applicationReleaseTrain.currentRelease?.semver) failures.push("application distribution release semver is stale");
   if (record.applicationDistribution?.sourceAvailableInRepository !== true) failures.push("application-owned sources must be available in the repository");
-  if (record.applicationDistribution?.marketplaceEntryCount !== 0) failures.push("app-owned sources must not create separate marketplace entries");
-  if (record.applicationDistribution?.publicReleaseAllowed !== false) failures.push("app-owned sources must remain public-release gated");
+  if (record.applicationDistribution?.publicRepositoryAvailable !== true) failures.push("application-owned sources must be public-repository available");
+  if (record.applicationDistribution?.publicAudience !== "everyone") failures.push("application-owned sources must declare everyone as the public audience");
+  if (record.applicationDistribution?.publicDistribution !== "direct-repository-source") failures.push("application-owned sources must use direct repository distribution");
+  if (record.applicationDistribution?.marketplaceName !== "seis-repo") failures.push("app-owned sources must use the seis-repo marketplace");
+  if (record.applicationDistribution?.publicMarketplace !== true) failures.push("app-owned sources must be public marketplace entries");
+  if (record.applicationDistribution?.marketplaceEntryCount !== applicationPlugins.length) failures.push("app-owned marketplace count must match app source count");
+  if (record.applicationDistribution?.publicReleaseAllowed !== false) failures.push("live external public release must remain gated");
   if (record.applicationDistribution?.coreSourceOwner !== false) failures.push("packages/seis-ai must not own app plugin sources");
   if (!Array.isArray(record.applicationDistribution?.plugins) || record.applicationDistribution.plugins.length !== applicationPluginSources.pluginCount) failures.push("suite must cover every app-owned plugin source");
   if (!Array.isArray(record.sourceDiscovery?.discoveredApplicationPluginNames) || record.sourceDiscovery.discoveredApplicationPluginNames.length !== applicationPluginSources.pluginCount) failures.push("suite discovery must cover every app-owned plugin manifest");
   if (record.sourceDiscovery.uncoveredApplicationSourcePlugins.length !== 0) failures.push(`unified suite is missing app-owned source plugins: ${record.sourceDiscovery.uncoveredApplicationSourcePlugins.join(", ")}`);
   if (new Set(record.applicationDistribution.plugins.map((plugin) => plugin.moduleId)).size !== record.applicationDistribution.plugins.length) failures.push("app-owned module ids must be unique");
-  if (!record.applicationDistribution.plugins.every((plugin) => plugin.sourcePath.startsWith("plugins/seis-core/") && plugin.publicMarketplace === false && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === null)) failures.push("app-owned modules must stay repo-contained and outside the public marketplace");
+  if (!record.applicationDistribution.plugins.every((plugin) => plugin.sourcePath.startsWith("plugins/seis-core/") && plugin.publicMarketplace === true && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === `${plugin.moduleId}@seis-repo`)) failures.push("app-owned modules must stay in the public seis-repo marketplace with stable install ids");
   if (!record.futurePluginIntake?.applicationDefaultInstallRule?.includes("plugins/seis-core")) failures.push("suite must define the direct repo app-owned intake rule");
   if (!record.futurePluginIntake?.defaultInstallRule?.includes("must not become separate public plugin")) failures.push("suite must keep future plugins under the single public install surface");
   if (failures.length) {
@@ -265,12 +281,14 @@ function buildApplicationPlugins(sourceManifest) {
       releaseSemver: manifest.version || sourcePlugin.version || null,
       canonicalApplicationId: "seis-core",
       applicationPath: "apps/seis-core",
-      canonicalInstallId: null,
+      canonicalInstallId: `${sourcePlugin.name}@seis-repo`,
       installSurface: "repo-source-app",
-      publicMarketplace: false,
-      publicStatus: "repo-source-available",
+      publicMarketplace: true,
+      publicRepositoryAvailable: true,
+      publicAudience: "everyone",
+      publicStatus: "public-repo-marketplace",
       publicReleaseAllowed: false,
-      sourceModuleStatus: "application-owned-source-module",
+      sourceModuleStatus: "public-application-marketplace-source-module",
       permissions: profile.permissions || { read: [], write: [], network: [], secrets: [] },
     };
   }).sort((left, right) => left.moduleId.localeCompare(right.moduleId));

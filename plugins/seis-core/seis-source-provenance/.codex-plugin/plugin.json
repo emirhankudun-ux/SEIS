@@ -6,8 +6,16 @@
   "author": {
     "name": "emirhankudun-ux"
   },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "provenance", "sha256", "rights", "classification"],
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "provenance",
+    "sha256",
+    "rights",
+    "classification",
+    "public-repository",
+    "read-only"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {

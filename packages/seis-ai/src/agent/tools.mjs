@@ -123,7 +123,7 @@ export function toolDefinitions({ allowWrite = false } = {}) {
     {
       name: AI_CORE_PLUGIN_REGISTRY_STATUS_TOOL,
       description:
-        "Read the canonical SEIS AI Core Plugin Registry. Reports the exact 5000-entry target, physical repo-owned plugins, app-owned personal sources, plan-only catalog slots, permission boundaries, and optional bounded search. Read-only; catalog presence never claims an implemented or connected plugin.",
+        "Read the canonical SEIS AI Core Plugin Registry. Reports the exact 5000-entry target, physical repo-owned plugins, public app-owned repository sources, legacy compatibility coverage, plan-only catalog slots, permission boundaries, and optional bounded search. Read-only; catalog presence never claims an implemented or connected plugin.",
       input_schema: {
         type: "object",
         properties: {

@@ -12,8 +12,16 @@
     "longDescription": "Analyze recorded download counts with a transparent median and MAD threshold without querying a registry.",
     "developerName": "Local developer",
     "category": "Data",
-    "capabilities": ["local-readonly-analysis", "deterministic-outlier-detection"],
+    "capabilities": [
+      "local-readonly-analysis",
+      "deterministic-outlier-detection"
+    ],
     "defaultPrompt": "Find anomalies in recorded download metrics."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

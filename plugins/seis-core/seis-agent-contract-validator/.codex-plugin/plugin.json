@@ -3,9 +3,19 @@
   "name": "seis-agent-contract-validator",
   "version": "0.0.13",
   "description": "Read-only validation of supervised SEIS agent purpose, permissions, approvals, and handoff contracts.",
-  "author": { "name": "emirhankudun-ux" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "agent", "contract", "permissions", "governance"],
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "agent",
+    "contract",
+    "permissions",
+    "governance",
+    "public-repository",
+    "read-only"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -14,8 +24,16 @@
     "longDescription": "A deterministic local SEIS validator for JSON agent contracts. It checks identity, purpose, permission arrays, approval gates, forbidden actions, validation, audit, rollback, and handoff hints without running agents.",
     "developerName": "emirhankudun-ux",
     "category": "AI",
-    "capabilities": ["Agent contract checks", "Permission boundary checks", "Approval and handoff validation"],
-    "defaultPrompt": ["Validate this SEIS agent contract.", "Find missing agent permission boundaries.", "Check approvals and rollback hints safely."],
+    "capabilities": [
+      "Agent contract checks",
+      "Permission boundary checks",
+      "Approval and handoff validation"
+    ],
+    "defaultPrompt": [
+      "Validate this SEIS agent contract.",
+      "Find missing agent permission boundaries.",
+      "Check approvals and rollback hints safely."
+    ],
     "brandColor": "#EC4899"
   }
 }

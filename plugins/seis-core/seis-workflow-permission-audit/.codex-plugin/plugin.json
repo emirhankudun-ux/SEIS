@@ -2,9 +2,18 @@
   "name": "seis-workflow-permission-audit",
   "version": "0.0.13",
   "description": "Review local workflow permission declarations without running workflows.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "workflow", "permissions", "github-actions", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "workflow",
+    "permissions",
+    "github-actions",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Workflow Permission Audit",
@@ -12,7 +21,10 @@
     "longDescription": "Reads bounded JSON or YAML-like workflow files and reports permission declarations without executing actions, using secrets or changing GitHub settings.",
     "developerName": "Emirhan Kudun",
     "category": "Security",
-    "capabilities": ["local-read-only", "permission-review"],
+    "capabilities": [
+      "local-read-only",
+      "permission-review"
+    ],
     "defaultPrompt": "Audit workflow permission declarations in this local repository."
   },
   "mcpServers": "./.mcp.json"

@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 
 import {
@@ -28,6 +29,7 @@ export function buildApplicationPluginCatalog(repoRoot, options = {}) {
 
   const allPlugins = discoverApplicationPlugins(repoRoot)
     .map((bundle) => toCatalogEntry(bundle, repoRoot, currentRelease, { includeStatus: false }));
+  const marketplaceEntryCount = readPublicMarketplaceEntryCount(repoRoot);
 
   return {
     schemaVersion: 1,
@@ -39,9 +41,14 @@ export function buildApplicationPluginCatalog(repoRoot, options = {}) {
     distribution: {
       repository: "SEIS",
       sourceAvailableInRepository: true,
+      publicRepositoryAvailable: true,
+      publicAudience: "everyone",
+      distributionScope: "direct-repository-source",
       sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
       installSurface: "repo-source-app",
-      marketplaceEntryCount: 0,
+      marketplaceName: "seis-repo",
+      publicMarketplace: true,
+      marketplaceEntryCount,
       coreSourceOwner: false,
     },
     release: compactRelease(currentRelease),
@@ -67,6 +74,15 @@ export function buildApplicationPluginCatalog(repoRoot, options = {}) {
     query: query || null,
     plugins,
   };
+}
+
+function readPublicMarketplaceEntryCount(repoRoot) {
+  try {
+    const marketplace = JSON.parse(fs.readFileSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json"), "utf8"));
+    return (marketplace.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/")).length;
+  } catch {
+    return 0;
+  }
 }
 
 export function searchApplicationPlugins(repoRoot, query, options = {}) {

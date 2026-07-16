@@ -12,8 +12,16 @@
     "longDescription": "Combine recorded dependents, downloads, and release-use signals without querying a registry or inventing adoption data.",
     "developerName": "Local developer",
     "category": "Data",
-    "capabilities": ["local-readonly-analysis", "evidence-aggregation"],
+    "capabilities": [
+      "local-readonly-analysis",
+      "evidence-aggregation"
+    ],
     "defaultPrompt": "Review recorded package adoption signals."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

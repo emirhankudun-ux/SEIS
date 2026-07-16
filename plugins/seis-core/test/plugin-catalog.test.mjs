@@ -30,9 +30,14 @@ test("application catalog is sourced from the complete SEIS Core plugin expansio
   assert.equal(catalog.sourceRoot, "plugins/seis-core");
   assert.equal(catalog.distribution.repository, "SEIS");
   assert.equal(catalog.distribution.sourceAvailableInRepository, true);
+  assert.equal(catalog.distribution.publicRepositoryAvailable, true);
+  assert.equal(catalog.distribution.publicAudience, "everyone");
+  assert.equal(catalog.distribution.distributionScope, "direct-repository-source");
   assert.equal(catalog.distribution.sourceManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
   assert.equal(catalog.distribution.installSurface, "repo-source-app");
-  assert.equal(catalog.distribution.marketplaceEntryCount, 0);
+  assert.equal(catalog.distribution.marketplaceName, "seis-repo");
+  assert.equal(catalog.distribution.publicMarketplace, true);
+  assert.equal(catalog.distribution.marketplaceEntryCount, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.distribution.coreSourceOwner, false);
   assert.equal(catalog.counts.discovered, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.counts.returned, APP_PLUGIN_EXPANSION_TARGET);
@@ -104,10 +109,14 @@ test("direct repository surface covers the app source, catalog, and unified suit
   assert.equal(surface.repository, "SEIS");
   assert.equal(surface.application, "apps/seis-core");
   assert.equal(surface.installSurface, "repo-source-app");
+  assert.equal(surface.policy.publicRepositoryAvailable, true);
+  assert.equal(surface.policy.publicAudience, "everyone");
   assert.equal(surface.counts.source, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(surface.counts.catalog, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(surface.counts.unifiedSuite, APP_PLUGIN_EXPANSION_TARGET);
-  assert.equal(surface.counts.marketplaceEntries, 0);
+  assert.equal(surface.counts.marketplaceEntries, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(surface.policy.marketplaceName, "seis-repo");
+  assert.equal(surface.policy.publicMarketplace, true);
   assert.equal(surface.policy.coreSourceOwner, false);
   assert.deepEqual(surface.failures, []);
 });
@@ -121,6 +130,7 @@ test("direct repository install plan is non-mutating and validates all app sourc
   assert.equal(plan.pluginCount, APP_PLUGIN_EXPANSION_TARGET);
   assert.ok(plan.commands.includes("npm run check:seis-core-requested-plugin-coverage"));
   assert.ok(plan.commands.includes("npm run check:seis-core-plugin-sources"));
+  assert.ok(plan.reason.includes("public MIT-licensed"));
   assert.ok(plan.reason.includes("packages/seis-ai"));
 });
 

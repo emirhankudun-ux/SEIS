@@ -23,24 +23,28 @@ route-eligible, authenticated, public marketplace plugins, or proof of a
 provider/MCP integration. This keeps the requested 5000 scale useful to AI
 Core discovery without creating thousands of duplicate source folders.
 
-The 60 app-owned packages currently share the internal Command Center release
-train `0.000000012` (`0.0.12` strict semver). The release policy is recorded
+The 60 app-owned packages currently share the public Command Center release
+train `0.000000013` (`0.0.13` strict semver). The release policy is recorded
 in `content/development/seis-core-plugin-release-train.json`; catalog slots do
 not inherit that app release. The public `seis-ai-agent` suite remains on its
 separate release lifecycle.
 
 ## Source and marketplace boundary
 
-All migrated personal plugin source is now represented inside the SEIS
-repository. The personal marketplace was not mutated. The public marketplace
-still exposes one card only:
+All 60 app-owned plugin packages are public MIT-licensed source in the SEIS
+repository and are available to everyone. Legacy personal plugin evidence is
+retained for compatibility auditing; the personal marketplace was not mutated.
+The public marketplace exposes the canonical orchestrator plus one card for
+each app-owned package:
 
 ```text
 seis-ai-agent@seis-repo
+<each plugins/seis-core package>@seis-repo
 ```
 
 Local-only licenses, missing licenses, provenance gaps, or unverified
-permissions keep a source package repo-internal until a separate review.
+permissions keep a source package outside the public app-owned boundary until
+a separate review.
 
 ## Validation
 
@@ -57,15 +61,15 @@ The registry is also available through the read-only AI Core MCP tool
 `seis_ai_core_plugin_registry_status` and resource
 `seis://ai/plugin-registry.json`.
 
-## Personal-source coverage and local validation
+## Legacy personal-source coverage and local validation
 
 The checked-in coverage record
 `content/development/seis-ai-core-personal-plugin-coverage.json` proves that
-the selected personal marketplace currently contains 55 SEIS plugin IDs and
-that all 55 have repository counterparts: five existing source modules and 50
-marketplace-migrated packages owned by the SEIS Command Center under
-`plugins/seis-core`; ten additional app-only audit plugins remain outside the
-personal marketplace by design.
+the selected historical personal marketplace currently contains 55 SEIS plugin
+IDs and that all 55 have repository counterparts. This is compatibility
+evidence only: the active app-owned source boundary is the 60-package public
+MIT repository set under `plugins/seis-core`; ten additional app-only audit
+plugins were added directly to that public repository boundary.
 
 The app-source gate
 `npm run check:seis-core-plugin-sources` validates each app-owned manifest,

@@ -2,9 +2,18 @@
   "name": "seis-changelog-validator",
   "version": "0.0.13",
   "description": "Validate local changelog structure without publishing or modifying release notes.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "changelog", "release", "documentation", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "changelog",
+    "release",
+    "documentation",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Changelog Validator",
@@ -12,7 +21,10 @@
     "longDescription": "Checks bounded local changelog files for release headings and change entries. It never publishes, edits, or claims a release is ready.",
     "developerName": "Emirhan Kudun",
     "category": "Developer",
-    "capabilities": ["local-read-only", "release-evidence"],
+    "capabilities": [
+      "local-read-only",
+      "release-evidence"
+    ],
     "defaultPrompt": "Validate the changelog structure in this local repository."
   },
   "mcpServers": "./.mcp.json"

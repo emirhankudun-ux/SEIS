@@ -12,8 +12,15 @@
     "longDescription": "Compute useful-token ratios and recorded latency summaries without model calls or prompt transmission.",
     "developerName": "Local developer",
     "category": "AI",
-    "capabilities": ["local-readonly-analysis"],
+    "capabilities": [
+      "local-readonly-analysis"
+    ],
     "defaultPrompt": "Measure recorded context efficiency."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

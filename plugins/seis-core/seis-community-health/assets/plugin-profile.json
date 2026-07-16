@@ -10,15 +10,29 @@
   "category": "community",
   "owner": "@seis-github",
   "publisher": "emirhankudun-ux",
-  "sourceClassification": "original-SEIS-local",
-  "license": "UNLICENSED-LOCAL",
-  "status": "approved-local-readonly",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
   "implementationState": "functional-local-demo",
   "entrypoint": "scripts/seis-community-health-mcp-server.mjs",
-  "permissions": { "read": ["bounded local contribution and community documents"], "write": [], "network": [], "secrets": [] },
+  "permissions": {
+    "read": [
+      "bounded local contribution and community documents"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
   "risk": "low",
-  "validation": ["node scripts/seis-community-health-mcp-server.mjs --status", "node scripts/seis-community-health-mcp-server.mjs --audit --path /path/to/tree"],
+  "validation": [
+    "node scripts/seis-community-health-mcp-server.mjs --status",
+    "node scripts/seis-community-health-mcp-server.mjs --audit --path /path/to/tree"
+  ],
   "rollback": "Disable or remove the local plugin; no source data is mutated.",
-  "reviewState": "local-development",
-  "provenance": "Promoted from the SEIS master prompt Section 38 proposed backlog after deterministic local implementation for SEIS-GOAL-021."
+  "reviewState": "public-repository-preview",
+  "provenance": "Promoted from the SEIS master prompt Section 38 proposed backlog after deterministic local implementation for SEIS-GOAL-021.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
 }

@@ -10,13 +10,15 @@
   "category": "design-system",
   "owner": "@seis-design",
   "publisher": "emirhankudun-ux",
-  "sourceClassification": "original-SEIS-local",
-  "license": "UNLICENSED-LOCAL",
-  "status": "approved-local-readonly",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
   "implementationState": "functional-local-demo",
   "entrypoint": "scripts/seis-design-token-audit-mcp-server.mjs",
   "permissions": {
-    "read": ["bounded local JSON token and theme files"],
+    "read": [
+      "bounded local JSON token and theme files"
+    ],
     "write": [],
     "network": [],
     "secrets": []
@@ -27,6 +29,10 @@
     "node scripts/seis-design-token-audit-mcp-server.mjs --audit --path /path/to/tree"
   ],
   "rollback": "Disable or remove the local plugin; no source data is mutated.",
-  "reviewState": "local-development",
-  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+  "reviewState": "public-repository-preview",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
 }

@@ -3,6 +3,8 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const root = process.cwd();
 const failures = [];
 const required = [
@@ -79,6 +81,7 @@ const marketplace = readJson(".agents/plugins/marketplace.json");
 const identities = readJson("data/seis-operating-identities.json");
 const packageJson = readJson("package.json");
 const publicPluginEntries = [["seis-ai-agent", "./plugins/seis-ai-agent"]];
+const publicApplicationEntries = (marketplace?.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/"));
 ensure(manifest?.name === "seis-ai-agent", "manifest name must be seis-ai-agent");
 ensure(manifest?.mcpServers === "./.mcp.json", "manifest must reference ./.mcp.json");
 ensure(manifest?.interface?.capabilities?.includes("Unified SEIS orchestration"), "manifest must expose unified orchestration");
@@ -95,7 +98,7 @@ ensure(profile?.version === 2, "profile must use unified suite profile version 2
 ensure(profile?.releaseVersion === "0.3.0+codex.20260712", "profile must expose the unified release version");
 ensure(profile?.consolidationPolicy?.defaultInstallMode === "single-public-plugin", "profile must use a single public install");
 ensure(profile?.consolidationPolicy?.standaloneLaneInstallMode === "source-module-only", "profile must retain lane packages as source modules only");
-ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-only-public-plugin-with-embedded-source-modules", "profile must publish the single public install policy");
+ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages", "profile must publish the canonical orchestrator and public app marketplace policy");
 ensure(profile?.consolidationPolicy?.unifiedSuite === "assets/unified-suite.json", "profile must point at the unified suite file");
 ensure(profile?.consolidationPolicy?.futurePluginIntake?.includes("assets/unified-suite.json"), "profile must route future SEIS plugins into the unified suite");
 ensure(profile?.applicationSourceBoundary?.application === "apps/seis-core", "profile must expose the SEIS Core application boundary");
@@ -103,8 +106,10 @@ ensure(profile?.applicationSourceBoundary?.sourceRoot === "plugins/seis-core", "
 ensure(profile?.applicationSourceBoundary?.sourceManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "profile must expose the app-owned source manifest");
 ensure(profile?.applicationSourceBoundary?.installSurface === "repo-source-app", "profile must expose the direct repo app install surface");
 ensure(profile?.applicationSourceBoundary?.sourceAvailableInRepository === true, "profile must mark app sources as repo-available");
+ensure(profile?.applicationSourceBoundary?.publicRepositoryAvailable === true, "profile must mark app sources as public-repository available");
+ensure(profile?.applicationSourceBoundary?.publicAudience === "everyone", "profile app public audience must be everyone");
 ensure(profile?.applicationSourceBoundary?.applicationOwnedPluginCount === 60, "profile must expose all 60 app-owned plugins");
-ensure(profile?.applicationSourceBoundary?.publicMarketplaceEntryCount === 0, "app-owned plugins must not become marketplace cards");
+ensure(profile?.applicationSourceBoundary?.publicMarketplaceEntryCount === 60, "profile must expose all app-owned marketplace cards");
 ensure(profile?.applicationSourceBoundary?.publicReleaseAllowed === false, "app-owned plugins must remain public-release gated");
 ensure(profile?.applicationSourceBoundary?.coreSourceOwner === false, "profile must keep packages/seis-ai out of app source ownership");
 ensure(profile?.terminalInstall?.defaultTarget === "seis-ai-agent@seis-repo", "profile must keep SEIS-Agent as terminal default target");
@@ -114,12 +119,18 @@ for (const platform of ["macos", "windows", "linux"]) ensure(profile?.terminalIn
 ensure(profile?.websiteRoadmap?.direction?.includes("Cinematic"), "website roadmap must preserve cinematic direction");
 ensure((identities?.identities || []).some((identity) => identity.name === "SEIS-Agent" && identity.repoSurface === "plugins/seis-ai-agent"), "operating identities must map SEIS-Agent to plugin");
 ensure(mcp?.mcpServers?.["seis-ai-agent"]?.args?.[0] === "./scripts/seis-ai-agent-mcp-server.mjs", "MCP manifest must point at server");
-ensure(marketplace?.plugins?.length === publicPluginEntries.length, "marketplace must publish only SEIS-Agent");
+ensure(marketplace?.plugins?.length === publicPluginEntries.length + APP_PLUGIN_EXPANSION_TARGET, "marketplace must publish SEIS-Agent plus all public app packages");
+ensure(publicApplicationEntries.length === APP_PLUGIN_EXPANSION_TARGET, "marketplace must publish every app-owned package as a public seis-repo entry");
 for (const [name, sourcePath] of publicPluginEntries) {
   const entry = marketplace?.plugins?.find((plugin) => plugin.name === name);
   ensure(entry?.source?.path === sourcePath, `marketplace must include ${name} at ${sourcePath}`);
   ensure(entry?.policy?.installation === "AVAILABLE", `marketplace ${name} must be AVAILABLE`);
   ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace ${name} must authenticate ON_INSTALL`);
+}
+for (const entry of publicApplicationEntries) {
+  ensure(entry?.policy?.installation === "AVAILABLE", `marketplace app ${entry?.name || "unknown"} must be AVAILABLE`);
+  ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace app ${entry?.name || "unknown"} must authenticate ON_INSTALL`);
+  ensure(fs.existsSync(path.join(root, entry.source.path)), `marketplace app ${entry?.name || "unknown"} source must exist`);
 }
 ensure(packageJson?.scripts?.["cloud:migration:audit"] === "node scripts/cloud-migration-audit.mjs", "package scripts must expose cloud:migration:audit");
 ensure(packageJson?.scripts?.["cloud:migration:audit:json"] === "node scripts/cloud-migration-audit.mjs --json", "package scripts must expose cloud:migration:audit:json");
@@ -144,7 +155,7 @@ ensure(packageJson?.scripts?.["check:seis-public-plugin-install-smoke:mcp"] === 
 ensure(packageJson?.scripts?.["check:seis-public-plugin-install-smoke:local:mcp"] === "node scripts/check-seis-public-plugin-install-smoke.mjs --require-installed --mcp-smoke", "package scripts must expose check:seis-public-plugin-install-smoke:local:mcp");
 contains("scripts/install-seis-ai-agent.mjs", "seis-ai-agent@seis-repo", "installer must include repo install id");
 contains("scripts/install-seis-ai-agent.mjs", "plan-only", "installer must default to plan-only");
-contains("scripts/install-seis-ai-agent.mjs", "SEIS-Agent is the only public install target", "installer must document single public install policy");
+contains("scripts/install-seis-ai-agent.mjs", "SEIS-Agent is the canonical public install target", "installer must document single public install policy");
 contains("scripts/install-seis-ai-agent.mjs", "single-public-plugin", "installer must default to one public plugin");
 contains("scripts/install-seis-ai-agent.mjs", "standalone lane installation is retired", "installer must reject standalone lane installation");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "publicPluginCount", "install smoke checker must report public plugin count");
@@ -219,8 +230,12 @@ function validateInstallerPlan(extraArgs) {
   ensure(payload?.readiness?.applicationSource?.sourceRoot === "plugins/seis-core", "installer must expose the app-owned source root");
   ensure(payload?.readiness?.applicationSource?.pluginCount === 60, "installer must expose all 60 app-owned plugins");
   ensure(payload?.readiness?.applicationSource?.sourceAvailableInRepository === true, "installer must expose app sources as repo-available");
-  ensure(payload?.readiness?.applicationSource?.marketplaceEntryCount === 0, "installer must keep app-owned plugins out of marketplace cards");
-  ensure(payload?.readiness?.consolidationPolicy?.includes("SEIS-Agent is the only public install target"), "installer must document single public plugin policy");
+  ensure(payload?.readiness?.applicationSource?.publicRepositoryAvailable === true, "installer must expose app sources as public-repository available");
+  ensure(payload?.readiness?.applicationSource?.publicAudience === "everyone", "installer app public audience must be everyone");
+  ensure(payload?.readiness?.applicationSource?.marketplaceName === "seis-repo", "installer app marketplace must be seis-repo");
+  ensure(payload?.readiness?.applicationSource?.publicMarketplace === true, "installer must expose app sources in the public marketplace");
+  ensure(payload?.readiness?.applicationSource?.marketplaceEntryCount === 60, "installer must expose all app-owned marketplace cards");
+  ensure(payload?.readiness?.consolidationPolicy?.includes("SEIS-Agent is the canonical public install target"), "installer must document the canonical public plugin policy");
   ensure(payload?.readiness?.canonicalization?.effectivePluginCount === 1, "installer must expose one canonical public plugin");
   ensure(payload?.readiness?.canonicalization?.legacyAliasCount === 5, "installer must preserve five legacy aliases");
   ensure(payload?.readiness?.canonicalization?.personalMarketplaceMutation === false, "installer must not mutate the personal marketplace");

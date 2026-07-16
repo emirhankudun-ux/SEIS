@@ -15,6 +15,726 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Developer"
+    },
+    {
+      "name": "seis-a11y-regression",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-a11y-regression"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    },
+    {
+      "name": "seis-action-pin-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-action-pin-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-agent-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-agent-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "AI"
+    },
+    {
+      "name": "seis-agent-contract-validator",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-agent-contract-validator"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "AI"
+    },
+    {
+      "name": "seis-approval-gate-review",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-approval-gate-review"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-architecture-drift",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-architecture-drift"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-artifact-attestation",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-artifact-attestation"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-branch-protection-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-branch-protection-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-canonical-registry-validator",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-canonical-registry-validator"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-changelog-validator",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-changelog-validator"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-codeowners-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-codeowners-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-community-health",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-community-health"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-context-efficiency",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-context-efficiency"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "AI"
+    },
+    {
+      "name": "seis-contract-compatibility",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-contract-compatibility"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-contributor-map",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-contributor-map"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-cost-latency-budget",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-cost-latency-budget"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-data-retention-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-data-retention-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-dependency-freshness",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-dependency-freshness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-design-token-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-design-token-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    },
+    {
+      "name": "seis-doc-indexer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-doc-indexer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data"
+    },
+    {
+      "name": "seis-docs-freshness",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-docs-freshness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data"
+    },
+    {
+      "name": "seis-dora-metrics",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-dora-metrics"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Observability"
+    },
+    {
+      "name": "seis-download-anomaly",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-download-anomaly"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data"
+    },
+    {
+      "name": "seis-github-metrics-collector",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-github-metrics-collector"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-goal-dependency-map",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-goal-dependency-map"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-goal-integrity",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-goal-integrity"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "seis-issue-triage",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-issue-triage"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-license-compatibility",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-license-compatibility"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-localization-coverage",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-localization-coverage"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data"
+    },
+    {
+      "name": "seis-maintainer-risk",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-maintainer-risk"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Governance"
+    },
+    {
+      "name": "seis-mcp-inventory",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-mcp-inventory"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "AI"
+    },
+    {
+      "name": "seis-migration-guide-check",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-migration-guide-check"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-model-fallback",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-model-fallback"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "AI"
+    },
+    {
+      "name": "seis-offline-mode-check",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-offline-mode-check"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-package-adoption",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-package-adoption"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data"
+    },
+    {
+      "name": "seis-performance-budget",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-performance-budget"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-personal-plugin-discovery",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-personal-plugin-discovery"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-plugin-migration",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-plugin-migration"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-pr-cycle-time",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-pr-cycle-time"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-prompt-injection-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-prompt-injection-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-provider-health",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-provider-health"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "AI"
+    },
+    {
+      "name": "seis-public-safe-scan",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-public-safe-scan"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-rag-citation-coverage",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-rag-citation-coverage"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data"
+    },
+    {
+      "name": "seis-release-cadence",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-release-cadence"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-release-readiness",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-release-readiness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-repository-health",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-repository-health"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-repository-scorecard",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-repository-scorecard"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-rollback-readiness",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-rollback-readiness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-route-explainer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-route-explainer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "AI"
+    },
+    {
+      "name": "seis-sbom-generator",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-sbom-generator"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-secret-boundary-scan",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-secret-boundary-scan"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-semver-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-semver-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-source-provenance",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-source-provenance"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "seis-technology-ontology",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-technology-ontology"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data"
+    },
+    {
+      "name": "seis-test-flakiness",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-test-flakiness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-tool-permission-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-tool-permission-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-vulnerability-triage",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-vulnerability-triage"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-workflow-linter",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-workflow-linter"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-workflow-permission-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-workflow-permission-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
+      "name": "seis-workspace-inspector",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-workspace-inspector"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
     }
   ]
 }

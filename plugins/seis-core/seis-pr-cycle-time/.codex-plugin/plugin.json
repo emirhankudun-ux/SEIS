@@ -12,8 +12,15 @@
     "longDescription": "Read recorded pull-request timestamps and summarize cycle-time distributions without GitHub access or writes.",
     "developerName": "Local developer",
     "category": "Developer",
-    "capabilities": ["local-readonly-analysis"],
+    "capabilities": [
+      "local-readonly-analysis"
+    ],
     "defaultPrompt": "Measure recorded pull-request cycle times."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

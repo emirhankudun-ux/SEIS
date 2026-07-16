@@ -3,9 +3,19 @@
   "name": "seis-secret-boundary-scan",
   "version": "0.0.13",
   "description": "Read-only scoped scan for likely secrets and private-path leakage in text files.",
-  "author": { "name": "emirhankudun-ux" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "security", "secrets", "privacy", "redaction"],
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "security",
+    "secrets",
+    "privacy",
+    "redaction",
+    "public-repository",
+    "read-only"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -14,8 +24,16 @@
     "longDescription": "A bounded local SEIS security plugin that scans selected text files for high-signal secret patterns and private-path leakage, returning redacted findings only and never sending, writing, or exposing matched values.",
     "developerName": "emirhankudun-ux",
     "category": "Security",
-    "capabilities": ["Redacted secret-pattern findings", "Private-path detection", "Bounded text scan"],
-    "defaultPrompt": ["Scan this scope for secret-boundary risks.", "Find likely credentials without printing values.", "Check private-path leakage safely."],
+    "capabilities": [
+      "Redacted secret-pattern findings",
+      "Private-path detection",
+      "Bounded text scan"
+    ],
+    "defaultPrompt": [
+      "Scan this scope for secret-boundary risks.",
+      "Find likely credentials without printing values.",
+      "Check private-path leakage safely."
+    ],
     "brandColor": "#DC2626"
   }
 }

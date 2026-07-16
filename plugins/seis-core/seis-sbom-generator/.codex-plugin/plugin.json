@@ -2,9 +2,18 @@
   "name": "seis-sbom-generator",
   "version": "0.0.13",
   "description": "Generate an in-memory local SBOM projection from bounded manifests without writing artifacts.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "sbom", "supply-chain", "dependencies", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "sbom",
+    "supply-chain",
+    "dependencies",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS SBOM Generator",
@@ -12,7 +21,10 @@
     "longDescription": "Reads bounded package manifests and lockfiles and returns a deterministic in-memory inventory. It does not write an SBOM, query registries or certify completeness.",
     "developerName": "Emirhan Kudun",
     "category": "Security",
-    "capabilities": ["local-read-only", "supply-chain-review"],
+    "capabilities": [
+      "local-read-only",
+      "supply-chain-review"
+    ],
     "defaultPrompt": "Generate a redacted in-memory SBOM projection for this local repository."
   },
   "mcpServers": "./.mcp.json"

@@ -10,9 +10,9 @@
   "category": "reliability",
   "owner": "@seis-core",
   "publisher": "emirhankudun-ux",
-  "sourceClassification": "original-SEIS-local",
-  "license": "UNLICENSED-LOCAL",
-  "status": "approved-local-readonly",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
   "implementationState": "functional-local-demo",
   "entrypoint": "scripts/seis-offline-mode-check-mcp-server.mjs",
   "permissions": {
@@ -33,6 +33,10 @@
     "node scripts/seis-offline-mode-check-mcp-server.mjs --report --path /path/to/tree"
   ],
   "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-  "reviewState": "local-development",
+  "reviewState": "public-repository-preview",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated",
   "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
 }

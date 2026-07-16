@@ -12,8 +12,16 @@
     "longDescription": "Identify missing ownership, stale activity, and low bus-factor signals without contacting GitHub or changing repositories.",
     "developerName": "Local developer",
     "category": "Governance",
-    "capabilities": ["local-readonly-analysis", "risk-signals"],
+    "capabilities": [
+      "local-readonly-analysis",
+      "risk-signals"
+    ],
     "defaultPrompt": "Review recorded maintainer-risk signals."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

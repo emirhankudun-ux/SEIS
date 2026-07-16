@@ -52,14 +52,17 @@
     "recordedGate": "npm run check:seis-public-plugin-independent-runner-evidence:recorded"
   },
   "marketplace": ".agents/plugins/marketplace.json",
-  "purpose": "Keep the single public SEIS-Agent plugin and its embedded SEIS source modules maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+  "purpose": "Keep the canonical public SEIS-Agent suite, its embedded SEIS source modules, and the 60 public app package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
   "publicAudience": "everyone",
   "orchestrator": "seis-ai-agent@seis-repo",
   "publicDistribution": {
     "publicPluginCount": 1,
     "embeddedModuleCount": 10,
     "canonicalInstallId": "seis-ai-agent@seis-repo",
-    "mode": "single-public-plugin"
+    "mode": "single-public-plugin",
+    "marketplaceName": "seis-repo",
+    "repoMarketplaceEntryCount": 61,
+    "applicationPluginCount": 60
   },
   "releasePolicy": {
     "currentChannel": "internal-review-local-proof",
@@ -172,7 +175,7 @@
         "npm run check:seis-public-plugin-external-install-proof",
         "disposable local stage excludes macOS metadata and forbidden artifact classes"
       ],
-      "exitRule": "A disposable local artifact stage contains the sole marketplace plugin plus its embedded module suite without forbidden release artifacts. This does not prove an independent installation."
+      "exitRule": "A disposable local artifact stage contains the canonical suite and every public app package from the repo marketplace without forbidden release artifacts. This does not prove an independent installation."
     },
     {
       "id": "fresh-task-reload",
@@ -545,5 +548,5 @@
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-repo-marketplace"
   ],
-  "completionRule": "The lifecycle is ready for internal review when the single public SEIS-Agent suite, embedded module discovery, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval."
+  "completionRule": "The lifecycle is ready for internal review when the canonical public SEIS-Agent suite, its embedded module discovery, all public seis-repo app package cards, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval."
 }

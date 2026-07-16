@@ -6,8 +6,14 @@
   "author": {
     "name": "emirhankudun-ux"
   },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "workspace", "inventory", "read-only"],
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "workspace",
+    "inventory",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {

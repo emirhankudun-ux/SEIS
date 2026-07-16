@@ -16,14 +16,14 @@
     "scope": "plugins/seis-core",
     "pluginCount": 60
   },
-  "purpose": "Keep every SEIS AI plugin record in the SEIS repository and expose a deterministic 5000-entry capability catalog to the AI Core without creating 5000 artificial source folders or public marketplace cards. Personal plugin source packages remain owned by the SEIS Command Center application.",
+  "purpose": "Keep every SEIS AI plugin record in the public SEIS repository and expose a deterministic 5000-entry capability catalog to the AI Core without creating 5000 artificial source folders. Public app plugin source packages remain owned by the SEIS Command Center application.",
   "canonicalOwnership": {
     "repository": "SEIS",
     "repositoryRole": "canonical-source-of-truth",
     "registryPath": "content/development/seis-ai-core-plugin-registry.json",
     "runtimePackage": "packages/seis-ai",
     "runtimeEntryPoint": "packages/seis-ai/src/lib/plugin-registry.mjs",
-    "coreSourcePolicy": "packages/seis-ai owns registry, contracts, permission policy, and read-only inspection; it does not own personal plugin source packages",
+    "coreSourcePolicy": "packages/seis-ai owns registry, contracts, permission policy, and read-only inspection; it does not own public app plugin source packages",
     "applicationPluginSourceRoot": "plugins/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
@@ -34,8 +34,10 @@
     "applicationPluginReleaseMicroUnits": 13,
     "personalPluginCoverage": "content/development/seis-ai-core-personal-plugin-coverage.json",
     "orchestrator": "seis-ai-agent@seis-repo",
-    "publicMarketplacePolicy": "seis-ai-agent-is-the-only-public-plugin-with-embedded-source-modules",
-    "publicMarketplacePath": ".agents/plugins/marketplace.json"
+    "publicMarketplacePolicy": "seis-ai-agent-is-the-canonical-orchestrator-and-app-sources-are-public-seis-repo-marketplace-packages",
+    "publicMarketplacePath": ".agents/plugins/marketplace.json",
+    "publicRepositoryAvailable": true,
+    "publicAudience": "everyone"
   },
   "target": {
     "requestedPluginCount": 5000,
@@ -49,7 +51,9 @@
     "appReleaseMicroUnits": 13,
     "catalogOnlyEntryCount": 4930,
     "functionalLocalDemoCount": 60,
-    "publicMarketplacePluginCount": 1,
+    "publicMarketplacePluginCount": 61,
+    "applicationMarketplacePluginCount": 60,
+    "publicRepositoryPluginCount": 60,
     "personalPluginCount": 55,
     "personalRepoCounterpartCount": 55,
     "countRule": "registryEntryCount must equal requestedPluginCount; physical and catalog-only states must remain distinct"
@@ -59,12 +63,15 @@
     "plugins/seis-core"
   ],
   "migration": {
-    "sourceClass": "user-selected-local-plugin-root",
+    "sourceClass": "public-repository-plugin-source",
     "destinationRoot": "plugins/seis-core",
     "destinationOwner": "apps/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "migratedOn": "2026-07-15",
     "migratedPluginCount": 60,
+    "legacyCompatibilityCount": 55,
+    "legacyRepoCounterpartCount": 55,
+    "legacyCompatibilityCoveragePath": "content/development/seis-ai-core-personal-plugin-coverage.json",
     "personalPluginCount": 55,
     "personalRepoCounterpartCount": 55,
     "personalPluginCoveragePath": "content/development/seis-ai-core-personal-plugin-coverage.json",
@@ -72,7 +79,7 @@
     "sourceCodeExecutedDuringMigration": false,
     "copiedSecrets": false,
     "publicReleaseAllowed": false,
-    "licensePolicy": "UNLICENSED-LOCAL, missing-license, or local-developer packages remain repo-internal until ownership, license, provenance, and public-release review passes."
+    "licensePolicy": "Public app packages use MIT metadata; live external capability release remains separately approval-gated."
   },
   "catalogModel": {
     "recordType": "capability-plugin-slot",
@@ -132,6 +139,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -169,16 +178,18 @@
       "category": "accessibility",
       "owner": "@seis-accessibility",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-a11y-regression",
       "entrypoint": "scripts/seis-a11y-regression-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-a11y-regression@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local accessibility JSON declarations"
@@ -188,14 +199,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-a11y-regression-mcp-server.mjs --status",
         "node scripts/seis-a11y-regression-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -216,16 +227,18 @@
       "category": "supply-chain",
       "owner": "@seis-security",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-action-pin-audit",
       "entrypoint": "scripts/seis-action-pin-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-action-pin-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local workflow files"
@@ -235,14 +248,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-action-pin-audit-mcp-server.mjs --status",
         "node scripts/seis-action-pin-audit-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -263,16 +276,18 @@
       "category": "agent-governance",
       "owner": "@seis-ai-agent",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-agent-audit",
       "entrypoint": "scripts/seis-agent-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-agent-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local agent JSON metadata"
@@ -282,14 +297,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-agent-audit-mcp-server.mjs --status",
         "node scripts/seis-agent-audit-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -310,16 +325,18 @@
       "category": "agent-governance",
       "owner": "@seis-ai-agent",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-agent-contract-validator",
       "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-agent-contract-validator@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local JSON agent contracts"
@@ -329,14 +346,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-agent-contract-validator-mcp-server.mjs --status",
         "node scripts/seis-agent-contract-validator-mcp-server.mjs --validate --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -360,7 +377,9 @@
       "sourcePath": "plugins/seis-ai-agent",
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -398,16 +417,18 @@
       "category": "governance",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-approval-gate-review",
       "entrypoint": "scripts/seis-approval-gate-review-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-approval-gate-review@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -417,14 +438,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-approval-gate-review-mcp-server.mjs --status",
         "node scripts/seis-approval-gate-review-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -445,16 +466,18 @@
       "category": "architecture",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-architecture-drift",
       "entrypoint": "scripts/seis-architecture-drift-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-architecture-drift@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -464,14 +487,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-architecture-drift-mcp-server.mjs --status",
         "node scripts/seis-architecture-drift-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -492,16 +515,18 @@
       "category": "security",
       "owner": "@seis-release",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-artifact-attestation",
       "entrypoint": "scripts/seis-artifact-attestation-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-artifact-attestation@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local artifact and provenance evidence"
@@ -511,7 +536,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -519,8 +544,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no artifact is modified.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -545,6 +570,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -582,16 +609,18 @@
       "category": "security",
       "owner": "@seis-github",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-branch-protection-audit",
       "entrypoint": "scripts/seis-branch-protection-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-branch-protection-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local branch and ruleset policy files"
@@ -601,7 +630,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -609,8 +638,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no branch policy is changed.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -631,16 +660,18 @@
       "category": "registry-governance",
       "owner": "@seis-governance",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-canonical-registry-validator",
       "entrypoint": "scripts/seis-canonical-registry-validator-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-canonical-registry-validator@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded JSON registry and catalog projections"
@@ -650,14 +681,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-canonical-registry-validator-mcp-server.mjs --status",
         "node scripts/seis-canonical-registry-validator-mcp-server.mjs --validate --path <workspace>"
       ],
       "rollback": "Disable or remove the local plugin; registry files and generated projections are never edited.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -678,16 +709,18 @@
       "category": "release-documentation",
       "owner": "@seis-docs",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-changelog-validator",
       "entrypoint": "scripts/seis-changelog-validator-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-changelog-validator@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local changelog files"
@@ -697,14 +730,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-changelog-validator-mcp-server.mjs --status",
         "node scripts/seis-changelog-validator-mcp-server.mjs --validate --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -729,6 +762,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -770,6 +805,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -807,16 +844,18 @@
       "category": "ownership",
       "owner": "@seis-governance",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-codeowners-audit",
       "entrypoint": "scripts/seis-codeowners-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-codeowners-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local CODEOWNERS files"
@@ -826,14 +865,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-codeowners-audit-mcp-server.mjs --status",
         "node scripts/seis-codeowners-audit-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -854,16 +893,18 @@
       "category": "community",
       "owner": "@seis-github",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-community-health",
       "entrypoint": "scripts/seis-community-health-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-community-health@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local contribution and community documents"
@@ -873,14 +914,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-community-health-mcp-server.mjs --status",
         "node scripts/seis-community-health-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -901,16 +942,18 @@
       "category": "ai",
       "owner": "@seis-ai-agent",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-context-efficiency",
       "entrypoint": "scripts/seis-context-efficiency-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-context-efficiency@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local context usage JSON"
@@ -920,7 +963,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -928,8 +971,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no prompt or source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -950,16 +993,18 @@
       "category": "engineering",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-contract-compatibility",
       "entrypoint": "scripts/seis-contract-compatibility-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-contract-compatibility@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -969,14 +1014,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-contract-compatibility-mcp-server.mjs --status",
         "node scripts/seis-contract-compatibility-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -997,16 +1042,18 @@
       "category": "developer",
       "owner": "@seis-github",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-contributor-map",
       "entrypoint": "scripts/seis-contributor-map-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-contributor-map@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local contributor and ownership JSON"
@@ -1016,7 +1063,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -1024,8 +1071,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1046,16 +1093,18 @@
       "category": "ai-core",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-cost-latency-budget",
       "entrypoint": "scripts/seis-cost-latency-budget-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-cost-latency-budget@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -1065,14 +1114,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-cost-latency-budget-mcp-server.mjs --status",
         "node scripts/seis-cost-latency-budget-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1097,6 +1146,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -1134,16 +1185,18 @@
       "category": "data-and-privacy",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-data-retention-audit",
       "entrypoint": "scripts/seis-data-retention-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-data-retention-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -1153,14 +1206,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-data-retention-audit-mcp-server.mjs --status",
         "node scripts/seis-data-retention-audit-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1181,16 +1234,18 @@
       "category": "supply-chain",
       "owner": "@seis-security",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-dependency-freshness",
       "entrypoint": "scripts/seis-dependency-freshness-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-dependency-freshness@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local dependency manifests and lockfiles"
@@ -1200,14 +1255,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-dependency-freshness-mcp-server.mjs --status",
         "node scripts/seis-dependency-freshness-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1232,6 +1287,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -1269,16 +1326,18 @@
       "category": "design-system",
       "owner": "@seis-design",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-design-token-audit",
       "entrypoint": "scripts/seis-design-token-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-design-token-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local JSON token and theme files"
@@ -1288,14 +1347,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-design-token-audit-mcp-server.mjs --status",
         "node scripts/seis-design-token-audit-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1316,16 +1375,18 @@
       "category": "knowledge",
       "owner": "@seis-knowledge",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-doc-indexer",
       "entrypoint": "scripts/seis-doc-indexer-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-doc-indexer@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local Markdown and text files"
@@ -1335,14 +1396,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-doc-indexer-mcp-server.mjs --status",
         "node scripts/seis-doc-indexer-mcp-server.mjs --search --path /path/to/tree --query SEIS"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1363,16 +1424,18 @@
       "category": "documentation",
       "owner": "@seis-docs",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-docs-freshness",
       "entrypoint": "scripts/seis-docs-freshness-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-docs-freshness@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local Markdown metadata"
@@ -1382,14 +1445,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-docs-freshness-mcp-server.mjs --status",
         "node scripts/seis-docs-freshness-mcp-server.mjs --audit --path /path/to/tree --days 180"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1410,16 +1473,18 @@
       "category": "observability",
       "owner": "@seis-observability",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-dora-metrics",
       "entrypoint": "scripts/seis-dora-metrics-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-dora-metrics@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local delivery JSON"
@@ -1429,7 +1494,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -1437,8 +1502,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1459,16 +1524,18 @@
       "category": "data",
       "owner": "@seis-data",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-download-anomaly",
       "entrypoint": "scripts/seis-download-anomaly-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-download-anomaly@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local download metrics JSON"
@@ -1478,7 +1545,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -1486,8 +1553,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no metric data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1508,16 +1575,18 @@
       "category": "developer",
       "owner": "@seis-github",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-github-metrics-collector",
       "entrypoint": "scripts/seis-github-metrics-collector-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-github-metrics-collector@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local recorded GitHub-style metrics"
@@ -1527,7 +1596,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -1535,8 +1604,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1557,16 +1626,18 @@
       "category": "planning",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-goal-dependency-map",
       "entrypoint": "scripts/seis-goal-dependency-map-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-goal-dependency-map@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -1576,14 +1647,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-goal-dependency-map-mcp-server.mjs --status",
         "node scripts/seis-goal-dependency-map-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1604,16 +1675,18 @@
       "category": "goal-governance",
       "owner": "@seis-governance",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-goal-integrity",
       "entrypoint": "scripts/seis-goal-integrity-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-goal-integrity@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded goal files"
@@ -1623,14 +1696,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-goal-integrity-mcp-server.mjs --status",
         "node scripts/seis-goal-integrity-mcp-server.mjs --validate --path <workspace>"
       ],
       "rollback": "Disable or remove the local plugin; goal records are never auto-completed or rewritten.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1651,16 +1724,18 @@
       "category": "developer",
       "owner": "@seis-product",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-issue-triage",
       "entrypoint": "scripts/seis-issue-triage-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-issue-triage@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local issue JSON"
@@ -1670,7 +1745,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -1678,8 +1753,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no issue data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1700,16 +1775,18 @@
       "category": "license-review",
       "owner": "@seis-docs",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-license-compatibility",
       "entrypoint": "scripts/seis-license-compatibility-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-license-compatibility@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local package and license files"
@@ -1719,14 +1796,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-license-compatibility-mcp-server.mjs --status",
         "node scripts/seis-license-compatibility-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1747,16 +1824,18 @@
       "category": "localization",
       "owner": "@seis-localization",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-localization-coverage",
       "entrypoint": "scripts/seis-localization-coverage-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-localization-coverage@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local locale JSON dictionaries"
@@ -1766,14 +1845,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-localization-coverage-mcp-server.mjs --status",
         "node scripts/seis-localization-coverage-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1794,16 +1873,18 @@
       "category": "governance",
       "owner": "@seis-governance",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-maintainer-risk",
       "entrypoint": "scripts/seis-maintainer-risk-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-maintainer-risk@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local maintainer and activity JSON"
@@ -1813,7 +1894,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -1821,8 +1902,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1843,16 +1924,18 @@
       "category": "mcp-governance",
       "owner": "@seis-mcp",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-mcp-inventory",
       "entrypoint": "scripts/seis-mcp-inventory-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-mcp-inventory@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local MCP and plugin JSON manifests"
@@ -1862,14 +1945,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-mcp-inventory-mcp-server.mjs --status",
         "node scripts/seis-mcp-inventory-mcp-server.mjs --inventory --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1890,16 +1973,18 @@
       "category": "migration",
       "owner": "@seis-docs",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-migration-guide-check",
       "entrypoint": "scripts/seis-migration-guide-check-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-migration-guide-check@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local migration documentation"
@@ -1909,14 +1994,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-migration-guide-check-mcp-server.mjs --status",
         "node scripts/seis-migration-guide-check-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1937,16 +2022,18 @@
       "category": "ai-routing",
       "owner": "@seis-ai-agent",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-model-fallback",
       "entrypoint": "scripts/seis-model-fallback-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-model-fallback@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local route and fallback JSON"
@@ -1956,14 +2043,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-model-fallback-mcp-server.mjs --status",
         "node scripts/seis-model-fallback-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -1984,16 +2071,18 @@
       "category": "reliability",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-offline-mode-check",
       "entrypoint": "scripts/seis-offline-mode-check-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-offline-mode-check@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -2003,14 +2092,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-offline-mode-check-mcp-server.mjs --status",
         "node scripts/seis-offline-mode-check-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2031,16 +2120,18 @@
       "category": "data",
       "owner": "@seis-product",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-package-adoption",
       "entrypoint": "scripts/seis-package-adoption-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-package-adoption@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local package adoption JSON"
@@ -2050,7 +2141,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -2058,8 +2149,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no adoption data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2080,16 +2171,18 @@
       "category": "performance",
       "owner": "@seis-observability",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-performance-budget",
       "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-performance-budget@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local performance JSON"
@@ -2099,14 +2192,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-performance-budget-mcp-server.mjs --status",
         "node scripts/seis-performance-budget-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2127,16 +2220,18 @@
       "category": "developer",
       "owner": "@seis-mcp",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-personal-plugin-discovery",
       "entrypoint": "scripts/seis-personal-plugin-discovery-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-personal-plugin-discovery@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "explicitly selected local plugin metadata"
@@ -2146,7 +2241,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -2154,8 +2249,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; discovery never mutates the selected directory.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2176,16 +2271,18 @@
       "category": "developer",
       "owner": "@seis-mcp",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-plugin-migration",
       "entrypoint": "scripts/seis-plugin-migration-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-plugin-migration@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "selected local plugin metadata"
@@ -2195,7 +2292,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -2203,8 +2300,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; the dry-run changes no source or registry state.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2225,16 +2322,18 @@
       "category": "developer",
       "owner": "@seis-observability",
       "publisher": "Local developer",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-pr-cycle-time",
       "entrypoint": "scripts/seis-pr-cycle-time-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-pr-cycle-time@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local pull-request JSON"
@@ -2244,7 +2343,7 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "plugin validator",
         "skill quick validator",
@@ -2252,8 +2351,8 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2278,6 +2377,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -2315,16 +2416,18 @@
       "category": "ai-safety",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-prompt-injection-audit",
       "entrypoint": "scripts/seis-prompt-injection-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-prompt-injection-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -2334,14 +2437,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-prompt-injection-audit-mcp-server.mjs --status",
         "node scripts/seis-prompt-injection-audit-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2362,16 +2465,18 @@
       "category": "ai-governance",
       "owner": "@seis-ai-agent",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-provider-health",
       "entrypoint": "scripts/seis-provider-health-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-provider-health@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local provider and capability JSON records"
@@ -2381,14 +2486,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-provider-health-mcp-server.mjs --status",
         "node scripts/seis-provider-health-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2409,16 +2514,18 @@
       "category": "security",
       "owner": "@seis-security",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-public-safe-scan",
       "entrypoint": "scripts/seis-public-safe-scan-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-public-safe-scan@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local text files and path names"
@@ -2428,14 +2535,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-public-safe-scan-mcp-server.mjs --status",
         "node scripts/seis-public-safe-scan-mcp-server.mjs --scan --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2456,16 +2563,18 @@
       "category": "knowledge",
       "owner": "@seis-knowledge",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-rag-citation-coverage",
       "entrypoint": "scripts/seis-rag-citation-coverage-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-rag-citation-coverage@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local retrieval JSON records"
@@ -2475,14 +2584,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-rag-citation-coverage-mcp-server.mjs --status",
         "node scripts/seis-rag-citation-coverage-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2503,16 +2612,18 @@
       "category": "release",
       "owner": "@seis-release",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-release-cadence",
       "entrypoint": "scripts/seis-release-cadence-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-release-cadence@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local changelog files"
@@ -2522,14 +2633,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-release-cadence-mcp-server.mjs --status",
         "node scripts/seis-release-cadence-mcp-server.mjs --analyze --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2550,16 +2661,18 @@
       "category": "release",
       "owner": "@seis-release",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-release-readiness",
       "entrypoint": "scripts/seis-release-readiness-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-release-readiness@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "recorded local JSON release-check evidence"
@@ -2569,14 +2682,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-release-readiness-mcp-server.mjs --status",
         "node scripts/seis-release-readiness-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2597,16 +2710,18 @@
       "category": "repository-hygiene",
       "owner": "@seis-code",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-repository-health",
       "entrypoint": "scripts/seis-repository-health-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-repository-health@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "explicit repository metadata",
@@ -2617,14 +2732,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-repository-health-mcp-server.mjs --status",
         "node scripts/seis-repository-health-mcp-server.mjs --scan --path <repository>"
       ],
       "rollback": "Disable or remove the local plugin; Git and repository files are never mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2645,16 +2760,18 @@
       "category": "repository-governance",
       "owner": "@seis-governance",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-repository-scorecard",
       "entrypoint": "scripts/seis-repository-scorecard-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-repository-scorecard@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local repository metadata"
@@ -2664,14 +2781,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-repository-scorecard-mcp-server.mjs --status",
         "node scripts/seis-repository-scorecard-mcp-server.mjs --score --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2696,6 +2813,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -2733,16 +2852,18 @@
       "category": "release",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-rollback-readiness",
       "entrypoint": "scripts/seis-rollback-readiness-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-rollback-readiness@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -2752,14 +2873,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-rollback-readiness-mcp-server.mjs --status",
         "node scripts/seis-rollback-readiness-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2780,16 +2901,18 @@
       "category": "ai-routing",
       "owner": "@seis-ai-agent",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-route-explainer",
       "entrypoint": "scripts/seis-route-explainer-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-route-explainer@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "task route parameters"
@@ -2799,14 +2922,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-route-explainer-mcp-server.mjs --status",
         "node scripts/seis-route-explainer-mcp-server.mjs --explain --taskClass architecture"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2827,16 +2950,18 @@
       "category": "supply-chain",
       "owner": "@seis-security",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-sbom-generator",
       "entrypoint": "scripts/seis-sbom-generator-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-sbom-generator@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local package manifests and lockfiles"
@@ -2846,14 +2971,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-sbom-generator-mcp-server.mjs --status",
         "node scripts/seis-sbom-generator-mcp-server.mjs --generate --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2874,16 +2999,18 @@
       "category": "security",
       "owner": "@seis-security",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-secret-boundary-scan",
       "entrypoint": "scripts/seis-secret-boundary-scan-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-secret-boundary-scan@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local text files and path names"
@@ -2893,14 +3020,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-secret-boundary-scan-mcp-server.mjs --status",
         "node scripts/seis-secret-boundary-scan-mcp-server.mjs --scan --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -2925,6 +3052,8 @@
       "entrypoint": null,
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "publicMarketplace": false,
+      "publicRepositoryAvailable": false,
+      "publicAudience": null,
       "routeEligible": false,
       "permissions": {
         "read": [
@@ -2962,16 +3091,18 @@
       "category": "release",
       "owner": "@seis-release",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-semver-audit",
       "entrypoint": "scripts/seis-semver-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-semver-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local package.json files"
@@ -2981,14 +3112,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-semver-audit-mcp-server.mjs --status",
         "node scripts/seis-semver-audit-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -3009,16 +3140,18 @@
       "category": "provenance-governance",
       "owner": "@seis-docs",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-source-provenance",
       "entrypoint": "scripts/seis-source-provenance-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-source-provenance@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded regular files under an explicit workspace"
@@ -3028,14 +3161,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-source-provenance-mcp-server.mjs --status",
         "node scripts/seis-source-provenance-mcp-server.mjs --scan --path <workspace> --max-files 25"
       ],
       "rollback": "Disable or remove the local plugin; hashes are emitted to stdout and no report file is written.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -3056,16 +3189,18 @@
       "category": "technology-ontology",
       "owner": "@seis-knowledge",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-technology-ontology",
       "entrypoint": "scripts/seis-technology-ontology-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-technology-ontology@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bundled ontology profile"
@@ -3075,14 +3210,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-technology-ontology-mcp-server.mjs --status",
         "node scripts/seis-technology-ontology-mcp-server.mjs --search --query agent"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -3103,16 +3238,18 @@
       "category": "qa",
       "owner": "@seis-qa",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-test-flakiness",
       "entrypoint": "scripts/seis-test-flakiness-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-test-flakiness@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local test result JSON"
@@ -3122,14 +3259,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-test-flakiness-mcp-server.mjs --status",
         "node scripts/seis-test-flakiness-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -3150,16 +3287,18 @@
       "category": "security",
       "owner": "@seis-core",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-tool-permission-audit",
       "entrypoint": "scripts/seis-tool-permission-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-tool-permission-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -3169,14 +3308,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-tool-permission-audit-mcp-server.mjs --status",
         "node scripts/seis-tool-permission-audit-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -3197,16 +3336,18 @@
       "category": "security",
       "owner": "@seis-security",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-vulnerability-triage",
       "entrypoint": "scripts/seis-vulnerability-triage-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-vulnerability-triage@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local vulnerability JSON reports"
@@ -3216,14 +3357,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-vulnerability-triage-mcp-server.mjs --status",
         "node scripts/seis-vulnerability-triage-mcp-server.mjs --triage --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -3244,16 +3385,18 @@
       "category": "automation",
       "owner": "@seis-automation",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-workflow-linter",
       "entrypoint": "scripts/seis-workflow-linter-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-workflow-linter@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local JSON workflow definitions"
@@ -3263,14 +3406,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-workflow-linter-mcp-server.mjs --status",
         "node scripts/seis-workflow-linter-mcp-server.mjs --lint --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -3291,16 +3434,18 @@
       "category": "security",
       "owner": "@seis-security",
       "publisher": "Emirhan Kudun",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-workflow-permission-audit",
       "entrypoint": "scripts/seis-workflow-permission-audit-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-workflow-permission-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "bounded local workflow JSON and YAML-like files"
@@ -3310,14 +3455,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-workflow-permission-audit-mcp-server.mjs --status",
         "node scripts/seis-workflow-permission-audit-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],
@@ -3338,16 +3483,18 @@
       "category": "workspace-governance",
       "owner": "@seis",
       "publisher": "emirhankudun-ux",
-      "sourceClassification": "original-SEIS-local",
-      "license": "UNLICENSED-LOCAL",
-      "status": "approved-local-readonly",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
       "implementationState": "functional-local-demo",
       "availability": "local-demo",
       "sourcePath": "plugins/seis-core/seis-workspace-inspector",
       "entrypoint": "scripts/seis-workspace-inspector-mcp-server.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
+      "canonicalInstallId": "seis-workspace-inspector@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
       "permissions": {
         "read": [
           "explicit workspace root metadata"
@@ -3357,14 +3504,14 @@
         "secrets": []
       },
       "privacyClass": "repo-internal-public-safe-boundary",
-      "riskClass": "review-required",
+      "riskClass": "low",
       "validation": [
         "node scripts/seis-workspace-inspector-mcp-server.mjs --status",
         "node scripts/seis-workspace-inspector-mcp-server.mjs --inspect --path <workspace>"
       ],
       "rollback": "Disable or remove the local plugin; no inspected workspace data is mutated.",
-      "reviewState": "local-development",
-      "provenance": "User-authorized local SEIS source migrated into the SEIS Command Center application boundary; original local path intentionally redacted.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
         "SEIS-GOAL-021"
       ],

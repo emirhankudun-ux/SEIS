@@ -32,14 +32,24 @@ export function readApplicationPluginSurface(repoRoot, options = {}) {
   ensure(catalog.sourceRoot === "plugins/seis-core", "catalog source root is not plugins/seis-core", failures);
   ensure(catalog.distribution?.repository === "SEIS", "catalog repository is not SEIS", failures);
   ensure(catalog.distribution?.sourceAvailableInRepository === true, "catalog does not mark source as repo-available", failures);
+  ensure(catalog.distribution?.publicRepositoryAvailable === true, "catalog does not mark source as public-repository available", failures);
+  ensure(catalog.distribution?.publicAudience === "everyone", "catalog public audience is not everyone", failures);
+  ensure(catalog.distribution?.distributionScope === "direct-repository-source", "catalog distribution scope is not direct-repository-source", failures);
   ensure(catalog.distribution?.installSurface === APPLICATION_PLUGIN_INSTALL_SURFACE, "catalog install surface is not repo-source-app", failures);
-  ensure(catalog.distribution?.marketplaceEntryCount === 0, "catalog app plugins must not create marketplace cards", failures);
+  ensure(catalog.distribution?.publicMarketplace === true, "catalog must mark app plugins as public marketplace entries", failures);
+  ensure(catalog.distribution?.marketplaceName === "seis-repo", "catalog marketplace must be seis-repo", failures);
+  ensure(catalog.distribution?.marketplaceEntryCount === sourceIds.length, "catalog marketplace count must match app source count", failures);
   ensure(catalog.distribution?.coreSourceOwner === false, "catalog must keep core out of app source ownership", failures);
   ensure(unifiedSuite.applicationDistribution?.applicationId === "seis-core", "unified suite application id is not seis-core", failures);
   ensure(unifiedSuite.applicationDistribution?.sourceRoot === "plugins/seis-core", "unified suite app source root is stale", failures);
   ensure(unifiedSuite.applicationDistribution?.sourceAvailableInRepository === true, "unified suite does not mark app source as repo-available", failures);
+  ensure(unifiedSuite.applicationDistribution?.publicRepositoryAvailable === true, "unified suite does not mark app source as public-repository available", failures);
+  ensure(unifiedSuite.applicationDistribution?.publicAudience === "everyone", "unified suite public audience is not everyone", failures);
+  ensure(unifiedSuite.applicationDistribution?.publicDistribution === "direct-repository-source", "unified suite distribution is not direct-repository-source", failures);
   ensure(unifiedSuite.applicationDistribution?.installSurface === APPLICATION_PLUGIN_INSTALL_SURFACE, "unified suite install surface is not repo-source-app", failures);
-  ensure(unifiedSuite.applicationDistribution?.marketplaceEntryCount === 0, "unified suite app plugins must not create marketplace cards", failures);
+  ensure(unifiedSuite.applicationDistribution?.publicMarketplace === true, "unified suite must mark app plugins as public marketplace entries", failures);
+  ensure(unifiedSuite.applicationDistribution?.marketplaceName === "seis-repo", "unified suite marketplace must be seis-repo", failures);
+  ensure(unifiedSuite.applicationDistribution?.marketplaceEntryCount === sourceIds.length, "unified suite marketplace count must match app source count", failures);
   ensure(unifiedSuite.applicationDistribution?.coreSourceOwner === false, "unified suite must keep core out of app source ownership", failures);
   ensure(sourceManifest.releaseTrainVersion === currentRelease.label, "source manifest release label is stale", failures);
   ensure(catalog.release?.label === currentRelease.label, "catalog release label is stale", failures);
@@ -74,11 +84,17 @@ export function readApplicationPluginSurface(repoRoot, options = {}) {
     policy: {
       sourceOwnership: "apps/seis-core",
       sourceAvailableInRepository: true,
+      publicRepositoryAvailable: true,
+      publicAudience: "everyone",
+      distributionScope: "direct-repository-source",
       coreSourceOwner: false,
-      marketplaceEntryCount: 0,
+      marketplaceName: "seis-repo",
+      publicMarketplace: true,
+      marketplaceEntryCount: unifiedSuite.applicationDistribution?.marketplaceEntryCount ?? null,
       defaultPermissions: { write: [], network: [], secrets: [] },
       execution: "task-scoped-local-demo-only",
       publicReleaseAllowed: false,
+      liveExternalCapabilities: "approval-gated",
     },
     pluginIds: sourceIds,
     catalogSummary,
@@ -106,7 +122,7 @@ export function createApplicationPluginInstallPlan(repoRoot) {
       "npm run check:seis-core-plugin-catalog",
       "node plugins/seis-core/bin/seis-core-plugins.mjs list --status --json",
     ],
-    reason: "App-owned plugins are already direct repository sources; the plan validates and discovers them without copying source into packages/seis-ai, adding marketplace cards, or performing external writes.",
+    reason: "App-owned plugins are public MIT-licensed repository sources for everyone; the plan validates and discovers them without copying source into packages/seis-ai, creating personal ownership, or performing external writes.",
     failures: surface.failures,
   };
 }

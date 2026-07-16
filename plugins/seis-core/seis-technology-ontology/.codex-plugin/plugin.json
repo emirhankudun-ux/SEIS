@@ -3,9 +3,18 @@
   "name": "seis-technology-ontology",
   "version": "0.0.13",
   "description": "Read-only searchable technology taxonomy and relationship projection for SEIS.",
-  "author": { "name": "emirhankudun-ux" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "ontology", "technology", "taxonomy"],
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "ontology",
+    "technology",
+    "taxonomy",
+    "public-repository",
+    "read-only"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -14,8 +23,16 @@
     "longDescription": "A deterministic local SEIS plugin that projects technology terms from bounded repository metadata and a built-in taxonomy without network access or filesystem writes.",
     "developerName": "emirhankudun-ux",
     "category": "Data",
-    "capabilities": ["Technology taxonomy search", "Relationship projection", "Local deterministic output"],
-    "defaultPrompt": ["Search the SEIS technology ontology.", "Map this stack to SEIS technology domains.", "Show local technology relationships safely."],
+    "capabilities": [
+      "Technology taxonomy search",
+      "Relationship projection",
+      "Local deterministic output"
+    ],
+    "defaultPrompt": [
+      "Search the SEIS technology ontology.",
+      "Map this stack to SEIS technology domains.",
+      "Show local technology relationships safely."
+    ],
     "brandColor": "#6366F1"
   }
 }

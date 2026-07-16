@@ -2,13 +2,19 @@
 
 Date: 2026-07-12
 
-SEIS now exposes `seis-ai-agent` as the one public repo marketplace plugin.
+SEIS now exposes `seis-ai-agent` as the canonical default public repo marketplace
+plugin, while all Command Center app packages are public MIT-licensed sources
+directly in the SEIS repository.
 The core governance lane and specialist package folders remain preserved source
 modules embedded into that agent: `seis`, `seis-cloud`, `seis-code`,
 `seis-design`, `seis-data`, `seis-security`, `seis-research`,
 `seis-automation`, and `seis-product`.
 
-The canonical local marketplace is repo-contained at `.agents/plugins/marketplace.json` with marketplace name `seis-repo`. The older `personal` marketplace can remain installed as a compatibility mirror, but SEIS repo development should use the repo marketplace as the source of truth.
+The canonical repo marketplace is contained at `.agents/plugins/marketplace.json`
+with marketplace name `seis-repo`. It contains the canonical `seis-ai-agent`
+orchestrator plus public `plugins/seis-core` application packages. No personal
+marketplace is a source of truth; legacy personal aliases are compatibility
+evidence only.
 
 ## Consolidation Rule
 
@@ -17,9 +23,11 @@ The canonical local marketplace is repo-contained at `.agents/plugins/marketplac
 - Embedded specialist modules: `seis-cloud`, `seis-code`, `seis-design`,
   `seis-data`, `seis-security`, `seis-research`, `seis-automation`, and
   `seis-product`.
-- Legacy duplicate source: `personal` marketplace, compatibility mirror only.
-- Standalone lane cards: not published. Source modules are routed through the
+- Legacy duplicate source: historical `personal` marketplace, compatibility evidence only.
+- Standalone specialist lane cards: not published. Source modules are routed through the
   installed SEIS-Agent package.
+- App-owned package cards: published individually under `seis-repo` from
+  `plugins/seis-core` with MIT metadata and an everyone audience.
 - Source mirrors stay in `plugins/` so each lane keeps its skill, MCP server,
   profile, and validation contract under repo control while SEIS-Agent embeds
   the active skills and lane profiles.
@@ -81,13 +89,15 @@ approved peer access.
 ## Marketplace
 
 The repo marketplace file is `.agents/plugins/marketplace.json`. It contains
-only the public SEIS-Agent plugin:
+the public SEIS-Agent orchestrator and the 60 public SEIS Core application
+packages:
 
 - `seis-ai-agent@seis-repo`
+- `seis-*-<app-capability>@seis-repo` entries sourced from `plugins/seis-core`
 
-Availability means the SEIS-Agent plugin card is installable from the repo marketplace.
-The embedded source modules are available through its lane tools rather than
-separate install ids.
+Availability means these public repo cards are installable from the `seis-repo`
+marketplace. The embedded specialist source modules remain available through
+SEIS-Agent lane tools rather than separate specialist lane ids.
 It does not mean live OAuth/account access, cloud credentials, SSH access,
 deployment authority, private dataset access, or destructive action permission.
 

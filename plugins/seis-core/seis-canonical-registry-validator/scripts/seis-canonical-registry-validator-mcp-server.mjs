@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const pluginRoot = path.resolve(scriptDir, "..");
 const ignoredNames = new Set([".git", "node_modules", "dist", "build", "target", "DerivedData", ".next", "coverage", "vendor", "cache", "caches", "model-weights"]);
-const allowedStatuses = new Set(["proposed", "approved-local-readonly", "functional-local-demo", "experimental", "beta", "stable", "deprecated", "removed", "active", "planned", "blocked", "completed"]);
+const allowedStatuses = new Set(["proposed", "approved-local-readonly", "approved-public-readonly", "functional-local-demo", "experimental", "beta", "stable", "deprecated", "removed", "active", "planned", "blocked", "completed"]);
 
 function pluginStatus() {
   return {

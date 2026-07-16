@@ -12,8 +12,15 @@
     "longDescription": "Classify bounded issue records by severity and attention need without changing issues or contacting a provider.",
     "developerName": "Local developer",
     "category": "Developer",
-    "capabilities": ["local-readonly-analysis"],
+    "capabilities": [
+      "local-readonly-analysis"
+    ],
     "defaultPrompt": "Triage recorded local issue reports."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

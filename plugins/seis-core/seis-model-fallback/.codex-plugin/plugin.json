@@ -2,9 +2,18 @@
   "name": "seis-model-fallback",
   "version": "0.0.13",
   "description": "Audit local route fallback declarations without selecting or calling models.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "model", "fallback", "routing", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "model",
+    "fallback",
+    "routing",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Model Fallback",
@@ -12,7 +21,10 @@
     "longDescription": "Audits bounded local route JSON for primary and fallback declarations, privacy compatibility and empty chains. It does not call or rank models.",
     "developerName": "Emirhan Kudun",
     "category": "AI",
-    "capabilities": ["local-read-only", "routing-review"],
+    "capabilities": [
+      "local-read-only",
+      "routing-review"
+    ],
     "defaultPrompt": "Audit model fallback declarations in this local repository."
   },
   "mcpServers": "./.mcp.json"

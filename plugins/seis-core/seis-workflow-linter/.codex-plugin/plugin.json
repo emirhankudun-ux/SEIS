@@ -3,9 +3,19 @@
   "name": "seis-workflow-linter",
   "version": "0.0.13",
   "description": "Read-only validation of SEIS workflow trigger, condition, approval, action, retry, and audit stages.",
-  "author": { "name": "emirhankudun-ux" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "workflow", "automation", "approval", "audit"],
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "workflow",
+    "automation",
+    "approval",
+    "audit",
+    "public-repository",
+    "read-only"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -14,8 +24,16 @@
     "longDescription": "A deterministic local SEIS automation-governance plugin that validates JSON workflow definitions for triggers, conditions, approvals, actions, retries, and audit stages without running or rewriting workflows.",
     "developerName": "emirhankudun-ux",
     "category": "Developer",
-    "capabilities": ["Workflow stage validation", "Approval-gate hints", "Retry and audit checks"],
-    "defaultPrompt": ["Lint this SEIS workflow safely.", "Find missing approval and audit stages.", "Check workflow retries without running it."],
+    "capabilities": [
+      "Workflow stage validation",
+      "Approval-gate hints",
+      "Retry and audit checks"
+    ],
+    "defaultPrompt": [
+      "Lint this SEIS workflow safely.",
+      "Find missing approval and audit stages.",
+      "Check workflow retries without running it."
+    ],
     "brandColor": "#059669"
   }
 }

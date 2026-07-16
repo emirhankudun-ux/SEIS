@@ -2,9 +2,18 @@
   "name": "seis-action-pin-audit",
   "version": "0.0.13",
   "description": "Audit local workflow action references for immutable pin declarations without executing actions.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "actions", "supply-chain", "workflow", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "actions",
+    "supply-chain",
+    "workflow",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Action Pin Audit",
@@ -12,7 +21,10 @@
     "longDescription": "Scans bounded workflow text for action references and reports whether they use an immutable-looking SHA pin. It does not contact GitHub or execute actions.",
     "developerName": "Emirhan Kudun",
     "category": "Security",
-    "capabilities": ["local-read-only", "supply-chain-review"],
+    "capabilities": [
+      "local-read-only",
+      "supply-chain-review"
+    ],
     "defaultPrompt": "Audit workflow action pinning in this local repository."
   },
   "mcpServers": "./.mcp.json"

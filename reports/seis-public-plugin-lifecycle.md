@@ -14,7 +14,7 @@
 | canonical-alias-resolution | active-non-destructive-canonicalization | seis-governance | SEIS AI and the installer report one canonical public SEIS-Agent install while preserving legacy personal plugins as read-only compatibility aliases. |
 | single-public-install | active-single-public-plugin | seis-ai-agent | All SEIS source modules share one versioned suite file, and SEIS-Agent is the only public install target; module folders do not create standalone public installs. |
 | installed-cache | active-local-proof | seis-automation | The single public SEIS-Agent plugin exists in the local Codex cache, its MCP server initializes, lists tools, and answers representative lane calls. |
-| clean-artifact-stage | repo-local-artifact-staged | seis-automation | A disposable local artifact stage contains the sole marketplace plugin plus its embedded module suite without forbidden release artifacts. This does not prove an independent installation. |
+| clean-artifact-stage | repo-local-artifact-staged | seis-automation | A disposable local artifact stage contains the canonical suite and every public app package from the repo marketplace without forbidden release artifacts. This does not prove an independent installation. |
 | fresh-task-reload | human-triggered-next-proof | seis-product | A newly started task can use the public SEIS plugin family without relying on this thread's pre-install tool surface. |
 | independent-runner-evidence | awaiting-independent-clean-runner-evidence | seis-automation | A strict recorded-evidence check proves the single SEIS-Agent public plugin installed from an independent public source, exposed every embedded module, passed MCP smoke, and was visible through SEIS AI in a fresh task. Human approval still remains required. |
 | public-preview | approval-gated | seis-security | Security, provenance, clean-artifact staging, independent installation, validation, rollback, and human release approval are recorded before public preview claims. |
@@ -56,6 +56,13 @@
 - Component count: 10
 - Default install mode: single-public-plugin
 - Source module install mode: source-module-only
+
+## Public SEIS Repo Marketplace
+
+- Marketplace: seis-repo
+- Total entries: 61
+- Canonical orchestrator entries: 1
+- App package entries: 60
 
 ## Independent Runner Evidence
 

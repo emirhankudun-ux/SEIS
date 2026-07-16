@@ -2,9 +2,18 @@
   "name": "seis-provider-health",
   "version": "0.0.13",
   "description": "Summarize recorded local provider health and credential states without making calls.",
-  "author": { "name": "Emirhan Kudun" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "provider", "health", "ai", "read-only"],
+  "author": {
+    "name": "Emirhan Kudun"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "provider",
+    "health",
+    "ai",
+    "read-only",
+    "public-repository"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Provider Health",
@@ -12,7 +21,10 @@
     "longDescription": "Reads bounded provider or capability registry JSON and separates declared health, credential state and unavailable evidence. It never contacts a provider.",
     "developerName": "Emirhan Kudun",
     "category": "AI",
-    "capabilities": ["local-read-only", "provider-governance"],
+    "capabilities": [
+      "local-read-only",
+      "provider-governance"
+    ],
     "defaultPrompt": "Review recorded provider health evidence in this local repository."
   },
   "mcpServers": "./.mcp.json"

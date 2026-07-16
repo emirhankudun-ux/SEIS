@@ -6,8 +6,15 @@
   "author": {
     "name": "emirhankudun-ux"
   },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "goals", "governance", "validation"],
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "goals",
+    "governance",
+    "validation",
+    "public-repository",
+    "read-only"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {

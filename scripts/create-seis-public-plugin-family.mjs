@@ -201,13 +201,15 @@ const reportPath = "reports/seis-public-plugin-family.md";
 
 const materializedPlugins = publicPlugins.filter((plugin) => plugin.materialize);
 const publicMarketplacePlugins = publicPlugins.filter((plugin) => plugin.name === "seis-ai-agent");
+const applicationMarketplacePlugins = discoverApplicationMarketplacePlugins();
+const marketplacePlugins = [...publicMarketplacePlugins, ...applicationMarketplacePlugins];
 
 const marketplace = {
   name: "seis-repo",
   interface: {
     displayName: "SEIS Repo",
   },
-  plugins: publicMarketplacePlugins.map((plugin) => ({
+  plugins: marketplacePlugins.map((plugin) => ({
     name: plugin.name,
     source: {
       source: "local",
@@ -225,9 +227,9 @@ const contract = {
   version: 3,
   id: "seis-public-plugin-family",
   generatedAt: GENERATED_AT,
-  mode: "single_public_seis_agent_with_embedded_modules",
+  mode: "public_seis_agent_with_public_app_repository_plugins",
   summary:
-    "SEIS exposes only SEIS-Agent as a public repo marketplace plugin. SEIS, Cloud, Code, Design, Data, Security, Research, Automation, and Product remain preserved source modules embedded inside SEIS-Agent rather than separate public installs.",
+    "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes the 60 app-owned MIT packages directly from the public SEIS repository marketplace. The specialist lanes remain embedded source modules inside SEIS-Agent.",
   defaultInstall: {
     installId: "seis-ai-agent@seis-repo",
     mode: "single-public-plugin",
@@ -241,6 +243,8 @@ const contract = {
     authenticationPolicy: "ON_INSTALL",
     publicAudience: "everyone",
     publicPluginCount: marketplace.plugins.length,
+    canonicalOrchestratorCount: publicMarketplacePlugins.length,
+    applicationPluginCount: applicationMarketplacePlugins.length,
     entries: marketplace.plugins.map((entry) => ({
       name: entry.name,
       sourcePath: entry.source.path,
@@ -249,6 +253,15 @@ const contract = {
       authentication: entry.policy.authentication,
     })),
   },
+  applicationPlugins: applicationMarketplacePlugins.map((plugin) => ({
+    name: plugin.name,
+    sourcePath: plugin.sourcePath,
+    category: plugin.category,
+    installId: `${plugin.name}@seis-repo`,
+    license: "MIT",
+    publicStatus: "repo_marketplace_available",
+    liveRuntimeStatus: "local_demo_or_auth_gated",
+  })),
   seisAiConnection: {
     orchestrator: "seis-ai-agent@seis-repo",
     mcpServer: "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
@@ -264,8 +277,9 @@ const contract = {
     destructiveActions: "delete_force_push_deploy_merge_and_live_ssh_actions_remain_approval_gated",
   },
   longHorizonGovernance: [
-    "Keep SEIS-Agent as the only public installation and orchestration layer for cross-lane work.",
+    "Keep SEIS-Agent as the canonical orchestration layer for cross-lane work.",
     "Keep source modules under plugins/seis-* embedded in SEIS-Agent, not exposed as separate public marketplace plugins.",
+    "Keep every app-owned package under plugins/seis-core available as a public MIT package in the seis-repo marketplace.",
     "Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.",
     "Validate manifests, MCP tools, marketplace entries, and SEIS-AI lane wiring before claiming public readiness.",
     "Record mock, disabled, planned, and connected states honestly.",
@@ -322,7 +336,7 @@ const markdown = [
   `- Unified suite: ${contract.defaultInstall.unifiedSuite}`,
   `- Standalone lanes: ${contract.defaultInstall.standaloneLaneInstallMode}`,
   "",
-  "## Public Plugin",
+  "## Canonical Public Plugin",
   "",
   "| plugin | role | source | category | install policy | auth policy | runtime state | SEIS AI |",
   "| --- | --- | --- | --- | --- | --- | --- | --- |",
@@ -330,6 +344,14 @@ const markdown = [
     (plugin) =>
       `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | ${plugin.category} | AVAILABLE | ON_INSTALL | ${plugin.liveRuntimeStatus} | connected |`,
   ),
+  "",
+  "## Public SEIS Core Repository Packages",
+  "",
+  `- Marketplace entries: ${contract.marketplace.applicationPluginCount}`,
+  "- Source root: plugins/seis-core",
+  "- Audience: everyone",
+  "- License: MIT",
+  "- Runtime: local demo or auth-gated; live external capabilities remain approval-gated.",
   "",
   "## Embedded Modules",
   "",
@@ -406,6 +428,28 @@ function pluginOutputs(plugin) {
     [path.join(base, "scripts", `${plugin.name}-status.mjs`), statusScript(plugin)],
     [path.join(base, "scripts", `${plugin.name}-mcp-server.mjs`), mcpServerScript(plugin)],
   ];
+}
+
+function discoverApplicationMarketplacePlugins() {
+  const sourceRoot = path.join(ROOT, "plugins", "seis-core");
+  if (!fs.existsSync(sourceRoot)) return [];
+  return fs.readdirSync(sourceRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => {
+      const pluginRoot = path.join(sourceRoot, entry.name);
+      const manifestPath = path.join(pluginRoot, ".codex-plugin", "plugin.json");
+      const profilePath = path.join(pluginRoot, "assets", "plugin-profile.json");
+      if (!fs.existsSync(manifestPath) || !fs.existsSync(profilePath)) return null;
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+      const profile = JSON.parse(fs.readFileSync(profilePath, "utf8"));
+      return {
+        name: manifest.name || entry.name,
+        sourcePath: `./plugins/seis-core/${entry.name}`,
+        category: manifest.interface?.category || profile.category || "Developer",
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => left.name.localeCompare(right.name));
 }
 
 function pluginManifest(plugin) {

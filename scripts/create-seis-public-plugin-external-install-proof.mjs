@@ -50,7 +50,7 @@ const proof = {
   },
   publicReleaseAllowed: false,
   purpose:
-    "Stage the single public SEIS-Agent artifact in a disposable clean directory, verify its embedded source-module suite, and retain independent runner/public installation proof as an explicit release gate.",
+    "Stage the canonical SEIS-Agent artifact and every public SEIS Core repository package in a disposable clean directory, verify their marketplace and source contracts, and retain independent runner/public installation proof as an explicit release gate.",
   repoLocalArtifactStaging: artifactStaging,
   externalCleanRunnerEvidence: {
     status: externalEvidenceStatus(independentRunnerEvidence),
@@ -62,7 +62,7 @@ const proof = {
     requiredEvidence: [
       "A clean runner or machine that cannot read the original working tree or existing Codex plugin cache.",
       "The public SEIS marketplace source or published package revision used for the install, including its immutable revision identifier.",
-      "Installation evidence for the single seis-ai-agent@seis-repo plugin and its embedded module inventory from that runner.",
+      "Installation evidence for seis-ai-agent@seis-repo plus the public app-package entries selected from the seis-repo marketplace, including the embedded module inventory.",
       "MCP initialization, tools/list, and representative tool-call evidence from the independent runner.",
       "A newly opened Codex task after the independent installation, with the SEIS AI public-plugin-family bridge visible.",
       "Sanitized runner metadata: operating system, Node major version, Codex version, and command exit summaries only.",
@@ -110,7 +110,11 @@ if (checkMode) {
 }
 
 function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
-  const plugins = Array.isArray(publicFamily.publicPlugins) ? publicFamily.publicPlugins : [];
+  const canonicalPlugins = (Array.isArray(publicFamily.publicPlugins) ? publicFamily.publicPlugins : [])
+    .map((plugin) => ({ ...plugin, sourceKind: "public-plugin" }));
+  const applicationPlugins = (Array.isArray(publicFamily.applicationPlugins) ? publicFamily.applicationPlugins : [])
+    .map((plugin) => ({ ...plugin, sourceKind: "public-application-package" }));
+  const plugins = [...canonicalPlugins, ...applicationPlugins];
   const embeddedModules = Array.isArray(publicFamily.embeddedModules) ? publicFamily.embeddedModules : (publicFamily.plugins || []);
   const expectedNames = plugins.map((plugin) => plugin.name);
   const failures = [];
@@ -153,8 +157,12 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
         excludedSourceArtifacts.push(...copyResult.excluded);
         disallowedSourceArtifacts.push(...copyResult.disallowed);
         pluginFailures.push(...copyResult.failures);
-        pluginFailures.push(...validateStagedPlugin(plugin, stagedRoot));
-        pluginFailures.push(...validateStagedEmbeddedSuite(plugin, stagedRoot, embeddedModules));
+        pluginFailures.push(...validateStagedPlugin(plugin, stagedRoot, { requireReadme: plugin.sourceKind !== "public-application-package" }));
+        if (plugin.sourceKind === "public-application-package") {
+          pluginFailures.push(...validateStagedApplicationPackage(plugin, stagedRoot));
+        } else {
+          pluginFailures.push(...validateStagedEmbeddedSuite(plugin, stagedRoot, embeddedModules));
+        }
         pluginResults.push({
           name: plugin.name,
           sourcePath: plugin.sourcePath,
@@ -198,6 +206,9 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
       externalNetworkAccessUsed: false,
       existingCodexCacheUsed: false,
       publicMarketplacePublished: false,
+      canonicalOrchestratorCount: canonicalPlugins.length,
+      applicationPluginCount: applicationPlugins.length,
+      marketplaceEntryCount: expectedNames.length,
       expectedPluginCount: expectedNames.length,
       embeddedModuleCount: embeddedModules.length,
       embeddedModuleFindings,
@@ -222,6 +233,9 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
       externalNetworkAccessUsed: false,
       existingCodexCacheUsed: false,
       publicMarketplacePublished: false,
+      canonicalOrchestratorCount: canonicalPlugins.length,
+      applicationPluginCount: applicationPlugins.length,
+      marketplaceEntryCount: expectedNames.length,
       expectedPluginCount: expectedNames.length,
       embeddedModuleCount: embeddedModules.length,
       embeddedModuleFindings,
@@ -302,14 +316,14 @@ function copyPluginTree(sourceRoot, stagedRoot) {
   return result;
 }
 
-function validateStagedPlugin(plugin, stagedRoot) {
+function validateStagedPlugin(plugin, stagedRoot, { requireReadme = true } = {}) {
   const failures = [];
   const manifestPath = path.join(stagedRoot, ".codex-plugin", "plugin.json");
   const mcpPath = path.join(stagedRoot, ".mcp.json");
   const readmePath = path.join(stagedRoot, "README.md");
   if (!fs.existsSync(manifestPath)) failures.push("staged plugin manifest is missing");
   if (!fs.existsSync(mcpPath)) failures.push("staged MCP manifest is missing");
-  if (!fs.existsSync(readmePath)) failures.push("staged README is missing");
+  if (requireReadme && !fs.existsSync(readmePath)) failures.push("staged README is missing");
 
   const manifest = readJsonAt(manifestPath);
   if (manifest?.name !== plugin.name) failures.push("staged manifest name does not match plugin name");
@@ -332,6 +346,26 @@ function validateStagedPlugin(plugin, stagedRoot) {
       } else if (!fs.existsSync(resolved)) {
         failures.push(`staged MCP server ${serverName} script is missing from the artifact`);
       }
+    }
+  }
+  return failures;
+}
+
+function validateStagedApplicationPackage(plugin, stagedRoot) {
+  const failures = [];
+  const profilePath = path.join(stagedRoot, "assets", "plugin-profile.json");
+  const skillPath = path.join(stagedRoot, "skills", plugin.name, "SKILL.md");
+  if (!fs.existsSync(profilePath)) failures.push("staged app package profile is missing");
+  if (!fs.existsSync(skillPath)) failures.push("staged app package skill is missing");
+  const profile = readJsonAt(profilePath);
+  if (profile?.stableId !== plugin.name) failures.push("staged app package profile id does not match plugin name");
+  if (profile?.license !== "MIT") failures.push("staged app package profile license must be MIT");
+  if (profile?.publicRepositoryAvailable !== true) failures.push("staged app package must be public-repository available");
+  if (profile?.publicAudience !== "everyone") failures.push("staged app package audience must be everyone");
+  if (profile?.publicMarketplace !== true) failures.push("staged app package must be available in the public marketplace");
+  for (const permission of ["write", "network", "secrets"]) {
+    if (!Array.isArray(profile?.permissions?.[permission]) || profile.permissions[permission].length !== 0) {
+      failures.push(`staged app package ${permission} permissions must be empty`);
     }
   }
   return failures;
@@ -460,12 +494,16 @@ function validateProof(record) {
   if (record.unifiedSuite.canonicalInstallId !== "seis-ai-agent@seis-repo" || record.unifiedSuite.defaultInstallMode !== "single-public-plugin") failures.push("unified suite must keep SEIS-Agent as the single public install");
   if (record.unifiedSuite.componentCount < 10) failures.push("unified suite must include all current SEIS components");
   if (record.unifiedSuite.publicPluginCount !== 1 || record.unifiedSuite.embeddedModuleCount < 10) failures.push("unified suite must expose one public plugin and every embedded source module");
-  if (record.repoLocalArtifactStaging.expectedPluginCount !== 1) failures.push("artifact staging must cover only the public SEIS-Agent plugin");
+  if (record.repoLocalArtifactStaging.marketplaceEntryCount !== marketplace.plugins.length) failures.push("artifact staging marketplace count must match the repo marketplace");
+  if (record.repoLocalArtifactStaging.canonicalOrchestratorCount !== 1) failures.push("artifact staging must include one canonical SEIS-Agent orchestrator");
+  if (record.repoLocalArtifactStaging.applicationPluginCount !== family.applicationPlugins.length) failures.push("artifact staging must cover every public app package");
+  if (record.repoLocalArtifactStaging.expectedPluginCount !== marketplace.plugins.length) failures.push("artifact staging must cover every public marketplace package");
   if (record.repoLocalArtifactStaging.embeddedModuleCount < 10) failures.push("artifact staging must validate every embedded source module");
   if (record.repoLocalArtifactStaging.embeddedModuleFindings.length) failures.push("embedded source module validation must pass");
   if (!record.repoLocalArtifactStaging.stageDeletedAfterValidation) failures.push("temporary stage must be deleted after validation");
   if (record.repoLocalArtifactStaging.stagedForbiddenArtifactCount !== 0) failures.push("staged artifact must not contain forbidden files");
   if (record.repoLocalArtifactStaging.disallowedSourceArtifactCount !== 0) failures.push("source artifacts must not contain disallowed release files");
+  if (!record.repoLocalArtifactStaging.ok) failures.push("artifact staging must pass for every public marketplace package");
   if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedPluginCount !== record.repoLocalArtifactStaging.expectedPluginCount) failures.push("successful artifact staging must include every current plugin");
   if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedManifestCount !== record.repoLocalArtifactStaging.expectedPluginCount) failures.push("successful artifact staging must include every current manifest");
   if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedMcpEntryScriptCount < 1) failures.push("successful artifact staging must include the public MCP entry script");
@@ -507,7 +545,9 @@ function renderReport(record) {
 ## Repo-Local Clean Artifact Staging
 
 - Mode: ${record.repoLocalArtifactStaging.mode}
-- Expected public plugins: ${record.repoLocalArtifactStaging.expectedPluginCount}
+  - Expected public marketplace packages: ${record.repoLocalArtifactStaging.expectedPluginCount}
+  - Canonical orchestrators: ${record.repoLocalArtifactStaging.canonicalOrchestratorCount}
+  - Application packages: ${record.repoLocalArtifactStaging.applicationPluginCount}
 - Staged public plugins: ${record.repoLocalArtifactStaging.stagedPluginCount}
 - Embedded source modules: ${record.repoLocalArtifactStaging.embeddedModuleCount}
 - Staged manifests: ${record.repoLocalArtifactStaging.stagedManifestCount}

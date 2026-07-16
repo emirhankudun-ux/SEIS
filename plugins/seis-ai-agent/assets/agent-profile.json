@@ -8,7 +8,7 @@
   "version": 2,
   "releaseVersion": "0.3.0+codex.20260712",
   "status": "development",
-  "intent": "Unify SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product into one versioned, repo-contained AI-native agent install surface while keeping older lane packages and personal installs as preserved compatibility paths.",
+  "intent": "Unify SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, SEIS Product, and public SEIS Command Center source packages into one versioned, repo-contained AI-native agent surface while keeping live external capabilities approval-gated.",
   "canonicalRepo": "emirhankudun-ux/SEIS",
   "canonicalBranch": "main",
   "repoMarketplace": "seis-repo",
@@ -19,9 +19,9 @@
     "legacyPersonalMarketplace": "compatibility-mirror-only",
     "legacyPersonalAliasesPreserved": true,
     "standaloneLaneInstallMode": "source-module-only",
-    "marketplacePolicy": "seis-agent-is-the-only-public-plugin-with-embedded-source-modules",
+    "marketplacePolicy": "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages",
     "unifiedSuite": "assets/unified-suite.json",
-    "futurePluginIntake": "Every future SEIS plugin must be registered in assets/unified-suite.json and embedded under this single public SEIS-Agent install before it is presented as a SEIS capability.",
+    "futurePluginIntake": "Every future cross-lane SEIS plugin must be registered in assets/unified-suite.json; future SEIS Core app packages must also be published under plugins/seis-core as public seis-repo entries.",
     "embeddedSkills": [
       "seis-ai-agent",
       "seis-governance",
@@ -55,11 +55,14 @@
     "releaseTrain": "content/development/seis-core-plugin-release-train.json",
     "installSurface": "repo-source-app",
     "sourceAvailableInRepository": true,
+    "publicRepositoryAvailable": true,
+    "publicAudience": "everyone",
+    "distributionScope": "direct-repository-source",
     "applicationOwnedPluginCount": 60,
-    "publicMarketplaceEntryCount": 0,
+    "publicMarketplaceEntryCount": 60,
     "publicReleaseAllowed": false,
     "coreSourceOwner": false,
-    "futureIntake": "New plugins for the SEIS Command Center are created under plugins/seis-core/<plugin-name>, regenerated into the app inventory/catalog, and covered by the unified suite without entering packages/seis-ai or becoming separate marketplace cards."
+    "futureIntake": "New public plugins for the SEIS Command Center are created under plugins/seis-core/<plugin-name>, use MIT metadata, regenerated into the app inventory/catalog, published as seis-repo entries, and covered by the unified suite without entering packages/seis-ai or becoming personal sources."
   },
   "composedLanes": [
     "seis",

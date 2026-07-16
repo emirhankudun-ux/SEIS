@@ -10,13 +10,15 @@
   "category": "technology-ontology",
   "owner": "@seis-knowledge",
   "publisher": "emirhankudun-ux",
-  "sourceClassification": "original-SEIS-local",
-  "license": "UNLICENSED-LOCAL",
-  "status": "approved-local-readonly",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
   "implementationState": "functional-local-demo",
   "entrypoint": "scripts/seis-technology-ontology-mcp-server.mjs",
   "permissions": {
-    "read": ["bundled ontology profile"],
+    "read": [
+      "bundled ontology profile"
+    ],
     "write": [],
     "network": [],
     "secrets": []
@@ -27,6 +29,10 @@
     "node scripts/seis-technology-ontology-mcp-server.mjs --search --query agent"
   ],
   "rollback": "Disable or remove the local plugin; no source data is mutated.",
-  "reviewState": "local-development",
-  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
+  "reviewState": "public-repository-preview",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
 }

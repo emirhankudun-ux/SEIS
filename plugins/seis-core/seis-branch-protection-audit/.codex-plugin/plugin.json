@@ -12,8 +12,16 @@
     "longDescription": "Inspect bounded JSON and YAML-like policy evidence for review, status checks, and administrator enforcement without writes.",
     "developerName": "Local developer",
     "category": "Security",
-    "capabilities": ["local-readonly-analysis", "policy-review"],
+    "capabilities": [
+      "local-readonly-analysis",
+      "policy-review"
+    ],
     "defaultPrompt": "Audit recorded branch protection policy."
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "public-repository",
+    "read-only"
+  ]
 }

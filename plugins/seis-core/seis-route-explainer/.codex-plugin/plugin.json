@@ -3,9 +3,19 @@
   "name": "seis-route-explainer",
   "version": "0.0.13",
   "description": "Deterministic provider-neutral route explanation for SEIS policy review.",
-  "author": { "name": "emirhankudun-ux" },
-  "license": "UNLICENSED-LOCAL",
-  "keywords": ["seis", "router", "route", "policy", "ai"],
+  "author": {
+    "name": "emirhankudun-ux"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "router",
+    "route",
+    "policy",
+    "ai",
+    "public-repository",
+    "read-only"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -14,8 +24,16 @@
     "longDescription": "A deterministic SEIS route-policy demo that turns task, privacy, latency, cost, and capability inputs into an explainable route proposal without connecting to a model or provider.",
     "developerName": "emirhankudun-ux",
     "category": "AI",
-    "capabilities": ["Explainable route proposal", "Privacy-aware policy hints", "Deterministic fallback explanation"],
-    "defaultPrompt": ["Explain the safest route for this task.", "Create a deterministic SEIS route proposal.", "Show route constraints without calling a provider."],
+    "capabilities": [
+      "Explainable route proposal",
+      "Privacy-aware policy hints",
+      "Deterministic fallback explanation"
+    ],
+    "defaultPrompt": [
+      "Explain the safest route for this task.",
+      "Create a deterministic SEIS route proposal.",
+      "Show route constraints without calling a provider."
+    ],
     "brandColor": "#8B5CF6"
   }
 }

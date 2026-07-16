@@ -56,6 +56,7 @@ export function aiCorePluginRegistryStatus(repoRoot, options = {}) {
       catalogOnlyEntryCount: catalog.length,
       functionalLocalDemoCount: registry.target?.functionalLocalDemoCount ?? null,
       publicMarketplacePluginCount: registry.target?.publicMarketplacePluginCount ?? null,
+      applicationMarketplacePluginCount: registry.target?.applicationMarketplacePluginCount ?? null,
       personalPluginCoveragePath: registry.canonicalOwnership?.personalPluginCoverage || null,
       personalPluginCount: registry.target?.personalPluginCount ?? null,
       personalRepoCounterpartCount: registry.target?.personalRepoCounterpartCount ?? null,
