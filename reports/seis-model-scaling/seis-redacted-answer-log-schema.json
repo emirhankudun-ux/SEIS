@@ -1,0 +1,34 @@
+{
+  "id": "seis-redacted-answer-log-schema-report",
+  "generatedAt": "2026-07-01T03:29:05.582Z",
+  "status": "redacted-answer-log-schema-ready-no-real-logs",
+  "sourceSchema": "content/development/seis-redacted-answer-log-schema.json",
+  "summary": {
+    "allowedFields": 12,
+    "forbiddenFields": 14,
+    "redactionRules": 5,
+    "sampleRecords": 3,
+    "failedChecks": 0,
+    "realAnswerLogCollection": false,
+    "logPersistence": false,
+    "promptBodyStorage": false,
+    "answerBodyStorage": false,
+    "providerCall": false
+  },
+  "safeNextCommands": [
+    "npm run report:seis-redacted-answer-log-schema",
+    "npm run check:seis-redacted-answer-log-schema",
+    "npm run check:seis-security-blocker-diagnostic",
+    "npm run check:seis-no-secret-answer-log-scan",
+    "npm run check:seis-ai-public-readiness"
+  ],
+  "humanApprovalNeededBefore": [
+    "human security review accepts this schema",
+    "log retention window accepted",
+    "redaction implementation reviewed",
+    "real answer logging explicitly approved",
+    "provider and retrieval logging separately approved",
+    "delete/export policy accepted",
+    "human approval recorded"
+  ]
+}

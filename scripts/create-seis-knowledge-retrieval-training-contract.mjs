@@ -12,6 +12,8 @@ const paths = {
   contract: "content/development/seis-knowledge-retrieval-training-contract.json",
   reportJson: "reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.json",
   reportMd: "reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md",
+  retrievalSourceProvenance: "content/development/seis-retrieval-source-provenance-manifest.json",
+  retrievalEvaluationFixtures: "content/development/seis-retrieval-evaluation-fixtures.json",
   installTrainingLedger: "content/development/seis-language-model-install-training-ledger.json",
   modelScalingProfile: "content/development/seis-model-scaling-hardware-profile.json",
   agiEvaluationProtocol: "content/development/seis-agi-evaluation-protocol.json",
@@ -21,17 +23,21 @@ const paths = {
 
 const existing = mode === "check" ? readOptionalJson(paths.contract) : null;
 const generatedAt = existing?.generatedAt || new Date().toISOString();
+const retrievalSourceProvenance = readJson(paths.retrievalSourceProvenance, "retrieval source provenance manifest");
+const retrievalEvaluationFixtures = readJson(paths.retrievalEvaluationFixtures, "retrieval evaluation fixtures");
 const installTrainingLedger = readJson(paths.installTrainingLedger, "language model install/training ledger");
 const modelScalingProfile = readJson(paths.modelScalingProfile, "model scaling profile");
 const agiEvaluationProtocol = readJson(paths.agiEvaluationProtocol, "AGI evaluation protocol");
 const packageJson = readJson(paths.packageJson, "package.json");
 
-if (!installTrainingLedger || !modelScalingProfile || !agiEvaluationProtocol || !packageJson) {
+if (!retrievalSourceProvenance || !retrievalEvaluationFixtures || !installTrainingLedger || !modelScalingProfile || !agiEvaluationProtocol || !packageJson) {
   process.exit(1);
 }
 
 const contract = buildContract({
   generatedAt,
+  retrievalSourceProvenance,
+  retrievalEvaluationFixtures,
   installTrainingLedger,
   modelScalingProfile,
   agiEvaluationProtocol
@@ -60,7 +66,7 @@ if (mode === "write") {
   finish("SEIS knowledge retrieval training contract check passed.");
 }
 
-function buildContract({ generatedAt, installTrainingLedger, modelScalingProfile, agiEvaluationProtocol }) {
+function buildContract({ generatedAt, retrievalSourceProvenance, retrievalEvaluationFixtures, installTrainingLedger, modelScalingProfile, agiEvaluationProtocol }) {
   return {
     id: "seis-knowledge-retrieval-training-contract",
     version: "2026.07.01",
@@ -78,6 +84,8 @@ function buildContract({ generatedAt, installTrainingLedger, modelScalingProfile
       "It does not prove SEIS is fully knowledgeable, routeable 512B, or AGI."
     ],
     sourceOfTruth: {
+      retrievalSourceProvenance: paths.retrievalSourceProvenance,
+      retrievalEvaluationFixtures: paths.retrievalEvaluationFixtures,
       installTrainingLedger: paths.installTrainingLedger,
       modelScalingProfile: paths.modelScalingProfile,
       agiEvaluationProtocol: paths.agiEvaluationProtocol,
@@ -119,6 +127,8 @@ function buildContract({ generatedAt, installTrainingLedger, modelScalingProfile
       localSourceInventory: true,
       metadataOnlySourceCatalog: true,
       retrievalArchitecturePlanning: true,
+      sourceProvenanceManifest: retrievalSourceProvenance.status === "manifest-defined-index-blocked",
+      retrievalEvaluationFixtures: retrievalEvaluationFixtures.status === "fixtures-defined-not-run",
       retrievalIndexBuild: false,
       embeddingModelInstall: false,
       rerankerModelInstall: false,
@@ -172,6 +182,8 @@ function buildContract({ generatedAt, installTrainingLedger, modelScalingProfile
     ],
     requiredBeforeRetrievalIndexBuild: [
       "path allowlist for source files",
+      "source provenance manifest accepted",
+      "retrieval evaluation fixtures accepted",
       "secret and credential scan",
       "private data exclusion policy",
       "chunk schema and source URI policy",
@@ -225,6 +237,10 @@ function buildContract({ generatedAt, installTrainingLedger, modelScalingProfile
       agiRoute: false,
       evidence: {
         installTrainingLedgerStatus: installTrainingLedger.status,
+        retrievalSourceProvenanceStatus: retrievalSourceProvenance.status,
+        retrievalSourceSecretFindings: retrievalSourceProvenance.secretScan?.findingsCount ?? null,
+        retrievalEvaluationFixtureStatus: retrievalEvaluationFixtures.status,
+        retrievalEvaluationRunApproved: retrievalEvaluationFixtures.approvedToday?.evaluationRun === true,
         modelScalingApexStatus: modelScalingProfile.apexTarget?.compatibilityStatus || "not-scoped",
         agiClaimAllowed: agiEvaluationProtocol.agiClaimAllowed === true
       }
@@ -250,6 +266,8 @@ function buildReport(contract) {
       sourceClassCount: contract.sourceClasses.length,
       internetResearchSourceCount: contract.internetResearchBaseline.length,
       agentResponsibilityCount: contract.agentResponsibilities.length,
+      sourceProvenanceManifest: contract.approvedToday.sourceProvenanceManifest,
+      retrievalEvaluationFixtures: contract.approvedToday.retrievalEvaluationFixtures,
       retrievalIndexBuild: contract.approvedToday.retrievalIndexBuild,
       embeddingModelInstall: contract.approvedToday.embeddingModelInstall,
       providerEmbeddingCalls: contract.approvedToday.providerEmbeddingCalls,
@@ -258,6 +276,8 @@ function buildReport(contract) {
     },
     safeNextCommands: [
       "npm run report:seis-knowledge-retrieval-training",
+      "npm run check:seis-retrieval-source-provenance",
+      "npm run check:seis-retrieval-evaluation-fixtures",
       "npm run check:seis-knowledge-retrieval-training",
       "npm run check:seis-language-model-install-training-ledger",
       "npm run check:seis-agi-evaluation-protocol"
@@ -287,6 +307,8 @@ function validateContract(contract, packageJson) {
   ensure(contract.status === "contract-defined-not-indexed", "contract status mismatch");
   ensure(contract.qualityGate === "npm run check:seis-knowledge-retrieval-training", "qualityGate mismatch");
   ensure(contract.reportCommand === "npm run report:seis-knowledge-retrieval-training", "reportCommand mismatch");
+  ensure(contract.sourceOfTruth?.retrievalSourceProvenance === paths.retrievalSourceProvenance, "retrieval source provenance link mismatch");
+  ensure(contract.sourceOfTruth?.retrievalEvaluationFixtures === paths.retrievalEvaluationFixtures, "retrieval evaluation fixtures link mismatch");
 
   for (const phrase of [
     "builds no retrieval index",
@@ -302,6 +324,8 @@ function validateContract(contract, packageJson) {
     localSourceInventory: true,
     metadataOnlySourceCatalog: true,
     retrievalArchitecturePlanning: true,
+    sourceProvenanceManifest: true,
+    retrievalEvaluationFixtures: true,
     retrievalIndexBuild: false,
     embeddingModelInstall: false,
     rerankerModelInstall: false,
@@ -322,7 +346,13 @@ function validateContract(contract, packageJson) {
   const sourceClasses = new Map(contract.sourceClasses.map((source) => [source.id, source]));
   ensure(sourceClasses.get("private-user-data")?.status === "blocked", "private user data must be blocked");
   ensure(sourceClasses.get("official-public-ai-sources")?.status === "metadata-only", "public AI sources must stay metadata-only");
+  ensure(contract.requiredBeforeRetrievalIndexBuild.includes("source provenance manifest accepted"), "retrieval index build must require provenance manifest");
+  ensure(contract.requiredBeforeRetrievalIndexBuild.includes("retrieval evaluation fixtures accepted"), "retrieval index build must require retrieval evaluation fixtures");
   ensure(contract.requiredBeforeRetrievalIndexBuild.includes("secret and credential scan"), "retrieval index build must require secret scan");
+  ensure(contract.routeEligibility?.evidence?.retrievalSourceProvenanceStatus === "manifest-defined-index-blocked", "route evidence must include provenance manifest status");
+  ensure(contract.routeEligibility?.evidence?.retrievalSourceSecretFindings === 0, "route evidence must include zero provenance secret findings");
+  ensure(contract.routeEligibility?.evidence?.retrievalEvaluationFixtureStatus === "fixtures-defined-not-run", "route evidence must include retrieval evaluation fixture status");
+  ensure(contract.routeEligibility?.evidence?.retrievalEvaluationRunApproved === false, "route evidence must show retrieval evaluation run is not approved");
   ensure(contract.requiredBeforeEmbeddingOrRerankerInstall.includes("checkpoint source and checksum"), "embedding/reranker install must require checksum");
   ensure(contract.requiredBeforeFullyKnowledgeableClaim.includes("independent review"), "fully knowledgeable claim must require independent review");
   ensure(contract.agentResponsibilities.length === 12, "contract must cover all 12 AI sub-agent roles");
@@ -358,6 +388,22 @@ function validateContract(contract, packageJson) {
     packageJson.scripts?.["report:seis-knowledge-retrieval-training"] === "node scripts/create-seis-knowledge-retrieval-training-contract.mjs --write",
     "package.json must expose report:seis-knowledge-retrieval-training"
   );
+  ensure(
+    packageJson.scripts?.["check:seis-retrieval-source-provenance"] === "node scripts/create-seis-retrieval-source-provenance-manifest.mjs",
+    "package.json must expose check:seis-retrieval-source-provenance"
+  );
+  ensure(
+    packageJson.scripts?.["report:seis-retrieval-source-provenance"] === "node scripts/create-seis-retrieval-source-provenance-manifest.mjs --write",
+    "package.json must expose report:seis-retrieval-source-provenance"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-retrieval-evaluation-fixtures"] === "node scripts/create-seis-retrieval-evaluation-fixtures.mjs",
+    "package.json must expose check:seis-retrieval-evaluation-fixtures"
+  );
+  ensure(
+    packageJson.scripts?.["report:seis-retrieval-evaluation-fixtures"] === "node scripts/create-seis-retrieval-evaluation-fixtures.mjs --write",
+    "package.json must expose report:seis-retrieval-evaluation-fixtures"
+  );
 }
 
 function renderMarkdown(report) {
@@ -377,6 +423,8 @@ Status: ${report.status}
 | Source classes | ${report.summary.sourceClassCount} |
 | Internet research sources | ${report.summary.internetResearchSourceCount} |
 | Agent responsibilities | ${report.summary.agentResponsibilityCount} |
+| Source provenance manifest accepted | ${String(report.summary.sourceProvenanceManifest)} |
+| Retrieval evaluation fixtures accepted | ${String(report.summary.retrievalEvaluationFixtures)} |
 | Retrieval index build approved | ${String(report.summary.retrievalIndexBuild)} |
 | Embedding model install approved | ${String(report.summary.embeddingModelInstall)} |
 | Provider embedding calls approved | ${String(report.summary.providerEmbeddingCalls)} |
@@ -410,6 +458,8 @@ redaksiyon, yerel fallback ve claim kapilaridir.
 ## Current Status
 
 - Contract status: ${contract.status}
+- Retrieval source provenance manifest accepted: ${String(contract.approvedToday.sourceProvenanceManifest)}
+- Retrieval evaluation fixtures accepted: ${String(contract.approvedToday.retrievalEvaluationFixtures)}
 - Retrieval index built: ${String(contract.approvedToday.retrievalIndexBuild)}
 - Embedding model installed: ${String(contract.approvedToday.embeddingModelInstall)}
 - Provider embedding calls: ${String(contract.approvedToday.providerEmbeddingCalls)}
@@ -438,6 +488,8 @@ ${contract.requiredBeforeFullyKnowledgeableClaim.map((item) => `- ${item}`).join
 
 \`\`\`bash
 npm run report:seis-knowledge-retrieval-training
+npm run check:seis-retrieval-source-provenance
+npm run check:seis-retrieval-evaluation-fixtures
 npm run check:seis-knowledge-retrieval-training
 \`\`\`
 

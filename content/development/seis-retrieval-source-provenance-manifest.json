@@ -1,0 +1,755 @@
+{
+  "id": "seis-retrieval-source-provenance-manifest",
+  "version": "2026.07.01",
+  "generatedAt": "2026-07-01T03:28:35.562Z",
+  "status": "manifest-defined-index-blocked",
+  "qualityGate": "npm run check:seis-retrieval-source-provenance",
+  "reportCommand": "npm run report:seis-retrieval-source-provenance",
+  "resourceUri": "seis://ai/retrieval-source-provenance-manifest.json",
+  "truthBoundary": [
+    "This manifest inventories candidate retrieval sources only.",
+    "It builds no persistent retrieval index.",
+    "It installs no embedding, reranker, or language model.",
+    "It calls no external providers.",
+    "It sends no repository content outside the local checkout.",
+    "It trains no model and proves no AGI or 512B route eligibility."
+  ],
+  "sourceOfTruth": {
+    "knowledgeRetrievalTraining": "content/development/seis-knowledge-retrieval-training-contract.json",
+    "securityPolicy": "SECURITY.md",
+    "docs": "docs/ai/seis-retrieval-source-provenance.md"
+  },
+  "internetResearchBaseline": [
+    {
+      "id": "nist-ai-rmf",
+      "sourceType": "official-guidance",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "usedFor": "Risk management baseline for source governance and public AI readiness."
+    },
+    {
+      "id": "owasp-llm-prompt-injection",
+      "sourceType": "official-guidance",
+      "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+      "usedFor": "Prompt-injection and untrusted-content boundary for retrieval source intake."
+    },
+    {
+      "id": "github-secret-scanning",
+      "sourceType": "official-docs",
+      "url": "https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning",
+      "usedFor": "Secret-scanning baseline for GitHub-ready repository source intake."
+    }
+  ],
+  "approvedToday": {
+    "sourceInventory": true,
+    "provenanceManifest": true,
+    "localSecretScanDryRun": true,
+    "persistentRetrievalIndex": false,
+    "embeddingModelInstall": false,
+    "providerEmbeddingCalls": false,
+    "privateDataIndexing": false,
+    "trainingOnIndexedSources": false,
+    "runtimeAuthority": false
+  },
+  "sourceGroups": [
+    {
+      "id": "root-governance-docs",
+      "status": "candidate-allowlisted-metadata-only",
+      "provenanceLabel": "repo-owned-governance",
+      "include": [
+        "AGENTS.md",
+        "README.md",
+        "ARCHITECTURE.md",
+        "ROADMAP.md",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        "CHANGELOG.md",
+        "LICENSE"
+      ],
+      "requiredBeforeIndex": [
+        "secret scan zero findings",
+        "chunk policy accepted",
+        "source URI policy accepted"
+      ]
+    },
+    {
+      "id": "ai-docs",
+      "status": "candidate-allowlisted-metadata-only",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "include": [
+        "docs/ai/**/*.md"
+      ],
+      "requiredBeforeIndex": [
+        "secret scan zero findings",
+        "claim-boundary review",
+        "staleness review"
+      ]
+    },
+    {
+      "id": "ai-governance-json",
+      "status": "candidate-allowlisted-metadata-only",
+      "provenanceLabel": "repo-owned-ai-json",
+      "include": [
+        "content/development/seis-ai-*.json",
+        "content/development/seis-agi-*.json",
+        "content/development/seis-language-model-*.json",
+        "content/development/seis-model-*.json"
+      ],
+      "requiredBeforeIndex": [
+        "schema validation",
+        "secret scan zero findings",
+        "source-of-truth mapping"
+      ]
+    },
+    {
+      "id": "ai-readiness-reports",
+      "status": "candidate-allowlisted-metadata-only",
+      "provenanceLabel": "generated-ai-readiness-report",
+      "include": [
+        "reports/seis-ai-public-readiness/**/*.{json,md}",
+        "reports/seis-model-scaling/seis-*.{json,md}"
+      ],
+      "requiredBeforeIndex": [
+        "generated artifact freshness check",
+        "claim-boundary review",
+        "secret scan zero findings"
+      ]
+    }
+  ],
+  "blockedPathClasses": [
+    {
+      "id": "environment-files",
+      "patterns": [
+        ".env",
+        ".env.*",
+        "*.env.*"
+      ],
+      "reason": "credential risk"
+    },
+    {
+      "id": "ssh-and-private-keys",
+      "patterns": [
+        "*.pem",
+        "*.key",
+        "id_rsa",
+        "id_ed25519*"
+      ],
+      "reason": "private key risk"
+    },
+    {
+      "id": "private-brain-notes",
+      "patterns": [
+        "seis-brain/private/**",
+        "seis-brain/local-only/**"
+      ],
+      "reason": "private user data"
+    },
+    {
+      "id": "dependencies-and-builds",
+      "patterns": [
+        "node_modules/**",
+        "dist/**",
+        "build/**",
+        ".next/**"
+      ],
+      "reason": "generated or third-party volume"
+    },
+    {
+      "id": "archives-and-binaries",
+      "patterns": [
+        "*.zip",
+        "*.tar",
+        "*.gz",
+        "*.7z",
+        "*.rar"
+      ],
+      "reason": "opaque binary/archive content"
+    }
+  ],
+  "chunkPolicy": {
+    "status": "defined-not-executed",
+    "maxChunkChars": 2400,
+    "overlapChars": 160,
+    "sourceUriRequired": true,
+    "sha256Required": true,
+    "redactedLogRequired": true
+  },
+  "secretScan": {
+    "status": "passed-redacted-local-dry-run",
+    "scannedFileCount": 54,
+    "findingsCount": 0,
+    "patternsChecked": [
+      "private-key-header",
+      "github-token",
+      "openai-token",
+      "aws-access-key"
+    ],
+    "findings": []
+  },
+  "fileRecords": [
+    {
+      "groupId": "root-governance-docs",
+      "path": "AGENTS.md",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/066f28425a3e3e8a",
+      "provenanceLabel": "repo-owned-governance",
+      "bytes": 12109,
+      "sha256": "066f28425a3e3e8a657bea8c4442032c58653e4ebfddb9c957e733ec99d9cca9",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "root-governance-docs",
+      "path": "ARCHITECTURE.md",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/40fa7ac209dadbb9",
+      "provenanceLabel": "repo-owned-governance",
+      "bytes": 4267,
+      "sha256": "40fa7ac209dadbb9b2f92a21dc95988138fbbddf4b76bf23eb5007d09a3df0b8",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "root-governance-docs",
+      "path": "CHANGELOG.md",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/8ae49961984c9a8e",
+      "provenanceLabel": "repo-owned-governance",
+      "bytes": 757,
+      "sha256": "8ae49961984c9a8e3e84b3251f9ccbcfaadff1497e687908efa3815045a73396",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "root-governance-docs",
+      "path": "CONTRIBUTING.md",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/07c7944cf190872e",
+      "provenanceLabel": "repo-owned-governance",
+      "bytes": 3048,
+      "sha256": "07c7944cf190872e584dd299c5acdc8f12a5dded0ca32688c7c70a84474fa468",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "root-governance-docs",
+      "path": "LICENSE",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/441404f1b01dbbaf",
+      "provenanceLabel": "repo-owned-governance",
+      "bytes": 1069,
+      "sha256": "441404f1b01dbbaf0467ce3c0a220f6032182257ac817988a6fac61bd533fb41",
+      "mediaType": "text/plain",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "root-governance-docs",
+      "path": "README.md",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/7ba3bb4849317d4b",
+      "provenanceLabel": "repo-owned-governance",
+      "bytes": 39823,
+      "sha256": "7ba3bb4849317d4b11106209401768576003ccd99c1e8246b049c5b80949ac97",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "root-governance-docs",
+      "path": "ROADMAP.md",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/15b2a6be81c3fb7f",
+      "provenanceLabel": "repo-owned-governance",
+      "bytes": 8399,
+      "sha256": "15b2a6be81c3fb7f84fda3dc51de2cfb896dfff2a755f527692730f0cbf9de05",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "root-governance-docs",
+      "path": "SECURITY.md",
+      "sourceUri": "seis://retrieval/source/root-governance-docs/58847b9e859e5c15",
+      "provenanceLabel": "repo-owned-governance",
+      "bytes": 3440,
+      "sha256": "58847b9e859e5c15734d79b5ffb50fd246f42c3f19ae99289ec9e9d8e2fdda05",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/agent-runtime.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/367402c8641638b0",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 6528,
+      "sha256": "367402c8641638b0c4d1be55d45b585a45078d4e4919c7d9c5c731eb4968e778",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/ai-workforce-training.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/9bd771d452177aa4",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 11029,
+      "sha256": "9bd771d452177aa44df17b45b54758379ea3b9353071daf2adbe3f624553313a",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/model-router.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/0d3da1dfbd39b18d",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 9890,
+      "sha256": "0d3da1dfbd39b18d74730e2493a2744d91ab2732f552287ac98f63e25ea3bfe4",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/nvidia-accelerator-catalog.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/4464d9a2bcca76bf",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 2274,
+      "sha256": "4464d9a2bcca76bf81aa348ec03d6b4db0c3672385bf1d13bbbb483b600d33fd",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/nvidia-installed-integrations.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/99ba319083652abe",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 2442,
+      "sha256": "99ba319083652abe3b77b0915f23821c0665d34b5caed51874f77a5993edbb63",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/policy.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/13ef37a4a3c193b4",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 371,
+      "sha256": "13ef37a4a3c193b4bd19eec12a0c62d1c63ce5cc557a9df489180b0c2374e0fb",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/prompt-engine.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/879badf426d6c2f0",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 2471,
+      "sha256": "879badf426d6c2f0def22a2f760d095a6d9a051241158a0e3004634d2cb61c99",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/read-only-model-router-contract.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/3248cd29689d897b",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 3494,
+      "sha256": "3248cd29689d897b73175d777ab37f0a56bbec6c19ae9624a9dae841c3a5774a",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/seis-agi-evaluation-protocol.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/7d1ab36bd3cf5704",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 4174,
+      "sha256": "7d1ab36bd3cf5704fd5fd34bc5165b39bb9ab7a90a60781386d26958dde45993",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/seis-agi-github-user-readiness-gates.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/64b3c9bc35dd5903",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 3420,
+      "sha256": "64b3c9bc35dd59030fac4eb67ae40eb8aa0e896d38d1787e64d6f80fe9bb2c8b",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/seis-agi-public-readiness-evidence.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/ab1907780d2ad574",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 2434,
+      "sha256": "ab1907780d2ad574da6e22bbeba69d95ca5e02d4508881451deed21c41e5515f",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/seis-ai-core.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/d029b4b1016d06ea",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 18955,
+      "sha256": "d029b4b1016d06eaf20746d0cc6afb698abf3aa06cd36dea7a82bca6c47a1091",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/seis-ai-fresh-clone-readiness.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/7cb2617e5c22ce3f",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 2490,
+      "sha256": "7cb2617e5c22ce3f4fd7a5935f329517bd79e8126ae4f749d58fafffe83c712e",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/seis-ai-public-readiness-program.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/e73f1aefef6d4aaf",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 6503,
+      "sha256": "e73f1aefef6d4aafead92618c4580906dc1ddec5850abc87881cdd9b8fb6afee",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-docs",
+      "path": "docs/ai/seis-model-scaling.md",
+      "sourceUri": "seis://retrieval/source/ai-docs/b10c6dbaddd3102f",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "bytes": 27134,
+      "sha256": "b10c6dbaddd3102f2138f7247c1aa5cf79716b0656a0291fbdbfb83c970e7352",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-agi-evaluation-protocol.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/1485cd017804cb5a",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 12771,
+      "sha256": "1485cd017804cb5a5f12d4be6dcf0d2b7c694b797f9b964ccf0602f6047cd139",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-agi-github-user-readiness-gates.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/5cb2c093e376c54d",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 9497,
+      "sha256": "5cb2c093e376c54dcb07c92f273a2fac2a5808426ff2bf23f26cdab24b93870f",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-agi-independent-evidence-ledger.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/15e2159f7806e7dc",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 4195,
+      "sha256": "15e2159f7806e7dc36fdd4b8ac5bc000c20b2aea01ed9e9a2d92e2f5af518568",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-agi-public-readiness-evidence.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/3c263d8771a15f44",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 13921,
+      "sha256": "3c263d8771a15f4462d49b19ebba9cc8a4841206e94660a947fcc5c6d98ebc7c",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-agi-system.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/246a0491d89ab26b",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 47604,
+      "sha256": "246a0491d89ab26b76ce11db2394a66782a30d6a2b27ea74917abb5cbbf6e3be",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-agent-permission-matrix.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/2f80139c38f3cb87",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 2230,
+      "sha256": "2f80139c38f3cb8716364cf9b547d2f3972ba32750dc37a50584c1d7a1c00f46",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-agent-role-schema.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/ecbfea0fa051e9e8",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 6022,
+      "sha256": "ecbfea0fa051e9e833893fec5d59111c0a5eb9bbdf2e6045801d8cfce884b9e5",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-approval-fixture.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/62b56f4ac31a8b01",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 1832,
+      "sha256": "62b56f4ac31a8b01fc83e86e84ec54c67665266a2c1700ce6e0021d286deed1b",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-cancellation-fixture.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/4b0b02588f94ff12",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 960,
+      "sha256": "4b0b02588f94ff125917e37c16c038c1dc5f5fa4dc736764c76806640d434ead",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-dry-run-task-queue.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/c942b4eb150a9831",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 2828,
+      "sha256": "c942b4eb150a9831bd20b28f5f2d32a6e13c4771a77280e2a8ccd474b870d20a",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-execution-ledger-fixture.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/8eb86f441f010d4b",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 1930,
+      "sha256": "8eb86f441f010d4b704ee54e6a5fcff49a752de0d4b357230a4e76a1c00f4197",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-mcp-runtime-contract.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/9c33f931cebdf7d6",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 3178,
+      "sha256": "9c33f931cebdf7d61da26df1a2480b869ba1ffd21843c10b6ce6f57c5196db80",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-provider-registry.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/33a4de76fb09e059",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 10573,
+      "sha256": "33a4de76fb09e059fb97b274722b6dff120ff5e0b94080c6ce5bc29c8fb1e70e",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-redaction-fixture.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/0315bb768cb07f71",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 1548,
+      "sha256": "0315bb768cb07f71f190496a883822acce20bdabb20929c6c8337103a53ae483",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-subagent-operating-model.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/1123b2e303d260a7",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 10690,
+      "sha256": "1123b2e303d260a70faeb5eaec556ff38a976d9b64156039a7c96e59d3c674cc",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-subagent-review-ledger.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/6abf1110506a1e25",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 12363,
+      "sha256": "6abf1110506a1e259dfdf94272249353334827195e3949377374680126938767",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/3ac3d147577c0bd0",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 5910,
+      "sha256": "3ac3d147577c0bd0c23378bb622d76e2ba3d028b72dc6b1bcab772113c456380",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-version-promotion-gates.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/4bea399988305f66",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 9845,
+      "sha256": "4bea399988305f66b623c29f4cae4f7c1a71db34f7778895898f1faa18ecf0d3",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-core-version-registry.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/a4124e2b1dc36eed",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 8375,
+      "sha256": "a4124e2b1dc36eed22954fccdef99570e05ef79d2467db7511c7a8fe2b2e1a28",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-fresh-clone-readiness.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/950c16e18b6de92a",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 5706,
+      "sha256": "950c16e18b6de92aa86cefe1cf76b8747d61203a1042f1614678175fa3c7651d",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-public-readiness-program.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/82e4380bdaa4092d",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 12969,
+      "sha256": "82e4380bdaa4092dcb38c7f8e706be7d43cc32cfefa8fb28a0263756eb21fb51",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-ai-workforce-training-plan.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/62bbaeb962ffd6a6",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 12963,
+      "sha256": "62bbaeb962ffd6a6252c327f82c6fee12c027aba8eff0e703ecdac61f40d11cf",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-language-model-install-training-ledger.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/c9c0a571980f6643",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 20779,
+      "sha256": "c9c0a571980f6643dfc4747e220e098816a175bda9338546c4f5e3d482cd4f75",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-language-model-intake-registry.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/eeb09131b6b14b91",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 10935,
+      "sha256": "eeb09131b6b14b9180583734d42ef667daf2c4b09998a8f1c1964d11a87ceb3d",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-language-model-training-curriculum.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/1cf0b80de49c7acb",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 34135,
+      "sha256": "1cf0b80de49c7acb52d6a9fa9b52e7b31f9a97dc6666207e8c89a7486e38fa4a",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-model-frontier-escalation-policy.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/41a45a0822bee0ce",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 8357,
+      "sha256": "41a45a0822bee0ceace3b0e3a7ec813896235c5b59f6e34d1721d649ec4cae3c",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-model-parameter-ladder.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/83eb7311a3800060",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 11448,
+      "sha256": "83eb7311a3800060384206336b72f9b8b6d369b95327b69bd85b237bee765204",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-model-scaling-hardware-profile.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/7e37d33b38623547",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 21997,
+      "sha256": "7e37d33b386235471ca7c9469a36b95eff21f01146abc2bb04de4953fadd50a7",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-governance-json",
+      "path": "content/development/seis-model-scaling-subagent-council.json",
+      "sourceUri": "seis://retrieval/source/ai-governance-json/fb3591c4e1780326",
+      "provenanceLabel": "repo-owned-ai-json",
+      "bytes": 17761,
+      "sha256": "fb3591c4e17803263003da22bb39690834e859257bbeb3fff1970d8cfe5901f7",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-readiness-reports",
+      "path": "reports/seis-ai-public-readiness/latest.json",
+      "sourceUri": "seis://retrieval/source/ai-readiness-reports/d463e9ba08a7bbd2",
+      "provenanceLabel": "generated-ai-readiness-report",
+      "bytes": 11932,
+      "sha256": "d463e9ba08a7bbd2214be95cc96e1d5e33eb27a7f911b153eb039faca67b72b8",
+      "mediaType": "application/json",
+      "indexApprovedToday": false
+    },
+    {
+      "groupId": "ai-readiness-reports",
+      "path": "reports/seis-ai-public-readiness/latest.md",
+      "sourceUri": "seis://retrieval/source/ai-readiness-reports/6c9ad8d44bc82368",
+      "provenanceLabel": "generated-ai-readiness-report",
+      "bytes": 4133,
+      "sha256": "6c9ad8d44bc823681fd5488e9f59643aa7c243f1f953f8965d640e3f9e8a18f6",
+      "mediaType": "text/markdown",
+      "indexApprovedToday": false
+    }
+  ],
+  "requiredBeforePersistentIndexBuild": [
+    "all source groups reviewed by a human",
+    "secretScan.findingsCount stays 0 on the target commit",
+    "blocked path classes remain excluded",
+    "chunk policy and source URI policy accepted",
+    "provenance labels reviewed",
+    "prompt-injection handling plan accepted",
+    "retrieval evaluation fixtures created",
+    "human approval recorded"
+  ],
+  "publicClaims": {
+    "canClaimSourceInventoryDefined": true,
+    "canClaimProvenanceManifestDefined": true,
+    "canClaimRetrievalIndexBuilt": false,
+    "canClaimEmbeddingModelInstalled": false,
+    "canClaimProviderEmbeddingUsed": false,
+    "canClaimFullyKnowledgeableAI": false,
+    "canClaimAGI": false,
+    "canClaim512BRouteEligible": false
+  },
+  "linkedKnowledgeContractStatus": "contract-defined-not-indexed",
+  "packageScripts": {
+    "check": "node scripts/create-seis-retrieval-source-provenance-manifest.mjs",
+    "report": "node scripts/create-seis-retrieval-source-provenance-manifest.mjs --write"
+  }
+}

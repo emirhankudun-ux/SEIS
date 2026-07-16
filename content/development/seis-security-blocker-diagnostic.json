@@ -1,0 +1,166 @@
+{
+  "id": "seis-security-blocker-diagnostic",
+  "version": "2026.07.01",
+  "generatedAt": "2026-07-01T03:29:10.898Z",
+  "status": "security-blocker-diagnostic-ready-approval-gated",
+  "qualityGate": "npm run check:seis-security-blocker-diagnostic",
+  "reportCommand": "npm run report:seis-security-blocker-diagnostic",
+  "resourceUri": "seis://ai/security-blocker-diagnostic.json",
+  "truthBoundary": [
+    "This diagnostic records the PR #100 security blocker without printing, copying, or storing secret values.",
+    "It does not change the gitleaks allowlist.",
+    "It does not rewrite git history.",
+    "It does not rotate secrets.",
+    "It does not mark GitHub ready for everyone.",
+    "It does not merge, release, deploy, call providers, run benchmarks, train models, grant 512B route eligibility, or prove AGI."
+  ],
+  "sourceOfTruth": {
+    "publicReadinessProgram": "content/development/seis-ai-public-readiness-program.json",
+    "redactedAnswerLogSchema": "content/development/seis-redacted-answer-log-schema.json",
+    "noSecretAnswerLogScan": "content/development/seis-no-secret-answer-log-scan.json",
+    "securityWorkflow": ".github/workflows/security-guardian.yml",
+    "gitleaksConfig": ".gitleaks.toml",
+    "nextPrQueue": "docs/roadmap/NEXT_PR_QUEUE.md",
+    "docs": "docs/ai/seis-security-blocker-diagnostic.md"
+  },
+  "internetResearchBaseline": [
+    {
+      "id": "github-secret-scanning",
+      "sourceType": "official-docs",
+      "url": "https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning",
+      "usedFor": "Secret scanning remediation and review framing."
+    },
+    {
+      "id": "gitleaks",
+      "sourceType": "official-project",
+      "url": "https://github.com/gitleaks/gitleaks",
+      "usedFor": "Understanding the full-history scanner used by the workflow."
+    },
+    {
+      "id": "nist-ai-rmf",
+      "sourceType": "official-guidance",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "usedFor": "Risk governance and approval-gate discipline."
+    }
+  ],
+  "blockerSummary": {
+    "prNumber": 100,
+    "failingChecks": [
+      "Secret & Vulnerability Scan",
+      "Security Summary"
+    ],
+    "derivedFailure": "Security Summary derives from Secret & Vulnerability Scan.",
+    "currentAttribution": "full-history GitLeaks scan against older generated aggregate bundle path",
+    "newDiffSecretMaterialAttributed": false,
+    "secretValuesPrintedOrStored": false,
+    "remediationStatus": "approval-gated",
+    "sourceLine": "| Current blocker | GitHub PR #100 currently has `Secret & Vulnerability Scan` and derived `Security Summary` failures from the full-history GitLeaks scan against an older generated aggregate bundle path, not from new secret material in this PR diff. Do not print or copy any secret value; remediation requires explicit human approval because a narrow allowlist, history cleanup, or rotation plan changes the security posture. |"
+  },
+  "approvedToday": {
+    "diagnosticReport": true,
+    "localWorkflowInspection": true,
+    "secretValueOutput": false,
+    "gitleaksAllowlistChange": false,
+    "historyRewrite": false,
+    "secretRotation": false,
+    "mergeOrRelease": false,
+    "deployment": false,
+    "providerCall": false,
+    "benchmarkRun": false,
+    "trainingRun": false,
+    "runtimeAuthority": false
+  },
+  "checks": [
+    {
+      "id": "security-workflow-present",
+      "status": "passed",
+      "evidence": "security workflow defines Secret & Vulnerability Scan"
+    },
+    {
+      "id": "gitleaks-used",
+      "status": "passed",
+      "evidence": "security workflow invokes gitleaks detect"
+    },
+    {
+      "id": "full-history-scan",
+      "status": "passed",
+      "evidence": "security workflow fetches full history"
+    },
+    {
+      "id": "security-summary-derived",
+      "status": "passed",
+      "evidence": "Security Summary derives from security-scan result"
+    },
+    {
+      "id": "gitleaks-config-present",
+      "status": "passed",
+      "evidence": "gitleaks config extends default rules"
+    },
+    {
+      "id": "next-pr-queue-records-blocker",
+      "status": "passed",
+      "evidence": "NEXT_PR_QUEUE records PR #100 security blocker"
+    },
+    {
+      "id": "blocker-attributed-to-full-history",
+      "status": "passed",
+      "evidence": "blocker attributed to full-history GitLeaks scan"
+    },
+    {
+      "id": "blocker-not-new-diff-secret",
+      "status": "passed",
+      "evidence": "blocker not attributed to new PR diff secret material"
+    },
+    {
+      "id": "no-secret-value-output-required",
+      "status": "passed",
+      "evidence": "queue explicitly forbids printing or copying secret values"
+    },
+    {
+      "id": "approval-required-for-security-posture",
+      "status": "passed",
+      "evidence": "queue requires approval for security posture changes"
+    },
+    {
+      "id": "program-everyone-ready-blocked",
+      "status": "passed",
+      "evidence": "program keeps githubReadyForEveryone false"
+    },
+    {
+      "id": "redacted-schema-no-real-logs",
+      "status": "passed",
+      "evidence": "redacted answer schema collects no real logs"
+    },
+    {
+      "id": "no-secret-scan-synthetic-only",
+      "status": "passed",
+      "evidence": "no-secret scan uses no real answer logs"
+    }
+  ],
+  "requiredHumanDecisionBeforeRemediation": [
+    "choose narrow gitleaks allowlist vs history cleanup vs rotation plan",
+    "confirm whether the older generated aggregate bundle path may be allowlisted",
+    "confirm whether any exposed secret requires rotation",
+    "approve any history rewrite before execution",
+    "approve any security allowlist push before execution",
+    "approve PR #100 merge only after security checks are green"
+  ],
+  "publicClaims": {
+    "canClaimSecurityBlockerDiagnosed": true,
+    "canClaimSecurityBlockerFixed": false,
+    "canClaimGithubReadyForEveryone": false,
+    "canClaimNoSecretHistory": false,
+    "canClaimAgiReady": false,
+    "canClaim512BRouteEligible": false
+  },
+  "linkedStatuses": {
+    "publicReadinessProgram": "local-demo-public-review-ready-not-agi",
+    "githubReadyForEveryone": false,
+    "redactedAnswerLogSchema": "redacted-answer-log-schema-ready-no-real-logs",
+    "noSecretAnswerLogScan": "no-secret-answer-log-scan-passed-no-answers"
+  },
+  "packageScripts": {
+    "check": "node scripts/create-seis-security-blocker-diagnostic.mjs",
+    "report": "node scripts/create-seis-security-blocker-diagnostic.mjs --write"
+  }
+}

@@ -101,6 +101,20 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS AI public readiness program gate | `npm run check:seis-ai-public-readiness-program` |
 | SEIS AI public readiness gate | `npm run check:seis-ai-public-readiness` |
 | SEIS AI public readiness report command | `npm run report:seis-ai-public-readiness` |
+| SEIS retrieval source provenance gate | `npm run check:seis-retrieval-source-provenance` |
+| SEIS retrieval source provenance report command | `npm run report:seis-retrieval-source-provenance` |
+| SEIS retrieval evaluation fixtures gate | `npm run check:seis-retrieval-evaluation-fixtures` |
+| SEIS retrieval evaluation fixtures report command | `npm run report:seis-retrieval-evaluation-fixtures` |
+| SEIS retrieval evaluation dry-run gate | `npm run check:seis-retrieval-evaluation-dry-run` |
+| SEIS retrieval evaluation dry-run report command | `npm run report:seis-retrieval-evaluation-dry-run` |
+| SEIS retrieval citation scorer dry-run gate | `npm run check:seis-retrieval-citation-scorer-dry-run` |
+| SEIS retrieval citation scorer dry-run report command | `npm run report:seis-retrieval-citation-scorer-dry-run` |
+| SEIS no-secret answer log scan gate | `npm run check:seis-no-secret-answer-log-scan` |
+| SEIS no-secret answer log scan report command | `npm run report:seis-no-secret-answer-log-scan` |
+| SEIS redacted answer log schema gate | `npm run check:seis-redacted-answer-log-schema` |
+| SEIS redacted answer log schema report command | `npm run report:seis-redacted-answer-log-schema` |
+| SEIS security blocker diagnostic gate | `npm run check:seis-security-blocker-diagnostic` |
+| SEIS security blocker diagnostic report command | `npm run report:seis-security-blocker-diagnostic` |
 | SEIS knowledge retrieval training gate | `npm run check:seis-knowledge-retrieval-training` |
 | SEIS knowledge retrieval training report command | `npm run report:seis-knowledge-retrieval-training` |
 | Foundation check alias | `npm run foundation:check` |
@@ -127,6 +141,13 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS public demo PR #54 stage plan | [../reports/seis-public-demo/pr54-stage-plan-latest.md](../reports/seis-public-demo/pr54-stage-plan-latest.md) |
 | SEIS AI public readiness report JSON artifact | [../reports/seis-ai-public-readiness/latest.json](../reports/seis-ai-public-readiness/latest.json) |
 | SEIS AI public readiness report markdown artifact | [../reports/seis-ai-public-readiness/latest.md](../reports/seis-ai-public-readiness/latest.md) |
+| SEIS retrieval source provenance report | [../reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md](../reports/seis-model-scaling/seis-retrieval-source-provenance-manifest.md) |
+| SEIS retrieval evaluation fixtures report | [../reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md](../reports/seis-model-scaling/seis-retrieval-evaluation-fixtures.md) |
+| SEIS retrieval evaluation dry-run report | [../reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.md](../reports/seis-model-scaling/seis-retrieval-evaluation-dry-run.md) |
+| SEIS retrieval citation scorer dry-run report | [../reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md](../reports/seis-model-scaling/seis-retrieval-citation-scorer-dry-run.md) |
+| SEIS no-secret answer log scan report | [../reports/seis-model-scaling/seis-no-secret-answer-log-scan.md](../reports/seis-model-scaling/seis-no-secret-answer-log-scan.md) |
+| SEIS redacted answer log schema report | [../reports/seis-model-scaling/seis-redacted-answer-log-schema.md](../reports/seis-model-scaling/seis-redacted-answer-log-schema.md) |
+| SEIS security blocker diagnostic report | [../reports/seis-model-scaling/seis-security-blocker-diagnostic.md](../reports/seis-model-scaling/seis-security-blocker-diagnostic.md) |
 | SEIS knowledge retrieval training report | [../reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md](../reports/seis-model-scaling/seis-knowledge-retrieval-training-contract.md) |
 | NVIDIA accelerator catalog | [../content/development/seis-nvidia-accelerator-catalog.json](../content/development/seis-nvidia-accelerator-catalog.json) |
 | NVIDIA accelerator catalog validator | `npm run check:seis-nvidia-accelerator-catalog` |

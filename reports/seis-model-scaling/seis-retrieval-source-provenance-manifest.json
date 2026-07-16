@@ -1,0 +1,106 @@
+{
+  "id": "seis-retrieval-source-provenance-report",
+  "generatedAt": "2026-07-01T03:28:35.562Z",
+  "status": "source-inventory-ready-index-blocked",
+  "sourceManifest": "content/development/seis-retrieval-source-provenance-manifest.json",
+  "summary": {
+    "sourceGroupCount": 4,
+    "fileRecordCount": 54,
+    "scannedFileCount": 54,
+    "findingsCount": 0,
+    "persistentRetrievalIndex": false,
+    "embeddingModelInstall": false,
+    "providerEmbeddingCalls": false,
+    "privateDataIndexing": false
+  },
+  "groups": [
+    {
+      "id": "root-governance-docs",
+      "status": "candidate-allowlisted-metadata-only",
+      "provenanceLabel": "repo-owned-governance",
+      "fileCount": 8
+    },
+    {
+      "id": "ai-docs",
+      "status": "candidate-allowlisted-metadata-only",
+      "provenanceLabel": "repo-owned-ai-docs",
+      "fileCount": 15
+    },
+    {
+      "id": "ai-governance-json",
+      "status": "candidate-allowlisted-metadata-only",
+      "provenanceLabel": "repo-owned-ai-json",
+      "fileCount": 29
+    },
+    {
+      "id": "ai-readiness-reports",
+      "status": "candidate-allowlisted-metadata-only",
+      "provenanceLabel": "generated-ai-readiness-report",
+      "fileCount": 2
+    }
+  ],
+  "blockedPathClasses": [
+    {
+      "id": "environment-files",
+      "patterns": [
+        ".env",
+        ".env.*",
+        "*.env.*"
+      ],
+      "reason": "credential risk"
+    },
+    {
+      "id": "ssh-and-private-keys",
+      "patterns": [
+        "*.pem",
+        "*.key",
+        "id_rsa",
+        "id_ed25519*"
+      ],
+      "reason": "private key risk"
+    },
+    {
+      "id": "private-brain-notes",
+      "patterns": [
+        "seis-brain/private/**",
+        "seis-brain/local-only/**"
+      ],
+      "reason": "private user data"
+    },
+    {
+      "id": "dependencies-and-builds",
+      "patterns": [
+        "node_modules/**",
+        "dist/**",
+        "build/**",
+        ".next/**"
+      ],
+      "reason": "generated or third-party volume"
+    },
+    {
+      "id": "archives-and-binaries",
+      "patterns": [
+        "*.zip",
+        "*.tar",
+        "*.gz",
+        "*.7z",
+        "*.rar"
+      ],
+      "reason": "opaque binary/archive content"
+    }
+  ],
+  "safeNextCommands": [
+    "npm run report:seis-retrieval-source-provenance",
+    "npm run check:seis-retrieval-source-provenance",
+    "npm run check:seis-knowledge-retrieval-training",
+    "npm run check:seis-ai-public-readiness"
+  ],
+  "humanApprovalNeededBefore": [
+    "building a persistent retrieval index",
+    "installing an embedding or reranker model",
+    "calling an external embedding provider",
+    "indexing private user data",
+    "training on indexed content",
+    "claiming fully knowledgeable AI, 512B route eligibility, or AGI"
+  ]
+}

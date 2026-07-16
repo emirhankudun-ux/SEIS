@@ -6,6 +6,13 @@ const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 const checks = [
   "check:seis-language-model-intake",
+  "check:seis-retrieval-source-provenance",
+  "check:seis-retrieval-evaluation-fixtures",
+  "check:seis-retrieval-evaluation-dry-run",
+  "check:seis-retrieval-citation-scorer-dry-run",
+  "check:seis-no-secret-answer-log-scan",
+  "check:seis-redacted-answer-log-schema",
+  "check:seis-security-blocker-diagnostic",
   "check:seis-language-model-training-curriculum",
   "check:seis-ai-workforce-training",
   "check:seis-agent-workforce",
