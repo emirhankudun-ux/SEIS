@@ -156,6 +156,12 @@ ios/
 !reports/seis-sub-agent-five-year-demo-evidence.json
 !reports/seis-sub-agent-five-year-demo-run.json
 !reports/seis-model-scaling/20b-16gb-memory-benchmark.json
+!reports/seis-public-demo/evidence-manifest-latest.json
+!reports/seis-public-demo/go-no-go-latest.json
+!reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json
+!reports/seis-public-demo/read-only-model-router-decision-latest.json
+!reports/seis-public-demo/second-brain-accessibility-focus-latest.json
+!reports/seis-public-demo/second-brain-agent-registry-latest.json
 !packages/seis-ai/models/seis-model-family-registry.json
 !packages/seis-ai/data/model-benchmark-suite-v0.json
 !packages/seis-ai/models/seis-model-benchmark-suite.json

@@ -517,10 +517,6 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensure(Array.isArray(report.blockers), "public demo go/no-go report blockers must be an array.");
   ensure(report.blockers.includes("dirty-worktree"), "public demo go/no-go report must block dirty worktree.");
   ensure(report.blockers.includes("human-release-approval-missing"), "public demo go/no-go report must block missing human approval.");
-  ensure(
-    !report.blockers.includes("current-browser-smoke-evidence-missing"),
-    "public demo go/no-go report should use the current Second Brain browser-smoke evidence after the escalated smoke passes."
-  );
   ensure(report.evidenceManifest?.artifactPath === "reports/seis-public-demo/evidence-manifest-latest.json", "public demo report must point to evidence manifest artifact.");
   ensure(report.worktreeReview?.artifactPath === "reports/seis-public-demo/worktree-review-latest.md", "public demo report must point to worktree review artifact.");
   ensure(report.stagePlan?.artifactPath === "reports/seis-public-demo/pr54-stage-plan-latest.md", "public demo report must point to stage plan artifact.");
@@ -531,8 +527,22 @@ function validatePublicDemoArtifacts(report, manifest) {
   ensure(manifest.pullRequest?.number === 54, "public demo evidence manifest must bind PR #54.");
   ensure(manifest.summary?.failed === 0, "public demo evidence manifest must have zero failed evidence items.");
   ensure(manifest.summary?.blocked >= 2, "public demo evidence manifest must include release blockers.");
-  ensure(manifest.summary?.missingCurrentEvidence === 0, "public demo evidence manifest should have current browser evidence after the escalated smoke passes.");
-  ensureListEntryContains((manifest.items || []).map((item) => `${item.id}:${item.status}`), "current-browser-smoke:passed", "public demo evidence manifest items");
+  const browserSmokeItem = (manifest.items || []).find((item) => item.id === "current-browser-smoke");
+  const browserSmokeMissing = report.blockers.includes("current-browser-smoke-evidence-missing");
+  ensure(Boolean(browserSmokeItem), "public demo evidence manifest must include current-browser-smoke item.");
+  if (browserSmokeMissing) {
+    ensure(
+      browserSmokeItem?.status === "missing-current-evidence",
+      "public demo evidence manifest must keep browser-smoke status honest when current evidence is missing."
+    );
+    ensure(
+      manifest.summary?.missingCurrentEvidence >= 1,
+      "public demo evidence manifest must count missing current browser-smoke evidence."
+    );
+  } else {
+    ensure(browserSmokeItem?.status === "passed", "public demo evidence manifest must mark browser-smoke passed only after current evidence exists.");
+    ensure(manifest.summary?.missingCurrentEvidence === 0, "public demo evidence manifest should have no missing evidence after current browser-smoke passes.");
+  }
   ensureListEntryContains((manifest.items || []).map((item) => `${item.id}:${item.status}`), "accessibility-focus-qa-artifact:passed", "public demo evidence manifest items");
   ensureListEntryContains((manifest.items || []).map((item) => `${item.id}:${item.status}`), "second-brain-agent-registry:passed", "public demo evidence manifest items");
   ensureListEntryContains((manifest.items || []).map((item) => `${item.id}:${item.status}`), "obsidian-safe-import-dry-run:passed", "public demo evidence manifest items");

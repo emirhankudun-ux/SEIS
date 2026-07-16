@@ -8,209 +8,209 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 997,
-    "countedBytes": 8226836,
-    "javascriptBytes": 2993076,
-    "javascriptPercent": 36.38,
+    "countedFileCount": 1508,
+    "countedBytes": 16325472,
+    "javascriptBytes": 4683139,
+    "javascriptPercent": 28.69,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 6025906,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 5975189,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
+      "language": "HTML",
+      "bytes": 6269305,
+      "percent": 38.4
+    },
+    {
       "language": "JavaScript",
-      "bytes": 2993076,
-      "percent": 36.38
+      "bytes": 4683139,
+      "percent": 28.69
     },
     {
       "language": "JSON",
-      "bytes": 2634914,
-      "percent": 32.03
+      "bytes": 2931633,
+      "percent": 17.96
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 6.98
+      "percent": 3.52
     },
     {
       "language": "Python",
-      "bytes": 513980,
-      "percent": 6.25
+      "bytes": 515500,
+      "percent": 3.16
+    },
+    {
+      "language": "CSS",
+      "bytes": 499004,
+      "percent": 3.06
     },
     {
       "language": "TypeScript",
       "bytes": 424439,
-      "percent": 5.16
-    },
-    {
-      "language": "CSS",
-      "bytes": 398393,
-      "percent": 4.84
-    },
-    {
-      "language": "HTML",
-      "bytes": 262365,
-      "percent": 3.19
+      "percent": 2.6
     },
     {
       "language": "Shell",
       "bytes": 98373,
-      "percent": 1.2
+      "percent": 0.6
     },
     {
       "language": "YAML",
       "bytes": 45668,
-      "percent": 0.56
+      "percent": 0.28
     },
     {
       "language": "Other",
-      "bytes": 43479,
-      "percent": 0.53
+      "bytes": 45014,
+      "percent": 0.28
     },
     {
       "language": "Go",
       "bytes": 16806,
-      "percent": 0.2
+      "percent": 0.1
     },
     {
       "language": "Java",
       "bytes": 16392,
-      "percent": 0.2
+      "percent": 0.1
     },
     {
       "language": "Scheme",
       "bytes": 15747,
-      "percent": 0.19
+      "percent": 0.1
     },
     {
       "language": "Perl",
       "bytes": 13916,
-      "percent": 0.17
+      "percent": 0.09
     },
     {
       "language": "Ruby",
       "bytes": 13677,
-      "percent": 0.17
+      "percent": 0.08
     },
     {
       "language": "Rust",
       "bytes": 12286,
-      "percent": 0.15
+      "percent": 0.08
     },
     {
       "language": "C++",
       "bytes": 11206,
-      "percent": 0.14
+      "percent": 0.07
     },
     {
       "language": "PHP",
       "bytes": 8768,
-      "percent": 0.11
+      "percent": 0.05
     },
     {
       "language": "SQL",
       "bytes": 8752,
-      "percent": 0.11
+      "percent": 0.05
     },
     {
       "language": "Objective-C",
       "bytes": 8447,
-      "percent": 0.1
+      "percent": 0.05
     },
     {
       "language": "R",
       "bytes": 7953,
-      "percent": 0.1
+      "percent": 0.05
     },
     {
       "language": "OCaml",
       "bytes": 7550,
-      "percent": 0.09
+      "percent": 0.05
     },
     {
       "language": "Tcl",
       "bytes": 7290,
-      "percent": 0.09
+      "percent": 0.04
     },
     {
       "language": "Racket",
       "bytes": 7245,
-      "percent": 0.09
+      "percent": 0.04
     },
     {
       "language": "Lua",
       "bytes": 6948,
-      "percent": 0.08
+      "percent": 0.04
     },
     {
       "language": "Common Lisp",
       "bytes": 5908,
-      "percent": 0.07
+      "percent": 0.04
     },
     {
       "language": "Nim",
       "bytes": 5452,
-      "percent": 0.07
+      "percent": 0.03
     },
     {
       "language": "C",
       "bytes": 5440,
-      "percent": 0.07
+      "percent": 0.03
     },
     {
       "language": "Groovy",
       "bytes": 5362,
-      "percent": 0.07
+      "percent": 0.03
     },
     {
       "language": "TOML",
       "bytes": 3853,
-      "percent": 0.05
+      "percent": 0.02
     },
     {
       "language": "C#",
       "bytes": 2973,
-      "percent": 0.04
+      "percent": 0.02
     },
     {
       "language": "XML",
       "bytes": 2883,
-      "percent": 0.04
+      "percent": 0.02
     },
     {
       "language": "PowerShell",
       "bytes": 2427,
-      "percent": 0.03
+      "percent": 0.01
+    },
+    {
+      "language": "dotenv",
+      "bytes": 2425,
+      "percent": 0.01
     },
     {
       "language": "AWK",
       "bytes": 1595,
-      "percent": 0.02
+      "percent": 0.01
     },
     {
       "language": "F#",
       "bytes": 1592,
-      "percent": 0.02
+      "percent": 0.01
     },
     {
       "language": "Kotlin",
       "bytes": 1406,
-      "percent": 0.02
+      "percent": 0.01
     },
     {
       "language": "CUE",
       "bytes": 1307,
-      "percent": 0.02
+      "percent": 0.01
     },
     {
       "language": "Rego",
       "bytes": 1299,
-      "percent": 0.02
-    },
-    {
-      "language": "dotenv",
-      "bytes": 1177,
       "percent": 0.01
     },
     {
@@ -261,147 +261,147 @@
     {
       "language": "Dockerfile",
       "bytes": 807,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "HOCON",
       "bytes": 805,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Ada",
       "bytes": 779,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "ABAP",
       "bytes": 778,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Hack",
       "bytes": 772,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "COBOL",
       "bytes": 723,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Protocol Buffers",
       "bytes": 714,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Zig",
       "bytes": 712,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "WGSL",
       "bytes": 674,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "HCL",
       "bytes": 667,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Scala",
       "bytes": 660,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "ReScript",
       "bytes": 652,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Cairo",
       "bytes": 649,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "GDScript",
       "bytes": 645,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "GLSL",
       "bytes": 632,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Jsonnet",
       "bytes": 621,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "CMake",
       "bytes": 611,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Julia",
       "bytes": 595,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Crystal",
       "bytes": 594,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Q#",
       "bytes": 594,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Elixir",
       "bytes": 582,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Nix",
       "bytes": 577,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "V",
       "bytes": 572,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Clojure",
       "bytes": 569,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Erlang",
       "bytes": 560,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Dart",
       "bytes": 532,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Fortran",
       "bytes": 528,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "Bicep",
       "bytes": 490,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "D",
       "bytes": 456,
-      "percent": 0.01
+      "percent": 0.0
     },
     {
       "language": "JSON-LD",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 2993076,
-      "percent": 36.38,
+      "bytes": 4683139,
+      "percent": 28.69,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 424439,
-      "percent": 5.16,
+      "percent": 2.6,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -519,15 +519,15 @@
     {
       "language": "Objective-C",
       "bytes": 8447,
-      "percent": 0.1,
+      "percent": 0.05,
       "sourceLanguages": [
         "Objective-C"
       ]
     },
     {
       "language": "Other",
-      "bytes": 4800874,
-      "percent": 58.36,
+      "bytes": 11209447,
+      "percent": 68.66,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -634,7 +634,7 @@
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
         "bytes": 583379,
-        "percent": 7.09,
+        "percent": 3.57,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -649,11 +649,11 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 3167853,
-        "percent": 38.51,
+        "bytes": 3466092,
+        "percent": 21.23,
         "minPercent": 18.0,
         "maxPercent": 22.0,
-        "status": "above_target",
+        "status": "within_target",
         "sourceLanguages": [
           "Python",
           "SQL",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 3417515,
-        "percent": 41.54,
+        "bytes": 5107578,
+        "percent": 31.29,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -687,7 +687,7 @@
         "id": "android-jvm",
         "label": "Android / JVM",
         "bytes": 23729,
-        "percent": 0.29,
+        "percent": 0.15,
         "minPercent": 10.0,
         "maxPercent": 15.0,
         "status": "below_target",
@@ -704,7 +704,7 @@
         "id": "rust-c-cpp-systems",
         "label": "Rust / C / C++ systems",
         "bytes": 29644,
-        "percent": 0.36,
+        "percent": 0.18,
         "minPercent": 10.0,
         "maxPercent": 15.0,
         "status": "below_target",
@@ -721,7 +721,7 @@
         "id": "go-infrastructure",
         "label": "Go / Infrastructure",
         "bytes": 169847,
-        "percent": 2.06,
+        "percent": 1.04,
         "minPercent": 5.0,
         "maxPercent": 8.0,
         "status": "below_target",
@@ -744,7 +744,7 @@
         "id": "windows-dotnet",
         "label": "Windows / .NET",
         "bytes": 7984,
-        "percent": 0.1,
+        "percent": 0.05,
         "minPercent": 5.0,
         "maxPercent": 8.0,
         "status": "below_target",
@@ -760,8 +760,8 @@
       {
         "id": "html-css-preview",
         "label": "HTML / CSS previews",
-        "bytes": 660758,
-        "percent": 8.03,
+        "bytes": 6768309,
+        "percent": 41.46,
         "minPercent": 0.0,
         "maxPercent": 3.0,
         "status": "above_target",
@@ -774,8 +774,8 @@
       }
     ],
     "unassigned": {
-      "bytes": 166127,
-      "percent": 2.02,
+      "bytes": 168910,
+      "percent": 1.03,
       "languages": [
         "ABAP",
         "AWK",
@@ -842,7 +842,17 @@
     {
       "path": "apps/web/desktop.js",
       "language": "JavaScript",
-      "bytes": 148278
+      "bytes": 534286
+    },
+    {
+      "path": "apps/seis-demo-web/script.js",
+      "language": "JavaScript",
+      "bytes": 148492
+    },
+    {
+      "path": "apps/web/reference-banks/reference-apps.js",
+      "language": "JavaScript",
+      "bytes": 116115
     },
     {
       "path": "emirhan-kudun-portfolio/apps/uix-web/src/i18n/locales.js",
@@ -860,50 +870,40 @@
       "bytes": 94536
     },
     {
-      "path": "apps/web/script.js",
-      "language": "JavaScript",
-      "bytes": 79540
-    },
-    {
-      "path": "apps/seis-demo-web/script.js",
-      "language": "JavaScript",
-      "bytes": 76575
-    },
-    {
       "path": "apps/web/seis-code.js",
       "language": "JavaScript",
-      "bytes": 66372
-    },
-    {
-      "path": "apps/web/app.js",
-      "language": "JavaScript",
-      "bytes": 61634
+      "bytes": 89892
     },
     {
       "path": "packages/seis-ai/test/agent.test.mjs",
       "language": "JavaScript",
-      "bytes": 55758
-    },
-    {
-      "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-      "language": "JavaScript",
-      "bytes": 45381
-    },
-    {
-      "path": "scripts/check-seis-master-prompt.mjs",
-      "language": "JavaScript",
-      "bytes": 42025
+      "bytes": 86997
     },
     {
       "path": "scripts/check-product-experience-browser-smoke.mjs",
       "language": "JavaScript",
-      "bytes": 41240
+      "bytes": 86889
+    },
+    {
+      "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
+      "language": "JavaScript",
+      "bytes": 81819
+    },
+    {
+      "path": "scripts/check-desktop-os.mjs",
+      "language": "JavaScript",
+      "bytes": 70113
+    },
+    {
+      "path": "apps/web/app.js",
+      "language": "JavaScript",
+      "bytes": 67280
     }
   ],
   "excludedBytesByReason": {
-    "binary": 246508693,
-    "documentation": 1888157,
-    "linguist-generated": 3301917,
+    "binary": 316162268,
+    "documentation": 2340645,
+    "linguist-generated": 3905485,
     "linguist-vendored": 2888366
   },
   "requiredLinguistRules": [
@@ -958,7 +958,7 @@
       "command": "node --version",
       "available": true,
       "exitCode": 0,
-      "version": "v24.16.0"
+      "version": "v22.23.1"
     },
     {
       "id": "python3",
@@ -970,16 +970,16 @@
     {
       "id": "go",
       "command": "go version",
-      "available": true,
-      "exitCode": 0,
-      "version": "go version go1.26.4 darwin/amd64"
+      "available": false,
+      "exitCode": null,
+      "version": null
     },
     {
       "id": "rustc",
       "command": "rustc --version",
       "available": false,
-      "exitCode": 1,
-      "version": "error: Missing manifest in toolchain 'stable-x86_64-apple-darwin'"
+      "exitCode": null,
+      "version": null
     },
     {
       "id": "swift",
@@ -991,16 +991,16 @@
     {
       "id": "javac",
       "command": "javac -version",
-      "available": true,
-      "exitCode": 0,
-      "version": "javac 21.0.11"
+      "available": false,
+      "exitCode": 1,
+      "version": "The operation couldn’t be completed. Unable to locate a Java Runtime. Please visit http://www.java.com for information on installing Java."
     },
     {
       "id": "dart",
       "command": "dart --version",
       "available": false,
-      "exitCode": 1,
-      "version": "$HOME/Developer/flutter/bin/internal/shared.sh: line 122: $HOME/Developer/flutter/bin/internal/update_engine_version.sh: No such file or directory"
+      "exitCode": null,
+      "version": null
     }
   ],
   "nextMigrationOrder": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "461ec010ddf3b8786dd674162f4c05fdc5da07713a2e27742ebb9100dca359e0",
+    "hash": "be1f0fc7e64693744b59c3f0f835d6a3255e07d7659e027cc5aa3d7d8c7bd294",
     "algorithm": "sha256"
   }
 }

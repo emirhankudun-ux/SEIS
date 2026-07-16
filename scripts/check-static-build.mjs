@@ -22,6 +22,17 @@ for (const file of [
   "docs/governance/development-process.md",
   "docs/deployment/server-upload-runbook.md",
   "docs/deployment/server-drop-handoff.md",
+  "reports/seis-public-demo/evidence-manifest-latest.json",
+  "reports/seis-public-demo/go-no-go-latest.json",
+  "reports/seis-public-demo/go-no-go-latest.md",
+  "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
+  "reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
+  "reports/seis-public-demo/read-only-model-router-decision-latest.json",
+  "reports/seis-public-demo/read-only-model-router-decision-latest.md",
+  "reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
+  "reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
+  "reports/seis-public-demo/second-brain-agent-registry-latest.json",
+  "reports/seis-public-demo/second-brain-agent-registry-latest.md",
   "contracts/polyglot/seis-experience-contract.json",
   "_deploy/server-targets.json"
 ]) {

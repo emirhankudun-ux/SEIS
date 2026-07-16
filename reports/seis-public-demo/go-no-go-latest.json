@@ -1,0 +1,197 @@
+{
+  "ok": true,
+  "decision": "NO-GO",
+  "status": "review-gated-not-released",
+  "mode": "read-only",
+  "pullRequest": {
+    "number": 54,
+    "url": "https://github.com/emirhankudun-ux/SEIS/pull/54",
+    "base": "main",
+    "head": "codex/seis-demo-github-upload-20260624",
+    "requiredState": "reviewed before merge or public release"
+  },
+  "checkedAt": "2026-06-30T12:46:16.068Z",
+  "checks": {
+    "checklist": {
+      "id": "seis-public-demo-release-checklist-pr54",
+      "status": "review-gated-not-released",
+      "releaseDecision": "not ready until checklist gates pass",
+      "requiredValidation": 23,
+      "blockedActions": 8,
+      "approvalNeeded": 7
+    },
+    "secondBrain": {
+      "status": "local-demo",
+      "privateVaultImportForbidden": true,
+      "githubMutation": false
+    },
+    "obsidian": {
+      "status": "planned-gated",
+      "hostVaultReadEnabled": false,
+      "privateVaultImportEnabled": false
+    },
+    "obsidianDryRun": {
+      "status": "repo-owned-seed-notes-only",
+      "mode": "dry-run-no-private-vault-read",
+      "selectedByUser": false,
+      "candidateNoteCount": 6,
+      "humanApprovalState": "not-requested"
+    },
+    "accessibility": {
+      "status": "contract-active",
+      "linkedBrowserSmoke": "npm run check:seis-second-brain-browser-smoke"
+    },
+    "accessibilityFocus": {
+      "status": "review-gated-human-accessibility-needed",
+      "mode": "repo-static-and-browser-smoke-evidence",
+      "decision": "NO-GO-human-accessibility-review-required",
+      "automatedFailed": 0,
+      "requiredBlocked": 6
+    },
+    "agentRegistry": {
+      "status": "review-only-agent-registry",
+      "mode": "repo-local-no-live-execution",
+      "decision": "NO-GO-autonomous-execution-not-approved",
+      "installedAiProfileCount": 6,
+      "autonomousAgentRosterCount": 12,
+      "mcpVendorSurfaceCount": 17
+    },
+    "router": {
+      "status": "planned-read-only-contract",
+      "providerCalls": false,
+      "browserSecrets": false,
+      "silentFallback": false
+    },
+    "routerDecision": {
+      "status": "review-only-no-runtime-authority",
+      "mode": "provider-neutral-read-only",
+      "decision": "NO-GO-live-routing-not-approved",
+      "decisionCount": 4,
+      "providerFixtureCount": 6
+    },
+    "packageScripts": {
+      "obsidianDryRun": "node scripts/create-seis-obsidian-safe-import-dry-run.mjs --check",
+      "obsidianDryRunReport": "node scripts/create-seis-obsidian-safe-import-dry-run.mjs --write",
+      "routerDecision": "node scripts/create-seis-read-only-model-router-decision.mjs --check",
+      "routerDecisionReport": "node scripts/create-seis-read-only-model-router-decision.mjs --write",
+      "accessibilityFocus": "node scripts/create-seis-second-brain-accessibility-focus-report.mjs --check",
+      "accessibilityFocusReport": "node scripts/create-seis-second-brain-accessibility-focus-report.mjs --write",
+      "agentRegistry": "node scripts/create-seis-second-brain-agent-registry.mjs --check",
+      "agentRegistryReport": "node scripts/create-seis-second-brain-agent-registry.mjs --write",
+      "goNoGo": "node scripts/check-seis-public-demo-go-no-go.mjs",
+      "goNoGoStrict": "node scripts/check-seis-public-demo-go-no-go.mjs --require-ready"
+    },
+    "git": {
+      "commandStatus": 0,
+      "dirtyCount": 26,
+      "dirtyPaths": [
+        " M .gitignore",
+        " M cloud-migration-audit.ci.json",
+        " M content/development/seis-technology-stack.json",
+        " M reports/language-distribution.json",
+        " M reports/language-distribution.md",
+        " M reports/seis-public-demo/go-no-go-latest.md",
+        " M reports/seis-public-demo/obsidian-safe-import-dry-run-latest.md",
+        " M reports/seis-public-demo/pr54-review-packet-latest.md",
+        " M reports/seis-public-demo/pr54-stage-plan-latest.md",
+        " M reports/seis-public-demo/read-only-model-router-decision-latest.md",
+        " M reports/seis-public-demo/second-brain-accessibility-focus-latest.md",
+        " M reports/seis-public-demo/second-brain-agent-registry-latest.md",
+        " M reports/seis-public-demo/worktree-review-latest.md",
+        " M reports/seis-technology-stack.json",
+        " M reports/seis-technology-stack.md",
+        " M scripts/build-static.mjs",
+        " M scripts/check-publish-gate-contract.mjs",
+        " M scripts/check-seis-platform-kernel.py",
+        " M scripts/check-seis-second-brain-readiness-contracts.mjs",
+        " M scripts/check-static-build.mjs",
+        "?? reports/seis-public-demo/evidence-manifest-latest.json",
+        "?? reports/seis-public-demo/go-no-go-latest.json",
+        "?? reports/seis-public-demo/obsidian-safe-import-dry-run-latest.json",
+        "?? reports/seis-public-demo/read-only-model-router-decision-latest.json",
+        "?? reports/seis-public-demo/second-brain-accessibility-focus-latest.json",
+        "?? reports/seis-public-demo/second-brain-agent-registry-latest.json"
+      ]
+    },
+    "fastValidation": [
+      {
+        "command": "npm run check:seis-obsidian-safe-import-dry-run",
+        "status": 0,
+        "stdout": "\n> seis@0.1.0 check:seis-obsidian-safe-import-dry-run\n> node scripts/create-seis-obsidian-safe-import-dry-run.mjs --check\n\nSEIS Obsidian safe-import dry-run check passed.\n",
+        "stderr": ""
+      },
+      {
+        "command": "npm run check:seis-read-only-model-router-decision",
+        "status": 0,
+        "stdout": "\n> seis@0.1.0 check:seis-read-only-model-router-decision\n> node scripts/create-seis-read-only-model-router-decision.mjs --check\n\nSEIS read-only model-router decision check passed.\n",
+        "stderr": ""
+      },
+      {
+        "command": "npm run check:seis-second-brain-accessibility-focus-report",
+        "status": 0,
+        "stdout": "\n> seis@0.1.0 check:seis-second-brain-accessibility-focus-report\n> node scripts/create-seis-second-brain-accessibility-focus-report.mjs --check\n\nSEIS Second Brain accessibility/focus QA check passed.\n",
+        "stderr": ""
+      },
+      {
+        "command": "npm run check:seis-second-brain-agent-registry",
+        "status": 0,
+        "stdout": "\n> seis@0.1.0 check:seis-second-brain-agent-registry\n> node scripts/create-seis-second-brain-agent-registry.mjs --check\n\nSEIS Second Brain agent registry check passed.\n",
+        "stderr": ""
+      },
+      {
+        "command": "npm run check:seis-second-brain-readiness-contracts",
+        "status": 0,
+        "stdout": "\n> seis@0.1.0 check:seis-second-brain-readiness-contracts\n> node scripts/check-seis-second-brain-readiness-contracts.mjs\n\nSEIS Second Brain readiness contracts check passed.\n",
+        "stderr": ""
+      },
+      {
+        "command": "npm run check:seis-second-brain",
+        "status": 0,
+        "stdout": "\n> seis@0.1.0 check:seis-second-brain\n> node scripts/check-seis-second-brain.mjs\n\nSEIS Second Brain check passed.\n",
+        "stderr": ""
+      },
+      {
+        "command": "git diff --check",
+        "status": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    ]
+  },
+  "failures": [],
+  "blockers": [
+    "dirty-worktree",
+    "human-release-approval-missing",
+    "current-browser-smoke-evidence-missing"
+  ],
+  "warnings": [],
+  "nextActions": [
+    "Review and stage only coherent release-candidate changes, or rerun with --allow-dirty-worktree for a planning-only report.",
+    "Run current browser-smoke evidence in an environment that can bind localhost and launch Chrome.",
+    "Get explicit human owner approval before merge, Pages publication, release tag, deployment, SSH, live providers, or public launch."
+  ],
+  "safety": [
+    "This command is read-only.",
+    "It does not push, merge, tag, deploy, publish GitHub Pages, import an Obsidian vault, execute SSH, or call model providers.",
+    "Use --require-ready only after human approval and current browser-smoke evidence exist."
+  ],
+  "evidenceManifest": {
+    "itemCount": 23,
+    "passedCount": 20,
+    "blockedCount": 2,
+    "missingEvidenceCount": 1,
+    "artifactPath": "reports/seis-public-demo/evidence-manifest-latest.json"
+  },
+  "worktreeReview": {
+    "artifactPath": "reports/seis-public-demo/worktree-review-latest.md",
+    "dirtyCount": 26,
+    "workstreamCount": 2,
+    "releaseBlocking": true
+  },
+  "stagePlan": {
+    "artifactPath": "reports/seis-public-demo/pr54-stage-plan-latest.md",
+    "candidatePathCount": 15,
+    "excludedPathCount": 11,
+    "readyForHumanReview": true
+  }
+}
