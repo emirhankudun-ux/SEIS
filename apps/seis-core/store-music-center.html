@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en" data-seis-store-music="browser-local">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEIS Store + Music Center</title>
+    <meta
+      name="description"
+      content="Browser-local SEIS Store and Music demo with install state, mock marketplace catalog, and simulated playback controls."
+    />
+    <link rel="stylesheet" href="./store-music-center.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to Store + Music workspace</a>
+
+    <header class="topbar" aria-label="SEIS Store Music status bar">
+      <div class="brand-mark" aria-hidden="true">S</div>
+      <div>
+        <p class="eyebrow">SEIS Core / Marketplace and media lane</p>
+        <h1>SEIS Store + Music Center</h1>
+      </div>
+      <div class="status-strip" aria-label="Safety state">
+        <span class="status-pill real">Browser-local</span>
+        <span class="status-pill mock">Mock catalog</span>
+        <span class="status-pill blocked">No payments or streaming</span>
+      </div>
+    </header>
+
+    <main id="main" class="shell" tabindex="-1">
+      <section class="hero-panel" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Apps, plugins, agents, themes, playlists</p>
+          <h2 id="hero-title">A marketplace and listening room for the SEIS creative OS demo.</h2>
+          <p>
+            This route makes SEIS Store and SEIS Music feel alive without pretending to operate a real marketplace,
+            payment system, license server, streaming service, or audio backend.
+          </p>
+        </div>
+        <div class="safety-card" aria-label="Non commerce and non streaming contract">
+          <p class="eyebrow">Runtime contract</p>
+          <code>paymentExecuted: false</code>
+          <code>licenseIssued: false</code>
+          <code>streamingStarted: false</code>
+          <code>networkRequested: false</code>
+        </div>
+      </section>
+
+      <nav class="module-tabs" aria-label="Workspace modules">
+        <button class="tab-button active" type="button" data-tab="store">SEIS Store</button>
+        <button class="tab-button" type="button" data-tab="music">SEIS Music</button>
+        <button class="tab-button" type="button" data-tab="status">Mock vs real status</button>
+      </nav>
+
+      <section id="storePanel" class="workspace-grid tab-panel active" aria-labelledby="store-title">
+        <article class="panel store-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">SEIS Store</p>
+              <h3 id="store-title">Installable demo catalog</h3>
+            </div>
+            <span id="installSummary" class="status-pill real">0 installed</span>
+          </div>
+
+          <div class="toolbar" aria-label="Store filters">
+            <label class="search-box">
+              <span>Search catalog</span>
+              <input id="storeSearch" type="search" placeholder="Search apps, plugins, agents, themes" autocomplete="off" />
+            </label>
+            <button class="filter-chip active" type="button" data-category="all">All</button>
+            <button class="filter-chip" type="button" data-category="app">Apps</button>
+            <button class="filter-chip" type="button" data-category="plugin">Plugins</button>
+            <button class="filter-chip" type="button" data-category="agent">AI Agents</button>
+            <button class="filter-chip" type="button" data-category="theme">Themes</button>
+            <button class="filter-chip" type="button" data-category="developer">Developer tools</button>
+            <button class="filter-chip" type="button" data-category="design">Design tools</button>
+          </div>
+
+          <div id="catalogGrid" class="catalog-grid" aria-label="Store catalog"></div>
+        </article>
+
+        <aside class="panel detail-panel" aria-labelledby="store-detail-title">
+          <p class="eyebrow">Selection</p>
+          <h3 id="store-detail-title">No package selected</h3>
+          <p id="storeDetailMeta" class="muted">Choose a catalog card to inspect install status and safe demo behavior.</p>
+          <div id="storeDetailBody" class="detail-body">
+            Store actions are browser-local state changes and never perform payment, license issuance, download, or extension execution.
+          </div>
+        </aside>
+      </section>
+
+      <section id="musicPanel" class="workspace-grid music-layout tab-panel" aria-labelledby="music-title" hidden>
+        <article class="panel player-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">SEIS Music</p>
+              <h3 id="music-title">Simulated creative player</h3>
+            </div>
+            <span id="playState" class="status-pill mock">Paused</span>
+          </div>
+
+          <div class="album-stage" aria-label="Now playing">
+            <div class="album-orb" aria-hidden="true">
+              <span></span>
+            </div>
+            <div>
+              <p class="eyebrow">Now playing</p>
+              <h2 id="trackTitle">No track selected</h2>
+              <p id="trackArtist" class="muted">Choose a playlist or track to start simulated playback.</p>
+            </div>
+          </div>
+
+          <div class="waveform" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+
+          <div class="progress-wrap" aria-label="Playback progress">
+            <span id="elapsedTime">0:00</span>
+            <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+            <span id="durationTime">0:00</span>
+          </div>
+
+          <div class="player-controls" aria-label="Music controls">
+            <button id="previousTrack" class="round-button" type="button">Previous</button>
+            <button id="playPause" class="primary-round-button" type="button">Play</button>
+            <button id="nextTrack" class="round-button" type="button">Next</button>
+          </div>
+        </article>
+
+        <aside class="panel playlist-panel" aria-labelledby="playlist-title">
+          <p class="eyebrow">Playlists</p>
+          <h3 id="playlist-title">Creative OS sound rooms</h3>
+          <div id="playlistGrid" class="playlist-grid" aria-label="Playlists"></div>
+        </aside>
+
+        <article class="panel track-panel" aria-labelledby="track-list-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Tracks</p>
+              <h3 id="track-list-title">Browser-local queue</h3>
+            </div>
+            <span class="status-pill mock">AI recommendations mock/safe mode</span>
+          </div>
+          <div id="trackList" class="track-list" aria-label="Track list"></div>
+        </article>
+      </section>
+
+      <section id="statusPanel" class="status-ledger tab-panel" aria-labelledby="ledger-title" hidden>
+        <div>
+          <p class="eyebrow">Mock vs real status</p>
+          <h2 id="ledger-title">Honest boundaries for marketplace and media behavior</h2>
+        </div>
+        <div class="ledger-grid">
+          <article>
+            <span class="status-pill real">Real</span>
+            <h3>Install state</h3>
+            <p>Install, update, enable, disable, selection, filters, and player state persist in <code>localStorage</code>.</p>
+          </article>
+          <article>
+            <span class="status-pill mock">Mock</span>
+            <h3>Marketplace catalog</h3>
+            <p>Apps, plugins, agents, themes, and tools are realistic demo metadata, not live marketplace inventory.</p>
+          </article>
+          <article>
+            <span class="status-pill mock">Mock</span>
+            <h3>Music playback</h3>
+            <p>Playback, progress, waveform, playlists, and recommendations are simulated UI state, not real audio streams.</p>
+          </article>
+          <article>
+            <span class="status-pill blocked">Blocked</span>
+            <h3>Commerce and network</h3>
+            <p>No payment, license issue, extension execution, download, tracking request, or network call is attempted.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./store-music-center.js" defer></script>
+  </body>
+</html>
