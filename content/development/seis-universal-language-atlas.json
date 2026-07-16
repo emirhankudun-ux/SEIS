@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-universal-language-atlas",
+  "updated": "2026-07-07",
+  "status": "universal-language-coverage-policy-ready",
+  "mode": "github-linguist-backed-reference-atlas",
+  "purpose": "Give SEIS a safe way to recognize, classify, plan, and route every GitHub-known language without pretending every language is an active runtime dependency.",
+  "officialSource": {
+    "name": "GitHub Linguist languages.yml",
+    "repository": "github-linguist/linguist",
+    "path": "lib/linguist/languages.yml",
+    "ref": "main",
+    "observedBlobSha": "92b013df81e6a30754c65f493f1f82308a566967",
+    "sourceDescription": "Defines all languages known to GitHub with type, ace_mode, extensions, filenames, language_id, tm_scope, aliases, color, group, interpreters, and wrapping metadata.",
+    "syncScript": "scripts/sync-seis-github-linguist-language-atlas.mjs",
+    "generatedOutput": "content/development/seis-github-linguist-language-atlas.generated.json"
+  },
+  "corePolicy": [
+    "SEIS may recognize every GitHub-known language as catalog metadata.",
+    "SEIS must not activate every language as a runtime, dependency, compiler, interpreter, SDK, or build tool.",
+    "Language recognition is safe; language execution is approval-gated.",
+    "Every language must be routed to a purpose, family, risk tier, and validation lane before implementation.",
+    "Current working SEIS web surfaces remain HTML, CSS, and JavaScript first until a scoped PR proves a new runtime is needed."
+  ],
+  "activationTiers": [
+    {
+      "id": "tier-0-active-core",
+      "label": "Active SEIS Core",
+      "meaning": "Already part of the current local-first SEIS repository workflow.",
+      "examples": ["HTML", "CSS", "JavaScript", "Node.js", "Python", "Shell", "JSON", "Markdown", "YAML"],
+      "approval": "normal scoped PR review"
+    },
+    {
+      "id": "tier-1-ready-extension",
+      "label": "Ready Extension",
+      "meaning": "Can be added when a product surface needs it and validation exists.",
+      "examples": ["TypeScript", "SQL", "Swift", "Kotlin", "Java", "Go", "Rust", "C#"],
+      "approval": "scope, tests, and rollback required"
+    },
+    {
+      "id": "tier-2-contract-only",
+      "label": "Contract Only",
+      "meaning": "May appear in docs, examples, parsers, schemas, or compatibility notes but not as live runtime yet.",
+      "examples": ["C", "C++", "Assembly", "R", "Julia", "Scala", "Ruby", "PHP", "Lua"],
+      "approval": "architecture contract before code"
+    },
+    {
+      "id": "tier-3-reference-only",
+      "label": "Reference Only",
+      "meaning": "Recognized for search, indexing, file classification, import/export, docs, and education.",
+      "examples": ["ABAP", "Ada", "ALGOL", "APL", "BASIC", "COBOL", "Common Lisp", "Fortran", "Pascal", "Prolog"],
+      "approval": "no runtime activation"
+    },
+    {
+      "id": "tier-4-blocked-until-explicit-approval",
+      "label": "Blocked Until Approval",
+      "meaning": "Requires new SDKs, compilers, interpreters, emulators, VM runtimes, GPU stacks, cloud services, or security review.",
+      "examples": ["Cuda", "Unity", "Unreal", "Dockerfile", "HCL", "Solidity", "Move", "Cairo", "Arduino", "Bicep"],
+      "approval": "explicit human approval plus isolated branch"
+    }
+  ],
+  "languageFamilies": [
+    {
+      "id": "web-and-markup",
+      "label": "Web, Markup, and Product Surfaces",
+      "examples": ["HTML", "CSS", "JavaScript", "TypeScript", "Astro", "ASP.NET", "Blade", "Antlers", "AsciiDoc", "Markdown"],
+      "seisUse": "Website, Desktop OS, docs, product UI, local demo pages, content rendering."
+    },
+    {
+      "id": "systems-and-native",
+      "label": "Systems and Native",
+      "examples": ["C", "C++", "Rust", "Zig", "Assembly", "Objective-C", "Swift", "Ada"],
+      "seisUse": "Future system lab, native apps, Apple-first work, low-level tooling research."
+    },
+    {
+      "id": "backend-and-enterprise",
+      "label": "Backend and Enterprise",
+      "examples": ["Java", "C#", "Go", "Python", "Ruby", "PHP", "Scala", "Kotlin", "Apex", "ABAP"],
+      "seisUse": "APIs, provider routers, enterprise service lanes, integrations, future durable backend."
+    },
+    {
+      "id": "data-ai-and-science",
+      "label": "Data, AI, and Science",
+      "examples": ["Python", "SQL", "R", "Julia", "MATLAB", "Jupyter Notebook", "CSV", "JSON", "Avro IDL", "Common Workflow Language"],
+      "seisUse": "RAG, evaluation, analytics, datasets, typed contracts, AI governance, data import/export."
+    },
+    {
+      "id": "devops-config-and-infra",
+      "label": "DevOps, Config, and Infrastructure",
+      "examples": ["Shell", "Bash", "Batchfile", "PowerShell", "Dockerfile", "HCL", "Bicep", "ApacheConf", "Caddyfile", "YAML"],
+      "seisUse": "CI, local checks, cloud readiness, server configs, deployment plans, SSH-safe onboarding."
+    },
+    {
+      "id": "formal-methods-and-research",
+      "label": "Formal Methods and Research",
+      "examples": ["B (Formal Method)", "Alloy", "Agda", "Coq", "Curry", "Answer Set Programming", "Prolog", "TLA", "Lean"],
+      "seisUse": "Future verification, proof-oriented docs, specification research, agent correctness experiments."
+    },
+    {
+      "id": "creative-media-audio-and-graphics",
+      "label": "Creative, Media, Audio, and Graphics",
+      "examples": ["Csound", "Csound Document", "Csound Score", "Cue Sheet", "COLLADA", "GLSL", "WGSL", "Processing", "SVG"],
+      "seisUse": "Creative coding, audio/visual experiments, 3D assets, motion systems, design tech research."
+    },
+    {
+      "id": "legacy-specialized-and-esoteric",
+      "label": "Legacy, Specialized, and Esoteric",
+      "examples": ["1C Enterprise", "2-Dimensional Array", "4D", "Befunge", "BQN", "COBOL", "Cool", "BlitzBasic", "Boo", "CWeb"],
+      "seisUse": "Recognition, docs, compatibility catalog, search/indexing, educational reference only."
+    }
+  ],
+  "visibleSeedLanguagesFromUserScreenshots": [
+    "Go",
+    "JavaScript",
+    "Lua",
+    "Python",
+    "Rust",
+    "Shell",
+    "TypeScript",
+    "1C Enterprise",
+    "2-Dimensional Array",
+    "4D",
+    "ABAP",
+    "ABAP CDS",
+    "ABNF",
+    "ActionScript",
+    "Ada",
+    "Adblock Filter List",
+    "Adobe Font Metrics",
+    "Agda",
+    "AGS Script",
+    "AIDL",
+    "Aiken",
+    "AL",
+    "AL Code",
+    "ALGOL",
+    "Alloy",
+    "Alpine Abuild",
+    "Altium Designer",
+    "AMPL",
+    "AngelScript",
+    "Answer Set Programming",
+    "Ant Build System",
+    "Antlers",
+    "ANTLR",
+    "ApacheConf",
+    "Apex",
+    "API Blueprint",
+    "APL",
+    "Apollo Guidance Computer",
+    "AppleScript",
+    "Arc",
+    "Arduino",
+    "AsciiDoc",
+    "ASL",
+    "ASN.1",
+    "ASP",
+    "ASP.NET",
+    "AspectJ",
+    "Assembly",
+    "Astro",
+    "Asymptote",
+    "ATS",
+    "Augeas",
+    "AutoHotkey",
+    "AutoIt",
+    "Avro IDL",
+    "Awk",
+    "B (Formal Method)",
+    "B4X",
+    "Ballerina",
+    "BAML",
+    "BASIC",
+    "Batchfile",
+    "Beef",
+    "Befunge",
+    "Berry",
+    "BibTeX",
+    "BibTeX Style",
+    "Bicep",
+    "Bikeshed",
+    "Bison",
+    "BitBake",
+    "Blade",
+    "BlitzBasic",
+    "BlitzMax",
+    "Bluespec",
+    "Bluespec BH",
+    "Boo",
+    "Boogie",
+    "BQN",
+    "C",
+    "C#",
+    "C++",
+    "C-ObjDump",
+    "C2hs Haskell",
+    "C3",
+    "Cabal Config",
+    "Caddyfile",
+    "Cadence",
+    "Cairo",
+    "Cairo Zero",
+    "CamelIGO",
+    "CAP CDS",
+    "CODEOWNERS",
+    "CodeQL",
+    "CoffeeScript",
+    "ColdFusion",
+    "ColdFusion CFC",
+    "COLLADA",
+    "Common Lisp",
+    "Common Workflow Language",
+    "Component Pascal",
+    "CoNLL-U",
+    "Cooklang",
+    "Cool",
+    "Coq",
+    "Csound Document",
+    "Csound Score",
+    "CSS",
+    "CSV",
+    "Cuda",
+    "CUE",
+    "Cue Sheet",
+    "cURL Config",
+    "Curry",
+    "CWeb",
+    "Cycript",
+    "Cylc",
+    "Cython"
+  ],
+  "safeImplementationModes": [
+    {
+      "id": "recognize",
+      "label": "Recognize",
+      "meaning": "SEIS can identify and display the language in search, files, docs, and catalogs."
+    },
+    {
+      "id": "document",
+      "label": "Document",
+      "meaning": "SEIS can explain where the language would fit and why."
+    },
+    {
+      "id": "parse-metadata",
+      "label": "Parse Metadata",
+      "meaning": "SEIS can ingest file extension, color, aliases, and language family metadata."
+    },
+    {
+      "id": "validate-contract",
+      "label": "Validate Contract",
+      "meaning": "SEIS can validate JSON/docs/schema references before executing anything."
+    },
+    {
+      "id": "execute-runtime",
+      "label": "Execute Runtime",
+      "meaning": "Blocked until explicit approval, dependency plan, sandbox boundary, and rollback exist."
+    }
+  ],
+  "blockedWithoutApproval": [
+    "installing compilers, interpreters, package managers, SDKs, engines, emulators, or GPU toolkits",
+    "executing untrusted code in any recognized language",
+    "adding build systems for every recognized language",
+    "turning reference-only languages into production dependencies",
+    "running Docker, Kubernetes, cloud, SSH, provider, database, or deployment actions",
+    "claiming SEIS supports every language at runtime before validators and isolated sandboxes exist"
+  ],
+  "nextImplementationSlices": [
+    {
+      "id": "slice-01-linguist-sync-script",
+      "title": "GitHub Linguist language sync script",
+      "deliverable": "Fetch and normalize GitHub Linguist languages.yml into a generated SEIS atlas when an operator explicitly runs the sync."
+    },
+    {
+      "id": "slice-02-universal-language-selector",
+      "title": "Universal language selector UI",
+      "deliverable": "Searchable local SEIS UI that separates active core, extension-ready, contract-only, reference-only, and blocked languages."
+    },
+    {
+      "id": "slice-03-language-aware-agent-router",
+      "title": "Language-aware agent router",
+      "deliverable": "Agents choose language lanes by purpose, risk, validation, and approval state instead of blindly using every stack."
+    },
+    {
+      "id": "slice-04-sandbox-research-plan",
+      "title": "Sandbox research plan",
+      "deliverable": "Future plan for safe execution sandboxes before any untrusted multi-language runtime support."
+    }
+  ]
+}

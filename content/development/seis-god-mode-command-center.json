@@ -1,0 +1,370 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-god-mode-command-center",
+  "updated": "2026-07-10",
+  "status": "working-local-demo-governed",
+  "mode": "god-mode-high-leverage-human-gated",
+  "qualityGate": "node scripts/check-seis-god-mode-command-center.mjs",
+  "description": "SEIS God Mode Command Center is a high-leverage local-demo operating surface that connects agent orchestration, language routing, production readiness, evidence, validation, rollback, and human approval without enabling unrestricted execution.",
+  "sourceOfTruth": {
+    "governance": "docs/governance/seis-god-mode-developer.md",
+    "contract": "content/development/seis-god-mode-command-center.json",
+    "page": "apps/web/god-mode-command-center.html",
+    "demoGuide": "docs/demos/seis-god-mode-command-center.md",
+    "validator": "scripts/check-seis-god-mode-command-center.mjs",
+    "languageAtlas": "content/development/seis-universal-language-atlas.json",
+    "fullstackRoadmap": "content/development/seis-agent-fullstack-production-roadmap.json"
+  },
+  "definition": {
+    "meaning": "Integrated development across multiple SEIS layers with explicit evidence, validation, rollback, and human review.",
+    "notMeaning": "Permission to bypass security, deploy automatically, expose secrets, execute untrusted code, rewrite the repository broadly, or merge without review."
+  },
+  "layerLift": [
+    {
+      "id": "product-experience",
+      "label": "Product Experience",
+      "evidence": "Interactive local command center, mission planner, agent map, readiness board, and language router."
+    },
+    {
+      "id": "repository-governance",
+      "label": "Repository Governance",
+      "evidence": "Canonical JSON contract, demo guide, PR queue update, and human-gated rules."
+    },
+    {
+      "id": "agent-orchestration",
+      "label": "Agent Orchestration",
+      "evidence": "Nine-stage pipeline, eight specialist roles, deterministic handoffs, and dry-run mission plans."
+    },
+    {
+      "id": "automation-quality",
+      "label": "Automation and Quality",
+      "evidence": "Dedicated validator and GitHub Actions workflow with zero runtime dependencies."
+    },
+    {
+      "id": "cloud-security",
+      "label": "Cloud and Security",
+      "evidence": "Secrets, provider calls, SSH, deployment, database writes, and autonomous merge remain disabled."
+    },
+    {
+      "id": "knowledge-system",
+      "label": "Knowledge System",
+      "evidence": "Every mission produces an exportable local JSON plan with checks, gates, and rollback notes."
+    }
+  ],
+  "operatingPrinciples": [
+    "Inspect before editing.",
+    "Choose the highest-value narrow slice.",
+    "Connect implementation, documentation, validation, and handoff.",
+    "Use evidence instead of readiness claims.",
+    "Keep local-demo, planned, blocked, and approval-required states visually separate.",
+    "Prefer deterministic contracts before adding runtimes or dependencies.",
+    "Preserve rollback and user ownership at every stage."
+  ],
+  "agentPipeline": [
+    {
+      "order": 1,
+      "id": "intent",
+      "label": "User Intent",
+      "status": "working-local-demo",
+      "purpose": "Capture the operator goal, constraints, priority, and desired outcome.",
+      "allowedActions": ["record mission", "classify scope", "identify constraints"],
+      "blockedActions": ["infer credentials", "expand scope silently"],
+      "evidence": "Mission planner input and exported local plan."
+    },
+    {
+      "order": 2,
+      "id": "research",
+      "label": "Research and Context",
+      "status": "working-local-demo",
+      "purpose": "Read repository contracts, docs, source files, validation history, and supplied references.",
+      "allowedActions": ["read files", "inspect PR state", "collect evidence"],
+      "blockedActions": ["copy private data", "claim unseen evidence"],
+      "evidence": "Source-of-truth paths and contract links."
+    },
+    {
+      "order": 3,
+      "id": "planning",
+      "label": "Planning",
+      "status": "working-local-demo",
+      "purpose": "Create a narrow implementation sequence with checks, risks, and rollback.",
+      "allowedActions": ["create milestones", "select roles", "define validation"],
+      "blockedActions": ["approve own deployment", "hide risk"],
+      "evidence": "Dry-run mission plan."
+    },
+    {
+      "order": 4,
+      "id": "architecture",
+      "label": "Architecture",
+      "status": "working-local-demo",
+      "purpose": "Define boundaries, data contracts, UI surfaces, APIs, and approval gates.",
+      "allowedActions": ["write contracts", "map layers", "document tradeoffs"],
+      "blockedActions": ["add runtime without reason", "store secrets in frontend"],
+      "evidence": "Canonical JSON contracts and architecture docs."
+    },
+    {
+      "order": 5,
+      "id": "language-router",
+      "label": "Language Router",
+      "status": "working-local-demo",
+      "purpose": "Choose the smallest language set that fits the layer, risk, validation path, and existing repository.",
+      "allowedActions": ["classify language tier", "recommend lane", "show build gate"],
+      "blockedActions": ["install every toolchain", "execute reference-only languages"],
+      "evidence": "Universal Language Atlas and Language Purpose Matrix."
+    },
+    {
+      "order": 6,
+      "id": "execution",
+      "label": "Execution",
+      "status": "dry-run-by-default",
+      "purpose": "Implement only the approved slice and preserve unrelated work.",
+      "allowedActions": ["edit scoped files", "add local UI", "write validators"],
+      "blockedActions": ["SSH", "deployment", "database writes", "live provider calls", "autonomous merge"],
+      "evidence": "Changed-file list and commit history."
+    },
+    {
+      "order": 7,
+      "id": "review",
+      "label": "Review",
+      "status": "working",
+      "purpose": "Check correctness, accessibility, security, maintainability, and truthful status labels.",
+      "allowedActions": ["run checks", "inspect diffs", "flag risk"],
+      "blockedActions": ["approve false evidence", "suppress failures"],
+      "evidence": "CI, CodeQL, security scan, and validator output."
+    },
+    {
+      "order": 8,
+      "id": "handoff",
+      "label": "Handoff",
+      "status": "working-local-demo",
+      "purpose": "Summarize findings, changes, validation, residual risk, and the next best step.",
+      "allowedActions": ["produce report", "export plan", "link PR"],
+      "blockedActions": ["claim release readiness without checks"],
+      "evidence": "PR body, demo guide, and mission export."
+    },
+    {
+      "order": 9,
+      "id": "human-gate",
+      "label": "Human Gate",
+      "status": "required",
+      "purpose": "Keep merge, deployment, credentials, external writes, and destructive actions under explicit owner control.",
+      "allowedActions": ["review", "approve", "reject", "request changes"],
+      "blockedActions": ["silent escalation", "autonomous release"],
+      "evidence": "Open PR and disabled live-action controls."
+    }
+  ],
+  "agentRoles": [
+    {
+      "id": "research-agent",
+      "label": "Research Agent",
+      "mission": "Gather repository evidence, references, dependencies, and current state."
+    },
+    {
+      "id": "planning-agent",
+      "label": "Planning Agent",
+      "mission": "Turn goals into a narrow sequence, milestone map, and rollback plan."
+    },
+    {
+      "id": "architecture-agent",
+      "label": "Architecture Agent",
+      "mission": "Own boundaries, contracts, data flow, and system tradeoffs."
+    },
+    {
+      "id": "execution-agent",
+      "label": "Execution Agent",
+      "mission": "Implement the approved slice without broad unrelated changes."
+    },
+    {
+      "id": "review-agent",
+      "label": "Review Agent",
+      "mission": "Validate behavior, accessibility, quality, and honest status labels."
+    },
+    {
+      "id": "security-agent",
+      "label": "Security Agent",
+      "mission": "Protect secrets, permissions, provider boundaries, and audit evidence."
+    },
+    {
+      "id": "devops-agent",
+      "label": "DevOps Agent",
+      "mission": "Prepare CI, deployment readiness, observability, and rollback without applying live changes."
+    },
+    {
+      "id": "design-system-agent",
+      "label": "Design System Agent",
+      "mission": "Keep the experience coherent, accessible, responsive, minimal, and premium."
+    }
+  ],
+  "productionReadiness": [
+    {
+      "order": 1,
+      "id": "frontend",
+      "label": "Frontend and Product UI",
+      "state": "working-local-demo",
+      "evidence": "Desktop OS, Language Matrix, Universal Selector, and God Mode Command Center routes.",
+      "nextGate": "Browser smoke, accessibility, responsive review."
+    },
+    {
+      "order": 2,
+      "id": "backend-api",
+      "label": "Backend and APIs",
+      "state": "working-read-only-local-demo",
+      "evidence": "Node read-only fixture endpoints and documented contracts.",
+      "nextGate": "Approved write model, schema, auth, and error contract."
+    },
+    {
+      "order": 3,
+      "id": "database-storage",
+      "label": "Database and Storage",
+      "state": "browser-local-plus-planned",
+      "evidence": "LocalStorage, IndexedDB VFS, JSON contracts.",
+      "nextGate": "Migration, privacy, backup, and external database approval."
+    },
+    {
+      "order": 4,
+      "id": "auth-permissions",
+      "label": "Auth and Permissions",
+      "state": "planned",
+      "evidence": "Role and approval boundaries documented.",
+      "nextGate": "Provider selection, threat model, session policy, RLS plan."
+    },
+    {
+      "order": 5,
+      "id": "hosting-deployment",
+      "label": "Hosting and Deployment",
+      "state": "disabled",
+      "evidence": "Deployment remains human-gated.",
+      "nextGate": "Readiness report, rollback plan, owner approval."
+    },
+    {
+      "order": 6,
+      "id": "cloud-compute",
+      "label": "Cloud and Compute",
+      "state": "planned-and-gated",
+      "evidence": "Provider-neutral cloud and SSH readiness contracts.",
+      "nextGate": "Budget, credentials, region, data policy, rollback."
+    },
+    {
+      "order": 7,
+      "id": "ci-version-control",
+      "label": "CI/CD and Version Control",
+      "state": "working",
+      "evidence": "GitHub Actions, CodeQL, Foundation, governance, polyglot, and system gates.",
+      "nextGate": "Dedicated God Mode validator workflow and branch review."
+    },
+    {
+      "order": 8,
+      "id": "security-rate-limits",
+      "label": "Security and Rate Limits",
+      "state": "working-plus-planned",
+      "evidence": "GitLeaks, CodeQL, secret boundaries, disabled live actions.",
+      "nextGate": "Threat model, API limits, abuse policy, redacted audit logs."
+    },
+    {
+      "order": 9,
+      "id": "cache-cdn-performance",
+      "label": "Cache, CDN, and Performance",
+      "state": "planned",
+      "evidence": "Static local assets and existing performance checks.",
+      "nextGate": "Cache policy, offline fallback, asset budget, CDN decision."
+    },
+    {
+      "order": 10,
+      "id": "scaling",
+      "label": "Load Balancing and Scaling",
+      "state": "not-applicable-yet",
+      "evidence": "No verified production traffic assumptions.",
+      "nextGate": "Real workload, SLOs, capacity model, cost limits."
+    },
+    {
+      "order": 11,
+      "id": "observability",
+      "label": "Observability",
+      "state": "local-evidence-only",
+      "evidence": "Local audit events, browser smoke evidence, CI status.",
+      "nextGate": "Metrics taxonomy, logs, alerts, trace privacy."
+    },
+    {
+      "order": 12,
+      "id": "testing",
+      "label": "Testing and Validation",
+      "state": "working",
+      "evidence": "Contract validators, browser checks, CodeQL, foundation checks.",
+      "nextGate": "Dedicated command-center validator and UI smoke."
+    },
+    {
+      "order": 13,
+      "id": "backup-recovery",
+      "label": "Backup and Recovery",
+      "state": "working-foundation",
+      "evidence": "GitHub source of truth, exportable local plans, rollback notes.",
+      "nextGate": "Versioned export schema, restore rehearsal, release tags."
+    }
+  ],
+  "missionTemplates": [
+    {
+      "id": "product-slice",
+      "label": "Product Slice",
+      "defaultRoles": ["research-agent", "planning-agent", "execution-agent", "review-agent", "design-system-agent"],
+      "defaultChecks": ["responsive review", "accessibility review", "contract validation", "git diff --check"]
+    },
+    {
+      "id": "agent-system",
+      "label": "Agent System",
+      "defaultRoles": ["research-agent", "planning-agent", "architecture-agent", "security-agent", "review-agent"],
+      "defaultChecks": ["agent boundary review", "tool permission review", "audit evidence", "rollback review"]
+    },
+    {
+      "id": "fullstack-contract",
+      "label": "Full-Stack Contract",
+      "defaultRoles": ["architecture-agent", "execution-agent", "security-agent", "devops-agent", "review-agent"],
+      "defaultChecks": ["API contract validation", "secret boundary review", "fallback check", "migration and rollback review"]
+    },
+    {
+      "id": "language-lane",
+      "label": "Language Lane",
+      "defaultRoles": ["research-agent", "architecture-agent", "execution-agent", "security-agent", "review-agent"],
+      "defaultChecks": ["language tier check", "toolchain approval check", "sandbox boundary", "dependency justification"]
+    },
+    {
+      "id": "security-hardening",
+      "label": "Security Hardening",
+      "defaultRoles": ["security-agent", "architecture-agent", "review-agent", "devops-agent"],
+      "defaultChecks": ["GitLeaks", "CodeQL", "permission review", "redaction review", "rollback review"]
+    },
+    {
+      "id": "release-readiness",
+      "label": "Release Readiness",
+      "defaultRoles": ["planning-agent", "review-agent", "security-agent", "devops-agent"],
+      "defaultChecks": ["CI status", "security status", "evidence review", "rollback plan", "owner approval"]
+    }
+  ],
+  "languageRouter": {
+    "source": "content/development/seis-universal-language-atlas.json",
+    "selectionRule": "Use the smallest language set that matches the existing layer and validation path.",
+    "activeCore": ["HTML", "CSS", "JavaScript", "Node.js", "Python", "Shell", "JSON", "Markdown", "YAML"],
+    "readyExtension": ["TypeScript", "SQL", "Swift", "Kotlin", "Java", "Go", "Rust", "C#"],
+    "contractOnly": ["C", "C++", "Assembly", "R", "Julia", "Scala", "Ruby", "PHP", "Lua"],
+    "blockedExamples": ["Cuda", "Unity", "Unreal", "Dockerfile", "HCL", "Solidity", "Move", "Cairo", "Arduino", "Bicep"],
+    "runtimeExecution": "blocked-unless-approved-and-sandboxed"
+  },
+  "hardGates": [
+    "No secrets, tokens, private keys, private endpoints, or credentials in the repository.",
+    "No live provider calls from frontend routes.",
+    "No SSH, deployment, DNS, firewall, or cloud spend without explicit approval.",
+    "No external database writes without schema, auth, migration, privacy, and rollback approval.",
+    "No compiler, interpreter, SDK, engine, model, or dependency installation without a scoped reason.",
+    "No autonomous merge, release, branch deletion, history rewrite, or destructive cleanup.",
+    "No production-readiness claim without matching validation evidence."
+  ],
+  "localDemoState": {
+    "externalCalls": 0,
+    "providerCalls": "disabled",
+    "secrets": "none-required",
+    "ssh": "disabled",
+    "deployment": "disabled",
+    "databaseWrites": "disabled",
+    "untrustedCodeExecution": "disabled",
+    "autonomousMerge": "disabled",
+    "planPersistence": "browser-local-only"
+  }
+}

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Search and classify the SEIS universal programming language atlas by activation tier, language type, purpose, and safety boundary.">
+    <meta name="theme-color" content="#080b12">
+    <meta name="color-scheme" content="dark">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+    <title>SEIS Universal Language Selector</title>
+    <link rel="stylesheet" href="./universal-language-selector.css">
+    <script src="./universal-language-selector.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#language-results">Skip to language results</a>
+
+    <main class="atlas-shell">
+      <header class="atlas-header" aria-label="SEIS Universal Language Selector header">
+        <a class="atlas-brand" href="./language-matrix.html" aria-label="Back to the SEIS language purpose matrix">
+          <span class="atlas-brand-mark" aria-hidden="true">S</span>
+          <span>
+            <strong>SEIS</strong>
+            <small>Universal Language Atlas</small>
+          </span>
+        </a>
+        <nav class="atlas-header-actions" aria-label="Language atlas navigation">
+          <a href="./language-matrix.html">Purpose Matrix</a>
+          <a href="./desktop.html#seis-ai">AI Center</a>
+          <a href="./index.html">SEIS Home</a>
+        </nav>
+      </header>
+
+      <section class="atlas-hero" aria-labelledby="atlas-title">
+        <div class="atlas-hero-copy">
+          <p class="eyebrow">God-mode language control plane</p>
+          <h1 id="atlas-title">Recognize every language. Activate only what SEIS can govern.</h1>
+          <p>
+            Search the language atlas, inspect activation tiers, and route each language to a safe SEIS purpose.
+            Recognition is local and read-only. Runtime execution, toolchain installation, SSH, deployment, cloud,
+            providers, and database actions remain approval-gated.
+          </p>
+          <div class="hero-badges" aria-label="Atlas safety boundaries">
+            <span>Local-first</span>
+            <span>No external provider calls</span>
+            <span>No compiler installation</span>
+            <span>No code execution</span>
+          </div>
+        </div>
+
+        <aside class="atlas-signal-card" aria-label="Atlas data source">
+          <span class="signal-orbit" aria-hidden="true"></span>
+          <p>Catalog source</p>
+          <strong data-source-label>Loading atlas…</strong>
+          <span data-source-detail>Checking generated GitHub Linguist catalog and offline fallback.</span>
+        </aside>
+      </section>
+
+      <section class="atlas-metrics" aria-label="Language atlas summary">
+        <article>
+          <span>Total records</span>
+          <strong data-metric-total>0</strong>
+        </article>
+        <article>
+          <span>Visible now</span>
+          <strong data-metric-visible>0</strong>
+        </article>
+        <article>
+          <span>Activation tier</span>
+          <strong data-metric-tier>All</strong>
+        </article>
+        <article>
+          <span>Runtime state</span>
+          <strong>Gated</strong>
+        </article>
+      </section>
+
+      <section class="atlas-workspace" aria-label="Universal language selector workspace">
+        <div class="atlas-browser">
+          <form class="atlas-toolbar" role="search" data-filter-form>
+            <label class="search-field" for="language-search">
+              <span aria-hidden="true">⌕</span>
+              <input id="language-search" name="query" type="search" autocomplete="off" placeholder="Search language, alias, extension, family…" data-search-input>
+              <kbd>⌘ K</kbd>
+            </label>
+
+            <label class="select-field" for="language-type">
+              <span>Type</span>
+              <select id="language-type" name="type" data-type-filter>
+                <option value="all">All types</option>
+                <option value="programming">Programming</option>
+                <option value="markup">Markup</option>
+                <option value="data">Data</option>
+                <option value="prose">Prose</option>
+                <option value="config">Config / Infra</option>
+                <option value="seed-reference">Seed reference</option>
+                <option value="unknown">Unknown</option>
+              </select>
+            </label>
+
+            <button class="reset-button" type="reset" data-reset-filters>Reset</button>
+          </form>
+
+          <div class="tier-filter" role="group" aria-label="Filter languages by activation tier" data-tier-filter>
+            <button class="is-active" type="button" data-tier="all" aria-pressed="true">All</button>
+            <button type="button" data-tier="tier-0-active-core" aria-pressed="false">Active Core</button>
+            <button type="button" data-tier="tier-1-ready-extension" aria-pressed="false">Ready Extension</button>
+            <button type="button" data-tier="tier-2-contract-only" aria-pressed="false">Contract Only</button>
+            <button type="button" data-tier="tier-3-reference-only" aria-pressed="false">Reference Only</button>
+            <button type="button" data-tier="tier-4-blocked-until-explicit-approval" aria-pressed="false">Blocked</button>
+          </div>
+
+          <div class="result-head">
+            <div>
+              <p class="eyebrow">Language registry</p>
+              <h2>Searchable catalog</h2>
+            </div>
+            <p aria-live="polite" data-result-summary>Loading language records…</p>
+          </div>
+
+          <div id="language-results" class="language-results" role="list" aria-busy="true" data-language-results></div>
+
+          <div class="load-more-wrap">
+            <button class="load-more-button" type="button" data-load-more hidden>Load more languages</button>
+          </div>
+        </div>
+
+        <aside class="language-inspector" aria-label="Selected language inspector" data-language-inspector>
+          <div class="inspector-empty" data-inspector-empty>
+            <span class="inspector-symbol" aria-hidden="true">⌘</span>
+            <h2>Select a language</h2>
+            <p>Inspect its type, family, activation tier, aliases, extensions, and permitted SEIS operating mode.</p>
+          </div>
+
+          <article class="inspector-card" data-inspector-card hidden>
+            <header>
+              <span class="language-color" data-inspector-color aria-hidden="true"></span>
+              <div>
+                <p class="eyebrow" data-inspector-family>Language family</p>
+                <h2 data-inspector-name>Language</h2>
+              </div>
+            </header>
+
+            <dl>
+              <div>
+                <dt>Activation tier</dt>
+                <dd data-inspector-tier>Reference only</dd>
+              </div>
+              <div>
+                <dt>Language type</dt>
+                <dd data-inspector-type>Unknown</dd>
+              </div>
+              <div>
+                <dt>SEIS mode</dt>
+                <dd data-inspector-mode>Recognize and document</dd>
+              </div>
+              <div>
+                <dt>Runtime permission</dt>
+                <dd data-inspector-runtime>Blocked by default</dd>
+              </div>
+            </dl>
+
+            <section>
+              <h3>Extensions</h3>
+              <div class="metadata-tags" data-inspector-extensions><span>Not provided</span></div>
+            </section>
+
+            <section>
+              <h3>Aliases</h3>
+              <div class="metadata-tags" data-inspector-aliases><span>Not provided</span></div>
+            </section>
+
+            <section class="inspector-boundary">
+              <h3>Safety boundary</h3>
+              <p data-inspector-boundary>
+                Language recognition is enabled. Execution requires an isolated runtime plan, tests, security review, and explicit approval.
+              </p>
+            </section>
+          </article>
+        </aside>
+      </section>
+
+      <section class="atlas-governance" aria-labelledby="governance-title">
+        <div>
+          <p class="eyebrow">Activation governance</p>
+          <h2 id="governance-title">Five tiers prevent polyglot chaos.</h2>
+        </div>
+        <ol>
+          <li><strong>Active Core</strong><span>Already used in current SEIS workflows.</span></li>
+          <li><strong>Ready Extension</strong><span>May enter through a scoped PR with tests and rollback.</span></li>
+          <li><strong>Contract Only</strong><span>Architecture and compatibility first; runtime later.</span></li>
+          <li><strong>Reference Only</strong><span>Search, indexing, docs, and education without activation.</span></li>
+          <li><strong>Blocked</strong><span>Requires explicit approval, toolchain isolation, and security review.</span></li>
+        </ol>
+      </section>
+
+      <footer class="atlas-footer">
+        <p>SEIS Universal Language Atlas · local-first catalog · runtime execution disabled by default</p>
+        <a href="./language-matrix.html">Return to Language Purpose Matrix</a>
+      </footer>
+    </main>
+  </body>
+</html>

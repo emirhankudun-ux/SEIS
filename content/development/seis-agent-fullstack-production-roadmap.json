@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-agent-fullstack-production-roadmap",
+  "updated": "2026-07-07",
+  "status": "reference-intake-ready-for-implementation",
+  "sourcePrompt": "User supplied visual references covering AI agent systems, role-based programming skills, country-specific Linux distributions, frontend roadmap, Java backend journey, and full-stack production reality.",
+  "intent": "Convert the supplied references into a safe SEIS development roadmap that upgrades the project from visual demo thinking into agentic, full-stack, production-aware architecture.",
+  "principles": [
+    "Do not treat vibe coding as production readiness.",
+    "Every agent action must be traceable, scoped, reviewable, and reversible.",
+    "Every full-stack layer needs an explicit contract before implementation.",
+    "Local Demo mode remains safe and usable without provider keys, SSH, deployment, or external databases.",
+    "Production features advance only through validation gates, docs, and PR review."
+  ],
+  "agentSystemModel": {
+    "flow": [
+      "user-query",
+      "llm-brain",
+      "rag-library",
+      "memory-notebook",
+      "mcp-universal-adapter",
+      "tools-hands",
+      "a2a-communication-line",
+      "multi-agent-team",
+      "final-response-or-action"
+    ],
+    "roles": [
+      {
+        "id": "research-agent",
+        "purpose": "Gather repository context, docs, data, dependencies, and external references before planning."
+      },
+      {
+        "id": "planning-agent",
+        "purpose": "Translate goals into milestones, risks, validation gates, and PR sequence."
+      },
+      {
+        "id": "architecture-agent",
+        "purpose": "Own system boundaries, layer contracts, safe escalation paths, and API/data shape."
+      },
+      {
+        "id": "execution-agent",
+        "purpose": "Implement scoped changes only after contracts and guardrails are clear."
+      },
+      {
+        "id": "review-agent",
+        "purpose": "Validate quality, accuracy, security, accessibility, and rollback readiness."
+      },
+      {
+        "id": "devops-agent",
+        "purpose": "Plan deployment, CI/CD, observability, scaling, and recovery without live execution until approved."
+      },
+      {
+        "id": "security-agent",
+        "purpose": "Protect secrets, auth, permissions, network boundaries, rate limits, and audit logs."
+      },
+      {
+        "id": "design-system-agent",
+        "purpose": "Keep UI/UX coherent, minimal, accessible, responsive, and premium."
+      }
+    ],
+    "safeActions": [
+      "read repository files",
+      "write docs",
+      "write JSON contracts",
+      "create dry-run plans",
+      "add local demo UI contracts",
+      "run local validators when available"
+    ],
+    "blockedWithoutApproval": [
+      "live provider calls",
+      "credential handling",
+      "SSH execution",
+      "deployment",
+      "DNS or firewall changes",
+      "database writes",
+      "dependency installation",
+      "model downloads",
+      "autonomous merge or release"
+    ]
+  },
+  "productionStackLayers": [
+    { "order": 1, "layer": "frontend", "SEISFocus": "Desktop OS, Search, Code, Design, Cloud, Store, Agents, responsive shell, accessibility." },
+    { "order": 2, "layer": "backend-apis", "SEISFocus": "Read-only local server contracts first, then approved write APIs." },
+    { "order": 3, "layer": "database-storage", "SEISFocus": "Fixture-backed JSON now; external durable storage only after schema, auth, and migration plan." },
+    { "order": 4, "layer": "auth-permissions", "SEISFocus": "Role-based access, local demo boundary, admin/operator/contributor modes." },
+    { "order": 5, "layer": "hosting-deployment", "SEISFocus": "Static local demo first; deployment readiness report before public release." },
+    { "order": 6, "layer": "cloud-compute", "SEISFocus": "Provider-neutral cloud plan with budget, secrets, rollback, and logs." },
+    { "order": 7, "layer": "ci-cd-version-control", "SEISFocus": "GitHub Actions, branch protection, check scripts, PR queue, rollback notes." },
+    { "order": 8, "layer": "security-rate-limiting", "SEISFocus": "Secret redaction, provider boundary, abuse limits, RLS planning, audit logs." },
+    { "order": 9, "layer": "cache-cdn-performance", "SEISFocus": "Static asset optimization, offline fallback, cache policy, CDN readiness." },
+    { "order": 10, "layer": "load-balancing-scaling", "SEISFocus": "Documented only until server runtime and traffic assumptions exist." },
+    { "order": 11, "layer": "observability", "SEISFocus": "Error tracking, logs, monitoring, alerts, demo evidence, health status." },
+    { "order": 12, "layer": "testing", "SEISFocus": "Contract checks, smoke tests, browser checks, accessibility tests, security audits." },
+    { "order": 13, "layer": "backup-recovery", "SEISFocus": "GitHub source of truth, exportable local demo state, restore plan, release tags." }
+  ],
+  "learningAndImplementationTracks": [
+    {
+      "track": "software-engineering",
+      "skills": ["Python", "Java", "C++", "C#", "Rust", "Go", "architecture", "testing"],
+      "SEISUse": "Core tools, validators, CLIs, model-router services, desktop/server contracts."
+    },
+    {
+      "track": "frontend-product",
+      "skills": ["HTML", "CSS", "JavaScript", "TypeScript", "accessibility", "responsive design", "component architecture"],
+      "SEISUse": "Current browser demo, public showcase, UI systems, design/product surfaces."
+    },
+    {
+      "track": "backend-java",
+      "skills": ["Java fundamentals", "OOP", "collections", "exceptions", "multithreading", "JDBC", "SQL", "Spring Core", "Spring Boot", "REST APIs", "JPA/Hibernate", "microservices", "Kafka", "Docker", "Kubernetes", "cloud", "system design"],
+      "SEISUse": "Optional future backend lane; no dependency added until approved."
+    },
+    {
+      "track": "ai-ml-data",
+      "skills": ["Python", "R", "Julia", "data pipelines", "RAG", "embeddings", "evaluation", "governance"],
+      "SEISUse": "AI Core, RAG library, evaluation reports, knowledge graph, safe memory."
+    },
+    {
+      "track": "cyber-security",
+      "skills": ["Linux", "networking", "threat modeling", "secret scanning", "permissions", "audit logs"],
+      "SEISUse": "Provider boundary, MCP safety, SSH disabled-by-default policy, deployment gates."
+    },
+    {
+      "track": "game-and-3d",
+      "skills": ["Unity", "Unreal", "C#", "C++", "asset pipeline", "performance"],
+      "SEISUse": "Mythic Gacha, interactive showcases, 3D/motion creative systems."
+    },
+    {
+      "track": "linux-distribution-lab",
+      "skills": ["Linux", "packaging", "desktop UX", "localization", "Pardus review", "system UX"],
+      "SEISUse": "Linux-like SEIS OS route, country-specific distro inspiration, local-first shell."
+    }
+  ],
+  "nextImplementationSlices": [
+    {
+      "id": "slice-01-agent-operating-map",
+      "title": "Agent operating map in SEIS Desktop",
+      "deliverable": "Visible local-demo map of LLM, RAG, memory, MCP, tools, A2A, and agent team states.",
+      "validation": ["desktop route loads", "no external calls", "keyboard accessible", "source contract linked"]
+    },
+    {
+      "id": "slice-02-production-readiness-stack",
+      "title": "Full-stack production readiness stack",
+      "deliverable": "Layer-by-layer readiness board from frontend to backups and recovery.",
+      "validation": ["contract JSON valid", "status labels visible", "planned/working/blocked states clear"]
+    },
+    {
+      "id": "slice-03-skill-roadmap-center",
+      "title": "Skill roadmap center",
+      "deliverable": "Role-based skill matrix for frontend, backend, AI/data, cyber, app, game, and Linux system tracks.",
+      "validation": ["no fake completion claims", "every skill maps to a SEIS use case", "learning vs production state separated"]
+    },
+    {
+      "id": "slice-04-java-backend-lane",
+      "title": "Java backend lane planning",
+      "deliverable": "Optional Java/Spring backend roadmap with no dependencies added yet.",
+      "validation": ["docs only", "approval required before adding runtime", "API contract first"]
+    },
+    {
+      "id": "slice-05-linux-distro-reference-lab",
+      "title": "Linux distro reference lab",
+      "deliverable": "SEIS OS inspiration catalog covering desktop UX, localization, package strategy, and country-specific OS references.",
+      "validation": ["no copying logos/assets", "reference-only notes", "Pardus and global distro ideas classified"]
+    }
+  ]
+}
