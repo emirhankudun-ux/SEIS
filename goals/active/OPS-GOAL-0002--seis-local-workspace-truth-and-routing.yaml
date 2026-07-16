@@ -1,0 +1,385 @@
+schema_version: 2
+
+id: OPS-GOAL-0002
+project: seis
+program: repository-operations
+initiative: local-workspace-truth-recovery
+parent_goal: null
+
+title: Establish redacted local workspace truth and non-destructive routing
+summary: >-
+  Replace ambiguous local SEIS folder selection with a public-safe, redacted,
+  machine-validated historical registry and read-only live discovery contract
+  that can identify an eligible focused worktree at one observation boundary,
+  carries no continuing routing authority, and fails closed without authorizing
+  cleanup.
+
+category:
+  - repository-hygiene
+  - security
+  - privacy
+  - devops
+  - documentation
+  - governance
+
+priority: critical
+status: review
+maturity: prototype
+confidence: medium
+
+owner_agent: repository-hygiene
+accountable_human: project-owner
+supporting_agents:
+  - lead-architect
+  - security
+  - privacy
+  - testing
+  - documentation
+  - github-workflow
+
+horizon: now
+start_after: null
+target_window:
+  start: '2026-07-14'
+  end: null
+
+scope:
+  repositories:
+    - seis
+  paths:
+    - goals/active/OPS-GOAL-0002--seis-local-workspace-truth-and-routing.yaml
+    - data/seis-local-workspace-registry.schema.json
+    - data/seis-local-workspace-registry.json
+    - scripts/discover-seis-local-workspaces.mjs
+    - scripts/check-seis-local-workspace-registry.mjs
+    - scripts/test-seis-local-workspace-registry.mjs
+    - scripts/check-workspace-routing.mjs
+    - scripts/check-development-process.mjs
+    - scripts/check-github-remote-configuration.mjs
+    - scripts/check-seis-evolution-model.mjs
+    - docs/deployment/workspace-routing.md
+    - docs/deployment/github-remote-configuration.md
+    - docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md
+    - docs/governance/seis-integration-and-github-development.md
+    - docs/governance/icloud-github-workspace-ingestion.md
+    - docs/governance/development-process.md
+    - docs/strategy/seis-evolution-model.md
+    - content/development/seis-integration-map.json
+    - content/development/seis-evolution-model.json
+    - content/lab/development-process.json
+    - content/development/github-remote-configuration.json
+    - package.json
+    - .github/workflows/foundation-check.yml
+    - .gitignore
+    - docs/STATUS.md
+    - docs/INDEX.md
+    - docs/SEIS_MASTER_INDEX.md
+    - docs/roadmap/MASTER_BACKLOG.md
+    - docs/roadmap/NEXT_PR_QUEUE.md
+
+canonical_owner_repo: seis
+
+platforms:
+  - repository
+  - github
+  - local-workspace
+
+architecture_layers:
+  - governance
+  - integration
+  - security
+  - observability
+
+security_classification: public-safe
+privacy_impact: high
+
+requirements:
+  - Discover the four bounded candidate roles read-only from committed generic relative locators and the supplied task-worktree locator; discovery code must not directly open application or user content, Git may internally read contained working-tree content and status names while computing aggregate status, external-command and include-capable local Git configuration must be rejected before status inspection, and names, content, personal or resolved paths, credentials, raw configuration, and raw Git values must not be retained, persisted, or emitted.
+  - Publish only opaque workspace identifiers, bounded state classifications, aggregate change counts, evidence times, and policy decisions in the registry; never publish personal absolute paths, account names, host details, credential-bearing or local remote URLs, or secret values.
+  - Classify valid clean Git worktrees separately from dirty worktrees, non-Git folders, and roots with incomplete Git metadata.
+  - Treat the committed registry as an immutable historical snapshot with zero write-eligible records and no current routing authority; each live discovery binds its timestamped dataset ID and per-record observation times to capturedAt, validates the complete observation semantically before stdout, may report zero eligible routes, and may identify at most one clean focused worktree as write-eligible at that observation only.
+  - Route repository writes only after a new live verification and fail closed when identity, cleanliness, canonical ownership, containment, branch, Git metadata integrity, or gitlink and submodule state is uncertain; any observed gitlink or submodule presence is unverified and blocks writes.
+  - Keep every discovered dirty, non-Git, incomplete, or otherwise ineligible candidate read-only until a separate human-approved recovery Goal authorizes a bounded action.
+  - Execute the JSON Schema against the frozen snapshot, positive live observations, and negative structural and conditional fixtures; use the generic observation validator for cross-field and routing relationships and the frozen registry checker for snapshot-specific identity, count, digest, documentation, and CI assertions.
+  - Validate registry schema, discovery determinism, redaction, path containment, unique identities, aggregate counts, zero-or-one live eligibility, routing invariants, gitlink fail-closed behavior, documentation references, and CI invocation.
+
+non_goals:
+  - Deleting, cleaning, restoring, moving, merging, rebasing, stashing, committing, or otherwise normalizing any discovered local workspace.
+  - Repairing the direct SEIS folder that is not a Git worktree or the workspace root that contains incomplete Git metadata.
+  - Changing remotes, credentials, branch protection, Git configuration, worktree registrations, default branches, or GitHub pull-request state.
+  - Publishing personal absolute paths, local account names, private repository locations, host metadata, credential-bearing or local remote URLs, file names from untracked content, or any file contents.
+  - Declaring a local candidate canonical solely because its folder name resembles SEIS.
+  - Treating this repository-routing guard as model, provider, agent, MCP, or production deployment routing.
+
+acceptance_criteria:
+  - The registry and schema represent every in-scope observation through a public-safe opaque identifier and an allowed workspace-state classification.
+  - The captured dirty candidate records exactly 158 modified, 865 deleted, and 93 untracked files at the declared observation boundary without exposing their paths or contents.
+  - The direct SEIS folder is classified non-Git and the workspace root is classified incomplete-metadata rather than being treated as writable repositories.
+  - The immutable capture records zero write-eligible worktrees and carries no current routing authority because the focused worktree's historical Gitlink state was not observed; a positive live fixture proves that a fully verified live observation may contain at most one eligible route, while zero is valid.
+  - Every dirty, non-Git, incomplete, ambiguous, missing, wrong-origin, wrong-branch, detached, protected-branch, out-of-root, gitlink-bearing, or otherwise submodule-unverified live candidate is rejected from write routing.
+  - Discovery defaults to observation only, executes only exact allowlisted Git inspection argument vectors, rejects unsafe local Git configuration and mismatched worktree reverse pointers, remains within the configured root without following an escaping symlink, assigns a capturedAt-derived live-observation dataset ID, and completes generic semantic validation before emitting stdout.
+  - The executable shared schema rejects structural and semantic-shape drift, the generic validator rejects invalid cross-field relationships, and the frozen checker rejects changes to snapshot-specific candidates, counts, digest, documentation evidence, exact CI commands, or SHA-pinned actions.
+  - Adversarial fixtures reject absolute-path leakage, user and host disclosure, duplicate identifiers, invalid counts, unknown states, path traversal, gitlink uncertainty, routing to ineligible workspaces, and documentation drift.
+  - Canonical workspace-routing and governance documents consume the same registry terminology and disclose that no cleanup was authorized.
+  - Ecosystem foundation, legacy Goal Tracking, workspace, governance, open-source, and diff-integrity checks remain green after the additive change.
+
+definition_of_ready:
+  - The repository constitution, project manifest, active ecosystem Goal dependency, and Goal schema have been read.
+  - An isolated non-default SEIS worktree with zero aggregate changes existed at Goal start; the later final contract does not treat that historical status alone as write-eligibility evidence.
+  - Read-only inspection has confirmed a materially dirty candidate, a direct non-Git SEIS folder, and incomplete Git metadata at the workspace root.
+  - The work can produce a redacted registry and routing guard without cleaning or repairing any observed workspace.
+  - No destructive or cleanup authorization is required for the scoped implementation.
+
+definition_of_done:
+  - The schema, redacted registry, read-only discovery command, fail-closed validator, and adversarial tests are committed on a focused branch.
+  - Workspace routing, integration, iCloud-ingestion, status, index, backlog, and queue surfaces reference one consistent source of truth.
+  - No public artifact contains personal absolute paths, account names, host details, credential-bearing or local remote URLs, credentials, private file names, or file contents; the canonical public GitHub URL may remain in the dedicated remote-configuration contract.
+  - Applicable local and remote checks pass, skipped checks are disclosed, and independent security, privacy, architecture, and repository-safety findings are resolved or recorded.
+  - A Goal-linked issue and focused draft pull request expose evidence, risks, and rollback without mutating any observed workspace.
+  - The Goal remains incomplete until review evidence proves every required gate and GitHub delivery field.
+
+dependencies:
+  - ECO-GOAL-0003
+blocked_by: []
+related_goals:
+  - OPS-GOAL-0001
+  - ECO-GOAL-0001
+
+validation:
+  commands:
+    - npm run check:seis-local-workspace-registry
+    - npm run test:seis-local-workspace-registry
+    - npm run check:ecosystem-foundation
+    - npm run test:ecosystem-foundation
+    - npm run check:goal-tracking
+    - git diff --check
+  manual:
+    - architecture and canonical repository-routing review
+    - security and privacy review of every emitted registry field
+    - read-only reconciliation of aggregate workspace-state counts
+    - symlink, path-containment, and fail-closed routing review
+    - public-private boundary and no-cleanup-authorization review
+  evidence:
+    - data/seis-local-workspace-registry.json
+    - docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md
+    - deterministic validator output
+    - adversarial fixture output
+    - focused branch diff
+
+quality_gates:
+  architecture: required
+  product: not-applicable
+  brand_creative_direction: not-applicable
+  design_system: not-applicable
+  ui_ux: not-applicable
+  engineering: required
+  ai_integrity: not-applicable
+  model_provider_routing: not-applicable
+  agent_permission: required
+  mcp_plugin_tool: not-applicable
+  security: required
+  privacy: required
+  accessibility: not-applicable
+  performance: not-applicable
+  data: required
+  documentation: required
+  devops: required
+  testing: required
+  release: not-applicable
+  public_readiness: required
+
+risks:
+  - id: OPS2-RISK-001
+    description: A public registry could leak personal absolute paths, local account names, host details, credential-bearing or local remote URLs, private file names, or other machine-specific identity.
+    likelihood: high
+    impact: critical
+    owner: privacy
+    mitigation: Allowlist public fields, use opaque stable identifiers, publish aggregate counts only, and reject path separators, home markers, host-like values, remote URLs, and unapproved free text.
+    trigger: A generated or hand-edited artifact contains a machine-specific identifier or non-allowlisted field.
+    contingency: Fail validation, prevent publication, remove the leaked value from the focused branch, and assess whether any exposed credential or private identity requires incident response.
+    status: open
+  - id: OPS2-RISK-002
+    description: An ambiguous, dirty, non-Git, or incomplete workspace could be selected for writes and suffer data loss or history corruption.
+    likelihood: high
+    impact: critical
+    owner: repository-hygiene
+    mitigation: Require positive canonical identity, valid Git metadata, an allowed branch, a clean state, containment within the configured root, and explicit eligibility before returning a write route.
+    trigger: More than one candidate is write-eligible at one observation boundary, an immutable capture is treated as current authority, or any ineligible live state receives a writable routing decision.
+    contingency: Fail closed, keep all candidates read-only, and require a separate human-approved recovery decision.
+    status: open
+  - id: OPS2-RISK-003
+    description: Aggregate state may drift after capture and make a previously accurate registry stale.
+    likelihood: high
+    impact: high
+    owner: testing
+    mitigation: Record a UTC observation boundary and evidence method, regenerate explicitly, and never silently reinterpret an immutable capture as live state.
+    trigger: A read-only reconciliation differs from the captured state, counts, or eligibility decision.
+    contingency: Keep writes disabled for the changed candidate, version the new evidence, rerun validation, and disclose the delta before review.
+    status: open
+  - id: OPS2-RISK-004
+    description: Discovery could escape the configured workspace root through traversal or symlink behavior.
+    likelihood: medium
+    impact: critical
+    owner: security
+    mitigation: Canonicalize the configured root, reject traversal, do not follow directory symlinks, and test containment with adversarial fixtures.
+    trigger: A discovered real path is outside the canonical root or a symlink is treated as a traversable workspace.
+    contingency: Abort discovery without emitting the candidate and block the security gate until containment is restored.
+    status: open
+  - id: OPS2-RISK-005
+    description: A structurally valid observation could be mistaken for a safe current route even when cross-field semantics, gitlink state, or snapshot freshness are unverified.
+    likelihood: medium
+    impact: critical
+    owner: security
+    mitigation: Validate every live observation with the generic semantic validator before stdout, allow zero eligible routes, block any gitlink or submodule presence, and reserve snapshot-specific assertions for the frozen checker.
+    trigger: A live observation is emitted before semantic validation, a historical snapshot is used as current authority, or gitlink-bearing state receives a writable decision.
+    contingency: Emit no observation, keep all routes blocked, correct the contract or implementation in a focused change, and rerun schema, generic, frozen, and adversarial validation.
+    status: open
+
+rollback:
+  strategy: revert
+  steps:
+    - Revert the focused Goal, registry schema and snapshot, discovery and validation scripts, tests, workflow wiring, and documentation references.
+    - Restore the prior static workspace-routing wording without changing any observed local workspace, Git metadata, branch, remote, or GitHub state.
+    - Rerun the pre-existing ecosystem, Goal Tracking, workspace, governance, open-source, and diff-integrity checks.
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: audit/seis-workspace-truth-recovery
+  suggested_commit: 'feat(governance): add safe local workspace routing'
+  issue_url: https://github.com/emirhankudun-ux/SEIS/issues/185
+  branch_name: audit/seis-workspace-truth-recovery
+  commit_sha: 4053db88af55779a2080551e651032b317e7e404
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/186
+  release_note_url: null
+
+observability:
+  metrics:
+    - discovered_workspace_count
+    - clean_eligible_workspace_count
+    - dirty_workspace_count
+    - non_git_workspace_count
+    - incomplete_metadata_workspace_count
+    - redaction_violation_count
+    - route_rejection_count
+    - registry_drift_count
+  logs:
+    - aggregate validator summaries without paths, account names, host details, credential-bearing or local remote URLs, file names, file contents, or secret values
+
+outputs:
+  - public-safe local workspace registry schema
+  - redacted immutable workspace observation registry
+  - read-only bounded discovery command
+  - fail-closed non-destructive repository-routing validator
+  - adversarial privacy, containment, and routing fixtures
+  - unified workspace routing and governance documentation
+  - canonical status, index, backlog, and next-PR queue updates
+
+notes:
+  - This Goal grants no cleanup, repair, deletion, restore, move, stash, rebase, merge, commit, remote, branch, credential, or GitHub mutation authority for any discovered workspace.
+  - The recorded counts are read-only observations at one evidence boundary, not permission to inspect or publish the affected file paths or contents.
+  - The committed registry is an immutable historical evidence artifact, not an operational source of current routing authority, and does not replace the canonical repository ownership decision tracked by ECO-GOAL-0001.
+  - 'Scoped requirement refinement (2026-07-14): implementation and adversarial review required exact Git and CI allowlists, local Git configuration rejection, linked-worktree reverse-pointer validation, capturedAt-bound live identity, executable schema fixtures, zero-eligible behavior, a Gitlink fail-closed boundary, and a clear separation between the shared schema, generic relationship validator, and frozen snapshot checker; this refinement narrows authority and does not expand candidate scope or permit cleanup.'
+  - This Goal changes no Apple-native product code, provider or model routing, MCP configuration, SEIS Brain private content, or SEIS-SSH connection configuration.
+  - A later cleanup or metadata-repair proposal requires its own Goal, exact scope, backup and rollback plan, human approval, and post-action validation.
+
+status_history:
+  - status: planned
+    at: '2026-07-14'
+    reason: Repository-safety triage identified local workspace ambiguity as a critical prerequisite to reliable SEIS execution and ownership recovery.
+    evidence_refs:
+      - OPS2-EVIDENCE-001
+  - status: in-progress
+    at: '2026-07-14'
+    reason: An isolated focused worktree with zero aggregate changes was selected and read-only workspace-state observations established the redaction and fail-closed routing requirements without authorizing cleanup; the final historical contract grants it no write route because Gitlink state was not captured at that boundary.
+    evidence_refs:
+      - OPS2-EVIDENCE-001
+      - OPS2-EVIDENCE-002
+      - OPS2-EVIDENCE-003
+  - status: review
+    at: '2026-07-14'
+    reason: The public-safe registry, fail-closed discovery, executable schema, adversarial validation, aligned governance surfaces, independent reviews, issue, implementation commit, upstream branch, and stacked draft pull request are ready for hosted review; no recovery action was authorized.
+    evidence_refs:
+      - OPS2-EVIDENCE-004
+      - OPS2-EVIDENCE-005
+      - OPS2-EVIDENCE-006
+      - OPS2-EVIDENCE-007
+      - OPS2-EVIDENCE-008
+      - OPS2-EVIDENCE-009
+      - OPS2-EVIDENCE-010
+
+evidence_records:
+  - id: OPS2-EVIDENCE-001
+    type: worktree-provenance
+    description: At Goal start, porcelain status on audit/seis-workspace-truth-recovery reported no aggregate tracked or untracked changes. Later review established that Gitlink state was not captured, so the immutable registry does not use this evidence as a write-eligibility claim.
+    status: passed
+    command: 'test "$(git branch --show-current)" = "audit/seis-workspace-truth-recovery" && test -z "$(git status --short)"'
+    exit_code: 0
+    artifact: goals/active/OPS-GOAL-0002--seis-local-workspace-truth-and-routing.yaml
+  - id: OPS2-EVIDENCE-002
+    type: read-only-workspace-observation
+    description: Read-only porcelain inspection with full untracked expansion observed one dirty candidate with 158 modified, 865 deleted, and 93 untracked files; separate boundary checks classified the direct SEIS folder non-Git and the workspace root incomplete-metadata. No affected path or file content is published.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: goals/active/OPS-GOAL-0002--seis-local-workspace-truth-and-routing.yaml
+  - id: OPS2-EVIDENCE-003
+    type: authorization-boundary
+    description: The scoped work authorizes read-only discovery and additive governance artifacts only; no cleanup, repair, history rewrite, remote change, or mutation of an observed workspace was requested or granted.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: goals/active/OPS-GOAL-0002--seis-local-workspace-truth-and-routing.yaml
+  - id: OPS2-EVIDENCE-004
+    type: validation
+    description: The deterministic frozen-registry checker passed with executable Draft 2020-12 subset validation, zero snapshot write routes, privacy and routing invariants, exact CI command order, SHA-pinned action references, and a frozen whole-workflow source digest.
+    status: passed
+    command: npm run check:seis-local-workspace-registry
+    exit_code: 0
+    artifact: scripts/check-seis-local-workspace-registry.mjs
+  - id: OPS2-EVIDENCE-005
+    type: adversarial-validation
+    description: The adversarial suite passed 345 assertions covering disclosure, traversal, duplicate identity, malformed inputs, schema conditionals and impossible calendar dates, live identity binding, Gitlink uncertainty, sibling worktree pointer swaps, safe slash-bearing branch configuration, unsafe local Git configuration, exact Git and CI allowlists, noncanonical YAML and workflow semantic modifiers, ineligible write routing, and documentation drift.
+    status: passed
+    command: npm run test:seis-local-workspace-registry
+    exit_code: 0
+    artifact: scripts/test-seis-local-workspace-registry.mjs
+  - id: OPS2-EVIDENCE-006
+    type: live-fail-closed-validation
+    description: The explicit local discovery command completed against the current task and shared common root, emitted one redacted four-record live observation to stdout, retained no path or raw remote, and granted zero write-eligible routes because the current task worktree is dirty.
+    status: passed
+    command: npm run inspect:seis-local-workspaces -- --compact
+    exit_code: 0
+    artifact: scripts/discover-seis-local-workspaces.mjs
+  - id: OPS2-EVIDENCE-007
+    type: foundation-validation
+    description: Foundation, ecosystem schema and negative tests, Goal Tracking, workspace, governance, open-source, platform-language, SEIS web, open-PR portfolio, plugin roadmap, SEIS Code, Mythic Gacha, video showcase, syntax, formatting, targeted lint, and diff-integrity checks passed. Targeted lint reported only the established CLI console warnings and no errors.
+    status: passed
+    command: npm run check:foundation
+    exit_code: 0
+    artifact: goals/active/OPS-GOAL-0002--seis-local-workspace-truth-and-routing.yaml
+  - id: OPS2-EVIDENCE-008
+    type: independent-review
+    description: Independent discovery, schema, and security reviewers approved the intended OPS2 diff after live-ID, malformed-input, Git allowlist, local-config, reverse-pointer, executable-schema, calendar, frozen-snapshot, and strict-workflow findings were resolved. Their approval excludes the two known generated AI audit side effects from the intended commit.
+    status: passed
+    command: null
+    exit_code: null
+    artifact: https://github.com/emirhankudun-ux/SEIS/issues/185
+  - id: OPS2-EVIDENCE-009
+    type: github-delivery
+    description: Issue 185 and stacked draft pull request 186 expose the Goal, zero-authority snapshot, implementation commit, validation evidence, security boundaries, risks, rollback, deferred recovery actions, and hosted-review dependency on draft pull request 184. The upstream push succeeded while the remote reported bypassed branch-creation and signature policy violations, so merge readiness is not claimed.
+    status: passed
+    command: gh pr view 186 --repo emirhankudun-ux/SEIS --json number,state,isDraft,baseRefName,headRefName,url
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/186
+  - id: OPS2-EVIDENCE-010
+    type: hosted-validation
+    description: On delivery commit c4567590a5615810084126bfe38ca2c352122c1e, the draft pull request reported successful Foundation governance, Enterprise gates, Governance, Socket project, Socket pull-request alert, and CodeRabbit status checks. CodeRabbit explicitly skipped review because the pull request is draft; merge readiness is not claimed.
+    status: passed
+    command: gh pr checks 186 --repo emirhankudun-ux/SEIS
+    exit_code: 0
+    artifact: https://github.com/emirhankudun-ux/SEIS/pull/186

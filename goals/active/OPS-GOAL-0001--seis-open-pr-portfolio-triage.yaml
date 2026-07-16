@@ -1,0 +1,282 @@
+schema_version: 2
+
+id: OPS-GOAL-0001
+project: seis
+program: github-governance
+initiative: open-pr-portfolio-recovery
+parent_goal: null
+
+title: Classify and sequence the complete SEIS open pull-request portfolio
+summary: >-
+  Replace the stale 25-pull-request queue baseline with a reproducible snapshot,
+  one-and-only-one disposition for every live open pull request, explicit
+  successor and dependency relationships, and deterministic validation without
+  mutating any existing pull request.
+
+category:
+  - repository-hygiene
+  - devops
+  - documentation
+  - governance
+
+priority: critical
+status: review
+maturity: specification
+confidence: medium
+
+owner_agent: repository-hygiene
+accountable_human: project-owner
+supporting_agents:
+  - lead-architect
+  - github-workflow
+  - security
+  - testing
+  - documentation
+
+horizon: now
+start_after: null
+target_window:
+  start: '2026-07-13'
+  end: null
+
+scope:
+  repositories:
+    - seis
+  paths:
+    - .gitignore
+    - goals/active/OPS-GOAL-0001--seis-open-pr-portfolio-triage.yaml
+    - data/seis-open-pr-portfolio.json
+    - docs/reviews/PR_STACK_REVIEW.md
+    - scripts/check-seis-open-pr-portfolio.mjs
+    - scripts/reconcile-seis-open-pr-portfolio-live.mjs
+    - scripts/test-seis-open-pr-portfolio.mjs
+    - package.json
+    - .github/workflows/foundation-check.yml
+    - docs/STATUS.md
+    - docs/roadmap/MASTER_BACKLOG.md
+    - docs/roadmap/NEXT_PR_QUEUE.md
+
+canonical_owner_repo: seis
+
+platforms:
+  - repository
+  - github
+
+architecture_layers:
+  - governance
+  - integration
+  - observability
+
+security_classification: public-safe
+privacy_impact: low
+
+requirements:
+  - Capture every live open SEIS pull request present at the declared retrieval boundary in one immutable, timestamped snapshot.
+  - Assign each captured pull request exactly one controlled disposition.
+  - Record evidence, risks, dependencies, successors, and the next safe action without performing GitHub mutations.
+  - Preserve active ecosystem foundation and Apple-native pull requests in their current review lanes.
+  - Fail validation on duplicate, missing, inconsistent, unsafe, or stale-in-document portfolio records.
+
+non_goals:
+  - Merging, closing, reopening, rebasing, labeling, commenting on, or editing any existing pull request.
+  - Deleting branches, rewriting history, rotating secrets, changing branch protection, or weakening security checks.
+  - Recovering or cherry-picking implementation code from classified pull requests in this Goal.
+  - Claiming that a recommendation is an approved GitHub action.
+
+acceptance_criteria:
+  - The snapshot count equals the number of unique pull-request records and every record has immutable GitHub identity fields.
+  - Every record has exactly one allowed disposition and a concrete, evidence-backed next action.
+  - Successor references and dependency references resolve to records in the snapshot or an explicit external Goal or issue.
+  - Canonical documentation derives its counts and sequencing from the same structured record.
+  - Adversarial fixtures prove rejection of duplicate numbers, invalid dispositions, dangling references, unsafe action claims, and documentation drift.
+  - Local foundation and legacy Goal Tracking checks remain green after the additive governance work.
+
+definition_of_ready:
+  - The repository manifest and canonical Goal schema have been read.
+  - A clean non-default worktree exists at the remote head of the ecosystem Goal foundation branch.
+  - GitHub read-only access can enumerate the complete open pull-request portfolio.
+  - No GitHub write action is required to produce the audit.
+
+definition_of_done:
+  - The structured snapshot, human review, validator, adversarial tests, and canonical queue updates are committed on a focused branch.
+  - Applicable local checks pass and any unavailable checks are disclosed with exact evidence.
+  - Independent architecture, security, data, and GitHub-governance review findings are resolved or recorded.
+  - A Goal-linked issue and stacked draft pull request expose the evidence without mutating the classified pull requests.
+  - Rollback is documented and the worktree state is verified.
+
+dependencies:
+  - ECO-GOAL-0003
+blocked_by: []
+related_goals: []
+
+validation:
+  commands:
+    - npm run check:seis-open-pr-portfolio
+    - npm run check:seis-open-pr-portfolio-live
+    - npm run test:seis-open-pr-portfolio
+    - npm run check:ecosystem-foundation
+    - npm run test:ecosystem-foundation
+    - npm run check:goal-tracking
+    - git diff --check
+  manual:
+    - architecture and canonical sequencing review
+    - security and protected-branch review
+    - read-only one-record-per-live-pull-request reconciliation outside deterministic CI
+    - public-private boundary review
+  evidence:
+    - data/seis-open-pr-portfolio.json
+    - docs/reviews/PR_STACK_REVIEW.md
+    - validator output
+    - adversarial fixture output
+
+quality_gates:
+  architecture: required
+  product: not-applicable
+  brand_creative_direction: not-applicable
+  design_system: not-applicable
+  ui_ux: not-applicable
+  engineering: required
+  ai_integrity: not-applicable
+  model_provider_routing: not-applicable
+  agent_permission: not-applicable
+  mcp_plugin_tool: not-applicable
+  security: required
+  privacy: required
+  accessibility: not-applicable
+  performance: not-applicable
+  data: required
+  documentation: required
+  devops: required
+  testing: required
+  release: not-applicable
+  public_readiness: required
+
+risks:
+  - id: OPS1-RISK-001
+    description: The live portfolio may change while the audit is being reviewed.
+    likelihood: high
+    impact: high
+    owner: github-workflow
+    mitigation: Record an immutable retrieval timestamp and head identity for every pull request, then require explicit refresh rather than silently changing the snapshot.
+    trigger: A live reconciliation reports a number or head identity not present in the committed snapshot.
+    contingency: Keep the Goal in review, refresh in a follow-up evidence commit, rerun classification review, and disclose the delta.
+    status: open
+  - id: OPS1-RISK-002
+    description: A broad close or supersede recommendation could discard unique or security-sensitive work.
+    likelihood: medium
+    impact: critical
+    owner: repository-hygiene
+    mitigation: Require evidence, successor references where applicable, and needs-human-review when uniqueness or safety cannot be established.
+    trigger: A recommendation lacks inspected evidence or a resolvable replacement path.
+    contingency: Downgrade the disposition to needs-human-review and block any GitHub action until a focused diff review exists.
+    status: open
+  - id: OPS1-RISK-003
+    description: Documentation and the structured snapshot may drift into contradictory counts or sequencing.
+    likelihood: medium
+    impact: high
+    owner: testing
+    mitigation: Validate all published counts, classification labels, protected records, and sequencing anchors against the structured snapshot.
+    trigger: A document count or referenced pull request differs from the snapshot.
+    contingency: Fail validation and update the source record or derived documentation before publication.
+    status: open
+
+rollback:
+  strategy: revert
+  steps:
+    - Revert the focused Goal, snapshot, validator, tests, and documentation commit.
+    - Restore the previous queue and status wording without changing any GitHub pull-request state.
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: audit/seis-open-pr-portfolio-triage
+  suggested_commit: 'docs(governance): classify the complete open pr portfolio'
+  issue_url: https://github.com/emirhankudun-ux/SEIS/issues/183
+  branch_name: audit/seis-open-pr-portfolio-triage
+  commit_sha: f357786be66a6b35ebbd00457b12f33e22de18e5
+  pull_request_url: https://github.com/emirhankudun-ux/SEIS/pull/184
+  release_note_url: null
+
+observability:
+  metrics:
+    - open_pr_snapshot_count
+    - classified_pr_count
+    - duplicate_pr_count
+    - unresolved_reference_count
+    - needs_human_review_count
+    - snapshot_document_drift_count
+  logs:
+    - validator summary without secret values or pull-request body content
+
+outputs:
+  - timestamped structured open-pull-request snapshot
+  - complete classification and sequencing review
+  - deterministic portfolio validator
+  - adversarial validation fixtures
+  - refreshed status, backlog, and next-PR queue evidence
+
+notes:
+  - This Goal authorizes read-only GitHub inspection and a new Goal-linked issue and pull request only; it does not authorize mutation of any classified pull request.
+  - Dispositions are recommendations until a human separately approves the corresponding GitHub action.
+  - GitHub accepted the initial audit-branch push with owner-bypass warnings for restricted ref creation, an inherited merge commit in the stacked base history, and the unsigned audit commit; maintainers must resolve the acceptable policy and signature path before merge.
+  - After publication, the live reconciler correctly reported the newly created audit PR 184 and a timestamp-only PR 154 delta. The frozen 05:54:16Z capture remains unchanged; a later portfolio decision requires a new versioned capture rather than silently rewriting this evidence.
+
+status_history:
+  - status: planned
+    at: '2026-07-13'
+    reason: The canonical SEIS queue identified open pull-request triage as a P0 repository-safety prerequisite.
+    evidence_refs:
+      - OPS1-EVIDENCE-001
+  - status: in-progress
+    at: '2026-07-13'
+    reason: A clean focused worktree was created from the remote ecosystem Goal foundation head and read-only portfolio capture began.
+    evidence_refs:
+      - OPS1-EVIDENCE-002
+  - status: review
+    at: '2026-07-14'
+    reason: The complete audit is committed, the local and live validation matrix is green, independent reviews found no publication blocker, and issue 183 plus stacked draft pull request 184 expose the evidence for human review.
+    evidence_refs:
+      - OPS1-EVIDENCE-003
+      - OPS1-EVIDENCE-004
+      - OPS1-EVIDENCE-005
+
+evidence_records:
+  - id: OPS1-EVIDENCE-001
+    type: governance-audit
+    description: The canonical backlog and PR queue require a P0 open-pull-request triage review, while the recorded 25-item inventory is stale.
+    status: passed
+    command: 'rg -n "PR 0A: Open PR Stack Triage" docs/roadmap/NEXT_PR_QUEUE.md'
+    exit_code: 0
+    artifact: docs/roadmap/NEXT_PR_QUEUE.md
+  - id: OPS1-EVIDENCE-002
+    type: worktree-provenance
+    description: At creation, the focused non-default worktree matched the exact remote head of pull request 177 rather than the unrelated dirty local continuation.
+    status: passed
+    command: 'test "$(git rev-parse HEAD)" = "db81733053c94a28c1d404d76ca37c152f783c07" && test "$(git rev-parse refs/remotes/origin/architecture/ecosystem-goal-tracking-v1)" = "db81733053c94a28c1d404d76ca37c152f783c07" && test "$(git branch --show-current)" = "audit/seis-open-pr-portfolio-triage" && test -z "$(git status --short)"'
+    exit_code: 0
+    artifact: goals/active/OPS-GOAL-0001--seis-open-pr-portfolio-triage.yaml
+  - id: OPS1-EVIDENCE-003
+    type: github-read-only-snapshot
+    description: The immutable capture contains 90 unique public pull-request identities. The July 14 comparison detected a title, head SHA, and update-time delta on PR 154; the capture was versioned and refreshed, the new Plugin/MCP scope was re-reviewed without changing its archive-candidate disposition, and the final read-only reconciliation matched all 90 identities.
+    status: passed
+    command: npm run check:seis-open-pr-portfolio-live
+    exit_code: 0
+    artifact: data/seis-open-pr-portfolio.json
+  - id: OPS1-EVIDENCE-004
+    type: validation
+    description: At the declared capture boundary, the frozen 90-record snapshot passed the deterministic validator, 87 adversarial assertions, read-only live reconciliation, ecosystem schema and negative tests, Goal Tracking validation, foundation, workspace, governance, open-source, formatting, syntax, and diff-integrity checks. Independent validator and Goal/CI reviews reported no remaining publication blocker.
+    status: passed
+    command: npm run check:seis-open-pr-portfolio && npm run test:seis-open-pr-portfolio && npm run check:seis-open-pr-portfolio-live
+    exit_code: 0
+    artifact: scripts/test-seis-open-pr-portfolio.mjs
+  - id: OPS1-EVIDENCE-005
+    type: github-delivery
+    description: Issue 183 and stacked draft pull request 184 expose the Goal, complete advisory review, validation evidence, policy-boundary warning, risk, and rollback without mutating any classified pull request.
+    status: passed
+    command: gh pr view 184 --repo emirhankudun-ux/SEIS --json number,state,isDraft,baseRefName,headRefName,url
+    exit_code: 0
+    artifact: goals/active/OPS-GOAL-0001--seis-open-pr-portfolio-triage.yaml

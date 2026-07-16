@@ -1,7 +1,12 @@
 {
   "id": "seis-evolution-model",
-  "version": 1,
-  "branch": "UIXAppTTR",
+  "version": 2,
+  "branchPolicy": {
+    "strategy": "task-scoped-pr-branches",
+    "protectedDefaultBranch": "main",
+    "directDefaultBranchWritesAllowed": false,
+    "workspaceRegistry": "data/seis-local-workspace-registry.json"
+  },
   "mode": "calm-ai-native-evolution",
   "purpose": "Keep GitHub-hosted SEIS improvement work modular, humane, observable, and rollback-safe while the ecosystem grows across design, code, content, plugins, and deployment surfaces.",
   "operatingPrinciples": [
@@ -96,7 +101,7 @@
     {
       "phase": "publish-gated",
       "question": "Are branch, remote, authentication, and deployment claims explicit?",
-      "proof": "Publication is claimed only after the UIXAppTTR branch contract and GitHub readiness are known."
+      "proof": "Publication is claimed only after the task-scoped branch, canonical remote identity, protected-branch policy, and GitHub readiness are verified."
     }
   ],
   "qualityGates": [
@@ -107,8 +112,8 @@
     },
     {
       "id": "workspace-routing",
-      "command": "npm run check:workspace",
-      "scope": "Confirm the working tree remains in the expected SEIS/UIXAppTTR routing shape."
+      "command": "npm run check:seis-local-workspace-registry",
+      "scope": "Confirm the redacted registry rejects non-Git canonical paths, dirty writable roots, and unsafe routing claims."
     },
     {
       "id": "development-process",
@@ -199,8 +204,8 @@
       "id": "evo-005",
       "backlogId": "SEIS-006",
       "layer": "automation",
-      "title": "Keep agent workstreams inside UIXAppTTR",
-      "nextAction": "Record agent-driven changes as small UIXAppTTR commits with focused validators and no long-lived branch sprawl.",
+      "title": "Keep agent workstreams task-scoped",
+      "nextAction": "Record agent-driven changes as small commits on focused PR branches in registry-approved task worktrees, with no permanent local execution branch.",
       "acceptanceCriteria": [
         "agent output is traceable to repository records",
         "no forced push or remote branch deletion is introduced",

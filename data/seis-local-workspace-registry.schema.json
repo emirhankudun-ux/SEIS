@@ -1,0 +1,430 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:seis:schema:local-workspace-observation:v1",
+  "title": "SEIS public-safe local workspace observation contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "datasetId",
+    "goalId",
+    "canonicalRepositorySlug",
+    "capturedAt",
+    "scope",
+    "policy",
+    "records",
+    "summary",
+    "digest"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "datasetId": {
+      "oneOf": [
+        { "const": "seis-local-workspace-registry-2026-07-14" },
+        {
+          "type": "string",
+          "pattern": "^seis-local-workspace-live-observation-[0-9]{8}T[0-9]{6}Z$"
+        }
+      ]
+    },
+    "goalId": { "const": "OPS-GOAL-0002" },
+    "canonicalRepositorySlug": { "const": "emirhankudun-ux/SEIS" },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "scope": { "$ref": "#/$defs/scope" },
+    "policy": { "$ref": "#/$defs/policy" },
+    "records": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        { "$ref": "#/$defs/directIntakeRecord" },
+        { "$ref": "#/$defs/taskWorktreeRecord" },
+        { "$ref": "#/$defs/sharedCommonRootRecord" },
+        { "$ref": "#/$defs/workspaceMetadataRecord" }
+      ],
+      "items": false
+    },
+    "summary": { "$ref": "#/$defs/summary" },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selectionMode", "coverage", "candidateIds", "candidateCount", "limitations"],
+      "properties": {
+        "selectionMode": { "const": "bounded-routing-critical-candidates" },
+        "coverage": { "const": "four-candidate-observation" },
+        "candidateIds": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/recordId" }
+        },
+        "candidateCount": { "const": 4 },
+        "limitations": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "does-not-enumerate-all-sibling-worktrees",
+              "does-not-authorize-recovery-or-cleanup",
+              "snapshot-is-not-live-state",
+              "records-may-have-distinct-observation-times"
+            ]
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disclosureMode",
+        "canonicalIdentityField",
+        "defaultRoutingDecision",
+        "liveDiscoveryMode",
+        "snapshotRoutingAuthority",
+        "mutationsPerformed",
+        "humanApprovalRequiredForRecovery"
+      ],
+      "properties": {
+        "disclosureMode": { "const": "opaque-workspace-identifiers" },
+        "canonicalIdentityField": { "const": "repositorySlug" },
+        "defaultRoutingDecision": { "const": "blocked" },
+        "liveDiscoveryMode": { "const": "stdout-only" },
+        "snapshotRoutingAuthority": { "const": "none" },
+        "mutationsPerformed": { "const": false },
+        "humanApprovalRequiredForRecovery": { "const": true }
+      }
+    },
+    "recordId": {
+      "enum": [
+        "direct-seis-intake",
+        "ops2-task-worktree",
+        "shared-seis-common-root",
+        "workspace-metadata"
+      ]
+    },
+    "directIntakeRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/record" },
+        {
+          "properties": {
+            "id": { "const": "direct-seis-intake" },
+            "kind": { "const": "non-git-intake" },
+            "repositorySlug": { "type": "null" },
+            "gitCommonRootId": { "type": "null" },
+            "divergence": { "type": "null" },
+            "writeEligibleAtObservation": { "const": false },
+            "humanApprovalRequired": { "const": true }
+          }
+        }
+      ]
+    },
+    "taskWorktreeRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/record" },
+        {
+          "properties": {
+            "id": { "const": "ops2-task-worktree" },
+            "kind": { "const": "task-worktree" },
+            "divergence": { "type": "null" }
+          }
+        }
+      ]
+    },
+    "sharedCommonRootRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/record" },
+        {
+          "properties": {
+            "id": { "const": "shared-seis-common-root" },
+            "kind": { "const": "git-common-root" },
+            "writeEligibleAtObservation": { "const": false },
+            "humanApprovalRequired": { "const": true }
+          }
+        }
+      ]
+    },
+    "workspaceMetadataRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/record" },
+        {
+          "properties": {
+            "id": { "const": "workspace-metadata" },
+            "kind": { "const": "workspace-root-metadata" },
+            "gitCommonRootId": { "type": "null" },
+            "routingDecision": { "const": "blocked" },
+            "writeEligibleAtObservation": { "const": false },
+            "humanApprovalRequired": { "const": true }
+          }
+        }
+      ]
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "repositorySlug",
+        "gitCommonRootId",
+        "gitState",
+        "worktreeState",
+        "routingDecision",
+        "writeEligibleAtObservation",
+        "dirtyCounts",
+        "divergence",
+        "evidenceMethods",
+        "reasonCodes",
+        "observedAt",
+        "humanApprovalRequired"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/recordId" },
+        "kind": {
+          "enum": ["workspace-root-metadata", "non-git-intake", "git-common-root", "task-worktree"]
+        },
+        "repositorySlug": {
+          "oneOf": [{ "const": "emirhankudun-ux/SEIS" }, { "type": "null" }]
+        },
+        "gitCommonRootId": {
+          "oneOf": [{ "const": "shared-seis-common-root" }, { "type": "null" }]
+        },
+        "gitState": {
+          "enum": ["valid", "not-repository", "incomplete-metadata"]
+        },
+        "worktreeState": {
+          "enum": ["clean", "dirty", "unverified", "not-applicable"]
+        },
+        "routingDecision": {
+          "enum": ["blocked", "read-only", "recovery-read-only", "task-scoped-write"]
+        },
+        "writeEligibleAtObservation": { "type": "boolean" },
+        "dirtyCounts": {
+          "oneOf": [{ "$ref": "#/$defs/dirtyCounts" }, { "type": "null" }]
+        },
+        "divergence": {
+          "oneOf": [{ "$ref": "#/$defs/divergence" }, { "type": "null" }]
+        },
+        "evidenceMethods": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "filesystem-metadata-presence",
+              "git-branch-show-current",
+              "git-common-dir",
+              "git-index-mode-scan",
+              "git-origin-slug",
+              "git-rev-list-left-right-count",
+              "git-rev-parse",
+              "git-status-porcelain-v1-uall-counts"
+            ]
+          }
+        },
+        "reasonCodes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "canonical-repository-slug-verified",
+              "clean-at-capture",
+              "common-root-link-unverified",
+              "dirty-shared-common-root",
+              "focused-goal-worktree",
+              "gitlink-state-not-observed",
+              "incomplete-git-metadata",
+              "mutation-not-authorized",
+              "not-a-git-worktree",
+              "repository-identity-unverified",
+              "shared-common-dir-not-owned",
+              "submodule-state-unverified",
+              "task-branch-not-approved",
+              "task-worktree-not-clean",
+              "recovery-human-approval-required"
+            ]
+          }
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "humanApprovalRequired": { "type": "boolean" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "gitState": { "not": { "const": "valid" } } } },
+          "then": {
+            "properties": {
+              "worktreeState": { "const": "not-applicable" },
+              "dirtyCounts": { "type": "null" },
+              "divergence": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "worktreeState": { "const": "clean" } } },
+          "then": {
+            "properties": {
+              "dirtyCounts": {
+                "allOf": [
+                  { "$ref": "#/$defs/dirtyCounts" },
+                  { "properties": { "total": { "const": 0 } } }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "worktreeState": { "const": "dirty" } } },
+          "then": {
+            "properties": {
+              "dirtyCounts": {
+                "allOf": [
+                  { "$ref": "#/$defs/dirtyCounts" },
+                  { "properties": { "total": { "type": "integer", "minimum": 1 } } }
+                ]
+              },
+              "writeEligibleAtObservation": { "const": false }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "worktreeState": { "const": "unverified" } } },
+          "then": {
+            "properties": {
+              "dirtyCounts": {
+                "allOf": [
+                  { "$ref": "#/$defs/dirtyCounts" },
+                  { "properties": { "total": { "const": 0 } } }
+                ]
+              },
+              "writeEligibleAtObservation": { "const": false },
+              "reasonCodes": {
+                "contains": {
+                  "enum": ["submodule-state-unverified", "gitlink-state-not-observed"]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "worktreeState": { "const": "not-applicable" } } },
+          "then": { "properties": { "dirtyCounts": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "writeEligibleAtObservation": { "const": true } } },
+          "then": {
+            "properties": {
+              "id": { "const": "ops2-task-worktree" },
+              "kind": { "const": "task-worktree" },
+              "repositorySlug": { "const": "emirhankudun-ux/SEIS" },
+              "gitCommonRootId": { "const": "shared-seis-common-root" },
+              "gitState": { "const": "valid" },
+              "worktreeState": { "const": "clean" },
+              "routingDecision": { "const": "task-scoped-write" },
+              "humanApprovalRequired": { "const": false }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "routingDecision": { "const": "task-scoped-write" } } },
+          "then": { "properties": { "writeEligibleAtObservation": { "const": true } } }
+        },
+        {
+          "if": { "properties": { "writeEligibleAtObservation": { "const": false } } },
+          "then": { "properties": { "humanApprovalRequired": { "const": true } } }
+        }
+      ]
+    },
+    "dirtyCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modified", "deleted", "untracked", "total"],
+      "properties": {
+        "modified": { "type": "integer", "minimum": 0 },
+        "deleted": { "type": "integer", "minimum": 0 },
+        "untracked": { "type": "integer", "minimum": 0 },
+        "total": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "divergence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ahead", "behind", "comparison"],
+      "properties": {
+        "ahead": { "type": "integer", "minimum": 0 },
+        "behind": { "type": "integer", "minimum": 0 },
+        "comparison": { "const": "local-head-vs-origin-main" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "totalRecords",
+        "writeEligibleAtObservationRecords",
+        "byKind",
+        "byGitState",
+        "byRoutingDecision"
+      ],
+      "properties": {
+        "totalRecords": { "const": 4 },
+        "writeEligibleAtObservationRecords": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "byKind": { "$ref": "#/$defs/kindSummary" },
+        "byGitState": { "$ref": "#/$defs/gitStateSummary" },
+        "byRoutingDecision": { "$ref": "#/$defs/routingSummary" }
+      }
+    },
+    "kindSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workspace-root-metadata", "non-git-intake", "git-common-root", "task-worktree"],
+      "properties": {
+        "workspace-root-metadata": { "const": 1 },
+        "non-git-intake": { "const": 1 },
+        "git-common-root": { "const": 1 },
+        "task-worktree": { "const": 1 }
+      }
+    },
+    "gitStateSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valid", "not-repository", "incomplete-metadata"],
+      "properties": {
+        "valid": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "not-repository": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "incomplete-metadata": { "type": "integer", "minimum": 0, "maximum": 4 }
+      }
+    },
+    "routingSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["blocked", "read-only", "recovery-read-only", "task-scoped-write"],
+      "properties": {
+        "blocked": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "read-only": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "recovery-read-only": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "task-scoped-write": { "type": "integer", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

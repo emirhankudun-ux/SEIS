@@ -1,137 +1,137 @@
 # SEIS Integration And GitHub Development Policy
 
+Date: 2026-07-14
+Goal: `OPS-GOAL-0002`
+
 ## Purpose
 
-This document defines how SEIS work must stay integrated across Command Center,
-Goal Tracking OS, AI Core, SEIS Code, design, data, media experiences, SSH/cloud
-planning, and GitHub governance.
+This policy keeps SEIS work traceable across product, AI, design, data,
+operations, documentation, and GitHub without treating a local folder or dirty
+common root as a second source of truth.
 
-The goal is not to copy every local worktree into one uncontrolled branch. The
-goal is to make every SEIS surface traceable to the canonical GitHub repository,
-a reviewable branch, evidence records, validation, and a next PR queue entry.
+## Canonical Repository And Routing
 
-## Canonical Workspace Spine
+The canonical repository identity is `emirhankudun-ux/SEIS`. The protected
+default branch is `main`. Neither statement grants direct-write authority.
 
-From the shared workspace parent, general SEIS work continues from one canonical
-local root:
+There is no permanent canonical local path. Each change must run from a clean,
+task-scoped worktree whose repository identity, branch, status, Goal, affected
+paths, and validation plan have been checked for the current task.
 
-```text
-SEIS/
-```
+The immutable redacted historical snapshot is
+`data/seis-local-workspace-registry.json`. It has no current routing authority.
+`data/seis-local-workspace-registry.schema.json` supplies the shared structural
+and semantic-shape contract.
 
-Nearby folders with `SEIS` or `seis` in their names are not discarded, but they
-are not second sources of truth. They are review-only inputs until a dedicated
-PR extracts a narrow, validated slice into `SEIS/`.
+## Current Workspace Posture
 
-| Relative path | Role | Rule |
+| Registry record | Role | Integration rule |
 | --- | --- | --- |
-| `SEIS/` | Canonical writable root | Start all general SEIS work here. |
-| `SEIS-ai-core-app-foundation-continuation/` | Reviewable worktree | Extract AI Core work through a dedicated PR after diff review. |
-| `SEIS-ai-model-env-defaults/` | Reviewable worktree | Use for provider/env comparison only when that workstream is selected. |
-| `SEIS-ai-workforce-assignments-20260623/` | Reviewable worktree | Use for agent/workforce comparison only when selected. |
-| `SEIS-download-assets-app-integration/` | Reviewable worktree | Review asset provenance and size before integration. |
-| `SEIS-goal-tracking-os-foundation/` | Reviewable worktree | Compare Goal Tracking changes only when selected. |
-| `SEIS-ai-core-app-foundation/`, `SEIS-ai-demo-app-worktree/`, `SEIS-open-pr-consolidation-20260619/` | Legacy/broken worktree candidates | Do not bulk import; repair, archive, or recover specific files only after review. |
-| `Github/SEIS/` | Secondary checkout / SSH-AI lane | Do not edit for general SEIS work unless the SSH-AI workstream is explicitly selected. |
-| `seis-digital-experience-foundation/` | Separate intake candidate | Keep separate until a dedicated intake task is approved. |
+| `shared-seis-common-root` | Canonical-repository Git common root with 1,116 aggregate dirty entries. | Recovery-critical and read-only; no staging, restoration, copying, or cleanup under this Goal. |
+| `direct-seis-intake` | SEIS-shaped non-Git intake tree. | Read-only; never commit, ship, or infer repository authority from it. |
+| `workspace-metadata` | Incomplete Git metadata at the workspace root. | Blocked; no initialization or repair during routine work. |
+| `ops2-task-worktree` | Review worktree with zero aggregate changes at the Goal-start boundary but no captured Gitlink scan. | Unverified, blocked, and non-writable; the snapshot grants no current authority and the folder is not a permanent source of truth. |
 
-Current classification evidence is recorded in
-[`../reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`](../reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md).
-
-## Scope
-
-This policy applies to:
-
-- source branches
-- local worktrees
-- documentation and review reports
-- structured JSON records
-- product surfaces under `apps/`
-- shared packages under `packages/`
-- generated reports
-- AI Core, provider, and agent planning
-- media, gacha, video, and SEIS Code product work
-- SSH/cloud work that remains approval-gated
-
-## Current Status
-
-| Area | Status | Evidence | Blocker | Next Safe Action |
-| --- | --- | --- | --- | --- |
-| Canonical repository | Active | `origin` points to the SEIS GitHub repository. | Default-branch and branch-protection state were not verified in this pass. | Keep integration work on reviewable branches and do not push to `main`. |
-| Current branch | Active integration surface | `codex/plugin-interface-handoff-20260623` | Dirty worktree with pre-existing product, docs, script, and content changes. | Keep docs and contracts scoped; do not stage unrelated changes. |
-| Goal Tracking OS | File-backed foundation | `docs/goals/*`, `content/development/seis-goal-*.json`, `apps/web/goal-tracking.html` | Must stay generated from records. | Keep `npm run check:goal-tracking` passing. |
-| AI Core branch work | Separate workstream | `seis/ai-core-app-foundation-continuation` has local changes. | Not reconciled into this branch. | Review diff, extract contracts, and land through a dedicated PR. |
-| Download/assets integration | Separate workstream | `seis/download-assets-app-integration` has local media integration changes. | Not reconciled into this branch. | Review provenance, asset size, and app integration before PR. |
-| SSH-AI stability work | Separate checkout | `seis/ssh-ai-connection-stability-20260622` exists separately. | SSH/cloud actions require approval. | Keep as approval-gated and avoid private credential exposure. |
-| Legacy local worktrees | Blocked | Some local worktree metadata is broken. | Git cannot inspect those worktrees safely. | Repair or retire worktree metadata only after explicit review. |
+Opaque IDs make the committed record public-safe. Their local path resolution,
+dirty filenames, file contents, Git configuration, and personal data remain
+unpublished.
 
 ## Integration Principles
 
-- GitHub remains the source of truth.
-- `main` remains protected and must not receive direct commits.
-- Every SEIS surface needs a branch, evidence, validation, and PR queue entry.
-- Existing local work must be inspected before staging, copying, or merging.
-- Broken worktrees are not evidence of working implementation.
-- Generated reports should be regenerated by scripts, not hand-edited, when a
-  script exists.
-- Product surfaces must share canonical records instead of duplicating state.
-- AI features must remain no-key by default and provider-neutral until audited.
-- Media and game assets need provenance and optimized runtime delivery.
-- SSH/cloud work remains disabled or dry-run until approved.
+- Select work by Goal and canonical repository identity, not folder name.
+- Keep `main` protected and deliver changes through focused review branches.
+- Inspect the chosen worktree before every meaningful change.
+- Preserve pre-existing and unrelated dirty state.
+- A `.git` marker, familiar folder name, branch name, or old status document is
+  not sufficient proof of a healthy writable worktree.
+- Broken, incomplete, recovery-critical, archive, backup, and non-Git surfaces
+  remain read-only until separately approved.
+- A live observation may report zero eligible routes; any gitlink or submodule
+  presence is unverified and blocks writes.
+- Generated records should be regenerated by their repository-owned scripts.
+- Product surfaces should consume canonical records instead of duplicating
+  mutable state.
+- AI features remain provider-neutral and no-key by default until audited.
+- Media requires rights, provenance, size, and public/private review.
+- SSH and cloud operations remain dry-run or disabled until explicitly approved.
 
 ## Canonical Integration Flow
 
-1. Inspect current branch and local worktree status.
-2. Identify the SEIS lane: Command Center, AI Core, SEIS Code, design, data,
-   media/product, SSH/cloud, or governance.
-3. Link the work to `docs/STATUS.md`, `docs/roadmap/MASTER_BACKLOG.md`, and
-   `docs/roadmap/NEXT_PR_QUEUE.md`.
-4. Add or update structured records under `content/` or `data/` when the work
-   needs to feed Command Center views.
-5. Apply scoped changes on a coherent branch.
-6. Run the lightest reliable validation already supported by the repo.
-7. Commit only the reviewed scope.
-8. Open or prepare a PR; do not merge without approval.
+1. Read `AGENTS.md`, the project manifest, active Goal, dependencies, and linked
+   decisions.
+2. Verify the canonical repository slug and select a clean task worktree.
+3. Confirm a non-default review branch, affected paths, ownership, and current
+   status before editing.
+4. Link the work to status, backlog, PR queue, and machine-readable evidence as
+   applicable.
+5. Apply the smallest reversible change and avoid unrelated state.
+6. Run the narrow validators plus required foundation checks.
+7. Record failures, skipped checks, risks, rollback, and public/private impact.
+8. Prepare a focused commit and PR; do not merge or mutate protected state
+   without the required human decision.
 
 ## Cross-Surface Contracts
 
-| Surface | Must integrate through | Required shared state |
+| Surface | Integration contract | Required shared state |
 | --- | --- | --- |
-| Command Center | `apps/web`, `docs/product`, `content/development` | status, blockers, evidence, actions |
-| Goal Tracking OS | `content/development/seis-goal-*.json` | goals, evidence, execution, hierarchy, progress |
-| SEIS AI Core | `docs/ai`, `docs/audits`, future provider registry | provider status, privacy mode, no-key behavior |
-| SEIS Code | `docs/product/seis-code-foundation.md`, future app route | virtual files, terminal history, editor state |
-| Video Hero | `apps/web/public/media`, asset registry, product docs | media manifest, posters, reduced-motion fallback |
-| Mythic Gacha | `apps/web/public/media`, future bestiary records | card metadata, artwork provenance, unlock state |
-| Design System | `packages/design-tokens`, `docs/design-system` | tokens, component inventory, accessibility gates |
-| Data Layer | `packages/data`, `data`, `content` | schema expectations, freshness, provenance |
-| SSH/Cloud | `docs/operations`, `deploy`, security docs | dry-run records, approval notes, redaction |
+| Command Center | `apps/web`, `docs/product`, `content/development` | status, blockers, evidence, safe actions |
+| Goal Tracking OS | Goal YAML and validated content records | goals, dependencies, evidence, progress |
+| AI Core | `docs/ai`, audit records, future registries | provider state, privacy mode, no-key behavior |
+| SEIS Code | product docs and browser-local contracts | virtual files, editor state, terminal history |
+| Design System | tokens, component inventory, accessibility review | tokens, components, gates |
+| Data Layer | schemas, data records, content records | ownership, freshness, provenance |
+| Media | asset manifests and rights review | provenance, license, optimization |
+| SSH/Cloud | operations records and security policy | dry-run evidence, approval, redaction |
 
 ## Evidence Requirements
 
-An integration claim needs at least one of:
+An integration claim needs reproducible evidence such as a source artifact,
+exact validation command and result, generated report, review record, hosted
+check, or explicit blocker with an unblock condition. Unsupported claims remain
+planned, unknown, blocked, or unverified.
 
-- source file or structured record
-- validation command output
-- generated report
-- review report
-- manual QA record
-- known blocker with next action
+Local discovery is read-only and non-authoritative. It derives a timestamped
+live-observation dataset ID, validates all generic semantic relationships before
+stdout, and may return zero eligible routes:
 
-Unsupported claims must remain `Unknown`, `Planned`, or `Blocked`.
+```bash
+npm run inspect:seis-local-workspaces
+npm run check:seis-local-workspace-registry
+npm run test:seis-local-workspace-registry
+```
+
+Only generic relative candidate locators are committed as implementation
+topology. Discovery code does not directly open application or user content.
+Git may internally read contained working-tree content and status names while
+computing aggregate status. External-command and include-capable local Git
+configuration is rejected before status inspection; personal paths, names,
+content, credentials, raw configuration, and raw Git values are not retained,
+persisted, or emitted.
+
+The JSON Schema enforces the shared structural and semantic shape. The generic
+validator enforces cross-field and routing relationships, and the frozen checker
+adds historical snapshot assertions for candidate identity, counts, digest,
+documentation evidence, and CI wiring.
+
+## Human Approval Needed
+
+Approval and rollback are required before recovery-critical local-state
+handling, metadata repair or pruning, folder or worktree retirement, repository
+initialization, destructive migration, external write access, credentials,
+GitHub mutation, SSH execution, deployment, or secret rotation.
 
 ## Related Documents
 
-- [../STATUS.md](../STATUS.md)
-- [../SEIS_MASTER_INDEX.md](../SEIS_MASTER_INDEX.md)
-- [../roadmap/MASTER_BACKLOG.md](../roadmap/MASTER_BACKLOG.md)
-- [../roadmap/NEXT_PR_QUEUE.md](../roadmap/NEXT_PR_QUEUE.md)
-- [../reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](../reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md)
-- [../../content/development/seis-integration-map.json](../../content/development/seis-integration-map.json)
+- [Workspace routing](../deployment/workspace-routing.md)
+- [Workspace truth and recovery review](../reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md)
+- [iCloud workspace ingestion](icloud-github-workspace-ingestion.md)
+- [Current status](../STATUS.md)
+- [Master backlog](../roadmap/MASTER_BACKLOG.md)
+- [Next PR queue](../roadmap/NEXT_PR_QUEUE.md)
+- [SEIS integration map](../../content/development/seis-integration-map.json)
 
 ## Next Safe Action
 
-Use the integration map to reconcile one workstream at a time from the
-canonical `SEIS/` root. The next safest PR is the workspace/integration spine
-itself: status, backlog, next PR queue, and review updates that make every
-active SEIS branch visible without merging risky code.
+Finish the immutable registry and offline gates, then send this scoped Goal to
+review. Preserve every recovery-critical or invalid local surface. A separate
+human-approved recovery Goal must own any later physical change.

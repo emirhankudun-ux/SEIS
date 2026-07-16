@@ -1,27 +1,43 @@
 # SEIS Next PR Queue
 
 Date: 2026-06-23
+Last updated: 2026-07-14 (`OPS-GOAL-0002`)
 
-## Active GitHub Merge Queue Continuity - 2026-07-01
+## Local Workspace Truth Snapshot
 
-This queue keeps current GitHub work resumable across local machine changes and
-new Codex sessions. The listed PRs may remain in auto-merge mode, but auto-merge
-must stay subordinate to branch protection, CI, code review, and the security
-gate tracked in issue #129.
+<!-- BEGIN OPS-GOAL-0002 REGISTRY METADATA -->
+Goal: `OPS-GOAL-0002`
+Dataset: `data/seis-local-workspace-registry.json`
+Dataset ID: `seis-local-workspace-registry-2026-07-14`
+Record count: `4 records`
+Registry digest: `sha256:5ad26241ec18c6f5ca122637b1b7989123ef1f854c52c7f1cfb61daa8bca6bcf`
+Captured at: `2026-07-14T07:24:28Z`
+Canonical repository: `emirhankudun-ux/SEIS`
+Write-eligible at observation: `0`
+Dirty aggregate: `158 modified / 865 deleted / 93 untracked / 1116 total`
+<!-- END OPS-GOAL-0002 REGISTRY METADATA -->
 
-| Order | PR | Scope | Current gate | Approval needed |
-| --- | --- | --- | --- | --- |
-| 0 | #77 | Security owner decision pack for the historical gitleaks blocker | Issue #129 owner decision path must be completed without exposing secret values or weakening the scanner. | Required for secret rotation, history rewrite, or destructive cleanup. |
-| 1 | #126 | SEIS Search Center foundation | Repository security gate must clear before protected-branch merge. | None for queued feature review; approval required for security-history remediation. |
-| 2 | #133 | Search Center review fixes stacked on #126 | Depends on #126 plus the repository security gate. | None for review-comment fixes; approval required for force push, history rewrite, or bypassing checks. |
-| 3 | #132 | Linux-like demo Security Gate app | Repository security gate must clear before protected-branch merge. | None for local demo code/docs; approval required for live SSH, deployment, provider calls, or deleting supplied assets. |
-| 4 | #130 | Follow-up queued PR | Protected-branch checks and security gate. | Inspect review comments before any code change. |
-| 5 | #131 | Follow-up queued PR | Protected-branch checks and security gate. | Inspect review comments before any code change. |
+Repository identity `emirhankudun-ux/SEIS` is canonical; no permanent local
+path is. The recovery-critical common root, non-Git intake, and incomplete
+workspace metadata remain read-only. This queue grants no authority to repair,
+prune, stage, restore, copy, delete, initialize, push, or merge.
 
-Do not merge these by force. Do not push directly to `main`. Do not rewrite
-history or rotate secrets from an automation agent without explicit owner
-approval. Keep supplied ZIP/folder-derived demo assets preserved unless the
-owner explicitly requests removal.
+## Canonical Open Pull-Request Portfolio — 2026-07-14 reconciliation
+
+Goal: `OPS-GOAL-0001`
+Dataset: `data/seis-open-pr-portfolio.json`
+Dataset ID: `seis-open-pr-portfolio-2026-07-14`
+Snapshot count: `90 open pull requests`
+Snapshot digest: `sha256:7c2b783eb302f9d25f64da5a9221d03e9db3a543abe7384d86b8c46d86c4bd69`
+Retrieved at: `2026-07-14T05:54:16Z`
+
+The complete classification, dependency graph, risks, and human-gated next
+actions live in `docs/reviews/PR_STACK_REVIEW.md`. A July 14 read-only
+reconciliation detected a PR #154 identity delta and refreshed the frozen
+capture. The protected review chain is PR #177, then PR #179, with PR #180
+retained as a draft ownership lane and PR #182 remaining draft behind #179.
+This is an advisory queue, not merge approval; every classified-PR mutation
+requires a separate human decision.
 
 ## Current Recommended Product Demo Stack
 
@@ -50,29 +66,29 @@ owner explicitly requests removal.
 | Validation | `jq empty content/development/seis-integration-map.json`, documentation review, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON updates; approval required for cross-worktree merge, push, or deletion. |
 
-## PR 0C: SEIS Workspace Unification Spine
+## PR 0C: SEIS Workspace Truth And Recovery Guard
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/workspace-unification-spine` |
+| Suggested branch | `audit/seis-workspace-truth-recovery` |
 | Priority | P0 |
-| Goal | Make `SEIS/` the single canonical writable local root and keep every other SEIS-like folder as a review-only input until a scoped PR extracts useful work. |
-| Include | `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, `docs/STATUS.md`, `docs/SEIS_MASTER_INDEX.md`, `docs/INDEX.md`, and backlog/queue updates. |
-| Exclude | Folder deletion, branch deletion, history rewrite, bulk copy, whole-branch cherry-pick, SSH, deployment, live provider calls, and secret rotation. |
-| Validation | `jq empty content/development/seis-integration-map.json`, `git diff --check`, documentation review. |
-| Approval needed | None for docs/JSON classification; approval required for physical consolidation, deletion, branch cleanup, push, merge, or remote changes. |
+| Goal | Execute `OPS-GOAL-0002`: establish canonical repository identity, an immutable opaque-ID local workspace snapshot, task-scoped write routing, and a non-destructive recovery plan. |
+| Include | Registry and schema, read-only discovery, offline validator/adversarial tests, `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, routing and ingestion policy, integration map, status/index/backlog/queue alignment, package scripts, and static CI gates. |
+| Exclude | Local path or dirty-filename publication; file-content or Git-config capture; worktree repair or pruning; repository initialization; staging, restoration, copying, deletion, physical consolidation, branch cleanup, history rewrite, SSH, deployment, provider calls, or secret rotation. |
+| Validation | `npm run check:seis-local-workspace-registry`, `npm run test:seis-local-workspace-registry`, `jq empty content/development/seis-integration-map.json`, `git diff --check`, documentation review. |
+| Approval needed | None for public-safe registry/docs/validator work; separate explicit approval and rollback are required for every local recovery action, metadata mutation, GitHub write, push, or merge. |
 
 ## PR 0A: Open PR Stack Triage
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/pr-stack-triage` |
+| Suggested branch | `audit/seis-open-pr-portfolio-triage` |
 | Priority | P0 |
-| Goal | Classify the 25 open PRs visible in the read-only GitHub inventory into merge-ready, replace, close, archive, superseded, or needs-human-review buckets. |
-| Include | `docs/reviews/PR_STACK_REVIEW.md`, PR number/title/head/base/state table, duplication notes, security/readiness risks, and recommended replacement order. |
-| Exclude | Closing PRs, merging PRs, reopening PRs, force-push, branch deletion, cross-worktree cherry-pick, and history rewrite. |
-| Validation | Read-only `gh pr list`, local docs review, `git diff --check`. |
-| Approval needed | None for the review document; approval required for any GitHub write action. |
+| Goal | Execute `OPS-GOAL-0001`: classify and sequence all 90 captured open PRs with exactly one controlled advisory disposition and no classified-PR mutation. |
+| Include | `data/seis-open-pr-portfolio.json`, `docs/reviews/PR_STACK_REVIEW.md`, the Goal YAML, validator/tests, all 90 identity and classification rows, protected records, dependency-safe sequence, source query, retrieval timestamp, default-branch identity, and digest. |
+| Exclude | Merging, closing, reopening, rebasing, labeling, commenting on, or editing classified PRs; branch deletion; cross-worktree cherry-pick; history changes; secret rotation; live SSH/cloud/deployment/provider actions. |
+| Validation | `npm run check:seis-open-pr-portfolio`, `npm run test:seis-open-pr-portfolio`, `npm run check:ecosystem-foundation`, `npm run test:ecosystem-foundation`, `npm run check:goal-tracking`, and `git diff --check`. |
+| Approval needed | None for the public-safe audit artifacts; separate human approval is required for every classified-PR write or implementation decision. |
 
 ## PR 0B: CI Foundation Workflow Alignment
 
@@ -446,6 +462,10 @@ owner explicitly requests removal.
 
 ## Human Approval Needed
 
+- Any staging, restoration, copying, deletion, or other recovery action in
+  `shared-seis-common-root`.
+- Repair or pruning of worktree metadata, repository initialization, or
+  retirement of a local workspace surface.
 - Push to `main`, merge, force-push, branch deletion, or history rewrite.
 - File deletion.
 - Cross-worktree cherry-pick, bulk copy, or branch reconciliation.

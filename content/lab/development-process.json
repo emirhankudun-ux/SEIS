@@ -3,26 +3,36 @@
   "name": "SEIS Development Process",
   "mode": "high-efficiency-low-power",
   "activeBranchPolicy": {
-    "githubBranch": "UIXAppTTR",
-    "singleRemoteBranchRequired": true,
-    "mainBranchSacred": true
+    "strategy": "task-scoped-pr-branches",
+    "protectedDefaultBranch": "main",
+    "directDefaultBranchWritesAllowed": false,
+    "branchNamingPrefixes": [
+      "architecture/",
+      "audit/",
+      "docs/",
+      "fix/",
+      "security/",
+      "test/"
+    ]
   },
   "workspaceRouting": {
-    "localStagingFolder": "Github/New project",
-    "gitCheckoutBranch": "UIXAppTTR",
-    "rule": "If the current folder is not a Git checkout, treat it as local staging and do not claim remote shipment.",
-    "qualitySignal": "npm run check:workspace",
+    "registry": "data/seis-local-workspace-registry.json",
+    "schema": "data/seis-local-workspace-registry.schema.json",
+    "discoveryCommand": "npm run inspect:seis-local-workspaces",
+    "rule": "Write only in a Git worktree classified as task-scoped; non-Git intake folders, incomplete Git metadata, and dirty common roots remain read-only or blocked.",
+    "qualitySignal": "npm run check:seis-local-workspace-registry",
     "publishReadinessSignal": "npm run automation:publish-readiness",
     "remoteShipmentClaimPolicy": {
-      "stagingMode": "local-only",
-      "disallowClaimWhenLocalStaging": true,
+      "stagingMode": "review-branch-only",
+      "disallowClaimWhenNonGitOrBlocked": true,
       "claimRequires": [
+        "canonical SEIS repository identity verified",
         "git checkout detected",
-        "UIXAppTTR active branch",
-        "UIX-Apps remote configured",
-        "clean worktree",
-        "branch upstream configured",
-        "github authentication ready"
+        "task-scoped review branch selected",
+        "clean worktree before publication",
+        "branch upstream and remote head verified",
+        "GitHub authentication ready",
+        "protected-branch policy satisfied"
       ]
     }
   },
@@ -52,7 +62,9 @@
     "lowPowerDefault": {
       "intent": "Use narrow checks for small reversible changes and local staging progress.",
       "commands": [
-        "npm run check:workspace",
+        "npm run check:seis-local-workspace-registry",
+        "npm run test:seis-local-workspace-registry",
+        "npm run check:workspace-routing",
         "node scripts/check-development-process.mjs",
         "node --check scripts/check-development-process.mjs",
         "node --check scripts/check-workspace-routing.mjs"
@@ -95,46 +107,50 @@
     ]
   },
   "firstDevelopmentSlice": {
-    "name": "calm foundation hardening",
+    "name": "workspace truth and recovery guard",
     "scope": [
-      "development process registry",
-      "lightweight governance document",
-      "static validation script"
+      "redacted local workspace registry",
+      "read-only discovery command",
+      "offline validator and adversarial tests",
+      "task-scoped worktree routing policy"
     ],
     "excluded": [
       "new runtime dependencies",
       "heavy builds",
-      "remote branch deletion without auth"
+      "worktree pruning",
+      "folder deletion or relocation",
+      "dirty-checkout mutation",
+      "remote branch deletion without approval"
     ]
   },
   "activeSprint": {
-    "name": "development cockpit and missing-surface closure",
+    "name": "workspace truth and recovery guard",
     "status": "in_progress",
-    "intent": "Make development visible in the public shell while keeping server preservation, polyglot branch growth, and quality gates aligned.",
+    "intent": "Make local repository routing truthful, public-safe, and non-destructive before further product expansion.",
     "workstreams": [
       {
-        "id": "experience",
-        "label": "Experience cockpit",
+        "id": "registry",
+        "label": "Redacted registry",
         "status": "in_progress",
-        "proof": "public shell exposes the active development cadence"
+        "proof": "immutable opaque-ID snapshot and schema remain aligned"
       },
       {
-        "id": "server",
-        "label": "Server handoff",
-        "status": "ready_for_confirmed_target",
-        "proof": "dist package, manifest, confirmation flow, and deploy-readiness check stay aligned"
+        "id": "discovery",
+        "label": "Read-only discovery",
+        "status": "in_progress",
+        "proof": "bounded local inspection emits public-safe stdout and performs no mutation"
       },
       {
-        "id": "polyglot",
-        "label": "Polyglot branch",
-        "status": "expanded",
-        "proof": "language surfaces remain small contracts without dependency bloat"
-      },
-      {
-        "id": "quality",
-        "label": "Quality gates",
+        "id": "validation",
+        "label": "Fail-closed validation",
         "status": "active",
-        "proof": "syntax, foundation, release, history, and server-drop checks stay green"
+        "proof": "offline checks and adversarial fixtures reject unsafe routing and disclosure drift"
+      },
+      {
+        "id": "governance",
+        "label": "Recovery governance",
+        "status": "active",
+        "proof": "routing, status, backlog, queue, and recovery approvals share one contract"
       }
     ]
   },

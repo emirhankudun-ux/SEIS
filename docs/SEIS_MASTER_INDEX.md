@@ -22,8 +22,9 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS-SSH docs | [../SEIS_SSH.md](../SEIS_SSH.md), [OBSIDIAN_SECOND_BRAIN.md](OBSIDIAN_SECOND_BRAIN.md), [SEIS_SSH_SETUP.md](SEIS_SSH_SETUP.md), [LOCAL_AI_SETUP.md](LOCAL_AI_SETUP.md) |
 | Current status | [STATUS.md](STATUS.md) |
 | Documentation index | [INDEX.md](INDEX.md) |
+| Workspace routing policy | [deployment/workspace-routing.md](deployment/workspace-routing.md) |
 | Integration and GitHub development policy | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) |
-| Workspace unification review | [reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md](reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md) |
+| Workspace truth and recovery review | [reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md](reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md) |
 | Master backlog | [roadmap/MASTER_BACKLOG.md](roadmap/MASTER_BACKLOG.md) |
 | Next PR queue | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) |
 | Ultimate foundation review | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) |
@@ -84,6 +85,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Goal execution | [../content/development/seis-goal-execution.json](../content/development/seis-goal-execution.json) |
 | Generated Goal Tracking view model | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) |
 | SEIS integration map | [../content/development/seis-integration-map.json](../content/development/seis-integration-map.json) |
+| Redacted local workspace registry | [../data/seis-local-workspace-registry.json](../data/seis-local-workspace-registry.json) |
+| Local workspace registry schema | [../data/seis-local-workspace-registry.schema.json](../data/seis-local-workspace-registry.schema.json) |
 | Static Goal Tracking page | [../apps/web/goal-tracking.html](../apps/web/goal-tracking.html) |
 | Static plugin interface roadmap | [../content/development/seis-plugin-interface-roadmap.json](../content/development/seis-plugin-interface-roadmap.json) |
 | Static plugin interface surface | [../apps/web/index.html](../apps/web/index.html#plugin-interfaces) |
@@ -149,7 +152,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 
 ## Next Safe Action
 
-Keep the current pass documentation-first until repository hygiene blockers are
-resolved. Do not stage unrelated tracked deletions, do not restore deleted files
-without review, and do not run live deployment, SSH, model-provider, benchmark,
-or dataset actions without explicit approval.
+Route new work only through a currently verified clean task worktree for
+`emirhankudun-ux/SEIS`. Keep recovery-critical, non-Git, and incomplete local
+surfaces read-only; physical recovery requires a separate approved Goal and
+rollback plan. Do not run live deployment, SSH, model-provider, benchmark, or
+dataset actions without explicit approval.

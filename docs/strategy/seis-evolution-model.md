@@ -1,6 +1,6 @@
 # SEIS Evolution Model
 
-The SEIS evolution model turns broad GitHub improvement work into small, traceable, humane system upgrades. It keeps the repository aligned with cinematic minimalism, accessibility, branch safety, the `UIXAppTTR` GitHub branch contract, and low-power development while still allowing the ecosystem to grow.
+The SEIS evolution model turns broad GitHub improvement work into small, traceable, humane system upgrades. It keeps the repository aligned with cinematic minimalism, accessibility, branch safety, task-scoped PR branches, and low-power development while still allowing the ecosystem to grow.
 
 Machine-readable source: [`content/development/seis-evolution-model.json`](../../content/development/seis-evolution-model.json)
 
@@ -40,7 +40,7 @@ Primary backlog links:
 - `SEIS-002` - tune mobile motion timing.
 - `SEIS-003` - confirm production server target before upload claims.
 - `SEIS-005` - choose the mobile starting path.
-- `SEIS-006` - keep agent workstreams inside `UIXAppTTR`.
+- `SEIS-006` - keep agent workstreams on focused PR branches in registry-approved task worktrees.
 
 ## Activation Queue
 
@@ -50,7 +50,7 @@ Primary backlog links:
 | `evo-002` | `SEIS-002` | Experience | Tune mobile reveal pressure only after checking the current motion policy. | Reduced-motion support, subtle mobile animation, no GPU-heavy effects. |
 | `evo-003` | `SEIS-003` | Deployment | Collect domain, host, document root, upload method, and rollback path. | Explicit server target, documented rollback, no automatic deploy. |
 | `evo-004` | `SEIS-005` | Platform | Compare PWA-first, Expo, and native paths against accessibility, cost, and rollback constraints. | Documented mobile path decision before native expansion. |
-| `evo-005` | `SEIS-006` | Automation | Keep agent-driven work as small `UIXAppTTR` commits with focused validators. | Traceable output, no forced push, checks before commit. |
+| `evo-005` | `SEIS-006` | Automation | Keep agent-driven work as small commits on task-scoped PR branches. | Traceable output, no forced push, checks before commit. |
 
 ## Decision Matrix
 
@@ -74,9 +74,15 @@ npm run check:seis-evolution-model
 Pair it with existing low-power checks when the change touches wider governance:
 
 ```bash
-npm run check:workspace
+npm run check:seis-local-workspace-registry
 node scripts/check-development-process.mjs
 ```
+
+The routing source is
+[`data/seis-local-workspace-registry.json`](../../data/seis-local-workspace-registry.json).
+It identifies the repository by canonical remote slug and permits edits only in
+worktrees classified as task-scoped; a non-Git intake path or dirty common root
+is never promoted to a writable source of truth.
 
 ## Rollback Policy
 
