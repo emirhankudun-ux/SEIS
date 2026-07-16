@@ -1,0 +1,90 @@
+{
+  "version": "2026.07.enterprise-claims.1",
+  "status": "draft-review",
+  "purpose": "Map SEIS enterprise and market-facing claims to required evidence, current proof, gaps, and allowed language.",
+  "claim_policy": {
+    "allowed": [
+      "SEIS is building toward enterprise-grade creative engineering OS capability.",
+      "SEIS uses evidence-gated readiness criteria.",
+      "SEIS keeps live provider, SSH, deployment, credential, and private-data surfaces approval-gated.",
+      "SEIS has a public, reviewable roadmap for enterprise readiness."
+    ],
+    "blocked_until_proven": [
+      "SEIS beats a named large-company product.",
+      "SEIS is production-ready for customer teams.",
+      "SEIS has live cloud, SSH, provider, or database capability unless explicitly validated.",
+      "SEIS is enterprise-secure without independent review and evidence."
+    ]
+  },
+  "claims": [
+    {
+      "id": "enterprise-grade-direction",
+      "claim": "SEIS is building toward enterprise-grade creative engineering OS capability.",
+      "status": "allowed-with-qualification",
+      "evidence": [
+        "data/enterprise/seis-enterprise-readiness-gates.json",
+        "docs/enterprise/seis-enterprise-execution-roadmap.md"
+      ],
+      "gaps": [
+        "Independent review not complete",
+        "Production customer proof not present",
+        "Release-readiness evidence still draft"
+      ]
+    },
+    {
+      "id": "large-company-comparison",
+      "claim": "SEIS can be compared against serious creative engineering platforms only through evidence gates.",
+      "status": "allowed-with-qualification",
+      "evidence": [
+        "docs/enterprise/seis-enterprise-competitive-readiness.md",
+        "docs/enterprise/seis-enterprise-moat-scorecard.md"
+      ],
+      "gaps": [
+        "No independent benchmark comparison",
+        "No customer adoption evidence",
+        "No third-party security audit"
+      ]
+    },
+    {
+      "id": "trust-boundary",
+      "claim": "SEIS keeps high-risk live operations gated by review and approval.",
+      "status": "allowed",
+      "evidence": [
+        "SECURITY.md",
+        "docs/enterprise/seis-enterprise-security-privacy-checklist.md",
+        "scripts/check-seis-enterprise-claims.py"
+      ],
+      "gaps": [
+        "Live controls require separate audited implementation"
+      ]
+    },
+    {
+      "id": "developer-experience",
+      "claim": "SEIS is improving toward contributor-friendly enterprise review workflows.",
+      "status": "allowed-with-qualification",
+      "evidence": [
+        "CONTRIBUTING.md",
+        "docs/enterprise/seis-enterprise-reviewer-demo-script.md",
+        "docs/enterprise/seis-enterprise-operating-model.md"
+      ],
+      "gaps": [
+        "Needs fresh first-time contributor test",
+        "Needs public demo walkthrough validation"
+      ]
+    },
+    {
+      "id": "native-platform-depth",
+      "claim": "SEIS has a broad native and polyglot platform foundation.",
+      "status": "allowed-with-qualification",
+      "evidence": [
+        "polyglot/seis_native/README.md",
+        "polyglot/seis_native/seis_native_manifest.yaml",
+        "polyglot/seis_native/QUALITY_GATES.md"
+      ],
+      "gaps": [
+        "Breadth exists before deep production implementations",
+        "Language surfaces need deeper platform examples over time"
+      ]
+    }
+  ]
+}

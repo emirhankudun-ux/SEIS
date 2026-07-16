@@ -1,0 +1,103 @@
+{
+  "version": "2026.07.enterprise-readiness.1",
+  "status": "draft-review",
+  "purpose": "Define evidence-based gates for making SEIS credible against enterprise-grade creative engineering platforms.",
+  "non_claims": [
+    "This file does not claim SEIS already beats any large company product.",
+    "This file does not approve deployment, credentials, live provider routing, or customer production use.",
+    "This file defines gates that must be proven before strong market claims are made."
+  ],
+  "principles": [
+    "Evidence before hype",
+    "Apple-first without platform lock-in",
+    "Local-first and privacy-aware by default",
+    "Readable architecture over feature noise",
+    "Reviewable automation over hidden magic",
+    "Open-source trust before market claims"
+  ],
+  "gates": [
+    {
+      "id": "product-clarity",
+      "title": "Product clarity",
+      "level": "foundation",
+      "target": "A reviewer can understand what SEIS is, who it serves, and what is runnable in under ten minutes.",
+      "evidence": [
+        "README.md",
+        "docs/enterprise/seis-enterprise-competitive-readiness.md",
+        "docs/enterprise/seis-enterprise-execution-roadmap.md"
+      ],
+      "minimum_required": true
+    },
+    {
+      "id": "architecture-depth",
+      "title": "Architecture depth",
+      "level": "enterprise",
+      "target": "SEIS has visible architecture layers for product, AI, data, native platforms, validation, and governance.",
+      "evidence": [
+        "ARCHITECTURE.md",
+        "docs/governance/seis-master-prompt.md",
+        "polyglot/seis_native/README.md"
+      ],
+      "minimum_required": true
+    },
+    {
+      "id": "trust-and-safety",
+      "title": "Trust and safety",
+      "level": "enterprise",
+      "target": "Secrets, provider keys, SSH, deployment, private data, and autonomous writes stay explicitly gated.",
+      "evidence": [
+        "SECURITY.md",
+        "docs/deployment/seis-ssh-public-github-access.md",
+        "docs/enterprise/seis-enterprise-competitive-readiness.md"
+      ],
+      "minimum_required": true
+    },
+    {
+      "id": "validation-system",
+      "title": "Validation system",
+      "level": "enterprise",
+      "target": "Important claims are backed by scripts, manifests, review packets, or reproducible local checks.",
+      "evidence": [
+        "scripts/check-seis-enterprise-readiness.py",
+        "data/enterprise/seis-enterprise-readiness-gates.json",
+        "polyglot/seis_native/QUALITY_GATES.md"
+      ],
+      "minimum_required": true
+    },
+    {
+      "id": "developer-experience",
+      "title": "Developer experience",
+      "level": "competitive",
+      "target": "A contributor can find the right route, run local checks, and understand rollback expectations without private context.",
+      "evidence": [
+        "CONTRIBUTING.md",
+        "CODEX.md",
+        "docs/development/first-run-quickstart.md"
+      ],
+      "minimum_required": true
+    },
+    {
+      "id": "native-platform-depth",
+      "title": "Native platform depth",
+      "level": "competitive",
+      "target": "Apple-first, systems, mobile, Windows, infrastructure, and data lanes have typed or declarative seed contracts.",
+      "evidence": [
+        "polyglot/seis_native/seis_native_manifest.yaml",
+        "polyglot/seis_native/LANGUAGE_FAMILIES.md",
+        "polyglot/seis_native/REVIEW_PACKET.md"
+      ],
+      "minimum_required": false
+    },
+    {
+      "id": "market-positioning",
+      "title": "Market positioning",
+      "level": "strategic",
+      "target": "SEIS has a credible moat story that explains why it is not just a dashboard, portfolio, code editor, or AI wrapper.",
+      "evidence": [
+        "docs/enterprise/seis-enterprise-moat-scorecard.md",
+        "docs/enterprise/seis-enterprise-competitive-readiness.md"
+      ],
+      "minimum_required": false
+    }
+  ]
+}
