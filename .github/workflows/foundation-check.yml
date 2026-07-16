@@ -40,6 +40,8 @@ jobs:
           npm run test:ecosystem-foundation
           npm run check:seis-open-pr-portfolio
           npm run test:seis-open-pr-portfolio
+          npm run check:seis-local-workspace-registry
+          npm run test:seis-local-workspace-registry
           npm run check:plugin-interface-roadmap
           npm run check:seis-code
           npm run check:mythic-gacha

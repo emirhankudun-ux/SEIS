@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "seis-local-workspace-registry-2026-07-14",
+  "goalId": "OPS-GOAL-0002",
+  "canonicalRepositorySlug": "emirhankudun-ux/SEIS",
+  "capturedAt": "2026-07-14T07:24:28Z",
+  "scope": {
+    "selectionMode": "bounded-routing-critical-candidates",
+    "coverage": "four-candidate-observation",
+    "candidateIds": [
+      "direct-seis-intake",
+      "ops2-task-worktree",
+      "shared-seis-common-root",
+      "workspace-metadata"
+    ],
+    "candidateCount": 4,
+    "limitations": [
+      "does-not-enumerate-all-sibling-worktrees",
+      "does-not-authorize-recovery-or-cleanup",
+      "snapshot-is-not-live-state",
+      "records-may-have-distinct-observation-times"
+    ]
+  },
+  "policy": {
+    "disclosureMode": "opaque-workspace-identifiers",
+    "canonicalIdentityField": "repositorySlug",
+    "defaultRoutingDecision": "blocked",
+    "liveDiscoveryMode": "stdout-only",
+    "snapshotRoutingAuthority": "none",
+    "mutationsPerformed": false,
+    "humanApprovalRequiredForRecovery": true
+  },
+  "records": [
+    {
+      "id": "direct-seis-intake",
+      "kind": "non-git-intake",
+      "repositorySlug": null,
+      "gitCommonRootId": null,
+      "gitState": "not-repository",
+      "worktreeState": "not-applicable",
+      "routingDecision": "read-only",
+      "writeEligibleAtObservation": false,
+      "dirtyCounts": null,
+      "divergence": null,
+      "evidenceMethods": ["git-rev-parse"],
+      "reasonCodes": ["not-a-git-worktree", "mutation-not-authorized"],
+      "observedAt": "2026-07-14T07:24:28Z",
+      "humanApprovalRequired": true
+    },
+    {
+      "id": "ops2-task-worktree",
+      "kind": "task-worktree",
+      "repositorySlug": "emirhankudun-ux/SEIS",
+      "gitCommonRootId": "shared-seis-common-root",
+      "gitState": "valid",
+      "worktreeState": "unverified",
+      "routingDecision": "blocked",
+      "writeEligibleAtObservation": false,
+      "dirtyCounts": {
+        "modified": 0,
+        "deleted": 0,
+        "untracked": 0,
+        "total": 0
+      },
+      "divergence": null,
+      "evidenceMethods": [
+        "git-branch-show-current",
+        "git-common-dir",
+        "git-origin-slug",
+        "git-rev-parse",
+        "git-status-porcelain-v1-uall-counts"
+      ],
+      "reasonCodes": [
+        "canonical-repository-slug-verified",
+        "focused-goal-worktree",
+        "gitlink-state-not-observed",
+        "mutation-not-authorized"
+      ],
+      "observedAt": "2026-07-14T06:59:37Z",
+      "humanApprovalRequired": true
+    },
+    {
+      "id": "shared-seis-common-root",
+      "kind": "git-common-root",
+      "repositorySlug": "emirhankudun-ux/SEIS",
+      "gitCommonRootId": "shared-seis-common-root",
+      "gitState": "valid",
+      "worktreeState": "dirty",
+      "routingDecision": "recovery-read-only",
+      "writeEligibleAtObservation": false,
+      "dirtyCounts": {
+        "modified": 158,
+        "deleted": 865,
+        "untracked": 93,
+        "total": 1116
+      },
+      "divergence": {
+        "ahead": 97,
+        "behind": 171,
+        "comparison": "local-head-vs-origin-main"
+      },
+      "evidenceMethods": [
+        "git-common-dir",
+        "git-origin-slug",
+        "git-rev-list-left-right-count",
+        "git-rev-parse",
+        "git-status-porcelain-v1-uall-counts"
+      ],
+      "reasonCodes": [
+        "canonical-repository-slug-verified",
+        "dirty-shared-common-root",
+        "mutation-not-authorized",
+        "recovery-human-approval-required"
+      ],
+      "observedAt": "2026-07-14T07:24:28Z",
+      "humanApprovalRequired": true
+    },
+    {
+      "id": "workspace-metadata",
+      "kind": "workspace-root-metadata",
+      "repositorySlug": null,
+      "gitCommonRootId": null,
+      "gitState": "incomplete-metadata",
+      "worktreeState": "not-applicable",
+      "routingDecision": "blocked",
+      "writeEligibleAtObservation": false,
+      "dirtyCounts": null,
+      "divergence": null,
+      "evidenceMethods": ["filesystem-metadata-presence", "git-rev-parse"],
+      "reasonCodes": [
+        "incomplete-git-metadata",
+        "mutation-not-authorized",
+        "recovery-human-approval-required"
+      ],
+      "observedAt": "2026-07-14T07:24:28Z",
+      "humanApprovalRequired": true
+    }
+  ],
+  "summary": {
+    "totalRecords": 4,
+    "writeEligibleAtObservationRecords": 0,
+    "byKind": {
+      "workspace-root-metadata": 1,
+      "non-git-intake": 1,
+      "git-common-root": 1,
+      "task-worktree": 1
+    },
+    "byGitState": {
+      "valid": 2,
+      "not-repository": 1,
+      "incomplete-metadata": 1
+    },
+    "byRoutingDecision": {
+      "blocked": 2,
+      "read-only": 1,
+      "recovery-read-only": 1,
+      "task-scoped-write": 0
+    }
+  },
+  "digest": "sha256:5ad26241ec18c6f5ca122637b1b7989123ef1f854c52c7f1cfb61daa8bca6bcf"
+}

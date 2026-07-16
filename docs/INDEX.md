@@ -39,8 +39,12 @@ Date: 2026-06-23
 | [LOCAL_AI_SETUP.md](LOCAL_AI_SETUP.md) | Optional local AI/Ollama setup guidance. |
 | [SEIS_SSH_SETUP.md](SEIS_SSH_SETUP.md) | Safe SEIS-SSH onboarding and deployment gates. |
 | [OBSIDIAN_SECOND_BRAIN.md](OBSIDIAN_SECOND_BRAIN.md) | Obsidian second-brain mapping for SEIS contributors and agents. |
+| [deployment/workspace-routing.md](deployment/workspace-routing.md) | Identity-first, task-scoped workspace routing policy backed by the redacted local registry. |
+| [governance/icloud-github-workspace-ingestion.md](governance/icloud-github-workspace-ingestion.md) | Public-safe and non-destructive intake boundary for the multi-project workspace. |
 | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) | Integration policy for keeping every SEIS workstream tied to GitHub, evidence, and PR sequencing. |
-| [reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md](reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md) | Canonical `SEIS/` workspace rule and classification of nearby SEIS-like folders. |
+| [reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md](reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md) | `OPS-GOAL-0002` redacted workspace-truth snapshot and non-destructive recovery plan; repository identity is canonical and local paths are not. |
+| [../data/seis-local-workspace-registry.json](../data/seis-local-workspace-registry.json) | Immutable, opaque-ID local workspace snapshot with aggregate state only. |
+| [../data/seis-local-workspace-registry.schema.json](../data/seis-local-workspace-registry.schema.json) | Public-safe registry schema that excludes local paths, dirty filenames, contents, and credentials. |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Foundation audit and review report. |
 | [reviews/PLUGIN_INTERFACE_SUITE_QA.md](reviews/PLUGIN_INTERFACE_SUITE_QA.md) | Browser QA evidence for the static five-lane plugin interface suite, year controls, H1/H2 cadence, maturity signals, readiness gates, and coverage metrics. |
 | [reviews/VIDEO_HERO_SHOWCASE_QA.md](reviews/VIDEO_HERO_SHOWCASE_QA.md) | QA evidence and release boundary for the four-page cinematic Video Hero showcase. |
@@ -126,6 +130,7 @@ Date: 2026-06-23
 | [adr/0002-ecosystem-governance-bootstrap-ownership.md](adr/0002-ecosystem-governance-bootstrap-ownership.md) | Proposed decision keeping SEIS coordination separate from Eleni and Pantechnoesis product ownership. |
 | [../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml](../goals/blocked/ECO-GOAL-0001--project-manifests-and-canonical-ownership.yaml) | Blocked ecosystem manifest and ownership goal with explicit unblock conditions. |
 | [../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml](../goals/active/ECO-GOAL-0003--goal-schema-validation-and-ci.yaml) | Active Goal schema, semantic validation, negative-test, and CI-enforcement goal. |
+| [../goals/active/OPS-GOAL-0002--seis-local-workspace-truth-and-routing.yaml](../goals/active/OPS-GOAL-0002--seis-local-workspace-truth-and-routing.yaml) | Active local-workspace truth, routing, privacy, and non-destructive recovery Goal. |
 | [goals/seis-vision.md](goals/seis-vision.md) | Long-term SEIS vision and guardrails. |
 | [goals/long-term-goals.md](goals/long-term-goals.md) | Strategic category goal matrix. |
 | [goals/goal-tracking-system.md](goals/goal-tracking-system.md) | Goal Tracking OS rules and storage model. |

@@ -1,20 +1,22 @@
 {
   "id": "github-remote-configuration",
-  "version": 1,
-  "status": "configured-local-remote",
-  "configuredAt": "2026-06-12",
+  "version": 2,
+  "status": "configured-canonical-remote",
+  "configuredAt": "2026-07-14",
   "repository": {
     "name": "SEIS",
     "owner": "emirhankudun-ux",
+    "slug": "emirhankudun-ux/SEIS",
     "remoteName": "origin",
     "remoteUrl": "git@github.com:emirhankudun-ux/SEIS.git",
     "targetBranch": "main"
   },
   "localBranchMode": {
-    "currentWorkingBranch": "codex/publish-local-seis-20260618-163043",
-    "tracks": "origin/codex/publish-local-seis-20260618-163043",
-    "reason": "Execution is happening on codex/publish-local-seis-20260618-163043; main remains the intended publish target."
+    "strategy": "task-scoped-pr-branches",
+    "permanentLocalExecutionBranch": null,
+    "reason": "Execution branches are selected per Goal and worktree; no dated local branch is a permanent routing authority."
   },
+  "routingRegistry": "data/seis-local-workspace-registry.json",
   "publishReadiness": {
     "remoteConfigured": true,
     "networkProbe": "verified-with-gh-repo-view",
@@ -30,8 +32,9 @@
   },
   "qualityCommands": [
     "npm run check:github-remote-configuration",
+    "npm run check:seis-local-workspace-registry",
     "npm run check:seis-evolution-model",
-    "npm run check:workspace"
+    "npm run check:workspace-routing"
   ],
-  "rollback": "Remove or reset the origin remote and restore main branch tracking config if the repository target changes."
+  "rollback": "Revert this versioned contract and its documentation first. Any actual remote or tracking change requires a separate approved Goal with backup, rollback, and post-change verification."
 }

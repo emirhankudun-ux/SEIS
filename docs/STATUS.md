@@ -1,10 +1,34 @@
 # SEIS Status
 
 Date: 2026-06-24
-Last updated: 2026-07-14 (OPS-GOAL-0001 snapshot reconciliation)
+Last updated: 2026-07-14 (`OPS-GOAL-0002` workspace truth and recovery)
 
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
+
+## Local Workspace Truth — 2026-07-14
+
+<!-- BEGIN OPS-GOAL-0002 REGISTRY METADATA -->
+Goal: `OPS-GOAL-0002`
+Dataset: `data/seis-local-workspace-registry.json`
+Dataset ID: `seis-local-workspace-registry-2026-07-14`
+Record count: `4 records`
+Registry digest: `sha256:5ad26241ec18c6f5ca122637b1b7989123ef1f854c52c7f1cfb61daa8bca6bcf`
+Captured at: `2026-07-14T07:24:28Z`
+Canonical repository: `emirhankudun-ux/SEIS`
+Write-eligible at observation: `0`
+Dirty aggregate: `158 modified / 865 deleted / 93 untracked / 1116 total`
+<!-- END OPS-GOAL-0002 REGISTRY METADATA -->
+
+The canonical identity is `emirhankudun-ux/SEIS`, not a permanent local
+folder. `shared-seis-common-root` is recovery-critical and read-only with 158
+modified, 865 deleted, and 93 untracked entries (1,116 total).
+`direct-seis-intake` is non-Git and read-only, `workspace-metadata` is invalid
+and blocked. `ops2-task-worktree` had zero aggregate changes, but its Gitlink
+state was not captured; the final historical record is therefore unverified,
+blocked, and non-writable. The snapshot grants no current write authority; live
+state must be reverified. Opaque record IDs keep local paths and dirty filenames
+out of Git.
 
 ## Open Pull-Request Portfolio — 2026-07-14 reconciliation
 
@@ -45,14 +69,14 @@ resources including the 512B apex program.
 
 | Area | Status | Evidence | Next action |
 | --- | --- | --- | --- |
-| Branch | Non-main branch | `codex/seis-demo-github-upload-20260624` | Keep work scoped; do not push without explicit approval. |
+| Branch | Task-scoped non-main branch | `OPS-GOAL-0002` review worktree | Keep work scoped; do not push or merge without the required review and approval. |
 | Google, Kimi, Claude, Apple, Windows, and major-platform MCP/skills | Local skill install pass completed; official Kimi Code CLI installed; Claude Code CLI verified; XcodeBuildMCP registered for Claude/Kimi project MCP configs; callable MCP surfaces and install blockers inventoried | `docs/platform/big-tech-mcp-skill-inventory.md`, `content/development/seis-big-tech-mcp-skill-inventory.json`, `.mcp.json`, `.kimi-code/mcp.json`, `.kimi-code/skills/seis-integration-guardian/SKILL.md`, local Codex skills under `$CODEX_HOME/skills` | Restart Codex to load new Codex skills; run `claude` to approve project MCP servers if desired; run Kimi OAuth/provider setup only with explicit user action; BigQuery still needs user-confirmed connector install; keep cloud, provider keys, SSH, deployment, and workspace mutations approval-gated. |
-| Canonical workspace path | Documented | General SEIS work now continues from `SEIS/`; other SEIS-like folders are review-only inputs. See `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`. | Reconcile one workstream at a time through the canonical root and PR queue. |
+| Canonical workspace identity | Corrected | `emirhankudun-ux/SEIS` is canonical; `data/seis-local-workspace-registry.json` records only opaque local surface IDs and no permanent canonical path. | Route each Goal through a currently verified clean task worktree. Preserve recovery-critical and invalid local surfaces. |
 | Goal Tracking OS | Foundation plus generated static view, review cadence, progress ledger, hierarchy map, goal metadata, archive ledger, cycle plan, risk register, validation steps, and roadmap links added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `apps/web/goal-tracking.html` | Keep validator, generated view freshness, review cadence, ledger, hierarchy, metadata, archive, cycle plan, risk, validation-step, and roadmap-link checks passing. |
 | SEIS Universe Omega | 24-phase active objective mapped to documented Goal Tracking coverage, with Phase 01/02/03/10 dependency, KPI, and success-metric evidence records and no implementation or validation overclaims | `content/development/seis-universe-omega-goal-system.json`, `content/development/seis-universe-omega-phase-evidence.json`, `docs/goals/seis-universe-omega-goal-system.md`, `docs/goals/seis-universe-omega-phase-evidence.md`, `scripts/check-seis-universe-omega-goal-system.mjs` | Extend the evidence model to Phase 04 Knowledge Graph and Phase 05 Agent Civilization before runtime readiness claims. |
 | Worktree hygiene | Scoped local edits in progress | Current modifications include the SEIS AI 20B/150B evidence chain and a Desktop OS design-fusion pass that uses the imported SEIS_WOW packs plus user-supplied Kimi LinuxOS / VS Code Web references as visual direction. | Review and stage only coherent slices after validation; keep product UI and AI Core evidence changes separate if this becomes more than one PR. |
 | Full-stack contract foundation | Validated Local Demo contract added | `content/development/seis-fullstack-contract.json`, `server/node/static-server.mjs`, `docs/architecture/seis-full-stack-transition.md`, `apps/fullstack/README.md`, `scripts/check-seis-fullstack-contract.mjs`, `scripts/check-seis-fullstack-server-smoke.mjs`, `scripts/check-seis-fullstack-no-server-fallback-smoke.mjs`, `npm run check:seis-fullstack-contract`, `npm run check:seis-fullstack-server-smoke`, `npm run check:seis-fullstack-no-server-fallback-smoke` | Read-only fixture-backed `/_server/*` endpoints only; no auth, database, live provider calls, SSH, deployment, GitHub writes, or real credentials. Static fallback is browser-smoked with `/_server/*` intentionally unavailable. |
-| SEIS integration posture | Documented | `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md` | Use the integration map to reconcile one SEIS workstream per PR. |
+| SEIS integration posture | Identity-bound and path-independent | `data/seis-local-workspace-registry.json`, `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md` | Use the integration map to reconcile one SEIS workstream per clean task worktree and focused PR. |
 | GitHub PR portfolio | Structured and read-only reconciled | `OPS-GOAL-0001`, `data/seis-open-pr-portfolio.json`, and `docs/reviews/PR_STACK_REVIEW.md` record 90 unique open PR identities, advisory dispositions, dependencies, and a deterministic digest; the July 14 reconciliation detected and incorporated the PR #154 delta. | Publish the Goal-linked review only after local gates pass; every classified-PR write remains a separate human decision. |
 | Public readiness | Not ready | Worktree is dirty, full secret-history scan and browser QA are incomplete. | Resolve blockers before public preparation. |
 | Release readiness | Not ready | Static build passed, but no release dry-run, tag, deployment, or rollback drill was performed. | Defer release work until review. |
@@ -63,7 +87,7 @@ resources including the 512B apex program.
 | Area | Current Status | Evidence | Blockers | Next Safe Action |
 | --- | --- | --- | --- | --- |
 | Source of truth | Partially documented | `AGENTS.md`, `README.md`, `SECURITY.md`, `docs/SEIS_MASTER_INDEX.md` | Worktree hygiene still blocks public/release readiness. | Keep official docs aligned before implementation expansion. |
-| Workspace unification | Documented | `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json` | Nearby SEIS folders still need one-by-one diff review; folder deletion, branch deletion, and physical consolidation need approval. | Continue from `SEIS/` and classify/extract other workstreams only through scoped PRs. |
+| Workspace truth and recovery | In progress | `OPS-GOAL-0002`, `data/seis-local-workspace-registry.json`, `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json` | The shared common root has 1,116 aggregate dirty entries; the direct intake is non-Git; workspace metadata is incomplete. Repair, pruning, physical consolidation, staging, restoration, copying, or deletion require separate approval. | Keep all affected surfaces read-only and use only clean task-scoped worktrees for new Goal changes. |
 | Documentation foundation | Expanded | `docs/SEIS_MASTER_INDEX.md`, `docs/INDEX.md`, lane docs | Full automated link integrity is not yet part of CI. | Add a lightweight docs link check later. |
 | `@seis` | Documented foundation | `docs/architecture/seis-platform-lanes.md` | Not public/release ready. | Keep source-of-truth docs aligned. |
 | `@seis-cloud` | Documented/scaffolded | `docs/operations/seis-cloud-foundation.md`, `deploy/cloud-environment.json` | No live cloud verification. | Keep dry-run only until approval. |

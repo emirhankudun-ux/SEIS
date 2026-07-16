@@ -26,7 +26,11 @@ const backlogIds = new Set((backlog?.items || []).map((item) => item.id));
 
 if (model) {
   ensure(model.id === "seis-evolution-model", "model id must stay stable");
-  ensure(model.branch === "UIXAppTTR", "model must target UIXAppTTR");
+  ensure(model.version === 2, "model version must be 2");
+  ensure(model.branchPolicy?.strategy === "task-scoped-pr-branches", "model must use task-scoped PR branches");
+  ensure(model.branchPolicy?.protectedDefaultBranch === "main", "model must keep main protected");
+  ensure(model.branchPolicy?.directDefaultBranchWritesAllowed === false, "model must block direct default-branch writes");
+  ensure(model.branchPolicy?.workspaceRegistry === "data/seis-local-workspace-registry.json", "model must reference the workspace registry");
   ensure(model.mode === "calm-ai-native-evolution", "model mode must stay calm-ai-native-evolution");
   ensure(Array.isArray(model.operatingPrinciples) && model.operatingPrinciples.length >= 5, "model must define at least five operating principles");
 
@@ -53,7 +57,7 @@ if (model) {
   const qualityCommands = new Set((model.qualityGates || []).map((gate) => gate.command));
   for (const requiredCommand of [
     "npm run check:seis-evolution-model",
-    "npm run check:workspace",
+    "npm run check:seis-local-workspace-registry",
     "node scripts/check-development-process.mjs"
   ]) {
     ensure(qualityCommands.has(requiredCommand), `quality gates missing command: ${requiredCommand}`);
@@ -97,7 +101,8 @@ for (const requiredText of [
   "Maturity Levels",
   "Development Loop",
   "npm run check:seis-evolution-model",
-  "UIXAppTTR",
+  "task-scoped PR branches",
+  "data/seis-local-workspace-registry.json",
   "Activation Queue",
   "Decision Matrix",
   "SEIS-001",

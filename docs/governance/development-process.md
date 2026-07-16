@@ -2,11 +2,11 @@
 
 SEIS development starts from a calm, modular, low-power rhythm. Each change should improve one explainable layer without forcing a broad rebuild, dependency expansion, or remote operation before the repository state is clear.
 
-## Active Branch Contract
+## Task-Scoped Branch Contract
 
-- GitHub should keep `UIXAppTTR` as the single remote branch for this project.
-- `main` remains sacred as a philosophy, but it should not exist as an active remote branch for the current UIXAppTTR-only GitHub shape.
-- Remote branch deletion requires working GitHub authentication before execution.
+- `main` is the protected default branch and receives accepted work through review.
+- Implementation uses a focused, temporary PR branch rather than one permanent local execution branch.
+- Direct writes to `main`, force pushes, branch deletion, and repository-setting changes require separate authorization.
 - Local conflict resolution and remote branch cleanup are separate operations.
 
 ## Development Cadence
@@ -20,13 +20,20 @@ SEIS development starts from a calm, modular, low-power rhythm. Each change shou
 
 ## Workspace Routing
 
-`Github/New project` can operate as local staging when it is not inside a Git checkout. In that mode, local checks and portable source edits are allowed, but remote shipment must not be claimed.
+The machine-readable routing source is
+[`data/seis-local-workspace-registry.json`](../../data/seis-local-workspace-registry.json).
+It identifies the canonical repository by remote slug, not by a permanent local
+folder name.
 
-When the folder is a Git checkout, it must use `UIXAppTTR` and the UIX-Apps GitHub remote.
-Publish claims also require a clean worktree and an explicit upstream for `UIXAppTTR`.
+Write only in a healthy Git worktree classified as `task-scoped`. Non-Git
+intake folders, incomplete Git metadata, dirty common roots, archives, and backups are
+read-only or blocked. These surfaces may be inspected without printing file
+names or contents, but they are never implicit staging surfaces.
 
 ```bash
-npm run check:workspace
+npm run check:seis-local-workspace-registry
+npm run test:seis-local-workspace-registry
+npm run check:workspace-routing
 ```
 
 Publish readiness stays explicit and local-safe through:
@@ -39,8 +46,10 @@ npm run automation:publish-readiness
 
 Choose the smallest validation profile that can prove the change:
 
-- `lowPowerDefault` for narrow, reversible updates in local staging:
-  - `npm run check:workspace`
+- `lowPowerDefault` for narrow, reversible updates in a task-scoped worktree:
+  - `npm run check:seis-local-workspace-registry`
+  - `npm run test:seis-local-workspace-registry`
+  - `npm run check:workspace-routing`
   - `node scripts/check-development-process.mjs`
   - `node --check scripts/check-development-process.mjs`
   - `node --check scripts/check-workspace-routing.mjs`
@@ -62,22 +71,23 @@ It should also block publish claims when the worktree is still dirty or the bran
 
 ## First Slice
 
-The first development slice is calm foundation hardening:
+The current governance slice is workspace truth and recovery:
 
-- Add a machine-readable development process registry.
-- Add this human-readable governance protocol.
-- Add a lightweight script that checks the protocol exists and remains aligned with the UIXAppTTR branch contract.
+- Maintain a redacted local-workspace registry and schema.
+- Keep discovery read-only and print-only by default.
+- Reject unsafe paths, credential-bearing remotes, dirty writable roots, and non-Git canonical claims.
+- Route edits to a clean, task-scoped worktree without pruning or repairing user-owned state.
 
 ## Active Sprint
 
-The current sprint adds a visible development cockpit and closes missing operational surfaces without introducing a new dependency stack.
+The current sprint establishes workspace truth and a non-destructive recovery guard before further product expansion.
 
 | Workstream | Status | Proof |
 | --- | --- | --- |
-| Experience cockpit | In progress | Public shell exposes the active development cadence. |
-| Server handoff | Ready for confirmed target | `dist/server-drop` contains zip, manifest, upload plan, and latest pointer. |
-| Polyglot branch | Expanded | Language surfaces stay small contracts without dependency bloat. |
-| Quality gates | Active | Syntax, foundation, release, history, and server-drop checks stay green. |
+| Redacted registry | In progress | Immutable opaque-ID snapshot and schema remain aligned. |
+| Read-only discovery | In progress | Bounded local inspection emits public-safe stdout and performs no mutation. |
+| Fail-closed validation | Active | Offline checks and adversarial fixtures reject unsafe routing and disclosure drift. |
+| Recovery governance | Active | Routing, status, backlog, queue, and approvals share one contract. |
 
 ## Builder Platform Preference
 
@@ -99,7 +109,8 @@ Lovable output must remain portable back into this repository: modular structure
 Stop and report clearly when:
 
 - GitHub authentication is missing.
-- The current folder is not the intended Git working tree.
+- The current folder is not a registry-approved task-scoped Git worktree.
+- Discovery finds a non-Git intake path, incomplete Git metadata, or dirty common root where a writable target was expected.
 - A change would require a heavy build, broad indexing, or dependency installation without explicit need.
 - Branch cleanup would delete remote history without confirming the protected branch first.
 

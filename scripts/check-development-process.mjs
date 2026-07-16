@@ -35,47 +35,61 @@ if (registry) {
     failures.push("development process must stay in high-efficiency-low-power mode");
   }
 
-  if (registry.activeBranchPolicy?.githubBranch !== "UIXAppTTR") {
-    failures.push("development process must target UIXAppTTR as the GitHub branch");
+  if (registry.activeBranchPolicy?.strategy !== "task-scoped-pr-branches") {
+    failures.push("development process must use task-scoped PR branches");
   }
 
-  if (registry.activeBranchPolicy?.singleRemoteBranchRequired !== true) {
-    failures.push("development process must require a single remote branch");
+  if (registry.activeBranchPolicy?.protectedDefaultBranch !== "main") {
+    failures.push("development process must keep main as the protected default branch");
   }
 
-  if (registry.workspaceRouting?.qualitySignal !== "npm run check:workspace") {
-    failures.push("development process must route workspace checks through npm run check:workspace");
+  if (registry.activeBranchPolicy?.directDefaultBranchWritesAllowed !== false) {
+    failures.push("development process must forbid direct default-branch writes");
+  }
+
+  if (registry.workspaceRouting?.registry !== "data/seis-local-workspace-registry.json") {
+    failures.push("development process must reference the local workspace registry");
+  }
+
+  if (!existsSync(registry.workspaceRouting?.registry || "")) {
+    failures.push("development process workspace registry must exist");
+  }
+
+  if (registry.workspaceRouting?.qualitySignal !== "npm run check:seis-local-workspace-registry") {
+    failures.push("development process must route workspace checks through the offline registry validator");
   }
 
   if (registry.workspaceRouting?.publishReadinessSignal !== "npm run automation:publish-readiness") {
     failures.push("development process must expose npm run automation:publish-readiness as the publish readiness signal");
   }
 
-  if (!String(registry.workspaceRouting?.rule || "").includes("local staging")) {
-    failures.push("development process must define the local staging workspace rule");
+  if (!String(registry.workspaceRouting?.rule || "").includes("task-scoped")) {
+    failures.push("development process must define the task-scoped worktree rule");
   }
 
-  if (!String(registry.workspaceRouting?.rule || "").includes("do not claim remote shipment")) {
-    failures.push("development process must explicitly block remote shipment claims in local staging mode");
+  if (!String(registry.workspaceRouting?.rule || "").includes("dirty common roots remain read-only or blocked")) {
+    failures.push("development process must block dirty common roots from writable routing");
   }
 
   const claimPolicy = registry.workspaceRouting?.remoteShipmentClaimPolicy || {};
-  if (claimPolicy.stagingMode !== "local-only") {
-    failures.push("development process must keep remote claim policy in local-only staging mode");
+  if (claimPolicy.stagingMode !== "review-branch-only") {
+    failures.push("development process must keep remote claims review-branch-only");
   }
 
-  if (claimPolicy.disallowClaimWhenLocalStaging !== true) {
-    failures.push("development process must disallow remote shipment claims in local staging mode");
+  if (claimPolicy.disallowClaimWhenNonGitOrBlocked !== true) {
+    failures.push("development process must disallow claims from non-Git or blocked workspaces");
   }
 
   const claimRequirements = claimPolicy.claimRequires || [];
   for (const requiredClaimRequirement of [
     "git checkout detected",
-    "UIXAppTTR active branch",
-    "UIX-Apps remote configured",
-    "clean worktree",
-    "branch upstream configured",
-    "github authentication ready"
+    "canonical SEIS repository identity verified",
+    "git checkout detected",
+    "task-scoped review branch selected",
+    "clean worktree before publication",
+    "branch upstream and remote head verified",
+    "GitHub authentication ready",
+    "protected-branch policy satisfied"
   ]) {
     if (!claimRequirements.includes(requiredClaimRequirement)) {
       failures.push(`development process missing remote claim requirement: ${requiredClaimRequirement}`);
@@ -93,7 +107,9 @@ if (registry) {
   const lowPowerProfile = validationProfiles.lowPowerDefault || {};
   const lowPowerCommands = lowPowerProfile.commands || [];
   for (const requiredCommand of [
-    "npm run check:workspace",
+    "npm run check:seis-local-workspace-registry",
+    "npm run test:seis-local-workspace-registry",
+    "npm run check:workspace-routing",
     "node scripts/check-development-process.mjs",
     "node --check scripts/check-development-process.mjs",
     "node --check scripts/check-workspace-routing.mjs"
@@ -132,9 +148,10 @@ if (roadmap && (roadmap.phases || []).length < 6) {
 }
 
 for (const requiredText of [
-  "UIXAppTTR",
+  "Task-Scoped Branch Contract",
   "Workspace Routing",
-  "remote shipment must not be claimed",
+  "non-Git intake",
+  "dirty common roots",
   "Development Cadence",
   "Proportional Validation Profiles",
   "Active Sprint",
@@ -145,14 +162,6 @@ for (const requiredText of [
 ]) {
   if (!documentText.includes(requiredText)) {
     failures.push(`missing "${requiredText}" in ${documentPath}`);
-  }
-}
-
-const webShellPath = "apps/web/index.html";
-if (existsSync(webShellPath)) {
-  const webShell = readFileSync(webShellPath, "utf8");
-  if (!webShell.includes('id="development"')) {
-    failures.push("web shell must expose the development cockpit section");
   }
 }
 

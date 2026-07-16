@@ -135,6 +135,8 @@ ios/
 *.json
 *.config.json
 !data/seis-open-pr-portfolio.json
+!data/seis-local-workspace-registry.json
+!data/seis-local-workspace-registry.schema.json
 !content/development/seis-*.json
 !apps/seis-demo-web/data/seis-ai-core-version-promotion-map.json
 !apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json
