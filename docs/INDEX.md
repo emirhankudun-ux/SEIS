@@ -12,6 +12,8 @@ Date: 2026-06-23
 | [AI_CORE.md](AI_CORE.md) | Provider-neutral AI Core states, routing, prompt/memory boundaries, and safety. |
 | [MCP_REGISTRY.md](MCP_REGISTRY.md) | MCP status, permissions, current records, and rollback boundary. |
 | [AGENT_REGISTRY.md](AGENT_REGISTRY.md) | Supervised specialist roles, permissions, and handoff evidence. |
+| [governance/SEIS_AGENCY_OPERATING_MODEL.md](governance/SEIS_AGENCY_OPERATING_MODEL.md) | Agency-shaped pods, 300-person headcount model, service ownership, brief-to-handoff flow, and human approval boundaries. |
+| [governance/SEIS_AGENCY_BRIEF_TEMPLATE.md](governance/SEIS_AGENCY_BRIEF_TEMPLATE.md) | Public-safe intake template for bounded SEIS agency work. |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | SEIS tokens, icon language, motion, and accessibility direction. |
 | [APPLE_PLATFORM_STRATEGY.md](APPLE_PLATFORM_STRATEGY.md) | macOS, iPadOS, iOS, visionOS research, and Swift package strategy. |
 | [SECURITY.md](SECURITY.md) | Focused secrets, permission, supply-chain, and public-review rules. |

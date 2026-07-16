@@ -104,6 +104,7 @@
     "check:seis-ai-public-readiness": "node scripts/check-seis-ai-public-readiness.mjs",
     "check:seis-ai-public-readiness-program": "node scripts/check-seis-ai-public-readiness-program.mjs",
     "check:seis-agent-workforce": "node scripts/check-seis-agent-workforce.mjs",
+    "check:seis-agency-team": "node scripts/check-seis-agency-team.mjs",
     "check:seis-nonjs-kernel": "python3 scripts/check-seis-nonjs-kernel.py",
     "check:seis-platform-kernel": "python3 scripts/check-seis-platform-kernel.py",
     "check:language-distribution": "python3 scripts/create-language-distribution-report.py --check",
