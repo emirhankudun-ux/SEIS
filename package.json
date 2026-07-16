@@ -158,6 +158,8 @@
     "check:gcp-cloud-server": "node scripts/check-gcp-cloud-server.mjs",
     "check:ssh-vpn-cloud-server": "node scripts/check-ssh-vpn-cloud-server.mjs",
     "check:ssh-ai-version": "node scripts/check-ssh-ai-version.mjs",
+    "check:seis-cloud-ssh-center-readiness": "node scripts/check-seis-cloud-ssh-center-readiness.mjs",
+    "check:seis-cloud-ssh-center-pr-boundary": "node scripts/check-seis-cloud-ssh-center-pr-boundary.mjs",
     "check:seis-ssh-cloud-roadmap": "node scripts/check-seis-ssh-cloud-roadmap.mjs",
     "check:seis-ssh-closed-runtime": "node scripts/check-seis-ssh-closed-runtime.mjs",
     "check:seis-unified-github-visibility": "node scripts/check-seis-unified-github-visibility.mjs",

@@ -170,3 +170,17 @@ Default outputs:
 These files are intentionally git-ignored because they describe the current
 operator machine and SSH alias state. The report redacts the home directory and
 blocks API-key/private-key patterns before writing the artifact.
+
+The report contains a machine-readable `claimGate`. It keeps
+`readyClaimAllowed`, `continuityClaimAllowed`, and `macOffClaimAllowed` false
+unless the report was produced through the strict doctor path and the readiness
+check passed. A non-strict report can still be useful for debugging, but it does
+not authorize the public claim that SEIS is mobile 24/7 ready or reachable while
+the local Mac is closed.
+
+The same report also contains `handoffReplay` and `evidenceManifest`. The
+`handoffReplay.replayableOnNewDevice` flag stays false until the strict doctor
+passes, which means a new computer or ChatGPT mobile session can replay the
+documented direct-cloud commands without copying private runtime state from the
+old Mac. The evidence manifest stores only commands, artifact paths, and
+sanitized status labels.

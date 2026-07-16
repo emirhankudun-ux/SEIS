@@ -1,0 +1,455 @@
+{
+  "id": "seis-cloud-ssh-center-readiness",
+  "version": 1,
+  "status": "browser-local-demo",
+  "route": "apps/seis-core/cloud-ssh-center.html",
+  "script": "apps/seis-core/cloud-ssh-center.js",
+  "doc": "docs/deployment/seis-cloud-ssh-center-demo.md",
+  "qualityGate": "npm run check:seis-cloud-ssh-center-readiness",
+  "prBoundaryGate": "npm run check:seis-cloud-ssh-center-pr-boundary",
+  "storageKey": "seis.cloud.ssh.center.v1",
+  "publicSafe": true,
+  "liveExecutionAllowed": false,
+  "remoteConnectedByDefault": false,
+  "sshExecutedByDefault": false,
+  "deployExecutedByDefault": false,
+  "credentialReadByDefault": false,
+  "secretStoredByDefault": false,
+  "serverPortChangedByDefault": false,
+  "macIndependentTarget": true,
+  "codespacesMaySleep": true,
+  "currentTransportClass": "codespaces-online-not-24x7",
+  "alwaysOnRequiresDirectCloud": true,
+  "mobile24x7ReadyByDefault": false,
+  "onlineGate": "npm run cloud:ssh:online:strict",
+  "mobile24x7Gate": "npm run cloud:ssh:mobile-24x7:strict",
+  "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
+  "acceptanceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+  "acceptanceContractGate": "npm run check:seis-ssh-mobile-direct-cloud",
+  "browserLocalHandoffPacket": {
+    "id": "seis-cloud-ssh-center-mobile-handoff-packet",
+    "status": "browser-local-demo",
+    "generatedBy": "apps/seis-core/cloud-ssh-center.js",
+    "containsSecrets": false,
+    "remoteMutationAllowed": false,
+    "fields": [
+      "ownerInputChecklist",
+      "mobile24x7AcceptanceLadder",
+      "mobileHandoffChecklist",
+      "requiredSafetyFlags",
+      "currentKnownBlocker",
+      "browserLocalReadyClaimGuard",
+      "browserLocalContinuityGuard"
+    ]
+  },
+  "browserLocalReadyClaimGuard": {
+    "id": "seis-cloud-ssh-center-ready-claim-guard",
+    "sourceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+    "status": "blocked",
+    "readyClaim": "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready",
+    "readyClaimAllowedOnlyWhen": [
+      "SEIS-SSH resolves to direct-cloud SSH without ProxyCommand",
+      "TCP reachability succeeds against the configured public SSH endpoint",
+      "SSH key authentication succeeds in BatchMode",
+      "remote runtime reports online",
+      "SEIS repository is present on the remote host",
+      "strict doctor writes a successful readiness handoff report"
+    ],
+    "blockedClaimWhen": [
+      "SEIS_SSH_HOST is missing",
+      "SEIS-SSH still uses Codespaces transport",
+      "SEIS-SSH points at localhost or the local Mac",
+      "public SSH endpoint is unreachable",
+      "identity file is missing",
+      "SSH authentication fails",
+      "remote runtime or SSH-AI daemon is offline",
+      "strict doctor exits non-zero"
+    ],
+    "allowedOnlyAfterStep": "handoff-doctor",
+    "allowedOnlyAfterCommand": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "allowedOnlyAfterClaimScope": "mobile-24x7-ready",
+    "readyClaimAllowed": false,
+    "claimAllowedByDefault": false,
+    "mobile24x7ReadyByDefault": false,
+    "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
+    "requiresFinalGate": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "generatedBy": "apps/seis-core/cloud-ssh-center.js",
+    "remoteMutationAllowed": false,
+    "credentialRead": false,
+    "secretStored": false
+  },
+  "browserLocalContinuityGuard": {
+    "id": "seis-cloud-ssh-center-continuity-guard",
+    "sourceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+    "status": "blocked",
+    "continuityClaim": "SEIS remains reachable when the local Mac is closed",
+    "continuityAllowedOnlyWhen": [
+      "SEIS-SSH resolves to direct-cloud SSH without ProxyCommand",
+      "TCP reachability succeeds against the configured public SSH endpoint",
+      "SSH key authentication succeeds in BatchMode",
+      "remote runtime reports online",
+      "SEIS repository is present on the remote host",
+      "strict doctor writes a successful readiness handoff report"
+    ],
+    "blockedContinuityWhen": [
+      "SEIS-SSH still depends on localhost or this Mac",
+      "SEIS-SSH still uses Codespaces transport",
+      "no always-on public VM endpoint is configured",
+      "strict doctor has not written a passing mobile readiness report"
+    ],
+    "allowedOnlyAfterStep": "handoff-doctor",
+    "allowedOnlyAfterCommand": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "allowedOnlyAfterClaimScope": "mobile-24x7-ready",
+    "continuityClaimAllowed": false,
+    "macOffClaimAllowed": false,
+    "localMacDependencyAllowed": false,
+    "codespacesContinuityAllowed": false,
+    "browserLocalProofAllowed": false,
+    "currentKnownBlocker": "mobile-24x7-requires-direct-cloud-transport",
+    "requiresFinalGate": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "generatedBy": "apps/seis-core/cloud-ssh-center.js",
+    "remoteMutationAllowed": false,
+    "credentialRead": false,
+    "secretStored": false
+  },
+  "ownerInputChecklist": [
+    {
+      "id": "direct-cloud-host",
+      "label": "Always-on public VM endpoint",
+      "field": "SEIS_SSH_HOST or SEIS_CLOUD_HOST",
+      "status": "unknown",
+      "boundary": "owner input required",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "ssh-port",
+      "label": "SSH TCP port",
+      "field": "SEIS_SSH_PORT",
+      "default": "22",
+      "status": "planned",
+      "boundary": "preserve existing port unless approved",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "runtime-user",
+      "label": "Runtime SSH user",
+      "field": "SEIS_SSH_USER",
+      "default": "aiuser",
+      "status": "planned",
+      "boundary": "least privilege account",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "identity-file-path",
+      "label": "Local identity file path",
+      "field": "SEIS_SSH_IDENTITY_FILE",
+      "default": "~/.ssh/id_ed25519_seis_codex",
+      "status": "planned",
+      "boundary": "local path only; key material never committed",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "remote-repo-dir",
+      "label": "Remote SEIS repository directory",
+      "field": "SEIS_REMOTE_REPO_DIR",
+      "default": "/opt/seis/SEIS",
+      "status": "planned",
+      "boundary": "no destructive sync",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "bootstrap-runbook",
+      "label": "Remote bootstrap runbook",
+      "field": "scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh",
+      "status": "planned",
+      "boundary": "dry-run before mutation",
+      "secret": false,
+      "requiredFor24x7": true
+    },
+    {
+      "id": "rollback-owner",
+      "label": "Rollback owner and console access",
+      "field": "provider console / owner approval",
+      "status": "unknown",
+      "boundary": "required before rollout",
+      "secret": false,
+      "requiredFor24x7": true
+    }
+  ],
+  "mobile24x7AcceptanceLadder": [
+    {
+      "id": "profile-contract",
+      "command": "npm run cloud:ssh:mobile-direct:profile",
+      "claimScope": "configuration-only",
+      "status": "unknown",
+      "proves": "local direct-cloud profile inputs are present",
+      "readyEvidence": false
+    },
+    {
+      "id": "bootstrap-dry-run",
+      "command": "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+      "claimScope": "bootstrap-plan-only",
+      "status": "planned",
+      "proves": "public-key-only bootstrap command is well formed",
+      "readyEvidence": false
+    },
+    {
+      "id": "bootstrap-apply",
+      "command": "npm run cloud:ssh:mobile-direct:bootstrap:apply",
+      "claimScope": "remote-bootstrap",
+      "status": "disabled",
+      "proves": "remote VM was bootstrapped with the selected public key and runtime user",
+      "readyEvidence": false
+    },
+    {
+      "id": "ssh-config-plan",
+      "command": "npm run cloud:ssh:mobile-direct:config:plan",
+      "claimScope": "config-plan-only",
+      "status": "planned",
+      "proves": "managed SEIS-SSH block can be rendered without writing local SSH config",
+      "readyEvidence": false
+    },
+    {
+      "id": "ssh-config-install",
+      "command": "npm run cloud:ssh:mobile-direct:config:install",
+      "claimScope": "local-client-config",
+      "status": "disabled",
+      "proves": "local SEIS-SSH managed block is installed",
+      "readyEvidence": false
+    },
+    {
+      "id": "readiness-probe",
+      "command": "npm run cloud:ssh:mobile-direct:probe:strict",
+      "claimScope": "runtime-readiness",
+      "status": "disabled",
+      "proves": "direct-cloud transport, TCP reachability, SSH auth, and remote runtime readiness",
+      "readyEvidence": false
+    },
+    {
+      "id": "handoff-doctor",
+      "command": "npm run cloud:ssh:mobile-direct:doctor:strict",
+      "claimScope": "mobile-24x7-ready",
+      "status": "disabled",
+      "proves": "strict readiness report was written and passed",
+      "readyEvidence": true
+    },
+    {
+      "id": "contract-guard",
+      "command": "npm run check:seis-ssh-mobile-direct-cloud",
+      "claimScope": "governance-contract",
+      "status": "connected",
+      "proves": "repo contract, scripts, docs, ignore rules, and safety invariants are wired",
+      "readyEvidence": false
+    }
+  ],
+  "mobileHandoffChecklist": [
+    {
+      "id": "device-independent-entrypoint",
+      "status": "disabled",
+      "requirement": "ChatGPT mobile/Codex uses the single SEIS-SSH alias and does not depend on the local Mac.",
+      "evidence": "ssh -G SEIS-SSH shows direct-cloud transport without ProxyCommand.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "always-on-cloud-endpoint",
+      "status": "unknown",
+      "requirement": "The SSH endpoint is an always-on public VM or DNS name.",
+      "evidence": "npm run cloud:ssh:mobile-direct:probe:strict passes TCP reachability and SSH auth.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "remote-runtime-ready",
+      "status": "disabled",
+      "requirement": "Remote runtime can serve SEIS work after mobile reconnection.",
+      "evidence": "strict probe reports remote runtime online and SEIS repository present.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "handoff-report-written",
+      "status": "disabled",
+      "requirement": "A reusable readiness report exists for future device migration.",
+      "evidence": "npm run cloud:ssh:mobile-direct:doctor:strict writes reports/seis-ssh-mobile-24x7-readiness.json.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "secret-boundary-preserved",
+      "status": "connected",
+      "requirement": "Private keys, API keys, tokens, and runtime secrets remain outside git.",
+      "evidence": "runtime secrets stay in /etc/seis/ssh-ai.env and local readiness reports remain ignored.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "new-device-replayable",
+      "status": "planned",
+      "requirement": "A new computer can recreate the same mobile SSH entrypoint without copying private runtime state from the old Mac.",
+      "evidence": "bootstrap:plan, config:plan, probe:strict, and doctor:strict commands are documented in the runbook.",
+      "blockingIfMissing": true
+    }
+  ],
+  "historyScanBoundary": {
+    "fullHistoryGate": "GitHub Secret & Vulnerability Scan",
+    "currentKnownFailureSource": "legacy generated bundle in historical commit, not Cloud SSH Center diff",
+    "bypassAllowedByDefault": false,
+    "forbiddenDiffPrefixes": [
+      ".github/workflows/",
+      "sources/",
+      "reports/",
+      "dist/",
+      "build/",
+      "node_modules/"
+    ],
+    "forbiddenHeadPaths": [
+      "sources/github-unified-source/_generated/github-code-bundle.txt"
+    ]
+  },
+  "states": [
+    "connected",
+    "mock",
+    "disabled",
+    "planned",
+    "unknown"
+  ],
+  "surfaces": [
+    {
+      "id": "local-browser-demo",
+      "name": "Local Browser Demo",
+      "status": "connected",
+      "signal": "localStorage",
+      "boundary": "no network",
+      "realBehavior": true,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "github-repository",
+      "name": "GitHub Repository",
+      "status": "mock",
+      "signal": "review-needed",
+      "boundary": "no token",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "codespaces-workspace",
+      "name": "Codespaces Workspace",
+      "status": "planned",
+      "signal": "cloud workspace",
+      "boundary": "approval-needed",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "mac-independent-remote-runtime",
+      "name": "Mac Independent Remote Runtime",
+      "status": "planned",
+      "signal": "cloud runtime",
+      "boundary": "Codespaces can sleep",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "always-on-direct-cloud",
+      "name": "Always-On Direct Cloud",
+      "status": "planned",
+      "signal": "mobile-24x7 strict",
+      "boundary": "direct-cloud required",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "ssh-connection",
+      "name": "SSH Connection",
+      "status": "disabled",
+      "signal": "sshExecuted: false",
+      "boundary": "human gate",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "deployment-pipeline",
+      "name": "Deployment Pipeline",
+      "status": "planned",
+      "signal": "deployExecuted: false",
+      "boundary": "rollback first",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "environment-variables",
+      "name": "Environment Variables",
+      "status": "unknown",
+      "signal": "credentialRead: false",
+      "boundary": "redacted",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "backups",
+      "name": "Backups",
+      "status": "mock",
+      "signal": "restore test needed",
+      "boundary": "no mutation",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "system-health",
+      "name": "System Health",
+      "status": "mock",
+      "signal": "metadata-only",
+      "boundary": "not connected",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "provider-health",
+      "name": "Provider Health",
+      "status": "unknown",
+      "signal": "backend-only future",
+      "boundary": "missing evidence",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    },
+    {
+      "id": "rollback-readiness",
+      "name": "Rollback Readiness",
+      "status": "planned",
+      "signal": "approval-needed",
+      "boundary": "no live run",
+      "realBehavior": false,
+      "remoteMutationAllowed": false
+    }
+  ],
+  "requiredSafetyFlags": {
+    "remoteConnected": false,
+    "sshExecuted": false,
+    "deployExecuted": false,
+    "credentialRead": false,
+    "secretStored": false,
+    "serverPortChanged": false,
+    "mobile24x7Ready": false,
+    "directCloudRequired": true,
+    "rollbackRequired": true
+  },
+  "forbiddenClaims": [
+    "live SSH is connected",
+    "deployment executed",
+    "credential read",
+    "server or port changed",
+    "provider health verified",
+    "backup restore verified"
+  ],
+  "approvalGates": [
+    "execute-live-ssh",
+    "read-credentials",
+    "change-server-or-port",
+    "deploy",
+    "provision-cloud",
+    "restore-backup",
+    "publish-readiness-claim"
+  ]
+}

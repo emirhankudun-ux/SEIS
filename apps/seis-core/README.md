@@ -7,6 +7,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 - `index.html`: semantic app shell, sidebar navigation, command-center modules, dialogs, and accessible landmarks.
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
 - `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
+- `cloud-ssh-center.html`: browser-local Cloud / SSH Center for public-safe remote readiness planning.
 - `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
@@ -17,6 +18,9 @@ apps/seis-core/
   index.html
   styles.css
   script.js
+  cloud-ssh-center.html
+  cloud-ssh-center.css
+  cloud-ssh-center.js
   icon.svg
   manifest.webmanifest
   README.md
@@ -43,6 +47,7 @@ apps/seis-core/
 
 - App shell: sidebar, topbar, workspace grid, inspector.
 - Dashboard: metrics, operations readiness, active goals, recent activity, repository health, architecture alerts, and recommended actions.
+- Cloud / SSH Center: linked from dashboard recommended actions for local-only SSH/cloud readiness planning.
 - God Mode: mission composer, live route preview, SEIS AI setup matrix, 10-lane router ledger, execution protocol, run timeline, guardrails, artifacts, and feature growth ledger for controlled custom AI development.
 - Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
 - Goals: creation form, editable status actions, risk and next-action fields.
@@ -78,6 +83,7 @@ apps/seis-core/
 - Inspect architecture dependency graph, module contracts, and technical debt register.
 - Inspect knowledge graph nodes, memory freshness, decision history, and reusable implementation patterns.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
+- Open the Cloud / SSH Center route from dashboard recommended actions without running SSH, deploys, or credential reads.
 - Use command palette with `Command/Ctrl + K`.
 - Persist state in `localStorage`.
 - Support desktop and mobile layouts.
