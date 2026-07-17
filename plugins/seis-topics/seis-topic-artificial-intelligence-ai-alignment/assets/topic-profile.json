@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-artificial-intelligence-ai-alignment",
+  "displayName": "AI Alignment",
+  "category": "Artificial Intelligence",
+  "categoryId": "artificial-intelligence",
+  "kind": "objective-topic",
+  "sourceText": "AI Alignment",
+  "directiveNormalized": false,
+  "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-alignment",
+  "marketplace": "seis-repo",
+  "installId": "seis-topic-artificial-intelligence-ai-alignment@seis-repo",
+  "version": "0.1.0",
+  "status": "public-repository-preview",
+  "maturity": "prototype",
+  "publicMarketplace": true,
+  "publicAudience": "everyone",
+  "license": "MIT",
+  "liveRuntimeStatus": "local-demo-only",
+  "permissions": {
+    "read": [
+      "bounded local repository evidence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "node plugins/seis-topics/seis-topic-artificial-intelligence-ai-alignment/scripts/seis-topic-artificial-intelligence-ai-alignment-mcp-server.mjs --status",
+    "npm run check:seis-topic-plugin-family"
+  ],
+  "limitations": [
+    "Marketplace availability does not grant authenticated provider, cloud, GitHub, SSH, connector, or deployment access.",
+    "Repository-shape reports are evidence aids, not release, security, or integration approval."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-memory-systems": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-memory-systems-mcp-server.mjs"
+      ]
+    }
+  }
+}

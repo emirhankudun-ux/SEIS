@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-design-localization": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-design-localization-mcp-server.mjs"
+      ]
+    }
+  }
+}

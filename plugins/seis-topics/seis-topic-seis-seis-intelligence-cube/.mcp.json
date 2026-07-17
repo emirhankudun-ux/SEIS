@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-intelligence-cube": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-intelligence-cube-mcp-server.mjs"
+      ]
+    }
+  }
+}

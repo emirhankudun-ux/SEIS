@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-neural-networks": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-neural-networks-mcp-server.mjs"
+      ]
+    }
+  }
+}

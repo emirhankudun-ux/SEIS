@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-ai-safety": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-ai-safety-mcp-server.mjs"
+      ]
+    }
+  }
+}

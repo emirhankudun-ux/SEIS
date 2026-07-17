@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-knowledge-engine": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-knowledge-engine-mcp-server.mjs"
+      ]
+    }
+  }
+}

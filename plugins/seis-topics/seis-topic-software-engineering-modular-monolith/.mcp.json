@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-modular-monolith": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-modular-monolith-mcp-server.mjs"
+      ]
+    }
+  }
+}

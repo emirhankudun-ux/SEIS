@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-prompt-engineering": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-prompt-engineering-mcp-server.mjs"
+      ]
+    }
+  }
+}

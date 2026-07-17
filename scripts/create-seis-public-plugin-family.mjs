@@ -3,10 +3,21 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import {
+  TOPIC_PLUGIN_SOURCE_ROOT,
+  TOPIC_PLUGIN_TARGET,
+  assertTopicObjective,
+  flattenTopicObjective,
+  readTopicObjective,
+} from "../plugins/seis-topics/runtime/topic-definitions.mjs";
+
 const ROOT = process.cwd();
 const checkMode = process.argv.includes("--check");
 const GENERATED_AT = "2026-07-12";
 const UNIFIED_RELEASE_VERSION = "0.3.0+codex.20260712";
+const topicObjective = readTopicObjective(ROOT);
+const topicDefinitions = flattenTopicObjective(topicObjective);
+assertTopicObjective(topicObjective, topicDefinitions);
 
 const publicPlugins = [
   {
@@ -202,7 +213,10 @@ const reportPath = "reports/seis-public-plugin-family.md";
 const materializedPlugins = publicPlugins.filter((plugin) => plugin.materialize);
 const publicMarketplacePlugins = publicPlugins.filter((plugin) => plugin.name === "seis-ai-agent");
 const applicationMarketplacePlugins = discoverApplicationMarketplacePlugins();
-const marketplacePlugins = [...publicMarketplacePlugins, ...applicationMarketplacePlugins];
+const topicMarketplacePlugins = discoverTopicMarketplacePlugins();
+if (applicationMarketplacePlugins.length !== 60) throw new Error(`Expected 60 app marketplace packages; found ${applicationMarketplacePlugins.length}`);
+if (topicMarketplacePlugins.length !== TOPIC_PLUGIN_TARGET) throw new Error(`Expected ${TOPIC_PLUGIN_TARGET} topic marketplace packages; found ${topicMarketplacePlugins.length}`);
+const marketplacePlugins = [...publicMarketplacePlugins, ...applicationMarketplacePlugins, ...topicMarketplacePlugins];
 
 const marketplace = {
   name: "seis-repo",
@@ -227,9 +241,9 @@ const contract = {
   version: 3,
   id: "seis-public-plugin-family",
   generatedAt: GENERATED_AT,
-  mode: "public_seis_agent_with_public_app_repository_plugins",
+  mode: "public_seis_agent_with_public_app_and_topic_repository_plugins",
   summary:
-    "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes the 60 app-owned MIT packages directly from the public SEIS repository marketplace. The specialist lanes remain embedded source modules inside SEIS-Agent.",
+    "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes 60 app-owned MIT packages plus 300 objective-derived topic packages directly from the public SEIS repository marketplace. The specialist lanes remain embedded source modules inside SEIS-Agent.",
   defaultInstall: {
     installId: "seis-ai-agent@seis-repo",
     mode: "single-public-plugin",
@@ -245,6 +259,7 @@ const contract = {
     publicPluginCount: marketplace.plugins.length,
     canonicalOrchestratorCount: publicMarketplacePlugins.length,
     applicationPluginCount: applicationMarketplacePlugins.length,
+    topicPluginCount: topicMarketplacePlugins.length,
     entries: marketplace.plugins.map((entry) => ({
       name: entry.name,
       sourcePath: entry.source.path,
@@ -262,12 +277,26 @@ const contract = {
     publicStatus: "repo_marketplace_available",
     liveRuntimeStatus: "local_demo_or_auth_gated",
   })),
+  topicPlugins: topicMarketplacePlugins.map((plugin) => ({
+    name: plugin.name,
+    displayName: plugin.displayName,
+    sourcePath: plugin.sourcePath,
+    category: plugin.category,
+    installId: `${plugin.name}@seis-repo`,
+    license: "MIT",
+    publicStatus: "repo_marketplace_available",
+    publicAudience: "everyone",
+    liveRuntimeStatus: "local_demo_only",
+    sourceKind: "objective-derived-topic",
+  })),
   seisAiConnection: {
     orchestrator: "seis-ai-agent@seis-repo",
     mcpServer: "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
     connectedLanes: publicPlugins.map((plugin) => plugin.name),
     embeddedSkillSource: "plugins/seis-ai-agent/skills",
     embeddedLaneProfiles: "plugins/seis-ai-agent/assets/lanes",
+    topicPluginSourceRoot: TOPIC_PLUGIN_SOURCE_ROOT,
+    topicPluginCount: topicMarketplacePlugins.length,
   },
   securityModel: {
     secrets: "no_secrets_credentials_tokens_env_values_private_keys_or_cookies_are_committed_or_required_for_core_demo",
@@ -278,8 +307,9 @@ const contract = {
   },
   longHorizonGovernance: [
     "Keep SEIS-Agent as the canonical orchestration layer for cross-lane work.",
-    "Keep source modules under plugins/seis-* embedded in SEIS-Agent, not exposed as separate public marketplace plugins.",
+    "Keep specialist source modules under plugins/seis-ai-agent embedded in SEIS-Agent, not exposed as separate public marketplace plugins.",
     "Keep every app-owned package under plugins/seis-core available as a public MIT package in the seis-repo marketplace.",
+    "Keep every objective-derived package under plugins/seis-topics available as a public MIT package in the seis-repo marketplace.",
     "Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.",
     "Validate manifests, MCP tools, marketplace entries, and SEIS-AI lane wiring before claiming public readiness.",
     "Record mock, disabled, planned, and connected states honestly.",
@@ -315,6 +345,7 @@ const contract = {
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",
     "npm run check:seis-plugin-bundle -- --no-local",
+    "npm run check:seis-topic-plugin-family",
     ...publicPlugins.map((plugin) => plugin.validation),
   ],
 };
@@ -368,6 +399,19 @@ const markdown = [
   `- MCP server: ${contract.seisAiConnection.mcpServer}`,
   `- Embedded skills: ${contract.seisAiConnection.embeddedSkillSource}`,
   `- Embedded lane profiles: ${contract.seisAiConnection.embeddedLaneProfiles}`,
+  `- Objective-derived topic source root: ${contract.seisAiConnection.topicPluginSourceRoot}`,
+  `- Objective-derived topic packages: ${contract.seisAiConnection.topicPluginCount}`,
+  "- Topic packages are separate public repository cards; the canonical default install remains SEIS-Agent.",
+  "",
+  "## Objective-Derived Topic Packages",
+  "",
+  `- Marketplace entries: ${contract.marketplace.topicPluginCount}`,
+  "- Source root: plugins/seis-topics",
+  "- Objective source: content/development/seis-topic-plugin-objective.json",
+  "- Audience: everyone",
+  "- License: MIT",
+  "- Runtime: local read-only demo; no provider, network, secret, or write access.",
+  "- Package family check: npm run check:seis-topic-plugin-family",
   "",
   "## Security Model",
   "",
@@ -446,6 +490,32 @@ function discoverApplicationMarketplacePlugins() {
         name: manifest.name || entry.name,
         sourcePath: `./plugins/seis-core/${entry.name}`,
         category: manifest.interface?.category || profile.category || "Developer",
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => left.name.localeCompare(right.name));
+}
+
+function discoverTopicMarketplacePlugins() {
+  const sourceRoot = path.join(ROOT, TOPIC_PLUGIN_SOURCE_ROOT);
+  const definitionsById = new Map(topicDefinitions.map((topic) => [topic.id, topic]));
+  if (!fs.existsSync(sourceRoot)) return [];
+  return fs.readdirSync(sourceRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && entry.name !== "runtime")
+    .map((entry) => {
+      const pluginRoot = path.join(sourceRoot, entry.name);
+      const manifestPath = path.join(pluginRoot, ".codex-plugin", "plugin.json");
+      const profilePath = path.join(pluginRoot, "assets", "topic-profile.json");
+      const definition = definitionsById.get(entry.name);
+      if (!definition || !fs.existsSync(manifestPath) || !fs.existsSync(profilePath)) return null;
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+      const profile = JSON.parse(fs.readFileSync(profilePath, "utf8"));
+      return {
+        name: manifest.name || entry.name,
+        displayName: manifest.interface?.displayName || `SEIS ${definition.displayName}`,
+        sourcePath: `./${TOPIC_PLUGIN_SOURCE_ROOT}/${entry.name}`,
+        category: manifest.interface?.category || profile.category || definition.category,
+        definition,
       };
     })
     .filter(Boolean)

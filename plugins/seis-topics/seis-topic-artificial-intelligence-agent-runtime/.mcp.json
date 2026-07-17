@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-agent-runtime": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-agent-runtime-mcp-server.mjs"
+      ]
+    }
+  }
+}

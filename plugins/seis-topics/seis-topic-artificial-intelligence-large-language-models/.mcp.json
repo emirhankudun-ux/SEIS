@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-large-language-models": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-large-language-models-mcp-server.mjs"
+      ]
+    }
+  }
+}

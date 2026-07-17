@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-reasoning-models": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-reasoning-models-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cloud-computing-metrics": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cloud-computing-metrics-mcp-server.mjs"
+      ]
+    }
+  }
+}

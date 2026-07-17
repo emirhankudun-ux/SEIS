@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-ai-evaluation": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-ai-evaluation-mcp-server.mjs"
+      ]
+    }
+  }
+}

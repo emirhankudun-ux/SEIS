@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-graphics-composition": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-graphics-composition-mcp-server.mjs"
+      ]
+    }
+  }
+}

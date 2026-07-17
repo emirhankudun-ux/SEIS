@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-quality-assurance": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-quality-assurance-mcp-server.mjs"
+      ]
+    }
+  }
+}

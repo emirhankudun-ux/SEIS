@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-encryption": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-encryption-mcp-server.mjs"
+      ]
+    }
+  }
+}

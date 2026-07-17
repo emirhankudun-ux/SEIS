@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-lifestyle": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-lifestyle-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1627,6 +1627,7 @@ export function publicPluginFamilyStatus(repoRoot, options = {}) {
     const familyPlugins = Array.isArray(family.plugins) ? family.plugins : [];
     const publicFamilyPlugins = Array.isArray(family.publicPlugins) ? family.publicPlugins : [];
     const familyModules = Array.isArray(family.embeddedModules) ? family.embeddedModules : [];
+    const topicPlugins = Array.isArray(family.topicPlugins) ? family.topicPlugins : [];
     const marketplaceEntries = Array.isArray(family.marketplace?.entries) ? family.marketplace.entries : [];
     const plugins = (publicFamilyPlugins.length ? publicFamilyPlugins : (familyPlugins.length ? familyPlugins : marketplaceEntries)).map((plugin) => {
       const name = plugin.name;
@@ -1682,6 +1683,8 @@ export function publicPluginFamilyStatus(repoRoot, options = {}) {
         integration.embeddedModuleCount === embeddedModules.length &&
         (canonicalization?.effectivePluginCount ?? plugins.length) === plugins.length,
       publicPluginCount: plugins.length,
+      topicPluginCount: topicPlugins.length,
+      topicPluginSourceRoot: topicPlugins[0]?.sourcePath?.split("/").slice(0, 3).join("/") || null,
       embeddedModuleCount: embeddedModules.length,
       effectivePluginCount: canonicalization?.effectivePluginCount ?? plugins.length,
       legacyAliasCount: canonicalization?.legacyAliasCount ?? 0,

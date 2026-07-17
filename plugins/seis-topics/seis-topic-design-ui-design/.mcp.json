@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-design-ui-design": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-design-ui-design-mcp-server.mjs"
+      ]
+    }
+  }
+}

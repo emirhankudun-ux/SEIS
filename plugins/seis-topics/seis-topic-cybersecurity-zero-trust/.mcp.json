@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-zero-trust": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-zero-trust-mcp-server.mjs"
+      ]
+    }
+  }
+}

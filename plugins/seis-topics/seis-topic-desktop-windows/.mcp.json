@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-desktop-windows": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-desktop-windows-mcp-server.mjs"
+      ]
+    }
+  }
+}

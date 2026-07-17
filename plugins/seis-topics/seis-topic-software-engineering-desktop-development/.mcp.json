@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-desktop-development": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-desktop-development-mcp-server.mjs"
+      ]
+    }
+  }
+}

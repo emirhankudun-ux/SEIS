@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-spatial-computing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-spatial-computing-mcp-server.mjs"
+      ]
+    }
+  }
+}

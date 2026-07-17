@@ -1,0 +1,42 @@
+{
+  "name": "seis-topic-artificial-intelligence-ai-agents",
+  "version": "0.1.0",
+  "description": "Public SEIS topic plugin for AI Agents in the Artificial Intelligence lane. It provides bounded, read-only repository evidence and planning context without provider, network, secret, or write access.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "topic",
+    "artificial-intelligence",
+    "read-only",
+    "repository-evidence",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS AI Agents",
+    "shortDescription": "Read-only AI Agents topic lane.",
+    "longDescription": "Public SEIS topic plugin for AI Agents in the Artificial Intelligence lane. It provides bounded, read-only repository evidence and planning context without provider, network, secret, or write access.",
+    "developerName": "emirhankudun-ux",
+    "category": "Artificial Intelligence",
+    "capabilities": [
+      "Bounded repository evidence",
+      "Topic-focused planning context",
+      "Read-only status reporting",
+      "MCP status and report tools",
+      "Explicit safety boundaries"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS AI Agents to inspect this repository surface.",
+      "Report bounded evidence for the AI Agents topic."
+    ],
+    "brandColor": "#0F766E"
+  }
+}

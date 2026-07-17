@@ -51,7 +51,8 @@ const embeddedModules = (family.embeddedModules || family.plugins || []).map((mo
   installId: module.canonicalInstallId || "seis-ai-agent@seis-repo",
   sourceKind: "embedded-source-module",
 }));
-const reviewedUnits = [...plugins, ...embeddedModules];
+const topicPlugins = (family.topicPlugins || []).map((plugin) => reviewPlugin({ ...plugin, sourceKind: "public-topic-package" }));
+const reviewedUnits = [...plugins, ...embeddedModules, ...topicPlugins];
 const secretFindings = reviewedUnits.flatMap((plugin) => plugin.secretFindings);
 const blockingFindings = reviewedUnits.flatMap((plugin) => plugin.blockingFindings);
 const hygieneFindings = reviewedUnits.flatMap((plugin) => plugin.hygieneFindings);
@@ -72,10 +73,11 @@ const review = {
   unifiedSuite: unifiedSuitePath,
   publicReleaseAllowed: false,
   scope:
-    "Repo-local security and provenance review for the single public SEIS-Agent plugin and all embedded SEIS source modules before any public preview, publication, deployment, push, merge, tag, or release claim.",
+    "Repo-local security and provenance review for the single public SEIS-Agent plugin, all embedded SEIS source modules, and all objective-derived topic packages before any public preview, publication, deployment, push, merge, tag, or release claim.",
   evidenceInputs: {
     publicPluginCount: plugins.length,
     embeddedModuleCount: embeddedModules.length,
+    topicPluginCount: topicPlugins.length,
     lifecycleStatus: lifecycle.status,
     freshTaskReloadEvidenceStatus: reloadEvidence.status,
     freshTaskProofReloadEvidenceStatus: freshTaskProof.reloadEvidence?.status || null,
@@ -90,6 +92,7 @@ const review = {
     "Every reviewed unit has a README.md and .mcp.json.",
     "Every MCP server command uses node with repo-local script arguments.",
     "The one-file unified suite contains every current source module, uses SEIS-Agent as the single public install, and does not mutate personal marketplace entries.",
+    "Every objective-derived topic package has a repo-local MIT manifest, README, MCP boundary, and no write, network, or secret permission.",
     "No high-confidence secret patterns are present in scanned plugin text files.",
     "Public availability does not imply live cloud, SSH, provider, private data, GitHub write, deploy, merge, tag, or publish authority.",
     "Provenance is repo-local and release remains human-approved.",
@@ -99,6 +102,8 @@ const review = {
     reviewedPluginCount: plugins.filter((plugin) => plugin.reviewStatus === "pass").length,
     embeddedModuleCount: embeddedModules.length,
     reviewedEmbeddedModuleCount: embeddedModules.filter((module) => module.reviewStatus === "pass").length,
+    topicPluginCount: topicPlugins.length,
+    reviewedTopicPluginCount: topicPlugins.filter((plugin) => plugin.reviewStatus === "pass").length,
     secretFindingCount: secretFindings.length,
     blockingFindingCount: blockingFindings.length,
     hygieneFindingCount: hygieneFindings.length,
@@ -125,11 +130,13 @@ const review = {
   ],
   plugins,
   embeddedModules,
+  topicPlugins,
   qualityGates: [
     "npm run check:seis-public-plugin-security-provenance-review",
     "npm run check:seis-public-plugin-fresh-task-proof",
     "npm run check:seis-public-plugin-fresh-task-reload-evidence",
     "npm run check:seis-public-plugin-external-install-proof",
+    "npm run check:seis-topic-plugin-matrix",
     "npm run check:seis-unified-plugin-suite",
     "npm run check:seis-public-plugin-install-smoke:local:mcp",
     "npm run check:seis-agent-plugin-integration",
@@ -263,6 +270,8 @@ function validateReview(review, report) {
   if (review.aggregate.pluginCount !== 1) failures.push("review must cover only the public SEIS-Agent plugin");
   if (review.aggregate.embeddedModuleCount < 10) failures.push("review must cover every current embedded source module");
   if (review.aggregate.reviewedEmbeddedModuleCount !== review.aggregate.embeddedModuleCount) failures.push("every embedded source module must pass review");
+  if (review.aggregate.topicPluginCount !== family.topicPlugins.length) failures.push("review must cover every objective-derived topic package");
+  if (review.aggregate.reviewedTopicPluginCount !== review.aggregate.topicPluginCount) failures.push("every objective-derived topic package must pass review");
   if (review.aggregate.blockingFindingCount !== 0) failures.push("blocking findings must be zero for internal review");
   if (review.aggregate.secretFindingCount !== 0) failures.push("secret findings must be zero for internal review");
   if (review.evidenceInputs.unifiedSuiteComponentCount < 10) failures.push("unified suite must contain every current SEIS component");
@@ -286,6 +295,9 @@ function renderReport(review) {
     .join("\n");
   const moduleRows = review.embeddedModules
     .map((module) => `| ${module.name} | ${module.installId} | ${module.reviewStatus} | ${module.provenance.manifestLicense || "n/a"} | ${module.secretFindings.length} |`)
+    .join("\n");
+  const topicRows = review.topicPlugins
+    .map((plugin) => `| ${plugin.name} | ${plugin.installId} | ${plugin.reviewStatus} | ${plugin.provenance.manifestLicense || "n/a"} | ${plugin.mcpServers.length} | ${plugin.secretFindings.length} |`)
     .join("\n");
   const hygieneRows = review.findings.hygiene.length
     ? review.findings.hygiene.map((item) => `| ${item.plugin} | ${item.id} | ${item.path} | ${item.detail} |`).join("\n")
@@ -314,6 +326,12 @@ ${pluginRows}
 | module | canonical install | review | license | secrets |
 | --- | --- | --- | --- | --- |
 ${moduleRows}
+
+## Objective-Derived Topic Package Review
+
+| package | install id | review | license | MCP servers | secrets |
+| --- | --- | --- | --- | --- | --- |
+${topicRows}
 
 ## Blocking Findings
 

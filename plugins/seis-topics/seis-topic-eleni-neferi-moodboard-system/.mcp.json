@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-moodboard-system": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-moodboard-system-mcp-server.mjs"
+      ]
+    }
+  }
+}

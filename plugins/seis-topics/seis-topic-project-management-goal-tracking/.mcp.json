@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-goal-tracking": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-goal-tracking-mcp-server.mjs"
+      ]
+    }
+  }
+}

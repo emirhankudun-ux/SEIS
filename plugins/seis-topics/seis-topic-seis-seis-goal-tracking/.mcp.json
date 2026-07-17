@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-goal-tracking": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-goal-tracking-mcp-server.mjs"
+      ]
+    }
+  }
+}

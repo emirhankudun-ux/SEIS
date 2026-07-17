@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-interpreters": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-interpreters-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -50,6 +50,7 @@ const publicPlugins = (publicFamily.publicPlugins || []).map((plugin) => {
   };
 });
 const applicationPluginCount = publicFamily.applicationPlugins?.length || 0;
+const topicPluginCount = publicFamily.topicPlugins?.length || 0;
 const repoMarketplaceEntryCount = marketplace.plugins?.length || 0;
 const embeddedModules = (publicFamily.embeddedModules || publicFamily.plugins || []).map((module) => {
   const manifest = readJson(path.join(module.sourcePath, ".codex-plugin", "plugin.json"));
@@ -228,7 +229,7 @@ const lifecycle = {
   independentRunnerEvidenceIntake,
   marketplace: marketplacePath,
   purpose:
-    "Keep the canonical public SEIS-Agent suite, its embedded SEIS source modules, and the 60 public app package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+    "Keep the canonical public SEIS-Agent suite, its embedded SEIS source modules, the 60 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
   publicAudience: "everyone",
   orchestrator: "seis-ai-agent@seis-repo",
   publicDistribution: {
@@ -239,6 +240,7 @@ const lifecycle = {
     marketplaceName: publicFamily.marketplace?.name || "seis-repo",
     repoMarketplaceEntryCount,
     applicationPluginCount,
+    topicPluginCount,
   },
   releasePolicy: {
     currentChannel: "internal-review-local-proof",
@@ -370,6 +372,7 @@ function validateLifecycle(contract) {
   if (contract.publicDistribution?.marketplaceName !== "seis-repo") failures.push("lifecycle must identify the seis-repo marketplace");
   if (contract.publicDistribution?.repoMarketplaceEntryCount !== repoMarketplaceEntryCount) failures.push("lifecycle marketplace count must match the repo marketplace");
   if (contract.publicDistribution?.applicationPluginCount !== applicationPluginCount) failures.push("lifecycle app package count must match the public family");
+  if (contract.publicDistribution?.topicPluginCount !== topicPluginCount) failures.push("lifecycle topic package count must match the public family");
   if (contract.orchestrator !== "seis-ai-agent@seis-repo") failures.push("orchestrator must be seis-ai-agent@seis-repo");
   if (contract.freshTaskProofContract !== freshTaskProofPath) failures.push("lifecycle must point at the fresh-task proof contract");
   if (contract.freshTaskReloadEvidence !== freshTaskReloadEvidencePath) failures.push("lifecycle must point at the fresh-task reload evidence contract");
@@ -474,6 +477,7 @@ ${moduleRows}
 - Total entries: ${contract.publicDistribution.repoMarketplaceEntryCount}
 - Canonical orchestrator entries: ${contract.publicDistribution.publicPluginCount}
 - App package entries: ${contract.publicDistribution.applicationPluginCount}
+- Objective-derived topic entries: ${contract.publicDistribution.topicPluginCount}
 
 ## Independent Runner Evidence
 

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-desktop-ipados": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-desktop-ipados-mcp-server.mjs"
+      ]
+    }
+  }
+}

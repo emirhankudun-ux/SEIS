@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-desktop-cross-platform": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-desktop-cross-platform-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-identity-bible": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-identity-bible-mcp-server.mjs"
+      ]
+    }
+  }
+}

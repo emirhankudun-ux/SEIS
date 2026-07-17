@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-profiling": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-profiling-mcp-server.mjs"
+      ]
+    }
+  }
+}

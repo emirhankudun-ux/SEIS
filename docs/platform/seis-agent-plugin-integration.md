@@ -101,7 +101,9 @@ application:
 - current app-owned source count: 60
 - public audience: everyone; source license: MIT
 - public marketplace: `.agents/plugins/marketplace.json` (`seis-repo`)
-- public marketplace entries: 61 total — 1 canonical SEIS-Agent plus 60 app packages
+- public marketplace entries: 361 total — 1 canonical SEIS-Agent, 60 app packages, and 300 objective-derived topic packages
+- objective-derived topic source root: `plugins/seis-topics`
+- objective taxonomy: `content/development/seis-topic-plugin-objective.json`
 - direct repo surface: `apps/seis-core` reads and activates these packages through the bounded local catalog
 
 `packages/seis-ai` remains the core contract, permission, registry, and
@@ -121,6 +123,12 @@ source packages for the Command Center application:
 Each app-owned package also has its own public marketplace identity in the same
 repo marketplace: `<plugin-name>@seis-repo`, sourced from
 `plugins/seis-core/<plugin-name>`.
+
+The objective-derived topic family is also published directly in the same repo
+marketplace: 300 MIT packages under `plugins/seis-topics/<topic-id>`, sourced
+from `content/development/seis-topic-plugin-objective.json`. These cards are
+public repository packages with local read-only demo runtimes; they do not
+replace the canonical SEIS-Agent install or imply live external access.
 
 Its embedded source modules are preserved in the repository and exposed through
 the installed agent:
@@ -143,8 +151,8 @@ The one-file suite installed by default is
 SEIS public component, the shared `0.3.0+codex.20260712` release version, the
 60 app-owned `plugins/seis-core/*` source packages, canonical
 `seis-ai-agent@seis-repo` install id, and the future plugin intake rules. A
-new public `plugins/seis-*` manifest must be registered as an embedded source
-module. A new package for the user's Command Center application must be
+new embedded specialist `plugins/seis-*` manifest must be registered as an
+embedded source module. A new package for the user's Command Center application must be
 created under `plugins/seis-core/<plugin-name>`, regenerated into the app
 inventory/catalog, and covered by the app-owned section of this suite.
 The canonical alias contract is
@@ -191,14 +199,19 @@ and long-horizon development; they are not standalone installation targets.
 The app-owned packages remain under `plugins/seis-core` as public MIT-licensed
 repository sources for everyone to use through `apps/seis-core`; they do not
 transfer source ownership into `packages/seis-ai` or personal plugin roots.
+The objective-derived packages remain under `plugins/seis-topics` with their
+own package-local read-only runtime and are validated separately from the
+60-package app release train.
 
 Validate the generated suite with `npm run check:seis-unified-plugin-suite`.
-The discovery rules cover both `plugins/seis-*` and
-`plugins/seis-core/*/.codex-plugin/plugin.json`: new public modules join the
-one SEIS-Agent suite, while new Command Center packages join the app-owned
-repo-source inventory. Neither path creates another default install target.
+The discovery rules cover embedded `plugins/seis-*` sources, while the
+explicit `plugins/seis-core/*/.codex-plugin/plugin.json` and
+`plugins/seis-topics/*/.codex-plugin/plugin.json` families publish direct
+repository cards. Neither package family creates another default install
+target.
 The machine-readable modes are `single-public-plugin` for the canonical
 orchestrator and `repo-source-app` for the public app packages.
+Topic packages use `public-repository-preview` and `local-read-only-demo`.
 
 ## Fresh Task Reload Proof
 
@@ -292,7 +305,7 @@ The SEIS Agent also includes two runtime lanes to validate plugin and MCP surfac
 - Treat `seis-ai-agent@seis-repo` as the single default orchestrator install.
 - Keep `seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`, `seis-security`, `seis-research`, `seis-automation`, and `seis-product` as embedded source modules inside the one public suite, never as separate public installs.
 - Keep `seis@personal`, `seis-cloud@personal`, `seis-code@personal`, `seis-design@personal`, and `seis-data@personal` as preserved aliases only.
-- Route every new `plugins/seis-*` package through `assets/unified-suite.json`, SEIS AI status, MCP routing, the suite generator, and its shared release version before treating it as an embedded SEIS capability.
+- Route every new embedded specialist `plugins/seis-*` package through `assets/unified-suite.json`, SEIS AI status, MCP routing, the suite generator, and its shared release version before treating it as an embedded SEIS capability; objective-derived `plugins/seis-topics` cards use their own taxonomy and read-only runtime checks.
 - Keep `seis-plugin-runtime` and `seis-mcp-runtime` embedded under SEIS-Agent for runtime contract evidence.
 - Keep public repository plugin source packages under `plugins/seis-core`; keep `packages/seis-ai` limited to contracts, registry metadata, permission policy, and read-only inspection.
 - Keep the 60 app-owned packages on one gradual shared release ladder; the current release is `0.000000013`, large-code changes advance exactly one micro/revision step, annual updates advance one major step, and the supported range ends at `45.0000` without bulk jumps.

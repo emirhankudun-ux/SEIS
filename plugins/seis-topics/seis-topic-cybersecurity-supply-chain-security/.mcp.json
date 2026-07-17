@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-supply-chain-security": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-supply-chain-security-mcp-server.mjs"
+      ]
+    }
+  }
+}

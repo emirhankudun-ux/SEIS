@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-information-security": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-information-security-mcp-server.mjs"
+      ]
+    }
+  }
+}

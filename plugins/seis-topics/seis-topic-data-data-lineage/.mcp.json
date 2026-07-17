@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-data-lineage": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-data-lineage-mcp-server.mjs"
+      ]
+    }
+  }
+}

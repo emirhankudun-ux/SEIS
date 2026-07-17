@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-story-universe": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-story-universe-mcp-server.mjs"
+      ]
+    }
+  }
+}

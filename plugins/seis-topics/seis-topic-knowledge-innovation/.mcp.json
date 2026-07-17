@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-innovation": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-innovation-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cloud-computing-kubernetes": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cloud-computing-kubernetes-mcp-server.mjs"
+      ]
+    }
+  }
+}

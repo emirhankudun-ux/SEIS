@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-robotics": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-robotics-mcp-server.mjs"
+      ]
+    }
+  }
+}

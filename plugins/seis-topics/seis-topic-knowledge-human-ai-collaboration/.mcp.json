@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-human-ai-collaboration": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-human-ai-collaboration-mcp-server.mjs"
+      ]
+    }
+  }
+}

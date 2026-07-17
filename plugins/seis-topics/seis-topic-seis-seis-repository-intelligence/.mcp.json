@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-repository-intelligence": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-repository-intelligence-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-version-control": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-version-control-mcp-server.mjs"
+      ]
+    }
+  }
+}

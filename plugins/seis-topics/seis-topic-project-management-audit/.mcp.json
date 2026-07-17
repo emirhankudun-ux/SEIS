@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-audit": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-audit-mcp-server.mjs"
+      ]
+    }
+  }
+}

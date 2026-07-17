@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-future-technologies": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-future-technologies-mcp-server.mjs"
+      ]
+    }
+  }
+}

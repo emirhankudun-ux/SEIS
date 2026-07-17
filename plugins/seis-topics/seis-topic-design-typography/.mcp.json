@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-design-typography": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-design-typography-mcp-server.mjs"
+      ]
+    }
+  }
+}

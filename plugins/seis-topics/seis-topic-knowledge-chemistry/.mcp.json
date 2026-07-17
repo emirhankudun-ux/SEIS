@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-chemistry": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-chemistry-mcp-server.mjs"
+      ]
+    }
+  }
+}

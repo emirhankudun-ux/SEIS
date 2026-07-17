@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-iot": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-iot-mcp-server.mjs"
+      ]
+    }
+  }
+}

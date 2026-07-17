@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-creative-production-story-world": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-creative-production-story-world-mcp-server.mjs"
+      ]
+    }
+  }
+}

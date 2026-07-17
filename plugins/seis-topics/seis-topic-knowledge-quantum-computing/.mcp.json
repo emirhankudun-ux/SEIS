@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-quantum-computing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-quantum-computing-mcp-server.mjs"
+      ]
+    }
+  }
+}

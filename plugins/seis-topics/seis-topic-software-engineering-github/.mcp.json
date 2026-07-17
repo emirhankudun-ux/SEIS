@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-github": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-github-mcp-server.mjs"
+      ]
+    }
+  }
+}

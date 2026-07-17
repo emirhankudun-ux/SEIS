@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-command-center": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-command-center-mcp-server.mjs"
+      ]
+    }
+  }
+}

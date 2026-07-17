@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-ai-core": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-ai-core-mcp-server.mjs"
+      ]
+    }
+  }
+}

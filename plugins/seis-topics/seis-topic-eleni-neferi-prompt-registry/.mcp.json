@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-prompt-registry": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-prompt-registry-mcp-server.mjs"
+      ]
+    }
+  }
+}

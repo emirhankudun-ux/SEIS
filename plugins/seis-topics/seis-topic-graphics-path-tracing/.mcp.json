@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-graphics-path-tracing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-graphics-path-tracing-mcp-server.mjs"
+      ]
+    }
+  }
+}

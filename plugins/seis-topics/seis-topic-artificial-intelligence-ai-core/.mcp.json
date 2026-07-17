@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-ai-core": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-ai-core-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-evidence": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-evidence-mcp-server.mjs"
+      ]
+    }
+  }
+}

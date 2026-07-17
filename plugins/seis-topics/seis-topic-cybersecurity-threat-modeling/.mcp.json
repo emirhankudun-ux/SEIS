@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-threat-modeling": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-threat-modeling-mcp-server.mjs"
+      ]
+    }
+  }
+}

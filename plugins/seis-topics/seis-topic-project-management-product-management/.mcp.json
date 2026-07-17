@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-product-management": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-product-management-mcp-server.mjs"
+      ]
+    }
+  }
+}

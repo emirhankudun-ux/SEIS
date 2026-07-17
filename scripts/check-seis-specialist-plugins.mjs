@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+import { TOPIC_PLUGIN_SOURCE_ROOT, TOPIC_PLUGIN_TARGET } from "../plugins/seis-topics/runtime/topic-definitions.mjs";
 
 const ROOT = process.cwd();
 const args = parseArgs(process.argv.slice(2));
@@ -510,8 +511,10 @@ function validateMarketplace(marketplacePath, label, expectedName) {
 
   if (expectedName === "seis-repo") {
     const applicationEntries = marketplace.plugins.filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/"));
+    const topicEntries = marketplace.plugins.filter((plugin) => plugin?.source?.path?.startsWith(`./${TOPIC_PLUGIN_SOURCE_ROOT}/`));
     ensure(applicationEntries.length === APP_PLUGIN_EXPANSION_TARGET, `${label}: must publish all app-owned public packages`);
-    ensure(marketplace.plugins.length === publicMarketplaceEntries.length + APP_PLUGIN_EXPANSION_TARGET, `${label}: must publish SEIS-Agent plus all app-owned public packages`);
+    ensure(topicEntries.length === TOPIC_PLUGIN_TARGET, `${label}: must publish all objective-derived topic packages`);
+    ensure(marketplace.plugins.length === publicMarketplaceEntries.length + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, `${label}: must publish SEIS-Agent plus all public app and topic packages`);
     for (const expected of publicMarketplaceEntries) {
       const entry = marketplace.plugins?.find((plugin) => plugin.name === expected.name);
       ensure(entry, `${label}: entry missing: ${expected.name}`);
@@ -533,6 +536,23 @@ function validateMarketplace(marketplacePath, label, expectedName) {
       ensure(manifest?.license === "MIT", `${label} ${entry.name}: manifest must be MIT`);
       ensure(profile?.publicMarketplace === true, `${label} ${entry.name}: profile must mark public marketplace availability`);
       ensure(profile?.publicAudience === "everyone", `${label} ${entry.name}: profile audience must be everyone`);
+    }
+    for (const entry of topicEntries) {
+      const sourcePath = entry.source?.path || "";
+      ensure(entry.source?.source === "local", `${label} ${entry.name}: topic source must be local`);
+      ensure(entry.policy?.installation === "AVAILABLE", `${label} ${entry.name}: topic installation must be AVAILABLE`);
+      ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${entry.name}: topic authentication must be ON_INSTALL`);
+      ensure(sourcePath === `./${TOPIC_PLUGIN_SOURCE_ROOT}/${entry.name}`, `${label} ${entry.name}: topic source path must be repo-owned`);
+      ensure(fs.existsSync(path.join(ROOT, sourcePath)), `${label} ${entry.name}: topic source path must exist`);
+      const manifest = readJson(path.join(ROOT, sourcePath, ".codex-plugin", "plugin.json"));
+      const profile = readJson(path.join(ROOT, sourcePath, "assets", "topic-profile.json"));
+      ensure(manifest?.license === "MIT", `${label} ${entry.name}: topic manifest must be MIT`);
+      ensure(profile?.id === entry.name, `${label} ${entry.name}: topic profile id must match`);
+      ensure(profile?.publicMarketplace === true, `${label} ${entry.name}: topic profile must mark public marketplace availability`);
+      ensure(profile?.publicAudience === "everyone", `${label} ${entry.name}: topic profile audience must be everyone`);
+      for (const permission of ["write", "network", "secrets"]) {
+        ensure(Array.isArray(profile?.permissions?.[permission]) && profile.permissions[permission].length === 0, `${label} ${entry.name}: topic ${permission} permissions must be empty`);
+      }
     }
     return;
   }

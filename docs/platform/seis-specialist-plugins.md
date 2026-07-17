@@ -12,7 +12,8 @@ modules embedded into that agent: `seis`, `seis-cloud`, `seis-code`,
 
 The canonical repo marketplace is contained at `.agents/plugins/marketplace.json`
 with marketplace name `seis-repo`. It contains the canonical `seis-ai-agent`
-orchestrator plus public `plugins/seis-core` application packages. No personal
+orchestrator, public `plugins/seis-core` application packages, and the
+objective-derived `plugins/seis-topics` topic packages. No personal
 marketplace is a source of truth; legacy personal aliases are compatibility
 evidence only.
 
@@ -28,6 +29,8 @@ evidence only.
   installed SEIS-Agent package.
 - App-owned package cards: published individually under `seis-repo` from
   `plugins/seis-core` with MIT metadata and an everyone audience.
+- Objective-derived topic cards: published individually under `seis-repo` from
+  `plugins/seis-topics` with MIT metadata and an everyone audience.
 - Source mirrors stay in `plugins/` so each lane keeps its skill, MCP server,
   profile, and validation contract under repo control while SEIS-Agent embeds
   the active skills and lane profiles.
@@ -89,11 +92,11 @@ approved peer access.
 ## Marketplace
 
 The repo marketplace file is `.agents/plugins/marketplace.json`. It contains
-the public SEIS-Agent orchestrator and the 60 public SEIS Core application
-packages:
+361 public entries:
 
 - `seis-ai-agent@seis-repo`
 - `seis-*-<app-capability>@seis-repo` entries sourced from `plugins/seis-core`
+- 300 objective-derived entries sourced from `plugins/seis-topics`
 
 Availability means these public repo cards are installable from the `seis-repo`
 marketplace. The embedded specialist source modules remain available through
@@ -113,6 +116,8 @@ npm run check:seis-public-plugin-install-smoke:local:mcp
 npm run check:seis-specialist-plugins
 npm run check:seis-specialist-plugins -- --include-legacy-personal
 npm run check:seis-ai-agent
+npm run check:seis-topic-plugin-family
+npm run check:seis-topic-plugin-matrix
 npm run check:seis-agent-plugin-integration
 npm run quality:governance
 ```

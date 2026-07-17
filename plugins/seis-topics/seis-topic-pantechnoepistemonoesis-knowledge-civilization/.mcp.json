@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-pantechnoepistemonoesis-knowledge-civilization": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-pantechnoepistemonoesis-knowledge-civilization-mcp-server.mjs"
+      ]
+    }
+  }
+}

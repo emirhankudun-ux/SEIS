@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-milestones": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-milestones-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-secrets-management": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-secrets-management-mcp-server.mjs"
+      ]
+    }
+  }
+}

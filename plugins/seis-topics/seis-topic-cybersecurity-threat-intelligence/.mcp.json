@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-threat-intelligence": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-threat-intelligence-mcp-server.mjs"
+      ]
+    }
+  }
+}

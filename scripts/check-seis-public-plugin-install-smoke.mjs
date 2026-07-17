@@ -7,6 +7,7 @@ import path from "node:path";
 
 import { pluginIntegrationStatus } from "../packages/seis-ai/src/lib/plugin-integration.mjs";
 import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+import { TOPIC_PLUGIN_SOURCE_ROOT, TOPIC_PLUGIN_TARGET } from "../plugins/seis-topics/runtime/topic-definitions.mjs";
 
 const root = process.cwd();
 const args = new Set(process.argv.slice(2));
@@ -26,7 +27,8 @@ const retiredCompatibilityInstaller = runInstallerCheck(["--with-standalone-lane
 const entries = publicFamily?.marketplace?.entries || [];
 const expectedNames = ["seis-ai-agent"];
 const expectedApplicationNames = (publicFamily?.applicationPlugins || []).map((plugin) => plugin.name);
-const expectedMarketplaceNames = [...expectedNames, ...expectedApplicationNames];
+const expectedTopicNames = (publicFamily?.topicPlugins || []).map((plugin) => plugin.name);
+const expectedMarketplaceNames = [...expectedNames, ...expectedApplicationNames, ...expectedTopicNames];
 const expectedEmbeddedModuleNames = (publicFamily?.embeddedModules || []).map((module) => module.name);
 const expectedInstallIds = expectedNames.map((name) => `${name}@${marketplaceName}`);
 const expectedReleaseVersions = Object.fromEntries(expectedNames.map((name) => {
@@ -35,9 +37,10 @@ const expectedReleaseVersions = Object.fromEntries(expectedNames.map((name) => {
 }));
 
 ensure(Array.isArray(entries), "public plugin family entries must be an array");
-ensure(entries.length === expectedMarketplaceNames.length, "public plugin family must expose the canonical agent and every public app marketplace entry");
+ensure(entries.length === expectedMarketplaceNames.length, "public plugin family must expose the canonical agent and every public app and topic marketplace entry");
 ensure(publicFamily?.marketplace?.canonicalOrchestratorCount === expectedNames.length, "public plugin family must keep one canonical orchestrator");
 ensure(publicFamily?.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "public plugin family must expose every app marketplace entry");
+ensure(publicFamily?.marketplace?.topicPluginCount === TOPIC_PLUGIN_TARGET, "public plugin family must expose every objective-derived topic marketplace entry");
 ensure(publicFamily?.defaultInstall?.installId === "seis-ai-agent@seis-repo", "public plugin family must keep SEIS-Agent as the canonical install");
 ensure(publicFamily?.defaultInstall?.mode === "single-public-plugin", "public plugin family must use single-public-plugin mode");
 ensure(publicFamily?.defaultInstall?.unifiedSuite === "plugins/seis-ai-agent/assets/unified-suite.json", "public plugin family must point at the unified suite");
@@ -86,7 +89,22 @@ for (const name of expectedApplicationNames) {
   ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace public app ${name} must authenticate ON_INSTALL`);
 }
 
-ensure(marketplace?.plugins?.length === expectedMarketplaceNames.length, "repo marketplace must contain the canonical agent plus all public app packages");
+for (const name of expectedTopicNames) {
+  const entry = entries.find((candidate) => candidate.name === name);
+  const expectedPath = `./${TOPIC_PLUGIN_SOURCE_ROOT}/${name}`;
+  ensure(Boolean(entry), `public topic marketplace family missing ${name}`);
+  ensure(entry?.installation === "AVAILABLE", `${name} must be AVAILABLE in the public topic marketplace`);
+  ensure(entry?.authentication === "ON_INSTALL", `${name} must authenticate ON_INSTALL in the public topic marketplace`);
+  ensure(entry?.sourcePath === expectedPath, `public topic marketplace path mismatch for ${name}`);
+  const marketplaceEntry = marketplace?.plugins?.find((candidate) => candidate.name === name);
+  ensure(Boolean(marketplaceEntry), `repo marketplace missing public topic ${name}`);
+  ensure(marketplaceEntry?.source?.path === expectedPath, `repo marketplace public topic path mismatch for ${name}`);
+  ensure(marketplaceEntry?.policy?.installation === "AVAILABLE", `repo marketplace public topic ${name} must be AVAILABLE`);
+  ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace public topic ${name} must authenticate ON_INSTALL`);
+  ensure(fs.existsSync(path.join(root, expectedPath, "assets", "topic-profile.json")), `public topic profile must exist for ${name}`);
+}
+
+ensure(marketplace?.plugins?.length === expectedMarketplaceNames.length, "repo marketplace must contain the canonical agent plus all public app and topic packages");
 
 for (const module of publicFamily?.embeddedModules || []) {
   ensure(module?.canonicalInstallId === "seis-ai-agent@seis-repo", `${module?.name || "embedded module"} must resolve to SEIS-Agent`);
@@ -124,6 +142,8 @@ const report = {
   status: cacheComplete ? "repo-and-local-cache-ready" : "repo-ready-local-cache-partial-or-missing",
   publicPluginCount: expectedNames.length,
   repoMarketplaceEntryCount: expectedMarketplaceNames.length,
+  topicPluginCount: expectedTopicNames.length,
+  topicPluginMarketplaceEntryCount: expectedTopicNames.length,
   embeddedModuleCount: expectedEmbeddedModuleNames.length,
   applicationOwnedPluginCount: integration.applicationOwnedPluginCount,
   applicationPluginSourceRoot: integration.applicationPluginSourceRoot,

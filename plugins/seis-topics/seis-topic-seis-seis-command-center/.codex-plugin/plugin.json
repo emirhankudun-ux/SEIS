@@ -1,0 +1,42 @@
+{
+  "name": "seis-topic-seis-seis-command-center",
+  "version": "0.1.0",
+  "description": "Public SEIS topic plugin for SEIS Command Center in the SEIS lane. It provides bounded, read-only repository evidence and planning context without provider, network, secret, or write access.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "topic",
+    "seis",
+    "read-only",
+    "repository-evidence",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS SEIS Command Center",
+    "shortDescription": "Read-only SEIS Command Center topic lane.",
+    "longDescription": "Public SEIS topic plugin for SEIS Command Center in the SEIS lane. It provides bounded, read-only repository evidence and planning context without provider, network, secret, or write access.",
+    "developerName": "emirhankudun-ux",
+    "category": "SEIS",
+    "capabilities": [
+      "Bounded repository evidence",
+      "Topic-focused planning context",
+      "Read-only status reporting",
+      "MCP status and report tools",
+      "Explicit safety boundaries"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS SEIS Command Center to inspect this repository surface.",
+      "Report bounded evidence for the SEIS Command Center topic."
+    ],
+    "brandColor": "#0891B2"
+  }
+}

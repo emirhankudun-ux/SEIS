@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-data-structures": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-data-structures-mcp-server.mjs"
+      ]
+    }
+  }
+}

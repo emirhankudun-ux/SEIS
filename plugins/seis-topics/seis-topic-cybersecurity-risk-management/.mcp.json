@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-risk-management": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-risk-management-mcp-server.mjs"
+      ]
+    }
+  }
+}

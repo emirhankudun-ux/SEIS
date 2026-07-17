@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-physics": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-physics-mcp-server.mjs"
+      ]
+    }
+  }
+}

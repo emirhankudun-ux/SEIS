@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-workflow-engine": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-workflow-engine-mcp-server.mjs"
+      ]
+    }
+  }
+}

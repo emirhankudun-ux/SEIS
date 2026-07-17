@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-data-architecture": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-data-architecture-mcp-server.mjs"
+      ]
+    }
+  }
+}

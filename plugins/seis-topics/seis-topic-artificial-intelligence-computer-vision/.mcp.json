@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-computer-vision": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-computer-vision-mcp-server.mjs"
+      ]
+    }
+  }
+}

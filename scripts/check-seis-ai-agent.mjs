@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+import { TOPIC_PLUGIN_SOURCE_ROOT, TOPIC_PLUGIN_TARGET } from "../plugins/seis-topics/runtime/topic-definitions.mjs";
 
 const root = process.cwd();
 const failures = [];
@@ -82,6 +83,7 @@ const identities = readJson("data/seis-operating-identities.json");
 const packageJson = readJson("package.json");
 const publicPluginEntries = [["seis-ai-agent", "./plugins/seis-ai-agent"]];
 const publicApplicationEntries = (marketplace?.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/"));
+const publicTopicEntries = (marketplace?.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith(`./${TOPIC_PLUGIN_SOURCE_ROOT}/`));
 ensure(manifest?.name === "seis-ai-agent", "manifest name must be seis-ai-agent");
 ensure(manifest?.mcpServers === "./.mcp.json", "manifest must reference ./.mcp.json");
 ensure(manifest?.interface?.capabilities?.includes("Unified SEIS orchestration"), "manifest must expose unified orchestration");
@@ -119,8 +121,9 @@ for (const platform of ["macos", "windows", "linux"]) ensure(profile?.terminalIn
 ensure(profile?.websiteRoadmap?.direction?.includes("Cinematic"), "website roadmap must preserve cinematic direction");
 ensure((identities?.identities || []).some((identity) => identity.name === "SEIS-Agent" && identity.repoSurface === "plugins/seis-ai-agent"), "operating identities must map SEIS-Agent to plugin");
 ensure(mcp?.mcpServers?.["seis-ai-agent"]?.args?.[0] === "./scripts/seis-ai-agent-mcp-server.mjs", "MCP manifest must point at server");
-ensure(marketplace?.plugins?.length === publicPluginEntries.length + APP_PLUGIN_EXPANSION_TARGET, "marketplace must publish SEIS-Agent plus all public app packages");
+ensure(marketplace?.plugins?.length === publicPluginEntries.length + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, "marketplace must publish SEIS-Agent plus all public app and topic packages");
 ensure(publicApplicationEntries.length === APP_PLUGIN_EXPANSION_TARGET, "marketplace must publish every app-owned package as a public seis-repo entry");
+ensure(publicTopicEntries.length === TOPIC_PLUGIN_TARGET, "marketplace must publish every objective-derived topic package as a public seis-repo entry");
 for (const [name, sourcePath] of publicPluginEntries) {
   const entry = marketplace?.plugins?.find((plugin) => plugin.name === name);
   ensure(entry?.source?.path === sourcePath, `marketplace must include ${name} at ${sourcePath}`);
@@ -131,6 +134,16 @@ for (const entry of publicApplicationEntries) {
   ensure(entry?.policy?.installation === "AVAILABLE", `marketplace app ${entry?.name || "unknown"} must be AVAILABLE`);
   ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace app ${entry?.name || "unknown"} must authenticate ON_INSTALL`);
   ensure(fs.existsSync(path.join(root, entry.source.path)), `marketplace app ${entry?.name || "unknown"} source must exist`);
+}
+for (const entry of publicTopicEntries) {
+  ensure(entry?.policy?.installation === "AVAILABLE", `marketplace topic ${entry?.name || "unknown"} must be AVAILABLE`);
+  ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace topic ${entry?.name || "unknown"} must authenticate ON_INSTALL`);
+  ensure(fs.existsSync(path.join(root, entry.source.path)), `marketplace topic ${entry?.name || "unknown"} source must exist`);
+  const profile = readJson(path.join(entry.source.path, "assets", "topic-profile.json"));
+  ensure(profile?.id === entry.name, `marketplace topic ${entry?.name || "unknown"} profile id must match`);
+  ensure(profile?.license === "MIT", `marketplace topic ${entry?.name || "unknown"} profile license must be MIT`);
+  ensure(profile?.publicAudience === "everyone", `marketplace topic ${entry?.name || "unknown"} audience must be everyone`);
+  ensure(profile?.publicMarketplace === true, `marketplace topic ${entry?.name || "unknown"} profile must mark public marketplace availability`);
 }
 ensure(packageJson?.scripts?.["cloud:migration:audit"] === "node scripts/cloud-migration-audit.mjs", "package scripts must expose cloud:migration:audit");
 ensure(packageJson?.scripts?.["cloud:migration:audit:json"] === "node scripts/cloud-migration-audit.mjs --json", "package scripts must expose cloud:migration:audit:json");
@@ -153,6 +166,8 @@ ensure(packageJson?.scripts?.["check:seis-public-plugin-install-smoke"] === "nod
 ensure(packageJson?.scripts?.["check:seis-public-plugin-install-smoke:local"] === "node scripts/check-seis-public-plugin-install-smoke.mjs --require-installed", "package scripts must expose check:seis-public-plugin-install-smoke:local");
 ensure(packageJson?.scripts?.["check:seis-public-plugin-install-smoke:mcp"] === "node scripts/check-seis-public-plugin-install-smoke.mjs --mcp-smoke", "package scripts must expose check:seis-public-plugin-install-smoke:mcp");
 ensure(packageJson?.scripts?.["check:seis-public-plugin-install-smoke:local:mcp"] === "node scripts/check-seis-public-plugin-install-smoke.mjs --require-installed --mcp-smoke", "package scripts must expose check:seis-public-plugin-install-smoke:local:mcp");
+ensure(packageJson?.scripts?.["check:seis-topic-plugin-family"] === "node scripts/create-seis-topic-plugin-family.mjs --check", "package scripts must expose check:seis-topic-plugin-family");
+ensure(packageJson?.scripts?.["automation:seis-topic-plugin-family"] === "node scripts/create-seis-topic-plugin-family.mjs", "package scripts must expose automation:seis-topic-plugin-family");
 contains("scripts/install-seis-ai-agent.mjs", "seis-ai-agent@seis-repo", "installer must include repo install id");
 contains("scripts/install-seis-ai-agent.mjs", "plan-only", "installer must default to plan-only");
 contains("scripts/install-seis-ai-agent.mjs", "SEIS-Agent is the canonical public install target", "installer must document single public install policy");
@@ -161,6 +176,8 @@ contains("scripts/install-seis-ai-agent.mjs", "standalone lane installation is r
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "publicPluginCount", "install smoke checker must report public plugin count");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "--require-installed", "install smoke checker must support local installed-cache enforcement");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "--mcp-smoke", "install smoke checker must support installed MCP server smoke checks");
+contains("scripts/create-seis-topic-plugin-family.mjs", "TOPIC_PLUGIN_TARGET", "topic package generator must enforce the objective target");
+contains("plugins/seis-topics/runtime/topic-plugin-runtime.mjs", "local-read-only", "topic runtime must preserve read-only mode");
 contains("scripts/create-seis-public-plugin-lifecycle.mjs", "fresh task reload proof", "lifecycle generator must keep fresh task reload proof as a public preview gate");
 contains("scripts/create-seis-public-plugin-fresh-task-proof.mjs", "pending-fresh-task-reload-proof", "fresh-task proof generator must keep public preview pending until fresh task evidence exists");
 contains("scripts/capture-seis-public-plugin-fresh-task-reload-evidence.mjs", "CODEX_THREAD_ID", "fresh-task evidence capture must record the Codex task/thread id when exposed");

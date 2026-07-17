@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-graphics-game-engine": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-graphics-game-engine-mcp-server.mjs"
+      ]
+    }
+  }
+}

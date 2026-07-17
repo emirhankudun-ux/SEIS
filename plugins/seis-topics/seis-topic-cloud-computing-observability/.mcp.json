@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cloud-computing-observability": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cloud-computing-observability-mcp-server.mjs"
+      ]
+    }
+  }
+}

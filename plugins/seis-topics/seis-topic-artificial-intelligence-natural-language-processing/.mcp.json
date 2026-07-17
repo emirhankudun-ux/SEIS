@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-natural-language-processing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-natural-language-processing-mcp-server.mjs"
+      ]
+    }
+  }
+}

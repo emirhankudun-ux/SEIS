@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-audio-ai": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-audio-ai-mcp-server.mjs"
+      ]
+    }
+  }
+}

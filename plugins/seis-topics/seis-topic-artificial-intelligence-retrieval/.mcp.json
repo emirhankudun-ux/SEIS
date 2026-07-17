@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-retrieval": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-retrieval-mcp-server.mjs"
+      ]
+    }
+  }
+}

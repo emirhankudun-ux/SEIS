@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-sustainability": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-sustainability-mcp-server.mjs"
+      ]
+    }
+  }
+}

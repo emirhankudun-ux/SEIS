@@ -1,0 +1,42 @@
+{
+  "name": "seis-topic-software-engineering-data-structures",
+  "version": "0.1.0",
+  "description": "Public SEIS topic plugin for Data Structures in the Software Engineering lane. It provides bounded, read-only repository evidence and planning context without provider, network, secret, or write access.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "topic",
+    "software-engineering",
+    "read-only",
+    "repository-evidence",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Data Structures",
+    "shortDescription": "Read-only Data Structures topic lane.",
+    "longDescription": "Public SEIS topic plugin for Data Structures in the Software Engineering lane. It provides bounded, read-only repository evidence and planning context without provider, network, secret, or write access.",
+    "developerName": "emirhankudun-ux",
+    "category": "Software Engineering",
+    "capabilities": [
+      "Bounded repository evidence",
+      "Topic-focused planning context",
+      "Read-only status reporting",
+      "MCP status and report tools",
+      "Explicit safety boundaries"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Data Structures to inspect this repository surface.",
+      "Report bounded evidence for the Data Structures topic."
+    ],
+    "brandColor": "#DB2777"
+  }
+}

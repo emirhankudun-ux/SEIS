@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-semantic-search": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-semantic-search-mcp-server.mjs"
+      ]
+    }
+  }
+}

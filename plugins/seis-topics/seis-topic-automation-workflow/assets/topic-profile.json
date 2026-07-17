@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-automation-workflow",
+  "displayName": "Workflow",
+  "category": "Automation",
+  "categoryId": "automation",
+  "kind": "objective-topic",
+  "sourceText": "Workflow",
+  "directiveNormalized": false,
+  "sourcePath": "./plugins/seis-topics/seis-topic-automation-workflow",
+  "marketplace": "seis-repo",
+  "installId": "seis-topic-automation-workflow@seis-repo",
+  "version": "0.1.0",
+  "status": "public-repository-preview",
+  "maturity": "prototype",
+  "publicMarketplace": true,
+  "publicAudience": "everyone",
+  "license": "MIT",
+  "liveRuntimeStatus": "local-demo-only",
+  "permissions": {
+    "read": [
+      "bounded local repository evidence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "node plugins/seis-topics/seis-topic-automation-workflow/scripts/seis-topic-automation-workflow-mcp-server.mjs --status",
+    "npm run check:seis-topic-plugin-family"
+  ],
+  "limitations": [
+    "Marketplace availability does not grant authenticated provider, cloud, GitHub, SSH, connector, or deployment access.",
+    "Repository-shape reports are evidence aids, not release, security, or integration approval."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-graphrag": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-graphrag-mcp-server.mjs"
+      ]
+    }
+  }
+}

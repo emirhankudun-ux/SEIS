@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-desktop-visionos": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-desktop-visionos-mcp-server.mjs"
+      ]
+    }
+  }
+}

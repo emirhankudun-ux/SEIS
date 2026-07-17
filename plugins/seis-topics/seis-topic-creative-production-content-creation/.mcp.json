@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-creative-production-content-creation": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-creative-production-content-creation-mcp-server.mjs"
+      ]
+    }
+  }
+}

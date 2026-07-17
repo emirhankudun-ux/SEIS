@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-automation-task-management": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-automation-task-management-mcp-server.mjs"
+      ]
+    }
+  }
+}

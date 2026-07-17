@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-ai-alignment": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-ai-alignment-mcp-server.mjs"
+      ]
+    }
+  }
+}

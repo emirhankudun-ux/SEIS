@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-mobile-development": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-mobile-development-mcp-server.mjs"
+      ]
+    }
+  }
+}

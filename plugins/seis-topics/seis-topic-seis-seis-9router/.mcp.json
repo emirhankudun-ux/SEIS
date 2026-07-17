@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-9router": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-9router-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-domain-driven-design": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-domain-driven-design-mcp-server.mjs"
+      ]
+    }
+  }
+}

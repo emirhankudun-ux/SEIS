@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-pantechnoepistemonoesis-technology-atlas": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-pantechnoepistemonoesis-technology-atlas-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-package-managers": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-package-managers-mcp-server.mjs"
+      ]
+    }
+  }
+}

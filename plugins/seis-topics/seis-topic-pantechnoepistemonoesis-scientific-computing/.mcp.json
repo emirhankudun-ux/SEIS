@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-pantechnoepistemonoesis-scientific-computing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-pantechnoepistemonoesis-scientific-computing-mcp-server.mjs"
+      ]
+    }
+  }
+}

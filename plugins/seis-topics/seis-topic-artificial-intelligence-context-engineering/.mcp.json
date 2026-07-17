@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-context-engineering": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-context-engineering-mcp-server.mjs"
+      ]
+    }
+  }
+}

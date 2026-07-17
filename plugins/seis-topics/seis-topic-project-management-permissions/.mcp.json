@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-permissions": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-permissions-mcp-server.mjs"
+      ]
+    }
+  }
+}

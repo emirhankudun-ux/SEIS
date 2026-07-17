@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-graphics-color-theory": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-graphics-color-theory-mcp-server.mjs"
+      ]
+    }
+  }
+}

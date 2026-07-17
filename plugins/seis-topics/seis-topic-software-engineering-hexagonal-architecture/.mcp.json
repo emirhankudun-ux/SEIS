@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-hexagonal-architecture": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-hexagonal-architecture-mcp-server.mjs"
+      ]
+    }
+  }
+}

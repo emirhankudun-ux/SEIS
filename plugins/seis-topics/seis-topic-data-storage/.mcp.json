@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-storage": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-storage-mcp-server.mjs"
+      ]
+    }
+  }
+}

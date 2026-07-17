@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-brain": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-brain-mcp-server.mjs"
+      ]
+    }
+  }
+}

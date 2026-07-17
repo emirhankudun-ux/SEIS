@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-elt": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-elt-mcp-server.mjs"
+      ]
+    }
+  }
+}

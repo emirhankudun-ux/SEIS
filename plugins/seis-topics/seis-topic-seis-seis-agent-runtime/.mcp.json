@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-agent-runtime": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-agent-runtime-mcp-server.mjs"
+      ]
+    }
+  }
+}

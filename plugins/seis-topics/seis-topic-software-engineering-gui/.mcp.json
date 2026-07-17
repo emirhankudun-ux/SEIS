@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-gui": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-gui-mcp-server.mjs"
+      ]
+    }
+  }
+}

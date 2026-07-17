@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-migration": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-migration-mcp-server.mjs"
+      ]
+    }
+  }
+}

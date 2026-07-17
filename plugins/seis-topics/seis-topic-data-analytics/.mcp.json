@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-analytics": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-analytics-mcp-server.mjs"
+      ]
+    }
+  }
+}

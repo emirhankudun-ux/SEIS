@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-security-auditing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-security-auditing-mcp-server.mjs"
+      ]
+    }
+  }
+}

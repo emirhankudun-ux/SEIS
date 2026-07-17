@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-knowledge-graph": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-knowledge-graph-mcp-server.mjs"
+      ]
+    }
+  }
+}

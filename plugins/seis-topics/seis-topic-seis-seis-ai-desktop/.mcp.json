@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-ai-desktop": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-ai-desktop-mcp-server.mjs"
+      ]
+    }
+  }
+}

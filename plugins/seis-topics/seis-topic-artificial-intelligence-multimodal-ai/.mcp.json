@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-multimodal-ai": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-multimodal-ai-mcp-server.mjs"
+      ]
+    }
+  }
+}

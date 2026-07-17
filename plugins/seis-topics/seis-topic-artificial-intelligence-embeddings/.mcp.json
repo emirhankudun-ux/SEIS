@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-embeddings": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-embeddings-mcp-server.mjs"
+      ]
+    }
+  }
+}

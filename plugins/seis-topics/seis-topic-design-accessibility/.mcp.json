@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-design-accessibility": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-design-accessibility-mcp-server.mjs"
+      ]
+    }
+  }
+}

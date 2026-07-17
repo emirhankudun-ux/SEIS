@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-identity-management": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-identity-management-mcp-server.mjs"
+      ]
+    }
+  }
+}

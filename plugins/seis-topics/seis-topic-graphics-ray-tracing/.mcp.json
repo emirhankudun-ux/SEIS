@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-graphics-ray-tracing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-graphics-ray-tracing-mcp-server.mjs"
+      ]
+    }
+  }
+}

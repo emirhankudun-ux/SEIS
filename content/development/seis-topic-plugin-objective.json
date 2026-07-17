@@ -1,0 +1,1562 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-plugin-objective",
+  "generatedAt": "2026-07-17",
+  "source": {
+    "kind": "user-provided-objective",
+    "reference": "Normalized from the current SEIS one-conversation / one-goal objective.",
+    "pluginCreationSkill": "plugin-creator",
+    "sourceLineCount": 300,
+    "groupCount": 15,
+    "directivePreserved": true
+  },
+  "distribution": {
+    "repository": "SEIS",
+    "marketplace": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "sourceRoot": "plugins/seis-topics",
+    "audience": "everyone",
+    "license": "MIT",
+    "status": "public-repository-preview",
+    "runtime": "local-read-only-demo"
+  },
+  "groups": [
+    {
+      "id": "artificial-intelligence",
+      "displayName": "Artificial Intelligence",
+      "order": 1,
+      "topics": [
+        {
+          "displayName": "Generative AI",
+          "sourceText": "Generative AI",
+          "order": 1
+        },
+        {
+          "displayName": "Machine Learning",
+          "sourceText": "Machine Learning",
+          "order": 2
+        },
+        {
+          "displayName": "Deep Learning",
+          "sourceText": "Deep Learning",
+          "order": 3
+        },
+        {
+          "displayName": "Neural Networks",
+          "sourceText": "Neural Networks",
+          "order": 4
+        },
+        {
+          "displayName": "Computer Vision",
+          "sourceText": "Computer Vision",
+          "order": 5
+        },
+        {
+          "displayName": "Natural Language Processing",
+          "sourceText": "Natural Language Processing",
+          "order": 6
+        },
+        {
+          "displayName": "Speech AI",
+          "sourceText": "Speech AI",
+          "order": 7
+        },
+        {
+          "displayName": "Audio AI",
+          "sourceText": "Audio AI",
+          "order": 8
+        },
+        {
+          "displayName": "Multimodal AI",
+          "sourceText": "Multimodal AI",
+          "order": 9
+        },
+        {
+          "displayName": "Large Language Models",
+          "sourceText": "Large Language Models",
+          "order": 10
+        },
+        {
+          "displayName": "Small Language Models",
+          "sourceText": "Small Language Models",
+          "order": 11
+        },
+        {
+          "displayName": "Reasoning Models",
+          "sourceText": "Reasoning Models",
+          "order": 12
+        },
+        {
+          "displayName": "World Models",
+          "sourceText": "World Models",
+          "order": 13
+        },
+        {
+          "displayName": "AI Agents",
+          "sourceText": "AI Agents",
+          "order": 14
+        },
+        {
+          "displayName": "Agent Swarms",
+          "sourceText": "Agent Swarms",
+          "order": 15
+        },
+        {
+          "displayName": "Agent Runtime",
+          "sourceText": "Agent Runtime",
+          "order": 16
+        },
+        {
+          "displayName": "Prompt Engineering",
+          "sourceText": "Prompt Engineering",
+          "order": 17
+        },
+        {
+          "displayName": "Context Engineering",
+          "sourceText": "Context Engineering",
+          "order": 18
+        },
+        {
+          "displayName": "Memory Systems",
+          "sourceText": "Memory Systems",
+          "order": 19
+        },
+        {
+          "displayName": "Knowledge Systems",
+          "sourceText": "Knowledge Systems",
+          "order": 20
+        },
+        {
+          "displayName": "Knowledge Graph",
+          "sourceText": "Knowledge Graph",
+          "order": 21
+        },
+        {
+          "displayName": "Retrieval",
+          "sourceText": "Retrieval",
+          "order": 22
+        },
+        {
+          "displayName": "RAG",
+          "sourceText": "RAG",
+          "order": 23
+        },
+        {
+          "displayName": "GraphRAG",
+          "sourceText": "GraphRAG",
+          "order": 24
+        },
+        {
+          "displayName": "Semantic Search",
+          "sourceText": "Semantic Search",
+          "order": 25
+        },
+        {
+          "displayName": "Vector Search",
+          "sourceText": "Vector Search",
+          "order": 26
+        },
+        {
+          "displayName": "Embeddings",
+          "sourceText": "Embeddings",
+          "order": 27
+        },
+        {
+          "displayName": "AI Evaluation",
+          "sourceText": "AI Evaluation",
+          "order": 28
+        },
+        {
+          "displayName": "AI Safety",
+          "sourceText": "AI Safety",
+          "order": 29
+        },
+        {
+          "displayName": "AI Alignment",
+          "sourceText": "AI Alignment",
+          "order": 30
+        },
+        {
+          "displayName": "Responsible AI",
+          "sourceText": "Responsible AI",
+          "order": 31
+        },
+        {
+          "displayName": "Model Routing",
+          "sourceText": "Model Routing",
+          "order": 32
+        },
+        {
+          "displayName": "Provider Routing",
+          "sourceText": "Provider Routing",
+          "order": 33
+        },
+        {
+          "displayName": "AI Core",
+          "sourceText": "AI Core",
+          "order": 34
+        }
+      ]
+    },
+    {
+      "id": "software-engineering",
+      "displayName": "Software Engineering",
+      "order": 2,
+      "topics": [
+        {
+          "displayName": "Programming",
+          "sourceText": "Programming",
+          "order": 1
+        },
+        {
+          "displayName": "Programming Languages",
+          "sourceText": "Programming Languages",
+          "order": 2
+        },
+        {
+          "displayName": "Algorithms",
+          "sourceText": "Algorithms",
+          "order": 3
+        },
+        {
+          "displayName": "Data Structures",
+          "sourceText": "Data Structures",
+          "order": 4
+        },
+        {
+          "displayName": "Software Architecture",
+          "sourceText": "Software Architecture",
+          "order": 5
+        },
+        {
+          "displayName": "Clean Architecture",
+          "sourceText": "Clean Architecture",
+          "order": 6
+        },
+        {
+          "displayName": "Hexagonal Architecture",
+          "sourceText": "Hexagonal Architecture",
+          "order": 7
+        },
+        {
+          "displayName": "Domain-Driven Design",
+          "sourceText": "Domain-Driven Design",
+          "order": 8
+        },
+        {
+          "displayName": "Modular Monolith",
+          "sourceText": "Modular Monolith",
+          "order": 9
+        },
+        {
+          "displayName": "Microservices",
+          "sourceText": "Microservices",
+          "order": 10
+        },
+        {
+          "displayName": "Distributed Systems",
+          "sourceText": "Distributed Systems",
+          "order": 11
+        },
+        {
+          "displayName": "Frontend",
+          "sourceText": "Frontend",
+          "order": 12
+        },
+        {
+          "displayName": "Backend",
+          "sourceText": "Backend",
+          "order": 13
+        },
+        {
+          "displayName": "Full Stack",
+          "sourceText": "Full Stack",
+          "order": 14
+        },
+        {
+          "displayName": "Desktop Development",
+          "sourceText": "Desktop Development",
+          "order": 15
+        },
+        {
+          "displayName": "Mobile Development",
+          "sourceText": "Mobile Development",
+          "order": 16
+        },
+        {
+          "displayName": "Web Development",
+          "sourceText": "Web Development",
+          "order": 17
+        },
+        {
+          "displayName": "Embedded Systems",
+          "sourceText": "Embedded Systems",
+          "order": 18
+        },
+        {
+          "displayName": "Game Development",
+          "sourceText": "Game Development",
+          "order": 19
+        },
+        {
+          "displayName": "Operating Systems",
+          "sourceText": "Operating Systems",
+          "order": 20
+        },
+        {
+          "displayName": "Compilers",
+          "sourceText": "Compilers",
+          "order": 21
+        },
+        {
+          "displayName": "Interpreters",
+          "sourceText": "Interpreters",
+          "order": 22
+        },
+        {
+          "displayName": "Frameworks",
+          "sourceText": "Frameworks",
+          "order": 23
+        },
+        {
+          "displayName": "Libraries",
+          "sourceText": "Libraries",
+          "order": 24
+        },
+        {
+          "displayName": "SDK",
+          "sourceText": "SDK",
+          "order": 25
+        },
+        {
+          "displayName": "API",
+          "sourceText": "API",
+          "order": 26
+        },
+        {
+          "displayName": "CLI",
+          "sourceText": "CLI",
+          "order": 27
+        },
+        {
+          "displayName": "GUI",
+          "sourceText": "GUI",
+          "order": 28
+        },
+        {
+          "displayName": "TUI",
+          "sourceText": "TUI",
+          "order": 29
+        },
+        {
+          "displayName": "Version Control",
+          "sourceText": "Version Control",
+          "order": 30
+        },
+        {
+          "displayName": "Git",
+          "sourceText": "Git",
+          "order": 31
+        },
+        {
+          "displayName": "GitHub",
+          "sourceText": "GitHub",
+          "order": 32
+        },
+        {
+          "displayName": "Repository",
+          "sourceText": "Repository",
+          "order": 33
+        },
+        {
+          "displayName": "Testing",
+          "sourceText": "Testing",
+          "order": 34
+        },
+        {
+          "displayName": "Quality Assurance",
+          "sourceText": "Quality Assurance",
+          "order": 35
+        },
+        {
+          "displayName": "Debugging",
+          "sourceText": "Debugging",
+          "order": 36
+        },
+        {
+          "displayName": "Profiling",
+          "sourceText": "Profiling",
+          "order": 37
+        },
+        {
+          "displayName": "Optimization",
+          "sourceText": "Optimization",
+          "order": 38
+        },
+        {
+          "displayName": "Build Systems",
+          "sourceText": "Build Systems",
+          "order": 39
+        },
+        {
+          "displayName": "Package Managers",
+          "sourceText": "Package Managers",
+          "order": 40
+        },
+        {
+          "displayName": "Release Engineering",
+          "sourceText": "Release Engineering",
+          "order": 41
+        },
+        {
+          "displayName": "Migration",
+          "sourceText": "Migration",
+          "order": 42
+        },
+        {
+          "displayName": "Rollback",
+          "sourceText": "Rollback",
+          "order": 43
+        }
+      ]
+    },
+    {
+      "id": "cloud-computing",
+      "displayName": "Cloud Computing",
+      "order": 3,
+      "topics": [
+        {
+          "displayName": "Cloud Native",
+          "sourceText": "Cloud Native",
+          "order": 1
+        },
+        {
+          "displayName": "Hybrid Cloud",
+          "sourceText": "Hybrid Cloud",
+          "order": 2
+        },
+        {
+          "displayName": "Private Cloud",
+          "sourceText": "Private Cloud",
+          "order": 3
+        },
+        {
+          "displayName": "Public Cloud",
+          "sourceText": "Public Cloud",
+          "order": 4
+        },
+        {
+          "displayName": "Edge Computing",
+          "sourceText": "Edge Computing",
+          "order": 5
+        },
+        {
+          "displayName": "Infrastructure",
+          "sourceText": "Infrastructure",
+          "order": 6
+        },
+        {
+          "displayName": "Infrastructure as Code",
+          "sourceText": "Infrastructure as Code",
+          "order": 7
+        },
+        {
+          "displayName": "DevOps",
+          "sourceText": "DevOps",
+          "order": 8
+        },
+        {
+          "displayName": "DevSecOps",
+          "sourceText": "DevSecOps",
+          "order": 9
+        },
+        {
+          "displayName": "Platform Engineering",
+          "sourceText": "Platform Engineering",
+          "order": 10
+        },
+        {
+          "displayName": "Site Reliability Engineering",
+          "sourceText": "Site Reliability Engineering",
+          "order": 11
+        },
+        {
+          "displayName": "Containers",
+          "sourceText": "Containers",
+          "order": 12
+        },
+        {
+          "displayName": "Docker",
+          "sourceText": "Docker",
+          "order": 13
+        },
+        {
+          "displayName": "Kubernetes",
+          "sourceText": "Kubernetes",
+          "order": 14
+        },
+        {
+          "displayName": "Virtualization",
+          "sourceText": "Virtualization",
+          "order": 15
+        },
+        {
+          "displayName": "Serverless",
+          "sourceText": "Serverless",
+          "order": 16
+        },
+        {
+          "displayName": "Networking",
+          "sourceText": "Networking",
+          "order": 17
+        },
+        {
+          "displayName": "CI/CD",
+          "sourceText": "CI/CD",
+          "order": 18
+        },
+        {
+          "displayName": "Monitoring",
+          "sourceText": "Monitoring",
+          "order": 19
+        },
+        {
+          "displayName": "Observability",
+          "sourceText": "Observability",
+          "order": 20
+        },
+        {
+          "displayName": "Telemetry",
+          "sourceText": "Telemetry",
+          "order": 21
+        },
+        {
+          "displayName": "Logging",
+          "sourceText": "Logging",
+          "order": 22
+        },
+        {
+          "displayName": "Metrics",
+          "sourceText": "Metrics",
+          "order": 23
+        },
+        {
+          "displayName": "Tracing",
+          "sourceText": "Tracing",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "id": "cybersecurity",
+      "displayName": "Cybersecurity",
+      "order": 4,
+      "topics": [
+        {
+          "displayName": "Information Security",
+          "sourceText": "Information Security",
+          "order": 1
+        },
+        {
+          "displayName": "AI Security",
+          "sourceText": "AI Security",
+          "order": 2
+        },
+        {
+          "displayName": "Application Security",
+          "sourceText": "Application Security",
+          "order": 3
+        },
+        {
+          "displayName": "Network Security",
+          "sourceText": "Network Security",
+          "order": 4
+        },
+        {
+          "displayName": "Identity Management",
+          "sourceText": "Identity Management",
+          "order": 5
+        },
+        {
+          "displayName": "Authentication",
+          "sourceText": "Authentication",
+          "order": 6
+        },
+        {
+          "displayName": "Authorization",
+          "sourceText": "Authorization",
+          "order": 7
+        },
+        {
+          "displayName": "RBAC",
+          "sourceText": "RBAC",
+          "order": 8
+        },
+        {
+          "displayName": "ABAC",
+          "sourceText": "ABAC",
+          "order": 9
+        },
+        {
+          "displayName": "Zero Trust",
+          "sourceText": "Zero Trust",
+          "order": 10
+        },
+        {
+          "displayName": "Privacy",
+          "sourceText": "Privacy",
+          "order": 11
+        },
+        {
+          "displayName": "Compliance",
+          "sourceText": "Compliance",
+          "order": 12
+        },
+        {
+          "displayName": "Encryption",
+          "sourceText": "Encryption",
+          "order": 13
+        },
+        {
+          "displayName": "Secrets Management",
+          "sourceText": "Secrets Management",
+          "order": 14
+        },
+        {
+          "displayName": "Threat Intelligence",
+          "sourceText": "Threat Intelligence",
+          "order": 15
+        },
+        {
+          "displayName": "Threat Modeling",
+          "sourceText": "Threat Modeling",
+          "order": 16
+        },
+        {
+          "displayName": "Risk Management",
+          "sourceText": "Risk Management",
+          "order": 17
+        },
+        {
+          "displayName": "Security Auditing",
+          "sourceText": "Security Auditing",
+          "order": 18
+        },
+        {
+          "displayName": "Incident Response",
+          "sourceText": "Incident Response",
+          "order": 19
+        },
+        {
+          "displayName": "Supply Chain Security",
+          "sourceText": "Supply Chain Security",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "displayName": "Data",
+      "order": 5,
+      "topics": [
+        {
+          "displayName": "Data Science",
+          "sourceText": "Data Science",
+          "order": 1
+        },
+        {
+          "displayName": "Data Engineering",
+          "sourceText": "Data Engineering",
+          "order": 2
+        },
+        {
+          "displayName": "Data Architecture",
+          "sourceText": "Data Architecture",
+          "order": 3
+        },
+        {
+          "displayName": "Analytics",
+          "sourceText": "Analytics",
+          "order": 4
+        },
+        {
+          "displayName": "Business Intelligence",
+          "sourceText": "Business Intelligence",
+          "order": 5
+        },
+        {
+          "displayName": "Databases",
+          "sourceText": "Databases",
+          "order": 6
+        },
+        {
+          "displayName": "SQL",
+          "sourceText": "SQL",
+          "order": 7
+        },
+        {
+          "displayName": "NoSQL",
+          "sourceText": "NoSQL",
+          "order": 8
+        },
+        {
+          "displayName": "Vector Databases",
+          "sourceText": "Vector Databases",
+          "order": 9
+        },
+        {
+          "displayName": "Graph Databases",
+          "sourceText": "Graph Databases",
+          "order": 10
+        },
+        {
+          "displayName": "Metadata",
+          "sourceText": "Metadata",
+          "order": 11
+        },
+        {
+          "displayName": "Data Governance",
+          "sourceText": "Data Governance",
+          "order": 12
+        },
+        {
+          "displayName": "Data Lineage",
+          "sourceText": "Data Lineage",
+          "order": 13
+        },
+        {
+          "displayName": "Data Quality",
+          "sourceText": "Data Quality",
+          "order": 14
+        },
+        {
+          "displayName": "Storage",
+          "sourceText": "Storage",
+          "order": 15
+        },
+        {
+          "displayName": "Data Pipelines",
+          "sourceText": "Data Pipelines",
+          "order": 16
+        },
+        {
+          "displayName": "ETL",
+          "sourceText": "ETL",
+          "order": 17
+        },
+        {
+          "displayName": "ELT",
+          "sourceText": "ELT",
+          "order": 18
+        },
+        {
+          "displayName": "Search Engine",
+          "sourceText": "Search Engine",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "id": "design",
+      "displayName": "Design",
+      "order": 6,
+      "topics": [
+        {
+          "displayName": "Graphic Design",
+          "sourceText": "Graphic Design",
+          "order": 1
+        },
+        {
+          "displayName": "Visual Design",
+          "sourceText": "Visual Design",
+          "order": 2
+        },
+        {
+          "displayName": "UI Design",
+          "sourceText": "UI Design",
+          "order": 3
+        },
+        {
+          "displayName": "UX Design",
+          "sourceText": "UX Design",
+          "order": 4
+        },
+        {
+          "displayName": "Interaction Design",
+          "sourceText": "Interaction Design",
+          "order": 5
+        },
+        {
+          "displayName": "Product Design",
+          "sourceText": "Product Design",
+          "order": 6
+        },
+        {
+          "displayName": "Design Systems",
+          "sourceText": "Design Systems",
+          "order": 7
+        },
+        {
+          "displayName": "Design Tokens",
+          "sourceText": "Design Tokens",
+          "order": 8
+        },
+        {
+          "displayName": "Branding",
+          "sourceText": "Branding",
+          "order": 9
+        },
+        {
+          "displayName": "Visual Identity",
+          "sourceText": "Visual Identity",
+          "order": 10
+        },
+        {
+          "displayName": "Typography",
+          "sourceText": "Typography",
+          "order": 11
+        },
+        {
+          "displayName": "Illustration",
+          "sourceText": "Illustration",
+          "order": 12
+        },
+        {
+          "displayName": "Photography",
+          "sourceText": "Photography",
+          "order": 13
+        },
+        {
+          "displayName": "Motion Design",
+          "sourceText": "Motion Design",
+          "order": 14
+        },
+        {
+          "displayName": "Creative Coding",
+          "sourceText": "Creative Coding",
+          "order": 15
+        },
+        {
+          "displayName": "3D Design",
+          "sourceText": "3D Design",
+          "order": 16
+        },
+        {
+          "displayName": "Accessibility",
+          "sourceText": "Accessibility",
+          "order": 17
+        },
+        {
+          "displayName": "Localization",
+          "sourceText": "Localization",
+          "order": 18
+        },
+        {
+          "displayName": "Responsive Design",
+          "sourceText": "Responsive Design",
+          "order": 19
+        },
+        {
+          "displayName": "Editorial Design",
+          "sourceText": "Editorial Design",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "id": "creative-production",
+      "displayName": "Creative Production",
+      "order": 7,
+      "topics": [
+        {
+          "displayName": "Digital Art",
+          "sourceText": "Digital Art",
+          "order": 1
+        },
+        {
+          "displayName": "Storytelling",
+          "sourceText": "Storytelling",
+          "order": 2
+        },
+        {
+          "displayName": "Story World",
+          "sourceText": "Story World",
+          "order": 3
+        },
+        {
+          "displayName": "Moodboards",
+          "sourceText": "Moodboards",
+          "order": 4
+        },
+        {
+          "displayName": "Asset Management",
+          "sourceText": "Asset Management",
+          "order": 5
+        },
+        {
+          "displayName": "Media Production",
+          "sourceText": "Media Production",
+          "order": 6
+        },
+        {
+          "displayName": "Animation",
+          "sourceText": "Animation",
+          "order": 7
+        },
+        {
+          "displayName": "Video",
+          "sourceText": "Video",
+          "order": 8
+        },
+        {
+          "displayName": "Audio",
+          "sourceText": "Audio",
+          "order": 9
+        },
+        {
+          "displayName": "Music",
+          "sourceText": "Music",
+          "order": 10
+        },
+        {
+          "displayName": "Visual Effects",
+          "sourceText": "Visual Effects",
+          "order": 11
+        },
+        {
+          "displayName": "CGI",
+          "sourceText": "CGI",
+          "order": 12
+        },
+        {
+          "displayName": "Virtual Production",
+          "sourceText": "Virtual Production",
+          "order": 13
+        },
+        {
+          "displayName": "Content Creation",
+          "sourceText": "Content Creation",
+          "order": 14
+        },
+        {
+          "displayName": "Publishing",
+          "sourceText": "Publishing",
+          "order": 15
+        },
+        {
+          "displayName": "Creative Engineering",
+          "sourceText": "Creative Engineering",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "id": "graphics",
+      "displayName": "Graphics",
+      "order": 8,
+      "topics": [
+        {
+          "displayName": "Rendering",
+          "sourceText": "Rendering",
+          "order": 1
+        },
+        {
+          "displayName": "Shaders",
+          "sourceText": "Shaders",
+          "order": 2
+        },
+        {
+          "displayName": "Materials",
+          "sourceText": "Materials",
+          "order": 3
+        },
+        {
+          "displayName": "Ray Tracing",
+          "sourceText": "Ray Tracing",
+          "order": 4
+        },
+        {
+          "displayName": "Path Tracing",
+          "sourceText": "Path Tracing",
+          "order": 5
+        },
+        {
+          "displayName": "Lighting",
+          "sourceText": "Lighting",
+          "order": 6
+        },
+        {
+          "displayName": "Color Theory",
+          "sourceText": "Color Theory",
+          "order": 7
+        },
+        {
+          "displayName": "Composition",
+          "sourceText": "Composition",
+          "order": 8
+        },
+        {
+          "displayName": "Layout",
+          "sourceText": "Layout",
+          "order": 9
+        },
+        {
+          "displayName": "Iconography",
+          "sourceText": "Iconography",
+          "order": 10
+        },
+        {
+          "displayName": "Graphics Engine",
+          "sourceText": "Graphics Engine",
+          "order": 11
+        },
+        {
+          "displayName": "Game Engine",
+          "sourceText": "Game Engine",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "id": "desktop",
+      "displayName": "Desktop",
+      "order": 9,
+      "topics": [
+        {
+          "displayName": "Web",
+          "sourceText": "Web",
+          "order": 1
+        },
+        {
+          "displayName": "macOS",
+          "sourceText": "macOS",
+          "order": 2
+        },
+        {
+          "displayName": "Windows",
+          "sourceText": "Windows",
+          "order": 3
+        },
+        {
+          "displayName": "Linux",
+          "sourceText": "Linux",
+          "order": 4
+        },
+        {
+          "displayName": "iOS",
+          "sourceText": "iOS",
+          "order": 5
+        },
+        {
+          "displayName": "iPadOS",
+          "sourceText": "iPadOS",
+          "order": 6
+        },
+        {
+          "displayName": "Android",
+          "sourceText": "Android",
+          "order": 7
+        },
+        {
+          "displayName": "visionOS",
+          "sourceText": "visionOS",
+          "order": 8
+        },
+        {
+          "displayName": "watchOS",
+          "sourceText": "watchOS",
+          "order": 9
+        },
+        {
+          "displayName": "Cross Platform",
+          "sourceText": "Cross Platform",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "id": "automation",
+      "displayName": "Automation",
+      "order": 10,
+      "topics": [
+        {
+          "displayName": "Workflow",
+          "sourceText": "Workflow",
+          "order": 1
+        },
+        {
+          "displayName": "Orchestration",
+          "sourceText": "Orchestration",
+          "order": 2
+        },
+        {
+          "displayName": "Task Management",
+          "sourceText": "Task Management",
+          "order": 3
+        },
+        {
+          "displayName": "Scheduling",
+          "sourceText": "Scheduling",
+          "order": 4
+        },
+        {
+          "displayName": "Pipelines",
+          "sourceText": "Pipelines",
+          "order": 5
+        },
+        {
+          "displayName": "Plugins",
+          "sourceText": "Plugins",
+          "order": 6
+        },
+        {
+          "displayName": "Plugin Registry",
+          "sourceText": "Plugin Registry",
+          "order": 7
+        },
+        {
+          "displayName": "MCP",
+          "sourceText": "MCP",
+          "order": 8
+        },
+        {
+          "displayName": "Tools",
+          "sourceText": "Tools",
+          "order": 9
+        },
+        {
+          "displayName": "Skills",
+          "sourceText": "Skills",
+          "order": 10
+        },
+        {
+          "displayName": "Integrations",
+          "sourceText": "Integrations",
+          "order": 11
+        },
+        {
+          "displayName": "Connectors",
+          "sourceText": "Connectors",
+          "order": 12
+        },
+        {
+          "displayName": "Providers",
+          "sourceText": "Providers",
+          "order": 13
+        },
+        {
+          "displayName": "Templates",
+          "sourceText": "Templates",
+          "order": 14
+        },
+        {
+          "displayName": "Workspace",
+          "sourceText": "Workspace",
+          "order": 15
+        },
+        {
+          "displayName": "Command Center",
+          "sourceText": "Command Center",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "id": "knowledge",
+      "displayName": "Knowledge",
+      "order": 11,
+      "topics": [
+        {
+          "displayName": "Documentation",
+          "sourceText": "Documentation",
+          "order": 1
+        },
+        {
+          "displayName": "Research",
+          "sourceText": "Research",
+          "order": 2
+        },
+        {
+          "displayName": "Science",
+          "sourceText": "Science",
+          "order": 3
+        },
+        {
+          "displayName": "Mathematics",
+          "sourceText": "Mathematics",
+          "order": 4
+        },
+        {
+          "displayName": "Physics",
+          "sourceText": "Physics",
+          "order": 5
+        },
+        {
+          "displayName": "Chemistry",
+          "sourceText": "Chemistry",
+          "order": 6
+        },
+        {
+          "displayName": "Biology",
+          "sourceText": "Biology",
+          "order": 7
+        },
+        {
+          "displayName": "Genetics",
+          "sourceText": "Genetics",
+          "order": 8
+        },
+        {
+          "displayName": "Neuroscience",
+          "sourceText": "Neuroscience",
+          "order": 9
+        },
+        {
+          "displayName": "Robotics",
+          "sourceText": "Robotics",
+          "order": 10
+        },
+        {
+          "displayName": "Automation",
+          "sourceText": "Automation",
+          "order": 11
+        },
+        {
+          "displayName": "IoT",
+          "sourceText": "IoT",
+          "order": 12
+        },
+        {
+          "displayName": "Simulation",
+          "sourceText": "Simulation",
+          "order": 13
+        },
+        {
+          "displayName": "Digital Twin",
+          "sourceText": "Digital Twin",
+          "order": 14
+        },
+        {
+          "displayName": "Future Technologies",
+          "sourceText": "Future Technologies",
+          "order": 15
+        },
+        {
+          "displayName": "Quantum Computing",
+          "sourceText": "Quantum Computing",
+          "order": 16
+        },
+        {
+          "displayName": "Spatial Computing",
+          "sourceText": "Spatial Computing",
+          "order": 17
+        },
+        {
+          "displayName": "AR",
+          "sourceText": "AR",
+          "order": 18
+        },
+        {
+          "displayName": "VR",
+          "sourceText": "VR",
+          "order": 19
+        },
+        {
+          "displayName": "XR",
+          "sourceText": "XR",
+          "order": 20
+        },
+        {
+          "displayName": "Blockchain",
+          "sourceText": "Blockchain",
+          "order": 21
+        },
+        {
+          "displayName": "Human-AI Collaboration",
+          "sourceText": "Human-AI Collaboration",
+          "order": 22
+        },
+        {
+          "displayName": "Innovation",
+          "sourceText": "Innovation",
+          "order": 23
+        },
+        {
+          "displayName": "Sustainability",
+          "sourceText": "Sustainability",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "id": "project-management",
+      "displayName": "Project Management",
+      "order": 12,
+      "topics": [
+        {
+          "displayName": "Product Management",
+          "sourceText": "Product Management",
+          "order": 1
+        },
+        {
+          "displayName": "Architecture Governance",
+          "sourceText": "Architecture Governance",
+          "order": 2
+        },
+        {
+          "displayName": "Repository Management",
+          "sourceText": "Repository Management",
+          "order": 3
+        },
+        {
+          "displayName": "Goal Tracking",
+          "sourceText": "Goal Tracking",
+          "order": 4
+        },
+        {
+          "displayName": "Roadmaps",
+          "sourceText": "Roadmaps",
+          "order": 5
+        },
+        {
+          "displayName": "Milestones",
+          "sourceText": "Milestones",
+          "order": 6
+        },
+        {
+          "displayName": "Evidence",
+          "sourceText": "Evidence",
+          "order": 7
+        },
+        {
+          "displayName": "Validation",
+          "sourceText": "Validation",
+          "order": 8
+        },
+        {
+          "displayName": "Risk",
+          "sourceText": "Risk",
+          "order": 9
+        },
+        {
+          "displayName": "Audit",
+          "sourceText": "Audit",
+          "order": 10
+        },
+        {
+          "displayName": "Policies",
+          "sourceText": "Policies",
+          "order": 11
+        },
+        {
+          "displayName": "Permissions",
+          "sourceText": "Permissions",
+          "order": 12
+        },
+        {
+          "displayName": "Registries",
+          "sourceText": "Registries",
+          "order": 13
+        },
+        {
+          "displayName": "Ontology",
+          "sourceText": "Ontology",
+          "order": 14
+        },
+        {
+          "displayName": "Taxonomy",
+          "sourceText": "Taxonomy",
+          "order": 15
+        },
+        {
+          "displayName": "Repository Intelligence",
+          "sourceText": "Repository Intelligence",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "id": "seis",
+      "displayName": "SEIS",
+      "order": 13,
+      "topics": [
+        {
+          "displayName": "SEIS AI Desktop",
+          "sourceText": "SEIS AI Desktop",
+          "order": 1
+        },
+        {
+          "displayName": "SEIS AI Core",
+          "sourceText": "SEIS AI Core",
+          "order": 2
+        },
+        {
+          "displayName": "SEIS Brain",
+          "sourceText": "SEIS Brain",
+          "order": 3
+        },
+        {
+          "displayName": "SEIS 9Router",
+          "sourceText": "SEIS 9Router",
+          "order": 4
+        },
+        {
+          "displayName": "SEIS Command Center",
+          "sourceText": "SEIS Command Center",
+          "order": 5
+        },
+        {
+          "displayName": "SEIS Goal Tracking",
+          "sourceText": "SEIS Goal Tracking",
+          "order": 6
+        },
+        {
+          "displayName": "SEIS Workflow Engine",
+          "sourceText": "SEIS Workflow Engine",
+          "order": 7
+        },
+        {
+          "displayName": "SEIS Agent Runtime",
+          "sourceText": "SEIS Agent Runtime",
+          "order": 8
+        },
+        {
+          "displayName": "SEIS Knowledge Engine",
+          "sourceText": "SEIS Knowledge Engine",
+          "order": 9
+        },
+        {
+          "displayName": "SEIS Intelligence Cube",
+          "sourceText": "SEIS Intelligence Cube",
+          "order": 10
+        },
+        {
+          "displayName": "SEIS Technology Ontology",
+          "sourceText": "SEIS Technology Ontology",
+          "order": 11
+        },
+        {
+          "displayName": "SEIS Repository Intelligence",
+          "sourceText": "SEIS Repository Intelligence",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "id": "pantechnoepistemonoesis",
+      "displayName": "PANTECHNOEPISTEMONOESIS",
+      "order": 14,
+      "topics": [
+        {
+          "displayName": "Engineering Civilization",
+          "sourceText": "Engineering Civilization",
+          "order": 1
+        },
+        {
+          "displayName": "Technology Atlas",
+          "sourceText": "Technology Atlas",
+          "order": 2
+        },
+        {
+          "displayName": "Research Lab",
+          "sourceText": "Research Lab",
+          "order": 3
+        },
+        {
+          "displayName": "Knowledge Civilization",
+          "sourceText": "Knowledge Civilization",
+          "order": 4
+        },
+        {
+          "displayName": "Scientific Computing",
+          "sourceText": "Scientific Computing",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "eleni-neferi",
+      "displayName": "ELENI-NEFERI",
+      "order": 15,
+      "topics": [
+        {
+          "displayName": "Identity Bible",
+          "sourceText": "Identity Bible",
+          "order": 1
+        },
+        {
+          "displayName": "Visual Identity",
+          "sourceText": "Visual Identity",
+          "order": 2
+        },
+        {
+          "displayName": "Story Universe",
+          "sourceText": "Story Universe",
+          "order": 3
+        },
+        {
+          "displayName": "Creative Studio",
+          "sourceText": "Creative Studio",
+          "order": 4
+        },
+        {
+          "displayName": "Media Pipeline",
+          "sourceText": "Media Pipeline",
+          "order": 5
+        },
+        {
+          "displayName": "Prompt Registry",
+          "sourceText": "Prompt Registry",
+          "order": 6
+        },
+        {
+          "displayName": "Moodboard System",
+          "sourceText": "Moodboard System",
+          "order": 7
+        },
+        {
+          "displayName": "Asset Universe",
+          "sourceText": "Asset Universe",
+          "order": 8
+        },
+        {
+          "displayName": "Lifestyle",
+          "sourceText": "Lifestyle",
+          "order": 9
+        },
+        {
+          "displayName": "Travel",
+          "sourceText": "Travel",
+          "order": 10
+        },
+        {
+          "displayName": "Architecture",
+          "sourceText": "Architecture",
+          "order": 11
+        },
+        {
+          "displayName": "Fashion",
+          "sourceText": "Fashion",
+          "order": 12
+        },
+        {
+          "displayName": "Editorial",
+          "sourceText": "Editorial",
+          "order": 13
+        },
+        {
+          "displayName": "Cinematic Experience",
+          "sourceText": "Cinematic Experience bunlarla ilgili eklentiler oluşturup bütün eklentiler geliştirilecek",
+          "directive": true,
+          "order": 14
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "groupCount": 15,
+    "topicCountIncludingGroupHeadings": 300,
+    "topicCountExcludingGroupHeadings": 285,
+    "uniqueDisplayNameCount": 298
+  }
+}

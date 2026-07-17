@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-world-models": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-world-models-mcp-server.mjs"
+      ]
+    }
+  }
+}

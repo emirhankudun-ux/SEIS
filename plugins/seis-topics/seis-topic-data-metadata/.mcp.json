@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-metadata": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-metadata-mcp-server.mjs"
+      ]
+    }
+  }
+}

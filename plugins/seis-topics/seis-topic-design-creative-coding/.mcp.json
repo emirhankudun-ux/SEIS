@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-design-creative-coding": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-design-creative-coding-mcp-server.mjs"
+      ]
+    }
+  }
+}

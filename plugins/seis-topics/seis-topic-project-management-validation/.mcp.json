@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-validation": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-validation-mcp-server.mjs"
+      ]
+    }
+  }
+}

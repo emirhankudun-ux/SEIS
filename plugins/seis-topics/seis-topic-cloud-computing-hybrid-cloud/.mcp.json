@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cloud-computing-hybrid-cloud": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cloud-computing-hybrid-cloud-mcp-server.mjs"
+      ]
+    }
+  }
+}

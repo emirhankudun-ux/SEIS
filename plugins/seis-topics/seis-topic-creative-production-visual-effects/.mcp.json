@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-creative-production-visual-effects": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-creative-production-visual-effects-mcp-server.mjs"
+      ]
+    }
+  }
+}

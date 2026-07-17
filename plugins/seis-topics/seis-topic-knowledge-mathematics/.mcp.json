@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-mathematics": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-mathematics-mcp-server.mjs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-software-architecture": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-software-architecture-mcp-server.mjs"
+      ]
+    }
+  }
+}

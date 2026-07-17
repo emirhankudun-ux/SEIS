@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-asset-universe": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-asset-universe-mcp-server.mjs"
+      ]
+    }
+  }
+}

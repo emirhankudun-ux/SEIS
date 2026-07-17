@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-neuroscience": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-neuroscience-mcp-server.mjs"
+      ]
+    }
+  }
+}

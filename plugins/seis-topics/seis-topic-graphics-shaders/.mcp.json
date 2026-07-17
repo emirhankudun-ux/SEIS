@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-graphics-shaders": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-graphics-shaders-mcp-server.mjs"
+      ]
+    }
+  }
+}

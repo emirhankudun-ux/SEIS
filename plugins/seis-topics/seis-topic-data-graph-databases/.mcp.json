@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-graph-databases": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-graph-databases-mcp-server.mjs"
+      ]
+    }
+  }
+}

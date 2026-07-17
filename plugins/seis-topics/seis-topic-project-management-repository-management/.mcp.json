@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-repository-management": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-repository-management-mcp-server.mjs"
+      ]
+    }
+  }
+}

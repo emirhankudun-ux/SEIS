@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-business-intelligence": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-business-intelligence-mcp-server.mjs"
+      ]
+    }
+  }
+}

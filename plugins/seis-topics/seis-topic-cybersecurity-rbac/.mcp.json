@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-cybersecurity-rbac": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-cybersecurity-rbac-mcp-server.mjs"
+      ]
+    }
+  }
+}

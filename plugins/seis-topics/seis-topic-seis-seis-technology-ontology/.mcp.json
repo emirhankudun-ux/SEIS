@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-seis-seis-technology-ontology": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-seis-seis-technology-ontology-mcp-server.mjs"
+      ]
+    }
+  }
+}

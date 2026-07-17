@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-full-stack": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-full-stack-mcp-server.mjs"
+      ]
+    }
+  }
+}

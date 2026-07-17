@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-visual-identity": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-visual-identity-mcp-server.mjs"
+      ]
+    }
+  }
+}

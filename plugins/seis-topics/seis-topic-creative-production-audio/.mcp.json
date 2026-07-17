@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-creative-production-audio": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-creative-production-audio-mcp-server.mjs"
+      ]
+    }
+  }
+}

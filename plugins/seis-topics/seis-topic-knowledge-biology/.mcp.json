@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-biology": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-biology-mcp-server.mjs"
+      ]
+    }
+  }
+}

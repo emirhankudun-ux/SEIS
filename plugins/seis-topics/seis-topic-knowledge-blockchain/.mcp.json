@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-blockchain": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-blockchain-mcp-server.mjs"
+      ]
+    }
+  }
+}

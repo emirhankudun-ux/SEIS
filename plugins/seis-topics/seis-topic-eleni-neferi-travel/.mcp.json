@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-travel": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-travel-mcp-server.mjs"
+      ]
+    }
+  }
+}

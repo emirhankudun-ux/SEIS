@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-architecture-governance": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-architecture-governance-mcp-server.mjs"
+      ]
+    }
+  }
+}

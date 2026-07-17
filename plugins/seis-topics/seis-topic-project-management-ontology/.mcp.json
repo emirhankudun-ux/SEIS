@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-project-management-ontology": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-project-management-ontology-mcp-server.mjs"
+      ]
+    }
+  }
+}

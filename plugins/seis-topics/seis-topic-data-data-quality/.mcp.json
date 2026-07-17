@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-data-quality": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-data-quality-mcp-server.mjs"
+      ]
+    }
+  }
+}

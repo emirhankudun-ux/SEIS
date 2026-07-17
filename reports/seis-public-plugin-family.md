@@ -1,7 +1,7 @@
 # SEIS Public Plugin Family
 
 - Generated: 2026-07-12
-- Mode: public_seis_agent_with_public_app_repository_plugins
+- Mode: public_seis_agent_with_public_app_and_topic_repository_plugins
 - Marketplace: seis-repo
 - Public audience: everyone
 - SEIS AI orchestrator: seis-ai-agent@seis-repo
@@ -9,7 +9,7 @@
 ## Public Distribution
 
 - Canonical install: seis-ai-agent@seis-repo
-- Public plugin count: 61
+- Public plugin count: 361
 - Mode: single-public-plugin
 - Unified suite: plugins/seis-ai-agent/assets/unified-suite.json
 - Standalone lanes: source-module-only
@@ -49,6 +49,19 @@
 - MCP server: plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs
 - Embedded skills: plugins/seis-ai-agent/skills
 - Embedded lane profiles: plugins/seis-ai-agent/assets/lanes
+- Objective-derived topic source root: plugins/seis-topics
+- Objective-derived topic packages: 300
+- Topic packages are separate public repository cards; the canonical default install remains SEIS-Agent.
+
+## Objective-Derived Topic Packages
+
+- Marketplace entries: 300
+- Source root: plugins/seis-topics
+- Objective source: content/development/seis-topic-plugin-objective.json
+- Audience: everyone
+- License: MIT
+- Runtime: local read-only demo; no provider, network, secret, or write access.
+- Package family check: npm run check:seis-topic-plugin-family
 
 ## Security Model
 
@@ -60,8 +73,9 @@
 ## Long-Horizon Rules
 
 - Keep SEIS-Agent as the canonical orchestration layer for cross-lane work.
-- Keep source modules under plugins/seis-* embedded in SEIS-Agent, not exposed as separate public marketplace plugins.
+- Keep specialist source modules under plugins/seis-ai-agent embedded in SEIS-Agent, not exposed as separate public marketplace plugins.
 - Keep every app-owned package under plugins/seis-core available as a public MIT package in the seis-repo marketplace.
+- Keep every objective-derived package under plugins/seis-topics available as a public MIT package in the seis-repo marketplace.
 - Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.
 - Validate manifests, MCP tools, marketplace entries, and SEIS-AI lane wiring before claiming public readiness.
 - Record mock, disabled, planned, and connected states honestly.
@@ -74,6 +88,7 @@ npm run check:seis-public-plugin-family
 npm run check:seis-specialist-plugins
 npm run check:seis-ai-agent
 npm run check:seis-plugin-bundle -- --no-local
+npm run check:seis-topic-plugin-family
 python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent
 python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis
 python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-cloud

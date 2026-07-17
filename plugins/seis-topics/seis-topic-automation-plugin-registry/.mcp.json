@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-automation-plugin-registry": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-automation-plugin-registry-mcp-server.mjs"
+      ]
+    }
+  }
+}

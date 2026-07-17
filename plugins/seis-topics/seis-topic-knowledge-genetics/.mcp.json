@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-knowledge-genetics": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-knowledge-genetics-mcp-server.mjs"
+      ]
+    }
+  }
+}

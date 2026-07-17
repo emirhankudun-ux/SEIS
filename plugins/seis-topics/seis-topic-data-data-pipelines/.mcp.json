@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-data-data-pipelines": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-data-data-pipelines-mcp-server.mjs"
+      ]
+    }
+  }
+}

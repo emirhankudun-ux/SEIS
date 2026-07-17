@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-optimization": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-optimization-mcp-server.mjs"
+      ]
+    }
+  }
+}

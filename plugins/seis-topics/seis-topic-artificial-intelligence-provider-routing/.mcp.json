@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-provider-routing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-provider-routing-mcp-server.mjs"
+      ]
+    }
+  }
+}

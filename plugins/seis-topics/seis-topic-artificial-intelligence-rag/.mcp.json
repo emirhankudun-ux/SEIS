@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-artificial-intelligence-rag": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-artificial-intelligence-rag-mcp-server.mjs"
+      ]
+    }
+  }
+}

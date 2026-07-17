@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-software-engineering-testing": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-software-engineering-testing-mcp-server.mjs"
+      ]
+    }
+  }
+}

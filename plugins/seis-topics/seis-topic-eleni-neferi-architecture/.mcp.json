@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-eleni-neferi-architecture": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-topic-eleni-neferi-architecture-mcp-server.mjs"
+      ]
+    }
+  }
+}
