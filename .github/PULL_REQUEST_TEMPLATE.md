@@ -42,6 +42,57 @@ npm run check:open-source-governance
 npm run seis:check
 ```
 
+## SEIS-SSH Public Access Review
+
+Complete this section when the PR changes SSH, cloud access, GitHub
+onboarding, public support, Desktop Cloud Center evidence, or SEIS-SSH
+documentation.
+
+Core invariant:
+
+```text
+Keep the same server and port.
+Ayni sunucu ve baglanti noktasi korunur.
+```
+
+- [ ] I did not rename `SEIS-SSH`.
+- [ ] I did not add a duplicate visible SEIS SSH alias.
+- [ ] I did not change `HostName` or `Port` for `SEIS-SSH` without linked maintainer approval.
+- [ ] I did not paste private keys, tokens, passwords, cookies, `.env` values, full hostnames, full IPv4/IPv6 addresses, or provider credentials.
+- [ ] No live SSH session was attempted for this PR unless explicit maintainer approval is linked.
+- [ ] Live-ready, mobile-24x7-ready, and picker-ready claims are supported by strict evidence or left as `blocked` / `approval-gated`.
+- [ ] Public artifacts were checked before attaching them to a public issue or PR.
+- [ ] GitHub merge readiness is represented honestly when repository rules keep `mergeStateStatus: BLOCKED`.
+- [ ] Signed commit setup, last-push approval, code owner review, and review-thread resolution requirements are acknowledged.
+- [ ] Verified signed commits are covered by the public signing guide when required signatures are active.
+- [ ] Public review bundle was generated or checked before requesting SEIS-SSH review.
+- [ ] AI/MCP handoff was checked when installed AI, MCP, plugin, or connector context is relevant.
+- [ ] Client compatibility matrix was checked when user, device, IDE, picker, AI, MCP, plugin, or VPN behavior is relevant.
+- [ ] AI/plugin review matrix was checked when installed AI, MCP runtime, plugin lane, or connector evidence is relevant.
+
+Relevant checks:
+
+```bash
+npm run check:seis-ssh-public-pr-template
+npm run check:seis-ssh-public-access
+npm run check:seis-ssh-public-merge-readiness
+npm run check:seis-ssh-public-github-policy
+npm run check:seis-ssh-public-signing-guide
+npm run check:seis-ssh-public-review-bundle
+npm run check:seis-ssh-ai-mcp-handoff
+npm run check:seis-ssh-public-client-compatibility
+npm run check:seis-ssh-public-ai-plugin-review
+npm run check:seis-ssh-public-ci-workflow
+npm run check:seis-ssh-public-readiness-matrix
+npm run check:seis-ssh-public-artifact-hygiene
+npm run check:seis-ssh-live-readiness-evidence
+```
+
+Support path:
+
+- Issue form: `.github/ISSUE_TEMPLATE/seis_ssh_access.yml`
+- Runbook: `docs/deployment/seis-ssh-public-github-access.md`
+
 Quality/Safety evidence (choose one per row):
 
 - Enterprise gate set: [ ] quality [ ] security [ ] ai [ ] ai-policy

@@ -119,12 +119,23 @@ function buildOnboardingPack(report) {
         status: "ready",
         promise: "Can review the public contract, run static gates, and attach the sanitized onboarding pack without credentials.",
         commands: [
+          "npm run check:seis-ssh-public-first-run",
+          "npm run check:seis-ssh-public-troubleshooting",
+          "npm run check:seis-ssh-public-support-packet",
+          "npm run check:seis-ssh-public-merge-readiness",
+          "npm run check:seis-ssh-public-github-policy",
+          "npm run check:seis-ssh-public-signing-guide",
+          "npm run check:seis-ssh-public-review-bundle",
+          "npm run check:seis-ssh-public-pr-template",
+          "npm run check:seis-ssh-public-ci-workflow",
+          "npm run check:seis-ssh-public-readiness-matrix",
           "npm run check:seis-ssh-public-access",
           "npm run check:seis-ssh-public-access-report",
           "npm run check:seis-ssh-public-onboarding",
           "npm run check:seis-ssh-public-contributor-doctor",
           "npm run report:seis-ssh-public-onboarding",
-          "npm run report:seis-ssh-public-contributor-doctor"
+          "npm run report:seis-ssh-public-contributor-doctor",
+          "ssh -G SEIS-SSH"
         ],
         forbiddenActions: [
           "execute live SSH",
@@ -139,9 +150,22 @@ function buildOnboardingPack(report) {
         status: "approval-gated",
         promise: "Uses the existing SEIS-SSH endpoint and preserves the current server and port.",
         commands: [
+          "npm run report:seis-ssh-public-first-run",
+          "npm run report:seis-ssh-public-troubleshooting",
+          "npm run report:seis-ssh-public-support-packet",
+          "npm run report:seis-ssh-public-github-quickstart",
+          "npm run report:seis-ssh-public-merge-readiness",
+          "npm run report:seis-ssh-public-github-policy",
+          "npm run report:seis-ssh-public-signing-guide",
+          "npm run report:seis-ssh-public-review-bundle",
+          "npm run check:seis-ssh-public-pr-template",
+          "npm run check:seis-ssh-public-ci-workflow",
+          "npm run check:seis-ssh-public-readiness-matrix",
+          "npm run check:seis-ssh-public-artifact-hygiene",
           "npm run report:seis-ssh-public-access",
           "npm run report:seis-ssh-public-onboarding",
-          "npm run check:seis-ssh-picker-compatibility"
+          "npm run check:seis-ssh-picker-compatibility",
+          "ssh -G SEIS-SSH"
         ],
         forbiddenActions: [
           "silently rewrite ~/.ssh/config",
@@ -156,8 +180,23 @@ function buildOnboardingPack(report) {
         promise: "Can use the same SEIS-SSH alias pattern for an authorized personal Codespace or approved cloud workspace without accessing maintainer secrets.",
         commands: [
           "gh auth refresh -h github.com -s codespace",
+          "npm run run:seis-ssh-public-github-quickstart",
+          "npm run run:seis-ssh-public-merge-readiness",
+          "npm run run:seis-ssh-public-github-policy",
+          "npm run run:seis-ssh-public-signing-guide",
+          "npm run run:seis-ssh-public-review-bundle",
+          "npm run check:seis-ssh-public-pr-template",
+          "npm run check:seis-ssh-public-ci-workflow",
+          "npm run check:seis-ssh-public-readiness-matrix",
+          "npm run check:seis-ssh-public-artifact-hygiene",
+          "npm run run:seis-ssh-public-first-run",
+          "npm run run:seis-ssh-public-troubleshooting",
+          "npm run run:seis-ssh-public-support-packet",
           "npm run cloud:ssh-config:install -- --dry-run",
-          "npm run check:seis-ssh-picker-compatibility"
+          "npm run check:seis-ssh-picker-compatibility",
+          "ssh -G SEIS-SSH",
+          "npm run report:seis-ssh-public-onboarding",
+          "npm run report:seis-ssh-public-contributor-doctor"
         ],
         forbiddenActions: [
           "request shared private keys",
@@ -169,6 +208,26 @@ function buildOnboardingPack(report) {
     ],
     acceptanceGates: {
       publicReview: [
+        "npm run check:seis-ssh-public-first-run",
+        "npm run report:seis-ssh-public-first-run",
+        "npm run check:seis-ssh-public-troubleshooting",
+        "npm run report:seis-ssh-public-troubleshooting",
+        "npm run check:seis-ssh-public-support-packet",
+        "npm run report:seis-ssh-public-support-packet",
+        "npm run check:seis-ssh-public-github-quickstart",
+        "npm run report:seis-ssh-public-github-quickstart",
+        "npm run check:seis-ssh-public-merge-readiness",
+        "npm run report:seis-ssh-public-merge-readiness",
+        "npm run check:seis-ssh-public-github-policy",
+        "npm run report:seis-ssh-public-github-policy",
+        "npm run check:seis-ssh-public-signing-guide",
+        "npm run report:seis-ssh-public-signing-guide",
+        "npm run check:seis-ssh-public-review-bundle",
+        "npm run report:seis-ssh-public-review-bundle",
+        "npm run check:seis-ssh-public-pr-template",
+        "npm run check:seis-ssh-public-ci-workflow",
+        "npm run check:seis-ssh-public-readiness-matrix",
+        "npm run check:seis-ssh-public-artifact-hygiene",
         "npm run check:seis-ssh-public-access",
         "npm run check:seis-ssh-public-access-report",
         "npm run check:seis-ssh-public-onboarding",
@@ -322,7 +381,11 @@ function sanitizeLines(values) {
     .map((value) => String(value)
       .replace(/-----BEGIN [^-]+PRIVATE KEY-----[\s\S]*?-----END [^-]+PRIVATE KEY-----/g, "[redacted-private-key]")
       .replace(/sk-[A-Za-z0-9_-]{20,}/g, "[redacted-api-key]")
+      .replace(/github_pat_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
       .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
+      .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
+      .replace(/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/gi, "[redacted-ipv6]")
+      .replace(/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/gi, "[redacted-ipv6]")
       .slice(0, 400));
 }
 

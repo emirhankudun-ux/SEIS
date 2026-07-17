@@ -4,99 +4,28 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>SEIS OS Login</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-tertiary-fixed-variant": "#92002a",
-                        "tertiary-container": "#ff516a",
-                        "primary-fixed": "#f0dbff",
-                        "on-secondary-fixed-variant": "#842500",
-                        "on-primary-fixed-variant": "#6900b3",
-                        "surface-container-high": "#282a2a",
-                        "tertiary-fixed": "#ffdadb",
-                        "on-error": "#690005",
-                        "inverse-surface": "#e1e3e2",
-                        "on-tertiary-container": "#5b0017",
-                        "surface-container": "#1d2020",
-                        "tertiary-fixed-dim": "#ffb2b7",
-                        "secondary-fixed": "#ffdbd0",
-                        "on-surface-variant": "#cfc2d6",
-                        "outline": "#988d9f",
-                        "secondary-fixed-dim": "#ffb59e",
-                        "on-surface": "#e1e3e2",
-                        "surface-bright": "#373a3a",
-                        "on-tertiary-fixed": "#40000d",
-                        "secondary-container": "#fc5b1f",
-                        "on-background": "#e1e3e2",
-                        "surface-variant": "#323535",
-                        "background": "#111414",
-                        "surface-container-low": "#191c1c",
-                        "on-primary": "#490080",
-                        "on-primary-container": "#400071",
-                        "error-container": "#93000a",
-                        "surface-container-highest": "#323535",
-                        "tertiary": "#ffb2b7",
-                        "surface": "#111414",
-                        "on-tertiary": "#67001b",
-                        "surface-tint": "#ddb7ff",
-                        "on-secondary-fixed": "#390b00",
-                        "secondary": "#ffb59e",
-                        "inverse-on-surface": "#2e3131",
-                        "on-primary-fixed": "#2c0051",
-                        "error": "#ffb4ab",
-                        "primary-container": "#b76dff",
-                        "primary": "#ddb7ff",
-                        "outline-variant": "#4d4354",
-                        "inverse-primary": "#842bd2",
-                        "primary-fixed-dim": "#ddb7ff",
-                        "on-secondary": "#5d1800",
-                        "on-secondary-container": "#521400",
-                        "surface-dim": "#111414",
-                        "surface-container-lowest": "#0c0f0f",
-                        "on-error-container": "#ffdad6"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px",
-                        "2xl": "1.5rem"
-                    },
-                    "spacing": {
-                        "unit": "8px",
-                        "container-padding": "32px",
-                        "gutter": "24px",
-                        "safe-area": "40px"
-                    },
-                    "fontFamily": {
-                        "body-md": ["Geist"],
-                        "label-sm": ["JetBrains Mono"],
-                        "headline-lg": ["Geist"],
-                        "display": ["Geist"],
-                        "code-md": ["JetBrains Mono"],
-                        "body-lg": ["Geist"],
-                        "headline-md": ["Geist"]
-                    },
-                    "fontSize": {
-                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
-                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
-                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "code-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
-                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
-                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }]
-                    }
-                }
-            }
-        }
-    </script>
 <style>
+        :root {
+            --seis-background: #111414;
+            --seis-surface: #111414;
+            --seis-surface-container: #1d2020;
+            --seis-surface-container-low: #191c1c;
+            --seis-surface-variant: #323535;
+            --seis-surface-dim: #111414;
+            --seis-on-background: #e1e3e2;
+            --seis-on-surface: #e1e3e2;
+            --seis-on-surface-variant: #cfc2d6;
+            --seis-outline-variant: #4d4354;
+            --seis-outline: #988d9f;
+            --seis-primary: #ddb7ff;
+            --seis-on-primary: #490080;
+            --seis-inverse-surface: #e1e3e2;
+            --seis-primary-fixed: #f0dbff;
+            --seis-primary-fixed-dim: #ddb7ff;
+            --seis-tertiary: #ffb2b7;
+            --seis-on-tertiary: #67001b;
+        }
+
         .glass-panel {
             background-color: rgba(26, 28, 28, 0.7);
             backdrop-filter: blur(48px);
@@ -163,6 +92,163 @@
             .avatar-glow { animation: none; }
             .loading-spinner { animation-duration: 1.5s; }
         }
+
+        .dark {
+            color-scheme: dark;
+        }
+
+        .absolute { position: absolute; }
+        .relative { position: relative; }
+        .fixed { position: fixed; }
+        .inset-0 { inset: 0; }
+        .h-screen { height: 100vh; }
+        .w-screen { width: 100vw; }
+        .h-full { height: 100%; }
+        .w-full { width: 100%; }
+        .w-12 { width: 3rem; }
+        .h-12 { height: 3rem; }
+        .w-8 { width: 2rem; }
+        .h-8 { height: 2rem; }
+        .w-32 { width: 8rem; }
+        .h-32 { height: 8rem; }
+        .overflow-hidden { overflow: hidden; }
+        .overflow-auto { overflow: auto; }
+        .overflow-x-hidden { overflow-x: hidden; }
+        .overflow-y-auto { overflow-y: auto; }
+        .bg-background,
+        .bg-surface { background-color: var(--seis-background); }
+        .bg-primary { background-color: var(--seis-primary); }
+        .bg-\[\#1A1C1C\]\/70 { background-color: rgba(26, 28, 28, 0.7); }
+        .bg-\[\#000000\]\/80 { background-color: rgba(0, 0, 0, 0.8); }
+        .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+        .text-on-background { color: var(--seis-on-background); }
+        .text-on-surface { color: var(--seis-on-surface); }
+        .text-on-surface-variant { color: var(--seis-on-surface-variant); }
+        .text-primary { color: var(--seis-primary); }
+        .text-on-primary { color: var(--seis-on-primary); }
+        .text-\[16px\] { font-size: 16px; }
+        .text-center { text-align: center; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-4 { gap: 1rem; }
+        .gap-unit { gap: 8px; }
+        .gap-gutter { gap: 24px; }
+        .mb-unit { margin-bottom: 8px; }
+        .mb-gutter { margin-bottom: 24px; }
+        .mt-2 { margin-top: 0.5rem; }
+        .px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .p-container-padding { padding: 32px; }
+        .pt-12 { padding-top: 3rem; }
+        .text-white { color: #fff; }
+        .font-bold { font-weight: 700; }
+        .font-body-md { font-size: 16px; line-height: 1.6; font-weight: 400; font-family: "Segoe UI", system-ui, sans-serif; }
+        .font-display { font-size: 48px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 700; font-family: "Segoe UI", system-ui, sans-serif; }
+        .font-headline-md { font-size: 24px; line-height: 1.3; letter-spacing: 0; font-weight: 500; font-family: "Segoe UI", system-ui, sans-serif; }
+        .font-label-sm { font-size: 12px; line-height: 1; letter-spacing: 0.05em; font-weight: 500; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        .font-code-md { font-size: 14px; line-height: 1.5; font-weight: 400; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        .rounded-[24px] { border-radius: 24px; }
+        .border { border-width: 1px; border-style: solid; }
+        .border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+        .border-2 { border-width: 2px; }
+        .border-outline-variant { border-color: var(--seis-outline-variant); }
+        .border-primary\/50 { border-color: color-mix(in srgb, var(--seis-primary) 50%, transparent); }
+        .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
+        .transition-all { transition: all 0.3s ease; }
+        .transition-colors { transition-property: color, background-color, border-color; transition-duration: 0.15s; transition-timing-function: ease; }
+        .transition-opacity { transition-property: opacity; transition-duration: 0.5s; transition-timing-function: ease; }
+        .duration-200 { transition-duration: 200ms; }
+        .duration-300 { transition-duration: 300ms; }
+        .duration-500 { transition-duration: 500ms; }
+        .hover\:bg-white\/10:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .hover\:scale-110:hover { transform: scale(1.1); }
+        .transform { transform: translateZ(0); }
+        .transform-style-preserve-3d { transform-style: preserve-3d; }
+        .translate-z-\[10px\] { transform: translateZ(10px); }
+        .translate-z-\[20px\] { transform: translateZ(20px); }
+        .translate-z-\[30px\] { transform: translateZ(30px); }
+        .-translate-y-1\/2 { transform: translateY(-50%); }
+        .right-2 { right: 0.5rem; }
+        .top-1\/2 { top: 50%; }
+        .top-0 { top: 0; }
+        .left-safe-area { left: 40px; }
+        .right-safe-area { right: 40px; }
+        .bottom-safe-area { bottom: 40px; }
+        .z-10 { z-index: 10; }
+        .z-50 { z-index: 50; }
+        .-z-10 { z-index: -10; }
+        .z-\-10 { z-index: -10; }
+        .flex-col { flex-direction: column; }
+        .object-cover { object-fit: cover; }
+        .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
+        .backdrop-blur-sm,
+        .backdrop-blur-3xl { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .filter { filter: blur(0); }
+        .blur-\[10px\] { filter: blur(10px); }
+        .scale-110 { transform: scale(1.1); }
+        .opacity-70 { opacity: 0.7; }
+        .opacity-0 { opacity: 0; }
+        .duration-1000 { transition-duration: 1000ms; }
+        .-translate-x-1\/2 { transform: translateX(-50%); }
+        .-translate-y-1\/2 { transform: translateY(-50%); }
+        .pointer-events-none { pointer-events: none; }
+        .outline-none { outline: none; }
+        .focus\:outline-none:focus { outline: none; }
+        .placeholder-on-surface-variant::placeholder { color: var(--seis-on-surface-variant); }
+        .pointer-events-auto { pointer-events: auto; }
+        .perspective-\[1000px\] { perspective: 1000px; }
+        .gap-unit { gap: 8px; }
+        .bg-transparent { background-color: transparent; }
+        .text-label-sm { font-size: 12px; line-height: 1; letter-spacing: 0.05em; font-weight: 500; }
+        .text-headline-md { font-size: 24px; }
+        .text-display { font-size: 48px; }
+        .shadow-\[0_0_15px_rgba\(168,85,247,0\.5\)\] { box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
+
+        .material-symbols-outlined {
+            display: inline-block;
+            min-width: 1.2em;
+            text-align: center;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            color: var(--seis-on-surface-variant);
+        }
+
+        #bg-shader {
+            background: radial-gradient(circle at 20% 20%, rgba(75, 47, 143, 0.2), transparent 40%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 128, 255, 0.1), transparent 30%);
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .avatar-surface {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background:
+                radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.32), transparent 40%),
+                radial-gradient(circle at 70% 80%, rgba(66, 165, 245, 0.18), transparent 45%),
+                linear-gradient(160deg, #2a1f3c 0%, #1b1d2a 50%, #222f3a 100%);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.35), 0 0 18px rgba(168, 85, 247, 0.22);
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: var(--seis-background);
+        }
+
+        .text-on-error,
+        .on-error {
+            color: #ffb4ab;
+        }
+
+        .max-w-md {
+            max-width: 28rem;
+        }
     </style>
 </head>
 <body class="bg-background text-on-background h-screen w-screen overflow-hidden relative font-body-md">
@@ -185,7 +271,7 @@
 <div class="glass-panel rounded-[24px] p-container-padding w-full max-w-md flex flex-col items-center" id="login-card">
 <!-- Avatar -->
 <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-primary/50 mb-unit relative avatar-glow transform translate-z-[20px]">
-<img class="w-full h-full object-cover" data-alt="A cinematic, high-fidelity portrait of a futuristic tech user, glowing ambient purple lighting, sharp focus, set against a dark tech lab background. The styling is sleek, modern, and aligned with a dark-mode cyberpunk aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA9JCa4YLHZ-hjkDaRb2azZ2qrSl7KnnWxAZHXzfJ9e4wZ2TUYR2PedxuOXpisTdNEKzprFJQlR07ES0CTdlyjOi__8uYW4VMdFX-EQNotgnZ6L5ZVY3_ipJ3OXsm3H08s3C0M9EJmYGMN6-QnNumIHtA2D4-Hp15eGgLJJPeGtX2IShkJ9X7AHau97IG0fX9gxATu1zVyEzv5T6SvgXY_Ttcw8iZ0FI0N3ejIaAtAekLRzplelz-nBf5w7wd3x0Mhim2OAZ_LAuct"/>
+<div class="avatar-surface w-full h-full"></div>
 </div>
 <!-- Username -->
 <h1 class="font-display text-display text-on-surface mb-gutter transform translate-z-[10px]">Emirhan</h1>

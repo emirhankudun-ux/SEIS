@@ -77,6 +77,7 @@ ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run che
 ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-access"), "qualityCommands must include public access check");
 ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-onboarding"), "qualityCommands must include public onboarding check");
 ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-contributor-doctor"), "qualityCommands must include public contributor doctor check");
+ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-public-ai-plugin-review"), "qualityCommands must include AI/plugin review matrix check");
 ensure((model?.longTermDevelopment?.qualityCommands || []).includes("npm run check:seis-ssh-live-readiness-evidence"), "qualityCommands must include live readiness evidence check");
 ensure((roadmap?.tracks || []).some((track) => track.profile === "individual-cloud" && track.vpnRequired === false), "roadmap must preserve individual normal cloud SSH");
 ensure((roadmap?.tracks || []).some((track) => track.profile === "organization-vpn-cloud" && track.vpnRequired === true), "roadmap must preserve organization VPN SSH");
@@ -90,6 +91,7 @@ ensure(packageJson?.scripts?.["check:seis-ssh-picker-compatibility"] === "node s
 ensure(packageJson?.scripts?.["check:seis-ssh-public-access"] === "node scripts/check-seis-ssh-public-access.mjs", "missing check:seis-ssh-public-access script");
 ensure(packageJson?.scripts?.["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "missing check:seis-ssh-public-onboarding script");
 ensure(packageJson?.scripts?.["check:seis-ssh-public-contributor-doctor"] === "node scripts/check-seis-ssh-public-contributor-doctor.mjs --check", "missing check:seis-ssh-public-contributor-doctor script");
+ensure(packageJson?.scripts?.["check:seis-ssh-public-ai-plugin-review"] === "node scripts/create-seis-ssh-public-ai-plugin-review-matrix.mjs --check", "missing check:seis-ssh-public-ai-plugin-review script");
 ensure(packageJson?.scripts?.["check:seis-ssh-live-readiness-evidence"] === "node scripts/check-seis-ssh-live-readiness-evidence.mjs", "missing check:seis-ssh-live-readiness-evidence script");
 ensure(packageJson?.scripts?.["check:seis-ssh-cloud-roadmap"] === "node scripts/check-seis-ssh-cloud-roadmap.mjs", "missing check:seis-ssh-cloud-roadmap script");
 ensure(packageJson?.scripts?.["check:seis-ssh-closed-runtime"] === "node scripts/check-seis-ssh-closed-runtime.mjs", "missing check:seis-ssh-closed-runtime script");

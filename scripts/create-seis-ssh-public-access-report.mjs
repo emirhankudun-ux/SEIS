@@ -2,8 +2,9 @@
 
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { homedir } from "node:os";
 
 const args = parseArgs(process.argv.slice(2));
 const write = Boolean(args.write);
@@ -53,15 +54,18 @@ function buildReport(targetAlias) {
 
   const sshConfig = inspectSshConfig(targetAlias);
   if (!sshConfig.configured) warnings.push("local SEIS-SSH config was not resolved by ssh -G");
-  if (sshConfig.transport === "local-or-lan") failures.push("SEIS-SSH must not resolve to localhost or .local");
+  if (["local-or-lan"].includes(sshConfig.transport)) failures.push("SEIS-SSH must not resolve to localhost, private LAN, or .local addresses");
   if (sshConfig.alias !== "SEIS-SSH") failures.push("public report must inspect SEIS-SSH");
 
   const ok = failures.length === 0;
+  const status = failures.length > 0
+    ? "blocked"
+    : sshConfig.configured ? "review-ready" : "setup-needed";
   return {
     id: "seis-ssh-public-access-report",
     generatedAt: new Date().toISOString(),
     ok,
-    status: ok ? "review-ready" : "blocked",
+    status,
     mode: "read-only-no-live-ssh",
     alias: targetAlias,
     contract: "deploy/seis-ssh-public-access-contract.json",
@@ -102,6 +106,7 @@ function buildReport(targetAlias) {
 }
 
 function inspectSshConfig(targetAlias) {
+  const aliasConfigured = hasConfiguredAlias(targetAlias);
   const result = spawnSync("ssh", ["-G", targetAlias], {
     encoding: "utf8",
     timeout: 10000
@@ -111,7 +116,8 @@ function inspectSshConfig(targetAlias) {
       checked: true,
       configured: false,
       alias: targetAlias,
-      error: sanitize(result.stderr || "ssh -G failed")
+      error: sanitize(result.stderr || "ssh -G failed"),
+      aliasConfigured
     };
   }
 
@@ -119,23 +125,57 @@ function inspectSshConfig(targetAlias) {
   const hostname = values.hostname || "";
   const proxyCommand = normalizeNone(values.proxycommand);
   const port = values.port || "22";
-  const transport = detectTransport(hostname, proxyCommand);
+  const transport = aliasConfigured ? detectTransport(hostname, proxyCommand) : "unknown";
 
   return {
     checked: true,
-    configured: true,
+    configured: aliasConfigured,
     alias: targetAlias,
     transport,
-    hostnameKind: classifyHostname(hostname, transport),
-    hostnameSha256Prefix: hostname ? sha256Prefix(hostname) : null,
+    aliasConfigured,
+    hostnameKind: aliasConfigured ? classifyHostname(hostname, transport) : "missing",
+    hostnameSha256Prefix: aliasConfigured && hostname ? sha256Prefix(hostname) : null,
     port,
-    userPresent: Boolean(values.user),
-    proxyCommandPresent: Boolean(proxyCommand),
-    identityFileConfigured: Boolean(normalizeNone(values.identityfile)),
+    userPresent: aliasConfigured && Boolean(values.user),
+    proxyCommandPresent: aliasConfigured && Boolean(proxyCommand),
+    identityFileConfigured: aliasConfigured && Boolean(normalizeNone(values.identityfile)),
     pickerLikelyCompatible: transport === "direct-cloud",
     liveConnectionAttempted: false,
     serverAndPortPreservedByPolicy: true
   };
+}
+
+function hasConfiguredAlias(targetAlias) {
+  const candidates = [join(homedir(), ".ssh", "config")];
+  const configDir = join(homedir(), ".ssh", "config.d");
+  if (existsSync(configDir) && safeIsDirectory(configDir)) {
+    for (const file of readdirSync(configDir)) {
+      const fullPath = join(configDir, file);
+      if (safeIsFile(fullPath)) candidates.push(fullPath);
+    }
+  }
+
+  const target = String(targetAlias || "").toLowerCase();
+  if (!target) return false;
+
+  for (const file of candidates) {
+    const text = readOptionalText(file);
+    if (!text) continue;
+    if (containsHostAlias(text, target)) return true;
+  }
+  return false;
+}
+
+function containsHostAlias(configText, targetAlias) {
+  const target = targetAlias.toLowerCase();
+  for (const line of configText.split(/\r?\n/)) {
+    const hostMatch = /^\s*Host\s+(.+)$/.exec(line);
+    if (!hostMatch) continue;
+
+    const aliases = hostMatch[1].trim().toLowerCase().split(/\s+/);
+    if (aliases.includes(target)) return true;
+  }
+  return false;
 }
 
 function parseSshConfig(output) {
@@ -157,7 +197,7 @@ function normalizeNone(value) {
 function detectTransport(hostname, proxyCommand) {
   const host = String(hostname || "").toLowerCase();
   if (host === "github.codespaces" && String(proxyCommand || "").includes("gh cs ssh")) return "codespace";
-  if (isLocalHost(host)) return "local-or-lan";
+  if (isPrivateHost(host) || isLocalHost(host)) return "local-or-lan";
   if (host && !proxyCommand) return "direct-cloud";
   return "unknown";
 }
@@ -168,6 +208,41 @@ function classifyHostname(hostname, transport) {
   if (transport === "local-or-lan") return "blocked-local-or-lan";
   if (transport === "direct-cloud") return "redacted-direct-cloud-host";
   return "redacted-unknown-host";
+}
+
+function isPrivateHost(host) {
+  const value = String(host || "").toLowerCase();
+  const ipv4 = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/.exec(value);
+  if (ipv4) {
+    const first = Number(ipv4[1]);
+    const second = Number(ipv4[2]);
+
+    return first === 10
+      || (first === 172 && second >= 16 && second <= 31)
+      || (first === 192 && second === 168);
+  }
+
+  const bracketless = value.replace(/^\[/, "").replace(/\]$/, "");
+  if (!bracketless.includes(":")) return false;
+  return /^f[cd][0-9a-f]{0,2}:/i.test(bracketless)
+    || bracketless.startsWith("fe80:")
+    || bracketless === "::1";
+}
+
+function safeIsDirectory(path) {
+  try {
+    return statSync(path).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+function safeIsFile(path) {
+  try {
+    return statSync(path).isFile();
+  } catch {
+    return false;
+  }
 }
 
 function isLocalHost(host) {
@@ -186,7 +261,11 @@ function sanitize(value) {
   return String(value || "")
     .replace(/-----BEGIN [^-]+PRIVATE KEY-----[\s\S]*?-----END [^-]+PRIVATE KEY-----/g, "[redacted-private-key]")
     .replace(/sk-[A-Za-z0-9_-]{20,}/g, "[redacted-api-key]")
+    .replace(/github_pat_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
     .replace(/gh[pousr]_[A-Za-z0-9_]{20,}/g, "[redacted-github-token]")
+    .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "[redacted-ip]")
+    .replace(/\b(?:[a-f0-9]{1,4}:){4,7}[a-f0-9]{1,4}\b/gi, "[redacted-ipv6]")
+    .replace(/\b(?:f[cd][a-f0-9]{0,2}|fe80):[a-f0-9:]{2,}\b/gi, "[redacted-ipv6]")
     .slice(0, 400);
 }
 
@@ -260,6 +339,14 @@ function readText(file, failures) {
     return "";
   }
   return readFileSync(file, "utf8");
+}
+
+function readOptionalText(file) {
+  try {
+    return readFileSync(file, "utf8");
+  } catch {
+    return "";
+  }
 }
 
 function writeFile(file, content) {

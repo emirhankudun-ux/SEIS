@@ -21,7 +21,7 @@ Date: 2026-06-23
 | `SEIS-BL-014` | P1 | Release readiness | Run release-readiness dry run without deployment. | Release blockers and rollback plan are documented. |
 | `SEIS-BL-015` | P2 | AI Core | Define model router, prompt engine, agent runtime, and evaluation boundaries. | Docs avoid model ownership overclaims. |
 | `SEIS-BL-016` | P2 | SSH / cloud | Document SSH workspace policy before remote commands. | SSH docs require approval and no private key exposure. |
-| `SEIS-BL-052` | P0 | SSH / GitHub access | Keep `SEIS-SSH` public, contributor-friendly, and approval-gated while preserving the same server and port. | `deploy/seis-ssh-public-access-contract.json`, `docs/deployment/seis-ssh-public-github-access.md`, `content/development/seis-ssh-live-readiness-evidence.json`, `docs/deployment/seis-ssh-live-readiness-evidence.md`, `apps/web/desktop.js`, `scripts/create-seis-ssh-public-access-report.mjs`, `scripts/create-seis-ssh-public-onboarding-pack.mjs`, `scripts/check-seis-ssh-public-contributor-doctor.mjs`, `scripts/check-seis-ssh-live-readiness-evidence.mjs`, `npm run check:seis-ssh-public-access`, `npm run check:seis-ssh-public-access-report`, `npm run check:seis-ssh-public-onboarding`, `npm run check:seis-ssh-public-contributor-doctor`, and `npm run check:seis-ssh-live-readiness-evidence` validate the public contract, onboarding pack, contributor doctor, and current live blocker without changing the endpoint. |
+| `SEIS-BL-052` | P0 | SSH / GitHub access | Keep `SEIS-SSH` public, contributor-friendly, and approval-gated while preserving the same server and port. | `deploy/seis-ssh-public-access-contract.json`, `docs/deployment/seis-ssh-public-github-access.md`, `.github/ISSUE_TEMPLATE/seis_ssh_access.yml`, `content/development/seis-ssh-live-readiness-evidence.json`, `docs/deployment/seis-ssh-live-readiness-evidence.md`, `apps/web/desktop.js`, `scripts/create-seis-ssh-public-access-report.mjs`, `scripts/create-seis-ssh-public-first-run.mjs`, `scripts/create-seis-ssh-public-troubleshooting-guide.mjs`, `scripts/create-seis-ssh-public-support-packet.mjs`, `scripts/create-seis-ssh-public-github-quickstart.mjs`, `scripts/create-seis-ssh-public-merge-readiness.mjs`, `scripts/create-seis-ssh-public-github-policy-doctor.mjs`, `scripts/create-seis-ssh-public-signing-guide.mjs`, `scripts/create-seis-ssh-public-review-bundle.mjs`, `scripts/check-seis-ssh-public-readiness-matrix.mjs`, `scripts/check-seis-ssh-public-artifact-hygiene.mjs`, `scripts/create-seis-ssh-public-onboarding-pack.mjs`, `scripts/check-seis-ssh-public-contributor-doctor.mjs`, `scripts/check-seis-ssh-live-readiness-evidence.mjs`, `npm run check:seis-ssh-public-access`, `npm run check:seis-ssh-public-access-report`, `npm run check:seis-ssh-public-first-run`, `npm run check:seis-ssh-public-troubleshooting`, `npm run check:seis-ssh-public-support-packet`, `npm run check:seis-ssh-public-github-quickstart`, `npm run check:seis-ssh-public-merge-readiness`, `npm run check:seis-ssh-public-github-policy`, `npm run check:seis-ssh-public-signing-guide`, `npm run check:seis-ssh-public-review-bundle`, `npm run check:seis-ssh-public-readiness-matrix`, `npm run check:seis-ssh-public-artifact-hygiene`, `npm run check:seis-ssh-public-onboarding`, `npm run check:seis-ssh-public-contributor-doctor`, and `npm run check:seis-ssh-live-readiness-evidence` validate the public contract, first-run guide, troubleshooting guide, support packet, GitHub quickstart, merge readiness, GitHub policy doctor, signing guide, public review bundle, clean-runner readiness matrix, artifact hygiene gate, onboarding pack, contributor doctor, secret-safe support form, and current live blocker without changing the endpoint. |
 | `SEIS-BL-020` | P0 | Security | Keep root `SECURITY.md` and repeatable redacted provider/credential audit current. | `SECURITY.md`, `npm run audit:ai-providers`, and audit reports exist without secret values. |
 | `SEIS-BL-030` | P1 | `@seis-cloud` | Keep cloud work dry-run until deployment approval. | Existing cloud checks pass without live deployment. |
 | `SEIS-BL-038` | P1 | SEIS Desktop OS | Keep the browser-based desktop OS foundation functional, mobile-safe, single-entry, and evidence-backed. | `npm run check:desktop-os`, `npm run check:desktop-os-browser-smoke`, `npm run check:seis-ultimate-demo`, and `npm run check:product-experience-browser-smoke` validate 81 app surfaces, 38 terminal commands, app-window coverage, SEIS Demo Studio guided journeys and evidence export, Files search/grid-list/preview diagnostics, SEIS Search launcher routes plus AI/Web/Code/Design/Cloud/Apps/Plugins/Files tabs, the 10-row Command Center Master Objective Coverage matrix, 20B dry-run preflight VFS export, AI Plugin Center tabs, Desktop/SEIS Code workspace handoff, Local Demo `claude`, mobile no-overflow, and interactivity rate. |
@@ -69,7 +69,7 @@ Date: 2026-06-23
 | `SEIS-BL-029` | `seis/repository-intelligence-scanner` | `docs: define repository intelligence scanner outputs` | Medium | No | Define read-only scanner outputs before creating dashboards or health scores. |
 | `SEIS-BL-020` | `security/provider-env-validation` | `security: add provider env validation` | High | Yes only for secret rotation/history rewrite | Add typed server-only environment validation and keep audit reports redacted. |
 | `SEIS-BL-030` | `seis-cloud/readiness-dry-run` | `docs: add SEIS cloud readiness dry run` | High | Yes for live deploy/SSH | Keep all cloud output dry-run and evidence-backed. |
-| `SEIS-BL-052` | `seis-cloud/public-github-ssh` | `docs: add SEIS-SSH public GitHub access contract` | High | Yes for changing server/port, installing SSH config, live SSH, firewall/sshd, push, merge, or release | Keep `SEIS-SSH` as the only public alias, preserve the same server and port, keep public docs, sanitized report output, public onboarding pack output, contributor doctor output, live-readiness blocker evidence, and Desktop Cloud Center evidence wired to `npm run check:seis-ssh-public-access`, `npm run check:seis-ssh-public-access-report`, `npm run check:seis-ssh-public-onboarding`, `npm run check:seis-ssh-public-contributor-doctor`, `npm run check:seis-ssh-live-readiness-evidence`, `npm run report:seis-ssh-public-access`, `npm run report:seis-ssh-public-onboarding`, and `npm run report:seis-ssh-public-contributor-doctor`; require GitHub Codespaces billing resolution or approved direct-cloud/broker proof before any live-ready claim. |
+| `SEIS-BL-052` | `seis-cloud/public-github-ssh` | `docs: add SEIS-SSH public GitHub access contract` | High | Yes for changing server/port, installing SSH config, live SSH, firewall/sshd, push, merge, or release | Keep `SEIS-SSH` as the only public alias, preserve the same server and port, keep public docs, sanitized report output, first-run guide output, troubleshooting guide output, support packet output, GitHub quickstart output, merge readiness output, GitHub policy doctor output, signing guide output, public review bundle output, artifact hygiene output, public onboarding pack output, contributor doctor output, secret-safe GitHub support form, live-readiness blocker evidence, and Desktop Cloud Center evidence wired to `npm run check:seis-ssh-public-access`, `npm run check:seis-ssh-public-access-report`, `npm run check:seis-ssh-public-first-run`, `npm run check:seis-ssh-public-troubleshooting`, `npm run check:seis-ssh-public-support-packet`, `npm run check:seis-ssh-public-github-quickstart`, `npm run check:seis-ssh-public-merge-readiness`, `npm run check:seis-ssh-public-github-policy`, `npm run check:seis-ssh-public-signing-guide`, `npm run check:seis-ssh-public-artifact-hygiene`, `npm run check:seis-ssh-public-review-bundle`, `npm run check:seis-ssh-public-onboarding`, `npm run check:seis-ssh-public-contributor-doctor`, `npm run check:seis-ssh-live-readiness-evidence`, `npm run report:seis-ssh-public-access`, `npm run report:seis-ssh-public-first-run`, `npm run report:seis-ssh-public-troubleshooting`, `npm run report:seis-ssh-public-support-packet`, `npm run report:seis-ssh-public-github-quickstart`, `npm run report:seis-ssh-public-merge-readiness`, `npm run report:seis-ssh-public-github-policy`, `npm run report:seis-ssh-public-signing-guide`, `npm run report:seis-ssh-public-review-bundle`, `npm run report:seis-ssh-public-onboarding`, and `npm run report:seis-ssh-public-contributor-doctor`; require GitHub Codespaces billing resolution or approved direct-cloud/broker proof before any live-ready claim and GitHub ruleset approval/signature satisfaction before merge. |
 | `SEIS-BL-038` | `seis/desktop-os-foundation` | `feat: stabilize SEIS Desktop single-entry demo` | Medium | No unless adding dependencies, live providers, or host integrations | Keep desktop validators passing, preserve no-key browser-local operation, keep route cards and AI Plugin Center tabs responsive, and maintain the single demo entry boundary. |
 | `SEIS-BL-031` | `seis-code/mvp-contract` | `docs: define SEIS Code MVP contract` | Medium | Yes for dependency installation | Define the browser-safe IDE and terminal acceptance tests. |
 | `SEIS-BL-032` | `seis-design/component-inventory` | `docs: add SEIS design component inventory` | Low | No | Inventory current UI components, add committed video showcase screenshots, and verify reduced-motion behavior. |
@@ -102,6 +102,59 @@ Date: 2026-06-23
 | `SEIS-BL-035` | `docs/release-artifact-policy` | `docs: define release artifact retention policy` | Medium | Yes for file deletion or artifact migration | Decide whether zips stay tracked, move to releases/LFS/object storage, or are replaced by manifests. |
 | `SEIS-BL-036` | `docs/archive-ledger-agent-materials` | `docs: classify assistant archive materials` | Low | No unless moving/deleting files | Add structured archive records for external-agent and generated assistant materials. |
 | `SEIS-BL-037` | `docs/backlog-id-validator` | `test: add backlog id uniqueness check` | Low | No | Add a small docs validator that fails on duplicate backlog IDs. |
+
+## SEIS-BL-052 Current Addendum
+
+`SEIS-BL-052` now includes `npm run check:seis-ssh-public-pr-template`,
+`npm run check:seis-ssh-public-ci-workflow`,
+`npm run check:seis-ssh-public-readiness-matrix`,
+`.github/PULL_REQUEST_TEMPLATE.md`,
+`.github/workflows/seis-ssh-public-access.yml`,
+`scripts/check-seis-ssh-public-pr-template.mjs`, and
+`scripts/check-seis-ssh-public-ci-workflow.mjs`,
+`scripts/check-seis-ssh-public-readiness-matrix.mjs` as public GitHub review
+evidence. The gates keep same-server/port preservation, no-secret boundaries,
+clean-runner setup-needed behavior, IPv4/IPv6 artifact hygiene, support issue routing,
+dedicated GitHub Actions checks, and approval-gated live SSH claims visible for
+every SEIS-SSH pull request.
+
+### SEIS-SSH AI/MCP Handoff
+
+`SEIS-BL-052` also includes `scripts/create-seis-ssh-ai-mcp-handoff-bundle.mjs`
+and `reports/seis-ssh-public-access/ai-mcp-handoff-latest.md` as the read-only
+AI/MCP handoff for installed AI routes, MCP runtime counts, SEIS plugin lanes,
+connector context, and NVIDIA catalog-only lanes. Validate it with
+`npm run check:seis-ssh-ai-mcp-handoff` and generate it with
+`npm run report:seis-ssh-ai-mcp-handoff`. It must not call providers, execute
+MCP tools, contact GitHub auth, open live SSH, write config, print secrets, or
+change the same `SEIS-SSH` server and port.
+
+### SEIS-SSH Client Compatibility
+
+`SEIS-BL-052` also includes
+`scripts/create-seis-ssh-public-client-compatibility.mjs` and
+`reports/seis-ssh-public-access/client-compatibility-latest.md` as the read-only
+compatibility matrix for GitHub Contributor / Clean Runner, Terminal OpenSSH,
+ChatGPT / Codex SSH Picker, VS Code / IDE Remote SSH, Installed AI / MCP /
+Plugin Reviewer, Company / Team VPN SSH, New Device / Mobile Continuity, and
+Maintainer Merge Review. Validate it with
+`npm run check:seis-ssh-public-client-compatibility` and generate it with
+`npm run report:seis-ssh-public-client-compatibility`. It must not open live
+SSH, write config, call providers, execute MCP tools, contact GitHub auth,
+print secrets, or change the same `SEIS-SSH` server and port.
+
+### SEIS-SSH AI/Plugin Review Matrix
+
+`SEIS-BL-052` also includes
+`scripts/create-seis-ssh-public-ai-plugin-review-matrix.mjs` and
+`reports/seis-ssh-public-access/ai-plugin-review-latest.md` as the read-only
+review matrix for installed AI routes, MCP runtime surfaces, SEIS plugin lanes,
+and platform plugin evidence. Validate it with
+`npm run check:seis-ssh-public-ai-plugin-review` and generate it with
+`npm run report:seis-ssh-public-ai-plugin-review`. It must not open live SSH,
+write config, call providers, mutate MCP surfaces, authorize connectors,
+contact GitHub auth, print secrets, or change the same `SEIS-SSH` server and
+port.
 
 ## Deferred Dangerous Work
 

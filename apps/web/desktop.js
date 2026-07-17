@@ -3985,15 +3985,54 @@ const SEIS_SSH_PUBLIC_ACCESS_CONTRACT = {
   runbook: "docs/deployment/seis-ssh-public-github-access.md",
   qualityGate: "npm run check:seis-ssh-public-access",
   reportCommand: "npm run report:seis-ssh-public-access",
+  firstRunCommand: "npm run run:seis-ssh-public-first-run",
+  troubleshootingCommand: "npm run run:seis-ssh-public-troubleshooting",
+  supportPacketCommand: "npm run run:seis-ssh-public-support-packet",
+  quickstartCommand: "npm run run:seis-ssh-public-github-quickstart",
+  mergeReadinessCommand: "npm run run:seis-ssh-public-merge-readiness",
+  githubPolicyCommand: "npm run run:seis-ssh-public-github-policy",
+  signingGuideCommand: "npm run run:seis-ssh-public-signing-guide",
+  reviewBundleCommand: "npm run run:seis-ssh-public-review-bundle",
+  aiMcpHandoffCommand: "npm run run:seis-ssh-ai-mcp-handoff",
+  clientCompatibilityCommand: "npm run run:seis-ssh-public-client-compatibility",
+  aiPluginReviewCommand: "npm run run:seis-ssh-public-ai-plugin-review",
+  prTemplateCommand: "npm run check:seis-ssh-public-pr-template",
+  ciWorkflowCommand: "npm run check:seis-ssh-public-ci-workflow",
+  artifactHygieneCommand: "npm run check:seis-ssh-public-artifact-hygiene",
   onboardingCommand: "npm run report:seis-ssh-public-onboarding",
   contributorDoctorCommand: "npm run report:seis-ssh-public-contributor-doctor",
   liveEvidenceCommand: "npm run check:seis-ssh-live-readiness-evidence",
   localArtifact: "/home/seis/Documents/seis-ssh-public-access.md",
+  firstRunArtifact: "/home/seis/Documents/seis-ssh-public-first-run.md",
+  troubleshootingArtifact: "/home/seis/Documents/seis-ssh-public-troubleshooting.md",
+  supportPacketArtifact: "/home/seis/Documents/seis-ssh-public-support-packet.md",
+  quickstartArtifact: "/home/seis/Documents/seis-ssh-public-github-quickstart.md",
+  mergeReadinessArtifact: "/home/seis/Documents/seis-ssh-public-merge-readiness.md",
+  githubPolicyArtifact: "/home/seis/Documents/seis-ssh-public-github-policy.md",
+  signingGuideArtifact: "/home/seis/Documents/seis-ssh-public-signing-guide.md",
+  reviewBundleArtifact: "/home/seis/Documents/seis-ssh-public-review-bundle.md",
+  aiMcpHandoffArtifact: "/home/seis/Documents/seis-ssh-ai-mcp-handoff.md",
+  clientCompatibilityArtifact: "/home/seis/Documents/seis-ssh-public-client-compatibility.md",
+  aiPluginReviewArtifact: "/home/seis/Documents/seis-ssh-public-ai-plugin-review.md",
   onboardingArtifact: "/home/seis/Documents/seis-ssh-public-onboarding.md",
   contributorDoctorArtifact: "/home/seis/Documents/seis-ssh-public-contributor-doctor.md",
   liveEvidenceArtifact: "docs/deployment/seis-ssh-live-readiness-evidence.md",
   states: [
     ["documented", "GitHub contributors can review the public runbook and checks."],
+    ["first-run", "A read-only first-run guide gives new contributors setup-needed status without opening SSH or changing config."],
+    ["troubleshooting", "A read-only troubleshooting guide maps missing alias, picker warning, billing blocker, and unsafe target states to safe actions."],
+    ["support-packet", "A read-only support packet gives GitHub issue copy/paste fields without full hostnames, full IPv4/IPv6 addresses, secrets, live SSH, or config writes."],
+    ["github-quickstart", "A read-only GitHub quickstart turns first-run, troubleshooting, doctor, and support packet output into one public path."],
+    ["merge-readiness", "A read-only merge readiness report keeps GitHub ruleset blockers honest when static SEIS-SSH gates are green."],
+    ["github-policy", "A read-only GitHub policy doctor shows signed commit setup, last-push approval, code-owner, and review-thread requirements."],
+    ["signing-guide", "A read-only signing guide gives contributors a secret-safe path to verified signed commits without writing git config."],
+    ["review-bundle", "A public review bundle collects SEIS-SSH onboarding, support, policy, signing, and artifact evidence into one safe GitHub packet."],
+    ["ai-mcp-handoff", "An AI/MCP handoff maps installed AI routes, MCP runtime, plugin lanes, connectors, and external platform surfaces to safe SEIS-SSH review commands."],
+    ["client-compatibility", "A client compatibility matrix shows GitHub, terminal, Codex picker, IDE, AI/MCP, team VPN, mobile, and maintainer paths without changing server or port."],
+    ["ai-plugin-review", "An AI/plugin review matrix maps installed AI routes, MCP runtime surfaces, SEIS plugin lanes, and platform plugin evidence into status-only or plan-only SEIS-SSH review."],
+    ["pr-template", "A pull request checklist keeps SEIS-SSH changes reviewable on GitHub without server/port drift or public secrets."],
+    ["ci-workflow", "A GitHub Actions gate runs the public SEIS-SSH review checks on pull requests before merge review."],
+    ["artifact-hygiene", "A read-only artifact hygiene gate scans generated public reports before GitHub issue or PR attachment."],
     ["onboarding-pack", "A read-only GitHub review pack explains reviewer, maintainer, and new-contributor paths without writing SSH config."],
     ["contributor-doctor", "A read-only local doctor checks GitHub/SSH prerequisites and produces a review report without contacting GitHub."],
     ["live-blocked", "Latest approved live probe preserves server/port but is blocked by GitHub Codespaces billing."],
@@ -6636,6 +6675,20 @@ function renderSeisCloud() {
         <article class="metric-card"><strong>Contract</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract)}</p></article>
         <article class="metric-card"><strong>Gate</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.qualityGate)}</p></article>
         <article class="metric-card"><strong>Report</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reportCommand)}</p></article>
+        <article class="metric-card"><strong>First Run</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.firstRunCommand)}</p></article>
+        <article class="metric-card"><strong>Troubleshooting</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.troubleshootingCommand)}</p></article>
+        <article class="metric-card"><strong>Support Packet</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketCommand)}</p></article>
+        <article class="metric-card"><strong>GitHub Quickstart</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartCommand)}</p></article>
+        <article class="metric-card"><strong>Merge Readiness</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.mergeReadinessCommand)}</p></article>
+        <article class="metric-card"><strong>GitHub Policy</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.githubPolicyCommand)}</p></article>
+        <article class="metric-card"><strong>Signing Guide</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.signingGuideCommand)}</p></article>
+        <article class="metric-card"><strong>Review Bundle</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reviewBundleCommand)}</p></article>
+        <article class="metric-card"><strong>AI/MCP Handoff</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiMcpHandoffCommand)}</p></article>
+        <article class="metric-card"><strong>Client Compatibility</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.clientCompatibilityCommand)}</p></article>
+        <article class="metric-card"><strong>AI/Plugin Review</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiPluginReviewCommand)}</p></article>
+        <article class="metric-card"><strong>PR Template</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.prTemplateCommand)}</p></article>
+        <article class="metric-card"><strong>CI Workflow</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.ciWorkflowCommand)}</p></article>
+        <article class="metric-card"><strong>Artifact Hygiene</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.artifactHygieneCommand)}</p></article>
         <article class="metric-card"><strong>Onboarding</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand)}</p></article>
         <article class="metric-card"><strong>Doctor</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand)}</p></article>
         <article class="metric-card"><strong>Live Evidence</strong><p>${escapeHtml(SEIS_SSH_PUBLIC_ACCESS_CONTRACT.liveEvidenceCommand)}</p></article>
@@ -9181,6 +9234,31 @@ Public SSH contract: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contract}
 Public SSH runbook: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.runbook}
 Public SSH quality gate: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.qualityGate}
 Public SSH report command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reportCommand}
+Public SSH first-run command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.firstRunCommand}
+Public SSH first-run artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.firstRunArtifact}
+Public SSH troubleshooting command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.troubleshootingCommand}
+Public SSH troubleshooting artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.troubleshootingArtifact}
+Public SSH support packet command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketCommand}
+Public SSH support packet artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.supportPacketArtifact}
+Public SSH GitHub quickstart command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartCommand}
+Public SSH GitHub quickstart artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.quickstartArtifact}
+Public SSH merge readiness command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.mergeReadinessCommand}
+Public SSH merge readiness artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.mergeReadinessArtifact}
+Public SSH GitHub policy command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.githubPolicyCommand}
+Public SSH GitHub policy artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.githubPolicyArtifact}
+Public SSH signing guide command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.signingGuideCommand}
+Public SSH signing guide artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.signingGuideArtifact}
+Public SSH review bundle command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reviewBundleCommand}
+Public SSH review bundle artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.reviewBundleArtifact}
+Public SSH AI/MCP handoff command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiMcpHandoffCommand}
+Public SSH AI/MCP handoff artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiMcpHandoffArtifact}
+Public SSH client compatibility command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.clientCompatibilityCommand}
+Public SSH client compatibility artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.clientCompatibilityArtifact}
+Public SSH AI/plugin review command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiPluginReviewCommand}
+Public SSH AI/plugin review artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.aiPluginReviewArtifact}
+Public SSH PR template command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.prTemplateCommand}
+Public SSH CI workflow command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.ciWorkflowCommand}
+Public SSH artifact hygiene command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.artifactHygieneCommand}
 Public SSH onboarding command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingCommand}
 Public SSH onboarding artifact: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.onboardingArtifact}
 Public SSH contributor doctor command: ${SEIS_SSH_PUBLIC_ACCESS_CONTRACT.contributorDoctorCommand}

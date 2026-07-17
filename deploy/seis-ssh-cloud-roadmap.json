@@ -71,7 +71,22 @@
       "statement": "SEIS-SSH onboarding, docs, checks, and demo surfaces must preserve the existing server and port unless the human owner explicitly approves endpoint migration.",
       "evidence": [
         "deploy/seis-ssh-public-access-contract.json",
-        "npm run check:seis-ssh-public-access"
+        "npm run check:seis-ssh-public-access",
+        "npm run check:seis-ssh-public-first-run",
+        "npm run check:seis-ssh-public-troubleshooting",
+        "npm run check:seis-ssh-public-support-packet",
+        "npm run check:seis-ssh-public-github-quickstart",
+        "npm run check:seis-ssh-public-merge-readiness",
+        "npm run check:seis-ssh-public-github-policy",
+        "npm run check:seis-ssh-public-signing-guide",
+        "npm run check:seis-ssh-public-review-bundle",
+        "npm run check:seis-ssh-ai-mcp-handoff",
+        "npm run check:seis-ssh-public-client-compatibility",
+        "npm run check:seis-ssh-public-ai-plugin-review",
+        "npm run check:seis-ssh-public-pr-template",
+        "npm run check:seis-ssh-public-ci-workflow",
+        "npm run check:seis-ssh-public-readiness-matrix",
+        "npm run check:seis-ssh-public-artifact-hygiene"
       ]
     },
     {
@@ -209,12 +224,27 @@
   "guardrails": [
     "Do not add local Mac or LAN aliases to the managed SEIS SSH block.",
     "Do not add direct public VPS aliases to the Codex picker.",
-    "Do not print SSH private keys, GitHub tokens, certificates, or VPN private keys.",
+    "Do not print SSH private keys, GitHub classic or fine-grained tokens, certificates, or VPN private keys.",
     "Do not mark SEIS SSH online unless remote repo and Codex CLI are verified.",
     "Do not weaken company/team VPN requirements to simplify onboarding."
   ],
   "validationCommands": [
     "npm run check:seis-ssh-public-access",
+    "npm run check:seis-ssh-public-first-run",
+    "npm run check:seis-ssh-public-troubleshooting",
+    "npm run check:seis-ssh-public-support-packet",
+    "npm run check:seis-ssh-public-github-quickstart",
+    "npm run check:seis-ssh-public-merge-readiness",
+    "npm run check:seis-ssh-public-github-policy",
+    "npm run check:seis-ssh-public-signing-guide",
+    "npm run check:seis-ssh-public-review-bundle",
+    "npm run check:seis-ssh-ai-mcp-handoff",
+    "npm run check:seis-ssh-public-client-compatibility",
+    "npm run check:seis-ssh-public-ai-plugin-review",
+    "npm run check:seis-ssh-public-pr-template",
+    "npm run check:seis-ssh-public-ci-workflow",
+    "npm run check:seis-ssh-public-readiness-matrix",
+    "npm run check:seis-ssh-public-artifact-hygiene",
     "npm run check:seis-ssh-public-onboarding",
     "npm run check:seis-ssh-public-contributor-doctor",
     "npm run check:seis-ssh-live-readiness-evidence",

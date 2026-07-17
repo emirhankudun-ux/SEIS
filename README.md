@@ -176,6 +176,32 @@ Use this static gate before claiming public SSH onboarding is wired:
 ```bash
 npm run check:seis-ssh-public-access
 npm run report:seis-ssh-public-access
+npm run check:seis-ssh-public-first-run
+npm run report:seis-ssh-public-first-run
+npm run check:seis-ssh-public-troubleshooting
+npm run report:seis-ssh-public-troubleshooting
+npm run check:seis-ssh-public-support-packet
+npm run report:seis-ssh-public-support-packet
+npm run check:seis-ssh-public-github-quickstart
+npm run report:seis-ssh-public-github-quickstart
+npm run check:seis-ssh-public-merge-readiness
+npm run report:seis-ssh-public-merge-readiness
+npm run check:seis-ssh-public-github-policy
+npm run report:seis-ssh-public-github-policy
+npm run check:seis-ssh-public-signing-guide
+npm run report:seis-ssh-public-signing-guide
+npm run check:seis-ssh-public-review-bundle
+npm run report:seis-ssh-public-review-bundle
+npm run check:seis-ssh-ai-mcp-handoff
+npm run report:seis-ssh-ai-mcp-handoff
+npm run check:seis-ssh-public-client-compatibility
+npm run report:seis-ssh-public-client-compatibility
+npm run check:seis-ssh-public-ai-plugin-review
+npm run report:seis-ssh-public-ai-plugin-review
+npm run check:seis-ssh-public-pr-template
+npm run check:seis-ssh-public-ci-workflow
+npm run check:seis-ssh-public-readiness-matrix
+npm run check:seis-ssh-public-artifact-hygiene
 npm run check:seis-ssh-public-onboarding
 npm run report:seis-ssh-public-onboarding
 npm run check:seis-ssh-public-contributor-doctor
@@ -186,6 +212,105 @@ npm run check:seis-ssh-live-readiness-evidence
 This does not execute SSH. Live readiness still requires explicit approval and
 strict evidence such as `npm run cloud:ssh:online:strict`.
 
+`npm run run:seis-ssh-public-first-run` is the safest first command for a new
+GitHub contributor. It creates a read-only first-run guide, reports local setup
+needs without treating missing `SEIS-SSH` as live readiness, and preserves the
+same server and port without contacting GitHub, writing SSH config, or opening
+SSH.
+
+`npm run run:seis-ssh-public-troubleshooting` creates a read-only self-service
+troubleshooting guide for GitHub users. It maps common `SEIS-SSH` states such as
+missing alias, Codespaces picker warning, local/LAN target blockers, billing
+blockers, and live-ready claim boundaries to safe next actions without changing
+server, port, SSH config, or GitHub state.
+
+`npm run run:seis-ssh-public-support-packet` creates a read-only packet for the
+GitHub `SEIS SSH access support` form. It summarizes command results, sanitized
+status labels, warning IDs, blocker IDs, transport class, port, and endpoint
+fingerprint prefix without printing full hostnames, full IPv4/IPv6 addresses, private
+keys, tokens, cookies, provider credentials, or `.env` values.
+
+`npm run run:seis-ssh-public-github-quickstart` creates a read-only GitHub
+quickstart for public contributors. It reduces first-run, troubleshooting,
+contributor doctor, and support-packet outputs into one step-by-step path from
+fresh clone to secret-safe issue form without opening SSH, writing SSH config,
+contacting GitHub, or changing the existing `SEIS-SSH` server and port.
+
+`npm run run:seis-ssh-public-merge-readiness` creates a read-only merge
+readiness report for the public SEIS-SSH PR path. It does not call GitHub auth,
+merge, admin-bypass, open live SSH, or change the server or port. The current
+policy snapshot is explicit: `requiredApprovingReviewCount: 10`,
+`requireCodeOwnerReview: true`, `requireLastPushApproval: true`, required
+signatures, `mergeStateStatus: BLOCKED`, and auto-merge enabled while human
+review/signature requirements remain unsatisfied.
+
+`npm run run:seis-ssh-public-github-policy` creates a read-only GitHub policy
+doctor for public contributors. It checks local signed commit setup without
+printing signing keys and records required signatures, last-push approval, code
+owner review, and review-thread resolution requirements without contacting
+GitHub, opening SSH, merging, or changing the same server and port.
+
+`npm run run:seis-ssh-public-signing-guide` creates a read-only signing guide
+for verified signed commits when GitHub required signatures are active. It
+shows GitHub signing key setup paths for SSH or GPG signing without contacting
+GitHub, writing git config, printing private keys, opening SSH, or changing the
+same server and port.
+
+`npm run run:seis-ssh-public-review-bundle` creates a read-only public review
+bundle at `reports/seis-ssh-public-access/review-bundle-latest.md`. It collects
+the access report, first-run guide, troubleshooting guide, support packet,
+GitHub quickstart, merge readiness, policy doctor, signing guide, onboarding
+pack, and contributor doctor into one GitHub reviewer packet without contacting
+GitHub, opening SSH, writing SSH/git config, printing secrets, or changing the
+same server and port.
+
+`npm run run:seis-ssh-ai-mcp-handoff` creates a read-only AI/MCP handoff at
+`reports/seis-ssh-public-access/ai-mcp-handoff-latest.md`. It maps installed AI
+routes, the repo-local MCP runtime contract, personal SEIS plugin lanes,
+connector boundaries, NVIDIA catalog-only lanes, and safe review commands for
+`SEIS-SSH` without calling providers, executing MCP tools, contacting GitHub,
+opening SSH, writing config, printing secrets, or changing the same server and
+port.
+
+`npm run run:seis-ssh-public-client-compatibility` creates a read-only client compatibility
+matrix at `reports/seis-ssh-public-access/client-compatibility-latest.md`. It
+shows the current path for GitHub Contributor / Clean Runner, Terminal OpenSSH,
+ChatGPT / Codex SSH Picker, VS Code / IDE Remote SSH, Installed AI / MCP /
+Plugin Reviewer, Company / Team VPN SSH, New Device / Mobile Continuity, and
+Maintainer Merge Review without calling providers, executing MCP tools,
+contacting GitHub, opening SSH, writing config, printing secrets, or changing
+the same server and port.
+
+`npm run run:seis-ssh-public-ai-plugin-review` creates a read-only AI/plugin review matrix
+at `reports/seis-ssh-public-access/ai-plugin-review-latest.md`. It shows how
+installed AI routes, MCP runtime surfaces, SEIS plugin lanes, and platform
+plugin evidence can review `SEIS-SSH` as status-only or plan-only context
+without provider calls, MCP mutation, connector auth, GitHub mutation, live SSH,
+config writes, secrets, or a server/port change.
+
+`npm run check:seis-ssh-public-pr-template` verifies that the GitHub pull
+request template includes the `SEIS-SSH` review checklist, same-server/port
+invariant, no-secret boundary, public artifact hygiene gate, and approval-gated
+live SSH claim wording.
+
+`npm run check:seis-ssh-public-ci-workflow` verifies the dedicated GitHub
+Actions workflow for public SEIS-SSH review. The workflow runs only read-only
+static gates on pull requests and does not open live SSH, write SSH config,
+change endpoint variables, or publish raw SSH config details.
+
+`npm run check:seis-ssh-public-readiness-matrix` simulates a clean GitHub
+Actions runner with an empty home directory. It proves missing local
+`SEIS-SSH` config stays `setup-needed` and GitHub-review-ready while unsafe
+local/LAN targets, secrets, live-ready overclaims, live SSH, config writes, and
+server/port mutation remain blocked.
+
+`npm run check:seis-ssh-public-artifact-hygiene` generates every public
+SEIS-SSH JSON/Markdown report in a temporary directory and verifies that the
+artifacts are safe to attach to GitHub issues or PR review. It rejects private
+keys, API keys, GitHub classic and fine-grained tokens, inline credentials, full IPv4/IPv6 addresses, private
+`/Users` paths, raw ProxyCommand details, identity-file paths, live-SSH
+attempts, and live-ready overclaims.
+
 `npm run report:seis-ssh-public-onboarding` writes a read-only GitHub review
 pack under `reports/seis-ssh-public-access/`. It does not write SSH config,
 does not open a live connection, and does not create shared credentials; it
@@ -195,6 +320,12 @@ existing `SEIS-SSH` server and port.
 `npm run report:seis-ssh-public-contributor-doctor` adds a local self-service
 doctor for GitHub users. It checks local tools and the sanitized `SEIS-SSH`
 snapshot without contacting GitHub, opening SSH, or writing SSH config.
+
+GitHub users can open the `SEIS SSH access support` issue form when they need
+help with first-run setup, troubleshooting, contributor doctor output,
+Codespaces picker warnings, or the current billing blocker. The form requires
+secret-safety confirmations and keeps the same `SEIS-SSH` server and port
+invariant visible before a public issue is submitted.
 
 The latest approval-gated live probe is tracked in
 `content/development/seis-ssh-live-readiness-evidence.json` and
@@ -249,22 +380,31 @@ under `reports/seis-public-demo/`, including the evidence manifest and
 importing Obsidian, calling providers, executing SSH, staging files, committing,
 pushing, or deploying.
 
-## Yeni Nesil AGI Araştırma Hedefi
+## Next-Generation AGI Research Goal
 
-SEIS AGI hedefi şu an kanıt-gated bir araştırma ve uygulama mimarisi olarak
-tutulur. Bu repo gerçek AGI, eğitilmiş 512B ağırlık, benchmark sonucu,
-checkpoint veya canlı inference iddiası yapmaz.
+The SEIS AGI goal is currently kept as evidence-gated research and
+implementation architecture. This repository does not claim real AGI, trained
+512B weights, benchmark results, checkpoints, or live inference.
 
-Bu hedefin kısa hali:
+Short form:
 
-- **Başlangıç hattı:** `16GB+ RAM` için `20B` yerel-uyumluluk hedefi (planlı, test edilmemiş).
-- **Sonraki merdiven:** `70B` araştırma yolu, ardından frontier/long-horizon yolları.
-- **Üst hedef:** `150B`, `300B+`, `512B` ve en yüksek (`highest-available`) parametre sınıfı için tek tek uygun güvenlik, bütçe ve onay kanıtları toplandıktan sonra yol haritası açılır.
+- **Starting lane:** local-compatibility target for `20B` on `16GB+ RAM`
+  (planned, not tested).
+- **Next ladder:** `70B` research path, then frontier and long-horizon paths.
+- **Upper target:** `150B`, `300B+`, `512B`, and the highest-available
+  parameter class only open after separate safety, budget, and approval
+  evidence exists.
 
-- **512B Apex Programı:** `content/development/seis-512b-apex-model-program.json` ile internet-araştırmalı, plan-only ve route-blocked tutulur; AGI tanımı `definition-only-not-demonstrated` durumundadır.
-- **Alt Ajan Konseyi:** Tüm kurulu AI/sub-agent rolleri 512B için ayrı görev matrisine sahiptir, ama yalnızca planlama, inceleme ve doğrulama görevleri alır.
-- **Güvenli AI Core:** Local Demo varsayılandır; provider key, cloud/GPU, SSH, benchmark ve training insan onayı olmadan kapalıdır.
-- **AGI Kanıt Kuralı:** Gerçek AGI iddiası için bağımsız evaluation, safety review, training logs, checkpoint governance, model card ve explicit approval gerekir.
+- **512B Apex Program:** kept internet-researched, plan-only, and
+  route-blocked through `content/development/seis-512b-apex-model-program.json`;
+  AGI remains `definition-only-not-demonstrated`.
+- **Sub-Agent Council:** installed AI and sub-agent roles have a 512B task
+  matrix, but receive only planning, review, and validation duties.
+- **Safe AI Core:** Local Demo remains the default; provider keys, cloud/GPU,
+  SSH, benchmarks, and training stay disabled without human approval.
+- **AGI Evidence Rule:** any real AGI claim requires independent evaluation,
+  safety review, training logs, checkpoint governance, a model card, and
+  explicit approval.
 
 ## Core Scope
 
