@@ -73,6 +73,7 @@ if (checks.gh.available && repo) {
   if (!checks.pages.enabled) blockers.push("github-pages-disabled");
   if (checks.pages.enabled && !checks.pages.public) blockers.push("github-pages-not-public");
   if (checks.pages.enabled && !checks.pages.httpsEnforced) blockers.push("github-pages-https-not-enforced");
+  if (checks.pages.enabled && checks.pages.buildType !== "workflow") blockers.push("github-pages-build-type-not-workflow");
   if (checks.pages.enabled && !checks.pages.htmlUrl) blockers.push("github-pages-url-missing");
 
   if (
@@ -159,6 +160,7 @@ function nextActions(items) {
   if (items.includes("github-pages-disabled")) actions.push("Enable GitHub Pages or select another public cloud provider.");
   if (items.includes("github-pages-not-public")) actions.push("Make the Pages surface public for everyone-facing delivery.");
   if (items.includes("github-pages-https-not-enforced")) actions.push("Enable HTTPS enforcement for GitHub Pages.");
+  if (items.includes("github-pages-build-type-not-workflow")) actions.push("Configure GitHub Pages to build and deploy from GitHub Actions.");
   if (items.includes("github-pages-url-missing")) actions.push("Wait for Pages provisioning or configure the public URL.");
   if (items.includes("github-pages-source-not-default-branch")) actions.push("Move GitHub Pages source to the default branch or run without --require-default-branch-source.");
   if (items.includes("public-url-unreachable")) actions.push("Check the Pages build/deploy status and public URL route.");

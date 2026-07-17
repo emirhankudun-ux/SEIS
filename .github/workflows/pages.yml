@@ -45,6 +45,12 @@ jobs:
       - name: Check static package
         run: npm run check:static-build
 
+      - name: Run Second Brain browser smoke in GitHub Chrome
+        run: npm run check:seis-second-brain-browser-smoke
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+          SEIS_SECOND_BRAIN_SMOKE_WEB_ROOT: dist/seis-static
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
         with:
@@ -57,6 +63,7 @@ jobs:
 
   deploy:
     name: Deploy GitHub Pages
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: build
