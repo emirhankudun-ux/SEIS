@@ -31,6 +31,44 @@ function git(args) {
   });
 }
 
+function normalizeRemoteUrl(value) {
+  return String(value || "")
+    .trim()
+    .replace(/\.git$/, "")
+    .replace(/\/$/, "");
+}
+
+function githubSlugFromRemoteUrl(value) {
+  const normalized = normalizeRemoteUrl(value);
+  const sshMatch = normalized.match(/^git@github\.com:(?<slug>[^/]+\/[^/]+)$/i);
+  if (sshMatch?.groups?.slug) {
+    return sshMatch.groups.slug.toLowerCase();
+  }
+
+  const sshUrlMatch = normalized.match(/^ssh:\/\/git@github\.com\/(?<slug>[^/]+\/[^/]+)$/i);
+  if (sshUrlMatch?.groups?.slug) {
+    return sshUrlMatch.groups.slug.toLowerCase();
+  }
+
+  try {
+    const url = new URL(normalized);
+    if (url.hostname.toLowerCase() !== "github.com") return "";
+    return url.pathname.replace(/^\/+/, "").toLowerCase();
+  } catch {
+    return "";
+  }
+}
+
+function remotesPointToSameRepository(actual, expected) {
+  const actualNormalized = normalizeRemoteUrl(actual);
+  const expectedNormalized = normalizeRemoteUrl(expected);
+  if (actualNormalized === expectedNormalized) return true;
+
+  const actualSlug = githubSlugFromRemoteUrl(actualNormalized);
+  const expectedSlug = githubSlugFromRemoteUrl(expectedNormalized);
+  return actualSlug.length > 0 && actualSlug === expectedSlug;
+}
+
 for (const path of [contractPath, docsPath, packagePath]) {
   ensure(existsSync(path), `missing ${path}`);
 }
@@ -73,12 +111,17 @@ if (contract) {
 }
 
 const origin = git(["remote", "get-url", "origin"]);
+const originUrl = origin.stdout.trim();
 ensure(origin.status === 0, "origin remote must be configured");
-ensure(origin.stdout.trim() === contract?.remote?.url, `origin remote must match contract URL, got ${origin.stdout.trim() || "empty"}`);
+ensure(
+  remotesPointToSameRepository(originUrl, contract?.remote?.url),
+  `origin remote must target the contract repository, got ${originUrl || "empty"}`
+);
 
 if (state.gitInside) {
   ensure(state.hasRemote, "publish state must see a configured remote");
-  ensure((contract?.remote?.acceptedLocalBranches || []).includes(state.branchName), `current branch ${state.branchName || "unknown"} must be documented as accepted local branch`);
+  const effectiveBranchName = state.branchName || process.env.GITHUB_REF_NAME || "";
+  ensure((contract?.remote?.acceptedLocalBranches || []).includes(effectiveBranchName), `current branch ${effectiveBranchName || "unknown"} must be documented as accepted local branch`);
 
   if (state.ready) {
     ensure(state.branchName === contract?.remote?.targetBranch, `ready publish state must be on ${expectedTargetBranch}`);

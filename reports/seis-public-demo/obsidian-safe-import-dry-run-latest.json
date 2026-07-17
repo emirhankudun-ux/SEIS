@@ -1,0 +1,233 @@
+{
+  "id": "seis-obsidian-safe-import-dry-run-pr54",
+  "title": "SEIS Obsidian Safe Import Dry-Run",
+  "generatedAt": "2026-06-30T11:42:38.563Z",
+  "status": "repo-owned-seed-notes-only",
+  "mode": "dry-run-no-private-vault-read",
+  "decision": "NO-GO-private-vault-import-not-approved",
+  "contractPath": "content/development/seis-obsidian-bridge-safe-import-contract.json",
+  "secondBrainPath": "content/development/seis-second-brain-system.json",
+  "sourceKind": "repo-owned-second-brain-seed-contract",
+  "sourcePathFingerprint": "sha256:599309a96507e78f5b85a7ae7c2eea9e975559a93057ebaeeff75f07426c0f7e",
+  "selectedByUser": false,
+  "candidateNoteCount": 6,
+  "blockedFileCount": 0,
+  "blockedPathMatches": [],
+  "secretScanSummary": {
+    "status": "passed",
+    "scannedScope": "repo-owned Obsidian contract and Second Brain seed-note metadata only",
+    "scannedPrivateVault": false,
+    "hostFilesystemScanned": false,
+    "findings": 0,
+    "findingCategories": []
+  },
+  "provenanceLabels": {
+    "repo-owned-seed": 6,
+    "private-vault": 0,
+    "unknown-source": 0
+  },
+  "publishabilityLabels": {
+    "public-safe-metadata-only": 6,
+    "needs-redaction": 0,
+    "needs-provenance-review": 0,
+    "blocked-private": 0,
+    "blocked-secret-risk": 0,
+    "blocked-attachment-risk": 0
+  },
+  "redactionSummary": {
+    "privatePathStored": false,
+    "privateBodyTextCopied": false,
+    "privateVaultContentCopied": false,
+    "redactedFields": [
+      "absolute private source path",
+      "private note body"
+    ],
+    "notes": "This repo artifact uses browser-local seed note metadata only."
+  },
+  "attachmentReviewSummary": {
+    "attachmentsObserved": 0,
+    "attachmentsCopied": 0,
+    "status": "not-applicable-no-attachment-import"
+  },
+  "bodyImportPolicy": "metadata-only-by-default",
+  "humanApprovalState": "not-requested",
+  "dryRunManifest": {
+    "sourcePathFingerprint": "sha256:599309a96507e78f5b85a7ae7c2eea9e975559a93057ebaeeff75f07426c0f7e",
+    "selectedByUser": false,
+    "candidateNoteCount": 6,
+    "blockedFileCount": 0,
+    "blockedPathMatches": [],
+    "secretScanSummary": {
+      "status": "passed",
+      "scannedScope": "repo-owned Obsidian contract and Second Brain seed-note metadata only",
+      "scannedPrivateVault": false,
+      "hostFilesystemScanned": false,
+      "findings": 0,
+      "findingCategories": []
+    },
+    "provenanceLabels": {
+      "repo-owned-seed": 6,
+      "private-vault": 0,
+      "unknown-source": 0
+    },
+    "publishabilityLabels": {
+      "public-safe-metadata-only": 6,
+      "needs-redaction": 0,
+      "needs-provenance-review": 0,
+      "blocked-private": 0,
+      "blocked-secret-risk": 0,
+      "blocked-attachment-risk": 0
+    },
+    "redactionSummary": {
+      "privatePathStored": false,
+      "privateBodyTextCopied": false,
+      "privateVaultContentCopied": false,
+      "redactedFields": [
+        "absolute private source path",
+        "private note body"
+      ],
+      "notes": "This repo artifact uses browser-local seed note metadata only."
+    },
+    "attachmentReviewSummary": {
+      "attachmentsObserved": 0,
+      "attachmentsCopied": 0,
+      "status": "not-applicable-no-attachment-import"
+    },
+    "bodyImportPolicy": "metadata-only-by-default",
+    "humanApprovalState": "not-requested"
+  },
+  "candidateNotes": [
+    {
+      "id": "seis-os-map",
+      "title": "SEIS OS Map",
+      "folder": "01-system",
+      "path": "/home/seis/SecondBrain/01-system/seis-os-map.md",
+      "status": "real-local-demo",
+      "tags": [
+        "#seis",
+        "#desktop-os",
+        "#system-map"
+      ],
+      "links": [
+        "ai-core-router",
+        "sub-agent-council",
+        "github-readiness"
+      ],
+      "provenanceLabel": "repo-owned-seed",
+      "publishabilityLabel": "public-safe-metadata-only",
+      "bodyImported": false
+    },
+    {
+      "id": "ai-core-router",
+      "title": "AI Core Router",
+      "folder": "02-ai",
+      "path": "/home/seis/SecondBrain/02-ai/ai-core-router.md",
+      "status": "local-demo",
+      "tags": [
+        "#ai-core",
+        "#installed-ai",
+        "#local-demo"
+      ],
+      "links": [
+        "sub-agent-council",
+        "security-review"
+      ],
+      "provenanceLabel": "repo-owned-seed",
+      "publishabilityLabel": "public-safe-metadata-only",
+      "bodyImported": false
+    },
+    {
+      "id": "sub-agent-council",
+      "title": "Sub-Agent Council",
+      "folder": "03-agents",
+      "path": "/home/seis/SecondBrain/03-agents/sub-agent-council.md",
+      "status": "status-plan-only",
+      "tags": [
+        "#agents",
+        "#subagents",
+        "#approval-gates"
+      ],
+      "links": [
+        "github-readiness",
+        "security-review"
+      ],
+      "provenanceLabel": "repo-owned-seed",
+      "publishabilityLabel": "public-safe-metadata-only",
+      "bodyImported": false
+    },
+    {
+      "id": "obsidian-bridge",
+      "title": "Obsidian Bridge",
+      "folder": "04-vault",
+      "path": "/home/seis/SecondBrain/04-vault/obsidian-bridge.md",
+      "status": "planned",
+      "tags": [
+        "#obsidian",
+        "#markdown",
+        "#planned"
+      ],
+      "links": [
+        "seis-os-map",
+        "security-review"
+      ],
+      "provenanceLabel": "repo-owned-seed",
+      "publishabilityLabel": "public-safe-metadata-only",
+      "bodyImported": false
+    },
+    {
+      "id": "github-readiness",
+      "title": "GitHub Readiness",
+      "folder": "05-publish",
+      "path": "/home/seis/SecondBrain/05-publish/github-readiness.md",
+      "status": "human-review-required",
+      "tags": [
+        "#github",
+        "#public-readiness",
+        "#human-review"
+      ],
+      "links": [
+        "security-review",
+        "obsidian-bridge"
+      ],
+      "provenanceLabel": "repo-owned-seed",
+      "publishabilityLabel": "public-safe-metadata-only",
+      "bodyImported": false
+    },
+    {
+      "id": "security-review",
+      "title": "Security Review",
+      "folder": "06-security",
+      "path": "/home/seis/SecondBrain/06-security/security-review.md",
+      "status": "active-guardrail",
+      "tags": [
+        "#security",
+        "#no-secrets",
+        "#review"
+      ],
+      "links": [
+        "seis-os-map",
+        "github-readiness"
+      ],
+      "provenanceLabel": "repo-owned-seed",
+      "publishabilityLabel": "public-safe-metadata-only",
+      "bodyImported": false
+    }
+  ],
+  "safetyBoundary": {
+    "privateVaultReadPerformed": false,
+    "hostFilesystemScanned": false,
+    "obsidianPluginInstalled": false,
+    "githubMutationPerformed": false,
+    "providerCallsPerformed": false,
+    "sshExecuted": false,
+    "deploymentPerformed": false,
+    "writesOutsideReportsDirectory": false
+  },
+  "requiredNextApproval": [
+    "explicit user-selected local vault path",
+    "human approval before scanning selected files",
+    "human approval before generating any public fixture",
+    "separate approval before GitHub publication"
+  ],
+  "warnings": []
+}
