@@ -82,7 +82,7 @@
       "seis-offline-mode-check",
       "seis-package-adoption",
       "seis-performance-budget",
-      "seis-personal-plugin-discovery",
+      "seis-plugin-discovery",
       "seis-plugin-migration",
       "seis-pr-cycle-time",
       "seis-prompt-injection-audit",
@@ -144,7 +144,7 @@
       "seis-offline-mode-check",
       "seis-package-adoption",
       "seis-performance-budget",
-      "seis-personal-plugin-discovery",
+      "seis-plugin-discovery",
       "seis-plugin-migration",
       "seis-pr-cycle-time",
       "seis-prompt-injection-audit",
@@ -1431,10 +1431,10 @@
         }
       },
       {
-        "moduleId": "seis-personal-plugin-discovery",
-        "displayName": "Seis Personal Plugin Discovery",
+        "moduleId": "seis-plugin-discovery",
+        "displayName": "SEIS Plugin Discovery",
         "category": "Developer",
-        "sourcePath": "plugins/seis-core/seis-personal-plugin-discovery",
+        "sourcePath": "plugins/seis-core/seis-plugin-discovery",
         "version": "0.0.13",
         "license": "MIT",
         "sourceClassification": "public-SEIS-repository",
@@ -1444,7 +1444,7 @@
         "releaseSemver": "0.0.13",
         "canonicalApplicationId": "seis-core",
         "applicationPath": "apps/seis-core",
-        "canonicalInstallId": "seis-personal-plugin-discovery@seis-repo",
+        "canonicalInstallId": "seis-plugin-discovery@seis-repo",
         "installSurface": "repo-source-app",
         "publicMarketplace": true,
         "publicRepositoryAvailable": true,
@@ -1454,6 +1454,7 @@
         "sourceModuleStatus": "public-application-marketplace-source-module",
         "permissions": {
           "read": [
+            "SEIS Repo marketplace metadata",
             "explicitly selected local plugin metadata"
           ],
           "write": [],

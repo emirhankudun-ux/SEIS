@@ -1874,18 +1874,19 @@
       "rollback": "Disable or remove the local plugin; no source data is mutated."
     },
     {
-      "id": "seis-personal-plugin-discovery",
-      "name": "seis-personal-plugin-discovery",
-      "displayName": "Seis Personal Plugin Discovery",
-      "description": "Discover selected local plugins through metadata-only inspection with symlink refusal.",
+      "id": "seis-plugin-discovery",
+      "name": "seis-plugin-discovery",
+      "displayName": "SEIS Plugin Discovery",
+      "description": "Browse public SEIS Repo cards and inspect selected local plugin metadata without executing code.",
       "category": "Developer",
       "capabilities": [
+        "marketplace-catalog",
         "metadata-only",
         "symlink-refusal"
       ],
       "owner": "@seis-mcp",
-      "sourcePath": "plugins/seis-core/seis-personal-plugin-discovery",
-      "entrypoint": "scripts/seis-personal-plugin-discovery-mcp-server.mjs",
+      "sourcePath": "plugins/seis-core/seis-plugin-discovery",
+      "entrypoint": "scripts/seis-plugin-discovery-mcp-server.mjs",
       "release": {
         "label": "0.000000013",
         "semver": "0.0.13",
@@ -1900,6 +1901,7 @@
       "audit": null,
       "permissions": {
         "read": [
+          "SEIS Repo marketplace metadata",
           "explicitly selected local plugin metadata"
         ],
         "write": [],
@@ -1922,7 +1924,7 @@
         "node --check",
         "MCP initialize/tools/list/tools/call smoke"
       ],
-      "rollback": "Disable or remove the local plugin; discovery never mutates the selected directory."
+      "rollback": "Disable or remove the public plugin; catalog and discovery never mutate marketplace data or the selected directory."
     },
     {
       "id": "seis-plugin-migration",

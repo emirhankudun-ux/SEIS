@@ -605,10 +605,10 @@
       "failures": []
     },
     {
-      "name": "seis-personal-plugin-discovery",
+      "name": "seis-plugin-discovery",
       "version": "0.0.13",
       "releaseTrainVersion": "0.000000013",
-      "entrypoint": "scripts/seis-personal-plugin-discovery-mcp-server.mjs",
+      "entrypoint": "scripts/seis-plugin-discovery-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
         "write": [],

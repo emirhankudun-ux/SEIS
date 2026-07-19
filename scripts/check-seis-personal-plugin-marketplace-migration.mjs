@@ -20,6 +20,10 @@ const canonicalPlugins = family?.publicPlugins || [];
 const migratedRootNames = new Set(migratedRootPlugins.map((plugin) => plugin.name));
 const marketplaceEntries = Array.isArray(marketplace?.plugins) ? marketplace.plugins : [];
 const expectedMarketplaceCount = canonicalPlugins.length + migratedRootPlugins.length + applicationPlugins.length + topicPlugins.length;
+const legacyPublicRenames = Array.isArray(coverage?.repository?.legacyPublicRenames)
+  ? coverage.repository.legacyPublicRenames
+  : [];
+const publicNameForLegacyId = new Map(legacyPublicRenames.map((rename) => [rename?.legacyPluginId, rename?.publicPluginId]));
 
 ensure(historicalPluginIds.length === 55, "historical coverage must retain 55 SEIS plugin IDs");
 ensure(migratedRootPlugins.length === 5, "public family must publish all five migrated root packages");
@@ -30,11 +34,14 @@ ensure(canonicalPlugins.length === 1 && canonicalPlugins[0]?.name === "seis-ai-a
 ensure(marketplaceEntries.length === expectedMarketplaceCount, "repo marketplace count must match canonical, root, app, and topic package families");
 ensure(family?.marketplace?.publicPluginCount === expectedMarketplaceCount, "public family marketplace count must be current");
 ensure(new Set(marketplaceEntries.map((entry) => entry.name)).size === marketplaceEntries.length, "repo marketplace plugin names must be unique");
+ensure(legacyPublicRenames.length === 1, "historical coverage must declare the one public card rename");
+ensure(publicNameForLegacyId.get("seis-personal-plugin-discovery") === "seis-plugin-discovery", "legacy discovery card must resolve to the public discovery card");
 
-for (const id of historicalPluginIds) {
+for (const legacyId of historicalPluginIds) {
+  const id = publicNameForLegacyId.get(legacyId) || legacyId;
   const expectedPath = migratedRootNames.has(id) ? `./plugins/${id}` : `./plugins/seis-core/${id}`;
   const entry = marketplaceEntries.find((candidate) => candidate?.name === id);
-  ensure(Boolean(entry), `historical personal card is not available from seis-repo: ${id}`);
+  ensure(Boolean(entry), `historical card is not available from seis-repo: ${legacyId} -> ${id}`);
   if (!entry) continue;
   ensure(entry.source?.source === "local", `${id} marketplace source must be local`);
   ensure(entry.source?.path === expectedPath, `${id} must use its canonical repo source path`);
@@ -53,6 +60,14 @@ for (const id of historicalPluginIds) {
   }
 }
 
+for (const rename of legacyPublicRenames) {
+  const legacyId = rename?.legacyPluginId;
+  const publicId = rename?.publicPluginId;
+  ensure(typeof legacyId === "string" && historicalPluginIds.includes(legacyId), "legacy public rename must reference a historical card");
+  ensure(typeof publicId === "string" && marketplaceEntries.some((entry) => entry.name === publicId), "legacy public rename must resolve to an available seis-repo card");
+  ensure(!marketplaceEntries.some((entry) => entry.name === legacyId), `legacy card must not remain visible in seis-repo: ${legacyId}`);
+}
+
 for (const plugin of migratedRootPlugins) {
   ensure(migratedRootNames.has(plugin.name), `${plugin.name} must stay in the migrated root package list`);
   ensure(plugin.sourcePath === `./plugins/${plugin.name}`, `${plugin.name} root source path must be repo-owned`);
@@ -66,6 +81,8 @@ const report = {
   personalConfigRead: false,
   personalConfigMutated: false,
   historicalPersonalPluginCount: historicalPluginIds.length,
+  legacyPublicRenameCount: legacyPublicRenames.length,
+  legacyPublicRenames,
   migratedRootMarketplacePluginCount: migratedRootPlugins.length,
   applicationMarketplacePluginCount: applicationPlugins.length,
   topicMarketplacePluginCount: topicPlugins.length,

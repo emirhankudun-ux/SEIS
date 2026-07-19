@@ -511,8 +511,8 @@
         "findings": []
       },
       {
-        "name": "seis-personal-plugin-discovery",
-        "sourcePath": "./plugins/seis-core/seis-personal-plugin-discovery",
+        "name": "seis-plugin-discovery",
+        "sourcePath": "./plugins/seis-core/seis-plugin-discovery",
         "sourceFileCount": 5,
         "stagedFileCount": 5,
         "excludedArtifactCount": 0,

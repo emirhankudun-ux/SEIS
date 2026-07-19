@@ -317,8 +317,8 @@
         "authentication": "ON_INSTALL"
       },
       {
-        "name": "seis-personal-plugin-discovery",
-        "sourcePath": "./plugins/seis-core/seis-personal-plugin-discovery",
+        "name": "seis-plugin-discovery",
+        "sourcePath": "./plugins/seis-core/seis-plugin-discovery",
         "category": "Developer",
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
@@ -2912,10 +2912,10 @@
       "liveRuntimeStatus": "local_demo_or_auth_gated"
     },
     {
-      "name": "seis-personal-plugin-discovery",
-      "sourcePath": "./plugins/seis-core/seis-personal-plugin-discovery",
+      "name": "seis-plugin-discovery",
+      "sourcePath": "./plugins/seis-core/seis-plugin-discovery",
       "category": "Developer",
-      "installId": "seis-personal-plugin-discovery@seis-repo",
+      "installId": "seis-plugin-discovery@seis-repo",
       "license": "MIT",
       "publicStatus": "repo_marketplace_available",
       "liveRuntimeStatus": "local_demo_or_auth_gated"

@@ -509,10 +509,10 @@
       "category": "Developer"
     },
     {
-      "name": "seis-personal-plugin-discovery",
+      "name": "seis-plugin-discovery",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-core/seis-personal-plugin-discovery"
+        "path": "./plugins/seis-core/seis-plugin-discovery"
       },
       "policy": {
         "installation": "AVAILABLE",

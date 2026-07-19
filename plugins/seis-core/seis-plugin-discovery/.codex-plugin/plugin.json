@@ -1,0 +1,29 @@
+{
+  "name": "seis-plugin-discovery",
+  "version": "0.0.13",
+  "description": "Browse public SEIS Repo cards and inspect selected local plugin metadata without executing code.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Plugin Discovery",
+    "shortDescription": "Browse public SEIS Repo cards and selected metadata safely.",
+    "longDescription": "Read the public SEIS Repo catalog or inspect an explicitly selected directory without executing code, following symlinks, copying data, or scanning the device.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "marketplace-catalog",
+      "metadata-only",
+      "symlink-refusal"
+    ],
+    "defaultPrompt": "Show the public SEIS Repo plugin catalog or discover plugins in an explicitly selected directory."
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "marketplace-catalog",
+    "public-repository",
+    "read-only"
+  ]
+}

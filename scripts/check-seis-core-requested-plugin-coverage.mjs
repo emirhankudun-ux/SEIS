@@ -63,7 +63,7 @@ const requestedPluginIds = objectivePath
       "seis-branch-protection-audit",
       "seis-package-adoption",
       "seis-plugin-migration",
-      "seis-personal-plugin-discovery",
+      "seis-plugin-discovery",
       "seis-ai-agent",
     ];
 

@@ -69,7 +69,7 @@
 | seis-offline-mode-check | 5 | 5 | 0 | 1 | pass |
 | seis-package-adoption | 5 | 5 | 0 | 1 | pass |
 | seis-performance-budget | 5 | 5 | 0 | 1 | pass |
-| seis-personal-plugin-discovery | 5 | 5 | 0 | 1 | pass |
+| seis-plugin-discovery | 5 | 5 | 0 | 1 | pass |
 | seis-plugin-migration | 5 | 5 | 0 | 1 | pass |
 | seis-pr-cycle-time | 5 | 5 | 0 | 1 | pass |
 | seis-prompt-injection-audit | 5 | 5 | 0 | 1 | pass |

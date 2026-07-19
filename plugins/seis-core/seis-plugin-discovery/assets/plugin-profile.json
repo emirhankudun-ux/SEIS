@@ -1,6 +1,6 @@
 {
-  "stableId": "seis-personal-plugin-discovery",
-  "slug": "seis-personal-plugin-discovery",
+  "stableId": "seis-plugin-discovery",
+  "slug": "seis-plugin-discovery",
   "version": "0.0.13",
   "releaseMicroUnits": 13,
   "releaseRevision": 0,
@@ -14,9 +14,10 @@
   "license": "MIT",
   "status": "approved-public-readonly",
   "implementationState": "functional-local-demo",
-  "entrypoint": "scripts/seis-personal-plugin-discovery-mcp-server.mjs",
+  "entrypoint": "scripts/seis-plugin-discovery-mcp-server.mjs",
   "permissions": {
     "read": [
+      "SEIS Repo marketplace metadata",
       "explicitly selected local plugin metadata"
     ],
     "write": [],
@@ -30,9 +31,9 @@
     "node --check",
     "MCP initialize/tools/list/tools/call smoke"
   ],
-  "rollback": "Disable or remove the local plugin; discovery never mutates the selected directory.",
+  "rollback": "Disable or remove the public plugin; catalog and discovery never mutate marketplace data or the selected directory.",
   "reviewState": "public-repository-preview",
-  "provenance": "Promoted from the SEIS master prompt Section 38 proposed backlog after deterministic local implementation for SEIS-GOAL-021.",
+  "provenance": "Renamed from the former local discovery card and extended with public SEIS Repo catalog inspection for SEIS-GOAL-021.",
   "publicRepositoryAvailable": true,
   "publicAudience": "everyone",
   "publicMarketplace": true,

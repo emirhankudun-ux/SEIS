@@ -29,7 +29,7 @@
   "interface": {
     "displayName": "SEIS-Agent",
     "shortDescription": "The one public SEIS plugin that coordinates every embedded module.",
-    "longDescription": "SEIS-Agent 0.3.0 is the only public SEIS install surface. It embeds SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product as internal source modules while preserving older personal installations without publishing duplicate public plugin cards.",
+    "longDescription": "SEIS-Agent 0.3.0 is the only public SEIS install surface. It embeds SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product as internal source modules while preserving legacy local installations without publishing duplicate public plugin cards.",
     "developerName": "emirhankudun-ux",
     "category": "Developer Tools",
     "capabilities": [

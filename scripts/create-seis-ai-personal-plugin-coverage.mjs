@@ -11,6 +11,9 @@ const outputPath = "content/development/seis-ai-core-personal-plugin-coverage.js
 const applicationSourceRoot = "plugins/seis-core";
 const sourceRootOption = readOption("--source");
 const marketplaceOption = readOption("--marketplace");
+const legacyPublicRenameMap = Object.freeze({
+  "seis-personal-plugin-discovery": "seis-plugin-discovery",
+});
 
 let coverage;
 if (sourceRootOption && marketplaceOption) {
@@ -40,11 +43,12 @@ function buildCoverage(sourceRoot, marketplacePath) {
   const personalNames = uniqueSeisNames(marketplace.plugins || []);
   const sourceNames = listPluginNames(sourceRoot);
   const applicationNames = listPluginNames(path.join(root, ...applicationSourceRoot.split("/")));
-  const applicationOnlyNames = applicationNames.filter((name) => !personalNames.includes(name));
+  const resolvedRepositoryNames = personalNames.map(resolveRepositoryPluginId);
+  const applicationOnlyNames = applicationNames.filter((name) => !resolvedRepositoryNames.includes(name));
   const repoNames = new Set([...listPluginNames(path.join(root, "plugins")), ...applicationNames]);
   const overlapNames = personalNames.filter((name) => listPluginNames(path.join(root, "plugins")).includes(name));
-  const applicationOwnedNames = personalNames.filter((name) => applicationNames.includes(name));
-  const missingRepoCounterparts = personalNames.filter((name) => !repoNames.has(name));
+  const applicationOwnedNames = personalNames.filter((name) => applicationNames.includes(resolveRepositoryPluginId(name)));
+  const missingRepoCounterparts = personalNames.filter((name) => !repoNames.has(resolveRepositoryPluginId(name)));
   const unlistedSourcePlugins = sourceNames.filter((name) => !personalNames.includes(name));
   const missingSourcePlugins = personalNames.filter((name) => !sourceNames.includes(name));
 
@@ -73,12 +77,17 @@ function buildCoverage(sourceRoot, marketplacePath) {
     },
     repository: {
       sourceRoots: ["plugins", applicationSourceRoot],
-      counterpartCount: personalNames.filter((name) => repoNames.has(name)).length,
+      counterpartCount: personalNames.filter((name) => repoNames.has(resolveRepositoryPluginId(name))).length,
+      resolvedCounterpartPluginIds: resolvedRepositoryNames,
       missingRepoCounterparts,
       overlapCount: overlapNames.length,
       overlapPluginIds: overlapNames,
       migratedCount: applicationOwnedNames.length,
       migratedPluginIds: applicationOwnedNames,
+      migratedPublicPluginIds: applicationOwnedNames.map(resolveRepositoryPluginId),
+      legacyPublicRenames: personalNames
+        .filter((name) => legacyPublicRenameMap[name])
+        .map((legacyPluginId) => ({ legacyPluginId, publicPluginId: legacyPublicRenameMap[legacyPluginId] })),
       applicationSourceRoot,
       applicationOwnedCount: applicationNames.length,
       applicationOwnedPluginIds: applicationNames,
@@ -119,6 +128,9 @@ function validateCoverage(record) {
   if (repository?.missingRepoCounterparts?.length !== 0) failures.push("repository is missing personal plugin counterparts");
   if (repository?.overlapCount !== 5) failures.push("five personal lane plugins must resolve to existing repository modules");
   if (repository?.migratedCount !== 50) failures.push("50 personal-only plugins must be migrated into the SEIS Command Center app source root");
+  if (!Array.isArray(repository?.legacyPublicRenames) || repository.legacyPublicRenames.length !== 1) failures.push("coverage must record the one public card rename");
+  if (!repository?.legacyPublicRenames?.some((rename) => rename?.legacyPluginId === "seis-personal-plugin-discovery" && rename?.publicPluginId === "seis-plugin-discovery")) failures.push("coverage must map the legacy discovery card to the public discovery card");
+  if (!repository?.resolvedCounterpartPluginIds?.includes("seis-plugin-discovery")) failures.push("coverage must include the renamed public discovery card");
   if (repository?.applicationSourceRoot !== applicationSourceRoot) failures.push("personal plugin sources must be owned by apps/seis-core");
   if (repository?.applicationOwnedCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push(`the SEIS Command Center app must own ${APP_PLUGIN_EXPANSION_TARGET} plugins`);
   if (repository?.applicationOnlyCount !== APP_PLUGIN_EXPANSION_TARGET - 50) failures.push("the SEIS Command Center app must record ten app-only expansion plugins");
@@ -135,6 +147,10 @@ function uniqueSeisNames(entries) {
   return [...new Set(entries
     .map((entry) => entry?.name)
     .filter((name) => typeof name === "string" && (name === "seis" || name.startsWith("seis-"))))].sort();
+}
+
+function resolveRepositoryPluginId(name) {
+  return legacyPublicRenameMap[name] || name;
 }
 
 function listPluginNames(directory) {

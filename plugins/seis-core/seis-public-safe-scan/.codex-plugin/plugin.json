@@ -17,7 +17,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "SEIS Public-Safe Scan",
-    "shortDescription": "Find redacted private-path, personal-data and secret risks.",
+    "shortDescription": "Find redacted private-path, private-data and secret risks.",
     "longDescription": "Performs a bounded local heuristic scan and emits pattern codes and relative paths only. It never prints matched values, uploads files, or certifies public readiness.",
     "developerName": "Emirhan Kudun",
     "category": "Security",
