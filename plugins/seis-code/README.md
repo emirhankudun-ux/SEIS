@@ -19,10 +19,10 @@ python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_
 node plugins/seis-code/scripts/seis-code-status.mjs
 ```
 
-## Embedded Module Use
+## Direct Repository Card and Embedded Module Use
 
-The repository preserves this source module and embeds its lane at
-`plugins/seis-ai-agent/skills/seis-code/SKILL.md`. Install
-`seis-ai-agent@seis-repo` to use it; there is no standalone public code plugin
-card. Public agent installation does not imply write access, GitHub
-authentication, dependency installation, or deployment approval.
+This root package is directly available as `seis-code@seis-repo` and remains
+embedded at `plugins/seis-ai-agent/skills/seis-code/SKILL.md`. The canonical
+default installation is still `seis-ai-agent@seis-repo`. Public availability
+does not imply write access, GitHub authentication, dependency installation,
+or deployment approval.

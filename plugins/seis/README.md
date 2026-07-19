@@ -3,9 +3,10 @@
 This Codex plugin makes SEIS the default operating center for the `emirhankudun-ux` GitHub ecosystem.
 
 Normal user-facing SEIS work starts from `seis-ai-agent@seis-repo`. This
-package is the preserved governance source module embedded in that public
-SEIS-Agent installation alongside Cloud, Code, Design, Data, Security,
-Research, Automation, and Product lanes.
+package is also available directly as `seis@seis-repo`, replacing its
+historical personal-marketplace card while remaining embedded in SEIS-Agent
+alongside Cloud, Code, Design, Data, Security, Research, Automation, and
+Product lanes.
 
 ## Scope
 
@@ -28,9 +29,10 @@ Research, Automation, and Product lanes.
 
 - Repo source module root: `plugins/seis`
 - Repo marketplace: `.agents/plugins/marketplace.json`
-- Public install id: `seis-ai-agent@seis-repo`
+- Canonical default install id: `seis-ai-agent@seis-repo`
+- Direct root package install id: `seis@seis-repo`
 - Embedded module id: `seis`
-- Personal marketplace: `~/.agents/plugins/marketplace.json` (compatibility mirror only)
+- Historical personal marketplace entries are compatibility evidence only; the public card is in `seis-repo`.
 - Workspace root: the configured local SEIS workspace root (`SEIS_ROOT`/`SEIS_ROOT_HINTS`)
 
 ## Validate

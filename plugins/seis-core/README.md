@@ -110,7 +110,7 @@ anyone working from the repository; it never copies packages into
 - public audience: everyone
 - public source license: MIT
 - public marketplace app section: one canonical orchestrator card plus 60 public app package cards
-- complete `seis-repo` marketplace: 361 cards including 300 objective-derived `plugins/seis-topics` packages
+- complete `seis-repo` marketplace: 366 cards, including five migrated root cards and 300 objective-derived `plugins/seis-topics` packages
 - marketplace identity: `seis-repo` (audience: everyone)
 - public `seis-ai-agent` suite: separate release lifecycle
 - live runtime status: local demo/auth-gated; network, secrets, writes, and provider calls remain approval-gated

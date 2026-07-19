@@ -92,15 +92,17 @@ approved peer access.
 ## Marketplace
 
 The repo marketplace file is `.agents/plugins/marketplace.json`. It contains
-361 public entries:
+366 public entries:
 
 - `seis-ai-agent@seis-repo`
+- `seis@seis-repo`, `seis-cloud@seis-repo`, `seis-code@seis-repo`, `seis-design@seis-repo`, and `seis-data@seis-repo` sourced from the repository root
 - `seis-*-<app-capability>@seis-repo` entries sourced from `plugins/seis-core`
 - 300 objective-derived entries sourced from `plugins/seis-topics`
 
 Availability means these public repo cards are installable from the `seis-repo`
-marketplace. The embedded specialist source modules remain available through
-SEIS-Agent lane tools rather than separate specialist lane ids.
+marketplace. The five historical root modules also remain connected through
+SEIS-Agent lane tools; other embedded specialist source modules remain
+SEIS-Agent-only unless an explicit distribution decision changes that boundary.
 It does not mean live OAuth/account access, cloud credentials, SSH access,
 deployment authority, private dataset access, or destructive action permission.
 
@@ -114,6 +116,7 @@ npm run check:seis-public-plugin-install-smoke:mcp
 npm run check:seis-public-plugin-install-smoke:local
 npm run check:seis-public-plugin-install-smoke:local:mcp
 npm run check:seis-specialist-plugins
+npm run check:seis-personal-plugin-marketplace-migration
 npm run check:seis-specialist-plugins -- --include-legacy-personal
 npm run check:seis-ai-agent
 npm run check:seis-topic-plugin-family

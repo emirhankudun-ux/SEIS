@@ -9,6 +9,8 @@ const pkgRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const serverBin = path.join(pkgRoot, "bin", "seis-mcp.mjs");
 const EXPECTED_PHYSICAL_PLUGIN_COUNT = APP_PLUGIN_EXPANSION_TARGET + 10;
 const EXPECTED_CATALOG_ONLY_ENTRY_COUNT = 5000 - EXPECTED_PHYSICAL_PLUGIN_COUNT;
+const EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT = 366;
+const EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT = 5;
 
 /**
  * Drive the MCP server over its real stdio transport: spawn the bin, perform
@@ -271,7 +273,8 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(status.catalogOnlyEntryCount, EXPECTED_CATALOG_ONLY_ENTRY_COUNT);
     assert.equal(status.personalPluginCount, 55);
     assert.equal(status.personalRepoCounterpartCount, 55);
-    assert.equal(status.publicMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET + 1);
+    assert.equal(status.publicMarketplacePluginCount, EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT);
+    assert.equal(status.migratedRootMarketplacePluginCount, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
     assert.equal(status.applicationMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.applicationPluginSourceRoot, "plugins/seis-core");
@@ -322,6 +325,10 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.id, "seis-public-plugin-family");
     assert.equal(payload.lifecycleId, "seis-public-plugin-lifecycle");
     assert.equal(payload.publicPluginCount, 1);
+    assert.equal(payload.repoMarketplaceEntryCount, EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT);
+    assert.equal(payload.migratedRootPluginCount, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
+    assert.equal(payload.migratedRootPlugins.length, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
+    assert.equal(payload.connectedMigratedRootPluginCount, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
     assert.equal(payload.embeddedModuleCount, 10);
     assert.equal(payload.connectedPluginCount, 1);
     assert.equal(payload.connectedModuleCount, 10);

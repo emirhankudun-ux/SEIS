@@ -14,6 +14,16 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | seis-ai-agent | seis-ai-agent@seis-repo | pass | MIT | 1 | 0 | 0 |
 
+## Migrated Root Repository Card Review
+
+| plugin | install id | review | license | MCP servers | secrets |
+| --- | --- | --- | --- | --- | --- |
+| seis | seis@seis-repo | pass | MIT | 1 | 0 |
+| seis-cloud | seis-cloud@seis-repo | pass | MIT | 1 | 0 |
+| seis-code | seis-code@seis-repo | pass | MIT | 1 | 0 |
+| seis-design | seis-design@seis-repo | pass | MIT | 1 | 0 |
+| seis-data | seis-data@seis-repo | pass | MIT | 1 | 0 |
+
 ## Embedded Source Module Review
 
 | module | canonical install | review | license | secrets |

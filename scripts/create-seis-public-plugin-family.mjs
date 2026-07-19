@@ -211,12 +211,19 @@ const sourcePath = "content/development/seis-public-plugin-family.json";
 const reportPath = "reports/seis-public-plugin-family.md";
 
 const materializedPlugins = publicPlugins.filter((plugin) => plugin.materialize);
-const publicMarketplacePlugins = publicPlugins.filter((plugin) => plugin.name === "seis-ai-agent");
+const canonicalMarketplacePlugins = publicPlugins.filter((plugin) => plugin.name === "seis-ai-agent");
+const migratedRootMarketplacePlugins = publicPlugins.filter((plugin) => ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"].includes(plugin.name));
 const applicationMarketplacePlugins = discoverApplicationMarketplacePlugins();
 const topicMarketplacePlugins = discoverTopicMarketplacePlugins();
 if (applicationMarketplacePlugins.length !== 60) throw new Error(`Expected 60 app marketplace packages; found ${applicationMarketplacePlugins.length}`);
 if (topicMarketplacePlugins.length !== TOPIC_PLUGIN_TARGET) throw new Error(`Expected ${TOPIC_PLUGIN_TARGET} topic marketplace packages; found ${topicMarketplacePlugins.length}`);
-const marketplacePlugins = [...publicMarketplacePlugins, ...applicationMarketplacePlugins, ...topicMarketplacePlugins];
+if (migratedRootMarketplacePlugins.length !== 5) throw new Error(`Expected five migrated root marketplace packages; found ${migratedRootMarketplacePlugins.length}`);
+const marketplacePlugins = [
+  ...canonicalMarketplacePlugins,
+  ...migratedRootMarketplacePlugins,
+  ...applicationMarketplacePlugins,
+  ...topicMarketplacePlugins,
+];
 
 const marketplace = {
   name: "seis-repo",
@@ -238,12 +245,12 @@ const marketplace = {
 };
 
 const contract = {
-  version: 3,
+  version: 4,
   id: "seis-public-plugin-family",
   generatedAt: GENERATED_AT,
-  mode: "public_seis_agent_with_public_app_and_topic_repository_plugins",
+  mode: "public_seis_agent_with_migrated_root_app_and_topic_repository_plugins",
   summary:
-    "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes 60 app-owned MIT packages plus 300 objective-derived topic packages directly from the public SEIS repository marketplace. The specialist lanes remain embedded source modules inside SEIS-Agent.",
+    "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 60 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
   defaultInstall: {
     installId: "seis-ai-agent@seis-repo",
     mode: "single-public-plugin",
@@ -257,7 +264,8 @@ const contract = {
     authenticationPolicy: "ON_INSTALL",
     publicAudience: "everyone",
     publicPluginCount: marketplace.plugins.length,
-    canonicalOrchestratorCount: publicMarketplacePlugins.length,
+    canonicalOrchestratorCount: canonicalMarketplacePlugins.length,
+    migratedRootPluginCount: migratedRootMarketplacePlugins.length,
     applicationPluginCount: applicationMarketplacePlugins.length,
     topicPluginCount: topicMarketplacePlugins.length,
     entries: marketplace.plugins.map((entry) => ({
@@ -276,6 +284,20 @@ const contract = {
     license: "MIT",
     publicStatus: "repo_marketplace_available",
     liveRuntimeStatus: "local_demo_or_auth_gated",
+  })),
+  migratedRootPlugins: migratedRootMarketplacePlugins.map((plugin) => ({
+    name: plugin.name,
+    displayName: plugin.displayName,
+    role: plugin.role,
+    sourcePath: plugin.sourcePath,
+    category: plugin.category,
+    installId: `${plugin.name}@seis-repo`,
+    license: "MIT",
+    publicStatus: "repo_marketplace_available",
+    publicAudience: "everyone",
+    liveRuntimeStatus: "local_demo_or_auth_gated",
+    sourceKind: "migrated-seis-root-package",
+    connectedToSeisAi: true,
   })),
   topicPlugins: topicMarketplacePlugins.map((plugin) => ({
     name: plugin.name,
@@ -307,7 +329,8 @@ const contract = {
   },
   longHorizonGovernance: [
     "Keep SEIS-Agent as the canonical orchestration layer for cross-lane work.",
-    "Keep specialist source modules under plugins/seis-ai-agent embedded in SEIS-Agent, not exposed as separate public marketplace plugins.",
+    "Keep the five historical SEIS root packages under plugins/seis available as direct public seis-repo cards while preserving their embedded SEIS-Agent lane connections.",
+    "Keep specialist source modules other than the migrated root cards embedded in SEIS-Agent unless an explicit public distribution decision adds them to the repo marketplace.",
     "Keep every app-owned package under plugins/seis-core available as a public MIT package in the seis-repo marketplace.",
     "Keep every objective-derived package under plugins/seis-topics available as a public MIT package in the seis-repo marketplace.",
     "Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.",
@@ -315,7 +338,7 @@ const contract = {
     "Record mock, disabled, planned, and connected states honestly.",
     "Do not treat marketplace availability as authenticated runtime access.",
   ],
-  publicPlugins: publicMarketplacePlugins.map((plugin) => ({
+  publicPlugins: canonicalMarketplacePlugins.map((plugin) => ({
     name: plugin.name,
     displayName: plugin.displayName,
     role: plugin.role,
@@ -336,7 +359,7 @@ const contract = {
     validation: plugin.validation,
     canonicalInstallId: "seis-ai-agent@seis-repo",
     license: "MIT",
-    publicStatus: plugin.name === "seis-ai-agent" ? "public-plugin" : "embedded-source-module",
+    publicStatus: plugin.name === "seis-ai-agent" ? "public-plugin" : migratedRootMarketplacePlugins.some((rootPlugin) => rootPlugin.name === plugin.name) ? "public-marketplace-and-embedded-source-module" : "embedded-source-module",
     liveRuntimeStatus: "local_demo_or_auth_gated",
     connectedToSeisAi: true,
   })),
@@ -345,6 +368,7 @@ const contract = {
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",
     "npm run check:seis-plugin-bundle -- --no-local",
+    "npm run check:seis-personal-plugin-marketplace-migration",
     "npm run check:seis-topic-plugin-family",
     ...publicPlugins.map((plugin) => plugin.validation),
   ],
@@ -363,6 +387,8 @@ const markdown = [
   "",
   `- Canonical install: ${contract.defaultInstall.installId}`,
   `- Public plugin count: ${contract.marketplace.publicPluginCount}`,
+  `- Canonical default installs: ${contract.marketplace.canonicalOrchestratorCount}`,
+  `- Migrated root repository cards: ${contract.marketplace.migratedRootPluginCount}`,
   `- Mode: ${contract.defaultInstall.mode}`,
   `- Unified suite: ${contract.defaultInstall.unifiedSuite}`,
   `- Standalone lanes: ${contract.defaultInstall.standaloneLaneInstallMode}`,
@@ -375,6 +401,17 @@ const markdown = [
     (plugin) =>
       `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | ${plugin.category} | AVAILABLE | ON_INSTALL | ${plugin.liveRuntimeStatus} | connected |`,
   ),
+  "",
+  "## Migrated SEIS Root Repository Packages",
+  "",
+  "| plugin | role | source | category | direct public install | SEIS AI |",
+  "| --- | --- | --- | --- | --- | --- |",
+  ...contract.migratedRootPlugins.map(
+    (plugin) =>
+      `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | ${plugin.category} | ${plugin.installId} | connected |`,
+  ),
+  "",
+  "These cards replace the historical personal-marketplace visibility for the five root packages. SEIS-Agent remains the one canonical default install.",
   "",
   "## Public SEIS Core Repository Packages",
   "",
@@ -390,7 +427,7 @@ const markdown = [
   "| --- | --- | --- | --- | --- |",
   ...contract.embeddedModules.map(
     (plugin) =>
-      `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | connected | no |`,
+      `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | connected | ${plugin.publicStatus === "public-marketplace-and-embedded-source-module" || plugin.publicStatus === "public-plugin" ? "yes" : "no"} |`,
   ),
   "",
   "## SEIS AI Connection",

@@ -8,15 +8,16 @@
 ## Repo-Local Clean Artifact Staging
 
 - Mode: temporary-local-clean-artifact-staging
-  - Expected public marketplace packages: 361
+  - Expected public marketplace packages: 366
   - Canonical orchestrators: 1
+  - Migrated root packages: 5
   - Application packages: 60
   - Objective-derived topic packages: 300
-- Staged public plugins: 361
+- Staged public plugins: 366
 - Embedded source modules: 10
-- Staged manifests: 361
-- Staged MCP entry scripts: 361
-- Staged files: 2435
+- Staged manifests: 366
+- Staged MCP entry scripts: 366
+- Staged files: 2500
 - Excluded source metadata files: 0
 - Disallowed source artifacts: 0
 - Forbidden files in stage: 0
@@ -27,6 +28,11 @@
 | plugin | source files | staged files | excluded metadata | MCP entry scripts | stage |
 | --- | --- | --- | --- | --- | --- |
 | seis-ai-agent | 34 | 34 | 0 | 1 | pass |
+| seis | 33 | 33 | 0 | 1 | pass |
+| seis-cloud | 8 | 8 | 0 | 1 | pass |
+| seis-code | 8 | 8 | 0 | 1 | pass |
+| seis-design | 8 | 8 | 0 | 1 | pass |
+| seis-data | 8 | 8 | 0 | 1 | pass |
 | seis-a11y-regression | 5 | 5 | 0 | 1 | pass |
 | seis-action-pin-audit | 5 | 5 | 0 | 1 | pass |
 | seis-agent-audit | 5 | 5 | 0 | 1 | pass |

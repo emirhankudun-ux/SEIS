@@ -50,7 +50,7 @@ const proof = {
   },
   publicReleaseAllowed: false,
   purpose:
-    "Stage the canonical SEIS-Agent artifact, every public SEIS Core repository package, and every objective-derived SEIS topic package in a disposable clean directory, verify their marketplace and source contracts, and retain independent runner/public installation proof as an explicit release gate.",
+    "Stage the canonical SEIS-Agent artifact, five migrated SEIS root repository packages, every public SEIS Core repository package, and every objective-derived SEIS topic package in a disposable clean directory, verify their marketplace and source contracts, and retain independent runner/public installation proof as an explicit release gate.",
   repoLocalArtifactStaging: artifactStaging,
   externalCleanRunnerEvidence: {
     status: externalEvidenceStatus(independentRunnerEvidence),
@@ -112,11 +112,13 @@ if (checkMode) {
 function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
   const canonicalPlugins = (Array.isArray(publicFamily.publicPlugins) ? publicFamily.publicPlugins : [])
     .map((plugin) => ({ ...plugin, sourceKind: "public-plugin" }));
+  const migratedRootPlugins = (Array.isArray(publicFamily.migratedRootPlugins) ? publicFamily.migratedRootPlugins : [])
+    .map((plugin) => ({ ...plugin, sourceKind: "public-root-package" }));
   const applicationPlugins = (Array.isArray(publicFamily.applicationPlugins) ? publicFamily.applicationPlugins : [])
     .map((plugin) => ({ ...plugin, sourceKind: "public-application-package" }));
   const topicPlugins = (Array.isArray(publicFamily.topicPlugins) ? publicFamily.topicPlugins : [])
     .map((plugin) => ({ ...plugin, sourceKind: "public-topic-package" }));
-  const plugins = [...canonicalPlugins, ...applicationPlugins, ...topicPlugins];
+  const plugins = [...canonicalPlugins, ...migratedRootPlugins, ...applicationPlugins, ...topicPlugins];
   const embeddedModules = Array.isArray(publicFamily.embeddedModules) ? publicFamily.embeddedModules : (publicFamily.plugins || []);
   const expectedNames = plugins.map((plugin) => plugin.name);
   const failures = [];
@@ -211,6 +213,7 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
       existingCodexCacheUsed: false,
       publicMarketplacePublished: false,
       canonicalOrchestratorCount: canonicalPlugins.length,
+      migratedRootPluginCount: migratedRootPlugins.length,
       applicationPluginCount: applicationPlugins.length,
       topicPluginCount: topicPlugins.length,
       marketplaceEntryCount: expectedNames.length,
@@ -239,6 +242,7 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
       existingCodexCacheUsed: false,
       publicMarketplacePublished: false,
       canonicalOrchestratorCount: canonicalPlugins.length,
+      migratedRootPluginCount: migratedRootPlugins.length,
       applicationPluginCount: applicationPlugins.length,
       topicPluginCount: topicPlugins.length,
       marketplaceEntryCount: expectedNames.length,
@@ -525,6 +529,7 @@ function validateProof(record) {
   if (record.unifiedSuite.publicPluginCount !== 1 || record.unifiedSuite.embeddedModuleCount < 10) failures.push("unified suite must expose one public plugin and every embedded source module");
   if (record.repoLocalArtifactStaging.marketplaceEntryCount !== marketplace.plugins.length) failures.push("artifact staging marketplace count must match the repo marketplace");
   if (record.repoLocalArtifactStaging.canonicalOrchestratorCount !== 1) failures.push("artifact staging must include one canonical SEIS-Agent orchestrator");
+  if (record.repoLocalArtifactStaging.migratedRootPluginCount !== family.migratedRootPlugins.length || record.repoLocalArtifactStaging.migratedRootPluginCount !== 5) failures.push("artifact staging must cover all five migrated root marketplace packages");
   if (record.repoLocalArtifactStaging.applicationPluginCount !== family.applicationPlugins.length) failures.push("artifact staging must cover every public app package");
   if (record.repoLocalArtifactStaging.topicPluginCount !== family.topicPlugins.length) failures.push("artifact staging must cover every objective-derived topic package");
   if (record.repoLocalArtifactStaging.expectedPluginCount !== marketplace.plugins.length) failures.push("artifact staging must cover every public marketplace package");
@@ -577,6 +582,7 @@ function renderReport(record) {
 - Mode: ${record.repoLocalArtifactStaging.mode}
   - Expected public marketplace packages: ${record.repoLocalArtifactStaging.expectedPluginCount}
   - Canonical orchestrators: ${record.repoLocalArtifactStaging.canonicalOrchestratorCount}
+  - Migrated root packages: ${record.repoLocalArtifactStaging.migratedRootPluginCount}
   - Application packages: ${record.repoLocalArtifactStaging.applicationPluginCount}
   - Objective-derived topic packages: ${record.repoLocalArtifactStaging.topicPluginCount}
 - Staged public plugins: ${record.repoLocalArtifactStaging.stagedPluginCount}

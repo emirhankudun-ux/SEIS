@@ -19,10 +19,10 @@ python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_
 node plugins/seis-data/scripts/seis-data-status.mjs
 ```
 
-## Embedded Module Use
+## Direct Repository Card and Embedded Module Use
 
-The repository preserves this source module and embeds its lane at
-`plugins/seis-ai-agent/skills/seis-data/SKILL.md`. Install
-`seis-ai-agent@seis-repo` to use it; there is no standalone public data plugin
-card. Public agent installation does not imply connector authentication,
-private dataset access, or permission to export sensitive data.
+This root package is directly available as `seis-data@seis-repo` and remains
+embedded at `plugins/seis-ai-agent/skills/seis-data/SKILL.md`. The canonical
+default installation is still `seis-ai-agent@seis-repo`. Public availability
+does not imply connector authentication, private dataset access, or permission
+to export sensitive data.

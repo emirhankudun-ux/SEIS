@@ -26,10 +26,10 @@ node plugins/seis-cloud/scripts/seis-cloud-status.mjs
 npm run check:cloud-access-policy
 ```
 
-## Embedded Module Use
+## Direct Repository Card and Embedded Module Use
 
-The repository preserves this source module and embeds its lane at
-`plugins/seis-ai-agent/skills/seis-cloud/SKILL.md`. Install
-`seis-ai-agent@seis-repo` to use it; there is no standalone public cloud plugin
-card. Public agent installation does not imply live cloud authentication,
-deployment, SSH access, or secret availability; those remain approval-gated.
+This root package is directly available as `seis-cloud@seis-repo` and remains
+embedded at `plugins/seis-ai-agent/skills/seis-cloud/SKILL.md`. The canonical
+default installation is still `seis-ai-agent@seis-repo`. Public availability
+does not imply live cloud authentication, deployment, SSH access, or secret
+availability; those remain approval-gated.

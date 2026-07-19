@@ -52,7 +52,7 @@
     "recordedGate": "npm run check:seis-public-plugin-independent-runner-evidence:recorded"
   },
   "marketplace": ".agents/plugins/marketplace.json",
-  "purpose": "Keep the canonical public SEIS-Agent suite, its embedded SEIS source modules, the 60 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+  "purpose": "Keep the canonical public SEIS-Agent suite, five migrated root repository cards, its embedded SEIS source modules, the 60 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
   "publicAudience": "everyone",
   "orchestrator": "seis-ai-agent@seis-repo",
   "publicDistribution": {
@@ -61,7 +61,8 @@
     "canonicalInstallId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
     "marketplaceName": "seis-repo",
-    "repoMarketplaceEntryCount": 361,
+    "repoMarketplaceEntryCount": 366,
+    "migratedRootPluginCount": 5,
     "applicationPluginCount": 60,
     "topicPluginCount": 300
   },
@@ -280,6 +281,143 @@
       "rollback": "Remove seis-ai-agent@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, install smoke, and SEIS AI checks."
     }
   ],
+  "migratedRootPlugins": [
+    {
+      "name": "seis",
+      "displayName": "SEIS",
+      "role": "governance",
+      "sourcePath": "./plugins/seis",
+      "installId": "seis@seis-repo",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "category": "Developer",
+      "mcpServers": [
+        "seis"
+      ],
+      "lifecycleState": "public-repo-available-root-card",
+      "supportTier": "root-lane-direct-card",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "manifest-valid",
+        "mcp-manifest-valid",
+        "repo-marketplace-available",
+        "seis-ai-connected",
+        "security-boundary"
+      ],
+      "rollback": "Remove seis@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+    },
+    {
+      "name": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "role": "cloud",
+      "sourcePath": "./plugins/seis-cloud",
+      "installId": "seis-cloud@seis-repo",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "category": "Developer",
+      "mcpServers": [
+        "seis-cloud"
+      ],
+      "lifecycleState": "public-repo-available-root-card",
+      "supportTier": "root-lane-direct-card",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "manifest-valid",
+        "mcp-manifest-valid",
+        "repo-marketplace-available",
+        "seis-ai-connected",
+        "security-boundary"
+      ],
+      "rollback": "Remove seis-cloud@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+    },
+    {
+      "name": "seis-code",
+      "displayName": "SEIS-Code",
+      "role": "code",
+      "sourcePath": "./plugins/seis-code",
+      "installId": "seis-code@seis-repo",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "category": "Developer",
+      "mcpServers": [
+        "seis-code"
+      ],
+      "lifecycleState": "public-repo-available-root-card",
+      "supportTier": "root-lane-direct-card",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "manifest-valid",
+        "mcp-manifest-valid",
+        "repo-marketplace-available",
+        "seis-ai-connected",
+        "security-boundary"
+      ],
+      "rollback": "Remove seis-code@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+    },
+    {
+      "name": "seis-design",
+      "displayName": "SEIS-Design",
+      "role": "design",
+      "sourcePath": "./plugins/seis-design",
+      "installId": "seis-design@seis-repo",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "category": "Design",
+      "mcpServers": [
+        "seis-design"
+      ],
+      "lifecycleState": "public-repo-available-root-card",
+      "supportTier": "root-lane-direct-card",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "manifest-valid",
+        "mcp-manifest-valid",
+        "repo-marketplace-available",
+        "seis-ai-connected",
+        "security-boundary"
+      ],
+      "rollback": "Remove seis-design@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+    },
+    {
+      "name": "seis-data",
+      "displayName": "SEIS-DATA",
+      "role": "data",
+      "sourcePath": "./plugins/seis-data",
+      "installId": "seis-data@seis-repo",
+      "version": "0.3.0+codex.20260712",
+      "license": "MIT",
+      "category": "Data",
+      "mcpServers": [
+        "seis-data"
+      ],
+      "lifecycleState": "public-repo-available-root-card",
+      "supportTier": "root-lane-direct-card",
+      "compatibilityBand": "^0.3.x",
+      "releaseChannel": "internal-review-local-proof",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "connectedToSeisAi": true,
+      "requiredGates": [
+        "manifest-valid",
+        "mcp-manifest-valid",
+        "repo-marketplace-available",
+        "seis-ai-connected",
+        "security-boundary"
+      ],
+      "rollback": "Remove seis-data@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+    }
+  ],
   "embeddedModules": [
     {
       "name": "seis-ai-agent",
@@ -312,7 +450,7 @@
       "role": "governance",
       "sourcePath": "./plugins/seis",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -337,7 +475,7 @@
       "role": "cloud",
       "sourcePath": "./plugins/seis-cloud",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -362,7 +500,7 @@
       "role": "code",
       "sourcePath": "./plugins/seis-code",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -387,7 +525,7 @@
       "role": "design",
       "sourcePath": "./plugins/seis-design",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -412,7 +550,7 @@
       "role": "data",
       "sourcePath": "./plugins/seis-data",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -547,7 +685,8 @@
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-ai-agent",
     "npm run check:seis-specialist-plugins",
+    "npm run check:seis-personal-plugin-marketplace-migration",
     "npm run check:seis-repo-marketplace"
   ],
-  "completionRule": "The lifecycle is ready for internal review when the canonical public SEIS-Agent suite, its embedded module discovery, all public seis-repo app package cards, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval."
+  "completionRule": "The lifecycle is ready for internal review when the canonical public SEIS-Agent suite, five migrated root marketplace cards, its embedded module discovery, all public seis-repo app package cards, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, migration coverage, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval."
 }

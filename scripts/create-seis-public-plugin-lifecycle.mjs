@@ -49,6 +49,22 @@ const publicPlugins = (publicFamily.publicPlugins || []).map((plugin) => {
     mcpServers: Object.keys(mcp.mcpServers || {}),
   };
 });
+const migratedRootPlugins = (publicFamily.migratedRootPlugins || []).map((plugin) => {
+  const manifest = readJson(path.join(plugin.sourcePath, ".codex-plugin", "plugin.json"));
+  const mcp = readJson(path.join(plugin.sourcePath, ".mcp.json"));
+  const marketplaceEntry = marketplace.plugins.find((entry) => entry.name === plugin.name);
+  return {
+    name: plugin.name,
+    displayName: plugin.displayName,
+    role: plugin.role,
+    sourcePath: plugin.sourcePath,
+    installId: plugin.installId,
+    version: manifest.version || "0.1.0",
+    license: manifest.license,
+    category: marketplaceEntry?.category || plugin.category,
+    mcpServers: Object.keys(mcp.mcpServers || {}),
+  };
+});
 const applicationPluginCount = publicFamily.applicationPlugins?.length || 0;
 const topicPluginCount = publicFamily.topicPlugins?.length || 0;
 const repoMarketplaceEntryCount = marketplace.plugins?.length || 0;
@@ -229,7 +245,7 @@ const lifecycle = {
   independentRunnerEvidenceIntake,
   marketplace: marketplacePath,
   purpose:
-    "Keep the canonical public SEIS-Agent suite, its embedded SEIS source modules, the 60 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+    "Keep the canonical public SEIS-Agent suite, five migrated root repository cards, its embedded SEIS source modules, the 60 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
   publicAudience: "everyone",
   orchestrator: "seis-ai-agent@seis-repo",
   publicDistribution: {
@@ -239,6 +255,7 @@ const lifecycle = {
     mode: "single-public-plugin",
     marketplaceName: publicFamily.marketplace?.name || "seis-repo",
     repoMarketplaceEntryCount,
+    migratedRootPluginCount: migratedRootPlugins.length,
     applicationPluginCount,
     topicPluginCount,
   },
@@ -312,6 +329,23 @@ const lifecycle = {
     ],
     rollback: `Remove ${plugin.installId} from the repo marketplace only with human approval, then rerun public plugin family, install smoke, and SEIS AI checks.`,
   })),
+  migratedRootPlugins: migratedRootPlugins.map((plugin) => ({
+    ...plugin,
+    lifecycleState: "public-repo-available-root-card",
+    supportTier: "root-lane-direct-card",
+    compatibilityBand: "^0.3.x",
+    releaseChannel: "internal-review-local-proof",
+    liveRuntimeStatus: "local_demo_or_auth_gated",
+    connectedToSeisAi: true,
+    requiredGates: [
+      "manifest-valid",
+      "mcp-manifest-valid",
+      "repo-marketplace-available",
+      "seis-ai-connected",
+      "security-boundary",
+    ],
+    rollback: `Remove ${plugin.installId} from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks.`,
+  })),
   embeddedModules: embeddedModules.map((module) => ({
     ...module,
     lifecycleState: "embedded-in-public-seis-agent",
@@ -342,10 +376,11 @@ const lifecycle = {
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-ai-agent",
     "npm run check:seis-specialist-plugins",
+    "npm run check:seis-personal-plugin-marketplace-migration",
     "npm run check:seis-repo-marketplace",
   ],
   completionRule:
-    "The lifecycle is ready for internal review when the canonical public SEIS-Agent suite, its embedded module discovery, all public seis-repo app package cards, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval.",
+    "The lifecycle is ready for internal review when the canonical public SEIS-Agent suite, five migrated root marketplace cards, its embedded module discovery, all public seis-repo app package cards, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, migration coverage, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval.",
 };
 
 const report = renderReport(lifecycle);
@@ -371,6 +406,7 @@ function validateLifecycle(contract) {
   if (contract.publicDistribution?.embeddedModuleCount !== contract.embeddedModules.length) failures.push("lifecycle embedded module count must match its module matrix");
   if (contract.publicDistribution?.marketplaceName !== "seis-repo") failures.push("lifecycle must identify the seis-repo marketplace");
   if (contract.publicDistribution?.repoMarketplaceEntryCount !== repoMarketplaceEntryCount) failures.push("lifecycle marketplace count must match the repo marketplace");
+  if (contract.publicDistribution?.migratedRootPluginCount !== migratedRootPlugins.length || migratedRootPlugins.length !== 5) failures.push("lifecycle must track all five migrated root marketplace packages");
   if (contract.publicDistribution?.applicationPluginCount !== applicationPluginCount) failures.push("lifecycle app package count must match the public family");
   if (contract.publicDistribution?.topicPluginCount !== topicPluginCount) failures.push("lifecycle topic package count must match the public family");
   if (contract.orchestrator !== "seis-ai-agent@seis-repo") failures.push("orchestrator must be seis-ai-agent@seis-repo");
@@ -407,6 +443,11 @@ function validateLifecycle(contract) {
     if (!plugin.requiredGates.includes("mcp-smoke")) failures.push(`${plugin.name} must require MCP smoke`);
     if (!plugin.connectedToSeisAi) failures.push(`${plugin.name} must be connected to SEIS AI`);
   }
+  for (const plugin of contract.migratedRootPlugins || []) {
+    if (plugin.license !== "MIT") failures.push(`${plugin.name} root marketplace package must be MIT`);
+    if (!plugin.mcpServers.length) failures.push(`${plugin.name} root marketplace package must expose an MCP server`);
+    if (!plugin.connectedToSeisAi) failures.push(`${plugin.name} root marketplace package must remain connected to SEIS AI`);
+  }
   for (const module of contract.embeddedModules) {
     if (module.license !== "MIT") failures.push(`${module.name} must be MIT`);
     if (module.canonicalInstallId !== "seis-ai-agent@seis-repo") failures.push(`${module.name} must resolve to SEIS-Agent`);
@@ -421,6 +462,9 @@ function validateLifecycle(contract) {
 
 function renderReport(contract) {
   const rows = contract.plugins
+    .map((plugin) => `| ${plugin.name} | ${plugin.role} | ${plugin.version} | ${plugin.releaseChannel} | ${plugin.supportTier} | ${plugin.mcpServers.join(", ")} |`)
+    .join("\n");
+  const migratedRootRows = (contract.migratedRootPlugins || [])
     .map((plugin) => `| ${plugin.name} | ${plugin.role} | ${plugin.version} | ${plugin.releaseChannel} | ${plugin.supportTier} | ${plugin.mcpServers.join(", ")} |`)
     .join("\n");
   const phasesTable = contract.phases
@@ -449,6 +493,12 @@ ${phasesTable}
 | --- | --- | --- | --- | --- | --- |
 ${rows}
 
+## Migrated Root Repository Cards
+
+| plugin | role | version | channel | support tier | MCP servers |
+| --- | --- | --- | --- | --- | --- |
+${migratedRootRows}
+
 ## Embedded Source Modules
 
 | module | role | status | version | canonical install |
@@ -476,6 +526,7 @@ ${moduleRows}
 - Marketplace: ${contract.publicDistribution.marketplaceName}
 - Total entries: ${contract.publicDistribution.repoMarketplaceEntryCount}
 - Canonical orchestrator entries: ${contract.publicDistribution.publicPluginCount}
+- Migrated root package entries: ${contract.publicDistribution.migratedRootPluginCount}
 - App package entries: ${contract.publicDistribution.applicationPluginCount}
 - Objective-derived topic entries: ${contract.publicDistribution.topicPluginCount}
 

@@ -81,7 +81,14 @@ const mcp = readJson("plugins/seis-ai-agent/.mcp.json");
 const marketplace = readJson(".agents/plugins/marketplace.json");
 const identities = readJson("data/seis-operating-identities.json");
 const packageJson = readJson("package.json");
-const publicPluginEntries = [["seis-ai-agent", "./plugins/seis-ai-agent"]];
+const publicPluginEntries = [
+  ["seis-ai-agent", "./plugins/seis-ai-agent"],
+  ["seis", "./plugins/seis"],
+  ["seis-cloud", "./plugins/seis-cloud"],
+  ["seis-code", "./plugins/seis-code"],
+  ["seis-design", "./plugins/seis-design"],
+  ["seis-data", "./plugins/seis-data"],
+];
 const publicApplicationEntries = (marketplace?.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/"));
 const publicTopicEntries = (marketplace?.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith(`./${TOPIC_PLUGIN_SOURCE_ROOT}/`));
 ensure(manifest?.name === "seis-ai-agent", "manifest name must be seis-ai-agent");
@@ -121,7 +128,7 @@ for (const platform of ["macos", "windows", "linux"]) ensure(profile?.terminalIn
 ensure(profile?.websiteRoadmap?.direction?.includes("Cinematic"), "website roadmap must preserve cinematic direction");
 ensure((identities?.identities || []).some((identity) => identity.name === "SEIS-Agent" && identity.repoSurface === "plugins/seis-ai-agent"), "operating identities must map SEIS-Agent to plugin");
 ensure(mcp?.mcpServers?.["seis-ai-agent"]?.args?.[0] === "./scripts/seis-ai-agent-mcp-server.mjs", "MCP manifest must point at server");
-ensure(marketplace?.plugins?.length === publicPluginEntries.length + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, "marketplace must publish SEIS-Agent plus all public app and topic packages");
+ensure(marketplace?.plugins?.length === publicPluginEntries.length + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, "marketplace must publish SEIS-Agent, all migrated root cards, and all public app and topic packages");
 ensure(publicApplicationEntries.length === APP_PLUGIN_EXPANSION_TARGET, "marketplace must publish every app-owned package as a public seis-repo entry");
 ensure(publicTopicEntries.length === TOPIC_PLUGIN_TARGET, "marketplace must publish every objective-derived topic package as a public seis-repo entry");
 for (const [name, sourcePath] of publicPluginEntries) {

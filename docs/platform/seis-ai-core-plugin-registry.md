@@ -32,13 +32,18 @@ separate release lifecycle.
 ## Source and marketplace boundary
 
 All 60 app-owned plugin packages are public MIT-licensed source in the SEIS
-repository and are available to everyone. Legacy personal plugin evidence is
-retained for compatibility auditing; the personal marketplace was not mutated.
-The public marketplace exposes the canonical orchestrator plus one card for
-each app-owned package:
+repository and are available to everyone. Historical personal-plugin evidence
+is retained only for compatibility auditing. The public marketplace exposes the
+canonical orchestrator, five migrated root cards, and one card for each
+app-owned package:
 
 ```text
 seis-ai-agent@seis-repo
+seis@seis-repo
+seis-cloud@seis-repo
+seis-code@seis-repo
+seis-design@seis-repo
+seis-data@seis-repo
 <each plugins/seis-core package>@seis-repo
 ```
 
@@ -67,9 +72,12 @@ The checked-in coverage record
 `content/development/seis-ai-core-personal-plugin-coverage.json` proves that
 the selected historical personal marketplace currently contains 55 SEIS plugin
 IDs and that all 55 have repository counterparts. This is compatibility
-evidence only: the active app-owned source boundary is the 60-package public
-MIT repository set under `plugins/seis-core`; ten additional app-only audit
-plugins were added directly to that public repository boundary.
+evidence only: all 55 historical cards are now covered by the public
+`seis-repo` marketplace, with five root cards under `plugins/seis` and 50
+historical app cards under `plugins/seis-core`. The active app-owned source
+boundary remains the 60-package public MIT repository set under
+`plugins/seis-core`; ten additional app-only audit plugins were added directly
+to that public repository boundary.
 
 The app-source gate
 `npm run check:seis-core-plugin-sources` validates each app-owned manifest,

@@ -1503,6 +1503,7 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
       marketplaceName: manifest.canonicalAgent?.marketplaceName ?? null,
       publicPluginContract: manifest.canonicalAgent?.publicPluginContract ?? null,
       publicPluginCount: publicPlugins.length,
+      migratedRootMarketplacePluginCount: pluginRegistry.ok ? pluginRegistry.migratedRootMarketplacePluginCount : null,
       embeddedModuleCount: embeddedModules.length,
       applicationOwnedPluginCount: unifiedSuiteSummary?.applicationOwnedPluginCount ?? null,
       applicationPluginSourceRoot: unifiedSuiteSummary?.applicationPluginSourceRoot ?? null,
@@ -1533,6 +1534,7 @@ export function pluginIntegrationStatus(repoRoot, options = {}) {
             catalogOnlyEntryCount: pluginRegistry.catalogOnlyEntryCount,
             functionalLocalDemoCount: pluginRegistry.functionalLocalDemoCount,
             publicMarketplacePluginCount: pluginRegistry.publicMarketplacePluginCount,
+            migratedRootMarketplacePluginCount: pluginRegistry.migratedRootMarketplacePluginCount,
             personalPluginCoveragePath: pluginRegistry.personalPluginCoveragePath,
             personalPluginCount: pluginRegistry.personalPluginCount,
             personalRepoCounterpartCount: pluginRegistry.personalRepoCounterpartCount,
@@ -1623,9 +1625,11 @@ export function publicPluginFamilyStatus(repoRoot, options = {}) {
     const canonicalization = integration.canonicalization;
     const unifiedSuite = integration.unifiedSuite;
     const lifecyclePlugins = new Map((lifecycle.plugins || []).map((plugin) => [plugin.name, plugin]));
+    const lifecycleMigratedRootPlugins = new Map((lifecycle.migratedRootPlugins || []).map((plugin) => [plugin.name, plugin]));
     const lifecycleModules = new Map((lifecycle.embeddedModules || []).map((module) => [module.name, module]));
     const familyPlugins = Array.isArray(family.plugins) ? family.plugins : [];
     const publicFamilyPlugins = Array.isArray(family.publicPlugins) ? family.publicPlugins : [];
+    const migratedRootFamilyPlugins = Array.isArray(family.migratedRootPlugins) ? family.migratedRootPlugins : [];
     const familyModules = Array.isArray(family.embeddedModules) ? family.embeddedModules : [];
     const topicPlugins = Array.isArray(family.topicPlugins) ? family.topicPlugins : [];
     const marketplaceEntries = Array.isArray(family.marketplace?.entries) ? family.marketplace.entries : [];
@@ -1638,6 +1642,24 @@ export function publicPluginFamilyStatus(repoRoot, options = {}) {
         role: plugin.role,
         sourcePath: plugin.sourcePath,
         publicStatus: plugin.publicStatus || plugin.installation,
+        liveRuntimeStatus: plugin.liveRuntimeStatus,
+        connectedToSeisAi: plugin.connectedToSeisAi === true,
+        version: lifecyclePlugin.version,
+        releaseChannel: lifecyclePlugin.releaseChannel,
+        supportTier: lifecyclePlugin.supportTier,
+        compatibilityBand: lifecyclePlugin.compatibilityBand,
+        mcpServers: lifecyclePlugin.mcpServers || [],
+      };
+    });
+    const migratedRootPlugins = migratedRootFamilyPlugins.map((plugin) => {
+      const name = plugin.name;
+      const lifecyclePlugin = lifecycleMigratedRootPlugins.get(name) || {};
+      return {
+        name,
+        installId: plugin.installId,
+        role: plugin.role,
+        sourcePath: plugin.sourcePath,
+        publicStatus: plugin.publicStatus || "repo_marketplace_available",
         liveRuntimeStatus: plugin.liveRuntimeStatus,
         connectedToSeisAi: plugin.connectedToSeisAi === true,
         version: lifecyclePlugin.version,
@@ -1683,6 +1705,8 @@ export function publicPluginFamilyStatus(repoRoot, options = {}) {
         integration.embeddedModuleCount === embeddedModules.length &&
         (canonicalization?.effectivePluginCount ?? plugins.length) === plugins.length,
       publicPluginCount: plugins.length,
+      repoMarketplaceEntryCount: family.marketplace?.publicPluginCount ?? marketplaceEntries.length,
+      migratedRootPluginCount: migratedRootPlugins.length,
       topicPluginCount: topicPlugins.length,
       topicPluginSourceRoot: topicPlugins[0]?.sourcePath?.split("/").slice(0, 3).join("/") || null,
       embeddedModuleCount: embeddedModules.length,
@@ -1692,6 +1716,7 @@ export function publicPluginFamilyStatus(repoRoot, options = {}) {
       canonicalization,
       unifiedSuite,
       connectedPluginCount: plugins.filter((plugin) => plugin.connectedToSeisAi).length,
+      connectedMigratedRootPluginCount: migratedRootPlugins.filter((plugin) => plugin.connectedToSeisAi).length,
       connectedModuleCount: embeddedModules.filter((module) => module.connectedToSeisAi).length,
       currentChannel: lifecycle.releasePolicy?.currentChannel,
       releaseAuthority: lifecycle.releasePolicy?.releaseAuthority,
@@ -1756,6 +1781,7 @@ export function publicPluginFamilyStatus(repoRoot, options = {}) {
           }
         : null,
       plugins,
+      migratedRootPlugins,
       embeddedModules,
     };
 

@@ -26,16 +26,26 @@
 | --- | --- | --- | --- | --- | --- |
 | seis-ai-agent | orchestrator | 0.3.0+codex.20260712 | internal-review-local-proof | orchestrator-critical | seis-ai-agent |
 
+## Migrated Root Repository Cards
+
+| plugin | role | version | channel | support tier | MCP servers |
+| --- | --- | --- | --- | --- | --- |
+| seis | governance | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis |
+| seis-cloud | cloud | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis-cloud |
+| seis-code | code | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis-code |
+| seis-design | design | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis-design |
+| seis-data | data | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis-data |
+
 ## Embedded Source Modules
 
 | module | role | status | version | canonical install |
 | --- | --- | --- | --- | --- |
 | seis-ai-agent | orchestrator | public-plugin | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis | governance | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-cloud | cloud | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-code | code | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-design | design | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-data | data | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis | governance | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-cloud | cloud | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-code | code | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-design | design | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-data | data | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
 | seis-security | security | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
 | seis-research | research | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
 | seis-automation | automation | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
@@ -60,8 +70,9 @@
 ## Public SEIS Repo Marketplace
 
 - Marketplace: seis-repo
-- Total entries: 361
+- Total entries: 366
 - Canonical orchestrator entries: 1
+- Migrated root package entries: 5
 - App package entries: 60
 - Objective-derived topic entries: 300
 
@@ -114,5 +125,6 @@ npm run check:seis-public-plugin-install-smoke:mcp
 npm run check:seis-agent-plugin-integration
 npm run check:seis-ai-agent
 npm run check:seis-specialist-plugins
+npm run check:seis-personal-plugin-marketplace-migration
 npm run check:seis-repo-marketplace
 ```

@@ -12,6 +12,8 @@ import { APP_PLUGIN_EXPANSION_TARGET } from "../../../plugins/seis-core/runtime/
 const root = fileURLToPath(new URL("../../..", import.meta.url));
 const EXPECTED_PHYSICAL_PLUGIN_COUNT = APP_PLUGIN_EXPANSION_TARGET + 10;
 const EXPECTED_CATALOG_ONLY_ENTRY_COUNT = AI_CORE_PLUGIN_REGISTRY_TARGET_COUNT - EXPECTED_PHYSICAL_PLUGIN_COUNT;
+const EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT = 366;
+const EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT = 5;
 
 describe("SEIS AI Core plugin registry", () => {
   it("keeps exactly 5000 canonical registry entries under SEIS", () => {
@@ -36,7 +38,8 @@ describe("SEIS AI Core plugin registry", () => {
     assert.equal(registry.target.catalogOnlyEntryCount, EXPECTED_CATALOG_ONLY_ENTRY_COUNT);
     assert.equal(registry.target.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(registry.target.functionalLocalDemoCount, APP_PLUGIN_EXPANSION_TARGET);
-    assert.equal(registry.target.publicMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET + 1);
+    assert.equal(registry.target.publicMarketplacePluginCount, EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT);
+    assert.equal(registry.target.migratedRootMarketplacePluginCount, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
     assert.equal(registry.target.applicationMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(registry.target.personalPluginCount, 55);
     assert.equal(registry.target.personalRepoCounterpartCount, 55);
@@ -74,7 +77,8 @@ describe("SEIS AI Core plugin registry", () => {
     assert.equal(status.applicationPluginReleaseMicroUnits, registry.applicationRelease.microUnits);
     assert.equal(status.personalPluginCount, 55);
     assert.equal(status.personalRepoCounterpartCount, 55);
-    assert.equal(status.publicMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET + 1);
+    assert.equal(status.publicMarketplacePluginCount, EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT);
+    assert.equal(status.migratedRootMarketplacePluginCount, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
     assert.equal(status.applicationMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.personalPluginCoveragePath, "content/development/seis-ai-core-personal-plugin-coverage.json");
     assert.equal(status.migration.personalMarketplaceMutation, false);

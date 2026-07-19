@@ -1,9 +1,9 @@
 {
-  "version": 3,
+  "version": 4,
   "id": "seis-public-plugin-family",
   "generatedAt": "2026-07-12",
-  "mode": "public_seis_agent_with_public_app_and_topic_repository_plugins",
-  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes 60 app-owned MIT packages plus 300 objective-derived topic packages directly from the public SEIS repository marketplace. The specialist lanes remain embedded source modules inside SEIS-Agent.",
+  "mode": "public_seis_agent_with_migrated_root_app_and_topic_repository_plugins",
+  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 60 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
   "defaultInstall": {
     "installId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
@@ -16,8 +16,9 @@
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL",
     "publicAudience": "everyone",
-    "publicPluginCount": 361,
+    "publicPluginCount": 366,
     "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
     "applicationPluginCount": 60,
     "topicPluginCount": 300,
     "entries": [
@@ -25,6 +26,41 @@
         "name": "seis-ai-agent",
         "sourcePath": "./plugins/seis-ai-agent",
         "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis",
+        "sourcePath": "./plugins/seis",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-cloud",
+        "sourcePath": "./plugins/seis-cloud",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-code",
+        "sourcePath": "./plugins/seis-code",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-design",
+        "sourcePath": "./plugins/seis-design",
+        "category": "Design",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-data",
+        "sourcePath": "./plugins/seis-data",
+        "category": "Data",
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
@@ -3090,6 +3126,78 @@
       "license": "MIT",
       "publicStatus": "repo_marketplace_available",
       "liveRuntimeStatus": "local_demo_or_auth_gated"
+    }
+  ],
+  "migratedRootPlugins": [
+    {
+      "name": "seis",
+      "displayName": "SEIS",
+      "role": "governance",
+      "sourcePath": "./plugins/seis",
+      "category": "Developer",
+      "installId": "seis@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "publicAudience": "everyone",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "sourceKind": "migrated-seis-root-package",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "role": "cloud",
+      "sourcePath": "./plugins/seis-cloud",
+      "category": "Developer",
+      "installId": "seis-cloud@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "publicAudience": "everyone",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "sourceKind": "migrated-seis-root-package",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-code",
+      "displayName": "SEIS-Code",
+      "role": "code",
+      "sourcePath": "./plugins/seis-code",
+      "category": "Developer",
+      "installId": "seis-code@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "publicAudience": "everyone",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "sourceKind": "migrated-seis-root-package",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-design",
+      "displayName": "SEIS-Design",
+      "role": "design",
+      "sourcePath": "./plugins/seis-design",
+      "category": "Design",
+      "installId": "seis-design@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "publicAudience": "everyone",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "sourceKind": "migrated-seis-root-package",
+      "connectedToSeisAi": true
+    },
+    {
+      "name": "seis-data",
+      "displayName": "SEIS-DATA",
+      "role": "data",
+      "sourcePath": "./plugins/seis-data",
+      "category": "Data",
+      "installId": "seis-data@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "publicAudience": "everyone",
+      "liveRuntimeStatus": "local_demo_or_auth_gated",
+      "sourceKind": "migrated-seis-root-package",
+      "connectedToSeisAi": true
     }
   ],
   "topicPlugins": [
@@ -6723,7 +6831,8 @@
   },
   "longHorizonGovernance": [
     "Keep SEIS-Agent as the canonical orchestration layer for cross-lane work.",
-    "Keep specialist source modules under plugins/seis-ai-agent embedded in SEIS-Agent, not exposed as separate public marketplace plugins.",
+    "Keep the five historical SEIS root packages under plugins/seis available as direct public seis-repo cards while preserving their embedded SEIS-Agent lane connections.",
+    "Keep specialist source modules other than the migrated root cards embedded in SEIS-Agent unless an explicit public distribution decision adds them to the repo marketplace.",
     "Keep every app-owned package under plugins/seis-core available as a public MIT package in the seis-repo marketplace.",
     "Keep every objective-derived package under plugins/seis-topics available as a public MIT package in the seis-repo marketplace.",
     "Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.",
@@ -6768,7 +6877,7 @@
       "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "license": "MIT",
-      "publicStatus": "embedded-source-module",
+      "publicStatus": "public-marketplace-and-embedded-source-module",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
       "connectedToSeisAi": true
     },
@@ -6781,7 +6890,7 @@
       "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-cloud",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "license": "MIT",
-      "publicStatus": "embedded-source-module",
+      "publicStatus": "public-marketplace-and-embedded-source-module",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
       "connectedToSeisAi": true
     },
@@ -6794,7 +6903,7 @@
       "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-code",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "license": "MIT",
-      "publicStatus": "embedded-source-module",
+      "publicStatus": "public-marketplace-and-embedded-source-module",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
       "connectedToSeisAi": true
     },
@@ -6807,7 +6916,7 @@
       "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-design",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "license": "MIT",
-      "publicStatus": "embedded-source-module",
+      "publicStatus": "public-marketplace-and-embedded-source-module",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
       "connectedToSeisAi": true
     },
@@ -6820,7 +6929,7 @@
       "validation": "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-data",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
       "license": "MIT",
-      "publicStatus": "embedded-source-module",
+      "publicStatus": "public-marketplace-and-embedded-source-module",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
       "connectedToSeisAi": true
     },
@@ -6882,6 +6991,7 @@
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",
     "npm run check:seis-plugin-bundle -- --no-local",
+    "npm run check:seis-personal-plugin-marketplace-migration",
     "npm run check:seis-topic-plugin-family",
     "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent",
     "python3 ${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis",

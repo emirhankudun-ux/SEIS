@@ -16,6 +16,11 @@ const applicationPluginSourceRoot = "plugins/seis-core";
 const applicationPluginManifest = "apps/seis-core/data/seis-core-plugin-sources.json";
 const releaseTrainPath = "content/development/seis-core-plugin-release-train.json";
 const personalCoveragePath = "content/development/seis-ai-core-personal-plugin-coverage.json";
+const marketplacePath = ".agents/plugins/marketplace.json";
+const publicFamilyPath = "content/development/seis-public-plugin-family.json";
+const marketplace = readJson(marketplacePath);
+const publicFamily = readJson(publicFamilyPath);
+const migratedRootPluginNames = new Set((publicFamily.migratedRootPlugins || []).map((plugin) => plugin.name));
 
 const domains = `
 workspace project repository branch commit pull-request issue discussion goal task evidence risk validation roadmap decision architecture contract schema migration backup rollback file vfs storage document chunk collection citation knowledge memory retrieval ontology taxonomy prompt context provider model capability route agent agent-run task-run handoff workflow workflow-run trigger condition approval tool skill mcp plugin connector integration secret-reference permission policy security-event audit telemetry metric trace log cost latency evaluation benchmark dataset design-token component icon asset template theme localization notification release channel artifact license provenance compliance incident feature-flag configuration environment platform-adapter cloud ssh dependency supply-chain accessibility performance-budget local-app technology source media rights public-private-boundary plugin-marketplace extension-sdk ai-core
@@ -103,8 +108,8 @@ function buildRegistry() {
       applicationPluginReleaseMicroUnits: currentRelease.microUnits ?? null,
       personalPluginCoverage: personalCoveragePath,
       orchestrator: canonicalInstallId,
-      publicMarketplacePolicy: "seis-ai-agent-is-the-canonical-orchestrator-and-app-sources-are-public-seis-repo-marketplace-packages",
-      publicMarketplacePath: ".agents/plugins/marketplace.json",
+      publicMarketplacePolicy: "seis-ai-agent-is-the-canonical-orchestrator-and-migrated-root-app-and-topic-sources-are-public-seis-repo-marketplace-packages",
+      publicMarketplacePath: marketplacePath,
       publicRepositoryAvailable: true,
       publicAudience: "everyone",
     },
@@ -120,7 +125,8 @@ function buildRegistry() {
       appReleaseMicroUnits: currentRelease.microUnits ?? null,
       catalogOnlyEntryCount: catalogEntries.length,
       functionalLocalDemoCount: physicalEntries.filter((entry) => entry.implementationState === "functional-local-demo").length,
-      publicMarketplacePluginCount: APP_PLUGIN_EXPANSION_TARGET + 1,
+      publicMarketplacePluginCount: marketplace.plugins.length,
+      migratedRootMarketplacePluginCount: migratedRootPluginNames.size,
       applicationMarketplacePluginCount: physicalEntries.filter((entry) => entry.sourcePath.startsWith(`${applicationPluginSourceRoot}/`)).length,
       publicRepositoryPluginCount: physicalEntries.filter((entry) => entry.sourcePath.startsWith(`${applicationPluginSourceRoot}/`)).length,
       personalPluginCount: personalCoverage.personalMarketplace?.pluginCount ?? null,
@@ -142,6 +148,7 @@ function buildRegistry() {
       personalRepoCounterpartCount: personalCoverage.repository?.counterpartCount ?? null,
       personalPluginCoveragePath: personalCoveragePath,
       personalMarketplaceMutation: false,
+      migratedRootMarketplacePluginCount: migratedRootPluginNames.size,
       sourceCodeExecutedDuringMigration: false,
       copiedSecrets: false,
       publicReleaseAllowed: false,
@@ -205,6 +212,7 @@ function createPhysicalEntry({ sourcePath, manifest }) {
   const implementationState = profile?.implementationState || "repository-source-module";
   const license = profile?.license ?? manifest.license ?? null;
   const isApplicationPlugin = sourcePath.startsWith(`${applicationPluginSourceRoot}/`);
+  const isMigratedRootPlugin = migratedRootPluginNames.has(manifest.name || manifest.id);
   return {
     recordType: "physical-repo-plugin",
     id: manifest.id || manifest.name,
@@ -231,10 +239,10 @@ function createPhysicalEntry({ sourcePath, manifest }) {
     availability: implementationState === "functional-local-demo" ? "local-demo" : "source-module",
     sourcePath,
     entrypoint: profile?.entrypoint || null,
-    canonicalInstallId: isApplicationPlugin ? `${manifest.name || manifest.id}@seis-repo` : canonicalInstallId,
-    publicMarketplace: sourcePath === "plugins/seis-ai-agent" || (isApplicationPlugin && license === "MIT"),
-    publicRepositoryAvailable: sourcePath.startsWith(`${applicationPluginSourceRoot}/`) && license === "MIT",
-    publicAudience: sourcePath.startsWith(`${applicationPluginSourceRoot}/`) ? "everyone" : null,
+    canonicalInstallId: isApplicationPlugin || isMigratedRootPlugin ? `${manifest.name || manifest.id}@seis-repo` : canonicalInstallId,
+    publicMarketplace: sourcePath === "plugins/seis-ai-agent" || ((isApplicationPlugin || isMigratedRootPlugin) && license === "MIT"),
+    publicRepositoryAvailable: (isApplicationPlugin || isMigratedRootPlugin) && license === "MIT",
+    publicAudience: isApplicationPlugin || isMigratedRootPlugin ? "everyone" : null,
     routeEligible: implementationState === "functional-local-demo" && license === "MIT",
     permissions: profile?.permissions || { read: ["declared local SEIS scope"], write: [], network: [], secrets: [] },
     privacyClass: "repo-internal-public-safe-boundary",
@@ -336,7 +344,8 @@ function validateRegistry(record) {
   if (new Set(record.entries.map((entry) => entry.id)).size !== targetCount) failures.push("plugin ids must be unique");
   if (new Set(record.entries.map((entry) => entry.slug)).size !== targetCount) failures.push("plugin slugs must be unique");
   if (record.target.catalogOnlyEntryCount + record.target.physicalPluginCount !== targetCount) failures.push("physical and catalog counts must add to target");
-  if (record.target.publicMarketplacePluginCount !== APP_PLUGIN_EXPANSION_TARGET + 1) failures.push("registry public marketplace plugin count is stale");
+  if (record.target.publicMarketplacePluginCount !== marketplace.plugins.length) failures.push("registry public marketplace plugin count is stale");
+  if (record.target.migratedRootMarketplacePluginCount !== migratedRootPluginNames.size || migratedRootPluginNames.size !== 5) failures.push("registry migrated root marketplace package count is stale");
   if (record.target.applicationMarketplacePluginCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push("registry app marketplace plugin count is stale");
   if (record.target.publicRepositoryPluginCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push("registry public repository plugin count is stale");
   if (record.canonicalOwnership?.publicRepositoryAvailable !== true) failures.push("registry must mark the public repository source boundary");

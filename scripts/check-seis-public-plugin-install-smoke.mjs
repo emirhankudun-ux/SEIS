@@ -26,9 +26,10 @@ const retiredCompatibilityInstaller = runInstallerCheck(["--with-standalone-lane
 
 const entries = publicFamily?.marketplace?.entries || [];
 const expectedNames = ["seis-ai-agent"];
+const expectedMigratedRootNames = (publicFamily?.migratedRootPlugins || []).map((plugin) => plugin.name);
 const expectedApplicationNames = (publicFamily?.applicationPlugins || []).map((plugin) => plugin.name);
 const expectedTopicNames = (publicFamily?.topicPlugins || []).map((plugin) => plugin.name);
-const expectedMarketplaceNames = [...expectedNames, ...expectedApplicationNames, ...expectedTopicNames];
+const expectedMarketplaceNames = [...expectedNames, ...expectedMigratedRootNames, ...expectedApplicationNames, ...expectedTopicNames];
 const expectedEmbeddedModuleNames = (publicFamily?.embeddedModules || []).map((module) => module.name);
 const expectedInstallIds = expectedNames.map((name) => `${name}@${marketplaceName}`);
 const expectedReleaseVersions = Object.fromEntries(expectedNames.map((name) => {
@@ -37,8 +38,9 @@ const expectedReleaseVersions = Object.fromEntries(expectedNames.map((name) => {
 }));
 
 ensure(Array.isArray(entries), "public plugin family entries must be an array");
-ensure(entries.length === expectedMarketplaceNames.length, "public plugin family must expose the canonical agent and every public app and topic marketplace entry");
+ensure(entries.length === expectedMarketplaceNames.length, "public plugin family must expose the canonical agent, migrated root cards, and every public app and topic marketplace entry");
 ensure(publicFamily?.marketplace?.canonicalOrchestratorCount === expectedNames.length, "public plugin family must keep one canonical orchestrator");
+ensure(publicFamily?.marketplace?.migratedRootPluginCount === 5 && expectedMigratedRootNames.length === 5, "public plugin family must expose all five migrated root marketplace cards");
 ensure(publicFamily?.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "public plugin family must expose every app marketplace entry");
 ensure(publicFamily?.marketplace?.topicPluginCount === TOPIC_PLUGIN_TARGET, "public plugin family must expose every objective-derived topic marketplace entry");
 ensure(publicFamily?.defaultInstall?.installId === "seis-ai-agent@seis-repo", "public plugin family must keep SEIS-Agent as the canonical install");
@@ -75,6 +77,21 @@ for (const name of expectedNames) {
   ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace ${name} must authenticate ON_INSTALL`);
 }
 
+for (const name of expectedMigratedRootNames) {
+  const entry = entries.find((candidate) => candidate.name === name);
+  const expectedPath = `./plugins/${name}`;
+  ensure(Boolean(entry), `migrated root marketplace family missing ${name}`);
+  ensure(entry?.installation === "AVAILABLE", `${name} must be AVAILABLE in the migrated root marketplace`);
+  ensure(entry?.authentication === "ON_INSTALL", `${name} must authenticate ON_INSTALL in the migrated root marketplace`);
+  ensure(entry?.sourcePath === expectedPath, `migrated root marketplace path mismatch for ${name}`);
+  ensureFile(entry?.sourcePath || "", `${name} source path`);
+  const marketplaceEntry = marketplace?.plugins?.find((candidate) => candidate.name === name);
+  ensure(Boolean(marketplaceEntry), `repo marketplace missing migrated root ${name}`);
+  ensure(marketplaceEntry?.source?.path === expectedPath, `repo marketplace migrated root path mismatch for ${name}`);
+  ensure(marketplaceEntry?.policy?.installation === "AVAILABLE", `repo marketplace migrated root ${name} must be AVAILABLE`);
+  ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace migrated root ${name} must authenticate ON_INSTALL`);
+}
+
 for (const name of expectedApplicationNames) {
   const entry = entries.find((candidate) => candidate.name === name);
   const expectedPath = `./plugins/seis-core/${name}`;
@@ -104,11 +121,11 @@ for (const name of expectedTopicNames) {
   ensure(fs.existsSync(path.join(root, expectedPath, "assets", "topic-profile.json")), `public topic profile must exist for ${name}`);
 }
 
-ensure(marketplace?.plugins?.length === expectedMarketplaceNames.length, "repo marketplace must contain the canonical agent plus all public app and topic packages");
+ensure(marketplace?.plugins?.length === expectedMarketplaceNames.length, "repo marketplace must contain the canonical agent, migrated roots, and all public app and topic packages");
 
 for (const module of publicFamily?.embeddedModules || []) {
   ensure(module?.canonicalInstallId === "seis-ai-agent@seis-repo", `${module?.name || "embedded module"} must resolve to SEIS-Agent`);
-  ensure(module?.publicStatus === "public-plugin" || module?.publicStatus === "embedded-source-module", `${module?.name || "embedded module"} must declare its public status`);
+  ensure(["public-plugin", "public-marketplace-and-embedded-source-module", "embedded-source-module"].includes(module?.publicStatus), `${module?.name || "embedded module"} must declare its public status`);
   ensureFile(module?.sourcePath || "", `${module?.name || "embedded module"} source path`);
 }
 
@@ -141,6 +158,7 @@ const report = {
   cacheRoot,
   status: cacheComplete ? "repo-and-local-cache-ready" : "repo-ready-local-cache-partial-or-missing",
   publicPluginCount: expectedNames.length,
+  migratedRootPluginCount: expectedMigratedRootNames.length,
   repoMarketplaceEntryCount: expectedMarketplaceNames.length,
   topicPluginCount: expectedTopicNames.length,
   topicPluginMarketplaceEntryCount: expectedTopicNames.length,

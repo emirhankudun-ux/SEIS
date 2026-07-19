@@ -92,11 +92,19 @@ const lanes = [
   governanceLane,
 ];
 
-const publicMarketplaceEntries = [{
+const canonicalMarketplaceEntries = [{
   name: "seis-ai-agent",
   path: "./plugins/seis-ai-agent",
   category: "Developer",
 }];
+const migratedRootMarketplaceEntries = [
+  { name: "seis", path: "./plugins/seis", category: "Developer" },
+  { name: "seis-cloud", path: "./plugins/seis-cloud", category: "Developer" },
+  { name: "seis-code", path: "./plugins/seis-code", category: "Developer" },
+  { name: "seis-design", path: "./plugins/seis-design", category: "Design" },
+  { name: "seis-data", path: "./plugins/seis-data", category: "Data" },
+];
+const directMarketplaceEntries = [...canonicalMarketplaceEntries, ...migratedRootMarketplaceEntries];
 const embeddedModuleNames = [
   "seis-ai-agent",
   "seis",
@@ -163,7 +171,7 @@ if (specialistManifest) {
   ensure(specialistManifest.consolidation?.legacyPersonalMarketplace === "compatibility-mirror-only", "specialist plugin manifest must mark personal marketplace as compatibility mirror only");
   ensure(specialistManifest.consolidation?.standaloneLaneInstallMode === "source-module-only", "specialist plugin manifest must retain lanes as source modules only");
   ensure(specialistManifest.consolidation?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages", "specialist plugin manifest must publish the canonical orchestrator and public app packages");
-  for (const entry of publicMarketplaceEntries) {
+  for (const entry of canonicalMarketplaceEntries) {
     ensure(specialistManifest.marketplace?.publishedPlugins?.includes(entry.name), `specialist plugin manifest marketplace missing ${entry.name}`);
   }
   ensure(specialistManifest.marketplace?.publishedPlugins?.length === 1, "specialist plugin manifest marketplace must contain only SEIS-Agent");
@@ -514,8 +522,8 @@ function validateMarketplace(marketplacePath, label, expectedName) {
     const topicEntries = marketplace.plugins.filter((plugin) => plugin?.source?.path?.startsWith(`./${TOPIC_PLUGIN_SOURCE_ROOT}/`));
     ensure(applicationEntries.length === APP_PLUGIN_EXPANSION_TARGET, `${label}: must publish all app-owned public packages`);
     ensure(topicEntries.length === TOPIC_PLUGIN_TARGET, `${label}: must publish all objective-derived topic packages`);
-    ensure(marketplace.plugins.length === publicMarketplaceEntries.length + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, `${label}: must publish SEIS-Agent plus all public app and topic packages`);
-    for (const expected of publicMarketplaceEntries) {
+    ensure(marketplace.plugins.length === directMarketplaceEntries.length + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, `${label}: must publish SEIS-Agent, all migrated root cards, and all public app and topic packages`);
+    for (const expected of directMarketplaceEntries) {
       const entry = marketplace.plugins?.find((plugin) => plugin.name === expected.name);
       ensure(entry, `${label}: entry missing: ${expected.name}`);
       if (!entry) continue;
@@ -524,6 +532,9 @@ function validateMarketplace(marketplacePath, label, expectedName) {
       ensure(entry.policy?.installation === "AVAILABLE", `${label} ${expected.name}: installation must be AVAILABLE`);
       ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${expected.name}: authentication must be ON_INSTALL`);
       ensure(entry.category === expected.category, `${label} ${expected.name}: category must be ${expected.category}`);
+      ensure(fs.existsSync(path.join(ROOT, expected.path)), `${label} ${expected.name}: source path must exist`);
+      const manifest = readJson(path.join(ROOT, expected.path, ".codex-plugin", "plugin.json"));
+      ensure(manifest?.license === "MIT", `${label} ${expected.name}: manifest must be MIT`);
     }
     for (const entry of applicationEntries) {
       const sourcePath = entry.source?.path || "";

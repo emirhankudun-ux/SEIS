@@ -101,7 +101,7 @@ application:
 - current app-owned source count: 60
 - public audience: everyone; source license: MIT
 - public marketplace: `.agents/plugins/marketplace.json` (`seis-repo`)
-- public marketplace entries: 361 total — 1 canonical SEIS-Agent, 60 app packages, and 300 objective-derived topic packages
+- public marketplace entries: 366 total — 1 canonical SEIS-Agent, 5 migrated root packages, 60 app packages, and 300 objective-derived topic packages
 - objective-derived topic source root: `plugins/seis-topics`
 - objective taxonomy: `content/development/seis-topic-plugin-objective.json`
 - direct repo surface: `apps/seis-core` reads and activates these packages through the bounded local catalog
@@ -119,6 +119,12 @@ source packages for the Command Center application:
 | Public Plugin | Role |
 | --- | --- |
 | `seis-ai-agent@seis-repo` | SEIS AI orchestrator, cross-lane router, and canonical default install. |
+
+The five historical root packages are direct public repository cards while
+remaining embedded SEIS-Agent lanes: `seis@seis-repo`,
+`seis-cloud@seis-repo`, `seis-code@seis-repo`, `seis-design@seis-repo`, and
+`seis-data@seis-repo`. They replace the former personal-card visibility without
+creating another default install target.
 
 Each app-owned package also has its own public marketplace identity in the same
 repo marketplace: `<plugin-name>@seis-repo`, sourced from
@@ -204,7 +210,8 @@ own package-local read-only runtime and are validated separately from the
 60-package app release train.
 
 Validate the generated suite with `npm run check:seis-unified-plugin-suite`.
-The discovery rules cover embedded `plugins/seis-*` sources, while the
+The discovery rules cover embedded `plugins/seis-*` sources; five root packages
+also publish direct repository cards, while the
 explicit `plugins/seis-core/*/.codex-plugin/plugin.json` and
 `plugins/seis-topics/*/.codex-plugin/plugin.json` families publish direct
 repository cards. Neither package family creates another default install
@@ -238,8 +245,8 @@ and human approval remain required.
 
 Run `npm run automation:seis-public-plugin-security-provenance-review` and
 `npm run check:seis-public-plugin-security-provenance-review` before any public
-preview claim. The review verifies the one public plugin and all embedded source
-module mirrors, manifests,
+preview claim. The review verifies the canonical default plugin, the five
+migrated root repository cards, and all embedded source module mirrors, manifests,
 MIT license declarations, README files, MCP manifests, repo-local MCP commands,
 and high-confidence secret patterns without storing raw secret values. It does
 not approve publication; human approval and external clean-runner or public
@@ -250,7 +257,7 @@ package installation proof remain required.
 Run `npm run automation:seis-public-plugin-external-install-proof` followed by
 `npm run check:seis-public-plugin-external-install-proof` before discussing a
 public preview. The check creates a disposable local staging directory, copies
-the canonical SEIS-Agent marketplace artifact and all public SEIS Core package
+the canonical SEIS-Agent marketplace artifact, five migrated root packages, and all public SEIS Core package
 sources, validates their manifests, profiles, skills, MCP manifests, MCP entry
 scripts, and embedded module contract, then removes the stage. It excludes
 macOS `.DS_Store` metadata from the staged artifact and blocks secret-like,

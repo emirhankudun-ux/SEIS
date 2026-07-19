@@ -11,10 +11,11 @@ the useful source material while preventing a personal marketplace, machine
 paths, credentials, archives, caches, or runtime side effects from becoming a
 second source of truth.
 
-The canonical public installation surface remains
-`seis-ai-agent@seis-repo`. The source modules listed below remain repository
-owned and are embedded through that package rather than being separate public
-marketplace entries.
+The canonical default installation surface remains
+`seis-ai-agent@seis-repo`. The five root modules listed below are additionally
+published as direct `seis-repo` cards while remaining embedded through that
+package; this replaces their historical personal-marketplace visibility without
+creating another default install target.
 
 ## Discovery Boundary
 
@@ -33,11 +34,11 @@ marketplace, or copies a local folder into the repository.
 
 | Legacy personal source | Canonical repository mirror | Result |
 | --- | --- | --- |
-| `seis` | `plugins/seis` | Preserved as the governance/source module with portable repository defaults. |
-| `seis-cloud` | `plugins/seis-cloud` | Preserved as the Cloud source module and embedded SEIS-Agent lane. |
-| `seis-code` | `plugins/seis-code` | Preserved as the Code source module and embedded SEIS-Agent lane. |
-| `seis-design` | `plugins/seis-design` | Preserved as the Design source module and embedded SEIS-Agent lane. |
-| `seis-data` | `plugins/seis-data` | Preserved as the Data source module and embedded SEIS-Agent lane. |
+| `seis` | `plugins/seis` | Direct `seis@seis-repo` card and embedded governance lane. |
+| `seis-cloud` | `plugins/seis-cloud` | Direct `seis-cloud@seis-repo` card and embedded Cloud lane. |
+| `seis-code` | `plugins/seis-code` | Direct `seis-code@seis-repo` card and embedded Code lane. |
+| `seis-design` | `plugins/seis-design` | Direct `seis-design@seis-repo` card and embedded Design lane. |
+| `seis-data` | `plugins/seis-data` | Direct `seis-data@seis-repo` card and embedded Data lane. |
 
 Repo-only modules such as Security, Research, Automation, Product, and the
 SEIS-Agent orchestrator do not require a legacy personal-cache counterpart.
@@ -81,9 +82,11 @@ apps/seis-core/data/seis-core-plugin-sources.json
 policy, and read-only inspection runtime. It must not become a second source
 root for the personal packages.
 
-The five overlapping personal lane identities continue to resolve to their
-existing repository source modules. Their older personal folders remain
-compatibility evidence and were not deleted or rewritten.
+The five overlapping personal lane identities now have direct public
+repository-card counterparts. Their older local folders remain compatibility
+evidence and are not deleted or rewritten by repository tooling; removing a
+personal marketplace source from the Codex client is an explicit, reversible
+user-side configuration operation.
 
 ## Public-Safe Divergence Rules
 
@@ -121,6 +124,7 @@ repository checks:
 
 ```bash
 npm run check:seis-specialist-plugins
+npm run check:seis-personal-plugin-marketplace-migration
 npm run check:seis-public-plugin-family
 npm run check:seis-public-plugin-lifecycle
 npm run check:seis-ai-agent

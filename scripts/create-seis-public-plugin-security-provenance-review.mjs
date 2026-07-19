@@ -46,13 +46,14 @@ const reloadEvidence = readJson(reloadEvidencePath);
 const unifiedSuite = readJson(unifiedSuitePath);
 
 const plugins = (family.publicPlugins || []).map((plugin) => reviewPlugin({ ...plugin, sourceKind: "public-plugin" }));
+const migratedRootPlugins = (family.migratedRootPlugins || []).map((plugin) => reviewPlugin({ ...plugin, sourceKind: "public-root-package" }));
 const embeddedModules = (family.embeddedModules || family.plugins || []).map((module) => reviewPlugin({
   ...module,
   installId: module.canonicalInstallId || "seis-ai-agent@seis-repo",
   sourceKind: "embedded-source-module",
 }));
 const topicPlugins = (family.topicPlugins || []).map((plugin) => reviewPlugin({ ...plugin, sourceKind: "public-topic-package" }));
-const reviewedUnits = [...plugins, ...embeddedModules, ...topicPlugins];
+const reviewedUnits = [...plugins, ...migratedRootPlugins, ...embeddedModules, ...topicPlugins];
 const secretFindings = reviewedUnits.flatMap((plugin) => plugin.secretFindings);
 const blockingFindings = reviewedUnits.flatMap((plugin) => plugin.blockingFindings);
 const hygieneFindings = reviewedUnits.flatMap((plugin) => plugin.hygieneFindings);
@@ -73,9 +74,10 @@ const review = {
   unifiedSuite: unifiedSuitePath,
   publicReleaseAllowed: false,
   scope:
-    "Repo-local security and provenance review for the single public SEIS-Agent plugin, all embedded SEIS source modules, and all objective-derived topic packages before any public preview, publication, deployment, push, merge, tag, or release claim.",
+    "Repo-local security and provenance review for the canonical SEIS-Agent plugin, five migrated SEIS root repository cards, all embedded SEIS source modules, and all objective-derived topic packages before any public preview, publication, deployment, push, merge, tag, or release claim.",
   evidenceInputs: {
     publicPluginCount: plugins.length,
+    migratedRootPluginCount: migratedRootPlugins.length,
     embeddedModuleCount: embeddedModules.length,
     topicPluginCount: topicPlugins.length,
     lifecycleStatus: lifecycle.status,
@@ -87,11 +89,11 @@ const review = {
     unifiedSuiteEmbeddedModuleCount: unifiedSuite.publicDistribution?.embeddedModuleCount || 0,
   },
   reviewCriteria: [
-    "The one public plugin and every embedded source module path exist in the repo.",
+    "The canonical SEIS-Agent plugin, every migrated root repository card, and every embedded source module path exist in the repo.",
     "Every reviewed unit has a .codex-plugin/plugin.json manifest with matching name and MIT license.",
     "Every reviewed unit has a README.md and .mcp.json.",
     "Every MCP server command uses node with repo-local script arguments.",
-    "The one-file unified suite contains every current source module, uses SEIS-Agent as the single public install, and does not mutate personal marketplace entries.",
+    "The one-file unified suite contains every current source module and keeps SEIS-Agent as the single default install; root package cards remain separately visible in the repo marketplace.",
     "Every objective-derived topic package has a repo-local MIT manifest, README, MCP boundary, and no write, network, or secret permission.",
     "No high-confidence secret patterns are present in scanned plugin text files.",
     "Public availability does not imply live cloud, SSH, provider, private data, GitHub write, deploy, merge, tag, or publish authority.",
@@ -100,6 +102,8 @@ const review = {
   aggregate: {
     pluginCount: plugins.length,
     reviewedPluginCount: plugins.filter((plugin) => plugin.reviewStatus === "pass").length,
+    migratedRootPluginCount: migratedRootPlugins.length,
+    reviewedMigratedRootPluginCount: migratedRootPlugins.filter((plugin) => plugin.reviewStatus === "pass").length,
     embeddedModuleCount: embeddedModules.length,
     reviewedEmbeddedModuleCount: embeddedModules.filter((module) => module.reviewStatus === "pass").length,
     topicPluginCount: topicPlugins.length,
@@ -129,6 +133,7 @@ const review = {
     "External clean-runner or public package installation proof has not been recorded.",
   ],
   plugins,
+  migratedRootPlugins,
   embeddedModules,
   topicPlugins,
   qualityGates: [
@@ -142,7 +147,7 @@ const review = {
     "npm run check:seis-agent-plugin-integration",
   ],
   completionRule:
-    "This review is complete for internal review when the one-file unified suite, the single repo-local public SEIS-Agent component, and every embedded source module pass manifest, license, MCP command, source, README, and secret-scan checks. Public release remains blocked until human approval and external clean-runner/public install proof exist.",
+    "This review is complete for internal review when the one-file unified suite, the canonical repo-local SEIS-Agent component, all five migrated root repository cards, and every embedded source module pass manifest, license, MCP command, source, README, and secret-scan checks. Public release remains blocked until human approval and external clean-runner/public install proof exist.",
 };
 
 const report = renderReport(review);
@@ -268,6 +273,8 @@ function validateReview(review, report) {
   if (review.id !== "seis-public-plugin-security-provenance-review") failures.push("review id is invalid");
   if (review.publicReleaseAllowed !== false) failures.push("public release must remain blocked");
   if (review.aggregate.pluginCount !== 1) failures.push("review must cover only the public SEIS-Agent plugin");
+  if (review.aggregate.migratedRootPluginCount !== 5) failures.push("review must cover all five migrated root marketplace packages");
+  if (review.aggregate.reviewedMigratedRootPluginCount !== review.aggregate.migratedRootPluginCount) failures.push("every migrated root marketplace package must pass review");
   if (review.aggregate.embeddedModuleCount < 10) failures.push("review must cover every current embedded source module");
   if (review.aggregate.reviewedEmbeddedModuleCount !== review.aggregate.embeddedModuleCount) failures.push("every embedded source module must pass review");
   if (review.aggregate.topicPluginCount !== family.topicPlugins.length) failures.push("review must cover every objective-derived topic package");
@@ -296,6 +303,9 @@ function renderReport(review) {
   const moduleRows = review.embeddedModules
     .map((module) => `| ${module.name} | ${module.installId} | ${module.reviewStatus} | ${module.provenance.manifestLicense || "n/a"} | ${module.secretFindings.length} |`)
     .join("\n");
+  const migratedRootRows = review.migratedRootPlugins
+    .map((plugin) => `| ${plugin.name} | ${plugin.installId} | ${plugin.reviewStatus} | ${plugin.provenance.manifestLicense || "n/a"} | ${plugin.mcpServers.length} | ${plugin.secretFindings.length} |`)
+    .join("\n");
   const topicRows = review.topicPlugins
     .map((plugin) => `| ${plugin.name} | ${plugin.installId} | ${plugin.reviewStatus} | ${plugin.provenance.manifestLicense || "n/a"} | ${plugin.mcpServers.length} | ${plugin.secretFindings.length} |`)
     .join("\n");
@@ -320,6 +330,12 @@ function renderReport(review) {
 | plugin | install id | review | license | MCP servers | secrets | hygiene |
 | --- | --- | --- | --- | --- | --- | --- |
 ${pluginRows}
+
+## Migrated Root Repository Card Review
+
+| plugin | install id | review | license | MCP servers | secrets |
+| --- | --- | --- | --- | --- | --- |
+${migratedRootRows}
 
 ## Embedded Source Module Review
 
