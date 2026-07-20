@@ -1,7 +1,7 @@
 {
   "id": "seis-secret-boundary-scan",
   "name": "seis-secret-boundary-scan",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Read-only scoped scan for likely secrets and private-path leakage in text files.",
   "author": {
     "name": "emirhankudun-ux"

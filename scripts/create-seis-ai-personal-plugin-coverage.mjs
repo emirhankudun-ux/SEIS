@@ -133,7 +133,7 @@ function validateCoverage(record) {
   if (!repository?.resolvedCounterpartPluginIds?.includes("seis-plugin-discovery")) failures.push("coverage must include the renamed public discovery card");
   if (repository?.applicationSourceRoot !== applicationSourceRoot) failures.push("personal plugin sources must be owned by apps/seis-core");
   if (repository?.applicationOwnedCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push(`the SEIS Command Center app must own ${APP_PLUGIN_EXPANSION_TARGET} plugins`);
-  if (repository?.applicationOnlyCount !== APP_PLUGIN_EXPANSION_TARGET - 50) failures.push("the SEIS Command Center app must record ten app-only expansion plugins");
+  if (repository?.applicationOnlyCount !== APP_PLUGIN_EXPANSION_TARGET - 50) failures.push(`the SEIS Command Center app must record ${APP_PLUGIN_EXPANSION_TARGET - 50} app-only public packages`);
   const serialized = JSON.stringify(record);
   if (/\/Users\/|\/home\/|[A-Za-z]:\\/.test(serialized)) failures.push("coverage must not store machine-specific absolute paths");
   if (failures.length) {

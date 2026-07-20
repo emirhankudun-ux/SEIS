@@ -17,10 +17,10 @@
   "publicCards": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "count": 370,
+    "count": 371,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 64,
+    "applicationPluginCount": 65,
     "topicPluginCount": 300,
     "sourceAvailability": "public-repository-source-available",
     "installationPolicy": "AVAILABLE",
@@ -38,7 +38,7 @@
     "repoLocalArtifactStage": {
       "status": "repo-local-clean-artifact-staged-external-proof-pending",
       "verified": true,
-      "marketplaceEntryCount": 370,
+      "marketplaceEntryCount": 371,
       "stageDeletedAfterValidation": true,
       "scope": "repo-local-clean-artifact-staging"
     },

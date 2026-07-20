@@ -1,0 +1,36 @@
+{
+  "name": "seis-public-runtime-status",
+  "version": "0.0.15",
+  "description": "Compare public SEIS Repo cards with bounded local cache records without installing or enabling packages.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Public Runtime Status",
+    "shortDescription": "Compare public cards with local SEIS Repo cache records honestly.",
+    "longDescription": "Read fixed public SEIS Repo metadata and declared local cache manifests to distinguish current, stale, missing, invalid, and undeclared cache records without installing packages, changing files, using credentials, or accessing the network.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "public-card-to-cache-comparison",
+      "current-and-stale-cache-summary",
+      "undeclared-cache-record-count",
+      "runtime-claim-separation"
+    ],
+    "defaultPrompt": [
+      "Show the public SEIS Repo runtime cache state without installing or enabling anything.",
+      "Compare declared SEIS Repo cards with local cache records and separate current, stale, missing, invalid, and undeclared entries."
+    ]
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "public-repository",
+    "marketplace",
+    "runtime-status",
+    "cache",
+    "read-only"
+  ]
+}

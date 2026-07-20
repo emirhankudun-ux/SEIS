@@ -1,6 +1,6 @@
 {
   "name": "seis-changelog-validator",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Validate local changelog structure without publishing or modifying release notes.",
   "author": {
     "name": "Emirhan Kudun"

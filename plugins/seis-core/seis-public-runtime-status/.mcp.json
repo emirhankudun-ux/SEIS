@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-public-runtime-status": {
+      "command": "node",
+      "args": [
+        "scripts/seis-public-runtime-status-mcp-server.mjs"
+      ]
+    }
+  }
+}

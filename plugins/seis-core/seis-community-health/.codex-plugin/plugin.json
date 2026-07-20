@@ -1,6 +1,6 @@
 {
   "name": "seis-community-health",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Audit local community and contribution templates without contacting GitHub.",
   "author": {
     "name": "Emirhan Kudun"

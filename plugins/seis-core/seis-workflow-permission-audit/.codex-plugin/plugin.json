@@ -1,6 +1,6 @@
 {
   "name": "seis-workflow-permission-audit",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Review local workflow permission declarations without running workflows.",
   "author": {
     "name": "Emirhan Kudun"

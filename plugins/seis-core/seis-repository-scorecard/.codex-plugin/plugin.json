@@ -1,6 +1,6 @@
 {
   "name": "seis-repository-scorecard",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Read-only local repository scorecard based on evidence files and bounded metadata.",
   "author": {
     "name": "Emirhan Kudun"

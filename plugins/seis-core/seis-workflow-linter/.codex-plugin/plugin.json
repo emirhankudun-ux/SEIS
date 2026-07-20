@@ -1,7 +1,7 @@
 {
   "id": "seis-workflow-linter",
   "name": "seis-workflow-linter",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Read-only validation of SEIS workflow trigger, condition, approval, action, retry, and audit stages.",
   "author": {
     "name": "emirhankudun-ux"

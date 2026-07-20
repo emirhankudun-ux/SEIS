@@ -1,6 +1,6 @@
 {
   "name": "seis-dependency-freshness",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Audit local dependency declaration and lockfile coverage without registry access.",
   "author": {
     "name": "Emirhan Kudun"

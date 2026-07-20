@@ -1,7 +1,7 @@
 {
   "id": "seis-canonical-registry-validator",
   "name": "seis-canonical-registry-validator",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Read-only validation of SEIS registry records, owners, statuses, and duplicate IDs.",
   "author": {
     "name": "emirhankudun-ux"

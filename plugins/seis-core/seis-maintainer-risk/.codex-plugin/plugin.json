@@ -1,6 +1,6 @@
 {
   "name": "seis-maintainer-risk",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Assess recorded ownership and maintainer-risk signals from local evidence.",
   "author": {
     "name": "Local developer"

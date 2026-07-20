@@ -605,6 +605,18 @@
       "category": "Developer"
     },
     {
+      "name": "seis-public-runtime-status",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-public-runtime-status"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-public-safe-scan",
       "source": {
         "source": "local",

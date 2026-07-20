@@ -37,9 +37,9 @@ plugin_boundary:
     source_manifest: apps/seis-core/data/seis-core-plugin-sources.json
     catalog: apps/seis-core/data/seis-core-plugin-catalog.json
     unified_suite: plugins/seis-ai-agent/assets/unified-suite.json
-    marketplace_entry_count: 370
+    marketplace_entry_count: 371
     migrated_root_marketplace_entry_count: 5
-    application_marketplace_entry_count: 64
+    application_marketplace_entry_count: 65
     topic_marketplace_entry_count: 300
     topic_source_root: plugins/seis-topics
     topic_objective_source: content/development/seis-topic-plugin-objective.json

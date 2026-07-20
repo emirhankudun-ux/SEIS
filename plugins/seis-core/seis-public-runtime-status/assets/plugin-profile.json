@@ -1,0 +1,41 @@
+{
+  "stableId": "seis-public-runtime-status",
+  "slug": "seis-public-runtime-status",
+  "version": "0.0.15",
+  "releaseMicroUnits": 15,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.000000015",
+  "category": "runtime-observability",
+  "owner": "@seis-governance",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-public-runtime-status-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "bounded public SEIS Repo metadata and declared cache manifests"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-public-runtime-status-mcp-server.mjs --status",
+    "node scripts/seis-public-runtime-status-mcp-server.mjs --validate",
+    "node scripts/seis-public-runtime-status-mcp-server.mjs --runtime",
+    "npm run check:seis-public-runtime-status",
+    "node --test plugins/seis-core/test/public-runtime-status.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin; it never installs, enables, publishes, changes cache records, or mutates repository contracts.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 to make public card sources and local cache observations visibly distinct.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

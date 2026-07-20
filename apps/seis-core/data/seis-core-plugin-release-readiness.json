@@ -6,20 +6,20 @@
   "sourceRoot": "plugins/seis-core",
   "generatedAt": "2026-07-15",
   "currentRelease": {
-    "label": "0.000000014",
-    "semver": "0.0.14",
+    "label": "0.000000015",
+    "semver": "0.0.15",
     "major": 0,
     "revision": 0,
-    "microUnits": 14,
+    "microUnits": 15,
     "kind": "large-code-change"
   },
   "next": {
     "largeCode": {
-      "label": "0.000000015",
-      "semver": "0.0.15",
+      "label": "0.000000016",
+      "semver": "0.0.16",
       "major": 0,
       "revision": 0,
-      "microUnits": 15,
+      "microUnits": 16,
       "kind": "large-code-change"
     },
     "annual": {
@@ -44,10 +44,10 @@
     "bulkPromotionAllowed": false
   },
   "workingTree": {
-    "baseCommit": "259bed830996f8ed41ecbde111cc36140a5b06f0",
-    "codeLinesAdded": 698,
-    "codeLinesRemoved": 16,
-    "codeLinesChanged": 714,
+    "baseCommit": "b07a6bf9e3d7246c8534350cd5d470b00162918b",
+    "codeLinesAdded": 885,
+    "codeLinesRemoved": 12,
+    "codeLinesChanged": 897,
     "changedCodeFileCount": 10,
     "largeCodeEligible": true,
     "evidenceArtifact": "content/development/seis-core-plugin-change-evidence.json"

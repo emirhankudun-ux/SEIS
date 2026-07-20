@@ -1,6 +1,6 @@
 {
   "name": "seis-plugin-migration",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Create a read-only migration plan for selected local plugins without copying or executing them.",
   "author": {
     "name": "Local developer"

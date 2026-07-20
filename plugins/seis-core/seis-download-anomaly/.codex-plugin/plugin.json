@@ -1,6 +1,6 @@
 {
   "name": "seis-download-anomaly",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Detect deterministic download-count outliers in recorded local metrics.",
   "author": {
     "name": "Local developer"

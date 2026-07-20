@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-runtime-status",
+  "goalId": "SEIS-GOAL-021",
+  "generatedAt": "2026-07-20",
+  "status": "public-seis-repo-runtime-cache-observation",
+  "decision": "runtime-cache-observation-is-not-release-or-activation-proof",
+  "purpose": "Compare declared public SEIS Repo card versions with bounded local cache manifests while keeping cache presence, Codex enablement, independent installation proof, and release approval visibly separate.",
+  "plugin": {
+    "name": "seis-public-runtime-status",
+    "displayName": "SEIS Public Runtime Status",
+    "marketplaceName": "seis-repo",
+    "sourcePath": "plugins/seis-core/seis-public-runtime-status",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "publicCards": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "count": 371,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "applicationPluginCount": 65,
+    "topicPluginCount": 300,
+    "sourceAvailability": "public-repository-source-available",
+    "installationPolicy": "AVAILABLE",
+    "authenticationPolicy": "ON_INSTALL"
+  },
+  "observationBoundary": {
+    "cacheScope": "bounded-seis-repo-cache-manifests-only",
+    "sourceScope": "declared-public-seis-repo-card-manifests-only",
+    "cacheRecordIsInstallationProof": false,
+    "cacheRecordIsEnablementProof": false,
+    "cacheRecordIsIndependentProof": false,
+    "publicReleaseAllowed": false,
+    "writesAllowed": false,
+    "networkAllowed": false,
+    "secretsRead": false
+  },
+  "stateModel": [
+    {
+      "id": "current-cache-record",
+      "meaning": "A declared card has a local cache manifest whose package version matches its public repository source manifest."
+    },
+    {
+      "id": "stale-cache-record",
+      "meaning": "A declared card has a valid local cache manifest but no observed package version matching its current public source manifest."
+    },
+    {
+      "id": "missing-cache-record",
+      "meaning": "A declared card has no observed cache directory in the bounded seis-repo cache root."
+    },
+    {
+      "id": "invalid-cache-record",
+      "meaning": "A declared cache directory lacks a safe, parseable manifest matching its directory name."
+    },
+    {
+      "id": "undeclared-cache-record",
+      "meaning": "A bounded cache directory is present but is not a card in the current public marketplace contract."
+    }
+  ],
+  "limitations": [
+    "A local cache record is not proof that Codex currently enables a package.",
+    "A local cache record is not independent clean-runner or public installation evidence.",
+    "A local cache record does not authorize publication, credentials, external writes, or release activity."
+  ],
+  "safety": {
+    "reads": [
+      ".agents/plugins/marketplace.json",
+      "content/development/seis-public-plugin-family.json",
+      "content/development/seis-public-install-state.json",
+      "declared public plugin manifests",
+      "bounded seis-repo cache manifests"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "installationMutation": false,
+    "enablementMutation": false,
+    "publicationMutation": false
+  }
+}

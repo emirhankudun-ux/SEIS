@@ -1,6 +1,6 @@
 {
   "name": "seis-performance-budget",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Audit bounded local performance budget declarations without running benchmarks.",
   "author": {
     "name": "Emirhan Kudun"

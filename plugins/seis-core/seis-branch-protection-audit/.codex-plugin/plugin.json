@@ -1,6 +1,6 @@
 {
   "name": "seis-branch-protection-audit",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Audit recorded local branch and ruleset policy declarations without contacting GitHub.",
   "author": {
     "name": "Local developer"

@@ -155,6 +155,10 @@ const updatedTrain = {
   ...trainBeforePromotion,
   schemaVersion: 2,
   updatedAt: "2026-07-15",
+  scope: {
+    ...trainBeforePromotion.scope,
+    pluginCount: plugins.length,
+  },
   currentRelease: releaseRecord(promotion.parsed, promotion.kind, {
     maturity: "functional-local-demo",
     status: "public-repository-preview",
@@ -308,6 +312,12 @@ function updateIntegrationManifest(parsed) {
     section.applicationPluginReleaseRevision = parsed.revision;
     section.applicationPluginReleaseMicroUnits = parsed.microUnits;
     section.applicationPluginReleaseMicroUnits = parsed.microUnits;
+    if (Object.prototype.hasOwnProperty.call(section, "applicationOwnedPluginCount")) {
+      section.applicationOwnedPluginCount = plugins.length;
+    }
+    if (Object.prototype.hasOwnProperty.call(section, "applicationPluginMarketplaceEntryCount")) {
+      section.applicationPluginMarketplaceEntryCount = plugins.length;
+    }
   }
   if (manifest.applicationIntegration) {
     manifest.applicationIntegration.pluginReleaseTrain = APP_PLUGIN_RELEASE_TRAIN_PATH;
@@ -317,6 +327,14 @@ function updateIntegrationManifest(parsed) {
     manifest.applicationIntegration.pluginReleaseRevision = parsed.revision;
     manifest.applicationIntegration.pluginReleaseMicroUnits = parsed.microUnits;
     manifest.applicationIntegration.pluginReleaseMicroUnits = parsed.microUnits;
+    manifest.applicationIntegration.pluginSourceCount = plugins.length;
+    manifest.applicationIntegration.pluginMarketplaceEntryCount = plugins.length;
+  }
+  if (typeof manifest.completionRule === "string") {
+    manifest.completionRule = manifest.completionRule.replace(
+      /all \d+ public app package marketplace entries/g,
+      `all ${plugins.length} public app package marketplace entries`,
+    );
   }
   fs.writeFileSync(absolutePath, `${JSON.stringify(manifest, null, 2)}\n`);
 }
