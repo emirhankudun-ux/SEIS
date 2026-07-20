@@ -14,7 +14,7 @@
     "revision": 0,
     "microUnits": 13,
     "scope": "plugins/seis-core",
-    "pluginCount": 61
+    "pluginCount": 62
   },
   "purpose": "Keep every SEIS AI plugin record in the public SEIS repository and expose a deterministic 5000-entry capability catalog to the AI Core without creating 5000 artificial source folders. Public app plugin source packages remain owned by the SEIS Command Center application.",
   "canonicalOwnership": {
@@ -42,19 +42,19 @@
   "target": {
     "requestedPluginCount": 5000,
     "registryEntryCount": 5000,
-    "physicalPluginCount": 71,
-    "appOwnedPluginCount": 61,
+    "physicalPluginCount": 72,
+    "appOwnedPluginCount": 62,
     "appReleaseLabel": "0.000000013",
     "appReleaseSemver": "0.0.13",
     "appReleaseMajor": 0,
     "appReleaseRevision": 0,
     "appReleaseMicroUnits": 13,
-    "catalogOnlyEntryCount": 4929,
-    "functionalLocalDemoCount": 61,
-    "publicMarketplacePluginCount": 367,
+    "catalogOnlyEntryCount": 4928,
+    "functionalLocalDemoCount": 62,
+    "publicMarketplacePluginCount": 368,
     "migratedRootMarketplacePluginCount": 5,
-    "applicationMarketplacePluginCount": 61,
-    "publicRepositoryPluginCount": 61,
+    "applicationMarketplacePluginCount": 62,
+    "publicRepositoryPluginCount": 62,
     "personalPluginCount": 55,
     "personalRepoCounterpartCount": 55,
     "countRule": "registryEntryCount must equal requestedPluginCount; physical and catalog-only states must remain distinct"
@@ -69,7 +69,7 @@
     "destinationOwner": "apps/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "migratedOn": "2026-07-15",
-    "migratedPluginCount": 61,
+    "migratedPluginCount": 62,
     "legacyCompatibilityCount": 55,
     "legacyRepoCounterpartCount": 55,
     "legacyCompatibilityCoveragePath": "content/development/seis-ai-core-personal-plugin-coverage.json",
@@ -2546,6 +2546,57 @@
         "node scripts/seis-provider-health-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
+      "relatedGoalIds": [
+        "SEIS-GOAL-021"
+      ],
+      "declaredMcpServerCount": 1
+    },
+    {
+      "recordType": "physical-repo-plugin",
+      "id": "seis-public-distribution-audit",
+      "slug": "seis-public-distribution-audit",
+      "displayName": "SEIS Public Distribution Audit",
+      "description": "Validate public SEIS Repo distribution projections without writing files or using the network.",
+      "version": "0.0.13",
+      "releaseTrainVersion": "0.000000013",
+      "releaseSemver": "0.0.13",
+      "releaseMajor": 0,
+      "releaseRevision": 0,
+      "releaseMicroUnits": 13,
+      "category": "marketplace-governance",
+      "owner": "@seis-governance",
+      "publisher": "SEIS Repository",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
+      "implementationState": "functional-local-demo",
+      "availability": "local-demo",
+      "sourcePath": "plugins/seis-core/seis-public-distribution-audit",
+      "entrypoint": "scripts/seis-public-distribution-audit-mcp-server.mjs",
+      "canonicalInstallId": "seis-public-distribution-audit@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
+      "permissions": {
+        "read": [
+          "bounded public SEIS Repo distribution contracts",
+          "declared app, root, and topic marketplace metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "privacyClass": "repo-internal-public-safe-boundary",
+      "riskClass": "low",
+      "validation": [
+        "node scripts/seis-public-distribution-audit-mcp-server.mjs --status",
+        "node scripts/seis-public-distribution-audit-mcp-server.mjs --validate",
+        "node --test plugins/seis-core/test/public-distribution-audit.test.mjs"
+      ],
+      "rollback": "Disable or remove the local plugin; public marketplace cards and source contracts are never modified by this plugin.",
       "reviewState": "public-repository-preview",
       "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
@@ -220402,50 +220453,6 @@
       "declaredMcpServerCount": 0,
       "domain": "public-private-boundary",
       "operation": "export"
-    },
-    {
-      "recordType": "capability-plugin-slot",
-      "id": "seis-ai-catalog-4929",
-      "slug": "seis-public-private-boundary-import",
-      "displayName": "SEIS Public Private Boundary Import",
-      "description": "Plan-only import capability for the public-private-boundary registry surface in SEIS AI Core.",
-      "version": "0.1.0-catalog",
-      "category": "Security and Governance",
-      "owner": "@seis-security",
-      "publisher": "SEIS",
-      "sourceClassification": "generated-SEIS-catalog",
-      "license": "SEIS-CATALOG-INTERNAL",
-      "status": "cataloged",
-      "implementationState": "catalog-contract",
-      "availability": "plan-only",
-      "sourcePath": null,
-      "entrypoint": "packages/seis-ai/src/lib/plugin-registry.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
-      "permissions": {
-        "read": [
-          "bounded SEIS registry metadata"
-        ],
-        "write": [],
-        "network": [],
-        "secrets": []
-      },
-      "privacyClass": "public-safe-metadata",
-      "riskClass": "medium",
-      "validation": [
-        "npm run check:seis-ai-core-plugin-registry",
-        "SEIS-Agent catalog status review"
-      ],
-      "rollback": "Disable or remove this catalog record before implementation; no runtime capability is enabled by catalog presence.",
-      "reviewState": "catalog-review-required",
-      "provenance": "Generated from the SEIS master prompt taxonomy; not evidence of an implemented or connected plugin.",
-      "relatedGoalIds": [
-        "SEIS-GOAL-021"
-      ],
-      "declaredMcpServerCount": 0,
-      "domain": "public-private-boundary",
-      "operation": "import"
     }
   ]
 }

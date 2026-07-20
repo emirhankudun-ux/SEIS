@@ -581,6 +581,18 @@
       "category": "AI"
     },
     {
+      "name": "seis-public-distribution-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-public-distribution-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-public-safe-scan",
       "source": {
         "source": "local",

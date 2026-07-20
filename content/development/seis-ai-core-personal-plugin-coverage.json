@@ -317,7 +317,7 @@
       }
     ],
     "applicationSourceRoot": "plugins/seis-core",
-    "applicationOwnedCount": 61,
+    "applicationOwnedCount": 62,
     "applicationOwnedPluginIds": [
       "seis-a11y-regression",
       "seis-action-pin-audit",
@@ -361,6 +361,7 @@
       "seis-pr-cycle-time",
       "seis-prompt-injection-audit",
       "seis-provider-health",
+      "seis-public-distribution-audit",
       "seis-public-safe-scan",
       "seis-rag-citation-coverage",
       "seis-release-cadence",
@@ -381,7 +382,7 @@
       "seis-workflow-permission-audit",
       "seis-workspace-inspector"
     ],
-    "applicationOnlyCount": 11,
+    "applicationOnlyCount": 12,
     "applicationOnlyPluginIds": [
       "seis-approval-gate-review",
       "seis-architecture-drift",
@@ -392,6 +393,7 @@
       "seis-marketplace-integrity",
       "seis-offline-mode-check",
       "seis-prompt-injection-audit",
+      "seis-public-distribution-audit",
       "seis-rollback-readiness",
       "seis-tool-permission-audit"
     ]

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-public-distribution-audit": {
+      "command": "node",
+      "args": [
+        "scripts/seis-public-distribution-audit-mcp-server.mjs"
+      ]
+    }
+  }
+}

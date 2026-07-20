@@ -15,7 +15,7 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 61,
+    "marketplaceEntryCount": 62,
     "coreSourceOwner": false
   },
   "release": {
@@ -48,11 +48,11 @@
     ]
   },
   "counts": {
-    "discovered": 61,
-    "returned": 61,
-    "contractValid": 61,
+    "discovered": 62,
+    "returned": 62,
+    "contractValid": 62,
     "contractInvalid": 0,
-    "statusReady": 61,
+    "statusReady": 62,
     "statusNotChecked": 0
   },
   "query": null,
@@ -2182,6 +2182,59 @@
         "node scripts/seis-provider-health-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-public-distribution-audit",
+      "name": "seis-public-distribution-audit",
+      "displayName": "SEIS Public Distribution Audit",
+      "description": "Validate public SEIS Repo distribution projections without writing files or using the network.",
+      "category": "Developer",
+      "capabilities": [
+        "cross-surface-distribution-validation",
+        "public-source-boundary-check",
+        "marketplace-projection-audit",
+        "legacy-terminology-isolation"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-public-distribution-audit",
+      "entrypoint": "scripts/seis-public-distribution-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.000000013",
+        "semver": "0.0.13",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 13
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": null,
+      "permissions": {
+        "read": [
+          "bounded public SEIS Repo distribution contracts",
+          "declared app, root, and topic marketplace metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-public-distribution-audit-mcp-server.mjs --status",
+        "node scripts/seis-public-distribution-audit-mcp-server.mjs --validate",
+        "node --test plugins/seis-core/test/public-distribution-audit.test.mjs"
+      ],
+      "rollback": "Disable or remove the local plugin; public marketplace cards and source contracts are never modified by this plugin."
     },
     {
       "id": "seis-public-safe-scan",

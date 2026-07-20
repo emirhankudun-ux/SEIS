@@ -92,7 +92,7 @@ approved peer access.
 ## Marketplace
 
 The repo marketplace file is `.agents/plugins/marketplace.json`. It contains
-367 public entries:
+368 public entries:
 
 - `seis-ai-agent@seis-repo`
 - `seis@seis-repo`, `seis-cloud@seis-repo`, `seis-code@seis-repo`, `seis-design@seis-repo`, and `seis-data@seis-repo` sourced from the repository root

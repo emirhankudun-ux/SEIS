@@ -21,9 +21,9 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 61,
-  "expectedPluginCount": 61,
-  "readyCount": 61,
+  "pluginCount": 62,
+  "expectedPluginCount": 62,
+  "readyCount": 62,
   "attentionCount": 0,
   "failureCount": 0,
   "failures": [],
@@ -689,6 +689,22 @@
       "version": "0.0.13",
       "releaseTrainVersion": "0.000000013",
       "entrypoint": "scripts/seis-provider-health-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-public-distribution-audit",
+      "version": "0.0.13",
+      "releaseTrainVersion": "0.000000013",
+      "entrypoint": "scripts/seis-public-distribution-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
         "write": [],

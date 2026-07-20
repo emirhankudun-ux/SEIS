@@ -1,0 +1,35 @@
+{
+  "name": "seis-public-distribution-audit",
+  "version": "0.0.13",
+  "description": "Validate public SEIS Repo distribution projections without writing files or using the network.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Public Distribution Audit",
+    "shortDescription": "Validate SEIS Repo distribution projections safely.",
+    "longDescription": "Check that the public SEIS Repo marketplace, Command Center inventory and catalog, unified suite, lifecycle record, and project boundary describe the same public plugin distribution without executing plugin code, writing files, using credentials, or accessing the network.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "cross-surface-distribution-validation",
+      "public-source-boundary-check",
+      "marketplace-projection-audit",
+      "legacy-terminology-isolation"
+    ],
+    "defaultPrompt": [
+      "Validate that every public SEIS Repo plugin projection is aligned.",
+      "Check the public app, root, and topic plugin distribution counts safely."
+    ]
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "public-repository",
+    "marketplace",
+    "distribution",
+    "read-only"
+  ]
+}

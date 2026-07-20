@@ -1,0 +1,40 @@
+{
+  "stableId": "seis-public-distribution-audit",
+  "slug": "seis-public-distribution-audit",
+  "version": "0.0.13",
+  "releaseMicroUnits": 13,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.000000013",
+  "category": "marketplace-governance",
+  "owner": "@seis-governance",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-public-distribution-audit-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "bounded public SEIS Repo distribution contracts",
+      "declared app, root, and topic marketplace metadata"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-public-distribution-audit-mcp-server.mjs --status",
+    "node scripts/seis-public-distribution-audit-mcp-server.mjs --validate",
+    "node --test plugins/seis-core/test/public-distribution-audit.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin; public marketplace cards and source contracts are never modified by this plugin.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}
