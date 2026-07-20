@@ -3,7 +3,7 @@
   "id": "seis-public-plugin-family",
   "generatedAt": "2026-07-12",
   "mode": "public_seis_agent_with_migrated_root_app_and_topic_repository_plugins",
-  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 67 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
+  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 68 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
   "defaultInstall": {
     "installId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
@@ -16,10 +16,10 @@
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL",
     "publicAudience": "everyone",
-    "publicPluginCount": 373,
+    "publicPluginCount": 374,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 67,
+    "applicationPluginCount": 68,
     "topicPluginCount": 300,
     "entries": [
       {
@@ -222,6 +222,13 @@
         "name": "seis-download-anomaly",
         "sourcePath": "./plugins/seis-core/seis-download-anomaly",
         "category": "Data",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-focus-navigation-audit",
+        "sourcePath": "./plugins/seis-core/seis-focus-navigation-audit",
+        "category": "Design",
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
@@ -2839,6 +2846,15 @@
       "sourcePath": "./plugins/seis-core/seis-download-anomaly",
       "category": "Data",
       "installId": "seis-download-anomaly@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-focus-navigation-audit",
+      "sourcePath": "./plugins/seis-core/seis-focus-navigation-audit",
+      "category": "Design",
+      "installId": "seis-focus-navigation-audit@seis-repo",
       "license": "MIT",
       "publicStatus": "repo_marketplace_available",
       "liveRuntimeStatus": "local_demo_or_auth_gated"

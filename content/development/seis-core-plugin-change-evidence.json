@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-core-plugin-change-evidence",
   "goalId": "SEIS-GOAL-021",
-  "baseCommit": "c41173ed7790ef5f3dd7b18223d94e3bf7b2174f",
+  "baseCommit": "af3c16fc3bb5f818cd1ae88922c94dd55d753da7",
   "generatedAt": "2026-07-15",
   "scope": {
     "application": "apps/seis-core",
@@ -29,59 +29,87 @@
     ]
   },
   "threshold": 500,
-  "codeLinesAdded": 1016,
-  "codeLinesRemoved": 11,
-  "codeLinesChanged": 1027,
+  "codeLinesAdded": 791,
+  "codeLinesRemoved": 13,
+  "codeLinesChanged": 804,
   "eligible": true,
   "files": [
     {
-      "path": "plugins/seis-core/seis-mcp-permission/scripts/seis-mcp-permission-mcp-server.mjs",
-      "added": 392,
+      "path": "plugins/seis-core/seis-focus-navigation-audit/runtime/static-ui-audit.mjs",
+      "added": 301,
       "removed": 0,
       "state": "untracked",
-      "changed": 392
+      "changed": 301
     },
     {
-      "path": "scripts/create-seis-mcp-permission.mjs",
-      "added": 317,
+      "path": "scripts/create-seis-focus-navigation-audit.mjs",
+      "added": 166,
       "removed": 0,
       "state": "untracked",
-      "changed": 317
+      "changed": 166
     },
     {
-      "path": "plugins/seis-core/test/mcp-permission.test.mjs",
-      "added": 215,
+      "path": "plugins/seis-core/seis-focus-navigation-audit/scripts/seis-focus-navigation-audit-mcp-server.mjs",
+      "added": 153,
       "removed": 0,
       "state": "untracked",
-      "changed": 215
+      "changed": 153
     },
     {
-      "path": "scripts/create-seis-ai-personal-plugin-coverage.mjs",
-      "added": 47,
-      "removed": 2,
-      "state": "tracked-diff",
-      "changed": 49
+      "path": "plugins/seis-core/test/focus-navigation-audit.test.mjs",
+      "added": 101,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 101
     },
     {
       "path": "scripts/check-seis-agent-plugin-integration.mjs",
-      "added": 36,
-      "removed": 0,
+      "added": 41,
+      "removed": 1,
       "state": "tracked-diff",
-      "changed": 36
+      "changed": 42
     },
     {
       "path": "apps/seis-core/script.js",
-      "added": 5,
-      "removed": 5,
+      "added": 10,
+      "removed": 7,
       "state": "tracked-diff",
-      "changed": 10
+      "changed": 17
     },
     {
-      "path": "plugins/seis-core/test/plugin-audit.test.mjs",
-      "added": 1,
-      "removed": 3,
+      "path": "plugins/seis-core/seis-public-distribution-audit/scripts/seis-public-distribution-audit-mcp-server.mjs",
+      "added": 5,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 6
+    },
+    {
+      "path": "plugins/seis-core/test/plugin-catalog.test.mjs",
+      "added": 4,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 5
+    },
+    {
+      "path": "scripts/check-seis-core-plugin-release.mjs",
+      "added": 3,
+      "removed": 1,
       "state": "tracked-diff",
       "changed": 4
+    },
+    {
+      "path": "plugins/seis-core/runtime/plugin-catalog.mjs",
+      "added": 3,
+      "removed": 0,
+      "state": "tracked-diff",
+      "changed": 3
+    },
+    {
+      "path": "plugins/seis-core/bin/seis-core-plugins.mjs",
+      "added": 1,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 2
     },
     {
       "path": "plugins/seis-core/runtime/plugin-audit-definitions.mjs",

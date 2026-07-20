@@ -1,7 +1,7 @@
 # SEIS Core public repository plugin source boundary
 
 `plugins/seis-core/` is the public, canonical repository source boundary for the
-67 app-owned plugins used by the SEIS Command Center application. Everyone can
+68 app-owned plugins used by the SEIS Command Center application. Everyone can
 read and reuse these MIT-licensed source packages directly from the SEIS repo.
 The directory remains separate from the ten public source modules directly
 under `plugins/` so ownership and runtime boundaries stay explicit.
@@ -12,14 +12,14 @@ does not grant network, secret, or write permissions by default.
 
 ## Release policy
 
-All 67 packages move together on the gradual release train:
+All 68 packages move together on the gradual release train:
 
 ```text
 0.000000001 -> 0.00000001 -> 0.000000011 -> ... -> 1.0000 -> 1.0001 -> ... -> 45.0000
 ```
 
-The current release is `0.000000017`, represented as strict package semver
-`0.0.17`. A large, measured code change advances exactly one micro/revision
+The current release is `0.000000018`, represented as strict package semver
+`0.0.18`. A large, measured code change advances exactly one micro/revision
 step. An approved annual update advances exactly one major step. A bulk jump
 to `45.0000` is prohibited.
 
@@ -66,7 +66,11 @@ packages under this directory.
 
 The Command Center reads the generated app catalog at
 `apps/seis-core/data/seis-core-plugin-catalog.json`; this keeps the UI backed
-by the same 67 public repository manifests instead of a second static source of truth.
+by the same 68 public repository manifests instead of a second static source of truth.
+The catalog separates `ready` from `attention`: both may be operational
+read-only status responses, while attention keeps a visible external evidence
+or approval gate. `statusOk` is the no-failure operational count and does not
+turn an attention state into a release approval.
 Its release panel reads
 `apps/seis-core/data/seis-core-plugin-release-readiness.json`, which reports
 the next large-code and annual transitions plus measured working-tree code
@@ -77,7 +81,7 @@ is met.
 
 This directory is the direct public repository source for the SEIS Command
 Center application. The canonical public install card remains
-`seis-ai-agent@seis-repo`; the 67 app-owned packages are public app packages,
+`seis-ai-agent@seis-repo`; the 68 app-owned packages are public app packages,
 are not copied into `packages/seis-ai`, and are also published as individual
 MIT packages in the public `seis-repo` marketplace. Each package is available
 to everyone directly from this repository through the generated marketplace,
@@ -110,8 +114,8 @@ anyone working from the repository; it never copies packages into
 - AI Core role: registry, contracts, permission policy, and read-only inspection
 - public audience: everyone
 - public source license: MIT
-- public marketplace app section: one canonical orchestrator card plus 67 public app package cards
-- complete `seis-repo` marketplace: 373 cards, including five migrated root cards and 300 objective-derived `plugins/seis-topics` packages
+- public marketplace app section: one canonical orchestrator card plus 68 public app package cards
+- complete `seis-repo` marketplace: 374 cards, including five migrated root cards and 300 objective-derived `plugins/seis-topics` packages
 - marketplace identity: `seis-repo` (audience: everyone)
 - public `seis-ai-agent` suite: separate release lifecycle
 - live runtime status: local demo/auth-gated; network, secrets, writes, and provider calls remain approval-gated

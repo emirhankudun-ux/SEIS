@@ -1,6 +1,6 @@
 {
   "name": "seis-plugin-discovery",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Browse public SEIS Repo cards and inspect selected local plugin metadata without executing code.",
   "author": {
     "name": "SEIS Repository"

@@ -1,7 +1,7 @@
 {
   "id": "seis-route-explainer",
   "name": "seis-route-explainer",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Deterministic provider-neutral route explanation for SEIS policy review.",
   "author": {
     "name": "emirhankudun-ux"

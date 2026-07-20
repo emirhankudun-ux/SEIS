@@ -112,7 +112,9 @@ ensure(appCatalog.release?.label === current.label, "app plugin catalog release 
 ensure(appCatalog.release?.semver === current.semver, "app plugin catalog release semver is stale");
 ensure(appCatalog.policy?.sourceMutation === false, "app plugin catalog must not mutate source");
 ensure(appCatalog.policy?.executableAction === "status-only", "app plugin catalog executable action must be status-only");
-ensure(appCatalog.counts?.statusReady === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog status-ready count is stale");
+ensure(appCatalog.counts?.statusOk === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog operational status count is stale");
+ensure((appCatalog.counts?.statusReady || 0) + (appCatalog.counts?.statusAttention || 0) === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog ready/attention status split is stale");
+ensure(appCatalog.counts?.statusFailed === 0 && appCatalog.counts?.statusNotChecked === 0, "app plugin catalog must not contain failed or unchecked statuses");
 for (const plugin of appCatalog.plugins || []) {
   ensure(plugin.sourcePath?.startsWith(`${sourceRoot}/`), `${plugin.name}: app plugin catalog source path is invalid`);
   ensure(plugin.release?.label === current.label, `${plugin.name}: app plugin catalog release label is stale`);

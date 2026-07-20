@@ -72,7 +72,10 @@ test("catalog search and inspection expose app-owned plugin metadata", () => {
 
 test("status mode executes only the bounded local status contract", () => {
   const catalog = buildApplicationPluginCatalog(repoRoot, { includeStatus: true, limit: APP_PLUGIN_EXPANSION_TARGET });
-  assert.equal(catalog.counts.statusReady, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.counts.statusOk, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.counts.statusReady + catalog.counts.statusAttention, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.counts.statusFailed, 0);
+  assert.equal(catalog.counts.statusNotChecked, 0);
   assert.ok(catalog.plugins.every((plugin) => plugin.status.execution === "status-only"));
   assert.ok(catalog.plugins.every((plugin) => plugin.permissions.write.length === 0));
   assert.ok(catalog.plugins.every((plugin) => plugin.permissions.network.length === 0));

@@ -105,7 +105,7 @@ function printHuman(result) {
   }
 
   console.log(`SEIS Core app plugin catalog: ${result.counts.returned}/${result.counts.discovered} returned at ${result.release.label}.`);
-  console.log(`Contract valid: ${result.counts.contractValid}; status-ready: ${result.counts.statusReady}; mode: ${result.mode}.`);
+  console.log(`Contract valid: ${result.counts.contractValid}; status-ready: ${result.counts.statusReady}; status-attention: ${result.counts.statusAttention}; operational: ${result.counts.statusOk}; mode: ${result.mode}.`);
   for (const plugin of result.plugins) {
     console.log(`- ${plugin.name}: ${plugin.status.state} / ${plugin.category} / ${plugin.release.semver}`);
   }

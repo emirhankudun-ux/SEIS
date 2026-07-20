@@ -17,6 +17,7 @@ rollback, and validation are reviewed.
 | ------------------------------------------------------------------ | -------------------------------------------- | ----------------------------------------------------------------------- |
 | `content/development/seis-mcp-permission-risk-matrix.json`         | Declared public app MCP permission ledger    | Local stdio only; write, network, and secret permissions are empty      |
 | `seis-mcp-permission@seis-repo`                                    | Public MCP permission-boundary inspector     | Read-only; no server start, connection, permission grant, or activation |
+| `seis-focus-navigation-audit@seis-repo`                            | Static UI focus/navigation evidence inspector | Read-only; no browser, screen reader, source mutation, or release claim |
 | `content/development/seis-full-usage-mcp-binding.json`             | Repo-owned MCP binding and candidate servers | Local/read-only evidence; external candidates are not runtime authority |
 | `docs/platform/seis-official-vendor-mcp-integration-candidates.md` | Official/vendor-owned candidate review       | Documentation-only until individually approved                          |
 | `packages/seis-ai/src/mcp/server.mjs`                              | Local stdio protocol surface                 | Runtime schema validation and default-deny mutation                     |

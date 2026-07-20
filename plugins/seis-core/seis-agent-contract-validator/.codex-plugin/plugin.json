@@ -1,7 +1,7 @@
 {
   "id": "seis-agent-contract-validator",
   "name": "seis-agent-contract-validator",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Read-only validation of supervised SEIS agent purpose, permissions, approvals, and handoff contracts.",
   "author": {
     "name": "emirhankudun-ux"

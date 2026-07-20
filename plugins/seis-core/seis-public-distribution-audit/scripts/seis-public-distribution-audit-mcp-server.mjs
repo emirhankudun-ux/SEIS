@@ -158,7 +158,11 @@ function validateApplicationProjections(appSources, appCatalog, unifiedSuite, li
   ensure(appCatalog.distribution?.marketplaceEntryCount === appCount, findings, "app-catalog-marketplace-count-mismatch");
   ensure(appCatalog.counts?.discovered === appCount, findings, "app-catalog-discovered-count-mismatch");
   ensure(appCatalog.counts?.contractValid === appCount, findings, "app-catalog-contract-count-mismatch");
-  if (includeCatalogStatus) ensure(appCatalog.counts?.statusReady === appCount, findings, "app-catalog-status-count-mismatch");
+  if (includeCatalogStatus) {
+    ensure(appCatalog.counts?.statusOk === appCount, findings, "app-catalog-operational-status-count-mismatch");
+    ensure((appCatalog.counts?.statusReady || 0) + (appCatalog.counts?.statusAttention || 0) === appCount, findings, "app-catalog-ready-attention-count-mismatch");
+    ensure(appCatalog.counts?.statusFailed === 0 && appCatalog.counts?.statusNotChecked === 0, findings, "app-catalog-status-failure-or-unchecked");
+  }
   ensure(sameNames(appNames, names(safeArray(appCatalog.plugins))), findings, "app-catalog-name-set-mismatch");
 
   const appDistribution = unifiedSuite.applicationDistribution || {};

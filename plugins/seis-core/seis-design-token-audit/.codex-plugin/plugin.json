@@ -1,7 +1,7 @@
 {
   "id": "seis-design-token-audit",
   "name": "seis-design-token-audit",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Read-only validation of SEIS design token categories, naming, states, and platform mappings.",
   "author": {
     "name": "emirhankudun-ux"

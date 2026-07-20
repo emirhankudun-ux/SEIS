@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-focus-navigation-audit",
+  "goalId": "SEIS-GOAL-021",
+  "backlogId": "SEIS-BL-028",
+  "generatedAt": "2026-07-20",
+  "status": "active-static-source-evidence",
+  "purpose": "Keep keyboard, focus, semantic-control, ARIA, and reduced-motion source evidence visible for key SEIS UI surfaces without treating static markers as browser or assistive-technology proof.",
+  "plugin": {
+    "name": "seis-focus-navigation-audit",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "sourcePath": "plugins/seis-core/seis-focus-navigation-audit",
+    "releaseLabel": "0.000000018",
+    "releaseSemver": "0.0.18",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+  "surfaces": [
+    {
+      "id": "seis-command-center",
+      "sourceRoot": "apps/seis-core",
+      "sourceFiles": [
+        "apps/seis-core/index.html",
+        "apps/seis-core/script.js",
+        "apps/seis-core/styles.css"
+      ],
+      "state": "ready",
+      "filesScanned": 3,
+      "staticEvidence": {
+        "semanticInteractiveControls": true,
+        "keyboardEventHandler": true,
+        "focusManagement": true,
+        "focusStyle": true,
+        "reducedMotionStyle": true,
+        "ariaState": true,
+        "pointerEventHandler": true
+      },
+      "evidenceCounts": {
+        "semanticInteractiveControls": 58,
+        "keyboardEventHandlers": 1,
+        "focusManagementCalls": 4,
+        "focusStyleRules": 6,
+        "reducedMotionRules": 1,
+        "ariaStateMarkers": 63,
+        "pointerEventHandlers": 6
+      },
+      "findings": [],
+      "manualEvidenceStillRequired": [
+        "keyboard-only browser transcript",
+        "screen-reader transcript",
+        "desktop and mobile focus-order review",
+        "focus-obscuration review",
+        "reduced-motion visual review",
+        "human accessibility approval"
+      ]
+    },
+    {
+      "id": "seis-desktop-second-brain",
+      "sourceRoot": "apps/web",
+      "sourceFiles": [
+        "apps/web/desktop.html",
+        "apps/web/desktop.js",
+        "apps/web/desktop.css"
+      ],
+      "state": "ready",
+      "filesScanned": 3,
+      "staticEvidence": {
+        "semanticInteractiveControls": true,
+        "keyboardEventHandler": true,
+        "focusManagement": true,
+        "focusStyle": true,
+        "reducedMotionStyle": true,
+        "ariaState": true,
+        "pointerEventHandler": true
+      },
+      "evidenceCounts": {
+        "semanticInteractiveControls": 392,
+        "keyboardEventHandlers": 2,
+        "focusManagementCalls": 3,
+        "focusStyleRules": 18,
+        "reducedMotionRules": 1,
+        "ariaStateMarkers": 92,
+        "pointerEventHandlers": 11
+      },
+      "findings": [],
+      "manualEvidenceStillRequired": [
+        "keyboard-only browser transcript",
+        "screen-reader transcript",
+        "desktop and mobile focus-order review",
+        "focus-obscuration review",
+        "reduced-motion visual review",
+        "human accessibility approval"
+      ]
+    }
+  ],
+  "manualEvidenceRequired": [
+    "keyboard-only browser transcript",
+    "screen-reader transcript",
+    "mobile assistive-technology review",
+    "manual focus-order and focus-obscuration review",
+    "human accessibility approval before public release"
+  ],
+  "safety": {
+    "reads": [
+      "bounded local HTML, JavaScript, and CSS source for the declared surfaces",
+      "apps/seis-core/data/seis-core-plugin-sources.json",
+      "content/development/seis-core-plugin-release-train.json"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "launchesBrowser": false,
+    "controlsScreenReader": false,
+    "publicReleaseAllowed": false
+  },
+  "limitations": [
+    "Static source evidence cannot prove rendered focus visibility, keyboard reachability, focus order, focus visibility under themes, or assistive-technology behavior.",
+    "A native semantic control may be keyboard reachable without a JavaScript key handler, so static markers are evidence rather than a compliance score.",
+    "Public release remains blocked on manual accessibility evidence and human approval."
+  ]
+}

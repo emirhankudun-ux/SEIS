@@ -1,6 +1,6 @@
 {
   "name": "seis-public-install-evidence",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Validate the public-safe independent installation evidence gate without treating evidence as release approval.",
   "author": {
     "name": "SEIS Repository"

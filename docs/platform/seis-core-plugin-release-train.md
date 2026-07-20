@@ -1,11 +1,11 @@
 # SEIS Core public repository plugin release train
 
-Status: active public repository preview; current label `0.000000017` and
-strict package semver `0.0.17`.
+Status: active public repository preview; current label `0.000000018` and
+strict package semver `0.0.18`.
 
 ## Scope
 
-This release train belongs to the 67 app-owned, public MIT-licensed plugin
+This release train belongs to the 68 app-owned, public MIT-licensed plugin
 packages in `plugins/seis-core/`. That directory is the canonical application
 source boundary inside the public SEIS repository. The ten public source modules directly
 under `plugins/` and the public `seis-ai-agent@seis-repo` suite remain on their
@@ -20,7 +20,7 @@ The human-facing ladder is monotonic and deliberately gradual:
     -> 1.0000 -> 1.0001 -> ... -> 44.9999 -> 45.0000
 ```
 
-The current release `0.000000017` maps to strict semver `0.0.17`. During the
+The current release `0.000000018` maps to strict semver `0.0.18`. During the
 micro stage, each approved large-code change advances one decimal unit. After
 the first major step, each approved large-code change advances the four-digit
 revision by one. An annual update advances the major by exactly one and resets
@@ -57,7 +57,7 @@ npm run check:seis-ai-core-plugin-registry
 npm run check:seis-core-plugin-matrix
 ```
 
-The promoter updates all 67 manifests and profiles together, regenerates the
+The promoter updates all 68 manifests and profiles together, regenerates the
 app inventory, AI Core projection, app catalog, release-readiness artifact, and
 integration metadata. A large-code apply requires a change-evidence artifact
 whose base commit matches `HEAD` and whose measured code delta is at least 500

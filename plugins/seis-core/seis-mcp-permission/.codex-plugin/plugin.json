@@ -1,6 +1,6 @@
 {
   "name": "seis-mcp-permission",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Validate public SEIS Repo MCP entrypoints and deny-by-default permission contracts without starting servers.",
   "author": {
     "name": "SEIS Repository"

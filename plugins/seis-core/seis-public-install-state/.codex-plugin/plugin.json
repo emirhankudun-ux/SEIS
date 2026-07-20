@@ -1,6 +1,6 @@
 {
   "name": "seis-public-install-state",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Separate public SEIS Repo card availability from independent install and release proof without installing anything.",
   "author": {
     "name": "SEIS Repository"

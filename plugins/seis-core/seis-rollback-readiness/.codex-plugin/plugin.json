@@ -1,7 +1,7 @@
 {
   "id": "seis-rollback-readiness",
   "name": "seis-rollback-readiness",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Verify that release and operational surfaces retain a documented rollback path before handoff.",
   "author": {
     "name": "emirhankudun-ux"

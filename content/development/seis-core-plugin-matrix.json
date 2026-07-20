@@ -6,12 +6,12 @@
   "sourceRoot": "plugins/seis-core",
   "generatedAt": "2026-07-15",
   "release": {
-    "label": "0.000000017",
-    "semver": "0.0.17",
+    "label": "0.000000018",
+    "semver": "0.0.18",
     "kind": "large-code-change",
     "major": 0,
     "revision": 0,
-    "microUnits": 17
+    "microUnits": 18
   },
   "policy": {
     "mode": "status-only-local-runtime",
@@ -21,17 +21,17 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 67,
-  "expectedPluginCount": 67,
-  "readyCount": 67,
+  "pluginCount": 68,
+  "expectedPluginCount": 68,
+  "readyCount": 68,
   "attentionCount": 0,
   "failureCount": 0,
   "failures": [],
   "plugins": [
     {
       "name": "seis-a11y-regression",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-a11y-regression-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -46,8 +46,8 @@
     },
     {
       "name": "seis-action-pin-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-action-pin-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -62,8 +62,8 @@
     },
     {
       "name": "seis-agent-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-agent-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -78,8 +78,8 @@
     },
     {
       "name": "seis-agent-contract-validator",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -94,8 +94,8 @@
     },
     {
       "name": "seis-approval-gate-review",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-approval-gate-review-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -110,8 +110,8 @@
     },
     {
       "name": "seis-architecture-drift",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-architecture-drift-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -126,8 +126,8 @@
     },
     {
       "name": "seis-artifact-attestation",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-artifact-attestation-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -142,8 +142,8 @@
     },
     {
       "name": "seis-branch-protection-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-branch-protection-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -158,8 +158,8 @@
     },
     {
       "name": "seis-canonical-registry-validator",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-canonical-registry-validator-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -174,8 +174,8 @@
     },
     {
       "name": "seis-changelog-validator",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-changelog-validator-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -190,8 +190,8 @@
     },
     {
       "name": "seis-codeowners-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-codeowners-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -206,8 +206,8 @@
     },
     {
       "name": "seis-community-health",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-community-health-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -222,8 +222,8 @@
     },
     {
       "name": "seis-context-efficiency",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-context-efficiency-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -238,8 +238,8 @@
     },
     {
       "name": "seis-contract-compatibility",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-contract-compatibility-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -254,8 +254,8 @@
     },
     {
       "name": "seis-contributor-map",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-contributor-map-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -270,8 +270,8 @@
     },
     {
       "name": "seis-cost-latency-budget",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-cost-latency-budget-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -286,8 +286,8 @@
     },
     {
       "name": "seis-data-retention-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-data-retention-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -302,8 +302,8 @@
     },
     {
       "name": "seis-dependency-freshness",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-dependency-freshness-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -318,8 +318,8 @@
     },
     {
       "name": "seis-design-token-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-design-token-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -334,8 +334,8 @@
     },
     {
       "name": "seis-doc-indexer",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-doc-indexer-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -350,8 +350,8 @@
     },
     {
       "name": "seis-docs-freshness",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-docs-freshness-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -366,8 +366,8 @@
     },
     {
       "name": "seis-dora-metrics",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-dora-metrics-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -382,8 +382,8 @@
     },
     {
       "name": "seis-download-anomaly",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-download-anomaly-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -397,9 +397,25 @@
       "failures": []
     },
     {
+      "name": "seis-focus-navigation-audit",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
+      "entrypoint": "scripts/seis-focus-navigation-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
       "name": "seis-github-metrics-collector",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-github-metrics-collector-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -414,8 +430,8 @@
     },
     {
       "name": "seis-goal-dependency-map",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-goal-dependency-map-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -430,8 +446,8 @@
     },
     {
       "name": "seis-goal-integrity",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-goal-integrity-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -446,8 +462,8 @@
     },
     {
       "name": "seis-issue-triage",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-issue-triage-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -462,8 +478,8 @@
     },
     {
       "name": "seis-license-compatibility",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-license-compatibility-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -478,8 +494,8 @@
     },
     {
       "name": "seis-localization-coverage",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-localization-coverage-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -494,8 +510,8 @@
     },
     {
       "name": "seis-maintainer-risk",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-maintainer-risk-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -510,8 +526,8 @@
     },
     {
       "name": "seis-marketplace-integrity",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-marketplace-integrity-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -526,8 +542,8 @@
     },
     {
       "name": "seis-mcp-inventory",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-mcp-inventory-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -542,8 +558,8 @@
     },
     {
       "name": "seis-mcp-permission",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-mcp-permission-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -558,8 +574,8 @@
     },
     {
       "name": "seis-migration-guide-check",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-migration-guide-check-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -574,8 +590,8 @@
     },
     {
       "name": "seis-model-fallback",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-model-fallback-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -590,8 +606,8 @@
     },
     {
       "name": "seis-offline-mode-check",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-offline-mode-check-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -606,8 +622,8 @@
     },
     {
       "name": "seis-package-adoption",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-package-adoption-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -622,8 +638,8 @@
     },
     {
       "name": "seis-performance-budget",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -638,8 +654,8 @@
     },
     {
       "name": "seis-plugin-discovery",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-plugin-discovery-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -654,8 +670,8 @@
     },
     {
       "name": "seis-plugin-migration",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-plugin-migration-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -670,8 +686,8 @@
     },
     {
       "name": "seis-pr-cycle-time",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-pr-cycle-time-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -686,8 +702,8 @@
     },
     {
       "name": "seis-prompt-injection-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-prompt-injection-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -702,8 +718,8 @@
     },
     {
       "name": "seis-provider-health",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-provider-health-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -718,8 +734,8 @@
     },
     {
       "name": "seis-public-distribution-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-public-distribution-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -734,8 +750,8 @@
     },
     {
       "name": "seis-public-install-evidence",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-public-install-evidence-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -750,8 +766,8 @@
     },
     {
       "name": "seis-public-install-state",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-public-install-state-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -766,8 +782,8 @@
     },
     {
       "name": "seis-public-runtime-status",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-public-runtime-status-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -782,8 +798,8 @@
     },
     {
       "name": "seis-public-safe-scan",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-public-safe-scan-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -798,8 +814,8 @@
     },
     {
       "name": "seis-rag-citation-coverage",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-rag-citation-coverage-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -814,8 +830,8 @@
     },
     {
       "name": "seis-release-cadence",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-release-cadence-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -830,8 +846,8 @@
     },
     {
       "name": "seis-release-readiness",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-release-readiness-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -846,8 +862,8 @@
     },
     {
       "name": "seis-repository-health",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-repository-health-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -862,8 +878,8 @@
     },
     {
       "name": "seis-repository-scorecard",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-repository-scorecard-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -878,8 +894,8 @@
     },
     {
       "name": "seis-rollback-readiness",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-rollback-readiness-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -894,8 +910,8 @@
     },
     {
       "name": "seis-route-explainer",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-route-explainer-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -910,8 +926,8 @@
     },
     {
       "name": "seis-sbom-generator",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-sbom-generator-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -926,8 +942,8 @@
     },
     {
       "name": "seis-secret-boundary-scan",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-secret-boundary-scan-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -942,8 +958,8 @@
     },
     {
       "name": "seis-semver-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-semver-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -958,8 +974,8 @@
     },
     {
       "name": "seis-source-provenance",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-source-provenance-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -974,8 +990,8 @@
     },
     {
       "name": "seis-technology-ontology",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-technology-ontology-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -990,8 +1006,8 @@
     },
     {
       "name": "seis-test-flakiness",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-test-flakiness-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -1006,8 +1022,8 @@
     },
     {
       "name": "seis-tool-permission-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-tool-permission-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -1022,8 +1038,8 @@
     },
     {
       "name": "seis-trusted-marketplace",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-trusted-marketplace-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -1038,8 +1054,8 @@
     },
     {
       "name": "seis-vulnerability-triage",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-vulnerability-triage-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -1054,8 +1070,8 @@
     },
     {
       "name": "seis-workflow-linter",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-workflow-linter-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -1070,8 +1086,8 @@
     },
     {
       "name": "seis-workflow-permission-audit",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-workflow-permission-audit-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
@@ -1086,8 +1102,8 @@
     },
     {
       "name": "seis-workspace-inspector",
-      "version": "0.0.17",
-      "releaseTrainVersion": "0.000000017",
+      "version": "0.0.18",
+      "releaseTrainVersion": "0.000000018",
       "entrypoint": "scripts/seis-workspace-inspector-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {

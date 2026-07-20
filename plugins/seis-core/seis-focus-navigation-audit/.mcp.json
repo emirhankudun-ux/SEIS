@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-focus-navigation-audit": {
+      "command": "node",
+      "args": ["scripts/seis-focus-navigation-audit-mcp-server.mjs"]
+    }
+  }
+}

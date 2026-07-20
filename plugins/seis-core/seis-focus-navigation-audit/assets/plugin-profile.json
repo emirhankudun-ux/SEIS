@@ -1,0 +1,42 @@
+{
+  "stableId": "seis-focus-navigation-audit",
+  "slug": "seis-focus-navigation-audit",
+  "version": "0.0.18",
+  "releaseMicroUnits": 18,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.000000018",
+  "category": "accessibility",
+  "owner": "@seis-accessibility",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-focus-navigation-audit-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "bounded local HTML, JavaScript, and CSS UI source",
+      "committed static focus-navigation evidence contract"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-focus-navigation-audit-mcp-server.mjs --status",
+    "node scripts/seis-focus-navigation-audit-mcp-server.mjs --audit --path /path/to/local/ui-source",
+    "node scripts/seis-focus-navigation-audit-mcp-server.mjs --evidence",
+    "npm run check:seis-focus-navigation-audit",
+    "node --test plugins/seis-core/test/focus-navigation-audit.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin and revert its generated static-evidence record; the plugin never edits source, starts a browser, enables a runtime, or changes accessibility settings.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 and SEIS-BL-028 to distinguish static UI source evidence from the existing declared-JSON accessibility audit and from required human browser and assistive-technology review.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

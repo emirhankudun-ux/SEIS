@@ -1,6 +1,6 @@
 {
   "name": "seis-context-efficiency",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Measure recorded context usefulness and latency from local evidence.",
   "author": {
     "name": "Local developer"

@@ -1,6 +1,6 @@
 {
   "name": "seis-contributor-map",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Summarize local contributor and ownership evidence with redacted identifiers.",
   "author": {
     "name": "Local developer"

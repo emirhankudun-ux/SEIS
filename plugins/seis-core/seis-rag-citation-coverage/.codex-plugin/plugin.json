@@ -1,6 +1,6 @@
 {
   "name": "seis-rag-citation-coverage",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Measure declared local retrieval citation coverage without running retrieval.",
   "author": {
     "name": "Emirhan Kudun"

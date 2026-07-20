@@ -34,6 +34,9 @@ const requestedPluginCoverageScriptPath = path.join(root, "scripts", "check-seis
 const mcpPermissionScriptPath = path.join(root, "scripts", "create-seis-mcp-permission.mjs");
 const mcpPermissionPath = path.join(root, "content", "development", "seis-mcp-permission-risk-matrix.json");
 const mcpPermissionMcpServerPath = path.join(root, "plugins", "seis-core", "seis-mcp-permission", "scripts", "seis-mcp-permission-mcp-server.mjs");
+const focusNavigationAuditScriptPath = path.join(root, "scripts", "create-seis-focus-navigation-audit.mjs");
+const focusNavigationAuditPath = path.join(root, "content", "development", "seis-focus-navigation-audit.json");
+const focusNavigationAuditMcpServerPath = path.join(root, "plugins", "seis-core", "seis-focus-navigation-audit", "scripts", "seis-focus-navigation-audit-mcp-server.mjs");
 const pluginRegistryHelperPath = path.join(root, "packages", "seis-ai", "src", "lib", "plugin-registry.mjs");
 const pluginSourceCheckPath = path.join(root, "scripts", "check-seis-ai-core-plugin-sources.mjs");
 const installSmokePath = path.join(root, "scripts", "check-seis-public-plugin-install-smoke.mjs");
@@ -139,6 +142,9 @@ for (const [filePath, label] of [
   [mcpPermissionScriptPath, "SEIS MCP permission boundary generator"],
   [mcpPermissionPath, "SEIS MCP permission boundary ledger"],
   [mcpPermissionMcpServerPath, "SEIS MCP permission boundary MCP server"],
+  [focusNavigationAuditScriptPath, "SEIS focus-navigation audit generator"],
+  [focusNavigationAuditPath, "SEIS focus-navigation audit evidence"],
+  [focusNavigationAuditMcpServerPath, "SEIS focus-navigation audit MCP server"],
   [pluginRegistryHelperPath, "SEIS AI Core plugin registry helper"],
   [pluginSourceCheckPath, "SEIS AI Core plugin source checker"],
   [installSmokePath, "SEIS public plugin install smoke checker"],
@@ -207,6 +213,9 @@ const requestedPluginCoverageScript = readText(requestedPluginCoverageScriptPath
 const mcpPermission = readJson(mcpPermissionPath, "SEIS MCP permission boundary ledger");
 const mcpPermissionScript = readText(mcpPermissionScriptPath, "SEIS MCP permission boundary generator");
 const mcpPermissionMcpServer = readText(mcpPermissionMcpServerPath, "SEIS MCP permission boundary MCP server");
+const focusNavigationAudit = readJson(focusNavigationAuditPath, "SEIS focus-navigation audit evidence");
+const focusNavigationAuditScript = readText(focusNavigationAuditScriptPath, "SEIS focus-navigation audit generator");
+const focusNavigationAuditMcpServer = readText(focusNavigationAuditMcpServerPath, "SEIS focus-navigation audit MCP server");
 const webIndex = readText(webIndexPath, "SEIS demo index");
 const webScript = readText(webScriptPath, "SEIS demo script");
 const desktopScript = readText(desktopScriptPath, "SEIS desktop script");
@@ -412,6 +421,8 @@ if (manifest) {
     "npm run check:seis-core-plugin-sources",
     "npm run check:seis-mcp-permission",
     "npm run check:seis-core-mcp-permission",
+    "npm run check:seis-focus-navigation-audit",
+    "npm run check:seis-core-focus-navigation-audit",
     "npm run check:seis-core-plugin-release",
     "npm run check:seis-core-plugin-release-policy",
     "npm run check:seis-core-plugin-catalog",
@@ -482,6 +493,8 @@ if (manifest) {
   ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-requested-plugin-coverage"), "app plugin source manifest must include requested plugin coverage");
   ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-mcp-permission"), "app plugin source manifest must include the MCP permission boundary check");
   ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-mcp-permission"), "app plugin source manifest must include the MCP permission runtime test");
+  ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-focus-navigation-audit"), "app plugin source manifest must include focus-navigation static evidence");
+  ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-focus-navigation-audit"), "app plugin source manifest must include focus-navigation runtime tests");
   ensure(mcpPermission?.id === "seis-mcp-permission-risk-matrix", "MCP permission boundary ledger id is stale");
   ensure(mcpPermission?.plugin?.name === "seis-mcp-permission", "MCP permission boundary ledger plugin id is stale");
   ensure(mcpPermission?.plugin?.marketplaceName === "seis-repo", "MCP permission boundary ledger must remain public SEIS Repo scoped");
@@ -491,6 +504,17 @@ if (manifest) {
   ensure(mcpPermission?.safety?.startsMcpServers === false && mcpPermission?.safety?.permissionGrant === false && mcpPermission?.safety?.publicReleaseAllowed === false, "MCP permission boundary ledger must remain a non-executing public gate");
   ensure(mcpPermissionScript.includes("seis-mcp-permission-risk-matrix"), "MCP permission boundary generator must write the declared ledger");
   ensure(mcpPermissionMcpServer.includes("seis_mcp_permission_validate"), "MCP permission boundary MCP server must expose validation");
+  ensure(focusNavigationAudit?.id === "seis-focus-navigation-audit", "focus-navigation audit evidence id is stale");
+  ensure(focusNavigationAudit?.goalId === "SEIS-GOAL-021" && focusNavigationAudit?.backlogId === "SEIS-BL-028", "focus-navigation audit evidence must retain goal and backlog linkage");
+  ensure(focusNavigationAudit?.plugin?.name === "seis-focus-navigation-audit", "focus-navigation audit evidence plugin id is stale");
+  ensure(focusNavigationAudit?.plugin?.marketplaceName === "seis-repo" && focusNavigationAudit?.plugin?.marketplaceDisplayName === "SEIS Repo", "focus-navigation audit evidence must remain public SEIS Repo scoped");
+  ensure(focusNavigationAudit?.plugin?.releaseLabel === appReleaseLabel && focusNavigationAudit?.plugin?.releaseSemver === appReleaseSemver, "focus-navigation audit evidence release is stale");
+  ensure(Array.isArray(focusNavigationAudit?.surfaces) && focusNavigationAudit.surfaces.length === 2, "focus-navigation audit must cover two declared UI surfaces");
+  ensure(focusNavigationAudit?.surfaces?.every((surface) => surface?.state === "ready" && Array.isArray(surface?.findings) && surface.findings.length === 0), "focus-navigation audit must retain clean static source evidence");
+  ensure(focusNavigationAudit?.safety?.write?.length === 0 && focusNavigationAudit?.safety?.network?.length === 0 && focusNavigationAudit?.safety?.secrets?.length === 0, "focus-navigation audit must retain no write, network, or secret permissions");
+  ensure(focusNavigationAudit?.safety?.launchesBrowser === false && focusNavigationAudit?.safety?.controlsScreenReader === false && focusNavigationAudit?.safety?.publicReleaseAllowed === false, "focus-navigation audit must retain a non-executing public boundary");
+  ensure(focusNavigationAuditScript.includes("SEIS-BL-028"), "focus-navigation audit generator must preserve backlog linkage");
+  ensure(focusNavigationAuditMcpServer.includes("seis_focus_navigation_audit"), "focus-navigation audit MCP server must expose local static review");
   ensure(appPluginCatalog?.id === "seis-core-application-plugin-catalog", "app plugin catalog id must be stable");
   ensure(appPluginCatalog?.sourceRoot === "plugins/seis-core", "app plugin catalog source root is invalid");
   ensure(appPluginCatalog?.distribution?.repository === "SEIS", "app plugin catalog must expose SEIS as the canonical repository");
@@ -504,7 +528,9 @@ if (manifest) {
   ensure(appPluginCatalog?.release?.label === appReleaseLabel, "app plugin catalog release label is stale");
   ensure(appPluginCatalog?.policy?.sourceMutation === false, "app plugin catalog must not mutate source");
   ensure(appPluginCatalog?.policy?.executableAction === "status-only", "app plugin catalog executable action must be status-only");
-  ensure(appPluginCatalog?.counts?.statusReady === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog status-ready count is stale");
+  ensure(appPluginCatalog?.counts?.statusOk === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog operational status count is stale");
+  ensure((appPluginCatalog?.counts?.statusReady || 0) + (appPluginCatalog?.counts?.statusAttention || 0) === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog ready/attention status split is stale");
+  ensure(appPluginCatalog?.counts?.statusFailed === 0 && appPluginCatalog?.counts?.statusNotChecked === 0, "app plugin catalog must not contain failed or unchecked statuses");
   ensure(appPluginReadiness?.id === "seis-core-plugin-release-readiness", "app plugin release readiness id must be stable");
   ensure(appPluginReadiness?.currentRelease?.label === appReleaseLabel, "app plugin release readiness current label is stale");
   ensure(appPluginReadiness?.next?.largeCode?.label, "app plugin release readiness must expose the next large-code label");
@@ -624,8 +650,20 @@ if (packageJson) {
     "package.json must expose check:seis-core-mcp-permission"
   );
   ensure(
+    packageJson.scripts?.["check:seis-focus-navigation-audit"] === "node scripts/create-seis-focus-navigation-audit.mjs --check",
+    "package.json must expose check:seis-focus-navigation-audit"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-core-focus-navigation-audit"] === "node --test plugins/seis-core/test/focus-navigation-audit.test.mjs",
+    "package.json must expose check:seis-core-focus-navigation-audit"
+  );
+  ensure(
     packageJson.scripts?.["automation:seis-mcp-permission"] === "node scripts/create-seis-mcp-permission.mjs",
     "package.json must expose automation:seis-mcp-permission"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-focus-navigation-audit"] === "node scripts/create-seis-focus-navigation-audit.mjs",
+    "package.json must expose automation:seis-focus-navigation-audit"
   );
   ensure(
     packageJson.scripts?.["check:seis-ai-core-plugin-sources"] === "node scripts/check-seis-ai-core-plugin-sources.mjs",
@@ -775,11 +813,13 @@ for (const token of [
   "seis-plugin-canonicalization.json",
   "seis-public-plugin-independent-runner-evidence-contract.json",
   "seis-mcp-permission-risk-matrix.json",
+  "seis-focus-navigation-audit.json",
   "unified-suite.json",
   "single-public-plugin",
   "source-module-only",
   "check:seis-unified-plugin-suite",
   "check:seis-mcp-permission",
+  "check:seis-focus-navigation-audit",
   "check:seis-public-plugin-independent-runner-evidence:recorded",
   "seis-ai-agent@seis-repo",
   "Personal SEIS Plugin Bridge",

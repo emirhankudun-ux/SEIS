@@ -1,7 +1,7 @@
 {
   "id": "seis-doc-indexer",
   "name": "seis-doc-indexer",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Deterministic local full-text index for bounded Markdown and text documents.",
   "author": {
     "name": "emirhankudun-ux"

@@ -447,15 +447,15 @@ let seisRouterArtifact = {
 
 let seisCorePluginArtifact = {
   sourceRoot: "plugins/seis-core",
-  release: { label: "0.000000017", semver: "0.0.17", kind: "large-code-change" },
-  counts: { discovered: 67, returned: 0, contractValid: 67, statusReady: 0 },
+  release: { label: "0.000000018", semver: "0.0.18", kind: "large-code-change" },
+  counts: { discovered: 68, returned: 0, contractValid: 68, statusReady: 0, statusAttention: 0, statusOk: 0, statusNotChecked: 0, statusFailed: 0 },
   plugins: [],
   loadError: "Application plugin catalog has not loaded yet."
 };
 
 let seisCorePluginReleaseReadinessArtifact = {
-  currentRelease: { label: "0.000000017", semver: "0.0.17" },
-  next: { largeCode: { label: "0.000000018" }, annual: { label: "1.0000", year: 2027 } },
+  currentRelease: { label: "0.000000018", semver: "0.0.18" },
+  next: { largeCode: { label: "0.000000019" }, annual: { label: "1.0000", year: 2027 } },
   policy: { maximumLabel: "45.0000", largeCodeChangeThreshold: 500 },
   workingTree: { codeLinesChanged: 0, changedCodeFileCount: 0, largeCodeEligible: false },
   decision: "loading",
@@ -795,7 +795,7 @@ const pluginFamilies = [
     name: "SEIS Command Center App Plugins",
     health: "Local Demo",
     permissions: "Read-only, task-scoped",
-    summary: "67 app-owned plugin packages under plugins/seis-core at app release 0.000000017; AI Core indexes metadata without owning their source."
+    summary: "68 app-owned plugin packages under plugins/seis-core at app release 0.000000018; AI Core indexes metadata without owning their source."
   }
 ];
 
@@ -2343,15 +2343,18 @@ function renderPlugins() {
       .toLowerCase()
       .includes(query);
   });
+  const catalogOperationalCount = catalog.counts.statusOk ?? ((catalog.counts.statusReady || 0) + (catalog.counts.statusAttention || 0));
   const catalogState = catalog.loadError
     ? "Fallback"
     : catalog.counts.statusNotChecked === catalog.counts.returned
       ? "Catalog loaded"
-      : `${catalog.counts.statusReady || 0}/${catalog.counts.discovered || plugins.length} ready`;
+      : catalog.counts.statusAttention > 0
+        ? `${catalog.counts.statusReady || 0} ready, ${catalog.counts.statusAttention} attention / ${catalogOperationalCount} operational`
+        : `${catalog.counts.statusReady || 0}/${catalog.counts.discovered || plugins.length} ready`;
   const catalogStateElement = $("#app-plugin-catalog-state");
   if (catalogStateElement) {
     catalogStateElement.textContent = catalogState;
-    catalogStateElement.className = `status-pill ${catalog.loadError ? "attention" : "ready"}`;
+    catalogStateElement.className = `status-pill ${catalog.loadError || catalog.counts.statusAttention > 0 || catalog.counts.statusFailed > 0 ? "attention" : "ready"}`;
   }
   const catalogMeta = $("#app-plugin-catalog-meta");
   if (catalogMeta) {

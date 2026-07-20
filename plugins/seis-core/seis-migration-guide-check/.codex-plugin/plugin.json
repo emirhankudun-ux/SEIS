@@ -1,6 +1,6 @@
 {
   "name": "seis-migration-guide-check",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Check local migration and compatibility guidance without changing release documentation.",
   "author": {
     "name": "Emirhan Kudun"

@@ -8,16 +8,16 @@
 ## Repo-Local Clean Artifact Staging
 
 - Mode: temporary-local-clean-artifact-staging
-  - Expected public marketplace packages: 373
+  - Expected public marketplace packages: 374
   - Canonical orchestrators: 1
   - Migrated root packages: 5
-  - Application packages: 67
+  - Application packages: 68
   - Objective-derived topic packages: 300
-- Staged public plugins: 373
+- Staged public plugins: 374
 - Embedded source modules: 10
-- Staged manifests: 373
-- Staged MCP entry scripts: 373
-- Staged files: 2535
+- Staged manifests: 374
+- Staged MCP entry scripts: 374
+- Staged files: 2541
 - Excluded source metadata files: 0
 - Disallowed source artifacts: 0
 - Forbidden files in stage: 0
@@ -56,6 +56,7 @@
 | seis-docs-freshness | 5 | 5 | 0 | 1 | pass |
 | seis-dora-metrics | 5 | 5 | 0 | 1 | pass |
 | seis-download-anomaly | 5 | 5 | 0 | 1 | pass |
+| seis-focus-navigation-audit | 6 | 6 | 0 | 1 | pass |
 | seis-github-metrics-collector | 5 | 5 | 0 | 1 | pass |
 | seis-goal-dependency-map | 5 | 5 | 0 | 1 | pass |
 | seis-goal-integrity | 5 | 5 | 0 | 1 | pass |

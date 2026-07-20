@@ -1,6 +1,6 @@
 {
   "name": "seis-model-fallback",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Audit local route fallback declarations without selecting or calling models.",
   "author": {
     "name": "Emirhan Kudun"

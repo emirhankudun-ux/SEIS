@@ -1,0 +1,38 @@
+{
+  "name": "seis-focus-navigation-audit",
+  "version": "0.0.18",
+  "description": "Audit bounded local UI source for static keyboard, focus, semantic-control, and reduced-motion evidence without launching a browser.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "accessibility",
+    "keyboard",
+    "focus",
+    "navigation",
+    "read-only",
+    "public-repository"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Focus Navigation Audit",
+    "shortDescription": "Inspect static keyboard, focus, and motion evidence in local UI source.",
+    "longDescription": "Audits bounded local HTML, JavaScript, and CSS source for static keyboard, focus, semantic-control, ARIA, and reduced-motion evidence. It never launches a browser, drives a screen reader, or certifies runtime accessibility compliance.",
+    "developerName": "SEIS Repository",
+    "category": "Design",
+    "capabilities": [
+      "local-static-ui-audit",
+      "keyboard-focus-evidence",
+      "semantic-control-review",
+      "reduced-motion-evidence",
+      "manual-qa-handoff"
+    ],
+    "defaultPrompt": [
+      "Audit this local SEIS UI source for static keyboard, focus, semantic-control, and reduced-motion evidence without launching a browser.",
+      "Show static focus-navigation findings and the manual accessibility evidence still required before release."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}
