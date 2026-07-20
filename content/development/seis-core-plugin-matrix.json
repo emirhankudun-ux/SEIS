@@ -21,9 +21,9 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 62,
-  "expectedPluginCount": 62,
-  "readyCount": 62,
+  "pluginCount": 63,
+  "expectedPluginCount": 63,
+  "readyCount": 63,
   "attentionCount": 0,
   "failureCount": 0,
   "failures": [],
@@ -945,6 +945,22 @@
       "version": "0.0.13",
       "releaseTrainVersion": "0.000000013",
       "entrypoint": "scripts/seis-tool-permission-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-trusted-marketplace",
+      "version": "0.0.13",
+      "releaseTrainVersion": "0.000000013",
+      "entrypoint": "scripts/seis-trusted-marketplace-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
         "write": [],

@@ -7,6 +7,7 @@ const ROOT = process.cwd();
 const intakePath = path.join(ROOT, "content", "development", "trusted-marketplace-intake.json");
 const docsPath = path.join(ROOT, "docs", "development", "trusted-marketplace-intake.md");
 const pluginCatalogPath = path.join(ROOT, "content", "development", "plugin-capability-catalog.json");
+const publicBridgePath = path.join(ROOT, "content", "development", "seis-trusted-marketplace-plugin.json");
 const failures = [];
 
 function readJson(file) {
@@ -38,6 +39,7 @@ function ensure(condition, message) {
 
 const intake = readJson(intakePath);
 const pluginCatalog = readJson(pluginCatalogPath);
+const publicBridge = readJson(publicBridgePath);
 const docs = readText(docsPath);
 
 if (intake) {
@@ -51,6 +53,13 @@ if (intake) {
   ensure(Array.isArray(intake.trustedSourceShortlist) && intake.trustedSourceShortlist.length >= 8, "trusted source shortlist must include enough candidates");
   ensure(Array.isArray(intake.publishingPath) && intake.publishingPath.length >= 4, "publishing path must stay staged");
   ensure((intake.qualityCommands || []).includes("npm run check:trusted-marketplace-intake"), "intake must reference its validator");
+  ensure(intake.publicCodexPlugin?.name === "seis-trusted-marketplace", "intake must name the public trusted marketplace plugin");
+  ensure(intake.publicCodexPlugin?.marketplaceName === "seis-repo", "intake must use the public seis-repo marketplace");
+  ensure(intake.publicCodexPlugin?.sourcePath === "plugins/seis-core/seis-trusted-marketplace", "intake must use the public app-owned source path");
+  ensure(intake.publicCodexPlugin?.activationPolicy === "approval-gated", "intake must keep trusted-source activation approval-gated");
+  ensure(intake.publicCodexPlugin?.contract === "content/development/seis-trusted-marketplace-plugin.json", "intake must link the public trusted marketplace contract");
+  ensure(!/\bpersonal\b/i.test(JSON.stringify(intake.publicCodexPlugin)), "public intake plugin metadata must not contain personal terminology");
+  ensure(!/\/Users\/|\/home\/|[A-Za-z]:\\/.test(JSON.stringify(intake.publicCodexPlugin)), "public intake plugin metadata must not store machine paths");
 
   const channelIds = new Set((intake.marketplaceChannels || []).map((channel) => channel.id));
   for (const id of [
@@ -93,10 +102,20 @@ if (pluginCatalog) {
   ensure(pluginCatalog.marketplaceIntake === "content/development/trusted-marketplace-intake.json", "plugin catalog must link the marketplace intake");
 }
 
+if (publicBridge) {
+  ensure(publicBridge.status === "public-repository-successor", "trusted marketplace bridge must use public-repository-successor status");
+  ensure(publicBridge.plugin?.marketplaceName === "seis-repo", "trusted marketplace bridge must use seis-repo");
+  ensure(publicBridge.plugin?.sourcePath === "plugins/seis-core/seis-trusted-marketplace", "trusted marketplace bridge source path is invalid");
+  ensure(publicBridge.plugin?.publicAudience === "everyone", "trusted marketplace bridge must be public to everyone");
+  ensure(publicBridge.plugin?.publicMarketplace === true, "trusted marketplace bridge must expose a public marketplace card");
+  ensure(publicBridge.activationBoundary?.externalActivation === "approval-required", "trusted marketplace bridge must gate external activation");
+}
+
 ensure(docs.includes("# SEIS Trusted Marketplace Intake"), "marketplace intake docs must keep the title");
 ensure(docs.includes("content/development/trusted-marketplace-intake.json"), "marketplace docs must link the intake data");
 ensure(docs.includes("npm run check:trusted-marketplace-intake"), "marketplace docs must include the validator command");
 ensure(docs.includes("GitHub MCP Registry"), "marketplace docs must mention GitHub MCP Registry");
+ensure(docs.includes("seis-trusted-marketplace@seis-repo"), "marketplace docs must name the public SEIS Repo plugin");
 
 if (failures.length > 0) {
   console.error("Trusted marketplace intake check failed:");

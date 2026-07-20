@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-core-plugin-change-evidence",
   "goalId": "SEIS-GOAL-021",
-  "baseCommit": "81861235a163ccc60892a45c3a3e210620a153dd",
+  "baseCommit": "3ebb5ac1d3fb68a0284dc56cf491719205577a40",
   "generatedAt": "2026-07-15",
   "scope": {
     "application": "apps/seis-core",
@@ -29,31 +29,52 @@
     ]
   },
   "threshold": 500,
-  "codeLinesAdded": 539,
-  "codeLinesRemoved": 8,
-  "codeLinesChanged": 547,
+  "codeLinesAdded": 565,
+  "codeLinesRemoved": 170,
+  "codeLinesChanged": 735,
   "eligible": true,
   "files": [
     {
-      "path": "plugins/seis-core/seis-public-distribution-audit/scripts/seis-public-distribution-audit-mcp-server.mjs",
-      "added": 428,
+      "path": "plugins/seis-core/seis-trusted-marketplace/scripts/seis-trusted-marketplace-mcp-server.mjs",
+      "added": 298,
       "removed": 0,
       "state": "untracked",
-      "changed": 428
+      "changed": 298
     },
     {
-      "path": "plugins/seis-core/test/public-distribution-audit.test.mjs",
-      "added": 102,
+      "path": "scripts/check-seis-trusted-marketplace-plugin.cjs",
+      "added": 107,
+      "removed": 153,
+      "state": "tracked-diff",
+      "changed": 260
+    },
+    {
+      "path": "plugins/seis-core/test/trusted-marketplace.test.mjs",
+      "added": 96,
       "removed": 0,
       "state": "untracked",
-      "changed": 102
+      "changed": 96
+    },
+    {
+      "path": "plugins/seis-core/seis-public-distribution-audit/scripts/seis-public-distribution-audit-mcp-server.mjs",
+      "added": 29,
+      "removed": 2,
+      "state": "tracked-diff",
+      "changed": 31
     },
     {
       "path": "apps/seis-core/script.js",
-      "added": 4,
-      "removed": 4,
+      "added": 11,
+      "removed": 11,
       "state": "tracked-diff",
-      "changed": 8
+      "changed": 22
+    },
+    {
+      "path": "scripts/check-trusted-marketplace-intake.cjs",
+      "added": 19,
+      "removed": 0,
+      "state": "tracked-diff",
+      "changed": 19
     },
     {
       "path": "plugins/seis-core/test/plugin-audit.test.mjs",

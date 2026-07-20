@@ -1,0 +1,35 @@
+{
+  "name": "seis-trusted-marketplace",
+  "version": "0.0.13",
+  "description": "Review public SEIS marketplace intake and activation gates without connecting to external services.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Trusted Marketplace",
+    "shortDescription": "Review trusted marketplace intake safely.",
+    "longDescription": "Inspect the public SEIS Repo marketplace card, curated trusted-source intake, and approval-gated activation posture without using credentials, installing integrations, accessing the network, or changing files.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "trusted-source-intake-review",
+      "public-marketplace-card-validation",
+      "activation-gate-audit",
+      "approval-boundary-summary"
+    ],
+    "defaultPrompt": [
+      "Review the public SEIS trusted marketplace intake without activating any connector.",
+      "Validate the SEIS Repo marketplace card and the approval gates for trusted sources."
+    ]
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "trusted-marketplace",
+    "public-repository",
+    "governance",
+    "read-only"
+  ]
+}

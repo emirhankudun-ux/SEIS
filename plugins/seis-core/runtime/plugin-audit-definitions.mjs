@@ -1,4 +1,4 @@
-export const APP_PLUGIN_EXPANSION_TARGET = 62;
+export const APP_PLUGIN_EXPANSION_TARGET = 63;
 
 export const PLUGIN_AUDIT_DEFINITIONS = Object.freeze([
   {

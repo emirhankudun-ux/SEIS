@@ -104,6 +104,7 @@
       "seis-technology-ontology",
       "seis-test-flakiness",
       "seis-tool-permission-audit",
+      "seis-trusted-marketplace",
       "seis-vulnerability-triage",
       "seis-workflow-linter",
       "seis-workflow-permission-audit",
@@ -168,6 +169,7 @@
       "seis-technology-ontology",
       "seis-test-flakiness",
       "seis-tool-permission-audit",
+      "seis-trusted-marketplace",
       "seis-vulnerability-triage",
       "seis-workflow-linter",
       "seis-workflow-permission-audit",
@@ -186,8 +188,8 @@
       "seis-ai-agent@seis-repo"
     ],
     "embeddedModuleCount": 10,
-    "applicationOwnedPluginCount": 62,
-    "applicationMarketplacePluginCount": 62,
+    "applicationOwnedPluginCount": 63,
+    "applicationMarketplacePluginCount": 63,
     "applicationSourceRoot": "plugins/seis-core",
     "applicationSourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json"
   },
@@ -304,14 +306,14 @@
     "releaseTrain": "content/development/seis-core-plugin-release-train.json",
     "releaseLabel": "0.000000013",
     "releaseSemver": "0.0.13",
-    "pluginCount": 62,
+    "pluginCount": 63,
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
     "publicDistribution": "direct-repository-source",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 62,
+    "marketplaceEntryCount": 63,
     "installSurface": "repo-source-app",
     "executionMode": "task-scoped-local-demo-only",
     "publicReleaseAllowed": false,
@@ -2114,6 +2116,38 @@
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-trusted-marketplace",
+        "displayName": "SEIS Trusted Marketplace",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
+        "version": "0.0.13",
+        "license": "MIT",
+        "sourceClassification": "public-SEIS-repository",
+        "lifecycleStatus": "approved-public-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.000000013",
+        "releaseSemver": "0.0.13",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": "seis-trusted-marketplace@seis-repo",
+        "installSurface": "repo-source-app",
+        "publicMarketplace": true,
+        "publicRepositoryAvailable": true,
+        "publicAudience": "everyone",
+        "publicStatus": "public-repo-marketplace",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "permissions": {
+          "read": [
+            "bounded public SEIS marketplace intake contracts",
+            "declared public marketplace card metadata"
           ],
           "write": [],
           "network": [],

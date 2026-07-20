@@ -57,11 +57,11 @@ because it keeps integrations portable across compatible agent hosts. GitHub
 Marketplace Actions and Apps remain publication candidates only after the
 feature has a separate public action repository or a real GitHub App surface.
 
-The personal Codex plugin bridge lives in
-`content/development/seis-trusted-marketplace-plugin.json`. It binds the local
-`seis-trusted-marketplace` plugin to the `UIXAppTTR` branch, the personal
-marketplace file, and the repo quality gates so the designer-facing plugin card
-and source-governed marketplace records move together.
+The public SEIS Repo trusted-marketplace contract lives in
+`content/development/seis-trusted-marketplace-plugin.json`. It binds the
+`seis-trusted-marketplace@seis-repo` card to the public app-owned source under
+`plugins/seis-core`, while keeping every external integration behind explicit
+target, authorization, approval, and rollback gates.
 
 Designer-facing review lives in
 `docs/development/trusted-marketplace-intake.md`; the lightweight quality gate
@@ -70,6 +70,7 @@ is:
 ```bash
 npm run check:trusted-marketplace-intake
 npm run check:seis-trusted-marketplace-plugin
+npm run check:seis-core-trusted-marketplace
 ```
 
 ## Catalog Families

@@ -6,7 +6,13 @@
   "audience": "designer-friendly marketplace curation with engineering gates",
   "lastReviewed": "2026-06-04",
   "summary": "Track trusted GitHub, MCP, Copilot, and model marketplace channels before any live install, listing, or credentialed write.",
-  "localCodexPlugin": "content/development/seis-trusted-marketplace-plugin.json",
+  "publicCodexPlugin": {
+    "name": "seis-trusted-marketplace",
+    "marketplaceName": "seis-repo",
+    "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
+    "activationPolicy": "approval-gated",
+    "contract": "content/development/seis-trusted-marketplace-plugin.json"
+  },
   "nonCoderWorkflow": [
     "Choose the marketplace card or source family that feels useful for SEIS.",
     "Check the trust posture, visual fit, and user-facing value before technical activation.",

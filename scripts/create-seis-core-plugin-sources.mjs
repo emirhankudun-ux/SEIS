@@ -125,6 +125,7 @@ function buildRecord() {
       "npm run check:seis-core-plugin-discovery",
       "npm run check:seis-core-marketplace-integrity",
       "npm run check:seis-core-public-distribution-audit",
+      "npm run check:seis-core-trusted-marketplace",
       "npm run check:seis-core-requested-plugin-coverage",
       "npm run check:seis-core-plugin-surface",
       "npm run check:seis-core-plugin-public-repository",

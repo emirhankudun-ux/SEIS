@@ -15,6 +15,7 @@ const CONTRACTS = Object.freeze({
   appCatalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
   unifiedSuite: "plugins/seis-ai-agent/assets/unified-suite.json",
   lifecycle: "content/development/seis-public-plugin-lifecycle.json",
+  trustedMarketplace: "content/development/seis-trusted-marketplace-plugin.json",
   project: "project.ecosystem.yaml"
 });
 
@@ -47,6 +48,7 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
   const appCatalog = loaded.contracts.appCatalog;
   const unifiedSuite = loaded.contracts.unifiedSuite;
   const lifecycle = loaded.contracts.lifecycle;
+  const trustedMarketplace = loaded.contracts.trustedMarketplace;
   const project = parseProjectBoundary(loaded.contracts.project);
   const rootPlugins = safeArray(family.migratedRootPlugins);
   const appPlugins = safeArray(family.applicationPlugins);
@@ -77,8 +79,9 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
 
   validateMarketplaceFamilies(marketplaceEntries, canonicalNames, rootNames, appNames, topicNames, findings);
   validateApplicationProjections(appSources, appCatalog, unifiedSuite, lifecycle, appNames, findings, includeCatalogStatus);
+  validateTrustedMarketplaceBridge(trustedMarketplace, findings);
   validateProjectBoundary(project, expectedCardCount, appNames.length, topicNames.length, rootNames.length, findings);
-  validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, project, findings);
+  validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, trustedMarketplace, project, findings);
 
   const errorCount = findings.filter((finding) => finding.severity === "error").length;
   return {
@@ -181,7 +184,23 @@ function validateProjectBoundary(project, expectedCardCount, appCount, topicCoun
   ensure(project.migratedRootEntryCount === rootCount, findings, "project-root-count-mismatch");
 }
 
-function validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, project, findings) {
+function validateTrustedMarketplaceBridge(bridge, findings) {
+  const plugin = bridge?.plugin || {};
+  const repository = bridge?.pluginRepository || {};
+  const activationBoundary = bridge?.activationBoundary || {};
+  ensure(bridge.id === "seis-trusted-marketplace-plugin", findings, "trusted-marketplace-bridge-id-invalid");
+  ensure(bridge.status === "public-repository-successor", findings, "trusted-marketplace-bridge-status-invalid");
+  ensure(plugin.name === "seis-trusted-marketplace", findings, "trusted-marketplace-plugin-name-invalid");
+  ensure(plugin.marketplaceName === "seis-repo", findings, "trusted-marketplace-marketplace-invalid");
+  ensure(plugin.sourcePath === "plugins/seis-core/seis-trusted-marketplace", findings, "trusted-marketplace-source-path-invalid");
+  ensure(plugin.publicAudience === "everyone", findings, "trusted-marketplace-audience-invalid");
+  ensure(plugin.publicMarketplace === true, findings, "trusted-marketplace-public-marketplace-invalid");
+  ensure(repository.mode === "public-repository-app-owned", findings, "trusted-marketplace-repository-mode-invalid");
+  ensure(repository.canonicalRepository === "SEIS", findings, "trusted-marketplace-canonical-repository-invalid");
+  ensure(activationBoundary.externalActivation === "approval-required", findings, "trusted-marketplace-activation-boundary-invalid");
+}
+
+function validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, trustedMarketplace, project, findings) {
   const values = [
     marketplace.name,
     marketplace.interface?.displayName,
@@ -196,6 +215,14 @@ function validatePublicTerminology(marketplace, family, appSources, appCatalog, 
     unifiedSuite.applicationDistribution?.marketplaceName,
     unifiedSuite.publicDistribution?.applicationSourceRoot,
     lifecycle.publicDistribution?.marketplaceName,
+    trustedMarketplace.status,
+    trustedMarketplace.plugin?.name,
+    trustedMarketplace.plugin?.marketplaceName,
+    trustedMarketplace.plugin?.sourcePath,
+    trustedMarketplace.plugin?.publicAudience,
+    trustedMarketplace.pluginRepository?.mode,
+    trustedMarketplace.pluginRepository?.canonicalRepository,
+    trustedMarketplace.activationBoundary?.externalActivation,
     project.marketplaceName
   ];
   for (const value of values) {

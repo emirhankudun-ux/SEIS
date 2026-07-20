@@ -6,9 +6,10 @@ const path = require("node:path");
 const ROOT = process.cwd();
 const contractPath = path.join(ROOT, "content", "development", "seis-trusted-marketplace-plugin.json");
 const intakePath = path.join(ROOT, "content", "development", "trusted-marketplace-intake.json");
-const pluginDownloadReadinessPath = path.join(ROOT, "content", "development", "plugin-download-readiness.json");
+const marketplacePath = path.join(ROOT, ".agents", "plugins", "marketplace.json");
 const docsPath = path.join(ROOT, "docs", "development", "seis-trusted-marketplace-plugin.md");
 const packagePath = path.join(ROOT, "package.json");
+const pluginRoot = path.join(ROOT, "plugins", "seis-core", "seis-trusted-marketplace");
 const failures = [];
 
 function readJson(file) {
@@ -16,7 +17,6 @@ function readJson(file) {
     failures.push(`Missing ${path.relative(ROOT, file)}`);
     return null;
   }
-
   try {
     return JSON.parse(fs.readFileSync(file, "utf8"));
   } catch (error) {
@@ -30,7 +30,6 @@ function readText(file) {
     failures.push(`Missing ${path.relative(ROOT, file)}`);
     return "";
   }
-
   return fs.readFileSync(file, "utf8");
 }
 
@@ -38,177 +37,132 @@ function ensure(condition, message) {
   if (!condition) failures.push(message);
 }
 
-function ensureQualityCommandsExist(commands, scripts, owner) {
-  ensure(Array.isArray(commands) && commands.length > 0, `${owner} must define qualityCommands`);
-
-  for (const command of commands || []) {
-    const match = /^npm run ([a-z0-9:-]+)$/i.exec(command);
-    ensure(Boolean(match), `${owner} quality command must use npm run <script>: ${command}`);
-    if (match) {
-      ensure(Boolean(scripts[match[1]]), `${owner} quality command references missing npm script: ${command}`);
-    }
-  }
-}
-
-function ensureExactIds(actualIds, expectedIds, owner) {
-  const actual = new Set(actualIds || []);
-  ensure(actual.size === expectedIds.length, `${owner} must expose exactly ${expectedIds.length} ids`);
-  for (const id of expectedIds) {
-    ensure(actual.has(id), `${owner} missing ${id}`);
-  }
+function assertPublicSafe(value, label) {
+  const serialized = JSON.stringify(value || {});
+  ensure(!/\bpersonal\b/i.test(serialized), `${label} must not contain active personal terminology`);
+  ensure(!/\/Users\/|\/home\/|[A-Za-z]:\\/.test(serialized), `${label} must not store machine-specific paths`);
 }
 
 const contract = readJson(contractPath);
 const intake = readJson(intakePath);
-const pluginDownloadReadiness = readJson(pluginDownloadReadinessPath);
+const marketplace = readJson(marketplacePath);
 const pkg = readJson(packagePath);
+const manifest = readJson(path.join(pluginRoot, ".codex-plugin", "plugin.json"));
+const mcp = readJson(path.join(pluginRoot, ".mcp.json"));
+const profile = readJson(path.join(pluginRoot, "assets", "plugin-profile.json"));
 const docs = readText(docsPath);
+const skill = readText(path.join(pluginRoot, "skills", "seis-trusted-marketplace", "SKILL.md"));
+const entrypointPath = path.join(pluginRoot, "scripts", "seis-trusted-marketplace-mcp-server.mjs");
 
 if (contract) {
-  ensure(contract.id === "seis-trusted-marketplace-plugin", "plugin contract id must stay stable");
-  ensure(contract.status === "local-personal-bridge", "plugin contract status must stay local-personal-bridge");
-  ensure(contract.plugin?.name === "seis-trusted-marketplace", "plugin contract must name seis-trusted-marketplace");
-  ensure(contract.plugin?.displayName === "SEIS Trusted Marketplace", "plugin contract must keep the display name");
-  ensure(contract.plugin?.marketplaceName === "personal", "plugin contract must use the personal marketplace");
-  ensure(contract.plugin?.connectionAsset === "assets/seis-repo-connection.json", "plugin contract must point to the connection asset");
-  ensure(contract.plugin?.capabilityAsset === "assets/capability-map.json", "plugin contract must point to the capability asset");
-  ensure(contract.plugin?.bridgeHealthSnapshot === "assets/bridge-health-snapshot.json", "plugin contract must point to the bridge health snapshot");
-  ensure(contract.plugin?.requestedEcosystemBundle === "assets/requested-ecosystem-bundle.json", "plugin contract must point to the requested ecosystem bundle");
-  ensure(contract.plugin?.optionalForRemote === true, "plugin local source must be optional for remote checks");
-  ensure(contract.pluginRepository?.name === "seis-trusted-marketplace-plugin", "plugin contract must name the plugin source repository");
-  ensure(contract.pluginRepository?.mode === "private-personal", "plugin source repository must stay private-personal by default");
-  ensure(contract.pluginRepository?.githubRemote === "https://github.com/emirhankudun-ux/seis-trusted-marketplace-plugin.git", "plugin source repository remote must stay stable");
-  ensure(contract.repository?.name === "UIX-Apps", "plugin contract must target UIX-Apps");
-  ensure(contract.repository?.branch === "UIXAppTTR", "plugin contract must target UIXAppTTR");
-  ensure(contract.repository?.githubRemote === "https://github.com/emirhankudun-ux/UIX-Apps.git", "plugin contract must target the UIX-Apps GitHub remote");
-  ensure(Array.isArray(contract.capabilityLanes) && contract.capabilityLanes.length === 8, "plugin contract must define the eight capability lanes");
-  ensure(Array.isArray(contract.bridgeHealthChecks) && contract.bridgeHealthChecks.length === 5, "plugin contract must define the bridge health checks");
-  ensureExactIds(contract.bridgeHealthChecks || [], [
-    "manifest-parity",
-    "private-personal-mode",
-    "uixappttr-binding",
-    "github-workflow",
-    "safe-install-docs"
-  ], "plugin contract bridge health checks");
-  ensure(Array.isArray(contract.designerWorkflow) && contract.designerWorkflow.length >= 4, "plugin contract must keep designer workflow steps");
-  ensure(Array.isArray(contract.safetyRules) && contract.safetyRules.length >= 4, "plugin contract must keep safety rules");
-
+  ensure(contract.version === 2, "trusted marketplace bridge schema version must be 2");
+  ensure(contract.id === "seis-trusted-marketplace-plugin", "trusted marketplace bridge id must stay stable");
+  ensure(contract.status === "public-repository-successor", "trusted marketplace bridge must use public-repository-successor status");
+  ensure(contract.plugin?.name === "seis-trusted-marketplace", "trusted marketplace bridge must name the public plugin");
+  ensure(contract.plugin?.displayName === "SEIS Trusted Marketplace", "trusted marketplace bridge display name is invalid");
+  ensure(contract.plugin?.marketplaceName === "seis-repo", "trusted marketplace bridge must use seis-repo");
+  ensure(contract.plugin?.marketplacePath === ".agents/plugins/marketplace.json", "trusted marketplace bridge marketplace path is invalid");
+  ensure(contract.plugin?.sourcePath === "plugins/seis-core/seis-trusted-marketplace", "trusted marketplace bridge source path is invalid");
+  ensure(contract.plugin?.publicAudience === "everyone", "trusted marketplace bridge must be public to everyone");
+  ensure(contract.plugin?.publicMarketplace === true, "trusted marketplace bridge must expose a public marketplace card");
+  ensure(contract.plugin?.activationPolicy === "approval-gated", "trusted marketplace bridge must keep activation approval-gated");
+  ensure(contract.pluginRepository?.name === "SEIS", "trusted marketplace canonical repository name is invalid");
+  ensure(contract.pluginRepository?.mode === "public-repository-app-owned", "trusted marketplace repository mode is invalid");
+  ensure(contract.pluginRepository?.canonicalRepository === "SEIS", "trusted marketplace canonical repository is invalid");
+  ensure(contract.pluginRepository?.sourcePath === contract.plugin.sourcePath, "trusted marketplace repository source path must match plugin source");
+  ensure(contract.pluginRepository?.public === true, "trusted marketplace repository must be public");
+  ensure(contract.repository?.name === "SEIS", "trusted marketplace repository binding is invalid");
+  ensure(contract.repository?.canonicalBranch === "main", "trusted marketplace canonical branch is invalid");
+  ensure(contract.activationBoundary?.externalActivation === "approval-required", "trusted marketplace external activation must require approval");
+  ensure(contract.activationBoundary?.network === "disabled-by-default", "trusted marketplace network must be disabled by default");
+  ensure(contract.activationBoundary?.secrets === "not-read", "trusted marketplace must not read secrets");
+  ensure(contract.activationBoundary?.writes === "disabled-by-default", "trusted marketplace writes must be disabled by default");
+  ensure(contract.activationBoundary?.publicReleaseAllowed === false, "trusted marketplace must not claim public release approval");
+  ensure(Array.isArray(contract.capabilityLanes) && contract.capabilityLanes.length === 8, "trusted marketplace must keep eight capability lanes");
+  ensure(Array.isArray(contract.bridgeHealthChecks) && contract.bridgeHealthChecks.length === 5, "trusted marketplace must keep five bridge health checks");
+  ensure(Array.isArray(contract.designerWorkflow) && contract.designerWorkflow.length >= 4, "trusted marketplace designer workflow must be explicit");
+  ensure(Array.isArray(contract.safetyRules) && contract.safetyRules.length >= 4, "trusted marketplace safety rules must be explicit");
+  ensure(contract.migration?.legacyMode === "archived-non-active-reference", "trusted marketplace legacy source must be non-active");
+  ensure(contract.migration?.legacyInstallationMutation === false, "trusted marketplace migration must not mutate legacy installations");
+  ensure(contract.migration?.replacement === contract.plugin.sourcePath, "trusted marketplace replacement path must match plugin source");
   for (const repoContract of contract.repoContracts || []) {
-    ensure(fs.existsSync(path.join(ROOT, repoContract)), `repo contract path must exist: ${repoContract}`);
+    ensure(fs.existsSync(path.join(ROOT, repoContract)), `trusted marketplace repo contract path must exist: ${repoContract}`);
   }
+  assertPublicSafe(contract, "trusted marketplace bridge");
+}
 
-  if (pkg) {
-    ensureQualityCommandsExist(contract.qualityCommands, pkg.scripts || {}, "plugin contract");
-  }
-
-  const pluginSourcePath = contract.plugin?.sourcePath;
-  if (pluginSourcePath && fs.existsSync(pluginSourcePath)) {
-    const pluginManifest = readJson(path.join(pluginSourcePath, ".codex-plugin", "plugin.json"));
-    const pluginPackage = readJson(path.join(pluginSourcePath, "package.json"));
-    const connectionAsset = readJson(path.join(pluginSourcePath, contract.plugin.connectionAsset));
-    const capabilityAsset = readJson(path.join(pluginSourcePath, contract.plugin.capabilityAsset));
-    ensure(fs.existsSync(path.join(pluginSourcePath, "skills", "seis-trusted-marketplace", "SKILL.md")), "local plugin skill must exist");
-    ensure(fs.existsSync(path.join(pluginSourcePath, "scripts", "validate-plugin.mjs")), "local plugin validator must exist");
-    ensure(fs.existsSync(path.join(pluginSourcePath, "scripts", "plugin-doctor.mjs")), "local plugin doctor must exist");
-    ensure(fs.existsSync(path.join(pluginSourcePath, "scripts", "create-bridge-health-snapshot.mjs")), "local plugin bridge snapshot generator must exist");
-    ensure(fs.existsSync(path.join(pluginSourcePath, "scripts", "create-requested-ecosystem-bundle.mjs")), "local plugin requested ecosystem bundle generator must exist");
-    ensure(fs.existsSync(path.join(pluginSourcePath, "assets", "bridge-health-snapshot.json")), "local plugin bridge health snapshot must exist");
-    ensure(fs.existsSync(path.join(pluginSourcePath, "assets", "requested-ecosystem-bundle.json")), "local plugin requested ecosystem bundle must exist");
-    ensure(fs.existsSync(path.join(pluginSourcePath, ".github", "workflows", "validate.yml")), "local plugin GitHub validation workflow must exist");
-
-    if (pluginManifest) {
-      ensure(pluginManifest.name === contract.plugin.name, "local plugin manifest name must match the repo contract");
-      ensure(pluginManifest.interface?.displayName === contract.plugin.displayName, "local plugin display name must match the repo contract");
-    }
-
-    if (pluginPackage) {
-      ensure(Boolean(pluginPackage.scripts?.["doctor:strict"]), "local plugin package must expose doctor:strict");
-      ensure(Boolean(pluginPackage.scripts?.["bridge:snapshot"]), "local plugin package must expose bridge:snapshot");
-      ensure(Boolean(pluginPackage.scripts?.["bridge:snapshot:check"]), "local plugin package must expose bridge:snapshot:check");
-      ensure(Boolean(pluginPackage.scripts?.["ecosystem:bundle"]), "local plugin package must expose ecosystem:bundle");
-      ensure(Boolean(pluginPackage.scripts?.["ecosystem:bundle:check"]), "local plugin package must expose ecosystem:bundle:check");
-      ensure((pluginPackage.scripts?.check || "").includes("doctor:strict"), "local plugin check script must fail on doctor readiness regressions");
-      ensure((pluginPackage.scripts?.check || "").includes("bridge:snapshot:check"), "local plugin check script must verify the bridge snapshot without rewriting it");
-      ensure((pluginPackage.scripts?.check || "").includes("ecosystem:bundle:check"), "local plugin check script must verify the requested ecosystem bundle without rewriting it");
-    }
-
-    if (connectionAsset) {
-      ensure(connectionAsset.plugin?.name === contract.plugin.name, "connection asset plugin name must match the repo contract");
-      ensure(connectionAsset.pluginRepository?.githubRemote === contract.pluginRepository.githubRemote, "connection asset plugin repository remote must match the repo contract");
-      ensure(connectionAsset.repository?.githubRemote === contract.repository.githubRemote, "connection asset remote must match the repo contract");
-      ensure(connectionAsset.repository?.branch === contract.repository.branch, "connection asset branch must match the repo contract");
-      ensure((connectionAsset.repoContracts || []).includes("content/development/seis-trusted-marketplace-plugin.json"), "connection asset must include the repo bridge contract");
-    }
-
-    if (capabilityAsset) {
-      const capabilityIds = new Set((capabilityAsset.capabilities || []).map((capability) => capability.id));
-      for (const lane of contract.capabilityLanes || []) {
-        ensure(capabilityIds.has(lane), `capability asset must include ${lane}`);
-      }
-    }
-
-    const bridgeSnapshot = readJson(path.join(pluginSourcePath, "assets", "bridge-health-snapshot.json"));
-    if (bridgeSnapshot) {
-      ensure(bridgeSnapshot.id === "seis-trusted-marketplace-bridge-health-snapshot", "bridge snapshot id must stay stable");
-      ensure(bridgeSnapshot.schemaVersion === 1, "bridge snapshot schema version must stay stable");
-      ensure(bridgeSnapshot.mode === contract.pluginRepository.mode, "bridge snapshot mode must match the repo contract");
-      ensure(bridgeSnapshot.plugin?.name === contract.plugin.name, "bridge snapshot plugin name must match the repo contract");
-      ensure(Boolean(bridgeSnapshot.plugin?.version), "bridge snapshot must expose plugin version");
-      if (pluginManifest) {
-        ensure(bridgeSnapshot.plugin.version === pluginManifest.version, "bridge snapshot plugin version must match the local plugin manifest");
-      }
-      ensure(bridgeSnapshot.repositoryBinding?.productRepository === contract.repository.githubRemote, "bridge snapshot product repository must match the repo contract");
-      ensure(bridgeSnapshot.repositoryBinding?.branch === contract.repository.branch, "bridge snapshot branch must match the repo contract");
-      ensure(bridgeSnapshot.marketplace?.installation === "codex plugin add seis-trusted-marketplace@personal", "bridge snapshot must keep the personal install command");
-      ensureExactIds(bridgeSnapshot.policy?.requiredCheckIds || [], contract.bridgeHealthChecks || [], "bridge snapshot required checks");
-      ensureExactIds(bridgeSnapshot.policy?.requiredCapabilityIds || [], contract.capabilityLanes || [], "bridge snapshot required capabilities");
-      ensureExactIds((bridgeSnapshot.checks || []).map((check) => check.id), contract.bridgeHealthChecks || [], "bridge snapshot checks");
-      ensureExactIds((bridgeSnapshot.capabilityReadiness || []).map((lane) => lane.id), contract.capabilityLanes || [], "bridge snapshot capability readiness");
-      ensure(bridgeSnapshot.summary?.checksPassed === bridgeSnapshot.summary?.checksTotal, "bridge snapshot checks must all pass");
-      ensure(bridgeSnapshot.summary?.lanesReady === contract.capabilityLanes.length, "bridge snapshot must report all capability lanes ready");
-      const readyLanes = new Set((bridgeSnapshot.capabilityReadiness || []).filter((lane) => lane.status === "ready").map((lane) => lane.id));
-      for (const lane of contract.capabilityLanes || []) {
-        ensure(readyLanes.has(lane), `bridge snapshot must mark ${lane} ready`);
-      }
-    }
-
-    const ecosystemBundle = readJson(path.join(pluginSourcePath, "assets", "requested-ecosystem-bundle.json"));
-    if (ecosystemBundle) {
-      ensure(ecosystemBundle.id === "seis-requested-ecosystem-bundle", "requested ecosystem bundle id must stay stable");
-      ensure(ecosystemBundle.mode === "curated-not-activated", "requested ecosystem bundle must stay curated-not-activated");
-      ensure(ecosystemBundle.summary?.upstreamPlugins === pluginDownloadReadiness.summary?.uniquePlugins, "requested ecosystem bundle upstream count must match UIX plugin download readiness");
-      ensure(ecosystemBundle.summary?.totalPlugins >= pluginDownloadReadiness.summary?.uniquePlugins + 3, "requested ecosystem bundle must include UIX inventory plus local requested additions");
-      ensure((ecosystemBundle.policy?.requiredLocalUris || []).includes("plugin://seis-trusted-marketplace@personal"), "requested ecosystem bundle must include the personal SEIS plugin");
-      ensure((ecosystemBundle.policy?.requiredLocalUris || []).includes("plugin://magicpath@openai-curated"), "requested ecosystem bundle must include MagicPath");
-      ensure((ecosystemBundle.policy?.requiredLocalUris || []).includes("plugin://superhuman@openai-curated"), "requested ecosystem bundle must include Superhuman");
-      ensure((ecosystemBundle.plugins || []).every((plugin) => plugin.activationPolicy === "activate_only_when_relevant_authenticated_scoped_and_user_approved"), "requested ecosystem bundle must keep every plugin behind activation gates");
-    }
+if (marketplace) {
+  ensure(marketplace.name === "seis-repo", "public marketplace name must be seis-repo");
+  ensure(marketplace.interface?.displayName === "SEIS Repo", "public marketplace display name must be SEIS Repo");
+  const card = (marketplace.plugins || []).find((entry) => entry?.name === "seis-trusted-marketplace");
+  ensure(Boolean(card), "public marketplace must include seis-trusted-marketplace");
+  if (card) {
+    ensure(card.source?.source === "local", "trusted marketplace card source must be local repository source");
+    ensure(card.source?.path === "./plugins/seis-core/seis-trusted-marketplace", "trusted marketplace card source path is invalid");
+    ensure(card.policy?.installation === "AVAILABLE", "trusted marketplace card must be available");
+    ensure(card.policy?.authentication === "ON_INSTALL", "trusted marketplace card authentication policy is invalid");
+    ensure(card.category === "Developer", "trusted marketplace card category is invalid");
   }
 }
+
+if (manifest) {
+  ensure(manifest.name === "seis-trusted-marketplace", "trusted marketplace manifest name is invalid");
+  ensure(manifest.version === "0.0.13", "trusted marketplace manifest version is invalid");
+  ensure(manifest.interface?.displayName === "SEIS Trusted Marketplace", "trusted marketplace manifest display name is invalid");
+  ensure(manifest.mcpServers === "./.mcp.json", "trusted marketplace manifest must expose MCP metadata");
+  ensure(manifest.license === "MIT", "trusted marketplace manifest must be MIT licensed");
+  assertPublicSafe(manifest, "trusted marketplace manifest");
+}
+
+if (mcp) {
+  ensure(mcp.mcpServers?.["seis-trusted-marketplace"]?.command === "node", "trusted marketplace MCP command is invalid");
+  ensure(Array.isArray(mcp.mcpServers?.["seis-trusted-marketplace"]?.args), "trusted marketplace MCP args are missing");
+  ensure(mcp.mcpServers?.["seis-trusted-marketplace"]?.args?.includes("scripts/seis-trusted-marketplace-mcp-server.mjs"), "trusted marketplace MCP entrypoint is invalid");
+}
+
+if (profile) {
+  ensure(profile.stableId === "seis-trusted-marketplace", "trusted marketplace profile id is invalid");
+  ensure(profile.version === "0.0.13", "trusted marketplace profile version is invalid");
+  ensure(profile.releaseTrainVersion === "0.000000013", "trusted marketplace profile release train is invalid");
+  ensure(profile.sourceClassification === "public-SEIS-repository", "trusted marketplace profile source classification is invalid");
+  ensure(profile.status === "approved-public-readonly", "trusted marketplace profile status is invalid");
+  ensure(profile.implementationState === "functional-local-demo", "trusted marketplace profile implementation state is invalid");
+  ensure(profile.permissions?.write?.length === 0, "trusted marketplace write permissions must be empty");
+  ensure(profile.permissions?.network?.length === 0, "trusted marketplace network permissions must be empty");
+  ensure(profile.permissions?.secrets?.length === 0, "trusted marketplace secret permissions must be empty");
+  ensure(profile.publicAudience === "everyone", "trusted marketplace profile must be public to everyone");
+  ensure(profile.publicMarketplace === true, "trusted marketplace profile must expose a public marketplace card");
+  assertPublicSafe(profile, "trusted marketplace profile");
+}
+
+ensure(fs.existsSync(entrypointPath), "trusted marketplace MCP entrypoint must exist");
+ensure(skill.includes("# SEIS Trusted Marketplace"), "trusted marketplace skill must keep its title");
+ensure(skill.includes("approval"), "trusted marketplace skill must describe approval boundaries");
+ensure(skill.includes("read-only"), "trusted marketplace skill must describe its read-only boundary");
 
 if (intake) {
-  ensure(intake.localCodexPlugin === "content/development/seis-trusted-marketplace-plugin.json", "marketplace intake must link the local Codex plugin bridge");
-  ensure((intake.qualityCommands || []).includes("npm run check:seis-trusted-marketplace-plugin"), "marketplace intake must reference the plugin bridge validator");
+  ensure(intake.publicCodexPlugin?.name === "seis-trusted-marketplace", "trusted marketplace intake must name the public plugin");
+  ensure(intake.publicCodexPlugin?.marketplaceName === "seis-repo", "trusted marketplace intake marketplace is invalid");
+  ensure(intake.publicCodexPlugin?.sourcePath === "plugins/seis-core/seis-trusted-marketplace", "trusted marketplace intake source path is invalid");
+  ensure(intake.publicCodexPlugin?.activationPolicy === "approval-gated", "trusted marketplace intake activation policy is invalid");
+  ensure(intake.publicCodexPlugin?.contract === "content/development/seis-trusted-marketplace-plugin.json", "trusted marketplace intake contract path is invalid");
 }
 
-ensure(docs.includes("# SEIS Trusted Marketplace Plugin"), "plugin docs must keep the title");
-ensure(docs.includes("seis-trusted-marketplace"), "plugin docs must name the plugin");
-ensure(docs.includes("seis-trusted-marketplace-plugin"), "plugin docs must name the plugin source repository");
-ensure(docs.includes("UIXAppTTR"), "plugin docs must name the branch");
-ensure(docs.includes("npm run doctor"), "plugin docs must mention the plugin doctor command");
-ensure(docs.includes("npm run doctor:strict"), "plugin docs must mention the strict plugin doctor command");
-ensure(docs.includes("npm run ecosystem:bundle"), "plugin docs must mention the ecosystem bundle command");
-ensure(docs.includes("data engineering"), "plugin docs must mention data engineering");
-ensure(docs.includes("security"), "plugin docs must mention security");
-ensure(docs.includes("testing"), "plugin docs must mention testing");
-ensure(docs.includes("content/development/seis-trusted-marketplace-plugin.json"), "plugin docs must link the repo contract");
-ensure(docs.includes("npm run check:seis-trusted-marketplace-plugin"), "plugin docs must include the validator command");
+if (pkg) {
+  ensure(pkg.scripts?.["check:seis-trusted-marketplace-plugin"] === "node scripts/check-seis-trusted-marketplace-plugin.cjs", "package must expose trusted marketplace bridge validation");
+  ensure(pkg.scripts?.["check:seis-core-trusted-marketplace"] === "node --test plugins/seis-core/test/trusted-marketplace.test.mjs", "package must expose public trusted marketplace validation");
+}
+
+ensure(docs.includes("# SEIS Trusted Marketplace Plugin"), "trusted marketplace docs must keep the title");
+ensure(docs.includes("seis-trusted-marketplace@seis-repo"), "trusted marketplace docs must name the public SEIS Repo plugin");
+ensure(docs.includes("plugins/seis-core/seis-trusted-marketplace"), "trusted marketplace docs must link the public source path");
+ensure(docs.includes("approval"), "trusted marketplace docs must describe approval boundaries");
+ensure(!/\bpersonal\b/i.test(docs), "trusted marketplace docs must not present a personal installation surface");
+ensure(!/\/Users\/|\/home\/|[A-Za-z]:\\/.test(docs), "trusted marketplace docs must not store machine-specific paths");
 
 if (failures.length > 0) {
   console.error("SEIS trusted marketplace plugin check failed:");
-  for (const failure of failures) {
-    console.error(`- ${failure}`);
-  }
+  for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 

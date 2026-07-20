@@ -15,7 +15,7 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 62,
+    "marketplaceEntryCount": 63,
     "coreSourceOwner": false
   },
   "release": {
@@ -48,11 +48,11 @@
     ]
   },
   "counts": {
-    "discovered": 62,
-    "returned": 62,
-    "contractValid": 62,
+    "discovered": 63,
+    "returned": 63,
+    "contractValid": 63,
     "contractInvalid": 0,
-    "statusReady": 62,
+    "statusReady": 63,
     "statusNotChecked": 0
   },
   "query": null,
@@ -2987,6 +2987,59 @@
         "node scripts/seis-tool-permission-audit-mcp-server.mjs --report --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local app-owned plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-trusted-marketplace",
+      "name": "seis-trusted-marketplace",
+      "displayName": "SEIS Trusted Marketplace",
+      "description": "Review public SEIS marketplace intake and activation gates without connecting to external services.",
+      "category": "Developer",
+      "capabilities": [
+        "trusted-source-intake-review",
+        "public-marketplace-card-validation",
+        "activation-gate-audit",
+        "approval-boundary-summary"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
+      "entrypoint": "scripts/seis-trusted-marketplace-mcp-server.mjs",
+      "release": {
+        "label": "0.000000013",
+        "semver": "0.0.13",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 13
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": null,
+      "permissions": {
+        "read": [
+          "bounded public SEIS marketplace intake contracts",
+          "declared public marketplace card metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-trusted-marketplace-mcp-server.mjs --status",
+        "node scripts/seis-trusted-marketplace-mcp-server.mjs --validate",
+        "node --test plugins/seis-core/test/trusted-marketplace.test.mjs"
+      ],
+      "rollback": "Disable or remove the local plugin; the plugin never changes marketplace cards, source contracts, credentials, or external integrations."
     },
     {
       "id": "seis-vulnerability-triage",

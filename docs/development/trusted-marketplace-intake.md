@@ -50,6 +50,8 @@ You do not need to code to curate this layer.
 
 - Data: `content/development/trusted-marketplace-intake.json`
 - Validator: `npm run check:trusted-marketplace-intake`
+- Public SEIS Repo plugin: `seis-trusted-marketplace@seis-repo`
+- Public source: `plugins/seis-core/seis-trusted-marketplace`
 - Related catalog: `content/development/plugin-capability-catalog.json`
 - Related activation doc: `docs/development/aggressive-capability-activation.md`
 

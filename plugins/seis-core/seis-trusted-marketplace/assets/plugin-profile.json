@@ -1,0 +1,40 @@
+{
+  "stableId": "seis-trusted-marketplace",
+  "slug": "seis-trusted-marketplace",
+  "version": "0.0.13",
+  "releaseMicroUnits": 13,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.000000013",
+  "category": "marketplace-governance",
+  "owner": "@seis-governance",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-trusted-marketplace-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "bounded public SEIS marketplace intake contracts",
+      "declared public marketplace card metadata"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-trusted-marketplace-mcp-server.mjs --status",
+    "node scripts/seis-trusted-marketplace-mcp-server.mjs --validate",
+    "node --test plugins/seis-core/test/trusted-marketplace.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin; the plugin never changes marketplace cards, source contracts, credentials, or external integrations.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Public SEIS Repo successor to the legacy local trusted-marketplace bridge for SEIS-GOAL-021.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

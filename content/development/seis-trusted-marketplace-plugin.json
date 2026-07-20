@@ -1,62 +1,48 @@
 {
-  "version": 1,
+  "version": 2,
   "id": "seis-trusted-marketplace-plugin",
-  "status": "local-personal-bridge",
-  "summary": "Bind the personal Codex plugin to the UIX-Apps UIXAppTTR branch so marketplace curation and repo governance stay aligned.",
+  "status": "public-repository-successor",
+  "summary": "Bind the public SEIS Trusted Marketplace plugin to the SEIS Repo marketplace so curated source review remains visible without preserving a legacy installation surface.",
   "plugin": {
     "name": "seis-trusted-marketplace",
     "displayName": "SEIS Trusted Marketplace",
-    "marketplaceName": "personal",
-    "marketplacePath": "/Users/emirhan/.agents/plugins/marketplace.json",
-    "sourcePath": "/Users/emirhan/plugins/seis-trusted-marketplace",
-    "connectionAsset": "assets/seis-repo-connection.json",
-    "capabilityAsset": "assets/capability-map.json",
-    "bridgeHealthSnapshot": "assets/bridge-health-snapshot.json",
-    "requestedEcosystemBundle": "assets/requested-ecosystem-bundle.json",
-    "optionalForRemote": true
+    "marketplaceName": "seis-repo",
+    "marketplacePath": ".agents/plugins/marketplace.json",
+    "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
+    "publicAudience": "everyone",
+    "publicMarketplace": true,
+    "activationPolicy": "approval-gated"
   },
   "pluginRepository": {
-    "name": "seis-trusted-marketplace-plugin",
-    "mode": "private-personal",
-    "localPath": "/Users/emirhan/plugins/seis-trusted-marketplace",
-    "githubRemote": "https://github.com/emirhankudun-ux/seis-trusted-marketplace-plugin.git",
-    "publicReadyDocs": [
-      "docs/publication-readiness.md",
-      "docs/marketplace-setup.md",
-      "screenshots/README.md"
-    ]
+    "name": "SEIS",
+    "mode": "public-repository-app-owned",
+    "canonicalRepository": "SEIS",
+    "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
+    "githubRemote": "https://github.com/emirhankudun-ux/SEIS.git",
+    "public": true
   },
   "repository": {
-    "name": "UIX-Apps",
-    "localWorkspace": "/Users/emirhan/Library/Mobile Documents/com~apple~CloudDocs/Github/_SEIS_WORKSPACE/UIX-Apps-origin-clean",
-    "githubRemote": "https://github.com/emirhankudun-ux/UIX-Apps.git",
-    "branch": "UIXAppTTR"
+    "name": "SEIS",
+    "githubRemote": "https://github.com/emirhankudun-ux/SEIS.git",
+    "canonicalBranch": "main"
   },
   "repoContracts": [
+    ".agents/plugins/marketplace.json",
     "content/development/trusted-marketplace-intake.json",
     "content/development/plugin-capability-catalog.json",
-    "content/development/connector-capability-registry.json",
     "docs/development/trusted-marketplace-intake.md",
     "docs/development/aggressive-capability-activation.md"
   ],
   "qualityCommands": [
-    "npm run check:workspace",
     "npm run check:trusted-marketplace-intake",
     "npm run check:seis-trusted-marketplace-plugin",
-    "npm run check:aggressive-capability-map",
-    "npm run check:connector-activation-report",
-    "npm run automation:publish-readiness"
+    "npm run check:seis-core-trusted-marketplace",
+    "npm run check:seis-repo-marketplace"
   ],
   "pluginQualityCommands": [
-    "npm run validate",
-    "npm run doctor",
-    "npm run doctor:strict",
-    "npm run bridge:snapshot",
-    "npm run bridge:snapshot:check",
-    "npm run ecosystem:bundle",
-    "npm run ecosystem:bundle:check",
-    "python3 /Users/emirhan/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhan/plugins/seis-trusted-marketplace",
-    "codex plugin add seis-trusted-marketplace@personal"
+    "node plugins/seis-core/seis-trusted-marketplace/scripts/seis-trusted-marketplace-mcp-server.mjs --status",
+    "node plugins/seis-core/seis-trusted-marketplace/scripts/seis-trusted-marketplace-mcp-server.mjs --validate",
+    "node --test plugins/seis-core/test/trusted-marketplace.test.mjs"
   ],
   "capabilityLanes": [
     "data-engineering",
@@ -69,23 +55,36 @@
     "testing"
   ],
   "bridgeHealthChecks": [
-    "manifest-parity",
-    "private-personal-mode",
-    "uixappttr-binding",
-    "github-workflow",
-    "safe-install-docs"
+    "public-manifest-parity",
+    "seis-repo-marketplace-binding",
+    "read-only-permission-boundary",
+    "machine-path-exclusion",
+    "approval-gated-activation"
   ],
   "designerWorkflow": [
-    "Open the Codex plugin card from the personal marketplace.",
-    "Choose one capability lane before using live tools or connectors.",
-    "Use the plugin to review trusted GitHub, MCP, Copilot, model, data, testing, monitoring, security, productivity, design, development, and marketplace sources as visual cards.",
-    "Keep live activation blocked until the target, auth, approval, and rollback path are explicit.",
-    "Ask automation to run the repo bridge validator before publishing changes."
+    "Open the SEIS Trusted Marketplace card from SEIS Repo.",
+    "Choose one capability lane before proposing any external source or connector.",
+    "Review trust posture, scope, and user-facing value before activation.",
+    "Keep installs, credentials, external writes, and publication blocked until target, authorization, approval, and rollback are explicit.",
+    "Run the repository validation before handing off a trusted-source decision."
   ],
+  "activationBoundary": {
+    "externalActivation": "approval-required",
+    "network": "disabled-by-default",
+    "secrets": "not-read",
+    "writes": "disabled-by-default",
+    "publicReleaseAllowed": false
+  },
+  "migration": {
+    "legacySourceDirectory": "seis-trusted-marketplace-plugin",
+    "legacyMode": "archived-non-active-reference",
+    "legacyInstallationMutation": false,
+    "replacement": "plugins/seis-core/seis-trusted-marketplace"
+  },
   "safetyRules": [
-    "Preserve unrelated dirty files.",
-    "Keep main sacred and publish only from UIXAppTTR after clean readiness.",
-    "Separate local plugin readiness from GitHub publication state.",
-    "Do not store secrets, access tokens, or external service credentials in the plugin or repo contract."
+    "Keep the public marketplace source path relative to the SEIS repository.",
+    "Do not store user machine paths, credentials, tokens, or external service configuration in this contract.",
+    "Do not activate external marketplace sources from this plugin.",
+    "Preserve legacy source history without presenting it as an active installation surface."
   ]
 }

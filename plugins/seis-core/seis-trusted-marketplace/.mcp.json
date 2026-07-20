@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-trusted-marketplace": {
+      "command": "node",
+      "args": [
+        "scripts/seis-trusted-marketplace-mcp-server.mjs"
+      ]
+    }
+  }
+}

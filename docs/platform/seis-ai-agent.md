@@ -32,11 +32,11 @@ repo-contained lanes.
 Historical `personal` identifiers are retained only in a disabled compatibility record. The `seis`,
 `seis-cloud`, `seis-code`, `seis-design`, and `seis-data` directories remain
 source mirrors for lane development. The repo marketplace publishes the
-canonical `seis-ai-agent` card plus one `seis-repo` card for each of the 62
+canonical `seis-ai-agent` card plus one `seis-repo` card for each of the 63
 public app-owned packages under `plugins/seis-core`.
 
 The AI Core registry keeps exactly 5000 entries inside the SEIS repository. It
-indexes 62 public MIT-licensed app-owned source packages under
+indexes 63 public MIT-licensed app-owned source packages under
 `plugins/seis-core` and separates them from plan-only catalog slots. Historical
 personal marketplace coverage remains a compatibility audit record, not active
 source ownership.
