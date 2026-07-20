@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-install-state",
+  "goalId": "SEIS-GOAL-021",
+  "generatedAt": "2026-07-20",
+  "status": "public-seis-repo-source-available-independent-install-pending",
+  "decision": "not-ready-for-public-release",
+  "purpose": "Make public SEIS Repo source availability, local artifact evidence, independent installation proof, and human release approval visibly distinct so marketplace cards never overstate their runtime or release status.",
+  "plugin": {
+    "name": "seis-public-install-state",
+    "displayName": "SEIS Public Install State",
+    "marketplaceName": "seis-repo",
+    "sourcePath": "plugins/seis-core/seis-public-install-state",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "publicCards": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "count": 370,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "applicationPluginCount": 64,
+    "topicPluginCount": 300,
+    "sourceAvailability": "public-repository-source-available",
+    "installationPolicy": "AVAILABLE",
+    "authenticationPolicy": "ON_INSTALL",
+    "externalInstallationProven": false
+  },
+  "canonicalDefaultInstall": {
+    "installId": "seis-ai-agent@seis-repo",
+    "mode": "single-public-plugin",
+    "sourceAvailability": "public-repository-source-available",
+    "independentInstallationProven": false,
+    "note": "The canonical default install remains separate from source visibility for every direct SEIS Repo card."
+  },
+  "evidence": {
+    "repoLocalArtifactStage": {
+      "status": "repo-local-clean-artifact-staged-external-proof-pending",
+      "verified": true,
+      "marketplaceEntryCount": 370,
+      "stageDeletedAfterValidation": true,
+      "scope": "repo-local-clean-artifact-staging"
+    },
+    "freshTaskReload": {
+      "status": "recorded-local-fresh-task-evidence",
+      "recorded": true,
+      "scope": "canonical-default-install-local-evidence"
+    },
+    "independentRunner": {
+      "contractStatus": "active-evidence-intake-contract",
+      "evidencePath": "content/development/seis-public-plugin-independent-runner-evidence.json",
+      "evidenceStatus": "pending-independent-clean-runner-or-public-install",
+      "recorded": false,
+      "scope": "independent-clean-runner-or-public-install"
+    }
+  },
+  "readiness": {
+    "repositorySourceAvailable": true,
+    "localArtifactStageVerified": true,
+    "freshTaskReloadRecorded": true,
+    "independentInstallationVerified": false,
+    "humanReleaseApprovalRecorded": false,
+    "publicReleaseAllowed": false,
+    "releaseState": "independent-install-proof-and-human-approval-required"
+  },
+  "stateModel": [
+    {
+      "id": "public-source-available",
+      "meaning": "A bounded SEIS Repo card and repository source package are visible to everyone."
+    },
+    {
+      "id": "locally-artifact-validated",
+      "meaning": "A disposable local stage validated declared package artifacts without using a public marketplace installation."
+    },
+    {
+      "id": "independently-installed",
+      "meaning": "A sanitized clean-runner or public package installation record is required before this state can be claimed."
+    },
+    {
+      "id": "release-approved",
+      "meaning": "A human owner must separately approve any release, publication, credentialed activation, or external write."
+    }
+  ],
+  "nextRequiredEvidence": [
+    "Sanitized independent clean-runner or public package installation evidence.",
+    "Human owner approval before any public release, publication, credentialed activation, or external write."
+  ],
+  "safety": {
+    "reads": [
+      ".agents/plugins/marketplace.json",
+      "content/development/seis-public-plugin-family.json",
+      "content/development/seis-public-plugin-external-install-proof.json",
+      "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+      "content/development/seis-public-plugin-fresh-task-proof.json"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "installationMutation": false,
+    "publicationMutation": false
+  }
+}

@@ -1,7 +1,7 @@
 {
   "id": "seis-technology-ontology",
   "name": "seis-technology-ontology",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Read-only searchable technology taxonomy and relationship projection for SEIS.",
   "author": {
     "name": "emirhankudun-ux"

@@ -12,10 +12,10 @@ public `seis-ai-agent@seis-repo` installation.
 The registry contains exactly 5000 unique entries. The count is intentionally
 split into two honest states:
 
-- 73 physical repository plugin sources, including 63 app-owned local plugin
+- 74 physical repository plugin sources, including 64 app-owned local plugin
   packages under
   `plugins/seis-core`;
-- 4927 deterministic catalog-only capability slots generated from the SEIS
+- 4926 deterministic catalog-only capability slots generated from the SEIS
   domain/operation taxonomy.
 
 Catalog-only records are plan-only. They are not implemented, connected,
@@ -23,15 +23,15 @@ route-eligible, authenticated, public marketplace plugins, or proof of a
 provider/MCP integration. This keeps the requested 5000 scale useful to AI
 Core discovery without creating thousands of duplicate source folders.
 
-The 63 app-owned packages currently share the public Command Center release
-train `0.000000013` (`0.0.13` strict semver). The release policy is recorded
+The 64 app-owned packages currently share the public Command Center release
+train `0.000000014` (`0.0.14` strict semver). The release policy is recorded
 in `content/development/seis-core-plugin-release-train.json`; catalog slots do
 not inherit that app release. The public `seis-ai-agent` suite remains on its
 separate release lifecycle.
 
 ## Source and marketplace boundary
 
-All 63 app-owned plugin packages are public MIT-licensed source in the SEIS
+All 64 app-owned plugin packages are public MIT-licensed source in the SEIS
 repository and are available to everyone. Historical personal-plugin evidence
 is retained only for compatibility auditing. The public marketplace exposes the
 canonical orchestrator, five migrated root cards, and one card for each
@@ -75,7 +75,7 @@ IDs and that all 55 have repository counterparts. This is compatibility
 evidence only: all 55 historical cards are now covered by the public
 `seis-repo` marketplace, with five root cards under `plugins/seis` and 50
 historical app cards under `plugins/seis-core`. The active app-owned source
-boundary remains the 63-package public MIT repository set under
+boundary remains the 64-package public MIT repository set under
 `plugins/seis-core`; ten additional app-only audit plugins were added directly
 to that public repository boundary.
 

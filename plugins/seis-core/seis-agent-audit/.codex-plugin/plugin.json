@@ -1,6 +1,6 @@
 {
   "name": "seis-agent-audit",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Audit local agent evidence, cancellation and handoff metadata without executing agents.",
   "author": {
     "name": "Emirhan Kudun"

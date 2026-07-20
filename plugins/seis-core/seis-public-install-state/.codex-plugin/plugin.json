@@ -1,0 +1,36 @@
+{
+  "name": "seis-public-install-state",
+  "version": "0.0.14",
+  "description": "Separate public SEIS Repo card availability from independent install and release proof without installing anything.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Public Install State",
+    "shortDescription": "Show public source, install-evidence, and release-gate state honestly.",
+    "longDescription": "Read bounded public SEIS Repo evidence to distinguish source-visible marketplace cards, local artifact validation, independent installation proof, and human release approval without installing packages, using credentials, changing files, or accessing the network.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "public-source-availability-summary",
+      "local-artifact-evidence-summary",
+      "independent-install-proof-status",
+      "release-gate-separation"
+    ],
+    "defaultPrompt": [
+      "Show the public SEIS Repo install state without installing or publishing anything.",
+      "Explain which SEIS Repo cards are source-visible, locally validated, independently proven, or still approval-gated."
+    ]
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "public-repository",
+    "marketplace",
+    "install-evidence",
+    "release-gate",
+    "read-only"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "seis-codeowners-audit",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Audit local CODEOWNERS coverage without changing GitHub settings.",
   "author": {
     "name": "Emirhan Kudun"

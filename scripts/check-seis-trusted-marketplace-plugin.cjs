@@ -7,6 +7,7 @@ const ROOT = process.cwd();
 const contractPath = path.join(ROOT, "content", "development", "seis-trusted-marketplace-plugin.json");
 const intakePath = path.join(ROOT, "content", "development", "trusted-marketplace-intake.json");
 const marketplacePath = path.join(ROOT, ".agents", "plugins", "marketplace.json");
+const releaseTrainPath = path.join(ROOT, "content", "development", "seis-core-plugin-release-train.json");
 const docsPath = path.join(ROOT, "docs", "development", "seis-trusted-marketplace-plugin.md");
 const packagePath = path.join(ROOT, "package.json");
 const pluginRoot = path.join(ROOT, "plugins", "seis-core", "seis-trusted-marketplace");
@@ -46,6 +47,7 @@ function assertPublicSafe(value, label) {
 const contract = readJson(contractPath);
 const intake = readJson(intakePath);
 const marketplace = readJson(marketplacePath);
+const releaseTrain = readJson(releaseTrainPath);
 const pkg = readJson(packagePath);
 const manifest = readJson(path.join(pluginRoot, ".codex-plugin", "plugin.json"));
 const mcp = readJson(path.join(pluginRoot, ".mcp.json"));
@@ -53,6 +55,12 @@ const profile = readJson(path.join(pluginRoot, "assets", "plugin-profile.json"))
 const docs = readText(docsPath);
 const skill = readText(path.join(pluginRoot, "skills", "seis-trusted-marketplace", "SKILL.md"));
 const entrypointPath = path.join(pluginRoot, "scripts", "seis-trusted-marketplace-mcp-server.mjs");
+const currentRelease = releaseTrain?.currentRelease || {};
+
+if (releaseTrain) {
+  ensure(typeof currentRelease.label === "string" && currentRelease.label.length > 0, "release train must expose a current release label");
+  ensure(typeof currentRelease.semver === "string" && currentRelease.semver.length > 0, "release train must expose a current strict semver");
+}
 
 if (contract) {
   ensure(contract.version === 2, "trusted marketplace bridge schema version must be 2");
@@ -107,7 +115,7 @@ if (marketplace) {
 
 if (manifest) {
   ensure(manifest.name === "seis-trusted-marketplace", "trusted marketplace manifest name is invalid");
-  ensure(manifest.version === "0.0.13", "trusted marketplace manifest version is invalid");
+  ensure(manifest.version === currentRelease.semver, "trusted marketplace manifest version must match the current app release");
   ensure(manifest.interface?.displayName === "SEIS Trusted Marketplace", "trusted marketplace manifest display name is invalid");
   ensure(manifest.mcpServers === "./.mcp.json", "trusted marketplace manifest must expose MCP metadata");
   ensure(manifest.license === "MIT", "trusted marketplace manifest must be MIT licensed");
@@ -122,8 +130,8 @@ if (mcp) {
 
 if (profile) {
   ensure(profile.stableId === "seis-trusted-marketplace", "trusted marketplace profile id is invalid");
-  ensure(profile.version === "0.0.13", "trusted marketplace profile version is invalid");
-  ensure(profile.releaseTrainVersion === "0.000000013", "trusted marketplace profile release train is invalid");
+  ensure(profile.version === currentRelease.semver, "trusted marketplace profile version must match the current app release");
+  ensure(profile.releaseTrainVersion === currentRelease.label, "trusted marketplace profile release train must match the current app release");
   ensure(profile.sourceClassification === "public-SEIS-repository", "trusted marketplace profile source classification is invalid");
   ensure(profile.status === "approved-public-readonly", "trusted marketplace profile status is invalid");
   ensure(profile.implementationState === "functional-local-demo", "trusted marketplace profile implementation state is invalid");

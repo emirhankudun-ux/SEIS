@@ -15,16 +15,16 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 63,
+    "marketplaceEntryCount": 64,
     "coreSourceOwner": false
   },
   "release": {
-    "label": "0.000000013",
-    "semver": "0.0.13",
+    "label": "0.000000014",
+    "semver": "0.0.14",
     "kind": "large-code-change",
     "major": 0,
     "revision": 0,
-    "microUnits": 13
+    "microUnits": 14
   },
   "policy": {
     "sourceOwnership": "apps/seis-core",
@@ -48,11 +48,11 @@
     ]
   },
   "counts": {
-    "discovered": 63,
-    "returned": 63,
-    "contractValid": 63,
+    "discovered": 64,
+    "returned": 64,
+    "contractValid": 64,
     "contractInvalid": 0,
-    "statusReady": 63,
+    "statusReady": 64,
     "statusNotChecked": 0
   },
   "query": null,
@@ -71,12 +71,12 @@
       "sourcePath": "plugins/seis-core/seis-a11y-regression",
       "entrypoint": "scripts/seis-a11y-regression-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -120,12 +120,12 @@
       "sourcePath": "plugins/seis-core/seis-action-pin-audit",
       "entrypoint": "scripts/seis-action-pin-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -169,12 +169,12 @@
       "sourcePath": "plugins/seis-core/seis-agent-audit",
       "entrypoint": "scripts/seis-agent-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -219,12 +219,12 @@
       "sourcePath": "plugins/seis-core/seis-agent-contract-validator",
       "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -269,12 +269,12 @@
       "sourcePath": "plugins/seis-core/seis-approval-gate-review",
       "entrypoint": "scripts/seis-approval-gate-review-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -322,12 +322,12 @@
       "sourcePath": "plugins/seis-core/seis-architecture-drift",
       "entrypoint": "scripts/seis-architecture-drift-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -374,12 +374,12 @@
       "sourcePath": "plugins/seis-core/seis-artifact-attestation",
       "entrypoint": "scripts/seis-artifact-attestation-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -425,12 +425,12 @@
       "sourcePath": "plugins/seis-core/seis-branch-protection-audit",
       "entrypoint": "scripts/seis-branch-protection-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -478,12 +478,12 @@
       "sourcePath": "plugins/seis-core/seis-canonical-registry-validator",
       "entrypoint": "scripts/seis-canonical-registry-validator-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -527,12 +527,12 @@
       "sourcePath": "plugins/seis-core/seis-changelog-validator",
       "entrypoint": "scripts/seis-changelog-validator-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -576,12 +576,12 @@
       "sourcePath": "plugins/seis-core/seis-codeowners-audit",
       "entrypoint": "scripts/seis-codeowners-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -625,12 +625,12 @@
       "sourcePath": "plugins/seis-core/seis-community-health",
       "entrypoint": "scripts/seis-community-health-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -673,12 +673,12 @@
       "sourcePath": "plugins/seis-core/seis-context-efficiency",
       "entrypoint": "scripts/seis-context-efficiency-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -725,12 +725,12 @@
       "sourcePath": "plugins/seis-core/seis-contract-compatibility",
       "entrypoint": "scripts/seis-contract-compatibility-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -777,12 +777,12 @@
       "sourcePath": "plugins/seis-core/seis-contributor-map",
       "entrypoint": "scripts/seis-contributor-map-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -829,12 +829,12 @@
       "sourcePath": "plugins/seis-core/seis-cost-latency-budget",
       "entrypoint": "scripts/seis-cost-latency-budget-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -882,12 +882,12 @@
       "sourcePath": "plugins/seis-core/seis-data-retention-audit",
       "entrypoint": "scripts/seis-data-retention-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -934,12 +934,12 @@
       "sourcePath": "plugins/seis-core/seis-dependency-freshness",
       "entrypoint": "scripts/seis-dependency-freshness-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -984,12 +984,12 @@
       "sourcePath": "plugins/seis-core/seis-design-token-audit",
       "entrypoint": "scripts/seis-design-token-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1034,12 +1034,12 @@
       "sourcePath": "plugins/seis-core/seis-doc-indexer",
       "entrypoint": "scripts/seis-doc-indexer-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1083,12 +1083,12 @@
       "sourcePath": "plugins/seis-core/seis-docs-freshness",
       "entrypoint": "scripts/seis-docs-freshness-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1131,12 +1131,12 @@
       "sourcePath": "plugins/seis-core/seis-dora-metrics",
       "entrypoint": "scripts/seis-dora-metrics-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1182,12 +1182,12 @@
       "sourcePath": "plugins/seis-core/seis-download-anomaly",
       "entrypoint": "scripts/seis-download-anomaly-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1233,12 +1233,12 @@
       "sourcePath": "plugins/seis-core/seis-github-metrics-collector",
       "entrypoint": "scripts/seis-github-metrics-collector-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1285,12 +1285,12 @@
       "sourcePath": "plugins/seis-core/seis-goal-dependency-map",
       "entrypoint": "scripts/seis-goal-dependency-map-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1339,12 +1339,12 @@
       "sourcePath": "plugins/seis-core/seis-goal-integrity",
       "entrypoint": "scripts/seis-goal-integrity-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1387,12 +1387,12 @@
       "sourcePath": "plugins/seis-core/seis-issue-triage",
       "entrypoint": "scripts/seis-issue-triage-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1438,12 +1438,12 @@
       "sourcePath": "plugins/seis-core/seis-license-compatibility",
       "entrypoint": "scripts/seis-license-compatibility-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1487,12 +1487,12 @@
       "sourcePath": "plugins/seis-core/seis-localization-coverage",
       "entrypoint": "scripts/seis-localization-coverage-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1536,12 +1536,12 @@
       "sourcePath": "plugins/seis-core/seis-maintainer-risk",
       "entrypoint": "scripts/seis-maintainer-risk-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1590,12 +1590,12 @@
       "sourcePath": "plugins/seis-core/seis-marketplace-integrity",
       "entrypoint": "scripts/seis-marketplace-integrity-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1641,12 +1641,12 @@
       "sourcePath": "plugins/seis-core/seis-mcp-inventory",
       "entrypoint": "scripts/seis-mcp-inventory-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1690,12 +1690,12 @@
       "sourcePath": "plugins/seis-core/seis-migration-guide-check",
       "entrypoint": "scripts/seis-migration-guide-check-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1739,12 +1739,12 @@
       "sourcePath": "plugins/seis-core/seis-model-fallback",
       "entrypoint": "scripts/seis-model-fallback-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1789,12 +1789,12 @@
       "sourcePath": "plugins/seis-core/seis-offline-mode-check",
       "entrypoint": "scripts/seis-offline-mode-check-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1841,12 +1841,12 @@
       "sourcePath": "plugins/seis-core/seis-package-adoption",
       "entrypoint": "scripts/seis-package-adoption-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1892,12 +1892,12 @@
       "sourcePath": "plugins/seis-core/seis-performance-budget",
       "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1942,12 +1942,12 @@
       "sourcePath": "plugins/seis-core/seis-plugin-discovery",
       "entrypoint": "scripts/seis-plugin-discovery-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -1994,12 +1994,12 @@
       "sourcePath": "plugins/seis-core/seis-plugin-migration",
       "entrypoint": "scripts/seis-plugin-migration-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2044,12 +2044,12 @@
       "sourcePath": "plugins/seis-core/seis-pr-cycle-time",
       "entrypoint": "scripts/seis-pr-cycle-time-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2096,12 +2096,12 @@
       "sourcePath": "plugins/seis-core/seis-prompt-injection-audit",
       "entrypoint": "scripts/seis-prompt-injection-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2148,12 +2148,12 @@
       "sourcePath": "plugins/seis-core/seis-provider-health",
       "entrypoint": "scripts/seis-provider-health-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2199,12 +2199,12 @@
       "sourcePath": "plugins/seis-core/seis-public-distribution-audit",
       "entrypoint": "scripts/seis-public-distribution-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2237,6 +2237,59 @@
       "rollback": "Disable or remove the local plugin; public marketplace cards and source contracts are never modified by this plugin."
     },
     {
+      "id": "seis-public-install-state",
+      "name": "seis-public-install-state",
+      "displayName": "SEIS Public Install State",
+      "description": "Separate public SEIS Repo card availability from independent install and release proof without installing anything.",
+      "category": "Developer",
+      "capabilities": [
+        "public-source-availability-summary",
+        "local-artifact-evidence-summary",
+        "independent-install-proof-status",
+        "release-gate-separation"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-public-install-state",
+      "entrypoint": "scripts/seis-public-install-state-mcp-server.mjs",
+      "release": {
+        "label": "0.000000014",
+        "semver": "0.0.14",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 14
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": null,
+      "permissions": {
+        "read": [
+          "bounded public SEIS Repo marketplace and install-evidence contracts"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-public-install-state-mcp-server.mjs --status",
+        "node scripts/seis-public-install-state-mcp-server.mjs --validate",
+        "npm run check:seis-public-install-state",
+        "node --test plugins/seis-core/test/public-install-state.test.mjs"
+      ],
+      "rollback": "Disable or remove the local plugin; it never installs packages, changes marketplace cards, records approvals, or mutates source contracts."
+    },
+    {
       "id": "seis-public-safe-scan",
       "name": "seis-public-safe-scan",
       "displayName": "SEIS Public-Safe Scan",
@@ -2250,12 +2303,12 @@
       "sourcePath": "plugins/seis-core/seis-public-safe-scan",
       "entrypoint": "scripts/seis-public-safe-scan-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2299,12 +2352,12 @@
       "sourcePath": "plugins/seis-core/seis-rag-citation-coverage",
       "entrypoint": "scripts/seis-rag-citation-coverage-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2348,12 +2401,12 @@
       "sourcePath": "plugins/seis-core/seis-release-cadence",
       "entrypoint": "scripts/seis-release-cadence-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2398,12 +2451,12 @@
       "sourcePath": "plugins/seis-core/seis-release-readiness",
       "entrypoint": "scripts/seis-release-readiness-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2449,12 +2502,12 @@
       "sourcePath": "plugins/seis-core/seis-repository-health",
       "entrypoint": "scripts/seis-repository-health-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2499,12 +2552,12 @@
       "sourcePath": "plugins/seis-core/seis-repository-scorecard",
       "entrypoint": "scripts/seis-repository-scorecard-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2549,12 +2602,12 @@
       "sourcePath": "plugins/seis-core/seis-rollback-readiness",
       "entrypoint": "scripts/seis-rollback-readiness-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2602,12 +2655,12 @@
       "sourcePath": "plugins/seis-core/seis-route-explainer",
       "entrypoint": "scripts/seis-route-explainer-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2651,12 +2704,12 @@
       "sourcePath": "plugins/seis-core/seis-sbom-generator",
       "entrypoint": "scripts/seis-sbom-generator-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2701,12 +2754,12 @@
       "sourcePath": "plugins/seis-core/seis-secret-boundary-scan",
       "entrypoint": "scripts/seis-secret-boundary-scan-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2750,12 +2803,12 @@
       "sourcePath": "plugins/seis-core/seis-semver-audit",
       "entrypoint": "scripts/seis-semver-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2801,12 +2854,12 @@
       "sourcePath": "plugins/seis-core/seis-source-provenance",
       "entrypoint": "scripts/seis-source-provenance-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2851,12 +2904,12 @@
       "sourcePath": "plugins/seis-core/seis-technology-ontology",
       "entrypoint": "scripts/seis-technology-ontology-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2900,12 +2953,12 @@
       "sourcePath": "plugins/seis-core/seis-test-flakiness",
       "entrypoint": "scripts/seis-test-flakiness-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -2950,12 +3003,12 @@
       "sourcePath": "plugins/seis-core/seis-tool-permission-audit",
       "entrypoint": "scripts/seis-tool-permission-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -3004,12 +3057,12 @@
       "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
       "entrypoint": "scripts/seis-trusted-marketplace-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -3055,12 +3108,12 @@
       "sourcePath": "plugins/seis-core/seis-vulnerability-triage",
       "entrypoint": "scripts/seis-vulnerability-triage-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -3105,12 +3158,12 @@
       "sourcePath": "plugins/seis-core/seis-workflow-linter",
       "entrypoint": "scripts/seis-workflow-linter-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -3154,12 +3207,12 @@
       "sourcePath": "plugins/seis-core/seis-workflow-permission-audit",
       "entrypoint": "scripts/seis-workflow-permission-audit-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",
@@ -3205,12 +3258,12 @@
       "sourcePath": "plugins/seis-core/seis-workspace-inspector",
       "entrypoint": "scripts/seis-workspace-inspector-mcp-server.mjs",
       "release": {
-        "label": "0.000000013",
-        "semver": "0.0.13",
+        "label": "0.000000014",
+        "semver": "0.0.14",
         "kind": "large-code-change",
         "major": 0,
         "revision": 0,
-        "microUnits": 13
+        "microUnits": 14
       },
       "implementationState": "functional-local-demo",
       "lifecycleStatus": "approved-public-readonly",

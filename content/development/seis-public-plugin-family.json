@@ -3,7 +3,7 @@
   "id": "seis-public-plugin-family",
   "generatedAt": "2026-07-12",
   "mode": "public_seis_agent_with_migrated_root_app_and_topic_repository_plugins",
-  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 63 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
+  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 64 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
   "defaultInstall": {
     "installId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
@@ -16,10 +16,10 @@
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL",
     "publicAudience": "everyone",
-    "publicPluginCount": 369,
+    "publicPluginCount": 370,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 63,
+    "applicationPluginCount": 64,
     "topicPluginCount": 300,
     "entries": [
       {
@@ -361,6 +361,13 @@
       {
         "name": "seis-public-distribution-audit",
         "sourcePath": "./plugins/seis-core/seis-public-distribution-audit",
+        "category": "Developer",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-public-install-state",
+        "sourcePath": "./plugins/seis-core/seis-public-install-state",
         "category": "Developer",
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
@@ -2991,6 +2998,15 @@
       "sourcePath": "./plugins/seis-core/seis-public-distribution-audit",
       "category": "Developer",
       "installId": "seis-public-distribution-audit@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-public-install-state",
+      "sourcePath": "./plugins/seis-core/seis-public-install-state",
+      "category": "Developer",
+      "installId": "seis-public-install-state@seis-repo",
       "license": "MIT",
       "publicStatus": "repo_marketplace_available",
       "liveRuntimeStatus": "local_demo_or_auth_gated"

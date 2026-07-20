@@ -1,7 +1,7 @@
 {
   "id": "seis-approval-gate-review",
   "name": "seis-approval-gate-review",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Review human approval boundaries and release-gate evidence without executing gated work.",
   "author": {
     "name": "emirhankudun-ux"

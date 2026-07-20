@@ -1,6 +1,6 @@
 {
   "name": "seis-package-adoption",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Summarize recorded package adoption signals from local evidence.",
   "author": {
     "name": "Local developer"

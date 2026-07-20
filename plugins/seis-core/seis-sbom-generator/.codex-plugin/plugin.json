@@ -1,6 +1,6 @@
 {
   "name": "seis-sbom-generator",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Generate an in-memory local SBOM projection from bounded manifests without writing artifacts.",
   "author": {
     "name": "Emirhan Kudun"

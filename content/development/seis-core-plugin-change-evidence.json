@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-core-plugin-change-evidence",
   "goalId": "SEIS-GOAL-021",
-  "baseCommit": "3ebb5ac1d3fb68a0284dc56cf491719205577a40",
+  "baseCommit": "259bed830996f8ed41ecbde111cc36140a5b06f0",
   "generatedAt": "2026-07-15",
   "scope": {
     "application": "apps/seis-core",
@@ -29,52 +29,52 @@
     ]
   },
   "threshold": 500,
-  "codeLinesAdded": 565,
-  "codeLinesRemoved": 170,
-  "codeLinesChanged": 735,
+  "codeLinesAdded": 698,
+  "codeLinesRemoved": 16,
+  "codeLinesChanged": 714,
   "eligible": true,
   "files": [
     {
-      "path": "plugins/seis-core/seis-trusted-marketplace/scripts/seis-trusted-marketplace-mcp-server.mjs",
-      "added": 298,
+      "path": "plugins/seis-core/seis-public-install-state/scripts/seis-public-install-state-mcp-server.mjs",
+      "added": 309,
       "removed": 0,
       "state": "untracked",
-      "changed": 298
+      "changed": 309
     },
     {
-      "path": "scripts/check-seis-trusted-marketplace-plugin.cjs",
-      "added": 107,
-      "removed": 153,
-      "state": "tracked-diff",
-      "changed": 260
-    },
-    {
-      "path": "plugins/seis-core/test/trusted-marketplace.test.mjs",
-      "added": 96,
+      "path": "scripts/create-seis-public-install-state.mjs",
+      "added": 227,
       "removed": 0,
       "state": "untracked",
-      "changed": 96
+      "changed": 227
+    },
+    {
+      "path": "plugins/seis-core/test/public-install-state.test.mjs",
+      "added": 98,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 98
     },
     {
       "path": "plugins/seis-core/seis-public-distribution-audit/scripts/seis-public-distribution-audit-mcp-server.mjs",
-      "added": 29,
+      "added": 40,
       "removed": 2,
       "state": "tracked-diff",
-      "changed": 31
+      "changed": 42
     },
     {
       "path": "apps/seis-core/script.js",
-      "added": 11,
-      "removed": 11,
+      "added": 7,
+      "removed": 7,
       "state": "tracked-diff",
-      "changed": 22
+      "changed": 14
     },
     {
-      "path": "scripts/check-trusted-marketplace-intake.cjs",
-      "added": 19,
-      "removed": 0,
+      "path": "scripts/check-seis-trusted-marketplace-plugin.cjs",
+      "added": 11,
+      "removed": 3,
       "state": "tracked-diff",
-      "changed": 19
+      "changed": 14
     },
     {
       "path": "plugins/seis-core/test/plugin-audit.test.mjs",
@@ -99,10 +99,10 @@
     },
     {
       "path": "scripts/create-seis-core-plugin-sources.mjs",
-      "added": 1,
+      "added": 2,
       "removed": 0,
       "state": "tracked-diff",
-      "changed": 1
+      "changed": 2
     }
   ]
 }

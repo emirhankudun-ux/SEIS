@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-public-install-state": {
+      "command": "node",
+      "args": [
+        "scripts/seis-public-install-state-mcp-server.mjs"
+      ]
+    }
+  }
+}

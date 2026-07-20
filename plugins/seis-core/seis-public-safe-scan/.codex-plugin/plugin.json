@@ -1,6 +1,6 @@
 {
   "name": "seis-public-safe-scan",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Scan bounded local text for redacted public-private boundary findings.",
   "author": {
     "name": "Emirhan Kudun"

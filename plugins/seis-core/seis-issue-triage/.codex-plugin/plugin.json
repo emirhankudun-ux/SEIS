@@ -1,6 +1,6 @@
 {
   "name": "seis-issue-triage",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Classify recorded local issue reports for human triage.",
   "author": {
     "name": "Local developer"

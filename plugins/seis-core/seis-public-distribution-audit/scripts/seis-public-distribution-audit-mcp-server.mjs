@@ -16,6 +16,7 @@ const CONTRACTS = Object.freeze({
   unifiedSuite: "plugins/seis-ai-agent/assets/unified-suite.json",
   lifecycle: "content/development/seis-public-plugin-lifecycle.json",
   trustedMarketplace: "content/development/seis-trusted-marketplace-plugin.json",
+  publicInstallState: "content/development/seis-public-install-state.json",
   project: "project.ecosystem.yaml"
 });
 
@@ -49,6 +50,7 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
   const unifiedSuite = loaded.contracts.unifiedSuite;
   const lifecycle = loaded.contracts.lifecycle;
   const trustedMarketplace = loaded.contracts.trustedMarketplace;
+  const publicInstallState = loaded.contracts.publicInstallState;
   const project = parseProjectBoundary(loaded.contracts.project);
   const rootPlugins = safeArray(family.migratedRootPlugins);
   const appPlugins = safeArray(family.applicationPlugins);
@@ -80,8 +82,9 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
   validateMarketplaceFamilies(marketplaceEntries, canonicalNames, rootNames, appNames, topicNames, findings);
   validateApplicationProjections(appSources, appCatalog, unifiedSuite, lifecycle, appNames, findings, includeCatalogStatus);
   validateTrustedMarketplaceBridge(trustedMarketplace, findings);
+  validatePublicInstallState(publicInstallState, expectedCardCount, canonicalNames.length, rootNames.length, appNames.length, topicNames.length, findings);
   validateProjectBoundary(project, expectedCardCount, appNames.length, topicNames.length, rootNames.length, findings);
-  validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, trustedMarketplace, project, findings);
+  validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, trustedMarketplace, publicInstallState, project, findings);
 
   const errorCount = findings.filter((finding) => finding.severity === "error").length;
   return {
@@ -200,7 +203,35 @@ function validateTrustedMarketplaceBridge(bridge, findings) {
   ensure(activationBoundary.externalActivation === "approval-required", findings, "trusted-marketplace-activation-boundary-invalid");
 }
 
-function validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, trustedMarketplace, project, findings) {
+function validatePublicInstallState(state, expectedCardCount, canonicalCount, rootCount, applicationCount, topicCount, findings) {
+  const plugin = state?.plugin || {};
+  const publicCards = state?.publicCards || {};
+  const readiness = state?.readiness || {};
+  ensure(state.id === "seis-public-install-state", findings, "public-install-state-id-invalid");
+  ensure(state.goalId === "SEIS-GOAL-021", findings, "public-install-state-goal-invalid");
+  ensure(["public-seis-repo-source-available-independent-install-pending", "public-seis-repo-source-available-independent-install-recorded"].includes(state.status), findings, "public-install-state-status-invalid");
+  ensure(state.decision === "not-ready-for-public-release", findings, "public-install-state-decision-invalid");
+  ensure(plugin.name === "seis-public-install-state", findings, "public-install-state-plugin-name-invalid");
+  ensure(plugin.marketplaceName === "seis-repo", findings, "public-install-state-marketplace-invalid");
+  ensure(plugin.sourcePath === "plugins/seis-core/seis-public-install-state", findings, "public-install-state-source-path-invalid");
+  ensure(plugin.publicAudience === "everyone", findings, "public-install-state-audience-invalid");
+  ensure(plugin.publicMarketplace === true, findings, "public-install-state-marketplace-availability-invalid");
+  ensure(publicCards.count === expectedCardCount, findings, "public-install-state-card-count-invalid");
+  ensure(publicCards.canonicalOrchestratorCount === canonicalCount, findings, "public-install-state-canonical-count-invalid");
+  ensure(publicCards.migratedRootPluginCount === rootCount, findings, "public-install-state-root-count-invalid");
+  ensure(publicCards.applicationPluginCount === applicationCount, findings, "public-install-state-application-count-invalid");
+  ensure(publicCards.topicPluginCount === topicCount, findings, "public-install-state-topic-count-invalid");
+  ensure(publicCards.sourceAvailability === "public-repository-source-available", findings, "public-install-state-source-availability-invalid");
+  ensure(state.canonicalDefaultInstall?.installId === "seis-ai-agent@seis-repo", findings, "public-install-state-canonical-install-invalid");
+  ensure(state.evidence?.repoLocalArtifactStage?.verified === true, findings, "public-install-state-artifact-stage-invalid");
+  ensure(state.evidence?.repoLocalArtifactStage?.marketplaceEntryCount === expectedCardCount, findings, "public-install-state-artifact-count-invalid");
+  ensure(state.evidence?.independentRunner?.contractStatus === "active-evidence-intake-contract", findings, "public-install-state-independent-contract-invalid");
+  ensure(readiness.repositorySourceAvailable === true, findings, "public-install-state-source-readiness-invalid");
+  ensure(readiness.localArtifactStageVerified === true, findings, "public-install-state-artifact-readiness-invalid");
+  ensure(readiness.publicReleaseAllowed === false, findings, "public-install-state-must-not-claim-release");
+}
+
+function validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, trustedMarketplace, publicInstallState, project, findings) {
   const values = [
     marketplace.name,
     marketplace.interface?.displayName,
@@ -223,6 +254,13 @@ function validatePublicTerminology(marketplace, family, appSources, appCatalog, 
     trustedMarketplace.pluginRepository?.mode,
     trustedMarketplace.pluginRepository?.canonicalRepository,
     trustedMarketplace.activationBoundary?.externalActivation,
+    publicInstallState.status,
+    publicInstallState.plugin?.name,
+    publicInstallState.plugin?.marketplaceName,
+    publicInstallState.plugin?.sourcePath,
+    publicInstallState.plugin?.publicAudience,
+    publicInstallState.publicCards?.sourceAvailability,
+    publicInstallState.canonicalDefaultInstall?.installId,
     project.marketplaceName
   ];
   for (const value of values) {
