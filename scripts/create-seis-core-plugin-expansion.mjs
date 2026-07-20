@@ -14,8 +14,8 @@ const sourceRoot = path.join(root, "plugins", "seis-core");
 const releaseTrain = readJson(path.join(root, "content", "development", "seis-core-plugin-release-train.json"));
 const currentRelease = releaseTrain.currentRelease;
 
-if (PLUGIN_AUDIT_DEFINITIONS.length !== APP_PLUGIN_EXPANSION_TARGET - 50) {
-  throw new Error("Expansion definition count must add exactly ten app-owned plugins.");
+if (PLUGIN_AUDIT_DEFINITIONS.length !== 10) {
+  throw new Error("Expansion definition count must retain exactly ten bounded audit plugins.");
 }
 
 for (const definition of PLUGIN_AUDIT_DEFINITIONS) {

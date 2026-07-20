@@ -21,9 +21,9 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 60,
-  "expectedPluginCount": 60,
-  "readyCount": 60,
+  "pluginCount": 61,
+  "expectedPluginCount": 61,
+  "readyCount": 61,
   "attentionCount": 0,
   "failureCount": 0,
   "failures": [],
@@ -497,6 +497,22 @@
       "version": "0.0.13",
       "releaseTrainVersion": "0.000000013",
       "entrypoint": "scripts/seis-maintainer-risk-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-marketplace-integrity",
+      "version": "0.0.13",
+      "releaseTrainVersion": "0.000000013",
+      "entrypoint": "scripts/seis-marketplace-integrity-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
         "write": [],

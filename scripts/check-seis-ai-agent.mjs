@@ -117,8 +117,8 @@ ensure(profile?.applicationSourceBoundary?.installSurface === "repo-source-app",
 ensure(profile?.applicationSourceBoundary?.sourceAvailableInRepository === true, "profile must mark app sources as repo-available");
 ensure(profile?.applicationSourceBoundary?.publicRepositoryAvailable === true, "profile must mark app sources as public-repository available");
 ensure(profile?.applicationSourceBoundary?.publicAudience === "everyone", "profile app public audience must be everyone");
-ensure(profile?.applicationSourceBoundary?.applicationOwnedPluginCount === 60, "profile must expose all 60 app-owned plugins");
-ensure(profile?.applicationSourceBoundary?.publicMarketplaceEntryCount === 60, "profile must expose all app-owned marketplace cards");
+ensure(profile?.applicationSourceBoundary?.applicationOwnedPluginCount === APP_PLUGIN_EXPANSION_TARGET, `profile must expose all ${APP_PLUGIN_EXPANSION_TARGET} app-owned plugins`);
+ensure(profile?.applicationSourceBoundary?.publicMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, `profile must expose all ${APP_PLUGIN_EXPANSION_TARGET} app-owned marketplace cards`);
 ensure(profile?.applicationSourceBoundary?.publicReleaseAllowed === false, "app-owned plugins must remain public-release gated");
 ensure(profile?.applicationSourceBoundary?.coreSourceOwner === false, "profile must keep packages/seis-ai out of app source ownership");
 ensure(profile?.terminalInstall?.defaultTarget === "seis-ai-agent@seis-repo", "profile must keep SEIS-Agent as terminal default target");
@@ -252,13 +252,13 @@ function validateInstallerPlan(extraArgs) {
   ensure(payload?.readiness?.unifiedSuite?.componentCount >= 10, "installer unified suite must expose every current component");
   ensure(payload?.readiness?.applicationSource?.applicationPath === "apps/seis-core", "installer must expose the SEIS Core app path");
   ensure(payload?.readiness?.applicationSource?.sourceRoot === "plugins/seis-core", "installer must expose the app-owned source root");
-  ensure(payload?.readiness?.applicationSource?.pluginCount === 60, "installer must expose all 60 app-owned plugins");
+  ensure(payload?.readiness?.applicationSource?.pluginCount === APP_PLUGIN_EXPANSION_TARGET, `installer must expose all ${APP_PLUGIN_EXPANSION_TARGET} app-owned plugins`);
   ensure(payload?.readiness?.applicationSource?.sourceAvailableInRepository === true, "installer must expose app sources as repo-available");
   ensure(payload?.readiness?.applicationSource?.publicRepositoryAvailable === true, "installer must expose app sources as public-repository available");
   ensure(payload?.readiness?.applicationSource?.publicAudience === "everyone", "installer app public audience must be everyone");
   ensure(payload?.readiness?.applicationSource?.marketplaceName === "seis-repo", "installer app marketplace must be seis-repo");
   ensure(payload?.readiness?.applicationSource?.publicMarketplace === true, "installer must expose app sources in the public marketplace");
-  ensure(payload?.readiness?.applicationSource?.marketplaceEntryCount === 60, "installer must expose all app-owned marketplace cards");
+  ensure(payload?.readiness?.applicationSource?.marketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, `installer must expose all ${APP_PLUGIN_EXPANSION_TARGET} app-owned marketplace cards`);
   ensure(payload?.readiness?.consolidationPolicy?.includes("SEIS-Agent is the canonical public install target"), "installer must document the canonical public plugin policy");
   ensure(payload?.readiness?.canonicalization?.effectivePluginCount === 1, "installer must expose one canonical public plugin");
   ensure(payload?.readiness?.canonicalization?.legacyAliasCount === 5, "installer must preserve five legacy aliases");

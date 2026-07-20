@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 import {
   TOPIC_PLUGIN_SOURCE_ROOT,
   TOPIC_PLUGIN_TARGET,
@@ -215,7 +216,7 @@ const canonicalMarketplacePlugins = publicPlugins.filter((plugin) => plugin.name
 const migratedRootMarketplacePlugins = publicPlugins.filter((plugin) => ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"].includes(plugin.name));
 const applicationMarketplacePlugins = discoverApplicationMarketplacePlugins();
 const topicMarketplacePlugins = discoverTopicMarketplacePlugins();
-if (applicationMarketplacePlugins.length !== 60) throw new Error(`Expected 60 app marketplace packages; found ${applicationMarketplacePlugins.length}`);
+if (applicationMarketplacePlugins.length !== APP_PLUGIN_EXPANSION_TARGET) throw new Error(`Expected ${APP_PLUGIN_EXPANSION_TARGET} app marketplace packages; found ${applicationMarketplacePlugins.length}`);
 if (topicMarketplacePlugins.length !== TOPIC_PLUGIN_TARGET) throw new Error(`Expected ${TOPIC_PLUGIN_TARGET} topic marketplace packages; found ${topicMarketplacePlugins.length}`);
 if (migratedRootMarketplacePlugins.length !== 5) throw new Error(`Expected five migrated root marketplace packages; found ${migratedRootMarketplacePlugins.length}`);
 const marketplacePlugins = [
@@ -250,7 +251,7 @@ const contract = {
   generatedAt: GENERATED_AT,
   mode: "public_seis_agent_with_migrated_root_app_and_topic_repository_plugins",
   summary:
-    "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 60 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
+    `SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, ${APP_PLUGIN_EXPANSION_TARGET} app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.`,
   defaultInstall: {
     installId: "seis-ai-agent@seis-repo",
     mode: "single-public-plugin",

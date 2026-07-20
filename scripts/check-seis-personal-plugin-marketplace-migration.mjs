@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const root = process.cwd();
 const failures = [];
 const coveragePath = "content/development/seis-ai-core-personal-plugin-coverage.json";
@@ -28,7 +30,7 @@ const publicNameForLegacyId = new Map(legacyPublicRenames.map((rename) => [renam
 ensure(historicalPluginIds.length === 55, "historical coverage must retain 55 SEIS plugin IDs");
 ensure(migratedRootPlugins.length === 5, "public family must publish all five migrated root packages");
 ensure(family?.marketplace?.migratedRootPluginCount === migratedRootPlugins.length, "public family migrated root count must match the root package list");
-ensure(applicationPlugins.length === 60, "public family must retain every app-owned package");
+ensure(applicationPlugins.length === APP_PLUGIN_EXPANSION_TARGET, `public family must retain every ${APP_PLUGIN_EXPANSION_TARGET} app-owned packages`);
 ensure(topicPlugins.length === 300, "public family must retain every objective-derived topic package");
 ensure(canonicalPlugins.length === 1 && canonicalPlugins[0]?.name === "seis-ai-agent", "SEIS-Agent must remain the sole canonical default install");
 ensure(marketplaceEntries.length === expectedMarketplaceCount, "repo marketplace count must match canonical, root, app, and topic package families");

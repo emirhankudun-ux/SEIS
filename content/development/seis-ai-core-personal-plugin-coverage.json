@@ -317,7 +317,7 @@
       }
     ],
     "applicationSourceRoot": "plugins/seis-core",
-    "applicationOwnedCount": 60,
+    "applicationOwnedCount": 61,
     "applicationOwnedPluginIds": [
       "seis-a11y-regression",
       "seis-action-pin-audit",
@@ -349,6 +349,7 @@
       "seis-license-compatibility",
       "seis-localization-coverage",
       "seis-maintainer-risk",
+      "seis-marketplace-integrity",
       "seis-mcp-inventory",
       "seis-migration-guide-check",
       "seis-model-fallback",
@@ -380,7 +381,7 @@
       "seis-workflow-permission-audit",
       "seis-workspace-inspector"
     ],
-    "applicationOnlyCount": 10,
+    "applicationOnlyCount": 11,
     "applicationOnlyPluginIds": [
       "seis-approval-gate-review",
       "seis-architecture-drift",
@@ -388,6 +389,7 @@
       "seis-cost-latency-budget",
       "seis-data-retention-audit",
       "seis-goal-dependency-map",
+      "seis-marketplace-integrity",
       "seis-offline-mode-check",
       "seis-prompt-injection-audit",
       "seis-rollback-readiness",

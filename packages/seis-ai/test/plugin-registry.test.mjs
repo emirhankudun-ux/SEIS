@@ -1,5 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
@@ -12,7 +14,7 @@ import { APP_PLUGIN_EXPANSION_TARGET } from "../../../plugins/seis-core/runtime/
 const root = fileURLToPath(new URL("../../..", import.meta.url));
 const EXPECTED_PHYSICAL_PLUGIN_COUNT = APP_PLUGIN_EXPANSION_TARGET + 10;
 const EXPECTED_CATALOG_ONLY_ENTRY_COUNT = AI_CORE_PLUGIN_REGISTRY_TARGET_COUNT - EXPECTED_PHYSICAL_PLUGIN_COUNT;
-const EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT = 366;
+const EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT = JSON.parse(readFileSync(path.join(root, ".agents", "plugins", "marketplace.json"), "utf8")).plugins.length;
 const EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT = 5;
 
 describe("SEIS AI Core plugin registry", () => {

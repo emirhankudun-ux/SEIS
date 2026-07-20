@@ -155,7 +155,7 @@ The public-family contract is generated at `content/development/seis-public-plug
 The one-file suite installed by default is
 `plugins/seis-ai-agent/assets/unified-suite.json`. It records every current
 SEIS public component, the shared `0.3.0+codex.20260712` release version, the
-60 app-owned `plugins/seis-core/*` source packages, canonical
+61 app-owned `plugins/seis-core/*` source packages, canonical
 `seis-ai-agent@seis-repo` install id, and the future plugin intake rules. A
 new embedded specialist `plugins/seis-*` manifest must be registered as an
 embedded source module. A new package for the user's Command Center application must be
@@ -207,7 +207,7 @@ repository sources for everyone to use through `apps/seis-core`; they do not
 transfer source ownership into `packages/seis-ai` or personal plugin roots.
 The objective-derived packages remain under `plugins/seis-topics` with their
 own package-local read-only runtime and are validated separately from the
-60-package app release train.
+61-package app release train.
 
 Validate the generated suite with `npm run check:seis-unified-plugin-suite`.
 The discovery rules cover embedded `plugins/seis-*` sources; five root packages
@@ -315,7 +315,7 @@ The SEIS Agent also includes two runtime lanes to validate plugin and MCP surfac
 - Route every new embedded specialist `plugins/seis-*` package through `assets/unified-suite.json`, SEIS AI status, MCP routing, the suite generator, and its shared release version before treating it as an embedded SEIS capability; objective-derived `plugins/seis-topics` cards use their own taxonomy and read-only runtime checks.
 - Keep `seis-plugin-runtime` and `seis-mcp-runtime` embedded under SEIS-Agent for runtime contract evidence.
 - Keep public repository plugin source packages under `plugins/seis-core`; keep `packages/seis-ai` limited to contracts, registry metadata, permission policy, and read-only inspection.
-- Keep the 60 app-owned packages on one gradual shared release ladder; the current release is `0.000000013`, large-code changes advance exactly one micro/revision step, annual updates advance one major step, and the supported range ends at `45.0000` without bulk jumps.
+- Keep the 61 app-owned packages on one gradual shared release ladder; the current release is `0.000000013`, large-code changes advance exactly one micro/revision step, annual updates advance one major step, and the supported range ends at `45.0000` without bulk jumps.
 - Keep every app-owned package directly in the public SEIS repository under `plugins/seis-core` and consumed by `apps/seis-core`; a new package must not be placed under `packages/seis-ai` or a personal plugin root.
 - Do not claim connector authentication readiness from plugin inventory alone.
 - Validate the integration with `npm run check:seis-unified-plugin-suite`, `npm run check:seis-plugin-canonicalization`, `npm run check:seis-agent-plugin-integration`, `npm run check:seis-public-plugin-lifecycle`, `npm run check:seis-public-plugin-family`, `npm run check:seis-public-plugin-fresh-task-proof`, `npm run check:seis-public-plugin-fresh-task-reload-evidence`, `npm run check:seis-public-plugin-security-provenance-review`, `npm run check:seis-public-plugin-external-install-proof`, `npm run check:seis-public-plugin-independent-runner-evidence-contract`, `npm run check:seis-public-plugin-independent-runner-evidence`, `npm run check:seis-public-plugin-install-smoke`, and `npm run check:seis-public-plugin-install-smoke:mcp`.

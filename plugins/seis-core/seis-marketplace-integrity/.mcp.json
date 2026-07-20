@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-marketplace-integrity": {
+      "command": "node",
+      "args": ["scripts/seis-marketplace-integrity-mcp-server.mjs"]
+    }
+  }
+}

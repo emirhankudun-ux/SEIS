@@ -1,15 +1,17 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { APP_PLUGIN_EXPANSION_TARGET } from "../../../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 
 const pkgRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const repoRoot = path.resolve(pkgRoot, "..", "..");
 const serverBin = path.join(pkgRoot, "bin", "seis-mcp.mjs");
 const EXPECTED_PHYSICAL_PLUGIN_COUNT = APP_PLUGIN_EXPANSION_TARGET + 10;
 const EXPECTED_CATALOG_ONLY_ENTRY_COUNT = 5000 - EXPECTED_PHYSICAL_PLUGIN_COUNT;
-const EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT = 366;
+const EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT = JSON.parse(readFileSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json"), "utf8")).plugins.length;
 const EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT = 5;
 
 /**
@@ -22,7 +24,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
     const child = spawn(process.execPath, [serverBin], {
       cwd: pkgRoot,
       stdio: ["pipe", "pipe", "pipe"],
-      env: { ...process.env, SEIS_REPO_ROOT: path.resolve(pkgRoot, "..", "..") },
+      env: { ...process.env, SEIS_REPO_ROOT: repoRoot },
     });
 
     const responses = new Map();

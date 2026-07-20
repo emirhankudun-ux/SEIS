@@ -5,6 +5,8 @@ import process from "node:process";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const args = new Set(process.argv.slice(2));
 const marketplace = "seis-repo";
@@ -87,7 +89,7 @@ const readiness = {
       allowedWithoutHumanApproval: canonicalization?.globalMarketplaceMutation?.allowedWithoutHumanApproval === true,
     },
   },
-  consolidationPolicy: "SEIS-Agent is the canonical public install target; specialist source modules run through the embedded suite, and 60 MIT-licensed app-owned plugins are individually available to everyone as seis-repo entries from plugins/seis-core in the SEIS repository. Live external capabilities remain approval-gated.",
+  consolidationPolicy: `SEIS-Agent is the canonical public install target; specialist source modules run through the embedded suite, and ${APP_PLUGIN_EXPANSION_TARGET} MIT-licensed app-owned plugins are individually available to everyone as seis-repo entries from plugins/seis-core in the SEIS repository. Live external capabilities remain approval-gated.`,
   embeddedModuleCount: embeddedModules.length,
   embeddedModuleIds: embeddedModules.map((module) => module.moduleId || module.id).filter(Boolean),
   targets,

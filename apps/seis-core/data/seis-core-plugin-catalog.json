@@ -15,7 +15,7 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 60,
+    "marketplaceEntryCount": 61,
     "coreSourceOwner": false
   },
   "release": {
@@ -48,11 +48,11 @@
     ]
   },
   "counts": {
-    "discovered": 60,
-    "returned": 60,
-    "contractValid": 60,
+    "discovered": 61,
+    "returned": 61,
+    "contractValid": 61,
     "contractInvalid": 0,
-    "statusReady": 60,
+    "statusReady": 61,
     "statusNotChecked": 0
   },
   "query": null,
@@ -1572,6 +1572,60 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-marketplace-integrity",
+      "name": "seis-marketplace-integrity",
+      "displayName": "SEIS Marketplace Integrity",
+      "description": "Validate public SEIS Repo marketplace cards and manifests without writing files.",
+      "category": "Developer",
+      "capabilities": [
+        "public-marketplace-identity-check",
+        "card-uniqueness-validation",
+        "safe-source-path-validation",
+        "manifest-alignment-report",
+        "visible-terminology-guard"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-marketplace-integrity",
+      "entrypoint": "scripts/seis-marketplace-integrity-mcp-server.mjs",
+      "release": {
+        "label": "0.000000013",
+        "semver": "0.0.13",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 13
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": null,
+      "permissions": {
+        "read": [
+          "bounded public SEIS Repo marketplace manifest",
+          "declared plugin manifests under the SEIS plugin root"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-marketplace-integrity-mcp-server.mjs --status",
+        "node scripts/seis-marketplace-integrity-mcp-server.mjs --validate",
+        "node --test plugins/seis-core/test/marketplace-integrity.test.mjs"
+      ],
+      "rollback": "Disable or remove the local plugin; marketplace cards and plugin manifests are never modified by this plugin."
     },
     {
       "id": "seis-mcp-inventory",

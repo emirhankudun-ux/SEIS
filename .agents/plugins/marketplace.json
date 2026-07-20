@@ -437,6 +437,18 @@
       "category": "Governance"
     },
     {
+      "name": "seis-marketplace-integrity",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-marketplace-integrity"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-mcp-inventory",
       "source": {
         "source": "local",

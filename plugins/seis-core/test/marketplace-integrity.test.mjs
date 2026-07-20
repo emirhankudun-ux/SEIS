@@ -7,29 +7,37 @@ import { fileURLToPath } from "node:url";
 
 const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = path.resolve(pluginRoot, "../..");
-const entrypoint = path.join(pluginRoot, "seis-plugin-discovery", "scripts", "seis-plugin-discovery-mcp-server.mjs");
+const entrypoint = path.join(pluginRoot, "seis-marketplace-integrity", "scripts", "seis-marketplace-integrity-mcp-server.mjs");
 const marketplace = JSON.parse(readFileSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json"), "utf8"));
-const expectedMarketplaceCardCount = marketplace.plugins.length;
+const expectedCardCount = marketplace.plugins.length;
 
-test("SEIS Plugin Discovery lists bounded public marketplace metadata", () => {
-  const result = runCli(["--catalog", "--query", "security", "--limit", "3"]);
+test("SEIS Marketplace Integrity validates every public SEIS Repo card and declared manifest", () => {
+  const result = runCli(["--validate"]);
   assert.equal(result.state, "ready");
   assert.equal(result.ok, true);
-  assert.equal(result.mode, "repo-marketplace-metadata-only");
+  assert.equal(result.mode, "public-seis-repo-marketplace-read-only");
   assert.equal(result.marketplaceName, "seis-repo");
   assert.equal(result.marketplaceDisplayName, "SEIS Repo");
-  assert.equal(result.cardCount, expectedMarketplaceCardCount);
-  assert.ok(result.matchedCardCount >= result.returnedCardCount);
-  assert.ok(result.returnedCardCount <= 3);
-  assert.ok(result.cards.every((card) => card.sourcePath.startsWith("./plugins/")));
-  assert.ok(result.cards.every((card) => !/personal/i.test(card.name)));
+  assert.equal(result.cardCount, expectedCardCount);
+  assert.equal(result.uniqueCardCount, expectedCardCount);
+  assert.equal(result.manifestCount, expectedCardCount);
+  assert.equal(result.errorCount, 0);
+  assert.equal(result.warningCount, 0);
+  assert.deepEqual(result.findings, []);
+  assert.deepEqual(result.permissions, {
+    read: ["bounded public marketplace metadata", "declared plugin manifests"],
+    write: [],
+    network: [],
+    secrets: [],
+  });
 });
 
-test("SEIS Plugin Discovery exposes catalog inspection through MCP without writes", () => {
+test("SEIS Marketplace Integrity exposes bounded validation through MCP without writes", () => {
   const requests = [
     { jsonrpc: "2.0", id: 1, method: "initialize", params: {} },
     { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} },
-    { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "seis_plugin_discovery_catalog", arguments: { query: "security", limit: 2 } } },
+    { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "seis_marketplace_integrity_status", arguments: {} } },
+    { jsonrpc: "2.0", id: 4, method: "tools/call", params: { name: "seis_marketplace_integrity_validate", arguments: {} } },
   ];
   const result = spawnSync(process.execPath, [entrypoint], {
     cwd: repoRoot,
@@ -41,13 +49,20 @@ test("SEIS Plugin Discovery exposes catalog inspection through MCP without write
   assert.equal(result.status, 0, result.stderr);
   const responses = parseFrames(result.stdout);
   const toolNames = responses.find((response) => response.id === 2)?.result?.tools?.map((tool) => tool.name) || [];
-  assert.deepEqual(toolNames.sort(), ["seis_plugin_discovery", "seis_plugin_discovery_catalog", "seis_plugin_discovery_status"]);
+  assert.deepEqual(toolNames.sort(), ["seis_marketplace_integrity_status", "seis_marketplace_integrity_validate"]);
 
-  const catalog = responses.find((response) => response.id === 3)?.result;
-  assert.equal(catalog?.ok, true);
-  assert.equal(catalog?.cardCount, expectedMarketplaceCardCount);
-  assert.equal(catalog?.returnedCardCount, 2);
-  assert.ok(catalog?.cards?.every((card) => card.sourcePath.startsWith("./plugins/")));
+  const status = responses.find((response) => response.id === 3)?.result;
+  assert.equal(status?.status, "ready");
+  assert.equal(status?.marketplace?.marketplaceName, "seis-repo");
+  assert.equal(status?.marketplace?.cardCount, expectedCardCount);
+
+  const validation = responses.find((response) => response.id === 4)?.result;
+  assert.equal(validation?.ok, true);
+  assert.equal(validation?.cardCount, expectedCardCount);
+  assert.equal(validation?.manifestCount, expectedCardCount);
+  assert.deepEqual(validation?.permissions?.write, []);
+  assert.deepEqual(validation?.permissions?.network, []);
+  assert.deepEqual(validation?.permissions?.secrets, []);
 });
 
 function runCli(args) {

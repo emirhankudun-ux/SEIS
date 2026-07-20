@@ -245,7 +245,7 @@ const lifecycle = {
   independentRunnerEvidenceIntake,
   marketplace: marketplacePath,
   purpose:
-    "Keep the canonical public SEIS-Agent suite, five migrated root repository cards, its embedded SEIS source modules, the 60 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+    `Keep the canonical public SEIS-Agent suite, five migrated root repository cards, its embedded SEIS source modules, the ${applicationPluginCount} public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.`,
   publicAudience: "everyone",
   orchestrator: "seis-ai-agent@seis-repo",
   publicDistribution: {

@@ -1,0 +1,33 @@
+{
+  "name": "seis-marketplace-integrity",
+  "version": "0.0.13",
+  "description": "Validate public SEIS Repo marketplace cards and manifests without writing files.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Marketplace Integrity",
+    "shortDescription": "Validate public SEIS Repo cards and manifests safely.",
+    "longDescription": "Check the public SEIS Repo marketplace identity, card uniqueness, bounded source paths, and manifest alignment without executing plugin code, writing files, using credentials, or accessing the network.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "public-marketplace-identity-check",
+      "card-uniqueness-validation",
+      "safe-source-path-validation",
+      "manifest-alignment-report",
+      "visible-terminology-guard"
+    ],
+    "defaultPrompt": "Validate the public SEIS Repo marketplace and report only safe integrity findings."
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "marketplace",
+    "public-repository",
+    "integrity",
+    "read-only"
+  ]
+}
