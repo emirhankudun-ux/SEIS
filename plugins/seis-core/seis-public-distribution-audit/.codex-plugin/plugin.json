@@ -1,6 +1,6 @@
 {
   "name": "seis-public-distribution-audit",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Validate public SEIS Repo distribution projections without writing files or using the network.",
   "author": {
     "name": "SEIS Repository"

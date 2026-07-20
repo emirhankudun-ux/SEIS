@@ -1,7 +1,7 @@
 # SEIS Public Plugin Fresh Task Reload Evidence
 
 - Generated: 2026-07-12
-- Status: recorded-local-fresh-task-evidence
+- Status: incomplete-local-fresh-task-evidence
 - Decision: not-ready-for-public-preview
 - Public release allowed: no
 - Task/thread id source: CODEX_THREAD_ID
@@ -12,7 +12,7 @@
 | evidence | command | status | exit |
 | --- | --- | --- | --- |
 | install-smoke-local-mcp | `npm run check:seis-public-plugin-install-smoke:local:mcp` | pass | 0 |
-| agent-plugin-integration | `npm run check:seis-agent-plugin-integration` | pass | 0 |
+| agent-plugin-integration | `npm run check:seis-agent-plugin-integration` | fail | 1 |
 | seis-ai-package-tests | `npm test --prefix packages/seis-ai` | pass | 0 |
 
 ## SEIS AI Bridge
@@ -47,9 +47,9 @@
 
 ## Package Test Summary
 
-- Tests: 198
-- Suites: 30
-- Pass: 198
+- Tests: 202
+- Suites: 31
+- Pass: 202
 - Fail: 0
 - MCP inventory: 35 tools, 3 prompts, 31 resources
 

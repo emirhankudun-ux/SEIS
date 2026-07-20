@@ -593,6 +593,18 @@
       "category": "Developer"
     },
     {
+      "name": "seis-public-install-evidence",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-public-install-evidence"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-public-install-state",
       "source": {
         "source": "local",

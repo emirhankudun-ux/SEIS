@@ -128,6 +128,8 @@ function buildRecord() {
       "npm run check:seis-core-trusted-marketplace",
       "npm run check:seis-public-install-state",
       "npm run check:seis-core-public-install-state",
+      "npm run check:seis-public-install-evidence",
+      "npm run check:seis-core-public-install-evidence",
       "npm run check:seis-public-runtime-status",
       "npm run check:seis-core-public-runtime-status",
       "npm run check:seis-core-requested-plugin-coverage",

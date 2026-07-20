@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-public-install-evidence": {
+      "command": "node",
+      "args": [
+        "scripts/seis-public-install-evidence-mcp-server.mjs"
+      ]
+    }
+  }
+}

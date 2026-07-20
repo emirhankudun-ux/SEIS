@@ -16,9 +16,9 @@ import {
 const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = path.resolve(pluginRoot, "../..");
 
-test("the app expansion defines ten named audit plugins and reaches 65 packages", () => {
+test("the app expansion defines ten named audit plugins and reaches 66 packages", () => {
   assert.equal(PLUGIN_AUDIT_DEFINITIONS.length, 10);
-  assert.equal(APP_PLUGIN_EXPANSION_TARGET, 65);
+  assert.equal(APP_PLUGIN_EXPANSION_TARGET, 66);
   for (const definition of PLUGIN_AUDIT_DEFINITIONS) {
     assert.equal(definition.checks.length, 3);
     assert.ok(definition.checks.every((check) => check.label));

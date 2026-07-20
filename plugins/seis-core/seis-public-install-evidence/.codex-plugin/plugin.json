@@ -1,0 +1,36 @@
+{
+  "name": "seis-public-install-evidence",
+  "version": "0.0.16",
+  "description": "Validate the public-safe independent installation evidence gate without treating evidence as release approval.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Public Install Evidence",
+    "shortDescription": "Validate the independent install-evidence gate without releasing anything.",
+    "longDescription": "Read fixed public SEIS Repo contracts and the designated sanitized independent-runner evidence record to distinguish missing, invalid, and valid evidence while preserving a separate human release-approval gate.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "independent-runner-evidence-status",
+      "sanitized-evidence-contract-validation",
+      "missing-and-invalid-evidence-separation",
+      "human-release-gate-separation"
+    ],
+    "defaultPrompt": [
+      "Show the public SEIS Repo independent installation evidence state without reading secrets or authorizing a release.",
+      "Validate the designated sanitized independent-runner evidence record and keep human approval separate."
+    ]
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "public-repository",
+    "marketplace",
+    "install-evidence",
+    "independent-runner",
+    "read-only"
+  ]
+}

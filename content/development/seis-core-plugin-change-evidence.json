@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-core-plugin-change-evidence",
   "goalId": "SEIS-GOAL-021",
-  "baseCommit": "b07a6bf9e3d7246c8534350cd5d470b00162918b",
+  "baseCommit": "ca67ed6f651db2ae119e5e351ffe1ef83aed98f2",
   "generatedAt": "2026-07-15",
   "scope": {
     "application": "apps/seis-core",
@@ -29,38 +29,45 @@
     ]
   },
   "threshold": 500,
-  "codeLinesAdded": 885,
-  "codeLinesRemoved": 12,
-  "codeLinesChanged": 897,
+  "codeLinesAdded": 1177,
+  "codeLinesRemoved": 292,
+  "codeLinesChanged": 1469,
   "eligible": true,
   "files": [
     {
-      "path": "plugins/seis-core/seis-public-runtime-status/scripts/seis-public-runtime-status-mcp-server.mjs",
-      "added": 533,
+      "path": "plugins/seis-core/seis-public-install-evidence/scripts/seis-public-install-evidence-mcp-server.mjs",
+      "added": 371,
       "removed": 0,
       "state": "untracked",
-      "changed": 533
+      "changed": 371
     },
     {
-      "path": "scripts/create-seis-public-runtime-status.mjs",
-      "added": 170,
-      "removed": 0,
-      "state": "untracked",
-      "changed": 170
-    },
-    {
-      "path": "plugins/seis-core/test/public-runtime-status.test.mjs",
-      "added": 150,
-      "removed": 0,
-      "state": "untracked",
-      "changed": 150
-    },
-    {
-      "path": "scripts/promote-seis-core-plugin-release.mjs",
-      "added": 18,
-      "removed": 0,
+      "path": "scripts/check-seis-public-plugin-independent-runner-evidence.mjs",
+      "added": 13,
+      "removed": 281,
       "state": "tracked-diff",
-      "changed": 18
+      "changed": 294
+    },
+    {
+      "path": "plugins/seis-core/runtime/public-install-evidence-runtime.mjs",
+      "added": 283,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 283
+    },
+    {
+      "path": "plugins/seis-core/test/public-install-evidence.test.mjs",
+      "added": 276,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 276
+    },
+    {
+      "path": "scripts/create-seis-public-install-evidence.mjs",
+      "added": 221,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 221
     },
     {
       "path": "apps/seis-core/script.js",
@@ -85,13 +92,6 @@
     },
     {
       "path": "plugins/seis-core/runtime/plugin-audit-definitions.mjs",
-      "added": 1,
-      "removed": 1,
-      "state": "tracked-diff",
-      "changed": 2
-    },
-    {
-      "path": "scripts/create-seis-ai-personal-plugin-coverage.mjs",
       "added": 1,
       "removed": 1,
       "state": "tracked-diff",

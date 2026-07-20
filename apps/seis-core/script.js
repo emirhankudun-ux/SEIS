@@ -447,15 +447,15 @@ let seisRouterArtifact = {
 
 let seisCorePluginArtifact = {
   sourceRoot: "plugins/seis-core",
-  release: { label: "0.000000015", semver: "0.0.15", kind: "large-code-change" },
-  counts: { discovered: 65, returned: 0, contractValid: 65, statusReady: 0 },
+  release: { label: "0.000000016", semver: "0.0.16", kind: "large-code-change" },
+  counts: { discovered: 66, returned: 0, contractValid: 66, statusReady: 0 },
   plugins: [],
   loadError: "Application plugin catalog has not loaded yet."
 };
 
 let seisCorePluginReleaseReadinessArtifact = {
-  currentRelease: { label: "0.000000015", semver: "0.0.15" },
-  next: { largeCode: { label: "0.000000016" }, annual: { label: "1.0000", year: 2027 } },
+  currentRelease: { label: "0.000000016", semver: "0.0.16" },
+  next: { largeCode: { label: "0.000000017" }, annual: { label: "1.0000", year: 2027 } },
   policy: { maximumLabel: "45.0000", largeCodeChangeThreshold: 500 },
   workingTree: { codeLinesChanged: 0, changedCodeFileCount: 0, largeCodeEligible: false },
   decision: "loading",
@@ -795,7 +795,7 @@ const pluginFamilies = [
     name: "SEIS Command Center App Plugins",
     health: "Local Demo",
     permissions: "Read-only, task-scoped",
-    summary: "65 app-owned plugin packages under plugins/seis-core at app release 0.000000015; AI Core indexes metadata without owning their source."
+    summary: "66 app-owned plugin packages under plugins/seis-core at app release 0.000000016; AI Core indexes metadata without owning their source."
   }
 ];
 
@@ -2076,7 +2076,7 @@ async function loadSeisCorePluginArtifact() {
     const artifact = await response.json();
     if (
       artifact.sourceRoot !== "plugins/seis-core" ||
-      artifact.counts?.discovered !== 65 ||
+      artifact.counts?.discovered !== 66 ||
       artifact.distribution?.repository !== "SEIS" ||
       artifact.distribution?.sourceAvailableInRepository !== true ||
       artifact.distribution?.publicRepositoryAvailable !== true ||
@@ -2085,7 +2085,7 @@ async function loadSeisCorePluginArtifact() {
       artifact.distribution?.installSurface !== "repo-source-app" ||
       artifact.distribution?.marketplaceName !== "seis-repo" ||
       artifact.distribution?.publicMarketplace !== true ||
-      artifact.distribution?.marketplaceEntryCount !== 65 ||
+      artifact.distribution?.marketplaceEntryCount !== 66 ||
       artifact.distribution?.coreSourceOwner !== false ||
       !Array.isArray(artifact.plugins)
     ) {

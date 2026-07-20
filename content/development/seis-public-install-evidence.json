@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-install-evidence",
+  "goalId": "SEIS-GOAL-021",
+  "generatedAt": "2026-07-20",
+  "status": "public-seis-repo-independent-install-evidence-gate",
+  "decision": "independent-evidence-may-validate-but-human-release-approval-remains-required",
+  "purpose": "Expose the current independent clean-runner evidence gate for the public SEIS Repo marketplace without accepting arbitrary paths, emitting raw evidence, or turning a valid evidence record into release approval.",
+  "plugin": {
+    "name": "seis-public-install-evidence",
+    "displayName": "SEIS Public Install Evidence",
+    "marketplaceName": "seis-repo",
+    "sourcePath": "plugins/seis-core/seis-public-install-evidence",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "publicCards": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "count": 372,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "applicationPluginCount": 66,
+    "topicPluginCount": 300,
+    "sourceAvailability": "public-repository-source-available",
+    "installationPolicy": "AVAILABLE",
+    "authenticationPolicy": "ON_INSTALL"
+  },
+  "independentEvidence": {
+    "contractPath": "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+    "evidencePath": "content/development/seis-public-plugin-independent-runner-evidence.json",
+    "defaultEvidenceGate": "npm run check:seis-public-plugin-independent-runner-evidence",
+    "strictRecordedEvidenceGate": "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
+    "expectedPluginIds": [
+      "seis-ai-agent@seis-repo"
+    ],
+    "expectedEmbeddedModuleCount": 10,
+    "sourceWorktreeMustBeInaccessible": true,
+    "existingCacheMustBeInaccessible": true,
+    "rawCommandOutputAllowed": false,
+    "privatePathsAllowed": false
+  },
+  "evidenceStateModel": [
+    {
+      "id": "not-recorded",
+      "meaning": "No designated evidence record exists; public release remains blocked."
+    },
+    {
+      "id": "invalid",
+      "meaning": "The designated evidence record exists but violates the independent-runner or public-safe redaction contract."
+    },
+    {
+      "id": "recorded-valid-awaiting-human-approval",
+      "meaning": "The designated evidence record validates, but release, publication, external writes, and credentialed activation remain blocked until explicit human approval."
+    }
+  ],
+  "releaseBoundary": {
+    "evidenceRecordIsPublicReleaseProof": false,
+    "publicReleaseAllowed": false,
+    "humanApprovalRequired": true,
+    "approvalRequiredFor": [
+      "public preview",
+      "release",
+      "publish",
+      "push",
+      "merge",
+      "tag",
+      "deploy",
+      "SSH",
+      "live provider access"
+    ]
+  },
+  "limitations": [
+    "The plugin reads only one designated evidence record inside the public repository contract.",
+    "It does not create independent-runner evidence, perform an installation, or inspect a local cache as evidence.",
+    "It does not expose raw command output, private paths, credential-like data, or human approval decisions."
+  ],
+  "safety": {
+    "reads": [
+      ".agents/plugins/marketplace.json",
+      "content/development/seis-public-plugin-family.json",
+      "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+      "content/development/seis-public-plugin-independent-runner-evidence.json"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "installationMutation": false,
+    "enablementMutation": false,
+    "publicationMutation": false
+  }
+}

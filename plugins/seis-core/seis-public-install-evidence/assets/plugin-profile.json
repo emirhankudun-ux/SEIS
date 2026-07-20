@@ -1,0 +1,41 @@
+{
+  "stableId": "seis-public-install-evidence",
+  "slug": "seis-public-install-evidence",
+  "version": "0.0.16",
+  "releaseMicroUnits": 16,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.000000016",
+  "category": "installation-evidence",
+  "owner": "@seis-governance",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-public-install-evidence-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "fixed public SEIS Repo evidence contracts and one designated sanitized evidence record"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-public-install-evidence-mcp-server.mjs --status",
+    "node scripts/seis-public-install-evidence-mcp-server.mjs --validate",
+    "node scripts/seis-public-install-evidence-mcp-server.mjs --evidence",
+    "npm run check:seis-public-install-evidence",
+    "node --test plugins/seis-core/test/public-install-evidence.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin; it never writes evidence, changes installation state, authorizes a release, or mutates repository contracts.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 to make the independent clean-runner evidence gate publicly inspectable without turning evidence into release approval.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

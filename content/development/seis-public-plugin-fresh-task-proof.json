@@ -39,10 +39,10 @@
     "securityProvenanceReview": "npm run check:seis-public-plugin-security-provenance-review"
   },
   "reloadEvidence": {
-    "status": "recorded-local-fresh-task-evidence",
+    "status": "incomplete-local-fresh-task-evidence",
     "taskIdRecorded": true,
     "taskStartRecorded": true,
-    "commandOutputRecorded": true,
+    "commandOutputRecorded": false,
     "installSmokeRecorded": true,
     "seisAiBridgeRecorded": true,
     "mcpInventoryRecorded": true,
@@ -113,6 +113,7 @@
     }
   ],
   "blockers": [
+    "No fresh-task command output has been recorded.",
     "External clean-runner or public package installation proof has not been recorded.",
     "Human approval for public preview, release, publish, push, merge, tag, deploy, SSH, or live provider access has not been recorded."
   ],

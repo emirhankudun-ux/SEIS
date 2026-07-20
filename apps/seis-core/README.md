@@ -9,7 +9,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 - `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
 - `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
-- `plugins/seis-core/`: 65 app-owned public plugin packages inside the SEIS repository plugin boundary; current shared release is `0.000000015` (`0.0.15` in strict plugin manifests), including ten bounded read-only audit/report packages plus public marketplace-integrity, public-distribution, trusted-marketplace, public-install-state, and public-runtime-status validators.
+- `plugins/seis-core/`: 66 app-owned public plugin packages inside the SEIS repository plugin boundary; current shared release is `0.000000016` (`0.0.16` in strict plugin manifests), including ten bounded read-only audit/report packages plus public marketplace-integrity, public-distribution, trusted-marketplace, public-install-state, public-install-evidence, and public-runtime-status validators.
 - `data/seis-core-plugin-sources.json`: generated app plugin source inventory and release projection.
 - `data/seis-core-plugin-catalog.json`: generated metadata catalog consumed by the Plugins view for real app-owned search and inspection.
 - `data/seis-core-plugin-release-readiness.json`: current/next release ladder, annual cadence, code threshold, and working-tree evidence decision consumed by the Plugins view.
@@ -54,7 +54,7 @@ apps/seis-core/
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
 - Documentation: index and coverage plan.
 - Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, 10-lane routing matrix, handoff audit, and inspector sync.
-- Plugins & Extensions: plugin family health, the generated 65-plugin app catalog, search, permission posture, update gates, activation policy, and the app-owned plugin source boundary.
+- Plugins & Extensions: plugin family health, the generated 66-plugin app catalog, search, permission posture, update gates, activation policy, and the app-owned plugin source boundary.
 - Automation Center: workflows, triggers, run history, approval gates, rollback evidence, and execution gates.
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
 - Architecture Center: system map, module relationships, dependency graph, technical debt register, and platform phases.
@@ -79,11 +79,11 @@ apps/seis-core/
 - Review handoff audit records between Architect, Builder, Security, Research, and Design lanes.
 - Inspect recent activity across builder, security, architecture, and automation lanes.
 - Inspect plugin, automation run history, approval gate, rollback evidence, security operations, and AI system surfaces.
-- Inspect the 65 public app-owned plugin packages from `plugins/seis-core` through the source inventory and read-only AI Core registry projection.
-- Search and inspect the same 65 packages from the Command Center catalog; status checks remain bounded to each plugin's local `--status` entrypoint.
+- Inspect the 66 public app-owned plugin packages from `plugins/seis-core` through the source inventory and read-only AI Core registry projection.
+- Search and inspect the same 66 packages from the Command Center catalog; status checks remain bounded to each plugin's local `--status` entrypoint.
 - Review the ten audit/report packages through their declared read-only `--report` plans; report paths stay inside the SEIS workspace and never enable writes, network, or secrets.
 - Review the current release, next large-code `+1`, next annual `+1`, `45.0000` ceiling, and evidence threshold from the release-readiness panel.
-- Inspect the gradual app plugin release train at `0.000000015`; large-code changes advance one micro step, annual/major updates advance one major step, and no bulk jump is allowed.
+- Inspect the gradual app plugin release train at `0.000000016`; large-code changes advance one micro step, annual/major updates advance one major step, and no bulk jump is allowed.
 - Inspect permission reviews, dependency scans, and security audit evidence.
 - Inspect architecture dependency graph, module contracts, and technical debt register.
 - Inspect knowledge graph nodes, memory freshness, decision history, and reusable implementation patterns.

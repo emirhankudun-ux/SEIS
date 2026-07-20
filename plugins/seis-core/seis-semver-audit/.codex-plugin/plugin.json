@@ -1,6 +1,6 @@
 {
   "name": "seis-semver-audit",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Audit local package version metadata against semantic-versioning syntax.",
   "author": {
     "name": "Emirhan Kudun"
