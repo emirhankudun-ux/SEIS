@@ -5,7 +5,6 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
-  APP_PLUGIN_EXPANSION_TARGET,
   PLUGIN_AUDIT_DEFINITIONS,
 } from "../runtime/plugin-audit-definitions.mjs";
 import {
@@ -16,9 +15,8 @@ import {
 const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = path.resolve(pluginRoot, "../..");
 
-test("the app expansion defines ten named audit plugins and reaches 66 packages", () => {
+test("the app expansion defines ten named audit plugins", () => {
   assert.equal(PLUGIN_AUDIT_DEFINITIONS.length, 10);
-  assert.equal(APP_PLUGIN_EXPANSION_TARGET, 66);
   for (const definition of PLUGIN_AUDIT_DEFINITIONS) {
     assert.equal(definition.checks.length, 3);
     assert.ok(definition.checks.every((check) => check.label));

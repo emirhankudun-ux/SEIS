@@ -31,6 +31,9 @@ const appPluginCliPath = path.join(root, "plugins", "seis-core", "bin", "seis-co
 const appPluginChangeEvidenceScriptPath = path.join(root, "scripts", "create-seis-core-plugin-change-evidence.mjs");
 const appPluginReadinessScriptPath = path.join(root, "scripts", "create-seis-core-plugin-release-readiness.mjs");
 const requestedPluginCoverageScriptPath = path.join(root, "scripts", "check-seis-core-requested-plugin-coverage.mjs");
+const mcpPermissionScriptPath = path.join(root, "scripts", "create-seis-mcp-permission.mjs");
+const mcpPermissionPath = path.join(root, "content", "development", "seis-mcp-permission-risk-matrix.json");
+const mcpPermissionMcpServerPath = path.join(root, "plugins", "seis-core", "seis-mcp-permission", "scripts", "seis-mcp-permission-mcp-server.mjs");
 const pluginRegistryHelperPath = path.join(root, "packages", "seis-ai", "src", "lib", "plugin-registry.mjs");
 const pluginSourceCheckPath = path.join(root, "scripts", "check-seis-ai-core-plugin-sources.mjs");
 const installSmokePath = path.join(root, "scripts", "check-seis-public-plugin-install-smoke.mjs");
@@ -133,6 +136,9 @@ for (const [filePath, label] of [
   [appPluginChangeEvidenceScriptPath, "SEIS Core app plugin change evidence generator"],
   [appPluginReadinessScriptPath, "SEIS Core app plugin release readiness generator"],
   [requestedPluginCoverageScriptPath, "requested plugin coverage checker"],
+  [mcpPermissionScriptPath, "SEIS MCP permission boundary generator"],
+  [mcpPermissionPath, "SEIS MCP permission boundary ledger"],
+  [mcpPermissionMcpServerPath, "SEIS MCP permission boundary MCP server"],
   [pluginRegistryHelperPath, "SEIS AI Core plugin registry helper"],
   [pluginSourceCheckPath, "SEIS AI Core plugin source checker"],
   [installSmokePath, "SEIS public plugin install smoke checker"],
@@ -198,6 +204,9 @@ const appPluginCli = readText(appPluginCliPath, "SEIS Core app plugin CLI");
 const appPluginChangeEvidenceScript = readText(appPluginChangeEvidenceScriptPath, "SEIS Core app plugin change evidence generator");
 const appPluginReadinessScript = readText(appPluginReadinessScriptPath, "SEIS Core app plugin release readiness generator");
 const requestedPluginCoverageScript = readText(requestedPluginCoverageScriptPath, "requested plugin coverage checker");
+const mcpPermission = readJson(mcpPermissionPath, "SEIS MCP permission boundary ledger");
+const mcpPermissionScript = readText(mcpPermissionScriptPath, "SEIS MCP permission boundary generator");
+const mcpPermissionMcpServer = readText(mcpPermissionMcpServerPath, "SEIS MCP permission boundary MCP server");
 const webIndex = readText(webIndexPath, "SEIS demo index");
 const webScript = readText(webScriptPath, "SEIS demo script");
 const desktopScript = readText(desktopScriptPath, "SEIS desktop script");
@@ -401,6 +410,8 @@ if (manifest) {
     "npm run check:seis-ai-core-plugin-registry",
     "npm run check:seis-ai-personal-plugin-coverage",
     "npm run check:seis-core-plugin-sources",
+    "npm run check:seis-mcp-permission",
+    "npm run check:seis-core-mcp-permission",
     "npm run check:seis-core-plugin-release",
     "npm run check:seis-core-plugin-release-policy",
     "npm run check:seis-core-plugin-catalog",
@@ -469,6 +480,17 @@ if (manifest) {
   ensure(appPluginSources?.releaseMajor === appRelease.major, "app plugin source manifest release major is stale");
   ensure(appPluginSources?.releaseRevision === appRelease.revision, "app plugin source manifest release revision is stale");
   ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-requested-plugin-coverage"), "app plugin source manifest must include requested plugin coverage");
+  ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-mcp-permission"), "app plugin source manifest must include the MCP permission boundary check");
+  ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-mcp-permission"), "app plugin source manifest must include the MCP permission runtime test");
+  ensure(mcpPermission?.id === "seis-mcp-permission-risk-matrix", "MCP permission boundary ledger id is stale");
+  ensure(mcpPermission?.plugin?.name === "seis-mcp-permission", "MCP permission boundary ledger plugin id is stale");
+  ensure(mcpPermission?.plugin?.marketplaceName === "seis-repo", "MCP permission boundary ledger must remain public SEIS Repo scoped");
+  ensure(mcpPermission?.counts?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "MCP permission boundary ledger app plugin count is stale");
+  ensure(mcpPermission?.counts?.applicationMcpServerCount === APP_PLUGIN_EXPANSION_TARGET, "MCP permission boundary ledger MCP server count is stale");
+  ensure(mcpPermission?.counts?.writePermissionGrantCount === 0 && mcpPermission?.counts?.networkPermissionGrantCount === 0 && mcpPermission?.counts?.secretPermissionGrantCount === 0, "MCP permission boundary ledger must retain deny-by-default permissions");
+  ensure(mcpPermission?.safety?.startsMcpServers === false && mcpPermission?.safety?.permissionGrant === false && mcpPermission?.safety?.publicReleaseAllowed === false, "MCP permission boundary ledger must remain a non-executing public gate");
+  ensure(mcpPermissionScript.includes("seis-mcp-permission-risk-matrix"), "MCP permission boundary generator must write the declared ledger");
+  ensure(mcpPermissionMcpServer.includes("seis_mcp_permission_validate"), "MCP permission boundary MCP server must expose validation");
   ensure(appPluginCatalog?.id === "seis-core-application-plugin-catalog", "app plugin catalog id must be stable");
   ensure(appPluginCatalog?.sourceRoot === "plugins/seis-core", "app plugin catalog source root is invalid");
   ensure(appPluginCatalog?.distribution?.repository === "SEIS", "app plugin catalog must expose SEIS as the canonical repository");
@@ -592,6 +614,18 @@ if (packageJson) {
   ensure(
     packageJson.scripts?.["check:seis-core-plugin-sources"] === "node scripts/check-seis-ai-core-plugin-sources.mjs && node scripts/create-seis-core-plugin-sources.mjs --check",
     "package.json must expose check:seis-core-plugin-sources"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-mcp-permission"] === "node scripts/create-seis-mcp-permission.mjs --check",
+    "package.json must expose check:seis-mcp-permission"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-core-mcp-permission"] === "node --test plugins/seis-core/test/mcp-permission.test.mjs",
+    "package.json must expose check:seis-core-mcp-permission"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-mcp-permission"] === "node scripts/create-seis-mcp-permission.mjs",
+    "package.json must expose automation:seis-mcp-permission"
   );
   ensure(
     packageJson.scripts?.["check:seis-ai-core-plugin-sources"] === "node scripts/check-seis-ai-core-plugin-sources.mjs",
@@ -740,10 +774,12 @@ for (const token of [
   "seis-public-plugin-external-install-proof.json",
   "seis-plugin-canonicalization.json",
   "seis-public-plugin-independent-runner-evidence-contract.json",
+  "seis-mcp-permission-risk-matrix.json",
   "unified-suite.json",
   "single-public-plugin",
   "source-module-only",
   "check:seis-unified-plugin-suite",
+  "check:seis-mcp-permission",
   "check:seis-public-plugin-independent-runner-evidence:recorded",
   "seis-ai-agent@seis-repo",
   "Personal SEIS Plugin Bridge",

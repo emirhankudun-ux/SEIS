@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-mcp-permission": {
+      "command": "node",
+      "args": [
+        "scripts/seis-mcp-permission-mcp-server.mjs"
+      ]
+    }
+  }
+}

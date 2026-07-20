@@ -11,6 +11,8 @@ const outputPath = "content/development/seis-ai-core-personal-plugin-coverage.js
 const applicationSourceRoot = "plugins/seis-core";
 const sourceRootOption = readOption("--source");
 const marketplaceOption = readOption("--marketplace");
+const refreshPublicProjection = process.argv.includes("--refresh-public-projection");
+const PUBLIC_PROJECTION_REFRESHED_AT = "2026-07-20";
 const legacyPublicRenameMap = Object.freeze({
   "seis-personal-plugin-discovery": "seis-plugin-discovery",
 });
@@ -18,10 +20,12 @@ const legacyPublicRenameMap = Object.freeze({
 let coverage;
 if (sourceRootOption && marketplaceOption) {
   coverage = buildCoverage(path.resolve(sourceRootOption), path.resolve(marketplaceOption));
+} else if (refreshPublicProjection && !sourceRootOption && !marketplaceOption) {
+  coverage = refreshPublicRepositoryProjection(readJson(path.join(root, outputPath)));
 } else if (checkMode) {
   coverage = readJson(path.join(root, outputPath));
 } else {
-  console.error("Usage: node scripts/create-seis-ai-personal-plugin-coverage.mjs --source <selected-local-plugin-root> --marketplace <personal-marketplace.json> [--check]");
+  console.error("Usage: node scripts/create-seis-ai-personal-plugin-coverage.mjs --source <selected-local-plugin-root> --marketplace <personal-marketplace.json> [--check] | --refresh-public-projection");
   process.exit(2);
 }
 
@@ -32,7 +36,9 @@ if (checkMode) {
   console.log("SEIS AI personal plugin coverage check passed.");
 } else {
   writeFile(outputPath, `${JSON.stringify(coverage, null, 2)}\n`);
-  console.log(`Wrote ${outputPath} for ${coverage.personalMarketplace.pluginCount} personal SEIS plugins.`);
+  console.log(refreshPublicProjection
+    ? `Refreshed ${outputPath} from the checked-in historical coverage record and current public app source metadata.`
+    : `Wrote ${outputPath} for ${coverage.personalMarketplace.pluginCount} personal SEIS plugins.`);
 }
 
 function buildCoverage(sourceRoot, marketplacePath) {
@@ -108,6 +114,39 @@ function buildCoverage(sourceRoot, marketplacePath) {
   };
 }
 
+function refreshPublicRepositoryProjection(record) {
+  const applicationNames = listPluginNames(path.join(root, ...applicationSourceRoot.split("/")));
+  const resolvedCounterparts = Array.isArray(record?.repository?.resolvedCounterpartPluginIds)
+    ? record.repository.resolvedCounterpartPluginIds.filter((name) => typeof name === "string")
+    : [];
+  const resolvedApplicationNames = new Set(resolvedCounterparts.filter((name) => applicationNames.includes(name)));
+  const applicationOnlyNames = applicationNames.filter((name) => !resolvedApplicationNames.has(name));
+
+  return {
+    ...record,
+    repository: {
+      ...record.repository,
+      applicationSourceRoot,
+      applicationOwnedCount: applicationNames.length,
+      applicationOwnedPluginIds: applicationNames,
+      applicationOnlyCount: applicationOnlyNames.length,
+      applicationOnlyPluginIds: applicationOnlyNames,
+      publicSourceProjection: {
+        refreshedAt: PUBLIC_PROJECTION_REFRESHED_AT,
+        source: "repository-local-public-metadata",
+        historicalCounterpartBaseline: "checked-in-redacted-coverage-record",
+        personalMarketplaceRead: false,
+        personalMarketplaceMutation: false,
+      },
+    },
+    safety: {
+      ...record.safety,
+      publicSourceProjectionReadOnly: true,
+      personalMarketplaceMutation: false,
+    },
+  };
+}
+
 function validateCoverage(record) {
   const failures = [];
   const marketplace = record?.personalMarketplace;
@@ -134,6 +173,12 @@ function validateCoverage(record) {
   if (repository?.applicationSourceRoot !== applicationSourceRoot) failures.push("personal plugin sources must be owned by apps/seis-core");
   if (repository?.applicationOwnedCount !== APP_PLUGIN_EXPANSION_TARGET) failures.push(`the SEIS Command Center app must own ${APP_PLUGIN_EXPANSION_TARGET} plugins`);
   if (repository?.applicationOnlyCount !== APP_PLUGIN_EXPANSION_TARGET - 50) failures.push(`the SEIS Command Center app must record ${APP_PLUGIN_EXPANSION_TARGET - 50} app-only public packages`);
+  const projection = repository?.publicSourceProjection;
+  if (projection) {
+    if (projection.source !== "repository-local-public-metadata") failures.push("public source projection must use repository-local public metadata");
+    if (projection.historicalCounterpartBaseline !== "checked-in-redacted-coverage-record") failures.push("public source projection must preserve the checked-in redacted historical baseline");
+    if (projection.personalMarketplaceRead !== false || projection.personalMarketplaceMutation !== false) failures.push("public source projection must not read or mutate the personal marketplace");
+  }
   const serialized = JSON.stringify(record);
   if (/\/Users\/|\/home\/|[A-Za-z]:\\/.test(serialized)) failures.push("coverage must not store machine-specific absolute paths");
   if (failures.length) {

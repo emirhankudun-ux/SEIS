@@ -1,6 +1,6 @@
 {
   "name": "seis-release-cadence",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Analyze local release heading intervals without GitHub or publishing access.",
   "author": {
     "name": "Emirhan Kudun"

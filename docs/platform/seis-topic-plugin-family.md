@@ -24,9 +24,9 @@ The complete public repository marketplace is:
 
 - 1 canonical `seis-ai-agent@seis-repo` orchestrator
 - 5 migrated root cards: `seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data`
-- 64 app-owned `plugins/seis-core` packages
+- 67 app-owned `plugins/seis-core` packages
 - 300 objective-derived `plugins/seis-topics` packages
-- 370 marketplace entries total
+- 373 marketplace entries total
 
 The canonical default install remains `seis-ai-agent@seis-repo`. Topic cards
 are independently discoverable repository packages, not personal plugins and

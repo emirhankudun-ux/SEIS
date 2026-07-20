@@ -317,7 +317,7 @@
       }
     ],
     "applicationSourceRoot": "plugins/seis-core",
-    "applicationOwnedCount": 66,
+    "applicationOwnedCount": 67,
     "applicationOwnedPluginIds": [
       "seis-a11y-regression",
       "seis-action-pin-audit",
@@ -351,6 +351,7 @@
       "seis-maintainer-risk",
       "seis-marketplace-integrity",
       "seis-mcp-inventory",
+      "seis-mcp-permission",
       "seis-migration-guide-check",
       "seis-model-fallback",
       "seis-offline-mode-check",
@@ -386,7 +387,7 @@
       "seis-workflow-permission-audit",
       "seis-workspace-inspector"
     ],
-    "applicationOnlyCount": 16,
+    "applicationOnlyCount": 17,
     "applicationOnlyPluginIds": [
       "seis-approval-gate-review",
       "seis-architecture-drift",
@@ -395,6 +396,7 @@
       "seis-data-retention-audit",
       "seis-goal-dependency-map",
       "seis-marketplace-integrity",
+      "seis-mcp-permission",
       "seis-offline-mode-check",
       "seis-prompt-injection-audit",
       "seis-public-distribution-audit",
@@ -404,13 +406,21 @@
       "seis-rollback-readiness",
       "seis-tool-permission-audit",
       "seis-trusted-marketplace"
-    ]
+    ],
+    "publicSourceProjection": {
+      "refreshedAt": "2026-07-20",
+      "source": "repository-local-public-metadata",
+      "historicalCounterpartBaseline": "checked-in-redacted-coverage-record",
+      "personalMarketplaceRead": false,
+      "personalMarketplaceMutation": false
+    }
   },
   "safety": {
     "sourceCodeExecutedDuringAudit": false,
     "personalMarketplaceMutation": false,
     "copiedSecrets": false,
-    "absoluteSourcePathsStored": false
+    "absoluteSourcePathsStored": false,
+    "publicSourceProjectionReadOnly": true
   },
   "qualityGates": [
     "npm run check:seis-ai-personal-plugin-coverage",

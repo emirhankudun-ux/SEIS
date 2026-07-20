@@ -2,7 +2,7 @@
   "id": "seis-public-plugin-fresh-task-reload-evidence",
   "version": 1,
   "generatedAt": "2026-07-12",
-  "status": "incomplete-local-fresh-task-evidence",
+  "status": "recorded-local-fresh-task-evidence",
   "decision": "not-ready-for-public-preview",
   "sourcePath": "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
   "reportPath": "reports/seis-public-plugin-fresh-task-reload-evidence.md",
@@ -52,7 +52,7 @@
             "personalMarketplaceMutation": false,
             "discoveredPluginCount": 10,
             "uncoveredSourcePlugins": [],
-            "applicationOwnedPluginCount": 66,
+            "applicationOwnedPluginCount": 67,
             "applicationPluginIds": [
               "seis-a11y-regression",
               "seis-action-pin-audit",
@@ -86,6 +86,7 @@
               "seis-maintainer-risk",
               "seis-marketplace-integrity",
               "seis-mcp-inventory",
+              "seis-mcp-permission",
               "seis-migration-guide-check",
               "seis-model-fallback",
               "seis-offline-mode-check",
@@ -124,14 +125,14 @@
             "applicationPluginSourceRoot": "plugins/seis-core",
             "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
             "applicationPluginReleaseTrain": "content/development/seis-core-plugin-release-train.json",
-            "applicationPluginReleaseLabel": "0.000000016",
-            "applicationPluginReleaseSemver": "0.0.16",
+            "applicationPluginReleaseLabel": "0.000000017",
+            "applicationPluginReleaseSemver": "0.0.17",
             "applicationPluginInstallSurface": "repo-source-app",
             "applicationPluginSourceAvailableInRepository": true,
             "applicationPluginPublicRepositoryAvailable": true,
             "applicationPluginPublicAudience": "everyone",
             "applicationPluginDistribution": "direct-repository-source",
-            "applicationPluginMarketplaceEntryCount": 66,
+            "applicationPluginMarketplaceEntryCount": 67,
             "futurePluginDefaultRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets.",
             "futureApplicationPluginRule": "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and become available directly from this repository as individual seis-repo marketplace entries without entering packages/seis-ai."
           }
@@ -167,11 +168,11 @@
     "agentIntegration": {
       "id": "agent-plugin-integration",
       "command": "npm run check:seis-agent-plugin-integration",
-      "ok": false,
-      "exitCode": 1,
+      "ok": true,
+      "exitCode": 0,
       "signal": null,
       "summary": {
-        "passed": false,
+        "passed": true,
         "check": "npm run check:seis-agent-plugin-integration"
       }
     },

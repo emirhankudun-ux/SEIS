@@ -132,6 +132,8 @@ function buildRecord() {
       "npm run check:seis-core-public-install-evidence",
       "npm run check:seis-public-runtime-status",
       "npm run check:seis-core-public-runtime-status",
+      "npm run check:seis-mcp-permission",
+      "npm run check:seis-core-mcp-permission",
       "npm run check:seis-core-requested-plugin-coverage",
       "npm run check:seis-core-plugin-surface",
       "npm run check:seis-core-plugin-public-repository",

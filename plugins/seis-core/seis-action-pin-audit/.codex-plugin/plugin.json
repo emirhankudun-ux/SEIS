@@ -1,6 +1,6 @@
 {
   "name": "seis-action-pin-audit",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Audit local workflow action references for immutable pin declarations without executing actions.",
   "author": {
     "name": "Emirhan Kudun"

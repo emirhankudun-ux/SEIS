@@ -1,7 +1,7 @@
 {
   "id": "seis-tool-permission-audit",
   "name": "seis-tool-permission-audit",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Audit tool, plugin, and agent permission defaults without enabling external writes.",
   "author": {
     "name": "emirhankudun-ux"

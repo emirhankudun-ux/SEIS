@@ -1,0 +1,41 @@
+{
+  "stableId": "seis-mcp-permission",
+  "slug": "seis-mcp-permission",
+  "version": "0.0.17",
+  "releaseMicroUnits": 17,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.000000017",
+  "category": "mcp-governance",
+  "owner": "@seis-mcp",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-mcp-permission-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "fixed public SEIS Repo marketplace, source inventory, and MCP permission ledger contracts"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-mcp-permission-mcp-server.mjs --status",
+    "node scripts/seis-mcp-permission-mcp-server.mjs --validate",
+    "node scripts/seis-mcp-permission-mcp-server.mjs --ledger",
+    "npm run check:seis-mcp-permission",
+    "node --test plugins/seis-core/test/mcp-permission.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin; it never starts MCP servers, grants permissions, changes marketplace cards, or mutates source contracts.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 to turn the planned MCP permission capability into a deterministic public SEIS Repo boundary check.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

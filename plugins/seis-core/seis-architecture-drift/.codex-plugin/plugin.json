@@ -1,7 +1,7 @@
 {
   "id": "seis-architecture-drift",
   "name": "seis-architecture-drift",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Detect local source-boundary drift between the Command Center application and AI Core metadata.",
   "author": {
     "name": "emirhankudun-ux"

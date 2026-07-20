@@ -1,0 +1,1364 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-mcp-permission-risk-matrix",
+  "goalId": "SEIS-GOAL-021",
+  "generatedAt": "2026-07-20",
+  "status": "active-public-seis-repo-deny-by-default",
+  "purpose": "Keep the declared local stdio MCP envelope for every public SEIS Repo app package observable and deterministic without starting servers, granting permissions, or treating a metadata check as release approval.",
+  "plugin": {
+    "name": "seis-mcp-permission",
+    "displayName": "SEIS MCP Permission Boundary",
+    "marketplaceName": "seis-repo",
+    "sourcePath": "plugins/seis-core/seis-mcp-permission",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "scope": {
+    "marketplacePath": ".agents/plugins/marketplace.json",
+    "sourceManifestPath": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "releaseTrainPath": "content/development/seis-core-plugin-release-train.json",
+    "sourceRoot": "plugins/seis-core",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "releaseLabel": "0.000000017",
+    "releaseSemver": "0.0.17"
+  },
+  "policy": {
+    "transport": "local-stdio",
+    "command": "node",
+    "exactlyOneServerPerPackage": true,
+    "serverNameRule": "matches-public-plugin-id",
+    "entrypointRule": "declared-mcp-argument-matches-profile-entrypoint",
+    "acceptedServerConfigKeys": [
+      "args",
+      "command"
+    ],
+    "remoteUrlAllowed": false,
+    "environmentInjectionAllowed": false,
+    "permissions": {
+      "write": [],
+      "network": [],
+      "secrets": []
+    },
+    "humanApprovalRequiredFor": [
+      "permission changes",
+      "remote MCP access",
+      "credentials",
+      "network access",
+      "external writes",
+      "public release"
+    ]
+  },
+  "counts": {
+    "marketplaceCardCount": 373,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "applicationPluginCount": 67,
+    "topicPluginCount": 300,
+    "applicationMcpServerCount": 67,
+    "localStdioServerCount": 67,
+    "remoteServerCount": 0,
+    "writePermissionGrantCount": 0,
+    "networkPermissionGrantCount": 0,
+    "secretPermissionGrantCount": 0,
+    "validRecordCount": 67,
+    "invalidRecordCount": 0
+  },
+  "records": [
+    {
+      "name": "seis-a11y-regression",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-a11y-regression",
+      "transport": "local-stdio",
+      "serverName": "seis-a11y-regression",
+      "command": "node",
+      "entrypoint": "scripts/seis-a11y-regression-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-action-pin-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-action-pin-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-action-pin-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-action-pin-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-agent-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-agent-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-agent-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-agent-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-agent-contract-validator",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-agent-contract-validator",
+      "transport": "local-stdio",
+      "serverName": "seis-agent-contract-validator",
+      "command": "node",
+      "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-approval-gate-review",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-approval-gate-review",
+      "transport": "local-stdio",
+      "serverName": "seis-approval-gate-review",
+      "command": "node",
+      "entrypoint": "scripts/seis-approval-gate-review-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-architecture-drift",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-architecture-drift",
+      "transport": "local-stdio",
+      "serverName": "seis-architecture-drift",
+      "command": "node",
+      "entrypoint": "scripts/seis-architecture-drift-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-artifact-attestation",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-artifact-attestation",
+      "transport": "local-stdio",
+      "serverName": "seis-artifact-attestation",
+      "command": "node",
+      "entrypoint": "scripts/seis-artifact-attestation-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-branch-protection-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-branch-protection-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-branch-protection-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-branch-protection-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-canonical-registry-validator",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-canonical-registry-validator",
+      "transport": "local-stdio",
+      "serverName": "seis-canonical-registry-validator",
+      "command": "node",
+      "entrypoint": "scripts/seis-canonical-registry-validator-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-changelog-validator",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-changelog-validator",
+      "transport": "local-stdio",
+      "serverName": "seis-changelog-validator",
+      "command": "node",
+      "entrypoint": "scripts/seis-changelog-validator-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-codeowners-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-codeowners-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-codeowners-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-codeowners-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-community-health",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-community-health",
+      "transport": "local-stdio",
+      "serverName": "seis-community-health",
+      "command": "node",
+      "entrypoint": "scripts/seis-community-health-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-context-efficiency",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-context-efficiency",
+      "transport": "local-stdio",
+      "serverName": "seis-context-efficiency",
+      "command": "node",
+      "entrypoint": "scripts/seis-context-efficiency-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-contract-compatibility",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-contract-compatibility",
+      "transport": "local-stdio",
+      "serverName": "seis-contract-compatibility",
+      "command": "node",
+      "entrypoint": "scripts/seis-contract-compatibility-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-contributor-map",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-contributor-map",
+      "transport": "local-stdio",
+      "serverName": "seis-contributor-map",
+      "command": "node",
+      "entrypoint": "scripts/seis-contributor-map-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-cost-latency-budget",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-cost-latency-budget",
+      "transport": "local-stdio",
+      "serverName": "seis-cost-latency-budget",
+      "command": "node",
+      "entrypoint": "scripts/seis-cost-latency-budget-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-data-retention-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-data-retention-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-data-retention-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-data-retention-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-dependency-freshness",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-dependency-freshness",
+      "transport": "local-stdio",
+      "serverName": "seis-dependency-freshness",
+      "command": "node",
+      "entrypoint": "scripts/seis-dependency-freshness-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-design-token-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-design-token-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-design-token-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-design-token-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-doc-indexer",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-doc-indexer",
+      "transport": "local-stdio",
+      "serverName": "seis-doc-indexer",
+      "command": "node",
+      "entrypoint": "scripts/seis-doc-indexer-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-docs-freshness",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-docs-freshness",
+      "transport": "local-stdio",
+      "serverName": "seis-docs-freshness",
+      "command": "node",
+      "entrypoint": "scripts/seis-docs-freshness-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-dora-metrics",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-dora-metrics",
+      "transport": "local-stdio",
+      "serverName": "seis-dora-metrics",
+      "command": "node",
+      "entrypoint": "scripts/seis-dora-metrics-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-download-anomaly",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-download-anomaly",
+      "transport": "local-stdio",
+      "serverName": "seis-download-anomaly",
+      "command": "node",
+      "entrypoint": "scripts/seis-download-anomaly-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-github-metrics-collector",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-github-metrics-collector",
+      "transport": "local-stdio",
+      "serverName": "seis-github-metrics-collector",
+      "command": "node",
+      "entrypoint": "scripts/seis-github-metrics-collector-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-goal-dependency-map",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-goal-dependency-map",
+      "transport": "local-stdio",
+      "serverName": "seis-goal-dependency-map",
+      "command": "node",
+      "entrypoint": "scripts/seis-goal-dependency-map-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-goal-integrity",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-goal-integrity",
+      "transport": "local-stdio",
+      "serverName": "seis-goal-integrity",
+      "command": "node",
+      "entrypoint": "scripts/seis-goal-integrity-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-issue-triage",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-issue-triage",
+      "transport": "local-stdio",
+      "serverName": "seis-issue-triage",
+      "command": "node",
+      "entrypoint": "scripts/seis-issue-triage-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-license-compatibility",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-license-compatibility",
+      "transport": "local-stdio",
+      "serverName": "seis-license-compatibility",
+      "command": "node",
+      "entrypoint": "scripts/seis-license-compatibility-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-localization-coverage",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-localization-coverage",
+      "transport": "local-stdio",
+      "serverName": "seis-localization-coverage",
+      "command": "node",
+      "entrypoint": "scripts/seis-localization-coverage-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-maintainer-risk",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-maintainer-risk",
+      "transport": "local-stdio",
+      "serverName": "seis-maintainer-risk",
+      "command": "node",
+      "entrypoint": "scripts/seis-maintainer-risk-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-marketplace-integrity",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-marketplace-integrity",
+      "transport": "local-stdio",
+      "serverName": "seis-marketplace-integrity",
+      "command": "node",
+      "entrypoint": "scripts/seis-marketplace-integrity-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-mcp-inventory",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-mcp-inventory",
+      "transport": "local-stdio",
+      "serverName": "seis-mcp-inventory",
+      "command": "node",
+      "entrypoint": "scripts/seis-mcp-inventory-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-mcp-permission",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-mcp-permission",
+      "transport": "local-stdio",
+      "serverName": "seis-mcp-permission",
+      "command": "node",
+      "entrypoint": "scripts/seis-mcp-permission-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-migration-guide-check",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-migration-guide-check",
+      "transport": "local-stdio",
+      "serverName": "seis-migration-guide-check",
+      "command": "node",
+      "entrypoint": "scripts/seis-migration-guide-check-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-model-fallback",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-model-fallback",
+      "transport": "local-stdio",
+      "serverName": "seis-model-fallback",
+      "command": "node",
+      "entrypoint": "scripts/seis-model-fallback-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-offline-mode-check",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-offline-mode-check",
+      "transport": "local-stdio",
+      "serverName": "seis-offline-mode-check",
+      "command": "node",
+      "entrypoint": "scripts/seis-offline-mode-check-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-package-adoption",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-package-adoption",
+      "transport": "local-stdio",
+      "serverName": "seis-package-adoption",
+      "command": "node",
+      "entrypoint": "scripts/seis-package-adoption-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-performance-budget",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-performance-budget",
+      "transport": "local-stdio",
+      "serverName": "seis-performance-budget",
+      "command": "node",
+      "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-plugin-discovery",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-plugin-discovery",
+      "transport": "local-stdio",
+      "serverName": "seis-plugin-discovery",
+      "command": "node",
+      "entrypoint": "scripts/seis-plugin-discovery-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-plugin-migration",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-plugin-migration",
+      "transport": "local-stdio",
+      "serverName": "seis-plugin-migration",
+      "command": "node",
+      "entrypoint": "scripts/seis-plugin-migration-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-pr-cycle-time",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-pr-cycle-time",
+      "transport": "local-stdio",
+      "serverName": "seis-pr-cycle-time",
+      "command": "node",
+      "entrypoint": "scripts/seis-pr-cycle-time-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-prompt-injection-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-prompt-injection-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-prompt-injection-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-prompt-injection-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-provider-health",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-provider-health",
+      "transport": "local-stdio",
+      "serverName": "seis-provider-health",
+      "command": "node",
+      "entrypoint": "scripts/seis-provider-health-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-public-distribution-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-public-distribution-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-public-distribution-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-public-distribution-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-public-install-evidence",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-public-install-evidence",
+      "transport": "local-stdio",
+      "serverName": "seis-public-install-evidence",
+      "command": "node",
+      "entrypoint": "scripts/seis-public-install-evidence-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-public-install-state",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-public-install-state",
+      "transport": "local-stdio",
+      "serverName": "seis-public-install-state",
+      "command": "node",
+      "entrypoint": "scripts/seis-public-install-state-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-public-runtime-status",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-public-runtime-status",
+      "transport": "local-stdio",
+      "serverName": "seis-public-runtime-status",
+      "command": "node",
+      "entrypoint": "scripts/seis-public-runtime-status-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-public-safe-scan",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-public-safe-scan",
+      "transport": "local-stdio",
+      "serverName": "seis-public-safe-scan",
+      "command": "node",
+      "entrypoint": "scripts/seis-public-safe-scan-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-rag-citation-coverage",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-rag-citation-coverage",
+      "transport": "local-stdio",
+      "serverName": "seis-rag-citation-coverage",
+      "command": "node",
+      "entrypoint": "scripts/seis-rag-citation-coverage-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-release-cadence",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-release-cadence",
+      "transport": "local-stdio",
+      "serverName": "seis-release-cadence",
+      "command": "node",
+      "entrypoint": "scripts/seis-release-cadence-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-release-readiness",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-release-readiness",
+      "transport": "local-stdio",
+      "serverName": "seis-release-readiness",
+      "command": "node",
+      "entrypoint": "scripts/seis-release-readiness-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-repository-health",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-repository-health",
+      "transport": "local-stdio",
+      "serverName": "seis-repository-health",
+      "command": "node",
+      "entrypoint": "scripts/seis-repository-health-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-repository-scorecard",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-repository-scorecard",
+      "transport": "local-stdio",
+      "serverName": "seis-repository-scorecard",
+      "command": "node",
+      "entrypoint": "scripts/seis-repository-scorecard-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-rollback-readiness",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-rollback-readiness",
+      "transport": "local-stdio",
+      "serverName": "seis-rollback-readiness",
+      "command": "node",
+      "entrypoint": "scripts/seis-rollback-readiness-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-route-explainer",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-route-explainer",
+      "transport": "local-stdio",
+      "serverName": "seis-route-explainer",
+      "command": "node",
+      "entrypoint": "scripts/seis-route-explainer-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-sbom-generator",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-sbom-generator",
+      "transport": "local-stdio",
+      "serverName": "seis-sbom-generator",
+      "command": "node",
+      "entrypoint": "scripts/seis-sbom-generator-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-secret-boundary-scan",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-secret-boundary-scan",
+      "transport": "local-stdio",
+      "serverName": "seis-secret-boundary-scan",
+      "command": "node",
+      "entrypoint": "scripts/seis-secret-boundary-scan-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-semver-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-semver-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-semver-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-semver-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-source-provenance",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-source-provenance",
+      "transport": "local-stdio",
+      "serverName": "seis-source-provenance",
+      "command": "node",
+      "entrypoint": "scripts/seis-source-provenance-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-technology-ontology",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-technology-ontology",
+      "transport": "local-stdio",
+      "serverName": "seis-technology-ontology",
+      "command": "node",
+      "entrypoint": "scripts/seis-technology-ontology-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-test-flakiness",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-test-flakiness",
+      "transport": "local-stdio",
+      "serverName": "seis-test-flakiness",
+      "command": "node",
+      "entrypoint": "scripts/seis-test-flakiness-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-tool-permission-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-tool-permission-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-tool-permission-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-tool-permission-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-trusted-marketplace",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
+      "transport": "local-stdio",
+      "serverName": "seis-trusted-marketplace",
+      "command": "node",
+      "entrypoint": "scripts/seis-trusted-marketplace-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-vulnerability-triage",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-vulnerability-triage",
+      "transport": "local-stdio",
+      "serverName": "seis-vulnerability-triage",
+      "command": "node",
+      "entrypoint": "scripts/seis-vulnerability-triage-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-workflow-linter",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-workflow-linter",
+      "transport": "local-stdio",
+      "serverName": "seis-workflow-linter",
+      "command": "node",
+      "entrypoint": "scripts/seis-workflow-linter-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-workflow-permission-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-workflow-permission-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-workflow-permission-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-workflow-permission-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-workspace-inspector",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-workspace-inspector",
+      "transport": "local-stdio",
+      "serverName": "seis-workspace-inspector",
+      "command": "node",
+      "entrypoint": "scripts/seis-workspace-inspector-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    }
+  ],
+  "safety": {
+    "reads": [
+      ".agents/plugins/marketplace.json",
+      "content/development/seis-public-plugin-family.json",
+      "apps/seis-core/data/seis-core-plugin-sources.json",
+      "content/development/seis-core-plugin-release-train.json",
+      "plugins/seis-core/*/.codex-plugin/plugin.json",
+      "plugins/seis-core/*/.mcp.json",
+      "plugins/seis-core/*/assets/plugin-profile.json"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "startsMcpServers": false,
+    "permissionGrant": false,
+    "publicReleaseAllowed": false
+  },
+  "limitations": [
+    "This ledger validates declared public package metadata only; it does not start or connect to an MCP server.",
+    "An empty declared permission set is not proof of current Codex enablement, external safety, authorization, or release approval.",
+    "Remote endpoints, provider credentials, mutable tool calls, and external writes remain outside this plugin boundary."
+  ]
+}

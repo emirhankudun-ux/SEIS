@@ -1,7 +1,7 @@
 {
   "id": "seis-data-retention-audit",
   "name": "seis-data-retention-audit",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Review data-contract and privacy documentation presence without reading private data or mutating schemas.",
   "author": {
     "name": "emirhankudun-ux"

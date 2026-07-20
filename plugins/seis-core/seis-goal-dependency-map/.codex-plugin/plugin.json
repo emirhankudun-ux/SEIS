@@ -1,7 +1,7 @@
 {
   "id": "seis-goal-dependency-map",
   "name": "seis-goal-dependency-map",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Summarize goal, evidence, and architecture dependencies before a plugin or release handoff.",
   "author": {
     "name": "emirhankudun-ux"

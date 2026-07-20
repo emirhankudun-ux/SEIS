@@ -1,6 +1,6 @@
 {
   "name": "seis-trusted-marketplace",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Review public SEIS marketplace intake and activation gates without connecting to external services.",
   "author": {
     "name": "SEIS Repository"

@@ -1,0 +1,36 @@
+{
+  "name": "seis-mcp-permission",
+  "version": "0.0.17",
+  "description": "Validate public SEIS Repo MCP entrypoints and deny-by-default permission contracts without starting servers.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS MCP Permission Boundary",
+    "shortDescription": "Validate public MCP permission boundaries without granting access.",
+    "longDescription": "Inspects the declared local stdio MCP envelope for every public app-owned SEIS Repo package, checks entrypoint and empty write/network/secret permission contracts, and never starts servers, reads credentials, or grants a capability.",
+    "developerName": "SEIS Repository",
+    "category": "Security",
+    "capabilities": [
+      "public-mcp-entrypoint-validation",
+      "deny-by-default-permission-check",
+      "local-stdio-boundary-review",
+      "mcp-permission-ledger"
+    ],
+    "defaultPrompt": [
+      "Validate the declared public SEIS Repo MCP permission boundary in read-only mode.",
+      "Show whether MCP entrypoint and empty write, network, and secret permission contracts remain aligned without enabling anything."
+    ]
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "mcp",
+    "permissions",
+    "public-repository",
+    "security",
+    "read-only"
+  ]
+}

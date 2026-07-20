@@ -1,7 +1,7 @@
 {
   "id": "seis-workspace-inspector",
   "name": "seis-workspace-inspector",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Read-only local workspace metadata and technology inventory for SEIS.",
   "author": {
     "name": "emirhankudun-ux"

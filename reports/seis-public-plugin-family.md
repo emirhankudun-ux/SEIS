@@ -9,7 +9,7 @@
 ## Public Distribution
 
 - Canonical install: seis-ai-agent@seis-repo
-- Public plugin count: 372
+- Public plugin count: 373
 - Canonical default installs: 1
 - Migrated root repository cards: 5
 - Mode: single-public-plugin
@@ -36,7 +36,7 @@ These cards replace the historical personal-marketplace visibility for the five 
 
 ## Public SEIS Core Repository Packages
 
-- Marketplace entries: 66
+- Marketplace entries: 67
 - Source root: plugins/seis-core
 - Audience: everyone
 - License: MIT

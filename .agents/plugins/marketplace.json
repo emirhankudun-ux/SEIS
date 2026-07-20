@@ -461,6 +461,18 @@
       "category": "AI"
     },
     {
+      "name": "seis-mcp-permission",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-mcp-permission"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
       "name": "seis-migration-guide-check",
       "source": {
         "source": "local",
