@@ -95,8 +95,11 @@ Step 98 is completed by
 it identifies `seis-swift-package-topology` only as a planned, fixed-manifest,
 read-only candidate. It does not add that package or its card, activate Wave 4,
 or convert static manifest evidence into SwiftPM, compiler, runtime, install,
-or release proof. Wave 3 now has 98 completed steps and step 99 is active to
-create a separately reviewable following-wave plan.
+or release proof. Step 99 is completed by
+`content/development/seis-public-plugin-wave-4-program.json`, a separate
+five-round, 100-step `planned-gated` specification. It keeps the candidate
+unimplemented and unlisted in `SEIS Repo`; Wave 3 now has 99 completed steps
+and step 100 is active for its final current-evidence closure.
 The
 current contract is 73 packages / 379 `SEIS Repo` cards, without an
 independent installation, native-runtime, provider, deployment, or

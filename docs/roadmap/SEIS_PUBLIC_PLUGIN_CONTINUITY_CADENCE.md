@@ -11,7 +11,7 @@
 | Bootstrap | 30 steps / 5 rounds / 6 steps | Completed |
 | Wave 1 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 2 | 100 steps / 5 rounds / 20 steps | Completed |
-| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 98 complete, step 99 active |
+| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 99 complete, step 100 active |
 | Wave 4 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 | Wave 5 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 
@@ -60,7 +60,10 @@ by `content/development/seis-public-plugin-wave-3-following-wave-review.json`.
 That review identifies a fixed-manifest, read-only
 `seis-swift-package-topology` candidate for later planning while keeping its
 package and public card absent, activation false, and every SwiftPM/compiler/
-runtime/release claim false. Step 99 is active to prepare the separate plan;
+runtime/release claim false. Step 99 is completed by
+`content/development/seis-public-plugin-wave-4-program.json`, which defines
+five explicit rounds and 100 planned steps for the candidate without starting
+implementation. Step 100 is active to close Wave 3 with current evidence;
 Wave 4 remains planned-gated.
 
 ## GitHub Delivery Rule
@@ -99,5 +102,6 @@ npm run check:seis-public-plugin-wave-3-final-preflight
 npm run check:seis-public-plugin-wave-3-delivery-evidence
 npm run check:seis-public-plugin-wave-3-repository-local-handoff
 npm run check:seis-public-plugin-wave-3-following-wave-review
+npm run check:seis-public-plugin-wave-4-program
 npm run check:seis-public-plugin-expansion-program
 ```

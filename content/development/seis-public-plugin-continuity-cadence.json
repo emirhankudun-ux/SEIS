@@ -72,23 +72,31 @@
       "wave": 3,
       "status": "in-progress",
       "programPath": "content/development/seis-public-plugin-wave-3-program.json",
-      "completedSteps": 98,
+      "completedSteps": 99,
       "inProgressSteps": [
-        99
+        100
       ],
       "priorValidationPath": "content/development/seis-public-plugin-wave-3-final-validation.json",
       "preflightPath": "content/development/seis-public-plugin-wave-3-final-preflight.json",
       "deliveryEvidencePath": "content/development/seis-public-plugin-wave-3-delivery-evidence.json",
       "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
-      "currentEvidencePath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
+      "followingWaveReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
+      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-program.json",
       "entryRule": "Wave 2 completed with a current handoff, an approved non-duplicative capability decision, and continued user authority."
     },
     {
       "wave": 4,
       "status": "planned-gated",
       "programId": "seis-public-plugin-wave-4-program",
+      "plannedProgramPath": "content/development/seis-public-plugin-wave-4-program.json",
       "totalSteps": 100,
       "stepTemplateId": "seis-public-plugin-future-wave-template",
+      "scopeReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
+      "selectedCapability": "seis-swift-package-topology",
+      "activationApproved": false,
+      "implementationStarted": false,
+      "candidatePackageExists": false,
+      "candidatePublicCardExists": false,
       "predecessor": "Wave 3 repository-local handoff",
       "entryRule": "Activate only after Wave 3 handoff, current validation, an explicit scope and risk decision, and current user authority."
     },

@@ -48,7 +48,8 @@
     "finalPreflightPath": "content/development/seis-public-plugin-wave-3-final-preflight.json",
     "deliveryEvidencePath": "content/development/seis-public-plugin-wave-3-delivery-evidence.json",
     "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
-    "followingWaveReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json"
+    "followingWaveReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
+    "wave4ProgramPath": "content/development/seis-public-plugin-wave-4-program.json"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -894,25 +895,25 @@
       "number": 99,
       "round": 5,
       "title": "Create a separate plan for any following wave only after a new scope and risk review.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "Wave 3 handoff and following-wave scope review evidence"
     },
     {
       "number": 100,
       "round": 5,
       "title": "Mark Wave 3 complete only when all one hundred steps have current evidence.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "Wave 3 handoff and following-wave scope review evidence"
     }
   ],
   "progress": {
-    "completedStepCount": 98,
-    "plannedStepCount": 1,
+    "completedStepCount": 99,
+    "plannedStepCount": 0,
     "inProgressStepNumbers": [
-      99
+      100
     ],
     "completedRoundCount": 4,
-    "nextStepNumber": 99
+    "nextStepNumber": 100
   },
   "qualityGates": [
     "npm run check:seis-public-plugin-expansion-program",
@@ -923,6 +924,7 @@
     "npm run check:seis-public-plugin-wave-3-delivery-evidence",
     "npm run check:seis-public-plugin-wave-3-repository-local-handoff",
     "npm run check:seis-public-plugin-wave-3-following-wave-review",
+    "npm run check:seis-public-plugin-wave-4-program",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-core-plugin-sources",
