@@ -16,11 +16,11 @@
   "marketplace": {
     "name": "seis-repo",
     "displayName": "SEIS Repo",
-    "publicCardCount": 377,
-    "expectedCardCount": 377,
+    "publicCardCount": 378,
+    "expectedCardCount": 378,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 71,
+    "applicationPluginCount": 72,
     "topicPluginCount": 300,
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL"
@@ -28,7 +28,7 @@
   "release": {
     "label": "0.00000002",
     "semver": "0.0.20",
-    "appPluginCount": 71,
+    "appPluginCount": 72,
     "maturity": "functional-local-demo",
     "publicReleaseBlocked": true
   },

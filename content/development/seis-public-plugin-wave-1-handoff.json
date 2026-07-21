@@ -4,7 +4,7 @@
   "goalId": "SEIS-GOAL-021",
   "generatedAt": "2026-07-21",
   "status": "completed-repository-local-handoff",
-  "purpose": "Record a reproducible repository-local Wave 1 handoff after source, catalog, matrix, governance, lifecycle, provenance, and evidence contracts are current. This is not a public release, external installation, provider, deployment, or approval claim.",
+  "purpose": "Record a reproducible repository-local Wave 1 handoff and its current public-contract revalidation during later evidence-led work. This is not a public release, external installation, provider, deployment, or approval claim.",
   "program": {
     "id": "seis-public-plugin-wave-1-program",
     "status": "completed",
@@ -15,10 +15,10 @@
   "marketplace": {
     "name": "seis-repo",
     "displayName": "SEIS Repo",
-    "publicCardCount": 377,
-    "expectedCardCount": 377,
-    "applicationPluginCount": 71,
-    "expectedApplicationPluginCount": 71
+    "publicCardCount": 378,
+    "expectedCardCount": 378,
+    "applicationPluginCount": 72,
+    "expectedApplicationPluginCount": 72
   },
   "validation": {
     "sourceAndCatalog": true,
@@ -29,7 +29,8 @@
     "provenance": true,
     "freshTaskReload": true,
     "releaseReadiness": true,
-    "mcpBoundary": true
+    "mcpBoundary": true,
+    "wave2Activation": true
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -57,8 +58,8 @@
   "releaseReadiness": {
     "currentLabel": "0.00000002",
     "currentSemver": "0.0.20",
-    "codeLinesChanged": 278,
-    "decision": "continue-code-before-large-code-promotion",
+    "codeLinesChanged": 1155,
+    "decision": "large-code-promotion-evidence-ready",
     "promoted": false
   },
   "risks": [
@@ -82,12 +83,15 @@
   },
   "nextWave": {
     "number": 2,
-    "status": "planned",
+    "status": "in-progress",
     "scopeReviewComplete": true,
-    "activationRule": "A separate Wave 2 program and candidate-overlap review are required before implementation begins."
+    "programId": "seis-public-plugin-wave-2-program",
+    "capabilityDecisionPath": "content/development/seis-public-plugin-wave-2-capability-decision.json",
+    "completedStepCount": 20,
+    "activationRule": "Wave 2 is active only for the separately reviewed, bounded public Apple/Swift static-readiness scope; it must retain empty write, network, and secret permissions and cannot claim a native runtime or public release."
   },
   "inputSafetyScan": {
-    "inputCount": 12,
+    "inputCount": 14,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

@@ -21,9 +21,9 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 71,
-  "expectedPluginCount": 71,
-  "readyCount": 69,
+  "pluginCount": 72,
+  "expectedPluginCount": 72,
+  "readyCount": 70,
   "attentionCount": 2,
   "failureCount": 0,
   "failures": [],
@@ -81,6 +81,22 @@
       "version": "0.0.20",
       "releaseTrainVersion": "0.00000002",
       "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-apple-native-readiness",
+      "version": "0.0.20",
+      "releaseTrainVersion": "0.00000002",
+      "entrypoint": "scripts/seis-apple-native-readiness-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
         "write": [],

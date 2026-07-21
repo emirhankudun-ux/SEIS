@@ -50,6 +50,7 @@
       "seis-action-pin-audit",
       "seis-agent-audit",
       "seis-agent-contract-validator",
+      "seis-apple-native-readiness",
       "seis-approval-gate-review",
       "seis-architecture-drift",
       "seis-artifact-attestation",
@@ -123,6 +124,7 @@
       "seis-action-pin-audit",
       "seis-agent-audit",
       "seis-agent-contract-validator",
+      "seis-apple-native-readiness",
       "seis-approval-gate-review",
       "seis-architecture-drift",
       "seis-artifact-attestation",
@@ -204,8 +206,8 @@
       "seis-ai-agent@seis-repo"
     ],
     "embeddedModuleCount": 10,
-    "applicationOwnedPluginCount": 71,
-    "applicationMarketplacePluginCount": 71,
+    "applicationOwnedPluginCount": 72,
+    "applicationMarketplacePluginCount": 72,
     "applicationSourceRoot": "plugins/seis-core",
     "applicationSourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json"
   },
@@ -322,14 +324,14 @@
     "releaseTrain": "content/development/seis-core-plugin-release-train.json",
     "releaseLabel": "0.00000002",
     "releaseSemver": "0.0.20",
-    "pluginCount": 71,
+    "pluginCount": 72,
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
     "publicDistribution": "direct-repository-source",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 71,
+    "marketplaceEntryCount": 72,
     "installSurface": "repo-source-app",
     "executionMode": "task-scoped-local-demo-only",
     "publicReleaseAllowed": false,
@@ -454,6 +456,39 @@
         "permissions": {
           "read": [
             "bounded local JSON agent contracts"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-apple-native-readiness",
+        "displayName": "SEIS Apple Native Readiness",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
+        "version": "0.0.20",
+        "license": "MIT",
+        "sourceClassification": "public-SEIS-repository",
+        "lifecycleStatus": "approved-public-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.00000002",
+        "releaseSemver": "0.0.20",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": "seis-apple-native-readiness@seis-repo",
+        "installSurface": "repo-source-app",
+        "publicMarketplace": true,
+        "publicRepositoryAvailable": true,
+        "publicAudience": "everyone",
+        "publicStatus": "public-repo-marketplace",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "permissions": {
+          "read": [
+            "bounded Swift Package manifest markers",
+            "bounded Swift source and test filenames",
+            "checked-in Apple platform strategy markers"
           ],
           "write": [],
           "network": [],

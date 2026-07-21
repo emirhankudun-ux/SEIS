@@ -134,13 +134,13 @@
     }
   ],
   "counts": {
-    "declaredMarketplaceEntryCount": 377,
-    "declaredApplicationMarketplaceEntryCount": 71,
-    "sourceManifestPluginCount": 71,
-    "marketplaceApplicationPluginCount": 71,
-    "marketplaceEntryCount": 377,
-    "publicFamilyApplicationPluginCount": 71,
-    "publicFamilyMarketplaceEntryCount": 377
+    "declaredMarketplaceEntryCount": 378,
+    "declaredApplicationMarketplaceEntryCount": 72,
+    "sourceManifestPluginCount": 72,
+    "marketplaceApplicationPluginCount": 72,
+    "marketplaceEntryCount": 378,
+    "publicFamilyApplicationPluginCount": 72,
+    "publicFamilyMarketplaceEntryCount": 378
   },
   "findings": [],
   "manualEvidenceRequired": [

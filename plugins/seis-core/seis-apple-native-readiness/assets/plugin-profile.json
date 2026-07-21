@@ -1,0 +1,47 @@
+{
+  "stableId": "seis-apple-native-readiness",
+  "slug": "seis-apple-native-readiness",
+  "version": "0.0.20",
+  "releaseMicroUnits": 20,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.00000002",
+  "category": "apple-native-readiness",
+  "owner": "@seis-apple",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-apple-native-readiness-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "bounded Swift Package manifest markers",
+      "bounded Swift source and test filenames",
+      "checked-in Apple platform strategy markers"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "audit": {
+    "mode": "read-only-report",
+    "checkCount": 16
+  },
+  "validation": [
+    "node scripts/seis-apple-native-readiness-mcp-server.mjs --status",
+    "node scripts/seis-apple-native-readiness-mcp-server.mjs --audit --path .",
+    "node scripts/seis-apple-native-readiness-mcp-server.mjs --evidence",
+    "npm run check:seis-apple-native-readiness",
+    "node --test plugins/seis-core/test/apple-native-readiness.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin and revert its generated evidence record; the plugin never edits source, Swift packages, marketplace state, an external system, or release state.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 Wave 2 after an overlap review found no existing public app-owned plugin that jointly verifies bounded Swift Package targets, source/test presence, and Apple platform strategy evidence.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

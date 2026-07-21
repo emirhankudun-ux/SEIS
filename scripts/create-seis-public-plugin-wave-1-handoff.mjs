@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-1-handoff.json";
@@ -15,11 +17,14 @@ const PATHS = Object.freeze({
   waveEvidence: "content/development/seis-public-plugin-wave-1-evidence-index.json",
   pluginEvidence: "content/development/seis-evidence-index.json",
   capabilityDecision: "content/development/seis-public-plugin-wave-1-capability-decision.json",
+  wave2Program: "content/development/seis-public-plugin-wave-2-program.json",
+  wave2CapabilityDecision: "content/development/seis-public-plugin-wave-2-capability-decision.json",
   lifecycle: "content/development/seis-public-plugin-lifecycle.json",
   securityReview: "content/development/seis-public-plugin-security-provenance-review.json",
   freshTaskReload: "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
   mcpPermission: "content/development/seis-mcp-permission-risk-matrix.json",
 });
+const EXPECTED_PUBLIC_CARD_COUNT = APP_PLUGIN_EXPANSION_TARGET + 306;
 const SECRET_PATTERNS = [
   { id: "openai-like-api-key", regex: /\bsk-[A-Za-z0-9_-]{20,}\b/ },
   { id: "github-token", regex: /\bgh[pousr]_[A-Za-z0-9_]{20,}\b/ },
@@ -51,6 +56,8 @@ function buildRecord() {
   const waveEvidence = readJson(PATHS.waveEvidence);
   const pluginEvidence = readJson(PATHS.pluginEvidence);
   const capabilityDecision = readJson(PATHS.capabilityDecision);
+  const wave2Program = readJson(PATHS.wave2Program);
+  const wave2CapabilityDecision = readJson(PATHS.wave2CapabilityDecision);
   const lifecycle = readJson(PATHS.lifecycle);
   const securityReview = readJson(PATHS.securityReview);
   const freshTaskReload = readJson(PATHS.freshTaskReload);
@@ -69,7 +76,7 @@ function buildRecord() {
     goalId: "SEIS-GOAL-021",
     generatedAt: "2026-07-21",
     status: "completed-repository-local-handoff",
-    purpose: "Record a reproducible repository-local Wave 1 handoff after source, catalog, matrix, governance, lifecycle, provenance, and evidence contracts are current. This is not a public release, external installation, provider, deployment, or approval claim.",
+    purpose: "Record a reproducible repository-local Wave 1 handoff and its current public-contract revalidation during later evidence-led work. This is not a public release, external installation, provider, deployment, or approval claim.",
     program: {
       id: waveProgram.id,
       status: waveProgram.status,
@@ -89,8 +96,8 @@ function buildRecord() {
       expectedApplicationPluginCount: waveEvidence.marketplace?.applicationPluginCount || null,
     },
     validation: {
-      sourceAndCatalog: plugins.length === 71 && cards.length === 377,
-      matrix: matrix.pluginCount === 71 && matrix.expectedPluginCount === 71 && matrix.failureCount === 0,
+      sourceAndCatalog: plugins.length === APP_PLUGIN_EXPANSION_TARGET && cards.length === EXPECTED_PUBLIC_CARD_COUNT,
+      matrix: matrix.pluginCount === APP_PLUGIN_EXPANSION_TARGET && matrix.expectedPluginCount === APP_PLUGIN_EXPANSION_TARGET && matrix.failureCount === 0,
       waveEvidence: waveEvidence.status === "completed-repo-local-evidence-index" && attentionContractIds.length === 1,
       pluginEvidence: pluginEvidence.id === "seis-evidence-index" && pluginEvidence.status === "completed-public-evidence-index",
       lifecycle: lifecycle.id === "seis-public-plugin-lifecycle",
@@ -100,6 +107,11 @@ function buildRecord() {
         && typeof releaseReadiness.decision === "string"
         && ["large-code-promotion-evidence-ready", "continue-code-before-large-code-promotion"].includes(releaseReadiness.decision),
       mcpBoundary: list(mcpPermission.safety?.write).length === 0 && list(mcpPermission.safety?.network).length === 0 && list(mcpPermission.safety?.secrets).length === 0,
+      wave2Activation: wave2Program.id === "seis-public-plugin-wave-2-program"
+        && wave2Program.status === "in-progress"
+        && wave2Program.progress?.completedStepCount === 20
+        && wave2CapabilityDecision.id === "seis-public-plugin-wave-2-capability-decision"
+        && wave2CapabilityDecision.decision?.selectedCapability === "seis-apple-native-readiness",
     },
     publicBoundary: {
       marketplaceName: capabilityDecision.publicBoundary?.marketplaceName,
@@ -150,9 +162,12 @@ function buildRecord() {
     },
     nextWave: {
       number: 2,
-      status: "planned",
+      status: wave2Program.status,
       scopeReviewComplete: true,
-      activationRule: "A separate Wave 2 program and candidate-overlap review are required before implementation begins.",
+      programId: wave2Program.id,
+      capabilityDecisionPath: PATHS.wave2CapabilityDecision,
+      completedStepCount: wave2Program.progress?.completedStepCount || 0,
+      activationRule: "Wave 2 is active only for the separately reviewed, bounded public Apple/Swift static-readiness scope; it must retain empty write, network, and secret permissions and cannot claim a native runtime or public release.",
     },
     inputSafetyScan,
   };
@@ -167,14 +182,14 @@ function validateRecord(record) {
   assert(record.program?.id === "seis-public-plugin-wave-1-program" && record.program?.status === "completed", "Wave 1 program status is invalid");
   assert(record.program?.completedStepCount === 100 && record.program?.completedRoundCount === 5 && list(record.program?.inProgressStepNumbers).length === 0, "Wave 1 completion evidence is invalid");
   assert(record.marketplace?.name === "seis-repo" && record.marketplace?.displayName === "SEIS Repo", "public marketplace identity is invalid");
-  assert(record.marketplace?.publicCardCount === 377 && record.marketplace?.expectedCardCount === 377, "public card count is invalid");
-  assert(record.marketplace?.applicationPluginCount === 71 && record.marketplace?.expectedApplicationPluginCount === 71, "application plugin count is invalid");
+  assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.expectedCardCount === EXPECTED_PUBLIC_CARD_COUNT, "public card count is invalid");
+  assert(record.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.marketplace?.expectedApplicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "application plugin count is invalid");
   assert(Object.values(record.validation).every(Boolean), "a required Wave 1 validation contract is not current");
-  assert(record.releaseReadiness?.promoted === false && record.releaseReadiness?.decision === "continue-code-before-large-code-promotion", "handoff must not claim a release promotion");
+  assert(record.releaseReadiness?.promoted === false && ["large-code-promotion-evidence-ready", "continue-code-before-large-code-promotion"].includes(record.releaseReadiness?.decision), "handoff must not claim a release promotion");
   assert(record.publicBoundary?.publicAudience === "everyone" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false, "public marketplace boundary is invalid");
   assert(record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
   assert(list(record.knownGaps).length === 1 && record.knownGaps[0]?.id === "ui-state-contract", "known attention record is invalid");
-  assert(record.nextWave?.number === 2 && record.nextWave?.status === "planned" && record.nextWave?.scopeReviewComplete === true, "Wave 2 scope decision is invalid");
+  assert(record.nextWave?.number === 2 && record.nextWave?.status === "in-progress" && record.nextWave?.programId === "seis-public-plugin-wave-2-program" && record.nextWave?.completedStepCount === 20 && record.nextWave?.scopeReviewComplete === true, "Wave 2 scope decision is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0, "handoff inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "handoff record must not contain machine-specific paths");
 }

@@ -50,18 +50,18 @@
     ]
   },
   "counts": {
-    "marketplaceCardCount": 377,
+    "marketplaceCardCount": 378,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 71,
+    "applicationPluginCount": 72,
     "topicPluginCount": 300,
-    "applicationMcpServerCount": 71,
-    "localStdioServerCount": 71,
+    "applicationMcpServerCount": 72,
+    "localStdioServerCount": 72,
     "remoteServerCount": 0,
     "writePermissionGrantCount": 0,
     "networkPermissionGrantCount": 0,
     "secretPermissionGrantCount": 0,
-    "validRecordCount": 71,
+    "validRecordCount": 72,
     "invalidRecordCount": 0
   },
   "records": [
@@ -130,6 +130,25 @@
       "serverName": "seis-agent-contract-validator",
       "command": "node",
       "entrypoint": "scripts/seis-agent-contract-validator-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-apple-native-readiness",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
+      "transport": "local-stdio",
+      "serverName": "seis-apple-native-readiness",
+      "command": "node",
+      "entrypoint": "scripts/seis-apple-native-readiness-mcp-server.mjs",
       "permissionState": "deny-by-default",
       "permissions": {
         "write": [],

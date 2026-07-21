@@ -8,16 +8,16 @@
 ## Repo-Local Clean Artifact Staging
 
 - Mode: temporary-local-clean-artifact-staging
-  - Expected public marketplace packages: 377
+  - Expected public marketplace packages: 378
   - Canonical orchestrators: 1
   - Migrated root packages: 5
-  - Application packages: 71
+  - Application packages: 72
   - Objective-derived topic packages: 300
-- Staged public plugins: 377
+- Staged public plugins: 378
 - Embedded source modules: 10
-- Staged manifests: 377
-- Staged MCP entry scripts: 377
-- Staged files: 2559
+- Staged manifests: 378
+- Staged MCP entry scripts: 378
+- Staged files: 2565
 - Excluded source metadata files: 0
 - Disallowed source artifacts: 0
 - Forbidden files in stage: 0
@@ -37,6 +37,7 @@
 | seis-action-pin-audit | 5 | 5 | 0 | 1 | pass |
 | seis-agent-audit | 5 | 5 | 0 | 1 | pass |
 | seis-agent-contract-validator | 5 | 5 | 0 | 1 | pass |
+| seis-apple-native-readiness | 6 | 6 | 0 | 1 | pass |
 | seis-approval-gate-review | 5 | 5 | 0 | 1 | pass |
 | seis-architecture-drift | 5 | 5 | 0 | 1 | pass |
 | seis-artifact-attestation | 5 | 5 | 0 | 1 | pass |

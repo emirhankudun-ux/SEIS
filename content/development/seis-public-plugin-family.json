@@ -3,7 +3,7 @@
   "id": "seis-public-plugin-family",
   "generatedAt": "2026-07-12",
   "mode": "public_seis_agent_with_migrated_root_app_and_topic_repository_plugins",
-  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 71 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
+  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 72 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
   "defaultInstall": {
     "installId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
@@ -16,10 +16,10 @@
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL",
     "publicAudience": "everyone",
-    "publicPluginCount": 377,
+    "publicPluginCount": 378,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 71,
+    "applicationPluginCount": 72,
     "topicPluginCount": 300,
     "entries": [
       {
@@ -89,6 +89,13 @@
         "name": "seis-agent-contract-validator",
         "sourcePath": "./plugins/seis-core/seis-agent-contract-validator",
         "category": "AI",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-apple-native-readiness",
+        "sourcePath": "./plugins/seis-core/seis-apple-native-readiness",
+        "category": "Developer",
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
@@ -2696,6 +2703,15 @@
       "sourcePath": "./plugins/seis-core/seis-agent-contract-validator",
       "category": "AI",
       "installId": "seis-agent-contract-validator@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-apple-native-readiness",
+      "sourcePath": "./plugins/seis-core/seis-apple-native-readiness",
+      "category": "Developer",
+      "installId": "seis-apple-native-readiness@seis-repo",
       "license": "MIT",
       "publicStatus": "repo_marketplace_available",
       "liveRuntimeStatus": "local_demo_or_auth_gated"

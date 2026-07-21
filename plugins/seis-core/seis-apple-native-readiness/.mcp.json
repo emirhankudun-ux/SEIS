@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-apple-native-readiness": {
+      "command": "node",
+      "args": [
+        "scripts/seis-apple-native-readiness-mcp-server.mjs"
+      ]
+    }
+  }
+}

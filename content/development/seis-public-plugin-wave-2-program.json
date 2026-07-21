@@ -1,0 +1,943 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-2-program",
+  "goalId": "SEIS-GOAL-021",
+  "parentProgramId": "seis-public-plugin-expansion-program",
+  "status": "in-progress",
+  "createdAt": "2026-07-21",
+  "updatedAt": "2026-07-21",
+  "wave": {
+    "number": 2,
+    "totalSteps": 100,
+    "roundCount": 5,
+    "stepsPerRound": 20,
+    "activationEvidence": {
+      "initialProgramPath": "content/development/seis-public-plugin-expansion-program.json",
+      "wave1HandoffPath": "content/development/seis-public-plugin-wave-1-handoff.json",
+      "capabilityDecisionPath": "content/development/seis-public-plugin-wave-2-capability-decision.json"
+    }
+  },
+  "scope": {
+    "repositories": [
+      "SEIS"
+    ],
+    "paths": [
+      "plugins/seis-core/seis-apple-native-readiness",
+      "plugins/seis-core/test/apple-native-readiness.test.mjs",
+      "packages/seis_platform_swift/Package.swift",
+      "packages/seis_platform_swift/Sources/SeisPlatformKit",
+      "packages/seis_platform_swift/Sources/SeisAppleNativeShell",
+      "packages/seis_platform_swift/Tests/SeisPlatformKitTests",
+      "docs/APPLE_PLATFORM_STRATEGY.md",
+      "content/development",
+      "docs/roadmap"
+    ],
+    "outcome": "Keep the public SEIS Repo marketplace aligned while exposing one bounded Apple/Swift Package static-readiness capability that remains local, read-only, non-releasing, and explicit about its limitations."
+  },
+  "nonGoals": [
+    "Reading or mutating the personal marketplace.",
+    "Protected default branch writes, force pushes, or destructive repository actions.",
+    "Running SwiftPM, a simulator, a native application, signing, provisioning, App Store submission, deployment, provider calls, or a public release.",
+    "Treating static source evidence as live native capability proof.",
+    "Creating a follow-up public package without a separate overlap and risk decision."
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "name": "Apple/Swift evidence foundation",
+      "objective": "Select and deliver one non-duplicative, bounded Apple-native static-readiness plugin without compiling or overstating native capability.",
+      "status": "completed",
+      "steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "round": 2,
+      "name": "Native evidence resilience",
+      "objective": "Strengthen test fixtures and bounded error handling only when real source evidence identifies a gap.",
+      "status": "planned",
+      "steps": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "round": 3,
+      "name": "Public contract maintenance",
+      "objective": "Keep public distribution, catalog, release, and lifecycle artifacts coherent while preserving approval-gated external boundaries.",
+      "status": "planned",
+      "steps": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ]
+    },
+    {
+      "round": 4,
+      "name": "Apple-native follow-up selection",
+      "objective": "Select at most one follow-up only if current evidence shows a non-duplicative gap beyond static readiness.",
+      "status": "planned",
+      "steps": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80
+      ]
+    },
+    {
+      "round": 5,
+      "name": "Wave 2 handoff",
+      "objective": "Close the wave only with current evidence, explicit risks, a reversible handoff, and a feature-branch delivery record.",
+      "status": "planned",
+      "steps": [
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "round": 1,
+      "title": "Confirm the completed initial 30-step program and current user continuation authority.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 2,
+      "round": 1,
+      "title": "Confirm the current feature branch, public SEIS Repo boundary, and no-personal-marketplace rule.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 3,
+      "round": 1,
+      "title": "Review the completed Wave 1 handoff and its release, provenance, and attention boundaries.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 4,
+      "round": 1,
+      "title": "Inventory existing public plugin responsibilities for Apple/Swift capability overlap.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 5,
+      "round": 1,
+      "title": "Inventory the real Swift Package, source, test, and Apple strategy inputs within a bounded local scope.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 6,
+      "round": 1,
+      "title": "Select a single non-duplicative capability or stop if a useful gap is absent.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 7,
+      "round": 1,
+      "title": "Record Wave 2 scope, non-goals, risks, rollback, and public-only permission boundaries.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 8,
+      "round": 1,
+      "title": "Create the Wave 2 one-hundred-step record and deterministic tracker validation.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 9,
+      "round": 1,
+      "title": "Define static-evidence-only terminology that avoids build, signing, deployment, provider, and release claims.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 10,
+      "round": 1,
+      "title": "Define fixed relative input paths, byte bounds, source traversal bounds, and path-escape refusal behavior.",
+      "status": "completed",
+      "validation": "scope, overlap, and boundary review"
+    },
+    {
+      "number": 11,
+      "round": 1,
+      "title": "Create public plugin metadata, profile, skill, and MCP declaration for the selected readiness audit.",
+      "status": "completed",
+      "validation": "focused Apple-native readiness runtime check"
+    },
+    {
+      "number": 12,
+      "round": 1,
+      "title": "Implement the bounded Swift Package manifest contract audit.",
+      "status": "completed",
+      "validation": "focused Apple-native readiness runtime check"
+    },
+    {
+      "number": 13,
+      "round": 1,
+      "title": "Implement bounded Swift source-area presence checks without returning source content.",
+      "status": "completed",
+      "validation": "focused Apple-native readiness runtime check"
+    },
+    {
+      "number": 14,
+      "round": 1,
+      "title": "Implement focused Swift test-file presence checks without running SwiftPM.",
+      "status": "completed",
+      "validation": "focused Apple-native readiness runtime check"
+    },
+    {
+      "number": 15,
+      "round": 1,
+      "title": "Implement Apple platform strategy and anti-symbolic-code marker checks.",
+      "status": "completed",
+      "validation": "focused Apple-native readiness runtime check"
+    },
+    {
+      "number": 16,
+      "round": 1,
+      "title": "Implement status, audit/report, evidence, and MCP tool responses with empty write/network/secret permissions.",
+      "status": "completed",
+      "validation": "focused Apple-native readiness runtime check"
+    },
+    {
+      "number": 17,
+      "round": 1,
+      "title": "Add positive and negative Node tests for the static readiness runtime.",
+      "status": "completed",
+      "validation": "node --test plugins/seis-core/test/apple-native-readiness.test.mjs"
+    },
+    {
+      "number": 18,
+      "round": 1,
+      "title": "Generate repository-local Apple-native readiness evidence without source, machine-path, or secret leakage.",
+      "status": "completed",
+      "validation": "node --test plugins/seis-core/test/apple-native-readiness.test.mjs"
+    },
+    {
+      "number": 19,
+      "round": 1,
+      "title": "Register the package in the public SEIS Repo family and refresh source, catalog, matrix, and AI Core integration artifacts.",
+      "status": "completed",
+      "validation": "plugin validator and public source/catalog/matrix integration checks"
+    },
+    {
+      "number": 20,
+      "round": 1,
+      "title": "Run structural package validation and focused local readiness checks before closing the first round.",
+      "status": "completed",
+      "validation": "plugin validator and public source/catalog/matrix integration checks"
+    },
+    {
+      "number": 21,
+      "round": 2,
+      "title": "Review Wave 2 Round 1 evidence for stale or overly broad static markers.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 22,
+      "round": 2,
+      "title": "Review path-boundary behavior against invalid and symlinked input scenarios.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 23,
+      "round": 2,
+      "title": "Review text-size and source-file traversal limits for practical local safety.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 24,
+      "round": 2,
+      "title": "Add fixture coverage only for an observed static-readiness failure mode.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 25,
+      "round": 2,
+      "title": "Review platform-version markers against the checked-in Package.swift declaration.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 26,
+      "round": 2,
+      "title": "Review source-area checks for false confidence caused by empty directories.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 27,
+      "round": 2,
+      "title": "Review test-file checks for changes in the focused Swift test contract.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 28,
+      "round": 2,
+      "title": "Review static evidence terminology for native-runtime ambiguity.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 29,
+      "round": 2,
+      "title": "Review accessibility and documentation wording for clear limitation disclosure.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 30,
+      "round": 2,
+      "title": "Review no-raw-source and no-machine-path output guarantees.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 31,
+      "round": 2,
+      "title": "Run focused runtime and MCP framing regressions.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 32,
+      "round": 2,
+      "title": "Run package catalog status-only regression.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 33,
+      "round": 2,
+      "title": "Reconcile generated evidence after any bounded source contract change.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 34,
+      "round": 2,
+      "title": "Review public marketplace card labels for SEIS Repo terminology.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 35,
+      "round": 2,
+      "title": "Review source-manifest permissions and implementation state.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 36,
+      "round": 2,
+      "title": "Review AI Core registry treatment of the physical public package.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 37,
+      "round": 2,
+      "title": "Record any unmet native validation need as a separate future goal.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 38,
+      "round": 2,
+      "title": "Update risk and rollback evidence if source boundaries change.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 39,
+      "round": 2,
+      "title": "Prepare a focused review checkpoint if Round 2 produces a real change.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 40,
+      "round": 2,
+      "title": "Validate Round 2 evidence before marking any of its tasks complete.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 41,
+      "round": 3,
+      "title": "Review public family and marketplace counts after any Wave 2 source change.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 42,
+      "round": 3,
+      "title": "Review source-manifest and catalog count reconciliation.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 43,
+      "round": 3,
+      "title": "Review plugin matrix, registry, and unified-suite source discovery.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 44,
+      "round": 3,
+      "title": "Review public install-state wording without claiming external installation.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 45,
+      "round": 3,
+      "title": "Review public runtime-status wording without claiming a provider or deployment.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 46,
+      "round": 3,
+      "title": "Review MCP permission ledger for empty write, network, and secret permissions.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 47,
+      "round": 3,
+      "title": "Review public security and provenance evidence for source-boundary drift.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 48,
+      "round": 3,
+      "title": "Review release readiness without promoting a version automatically.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 49,
+      "round": 3,
+      "title": "Review project manifest count and public-audience declarations.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 50,
+      "round": 3,
+      "title": "Review public marketplace terminology for personal-label leakage.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 51,
+      "round": 3,
+      "title": "Run source, catalog, matrix, and public-family checks.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 52,
+      "round": 3,
+      "title": "Run AI Core integration and requested-plugin coverage checks.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 53,
+      "round": 3,
+      "title": "Run public lifecycle, provenance, fresh-task, and external-install boundary checks.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 54,
+      "round": 3,
+      "title": "Inspect generated records for machine-specific paths and secret-like values.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 55,
+      "round": 3,
+      "title": "Document any approval-gated external validation separately from repository evidence.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 56,
+      "round": 3,
+      "title": "Update non-goals if a public card begins to imply a live integration.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 57,
+      "round": 3,
+      "title": "Prepare a reversible checkpoint only after all relevant local checks pass.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 58,
+      "round": 3,
+      "title": "Commit and push the scoped checkpoint only with current user delivery authority.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 59,
+      "round": 3,
+      "title": "Verify the feature-branch reference when the network environment permits.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 60,
+      "round": 3,
+      "title": "Record failed or skipped external checks without converting them into success claims.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 61,
+      "round": 4,
+      "title": "Review whether a follow-up needs real SwiftPM validation rather than another metadata audit.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 62,
+      "round": 4,
+      "title": "Review whether a platform-specific test can run in the current environment.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 63,
+      "round": 4,
+      "title": "Review existing native diagnostics and package tests before proposing new code.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 64,
+      "round": 4,
+      "title": "Review design, accessibility, privacy, and performance consequences of a native follow-up.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 65,
+      "round": 4,
+      "title": "Review signing, provisioning, and App Store boundaries as approval-gated non-goals.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 66,
+      "round": 4,
+      "title": "Review macOS, iPadOS, iOS, and visionOS roles without asserting deployment readiness.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 67,
+      "round": 4,
+      "title": "Inventory candidate overlap with existing repository and plugin capabilities.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 68,
+      "round": 4,
+      "title": "Choose no follow-up when the remaining work is a duplicate or cannot be validated safely.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 69,
+      "round": 4,
+      "title": "Write a separate capability decision before scaffolding any additional package.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 70,
+      "round": 4,
+      "title": "Define local-only inputs, outputs, validation, risks, and rollback for a selected follow-up.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 71,
+      "round": 4,
+      "title": "Confirm public SEIS Repo placement and no-personal-marketplace boundary.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 72,
+      "round": 4,
+      "title": "Confirm empty write, network, and secret permissions by default.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 73,
+      "round": 4,
+      "title": "Confirm no live provider, deployment, or release claim is needed.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 74,
+      "round": 4,
+      "title": "Add tests before broad marketplace integration.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 75,
+      "round": 4,
+      "title": "Refresh generated artifacts only after source validation succeeds.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 76,
+      "round": 4,
+      "title": "Run focused plugin-creator validation for the selected package.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 77,
+      "round": 4,
+      "title": "Run public source, catalog, and integration checks.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 78,
+      "round": 4,
+      "title": "Record any external validation gap as approval-required.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 79,
+      "round": 4,
+      "title": "Prepare a reviewable feature-branch checkpoint.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 80,
+      "round": 4,
+      "title": "Do not mark Round 4 complete without evidence for every listed task.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 81,
+      "round": 5,
+      "title": "Run the Wave 2 tracker and capability-decision checks.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 82,
+      "round": 5,
+      "title": "Run Apple-native readiness generator and focused tests.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 83,
+      "round": 5,
+      "title": "Run plugin-creator structural validation for every Wave 2 package.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 84,
+      "round": 5,
+      "title": "Run source, catalog, matrix, marketplace, and unified-suite regressions.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 85,
+      "round": 5,
+      "title": "Run AI Core integration and requested-plugin coverage regressions.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 86,
+      "round": 5,
+      "title": "Run public lifecycle, provenance, fresh-task, and install-boundary regressions.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 87,
+      "round": 5,
+      "title": "Run baseline SEIS repository checks where applicable.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 88,
+      "round": 5,
+      "title": "Review generated artifacts for count, release, and terminology drift.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 89,
+      "round": 5,
+      "title": "Review source and documentation for personal marketplace references.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 90,
+      "round": 5,
+      "title": "Review source and generated evidence for secret-like or machine-specific values.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 91,
+      "round": 5,
+      "title": "Review external install, provider, browser, deployment, and release gaps honestly.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 92,
+      "round": 5,
+      "title": "Review release-readiness evidence without performing a promotion unless explicitly approved.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 93,
+      "round": 5,
+      "title": "Inspect the working tree and diff for unrelated changes.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 94,
+      "round": 5,
+      "title": "Run whitespace and focused security boundary checks.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 95,
+      "round": 5,
+      "title": "Prepare a focused local commit with goal and Wave 2 context.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 96,
+      "round": 5,
+      "title": "Push only the current feature branch when authorized.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 97,
+      "round": 5,
+      "title": "Verify the remote feature reference when possible.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 98,
+      "round": 5,
+      "title": "Publish a Wave 2 repository-local handoff with risks and rollback.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 99,
+      "round": 5,
+      "title": "Plan Wave 3 only after current Wave 2 handoff evidence and scope review.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    },
+    {
+      "number": 100,
+      "round": 5,
+      "title": "Mark Wave 2 complete only when all one hundred steps have current evidence.",
+      "status": "planned",
+      "validation": "current evidence required before completion"
+    }
+  ],
+  "progress": {
+    "completedStepCount": 20,
+    "plannedStepCount": 80,
+    "inProgressStepNumbers": [],
+    "completedRoundCount": 1,
+    "nextStepNumber": 21
+  },
+  "capability": {
+    "decisionId": "seis-public-plugin-wave-2-capability-decision",
+    "selectedCapability": "seis-apple-native-readiness",
+    "evidencePath": "content/development/seis-apple-native-readiness.json",
+    "implementationState": "functional-local-demo",
+    "classification": "documented-static-readiness-only"
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "qualityGates": [
+    "npm run check:seis-public-plugin-expansion-program",
+    "npm run check:seis-public-plugin-wave-2-program",
+    "npm run check:seis-public-plugin-wave-2-capability-decision",
+    "npm run check:seis-apple-native-readiness",
+    "npm run check:seis-repo-marketplace",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-core-plugin-sources",
+    "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-matrix"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W2-001",
+      "status": "tracked",
+      "description": "Static readiness evidence can be misread as proof that native build, signing, or release gates passed.",
+      "mitigation": "Use documented-static-readiness-only classification and keep all native execution, external release, and approval claims out of the package output."
+    },
+    {
+      "id": "RISK-W2-002",
+      "status": "tracked",
+      "description": "Public metadata can drift when app-owned plugin count changes.",
+      "mitigation": "Regenerate and validate source, catalog, marketplace, matrix, registry, lifecycle, and project-manifest artifacts before each checkpoint."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert only the focused Wave 2 package, program, decision, evidence, and generated public metadata on the feature branch.",
+    "dataMigrationRequired": false
+  }
+}

@@ -125,6 +125,18 @@
       "category": "AI"
     },
     {
+      "name": "seis-apple-native-readiness",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-apple-native-readiness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-approval-gate-review",
       "source": {
         "source": "local",

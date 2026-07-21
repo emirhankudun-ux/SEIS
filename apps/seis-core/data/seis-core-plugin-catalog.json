@@ -15,7 +15,7 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 71,
+    "marketplaceEntryCount": 72,
     "coreSourceOwner": false
   },
   "release": {
@@ -48,13 +48,13 @@
     ]
   },
   "counts": {
-    "discovered": 71,
-    "returned": 71,
-    "contractValid": 71,
+    "discovered": 72,
+    "returned": 72,
+    "contractValid": 72,
     "contractInvalid": 0,
-    "statusReady": 69,
+    "statusReady": 70,
     "statusAttention": 2,
-    "statusOk": 71,
+    "statusOk": 72,
     "statusNotChecked": 0,
     "statusFailed": 0
   },
@@ -256,6 +256,65 @@
         "node scripts/seis-agent-contract-validator-mcp-server.mjs --validate --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-apple-native-readiness",
+      "name": "seis-apple-native-readiness",
+      "displayName": "SEIS Apple Native Readiness",
+      "description": "Audit bounded Apple-native Swift Package source, test, and strategy evidence without compiling, signing, deploying, or claiming a live native runtime.",
+      "category": "Developer",
+      "capabilities": [
+        "swift-package-contract-audit",
+        "apple-platform-strategy-check",
+        "bounded-native-source-inventory",
+        "read-only-static-readiness-evidence"
+      ],
+      "owner": "@seis-apple",
+      "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
+      "entrypoint": "scripts/seis-apple-native-readiness-mcp-server.mjs",
+      "release": {
+        "label": "0.00000002",
+        "semver": "0.0.20",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 20
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-report",
+        "checkCount": 16
+      },
+      "permissions": {
+        "read": [
+          "bounded Swift Package manifest markers",
+          "bounded Swift source and test filenames",
+          "checked-in Apple platform strategy markers"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-apple-native-readiness-mcp-server.mjs --status",
+        "node scripts/seis-apple-native-readiness-mcp-server.mjs --audit --path .",
+        "node scripts/seis-apple-native-readiness-mcp-server.mjs --evidence",
+        "npm run check:seis-apple-native-readiness",
+        "node --test plugins/seis-core/test/apple-native-readiness.test.mjs"
+      ],
+      "rollback": "Disable or remove the local plugin and revert its generated evidence record; the plugin never edits source, Swift packages, marketplace state, an external system, or release state."
     },
     {
       "id": "seis-approval-gate-review",

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-apple-native-readiness",
+  "goalId": "SEIS-GOAL-021",
+  "generatedAt": "2026-07-21",
+  "status": "completed-public-static-readiness-evidence",
+  "purpose": "Record bounded local Apple/Swift Package readiness evidence without claiming a Swift build, device run, signing, provisioning, deployment, provider, App Store, or release outcome.",
+  "plugin": {
+    "name": "seis-apple-native-readiness",
+    "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
+    "version": "0.0.20",
+    "releaseTrainVersion": "0.00000002",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "marketplace": {
+    "publicCardCount": 378,
+    "expectedPublicCardCount": 378,
+    "applicationPluginCount": 72,
+    "expectedApplicationPluginCount": 72,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "topicPluginCount": 300
+  },
+  "audit": {
+    "state": "ready",
+    "ok": true,
+    "mode": "apple-native-static-readiness-read-only",
+    "classification": "documented-static-readiness-only",
+    "checkCount": 16,
+    "readyCheckCount": 16,
+    "findingCodes": [],
+    "summary": {
+      "package": "SeisPlatformKit",
+      "declaredPlatforms": [
+        "macOS 13+",
+        "iOS 16+"
+      ],
+      "sourceAreas": [
+        {
+          "id": "platform-kit-sources",
+          "swiftFileCount": 18,
+          "safe": true
+        },
+        {
+          "id": "apple-shell-sources",
+          "swiftFileCount": 12,
+          "safe": true
+        }
+      ],
+      "requiredTestFileCount": 2,
+      "presentTestFileCount": 2,
+      "staticCheckCount": 16,
+      "readyCheckCount": 16
+    }
+  },
+  "safety": {
+    "read": [
+      "bounded Swift Package manifest markers",
+      "bounded Swift source and test filenames",
+      "checked-in Apple platform strategy markers"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "compilesSwift": false,
+    "startsNativeApplication": false,
+    "signsArtifacts": false,
+    "installsPlugins": false,
+    "publicReleaseAllowed": false
+  },
+  "limitations": [
+    "This audit reads bounded static repository evidence only and does not compile Swift code.",
+    "A ready result does not prove a macOS, iPadOS, iOS, visionOS, simulator, device, signing, provisioning, App Store, or deployment outcome.",
+    "The audit does not start an app, call a provider, use a network, read credentials, or change a source file."
+  ],
+  "validation": [
+    "node plugins/seis-core/seis-apple-native-readiness/scripts/seis-apple-native-readiness-mcp-server.mjs --status",
+    "node plugins/seis-core/seis-apple-native-readiness/scripts/seis-apple-native-readiness-mcp-server.mjs --audit --path .",
+    "node --test plugins/seis-core/test/apple-native-readiness.test.mjs",
+    "npm run check:seis-apple-native-readiness"
+  ],
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "inputSafety": {
+    "machineSpecificPathFindingCount": 0,
+    "rawSourceReturned": false,
+    "sourceFilesCompiled": false,
+    "projectManifestPath": "project.ecosystem.yaml"
+  }
+}

@@ -17,10 +17,10 @@
   "publicCards": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "count": 377,
+    "count": 378,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 71,
+    "applicationPluginCount": 72,
     "topicPluginCount": 300,
     "sourceAvailability": "public-repository-source-available",
     "installationPolicy": "AVAILABLE",

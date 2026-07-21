@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-2-capability-decision",
+  "goalId": "SEIS-GOAL-021",
+  "backlogId": "SEIS-BL-021",
+  "generatedAt": "2026-07-21",
+  "status": "approved-public-local-implementation",
+  "wave": 2,
+  "decision": {
+    "selectedCapability": "seis-apple-native-readiness",
+    "displayName": "SEIS Apple Native Readiness",
+    "selectionReason": "The repository contains a real Swift Package and Apple platform strategy, while the current public app-owned plugins only perform generic root manifest discovery, repository hygiene, package inventory, or technology taxonomy work. No existing package jointly audits the declared Swift Package targets, bounded Swift source/test presence, and anti-symbolic Apple platform strategy markers without compiling or claiming a runtime.",
+    "overlapReview": [
+      {
+        "plugin": "seis-workspace-inspector",
+        "decision": "retain",
+        "reason": "It reports root-level manifest names and technologies without reading the Package.swift contract, bounded source/test presence, or Apple strategy markers."
+      },
+      {
+        "plugin": "seis-repository-health",
+        "decision": "retain",
+        "reason": "It performs repository hygiene and root governance checks, not Apple-native contract readiness."
+      },
+      {
+        "plugin": "seis-sbom-generator",
+        "decision": "retain",
+        "reason": "It inventories package manifests for an SBOM and does not evaluate the package target, test, or Apple strategy contract."
+      },
+      {
+        "plugin": "seis-technology-ontology",
+        "decision": "retain",
+        "reason": "It classifies technology vocabulary and does not verify a concrete Swift Package implementation boundary."
+      }
+    ]
+  },
+  "scope": {
+    "repositories": [
+      "SEIS"
+    ],
+    "sourceInputs": [
+      "packages/seis_platform_swift/Package.swift",
+      "packages/seis_platform_swift/Sources/SeisPlatformKit",
+      "packages/seis_platform_swift/Sources/SeisAppleNativeShell",
+      "packages/seis_platform_swift/Tests/SeisPlatformKitTests",
+      "docs/APPLE_PLATFORM_STRATEGY.md"
+    ],
+    "outcome": "Provide a bounded local static-readiness audit for real Apple/Swift Package evidence and make that evidence available through one public SEIS Repo card."
+  },
+  "nonGoals": [
+    "Compiling, testing, building, signing, provisioning, or distributing a Swift package or native application.",
+    "Claiming a simulator, device, macOS, iPadOS, iOS, visionOS, App Store, deployment, provider, or release result.",
+    "Reading or mutating the personal marketplace.",
+    "Adding a plugin solely to increase the public card count.",
+    "Writing source, marketplace, GitHub, or release state from the plugin runtime."
+  ],
+  "acceptanceCriteria": [
+    "A public app-owned package exists at plugins/seis-core/seis-apple-native-readiness.",
+    "The package returns bounded static readiness evidence without raw source content.",
+    "The package has empty write, network, and secret permissions.",
+    "The package has exactly one public seis-repo marketplace card and no personal marketplace dependency.",
+    "Focused test, generator, structural plugin validation, marketplace, source, catalog, matrix, and integration checks are current."
+  ],
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "implementation": {
+    "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
+    "marketplaceSourcePath": "./plugins/seis-core/seis-apple-native-readiness",
+    "pluginVersion": "0.0.20",
+    "releaseTrainVersion": "0.00000002",
+    "implementationState": "functional-local-demo"
+  },
+  "evidence": {
+    "initialProgramId": "seis-public-plugin-expansion-program",
+    "initialWave2Status": "in-progress",
+    "wave1HandoffId": "seis-public-plugin-wave-1-handoff",
+    "wave1HandoffStatus": "completed-repository-local-handoff",
+    "applicationPluginCount": 72,
+    "expectedApplicationPluginCount": 72,
+    "publicCardCount": 378
+  },
+  "risks": [
+    {
+      "id": "RISK-W2-001",
+      "status": "tracked",
+      "description": "Static source markers can be mistaken for a successful native build or platform release.",
+      "mitigation": "Expose documented-static-readiness-only classification and explicit limitations; do not run a compiler or claim runtime evidence."
+    },
+    {
+      "id": "RISK-W2-002",
+      "status": "tracked",
+      "description": "A broad filesystem audit could expose source or personal data beyond the intended package boundary.",
+      "mitigation": "Read only fixed relative paths, bounded text, and source/test filenames; reject paths outside the repository boundary and never return raw source text."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the focused Wave 2 package, evidence, and generated public metadata on the feature branch; do not mutate the protected default branch.",
+    "dataMigrationRequired": false
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-wave-2-capability-decision",
+    "npm run check:seis-apple-native-readiness",
+    "npm run check:seis-repo-marketplace",
+    "npm run check:seis-agent-plugin-integration"
+  ]
+}
