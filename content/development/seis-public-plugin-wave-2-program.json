@@ -25,6 +25,8 @@
       "plugins/seis-core/seis-apple-native-readiness",
       "plugins/seis-core/test/apple-native-readiness.test.mjs",
       "plugins/seis-core/test/apple-native-distribution-review.test.mjs",
+      "plugins/seis-core/test/apple-native-follow-up-decision.test.mjs",
+      "content/development/seis-public-plugin-wave-2-follow-up-decision.json",
       "packages/seis_platform_swift/Package.swift",
       "packages/seis_platform_swift/Sources/SeisPlatformKit",
       "packages/seis_platform_swift/Sources/SeisAppleNativeShell",
@@ -38,8 +40,8 @@
   "nonGoals": [
     "Reading or mutating the personal marketplace.",
     "Protected default branch writes, force pushes, or destructive repository actions.",
-    "Running SwiftPM, a simulator, a native application, signing, provisioning, App Store submission, deployment, provider calls, or a public release.",
-    "Treating static source evidence as live native capability proof.",
+    "Running SwiftPM from a public plugin runtime, or running a simulator, native application, signing, provisioning, App Store submission, deployment, provider calls, or a public release.",
+    "Treating static source evidence or an interrupted manual local SwiftPM attempt as live native capability proof.",
     "Creating a follow-up public package without a separate overlap and risk decision."
   ],
   "rounds": [
@@ -131,7 +133,7 @@
       "round": 4,
       "name": "Apple-native follow-up selection",
       "objective": "Select at most one follow-up only if current evidence shows a non-duplicative gap beyond static readiness.",
-      "status": "planned",
+      "status": "completed",
       "steps": [
         61,
         62,
@@ -609,141 +611,141 @@
       "number": 61,
       "round": 4,
       "title": "Review whether a follow-up needs real SwiftPM validation rather than another metadata audit.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "SwiftPM package graph, local tooling, platform-role, and overlap review"
     },
     {
       "number": 62,
       "round": 4,
       "title": "Review whether a platform-specific test can run in the current environment.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "SwiftPM package graph, local tooling, platform-role, and overlap review"
     },
     {
       "number": 63,
       "round": 4,
       "title": "Review existing native diagnostics and package tests before proposing new code.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "SwiftPM package graph, local tooling, platform-role, and overlap review"
     },
     {
       "number": 64,
       "round": 4,
       "title": "Review design, accessibility, privacy, and performance consequences of a native follow-up.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "SwiftPM package graph, local tooling, platform-role, and overlap review"
     },
     {
       "number": 65,
       "round": 4,
       "title": "Review signing, provisioning, and App Store boundaries as approval-gated non-goals.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "SwiftPM package graph, local tooling, platform-role, and overlap review"
     },
     {
       "number": 66,
       "round": 4,
       "title": "Review macOS, iPadOS, iOS, and visionOS roles without asserting deployment readiness.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "SwiftPM package graph, local tooling, platform-role, and overlap review"
     },
     {
       "number": 67,
       "round": 4,
       "title": "Inventory candidate overlap with existing repository and plugin capabilities.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "SwiftPM package graph, local tooling, platform-role, and overlap review"
     },
     {
       "number": 68,
       "round": 4,
       "title": "Choose no follow-up when the remaining work is a duplicate or cannot be validated safely.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "SwiftPM package graph, local tooling, platform-role, and overlap review"
     },
     {
       "number": 69,
       "round": 4,
       "title": "Write a separate capability decision before scaffolding any additional package.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "no-duplicate decision, public boundary, and focused decision-test review"
     },
     {
       "number": 70,
       "round": 4,
       "title": "Define local-only inputs, outputs, validation, risks, and rollback for a selected follow-up.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "no-duplicate decision, public boundary, and focused decision-test review"
     },
     {
       "number": 71,
       "round": 4,
       "title": "Confirm public SEIS Repo placement and no-personal-marketplace boundary.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "no-duplicate decision, public boundary, and focused decision-test review"
     },
     {
       "number": 72,
       "round": 4,
       "title": "Confirm empty write, network, and secret permissions by default.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "no-duplicate decision, public boundary, and focused decision-test review"
     },
     {
       "number": 73,
       "round": 4,
       "title": "Confirm no live provider, deployment, or release claim is needed.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "no-duplicate decision, public boundary, and focused decision-test review"
     },
     {
       "number": 74,
       "round": 4,
       "title": "Add tests before broad marketplace integration.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "no-duplicate decision, public boundary, and focused decision-test review"
     },
     {
       "number": 75,
       "round": 4,
       "title": "Refresh generated artifacts only after source validation succeeds.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "no-duplicate decision, public boundary, and focused decision-test review"
     },
     {
       "number": 76,
       "round": 4,
       "title": "Run focused plugin-creator validation for the selected package.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "no-duplicate decision, public boundary, and focused decision-test review"
     },
     {
       "number": 77,
       "round": 4,
       "title": "Run public source, catalog, and integration checks.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "external-validation-gap recording and feature-branch verification"
     },
     {
       "number": 78,
       "round": 4,
       "title": "Record any external validation gap as approval-required.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "external-validation-gap recording and feature-branch verification"
     },
     {
       "number": 79,
       "round": 4,
       "title": "Prepare a reviewable feature-branch checkpoint.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "external-validation-gap recording and feature-branch verification"
     },
     {
       "number": 80,
       "round": 4,
       "title": "Do not mark Round 4 complete without evidence for every listed task.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "external-validation-gap recording and feature-branch verification"
     },
     {
       "number": 81,
@@ -887,11 +889,11 @@
     }
   ],
   "progress": {
-    "completedStepCount": 60,
-    "plannedStepCount": 40,
+    "completedStepCount": 80,
+    "plannedStepCount": 20,
     "inProgressStepNumbers": [],
-    "completedRoundCount": 3,
-    "nextStepNumber": 61
+    "completedRoundCount": 4,
+    "nextStepNumber": 81
   },
   "capability": {
     "decisionId": "seis-public-plugin-wave-2-capability-decision",
@@ -900,7 +902,8 @@
     "implementationState": "functional-local-demo",
     "classification": "documented-static-readiness-only",
     "resilienceReview": "completed-repository-local-resilience-review",
-    "distributionReview": "completed-repository-local-distribution-maintenance-review"
+    "distributionReview": "completed-repository-local-distribution-maintenance-review",
+    "followUpDecision": "completed-no-additional-public-plugin-selected"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -918,6 +921,7 @@
     "npm run check:seis-public-plugin-wave-2-program",
     "npm run check:seis-public-plugin-wave-2-capability-decision",
     "npm run check:seis-public-plugin-wave-2-distribution-review",
+    "npm run check:seis-public-plugin-wave-2-follow-up-decision",
     "npm run check:seis-apple-native-readiness",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration",

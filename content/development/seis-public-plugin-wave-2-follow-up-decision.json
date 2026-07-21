@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-2-follow-up-decision",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 2,
+  "round": 4,
+  "status": "completed-no-additional-public-plugin-selected",
+  "generatedAt": "2026-07-21",
+  "purpose": "Record the evidence-based Round 4 decision not to add a duplicate public Apple/Swift plugin before a bounded, completed SwiftPM execution result exists.",
+  "decision": {
+    "selectedCapability": null,
+    "outcome": "no-additional-public-plugin-selected",
+    "selectionReason": "The existing public SEIS Apple Native Readiness package already owns bounded static Swift Package, source/test, strategy, and traversal-limit evidence. A second package would only repeat static inspection or expose an environment-specific incomplete test attempt, rather than provide a distinct, safely validated capability.",
+    "futureSelectionRequirement": "Any later follow-up must have a unique contract beyond static readiness and a bounded completed SwiftPM result or a reviewed reason why execution evidence remains unavailable.",
+    "overlapReview": [
+      {
+        "plugin": "seis-apple-native-readiness",
+        "decision": "retain-without-duplicate",
+        "reason": "It already owns bounded static Apple/Swift Package readiness and explicitly separates that evidence from build or runtime claims."
+      },
+      {
+        "plugin": "seis-test-flakiness",
+        "decision": "retain",
+        "reason": "It analyzes recorded test repetition variance and does not create a SwiftPM completion result."
+      },
+      {
+        "plugin": "seis-release-readiness",
+        "decision": "retain",
+        "reason": "It separates recorded release evidence from publication and does not replace a native test result."
+      },
+      {
+        "plugin": "seis-workspace-inspector",
+        "decision": "retain",
+        "reason": "It inventories workspace metadata but does not own SwiftPM execution evidence."
+      }
+    ]
+  },
+  "swiftPmEvidence": {
+    "packageGraph": {
+      "manifestInspection": "completed-local-package-graph-inspection",
+      "externalDependencyCount": 0,
+      "products": [
+        "SeisPlatformKit",
+        "SeisAppleNativeShell"
+      ],
+      "testTarget": "SeisPlatformKitTests",
+      "declaredPlatforms": [
+        "macOS 13+",
+        "iOS 16+"
+      ]
+    },
+    "localToolingObservation": {
+      "swiftToolchain": "available-local-inspection-only",
+      "xcodebuild": "unavailable-from-active-command-line-tools-directory",
+      "packageDescribe": "completed-local-package-graph-inspection",
+      "swiftTestCommand": "swift test --package-path packages/seis_platform_swift",
+      "swiftTestState": "interrupted-after-no-output-observation-window",
+      "swiftTestCompletionClaim": "not-completed-and-not-claimed",
+      "buildCacheTracked": false,
+      "networkUsedByPackageGraph": false
+    },
+    "validationBoundary": {
+      "compiledSwiftClaim": false,
+      "testPassClaim": false,
+      "nativeApplicationRunClaim": false,
+      "simulatorOrDeviceClaim": false,
+      "signingOrProvisioningClaim": false,
+      "deploymentOrAppStoreClaim": false
+    }
+  },
+  "platformBoundary": {
+    "macOS": "primary-native-command-center",
+    "iPadOS": "brain-review-and-creative-planning-surface",
+    "iOS": "companion-surface",
+    "visionOS": "research-only",
+    "releaseReadiness": "not-asserted"
+  },
+  "publicDistribution": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "applicationPluginCount": 72,
+    "expectedApplicationPluginCount": 72,
+    "publicCardCount": 378,
+    "expectedPublicCardCount": 378,
+    "additionalCardAdded": false,
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "writes": false,
+    "network": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalValidationGap": {
+    "status": "approval-required",
+    "reason": "The local SwiftPM test did not complete during the observed window, while xcodebuild is unavailable from the active developer directory. A longer controlled local or CI execution window must be explicitly approved and record a sanitized completed result before a runtime-oriented follow-up is reconsidered.",
+    "unblockCondition": "A bounded SwiftPM execution result with command, outcome, duration class, and no secret or machine-path disclosure is recorded, or a reviewed environment limitation is accepted."
+  },
+  "nonGoals": [
+    "Adding a public card merely to increase marketplace counts.",
+    "Treating the interrupted SwiftPM attempt as a successful build or test run.",
+    "Changing the active Xcode developer directory, signing, provisioning, publishing, deploying, or running a simulator or device.",
+    "Reading or mutating a personal marketplace, using a network, or granting write or secret permissions."
+  ],
+  "validation": [
+    "swift package --package-path packages/seis_platform_swift describe --type json",
+    "npm run check:seis-public-plugin-wave-2-follow-up-decision",
+    "node --test plugins/seis-core/test/apple-native-follow-up-decision.test.mjs",
+    "npm run check:seis-core-plugin-sources",
+    "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-matrix",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this decision record and its program references on the feature branch; it adds no plugin source, public card, external state, or release state.",
+    "dataMigrationRequired": false
+  }
+}

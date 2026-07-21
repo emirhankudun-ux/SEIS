@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-core-plugin-change-evidence",
   "goalId": "SEIS-GOAL-021",
-  "baseCommit": "7c64bb4c64cc3736640fe889072c1c5d5b52bf00",
+  "baseCommit": "c28f375069c53ed5eb263a7c1f3025361509bab5",
   "generatedAt": "2026-07-15",
   "scope": {
     "application": "apps/seis-core",
@@ -29,31 +29,31 @@
     ]
   },
   "threshold": 500,
-  "codeLinesAdded": 272,
-  "codeLinesRemoved": 9,
-  "codeLinesChanged": 281,
+  "codeLinesAdded": 275,
+  "codeLinesRemoved": 10,
+  "codeLinesChanged": 285,
   "eligible": false,
   "files": [
     {
-      "path": "scripts/create-seis-public-plugin-wave-2-distribution-review.mjs",
-      "added": 223,
+      "path": "scripts/create-seis-public-plugin-wave-2-follow-up-decision.mjs",
+      "added": 220,
       "removed": 0,
       "state": "untracked",
-      "changed": 223
+      "changed": 220
     },
     {
-      "path": "plugins/seis-core/test/apple-native-distribution-review.test.mjs",
-      "added": 31,
+      "path": "plugins/seis-core/test/apple-native-follow-up-decision.test.mjs",
+      "added": 35,
       "removed": 0,
       "state": "untracked",
-      "changed": 31
+      "changed": 35
     },
     {
       "path": "scripts/create-seis-public-plugin-wave-2-program.mjs",
-      "added": 18,
-      "removed": 9,
+      "added": 20,
+      "removed": 10,
       "state": "tracked-diff",
-      "changed": 27
+      "changed": 30
     }
   ]
 }

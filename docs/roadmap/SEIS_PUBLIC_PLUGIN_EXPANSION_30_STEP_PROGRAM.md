@@ -68,12 +68,15 @@ with its own 100-step record at
 `content/development/seis-public-plugin-wave-2-program.json` and a public-only
 candidate decision at
 `content/development/seis-public-plugin-wave-2-capability-decision.json`.
-Its first three completed rounds are limited to a read-only Apple/Swift Package
+Its first four completed rounds are limited to a read-only Apple/Swift Package
 readiness audit, its bounded-resilience review (depth/file/text limits, direct
 source-area symlink refusal, focused fixtures, and framed MCP path refusal),
 and a public-distribution maintenance review across source, catalog, matrix,
 registry, suite, permission, lifecycle, provenance, release, and manifest
-records. They do not claim a native build, signing, release, provider, or App
+records. Round 4 also records a local SwiftPM package-graph inspection and an
+interrupted, non-claimable SwiftPM test attempt, then declines a duplicate
+public card until a bounded completed execution result exists. None of these
+rounds claims a native build, test pass, signing, release, provider, or App
 Store transition. Waves 3–5 remain *not planned* until the preceding
 wave has current evidence, scope review, and risk review. After Wave 5, repeat
 the cadence-design review before defining a new five-wave sequence;
