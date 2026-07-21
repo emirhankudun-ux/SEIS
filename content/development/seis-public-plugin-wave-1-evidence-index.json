@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-1-evidence-index",
+  "goalId": "SEIS-GOAL-021",
+  "generatedAt": "2026-07-21",
+  "status": "active-repo-local-evidence-index",
+  "scope": {
+    "programId": "seis-public-plugin-wave-1-program",
+    "wave": 1,
+    "round": 3,
+    "marketplace": "seis-repo",
+    "publicAudience": "everyone",
+    "sourceOnly": true
+  },
+  "purpose": "Reconcile current public SEIS Repo evidence without turning repository-local checks into browser, provider, installation, publication, deployment, or human-approval claims.",
+  "marketplace": {
+    "name": "seis-repo",
+    "displayName": "SEIS Repo",
+    "publicCardCount": 376,
+    "expectedCardCount": 376,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "applicationPluginCount": 70,
+    "topicPluginCount": 300,
+    "installationPolicy": "AVAILABLE",
+    "authenticationPolicy": "ON_INSTALL"
+  },
+  "release": {
+    "label": "0.00000002",
+    "semver": "0.0.20",
+    "appPluginCount": 70,
+    "maturity": "functional-local-demo",
+    "publicReleaseBlocked": true
+  },
+  "contracts": [
+    {
+      "id": "public-marketplace-family",
+      "state": "ready",
+      "summary": "The repository marketplace and public family agree on public-card ownership and counts.",
+      "evidencePaths": [
+        ".agents/plugins/marketplace.json",
+        "content/development/seis-public-plugin-family.json"
+      ]
+    },
+    {
+      "id": "app-source-and-release-train",
+      "state": "ready",
+      "summary": "Every app-owned public package matches the active app release train.",
+      "evidencePaths": [
+        "apps/seis-core/data/seis-core-plugin-sources.json",
+        "content/development/seis-core-plugin-release-train.json"
+      ]
+    },
+    {
+      "id": "public-install-and-runtime-boundaries",
+      "state": "ready",
+      "summary": "Public source, independent-evidence, and runtime-cache records agree on the current marketplace contract without claiming an external installation.",
+      "evidencePaths": [
+        "content/development/seis-public-install-state.json",
+        "content/development/seis-public-install-evidence.json",
+        "content/development/seis-public-runtime-status.json"
+      ]
+    },
+    {
+      "id": "mcp-permission-boundary",
+      "state": "ready",
+      "summary": "Declared public MCP capabilities remain read-only, offline, secret-free, and non-releasing.",
+      "evidencePaths": [
+        "content/development/seis-mcp-permission-risk-matrix.json"
+      ]
+    },
+    {
+      "id": "focus-and-project-governance",
+      "state": "ready",
+      "summary": "Focused static navigation evidence and project-manifest governance remain ready for their bounded scopes.",
+      "evidencePaths": [
+        "content/development/seis-focus-navigation-audit.json",
+        "content/development/seis-project-manifest-audit.json"
+      ]
+    },
+    {
+      "id": "ui-state-contract",
+      "state": "attention",
+      "summary": "The Command Center static state contract is ready; desktop source markers remain a separate tracked gap.",
+      "evidencePaths": [
+        "content/development/seis-ui-state-contract-audit.json"
+      ]
+    },
+    {
+      "id": "security-and-provenance",
+      "state": "ready",
+      "summary": "The existing public security/provenance review contains no secret or blocking finding.",
+      "evidencePaths": [
+        "content/development/seis-public-plugin-security-provenance-review.json"
+      ]
+    },
+    {
+      "id": "wave-1-tracker",
+      "state": "ready",
+      "summary": "Wave 1 records the first three rounds as complete and starts the bounded capability-selection review at step 61.",
+      "evidencePaths": [
+        "content/development/seis-public-plugin-wave-1-program.json"
+      ]
+    }
+  ],
+  "knownGaps": [
+    {
+      "id": "desktop-ui-state-contract",
+      "state": "attention",
+      "surface": "seis-desktop-second-brain",
+      "missingStateIds": [
+        "degraded",
+        "loading",
+        "provider-failed",
+        "validation-failed"
+      ],
+      "decision": "Keep this source-only gap separate from the Command Center checkpoint; do not convert it into a provider, browser, or release failure claim."
+    },
+    {
+      "id": "independent-public-install-proof",
+      "state": "approval-required",
+      "decision": "Public release remains gated on independent installation evidence and explicit human approval."
+    }
+  ],
+  "inputSafetyScan": {
+    "inputCount": 14,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  },
+  "releaseBoundary": {
+    "publicReleaseAllowed": false,
+    "externalInstallationProven": false,
+    "independentEvidenceIsReleaseProof": false,
+    "humanApprovalRequired": true,
+    "lifecycleChannel": "internal-review-local-proof",
+    "forbiddenWithoutApproval": [
+      "push",
+      "merge",
+      "tag",
+      "release",
+      "deploy",
+      "publish marketplace listing",
+      "execute live SSH",
+      "use provider credentials",
+      "claim live cloud or AI provider connectivity"
+    ]
+  },
+  "safety": {
+    "reads": [
+      ".agents/plugins/marketplace.json",
+      "content/development/seis-public-plugin-family.json",
+      "apps/seis-core/data/seis-core-plugin-sources.json",
+      "content/development/seis-core-plugin-release-train.json",
+      "content/development/seis-public-install-state.json",
+      "content/development/seis-public-install-evidence.json",
+      "content/development/seis-public-runtime-status.json",
+      "content/development/seis-mcp-permission-risk-matrix.json",
+      "content/development/seis-focus-navigation-audit.json",
+      "content/development/seis-ui-state-contract-audit.json",
+      "content/development/seis-project-manifest-audit.json",
+      "content/development/seis-public-plugin-lifecycle.json",
+      "content/development/seis-public-plugin-security-provenance-review.json",
+      "content/development/seis-public-plugin-wave-1-program.json"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "executesUi": false,
+    "startsMcpServers": false,
+    "installationMutation": false,
+    "publicationMutation": false
+  },
+  "limitations": [
+    "The index compares checked-in repository records only; it does not execute a UI, provider, MCP server, or installation.",
+    "The index does not make the desktop UI-state gap a live failure claim.",
+    "The index does not prove an independent installation, publication, release, deployment, or human approval."
+  ],
+  "qualityGates": [
+    "npm run check:seis-public-plugin-wave-1-program",
+    "npm run check:seis-public-plugin-wave-1-evidence-index",
+    "npm run check:seis-repo-marketplace",
+    "npm run check:seis-agent-plugin-integration"
+  ]
+}

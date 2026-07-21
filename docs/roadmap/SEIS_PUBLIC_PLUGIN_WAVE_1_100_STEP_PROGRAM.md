@@ -27,25 +27,32 @@ rate-limited, provider-failed, and approval-required behavior.
 | --- | --- | --- | --- |
 | 1 | 1–20 | State-boundary foundation | Completed in the first Wave 1 checkpoint |
 | 2 | 21–40 | Interaction and recovery semantics | Completed in the second Wave 1 checkpoint |
-| 3 | 41–60 | Public evidence and contract clarity | In progress |
-| 4 | 61–80 | Next capability selection | Planned |
+| 3 | 41–60 | Public evidence and contract clarity | Completed in the third Wave 1 checkpoint |
+| 4 | 61–80 | Next capability selection | In progress |
 | 5 | 81–100 | Release-quality handoff | Planned |
 
 ## Current Checkpoint
 
-Rounds 1–2 create an explicit, accessible Command Center panel for the four
-state boundaries, correct the visible app-plugin filter to 70 packages, and
-bind semantic, focus, no-provider, no-storage, and filter-isolation source
-evidence to generated records. The state copy is deliberately no-key: it
-distinguishes catalog fallback, reduced static posture, future provider
-failure, rate limits, and human approval without claiming that a live provider
-has been called. The remaining desktop-web gaps are recorded separately in the
-UI-state evidence; they are not silently absorbed into this Command Center
-checkpoint.
+Rounds 1–3 create an explicit, accessible Command Center panel for the four
+state boundaries, correct the visible app-plugin filter to 70 packages, bind
+semantic, focus, no-provider, no-storage, and filter-isolation source evidence
+to generated records, and add a deterministic Wave 1 evidence index. The state
+copy is deliberately no-key: it distinguishes catalog fallback, reduced static
+posture, future provider failure, rate limits, and human approval without
+claiming that a live provider has been called. The remaining desktop-web gaps
+are recorded separately in the UI-state evidence; they are not silently
+absorbed into this Command Center checkpoint.
 
 The machine-readable 100-step source of truth is
 `content/development/seis-public-plugin-wave-1-program.json`. Validate it with
 `npm run check:seis-public-plugin-wave-1-program`.
+
+The cross-contract index is
+`content/development/seis-public-plugin-wave-1-evidence-index.json`. It keeps
+the 376-card public marketplace contract, release labels, deny-by-default MCP
+boundary, generated evidence safety scan, and known desktop UI-state gap in one
+read-only record. Validate it with
+`npm run check:seis-public-plugin-wave-1-evidence-index`.
 
 ## Wave 2 Gate
 

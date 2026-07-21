@@ -123,7 +123,7 @@
         59,
         60
       ],
-      "status": "in-progress"
+      "status": "completed"
     },
     {
       "round": 4,
@@ -151,7 +151,7 @@
         79,
         80
       ],
-      "status": "planned"
+      "status": "in-progress"
     },
     {
       "round": 5,
@@ -467,147 +467,147 @@
       "number": 41,
       "round": 3,
       "title": "Review public plugin family evidence after the state-boundary change.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 42,
       "round": 3,
       "title": "Review UI-state audit limitations for accuracy.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 43,
       "round": 3,
       "title": "Review project-manifest count reconciliation.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 44,
       "round": 3,
       "title": "Review app catalog fallback metadata for current counts.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 45,
       "round": 3,
       "title": "Review release-readiness copy for local-only accuracy.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 46,
       "round": 3,
       "title": "Review marketplace terminology for personal-label leakage.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 47,
       "round": 3,
       "title": "Review public install-state language for activation claims.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 48,
       "round": 3,
       "title": "Review public runtime-status language for cache claims.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 49,
       "round": 3,
       "title": "Review source-provenance evidence boundaries.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 50,
       "round": 3,
       "title": "Review independent-runner evidence boundaries.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 51,
       "round": 3,
       "title": "Add a concise Wave 1 evidence index if needed.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 52,
       "round": 3,
       "title": "Validate generated JSON contains no machine-specific paths.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 53,
       "round": 3,
       "title": "Validate generated JSON contains no secret-like values.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 54,
       "round": 3,
       "title": "Validate source manifests retain empty permissions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 55,
       "round": 3,
       "title": "Validate public app count remains reconciled.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 56,
       "round": 3,
       "title": "Validate catalog release labels remain reconciled.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 57,
       "round": 3,
       "title": "Validate public audience remains everyone.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 58,
       "round": 3,
       "title": "Run public marketplace terminology validation.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 59,
       "round": 3,
       "title": "Run public evidence-contract validation.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 60,
       "round": 3,
       "title": "Publish the Round 3 evidence decision.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public contract, provenance, and generated-artifact checks"
     },
     {
       "number": 61,
       "round": 4,
       "title": "Inventory existing state, focus, and provenance plugin responsibilities.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
