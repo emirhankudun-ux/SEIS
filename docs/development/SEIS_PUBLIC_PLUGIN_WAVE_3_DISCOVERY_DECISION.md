@@ -10,10 +10,11 @@ repository-local implementation state. The public
 card are present. The program has reconciled implementation, resilience review,
 non-terminal handoff readiness through step 80, and tracker plus
 capability-decision validation through step 81. The repository-local final
-preflight reconciles steps 82–91, and step 92 continues the focused
-working-tree and diff review. This does not claim an independent installation,
-public release, provider connection, deployment, native runtime, or completed
-SwiftPM test.
+preflight reconciles steps 82–91, and delivery evidence reconciles steps
+92–96 on the current feature branch. Step 97 continues the repository-local
+Wave 3 handoff record. This does not claim an independent installation, public
+release, provider connection, deployment, native runtime, or completed SwiftPM
+test.
 
 ## Why this capability is distinct
 

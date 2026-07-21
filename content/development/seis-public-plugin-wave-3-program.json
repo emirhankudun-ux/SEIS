@@ -45,7 +45,8 @@
     "round4ReviewPath": "content/development/seis-public-plugin-wave-3-round-4-review.json",
     "handoffReadinessPath": "content/development/seis-public-plugin-wave-3-handoff-readiness.json",
     "finalValidationPath": "content/development/seis-public-plugin-wave-3-final-validation.json",
-    "finalPreflightPath": "content/development/seis-public-plugin-wave-3-final-preflight.json"
+    "finalPreflightPath": "content/development/seis-public-plugin-wave-3-final-preflight.json",
+    "deliveryEvidencePath": "content/development/seis-public-plugin-wave-3-delivery-evidence.json"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -842,42 +843,42 @@
       "number": 92,
       "round": 5,
       "title": "Inspect the working tree and diff for unrelated changes.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 93,
       "round": 5,
       "title": "Run whitespace and focused security boundary checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 94,
       "round": 5,
       "title": "Prepare a focused local commit with goal and Wave 3 context.",
-      "status": "planned",
+      "status": "completed",
       "validation": "feature-branch delivery and remote-reference verification when authorized"
     },
     {
       "number": 95,
       "round": 5,
       "title": "Push only the current feature branch when authorized.",
-      "status": "planned",
+      "status": "completed",
       "validation": "feature-branch delivery and remote-reference verification when authorized"
     },
     {
       "number": 96,
       "round": 5,
       "title": "Verify the remote feature reference when possible.",
-      "status": "planned",
+      "status": "completed",
       "validation": "feature-branch delivery and remote-reference verification when authorized"
     },
     {
       "number": 97,
       "round": 5,
       "title": "Publish a Wave 3 repository-local handoff with risks and rollback.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "Wave 3 handoff and following-wave scope review evidence"
     },
     {
@@ -903,13 +904,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 91,
-    "plannedStepCount": 8,
+    "completedStepCount": 96,
+    "plannedStepCount": 3,
     "inProgressStepNumbers": [
-      92
+      97
     ],
     "completedRoundCount": 4,
-    "nextStepNumber": 92
+    "nextStepNumber": 97
   },
   "qualityGates": [
     "npm run check:seis-public-plugin-expansion-program",
@@ -917,6 +918,7 @@
     "npm run check:seis-public-plugin-wave-2-handoff",
     "npm run check:seis-public-plugin-wave-3-program",
     "npm run check:seis-public-plugin-wave-3-final-preflight",
+    "npm run check:seis-public-plugin-wave-3-delivery-evidence",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-core-plugin-sources",

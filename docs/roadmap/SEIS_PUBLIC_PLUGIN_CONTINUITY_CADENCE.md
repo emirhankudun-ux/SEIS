@@ -11,7 +11,7 @@
 | Bootstrap | 30 steps / 5 rounds / 6 steps | Completed |
 | Wave 1 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 2 | 100 steps / 5 rounds / 20 steps | Completed |
-| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 91 complete, step 92 active |
+| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 96 complete, step 97 active |
 | Wave 4 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 | Wave 5 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 
@@ -47,7 +47,13 @@ preflight verifies the current package, source/catalog/matrix, integration,
 lifecycle, security/provenance, fresh-task and installation gates, release
 limits, public terminology policy, and static input safety while keeping final
 handoff, independent installation, native runtime, and public release false.
-Step 92 is now active for the focused working-tree and diff review.
+Steps 92–96 are reconciled by
+`content/development/seis-public-plugin-wave-3-delivery-evidence.json`. That
+record binds the preflight checkpoint's clean worktree review, whitespace
+check, focused commit, feature-branch push, and remote reference verification
+to the prior SHA without treating it as a final handoff, protected-branch
+write, merge, or release. Step 97 is now active for the repository-local Wave
+3 handoff record.
 
 ## GitHub Delivery Rule
 
@@ -82,5 +88,6 @@ npm run check:seis-public-plugin-wave-3-round-3-checkpoint
 npm run check:seis-public-plugin-wave-3-round-4-review
 npm run check:seis-public-plugin-wave-3-final-validation
 npm run check:seis-public-plugin-wave-3-final-preflight
+npm run check:seis-public-plugin-wave-3-delivery-evidence
 npm run check:seis-public-plugin-expansion-program
 ```
