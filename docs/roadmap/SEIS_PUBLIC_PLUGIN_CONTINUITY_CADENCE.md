@@ -11,7 +11,7 @@
 | Bootstrap | 30 steps / 5 rounds / 6 steps | Completed |
 | Wave 1 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 2 | 100 steps / 5 rounds / 20 steps | Completed |
-| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 96 complete, step 97 active |
+| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 97 complete, step 98 active |
 | Wave 4 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 | Wave 5 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 
@@ -52,8 +52,12 @@ Steps 92–96 are reconciled by
 record binds the preflight checkpoint's clean worktree review, whitespace
 check, focused commit, feature-branch push, and remote reference verification
 to the prior SHA without treating it as a final handoff, protected-branch
-write, merge, or release. Step 97 is now active for the repository-local Wave
-3 handoff record.
+write, merge, or release. Step 97 is reconciled by
+`content/development/seis-public-plugin-wave-3-repository-local-handoff.json`.
+It records the current scope, evidence, risks, rollback, limits, and next
+decision without completing Wave 3 or activating Wave 4. Step 98 is now active
+to decide whether a following wave is justified by current evidence rather than
+cadence alone.
 
 ## GitHub Delivery Rule
 
@@ -89,5 +93,6 @@ npm run check:seis-public-plugin-wave-3-round-4-review
 npm run check:seis-public-plugin-wave-3-final-validation
 npm run check:seis-public-plugin-wave-3-final-preflight
 npm run check:seis-public-plugin-wave-3-delivery-evidence
+npm run check:seis-public-plugin-wave-3-repository-local-handoff
 npm run check:seis-public-plugin-expansion-program
 ```

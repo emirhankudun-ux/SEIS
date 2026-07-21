@@ -46,7 +46,8 @@
     "handoffReadinessPath": "content/development/seis-public-plugin-wave-3-handoff-readiness.json",
     "finalValidationPath": "content/development/seis-public-plugin-wave-3-final-validation.json",
     "finalPreflightPath": "content/development/seis-public-plugin-wave-3-final-preflight.json",
-    "deliveryEvidencePath": "content/development/seis-public-plugin-wave-3-delivery-evidence.json"
+    "deliveryEvidencePath": "content/development/seis-public-plugin-wave-3-delivery-evidence.json",
+    "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-3-repository-local-handoff.json"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -878,14 +879,14 @@
       "number": 97,
       "round": 5,
       "title": "Publish a Wave 3 repository-local handoff with risks and rollback.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "Wave 3 handoff and following-wave scope review evidence"
     },
     {
       "number": 98,
       "round": 5,
       "title": "Review whether a following wave is justified by current evidence rather than cadence alone.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "Wave 3 handoff and following-wave scope review evidence"
     },
     {
@@ -904,13 +905,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 96,
-    "plannedStepCount": 3,
+    "completedStepCount": 97,
+    "plannedStepCount": 2,
     "inProgressStepNumbers": [
-      97
+      98
     ],
     "completedRoundCount": 4,
-    "nextStepNumber": 97
+    "nextStepNumber": 98
   },
   "qualityGates": [
     "npm run check:seis-public-plugin-expansion-program",
@@ -919,6 +920,7 @@
     "npm run check:seis-public-plugin-wave-3-program",
     "npm run check:seis-public-plugin-wave-3-final-preflight",
     "npm run check:seis-public-plugin-wave-3-delivery-evidence",
+    "npm run check:seis-public-plugin-wave-3-repository-local-handoff",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-core-plugin-sources",
