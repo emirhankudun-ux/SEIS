@@ -70,10 +70,10 @@
 ## Public SEIS Repo Marketplace
 
 - Marketplace: seis-repo
-- Total entries: 380
+- Total entries: 381
 - Canonical orchestrator entries: 1
 - Migrated root package entries: 5
-- App package entries: 74
+- App package entries: 75
 - Objective-derived topic entries: 300
 
 ## Independent Runner Evidence

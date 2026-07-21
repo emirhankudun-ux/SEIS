@@ -1,0 +1,56 @@
+{
+  "stableId": "seis-plugin-capability-coverage",
+  "slug": "seis-plugin-capability-coverage",
+  "version": "0.0.20",
+  "releaseMicroUnits": 20,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.00000002",
+  "category": "plugin-capability-coverage",
+  "owner": "@seis-governance",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-plugin-capability-coverage-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "four fixed checked-in public SEIS Repo registry projections",
+      "bounded derived category and capability coverage metadata"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "audit": {
+    "mode": "read-only-fixed-registry-capability-coverage",
+    "fixedRegistryPaths": [
+      "apps/seis-core/data/seis-core-plugin-sources.json",
+      "apps/seis-core/data/seis-core-plugin-catalog.json",
+      "content/development/seis-core-plugin-matrix.json",
+      ".agents/plugins/marketplace.json"
+    ],
+    "maxRegistryBytes": 524288,
+    "regularFilesRequired": true,
+    "symlinkRefusal": true,
+    "rawRegistryContentReturned": false
+  },
+  "validation": [
+    "node scripts/seis-plugin-capability-coverage-mcp-server.mjs --status",
+    "node scripts/seis-plugin-capability-coverage-mcp-server.mjs --report --path .",
+    "node scripts/seis-plugin-capability-coverage-mcp-server.mjs --evidence",
+    "npm run check:seis-plugin-capability-coverage",
+    "node --test plugins/seis-core/test/plugin-capability-coverage.test.mjs",
+    "node --test plugins/seis-core/test/plugin-capability-coverage-evidence.test.mjs"
+  ],
+  "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits registry data, marketplace state, an external system, or release state.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 Wave 5 after a distinctness review confirmed that coverage summaries do not replace marketplace integrity, plugin discovery, technology ontology, or canonical registry validation.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

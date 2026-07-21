@@ -262,7 +262,7 @@ function isSupportedExpansionProgram(record) {
     && wave4?.programPath === PATHS.wave4Program
     && wave4?.handoffPreparationPath === PATHS.handoffPreparation
     && wave4?.closeoutSequenceDecisionPath === OUTPUT_PATH
-    && list(record?.nextWaves)[4]?.status === "planned-gated";
+    && ["planned-gated", "in-progress", "completed"].includes(list(record?.nextWaves)[4]?.status);
   const afterCloseout = wave4?.status === "completed"
     && wave4?.completionEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
   return shared && (wave4?.status === "in-progress" || afterCloseout);
@@ -274,7 +274,7 @@ function isSupportedContinuityCadence(record) {
     && record?.status === "active-evidence-led-cadence"
     && wave4?.handoffPreparationPath === PATHS.handoffPreparation
     && wave4?.closeoutSequenceDecisionPath === OUTPUT_PATH
-    && list(record?.waves)[4]?.status === "planned-gated";
+    && ["planned-gated", "in-progress", "completed"].includes(list(record?.waves)[4]?.status);
   const preApplication = record?.cadence?.waveSeries?.activeWave === 4
     && wave4?.status === "in-progress"
     && wave4?.completedSteps === 95
@@ -309,7 +309,16 @@ function isSupportedContinuityCadence(record) {
     && list(wave4?.inProgressSteps).length === 0
     && wave4?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave4?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
-  return shared && (preApplication || postApplication || afterHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout);
+  const activeWave5 = record?.cadence?.waveSeries?.activeWave === 5
+    && record?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress"
+    && wave4?.status === "completed"
+    && wave4?.completedSteps === 100
+    && list(wave4?.inProgressSteps).length === 0
+    && list(record?.waves)[4]?.status === "in-progress"
+    && list(record?.waves)[4]?.selectedCapability === "seis-plugin-capability-coverage"
+    && list(record?.waves)[4]?.completedSteps === 30
+    && list(list(record?.waves)[4]?.inProgressSteps).join(",") === "31";
+  return shared && (preApplication || postApplication || afterHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout || activeWave5);
 }
 
 function validateRecord(record) {

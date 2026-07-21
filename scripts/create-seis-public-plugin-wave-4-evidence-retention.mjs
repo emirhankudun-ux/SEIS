@@ -20,6 +20,9 @@ const PATHS = Object.freeze({
   handoffPreparation: "content/development/seis-public-plugin-wave-4-handoff-preparation.json",
   closeoutSequenceDecision: "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
   repositoryLocalHandoff: "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
+  wave5ActivationDecision: "content/development/seis-public-plugin-wave-5-activation-decision.json",
+  capabilityCoverage: "content/development/seis-plugin-capability-coverage.json",
+  wave5Program: "content/development/seis-public-plugin-wave-5-program.json",
   sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
   catalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
   matrix: "content/development/seis-core-plugin-matrix.json",
@@ -34,6 +37,9 @@ const RETAINED_PATH_KEYS = Object.freeze([
   "handoffPreparation",
   "closeoutSequenceDecision",
   "repositoryLocalHandoff",
+  "wave5ActivationDecision",
+  "capabilityCoverage",
+  "wave5Program",
   "followingWaveReview",
   "wave4Program",
   "continuityCadence",
@@ -70,6 +76,9 @@ function buildRecord() {
   const followingWaveReview = readJson(PATHS.followingWaveReview);
   const continuityCadence = readJson(PATHS.continuityCadence);
   const expansionProgram = readJson(PATHS.expansionProgram);
+  const wave5ActivationDecision = readJson(PATHS.wave5ActivationDecision);
+  const capabilityCoverage = readJson(PATHS.capabilityCoverage);
+  const wave5Program = readJson(PATHS.wave5Program);
   const sourceManifest = readJson(PATHS.sourceManifest);
   const catalog = readJson(PATHS.catalog);
   const matrix = readJson(PATHS.matrix);
@@ -90,7 +99,7 @@ function buildRecord() {
     status: "completed-public-evidence-retention",
     maturity: "prototype",
     generatedAt: "2026-07-21",
-    purpose: "Retain a bounded, public-only inventory of the checked-in Wave 4 evidence needed for the final repository-local closeout. This records relative paths and safe file metadata only; it does not delete, export, publish, activate Wave 5, or claim installation, compilation, runtime, provider, deployment, signing, or release proof.",
+    purpose: "Retain a bounded, public-only inventory of the checked-in Wave 4 evidence and its later active Wave 5 continuity context. This records relative paths and safe file metadata only; the Wave 4 checkpoint did not activate Wave 5, and this current retention record does not claim installation, compilation, runtime, provider, deployment, signing, or release proof.",
     stateAtCheckpoint: {
       completedStepCountBeforeTrackerUpdate: 98,
       activeStepBeforeTrackerUpdate: 99,
@@ -99,6 +108,7 @@ function buildRecord() {
       wave5ImplementationApproved: false,
       wave5ActivationApproved: false,
     },
+    currentContext: currentWave5Context(continuityCadence, expansionProgram, wave5ActivationDecision, capabilityCoverage, wave5Program),
     checks: {
       wave4Tracker: isSupportedWave4Tracker(wave4Program),
       followingWaveReview: followingWaveReview.id === "seis-public-plugin-wave-4-following-wave-review"
@@ -109,22 +119,9 @@ function buildRecord() {
         && followingWaveReview.followingWaveDecision?.activationApproved === false
         && Object.values(followingWaveReview.checks || {}).every(Boolean),
       continuity: isSupportedContinuity(continuityCadence),
-      expansionProgram: expansionProgram.id === "seis-public-plugin-expansion-program"
-        && ["in-progress", "completed"].includes(expansionProgram.nextWaves?.[3]?.status)
-        && expansionProgram.nextWaves?.[3]?.followingWaveReviewPath === PATHS.followingWaveReview
-        && (!expansionProgram.nextWaves?.[3]?.completionEvidencePath || expansionProgram.nextWaves?.[3]?.completionEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json")
-        && expansionProgram.nextWaves?.[4]?.status === "planned-gated"
-        && expansionProgram.nextWaves?.[4]?.candidateReviewPath === PATHS.followingWaveReview
-        && expansionProgram.nextWaves?.[4]?.selectedCapability === "seis-plugin-capability-coverage"
-        && expansionProgram.nextWaves?.[4]?.implementationApproved === false
-        && expansionProgram.nextWaves?.[4]?.activationApproved === false,
-      publicInventory: sourceEntries.length === 74
-        && catalog.counts?.discovered === 74
-        && matrix.pluginCount === 74
-        && matrix.failureCount === 0
-        && marketplace.name === "seis-repo"
-        && marketplace.interface?.displayName === "SEIS Repo"
-        && marketplaceEntries.length === 380,
+      expansionProgram: isSupportedExpansionProgram(expansionProgram),
+      publicInventory: isSupportedPublicInventory(sourceEntries, catalogEntries, matrixEntries, marketplaceEntries, catalog, matrix, marketplace),
+      currentWave5: isSupportedActiveWave5(continuityCadence, expansionProgram, wave5ActivationDecision, capabilityCoverage, wave5Program),
       retainedPaths: retainedEvidence.length === RETAINED_PATH_KEYS.length
         && retainedEvidence.every((entry) => entry.regularFile === true && entry.symlink === false && entry.bytes > 0 && entry.bytes <= MAX_EVIDENCE_BYTES),
       evidenceBoundary: inputSafetyScan.machineSpecificPathFindingCount === 0
@@ -168,6 +165,9 @@ function buildRecord() {
       followingWaveReviewPath: PATHS.followingWaveReview,
       continuityCadencePath: PATHS.continuityCadence,
       expansionProgramPath: PATHS.expansionProgram,
+      wave5ActivationDecisionPath: PATHS.wave5ActivationDecision,
+      capabilityCoveragePath: PATHS.capabilityCoverage,
+      wave5ProgramPath: PATHS.wave5Program,
       retainedPaths: RETAINED_PATH_KEYS.map((key) => PATHS[key]),
     },
     validation: [
@@ -175,6 +175,9 @@ function buildRecord() {
       "npm run check:seis-public-plugin-wave-4-program",
       "npm run check:seis-public-plugin-continuity-cadence",
       "npm run check:seis-public-plugin-expansion-program",
+      "npm run check:seis-public-plugin-wave-5-activation-decision",
+      "npm run check:seis-plugin-capability-coverage",
+      "npm run check:seis-public-plugin-wave-5-program",
       "npm run check:seis-repo-marketplace",
       "node --test plugins/seis-core/test/public-plugin-wave-4-evidence-retention.test.mjs",
     ],
@@ -188,8 +191,8 @@ function buildRecord() {
       {
         id: "RISK-W4-024",
         status: "tracked",
-        description: "Evidence retention could be mistaken for a publication, release, or Wave 5 activation decision.",
-        mitigation: "Preserve publicRelease=false, no external storage, no deletion, and Wave 5 implementation/activation gates as false until separate decisions exist.",
+        description: "Historical Wave 4 retention could be mistaken for a publication or release, or its former Wave 5 gate could be mistaken for the current active Wave 5 decision.",
+        mitigation: "Preserve the historical checkpoint gate separately, record current Wave 5 activation context explicitly, and keep publicRelease=false, no external storage, and no deletion.",
       },
     ],
     rollback: {
@@ -229,6 +232,7 @@ function isSupportedWave4Tracker(program) {
 
 function isSupportedContinuity(cadence) {
   const wave = cadence?.waves?.[3];
+  const wave5 = cadence?.waves?.[4];
   const shared = cadence?.id === "seis-public-plugin-continuity-cadence" && cadence?.status === "active-evidence-led-cadence";
   const beforeTrackerUpdate = cadence?.cadence?.waveSeries?.activeWaveState === "following-wave-review-complete-step-99-in-progress"
     && wave?.completedSteps === 98
@@ -247,7 +251,98 @@ function isSupportedContinuity(cadence) {
     && list(wave?.inProgressSteps).length === 0
     && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
-  return shared && (beforeTrackerUpdate || afterTrackerUpdate || afterCloseout);
+  const activeWave5 = cadence?.cadence?.waveSeries?.activeWave === 5
+    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress"
+    && wave?.status === "completed"
+    && wave?.completedSteps === 100
+    && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
+    && wave5?.status === "in-progress"
+    && wave5?.completedSteps === 30
+    && list(wave5?.inProgressSteps).join(",") === "31"
+    && wave5?.activationDecisionPath === PATHS.wave5ActivationDecision
+    && wave5?.capabilityEvidencePath === PATHS.capabilityCoverage
+    && wave5?.programPath === PATHS.wave5Program;
+  return shared && (beforeTrackerUpdate || afterTrackerUpdate || afterCloseout || activeWave5);
+}
+
+function isSupportedExpansionProgram(program) {
+  const wave4 = program?.nextWaves?.[3];
+  const wave5 = program?.nextWaves?.[4];
+  const shared = program?.id === "seis-public-plugin-expansion-program"
+    && ["in-progress", "completed"].includes(wave4?.status)
+    && wave4?.followingWaveReviewPath === PATHS.followingWaveReview
+    && (!wave4?.completionEvidencePath || wave4?.completionEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json")
+    && wave5?.candidateReviewPath === PATHS.followingWaveReview
+    && wave5?.selectedCapability === "seis-plugin-capability-coverage";
+  const plannedWave5 = wave5?.status === "planned-gated"
+    && wave5?.implementationApproved === false
+    && wave5?.activationApproved === false;
+  const activeWave5 = wave5?.status === "in-progress"
+    && wave5?.programPath === PATHS.wave5Program
+    && wave5?.activationDecisionPath === PATHS.wave5ActivationDecision
+    && wave5?.capabilityEvidencePath === PATHS.capabilityCoverage
+    && wave5?.implementationApproved === true
+    && wave5?.activationApproved === true
+    && wave5?.implementationStarted === true
+    && wave5?.candidatePackageExists === true
+    && wave5?.candidatePublicCardExists === true
+    && wave5?.completedSteps === 30
+    && list(wave5?.inProgressSteps).join(",") === "31";
+  return shared && (plannedWave5 || activeWave5);
+}
+
+function isSupportedPublicInventory(sourceEntries, catalogEntries, matrixEntries, marketplaceEntries, catalog, matrix, marketplace) {
+  const shared = matrix?.failureCount === 0
+    && marketplace?.name === "seis-repo"
+    && marketplace?.interface?.displayName === "SEIS Repo"
+    && sourceEntries.filter((entry) => entry?.name === "seis-swift-package-topology").length === 1
+    && catalogEntries.filter((entry) => entry?.name === "seis-swift-package-topology").length === 1
+    && matrixEntries.filter((entry) => entry?.name === "seis-swift-package-topology").length === 1;
+  const wave4Snapshot = sourceEntries.length === 74
+    && catalog?.counts?.discovered === 74
+    && matrix?.pluginCount === 74
+    && marketplaceEntries.length === 380;
+  const activeWave5 = sourceEntries.length === 75
+    && catalog?.counts?.discovered === 75
+    && matrix?.pluginCount === 75
+    && marketplaceEntries.length === 381
+    && sourceEntries.filter((entry) => entry?.name === "seis-plugin-capability-coverage").length === 1
+    && catalogEntries.filter((entry) => entry?.name === "seis-plugin-capability-coverage").length === 1
+    && matrixEntries.filter((entry) => entry?.name === "seis-plugin-capability-coverage").length === 1;
+  return shared && (wave4Snapshot || activeWave5);
+}
+
+function isSupportedActiveWave5(cadence, expansionProgram, activationDecision, capabilityCoverage, wave5Program) {
+  const wave5 = expansionProgram?.nextWaves?.[4];
+  return cadence?.cadence?.waveSeries?.activeWave === 5
+    && activationDecision?.id === "seis-public-plugin-wave-5-activation-decision"
+    && activationDecision?.status === "approved-public-local-wave-5-activation"
+    && activationDecision?.decision?.selectedCapability === "seis-plugin-capability-coverage"
+    && activationDecision?.decision?.activationApproved === true
+    && activationDecision?.decision?.implementationApproved === true
+    && capabilityCoverage?.id === "seis-plugin-capability-coverage"
+    && capabilityCoverage?.status === "ready-public-static-capability-coverage-evidence"
+    && capabilityCoverage?.activation?.activationApproved === true
+    && capabilityCoverage?.audit?.reconciliation?.reconciled === true
+    && wave5Program?.id === "seis-public-plugin-wave-5-program"
+    && wave5Program?.status === "in-progress"
+    && wave5Program?.progress?.completedStepCount === 30
+    && list(wave5Program?.progress?.inProgressStepNumbers).join(",") === "31"
+    && wave5?.status === "in-progress";
+}
+
+function currentWave5Context(cadence, expansionProgram, activationDecision, capabilityCoverage, wave5Program) {
+  return {
+    activeWave: cadence?.cadence?.waveSeries?.activeWave,
+    activeWaveState: cadence?.cadence?.waveSeries?.activeWaveState,
+    status: expansionProgram?.nextWaves?.[4]?.status,
+    completedSteps: wave5Program?.progress?.completedStepCount,
+    inProgressSteps: list(wave5Program?.progress?.inProgressStepNumbers),
+    activationDecisionPath: PATHS.wave5ActivationDecision,
+    capabilityCoveragePath: PATHS.capabilityCoverage,
+    activationDecisionStatus: activationDecision?.status,
+    capabilityCoverageStatus: capabilityCoverage?.status,
+  };
 }
 
 function evidenceMetadata(key, relativePath) {
@@ -265,6 +360,7 @@ function evidenceMetadata(key, relativePath) {
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-4-evidence-retention" && record.goalId === "SEIS-GOAL-021" && record.parentGoalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.wave === 4 && record.step === 99 && record.status === "completed-public-evidence-retention" && record.maturity === "prototype", "retention identity is invalid");
   assert(record.stateAtCheckpoint?.completedStepCountBeforeTrackerUpdate === 98 && record.stateAtCheckpoint?.activeStepBeforeTrackerUpdate === 99 && record.stateAtCheckpoint?.nextPlannedDecisionStep === 100 && record.stateAtCheckpoint?.waveCompleted === false && record.stateAtCheckpoint?.wave5ImplementationApproved === false && record.stateAtCheckpoint?.wave5ActivationApproved === false, "retention state is invalid");
+  assert(record.currentContext?.activeWave === 5 && record.currentContext?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress" && record.currentContext?.status === "in-progress" && record.currentContext?.completedSteps === 30 && list(record.currentContext?.inProgressSteps).join(",") === "31" && record.currentContext?.activationDecisionPath === PATHS.wave5ActivationDecision && record.currentContext?.capabilityCoveragePath === PATHS.capabilityCoverage && record.currentContext?.activationDecisionStatus === "approved-public-local-wave-5-activation" && record.currentContext?.capabilityCoverageStatus === "ready-public-static-capability-coverage-evidence", "current Wave 5 context is invalid");
   assert(Object.values(record.checks || {}).every(Boolean), "a required evidence-retention check is not current");
   assert(record.retention?.status === "bounded-public-evidence-retained" && record.retention?.retainedArtifactCount === RETAINED_PATH_KEYS.length && record.retention?.relativePathOnly === true && record.retention?.rawContentStored === false && record.retention?.deletionPerformed === false && record.retention?.externalStorageUsed === false && record.retention?.featureBranchOnly === true && record.retention?.nextActiveStep === 100 && list(record.retention?.retainedEvidence).length === RETAINED_PATH_KEYS.length, "retention boundary is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");

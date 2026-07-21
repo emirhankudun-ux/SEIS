@@ -9,6 +9,8 @@ const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(testDirectory, "../../..");
 const decisionPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-3-capability-decision.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-3-capability-decision.mjs");
+const sourceManifestPath = path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json");
+const marketplacePath = path.join(repositoryRoot, ".agents/plugins/marketplace.json");
 
 test("records the bounded non-duplicative Wave 3 concurrency package and SEIS Repo card", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
@@ -18,6 +20,8 @@ test("records the bounded non-duplicative Wave 3 concurrency package and SEIS Re
   assert.equal(result.status, 0, result.stderr);
 
   const decision = JSON.parse(fs.readFileSync(decisionPath, "utf8"));
+  const sourceManifest = JSON.parse(fs.readFileSync(sourceManifestPath, "utf8"));
+  const marketplace = JSON.parse(fs.readFileSync(marketplacePath, "utf8"));
   assert.equal(decision.status, "approved-public-local-implementation");
   assert.equal(decision.decision.selectedCapability, "seis-swift-concurrency-audit");
   assert.equal(decision.decision.implementationStarted, true);
@@ -32,8 +36,8 @@ test("records the bounded non-duplicative Wave 3 concurrency package and SEIS Re
   assert.equal(decision.preconditions.wave3ProgramSelectedCapability, "seis-swift-concurrency-audit");
   assert.equal(decision.publicDistribution.marketplaceName, "seis-repo");
   assert.equal(decision.publicDistribution.marketplaceDisplayName, "SEIS Repo");
-  assert.equal(decision.publicDistribution.applicationPluginCount, 74);
-  assert.equal(decision.publicDistribution.publicCardCount, 380);
+  assert.equal(decision.publicDistribution.applicationPluginCount, sourceManifest.plugins.length);
+  assert.equal(decision.publicDistribution.publicCardCount, marketplace.plugins.length);
   assert.equal(decision.publicDistribution.additionalPublicCardAdded, true);
   assert.equal(decision.publicDistribution.personalMarketplaceRead, false);
   assert.equal(decision.publicDistribution.personalMarketplaceMutation, false);

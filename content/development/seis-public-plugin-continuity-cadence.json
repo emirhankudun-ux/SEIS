@@ -34,8 +34,8 @@
       "roundsPerWave": 5,
       "stepsPerRound": 20,
       "totalPlannedWaveSteps": 500,
-      "activeWave": null,
-      "activeWaveState": "wave-4-completed-wave-5-planned-gated"
+      "activeWave": 5,
+      "activeWaveState": "wave-5-first-30-steps-completed-step-31-in-progress"
     },
     "githubDelivery": {
       "branch": "plugins/seis-plugin-root-20260715",
@@ -116,16 +116,27 @@
     },
     {
       "wave": 5,
-      "status": "planned-gated",
+      "status": "in-progress",
       "programId": "seis-public-plugin-wave-5-program",
+      "programPath": "content/development/seis-public-plugin-wave-5-program.json",
       "totalSteps": 100,
       "stepTemplateId": "seis-public-plugin-future-wave-template",
       "predecessor": "Wave 4 following-wave scope review",
       "candidateReviewPath": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
+      "activationDecisionPath": "content/development/seis-public-plugin-wave-5-activation-decision.json",
+      "capabilityEvidencePath": "content/development/seis-plugin-capability-coverage.json",
       "selectedCapability": "seis-plugin-capability-coverage",
-      "implementationApproved": false,
-      "activationApproved": false,
-      "entryRule": "Activate only after Wave 4 closes with current validation, a Wave 5-specific scope and risk decision, an explicit activation decision, and current user authority."
+      "implementationApproved": true,
+      "activationApproved": true,
+      "implementationStarted": true,
+      "candidatePackageExists": true,
+      "candidatePublicCardExists": true,
+      "completedSteps": 30,
+      "inProgressSteps": [
+        31
+      ],
+      "currentEvidencePath": "content/development/seis-plugin-capability-coverage.json",
+      "entryRule": "Wave 4 closed with historical scope evidence; the separate Wave 5 activation decision records current user authority. The first 30 repository-local steps are complete and step 31 starts the bounded resilience-review tranche. This is not a merge, release, installation, external runtime, provider, deployment, signing, or public proof claim."
     }
   ],
   "futureWaveTemplate": {

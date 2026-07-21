@@ -7,7 +7,7 @@
   "scope": {
     "application": "apps/seis-core",
     "sourceRoot": "plugins/seis-core",
-    "pluginCount": 72,
+    "pluginCount": 75,
     "ownership": "public-repository-app-owned",
     "publicSuiteReleaseTrack": "plugins/seis-ai-agent"
   },

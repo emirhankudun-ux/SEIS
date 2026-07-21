@@ -12,14 +12,18 @@
 | Wave 1 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 2 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 3 | 100 steps / 5 rounds / 20 steps | Completed: 100 repository-local evidence steps |
-| Wave 4 | 100 steps / 5 rounds / 20 steps | Planned-gated |
-| Wave 5 | 100 steps / 5 rounds / 20 steps | Planned-gated |
+| Wave 4 | 100 steps / 5 rounds / 20 steps | Completed: repository-local evidence cycle |
+| Wave 5 | 100 steps / 5 rounds / 20 steps | In progress: steps 1–30 complete; step 31 active |
 
 The machine-readable cadence is
-`content/development/seis-public-plugin-continuity-cadence.json`. Wave 4 has a
-separate planned-gated candidate and 100-step specification, but it does not
-add a package or card, activate implementation, or claim that future work has
-started.
+`content/development/seis-public-plugin-continuity-cadence.json`. Wave 4 is a
+completed repository-local evidence cycle. Wave 5 is the currently authorized
+public-only cycle: its activation decision, capability-coverage evidence, and
+100-step program record live in `content/development/`. It adds the bounded
+`seis-plugin-capability-coverage` package and its `SEIS Repo` card while
+preserving deny-by-default writes, network, and secret permissions. None of
+those records claims independent installation, provider execution, native
+runtime, deployment, or public release.
 
 ## Wave 3 Closeout Evidence
 
@@ -66,10 +70,10 @@ runtime/release claim false. Step 99 is completed by
 five explicit rounds and 100 planned steps for the candidate without starting
 implementation. Step 100 is completed by
 `content/development/seis-public-plugin-wave-3-closeout.json`. It closes all
-100 Wave 3 steps with current repository-local evidence, preserves every
+100 Wave 3 steps with repository-local evidence and preserves every
 independent installation, SwiftPM/compiler, runtime, provider, deployment,
-and release claim as false, and leaves Wave 4 planned-gated with activation
-false.
+and release claim as false. Subsequent Wave 4 and active Wave 5 evidence is
+tracked separately so that the Wave 3 historical closeout remains intact.
 
 ## GitHub Delivery Rule
 
@@ -109,5 +113,8 @@ npm run check:seis-public-plugin-wave-3-repository-local-handoff
 npm run check:seis-public-plugin-wave-3-following-wave-review
 npm run check:seis-public-plugin-wave-4-program
 npm run check:seis-public-plugin-wave-3-closeout
+npm run check:seis-public-plugin-wave-5-activation-decision
+npm run check:seis-plugin-capability-coverage
+npm run check:seis-public-plugin-wave-5-program
 npm run check:seis-public-plugin-expansion-program
 ```

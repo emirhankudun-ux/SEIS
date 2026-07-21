@@ -53,8 +53,11 @@ single `seis-swift-concurrency-audit` package and added its public `SEIS Repo`
 card only after its Wave 2 handoff, focused implementation design, current
 repository-local validation evidence, and continued user authority. It still
 does not imply a public release, independent installation, compiler result, or
-native-runtime claim. Wave 4 has a planned-gated topology specification only;
-its package and card remain absent until a separate activation decision.
+native-runtime claim. That Wave 4 gate was later completed through a separate
+repository-local evidence cycle. For the current active Wave 5 state, including
+the public `seis-plugin-capability-coverage` package, see
+`SEIS_PUBLIC_PLUGIN_CONTINUITY_CADENCE.md` rather than treating this historical
+Wave 2 record as the current marketplace contract.
 
 ## Rollback
 

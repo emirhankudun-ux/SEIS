@@ -42,7 +42,11 @@ test("preserves the Wave 3 closeout snapshot after the single Wave 4 integration
 
   const sourceManifest = JSON.parse(fs.readFileSync(path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json"), "utf8"));
   const marketplace = JSON.parse(fs.readFileSync(path.join(repositoryRoot, ".agents/plugins/marketplace.json"), "utf8"));
-  assert.equal(sourceManifest.pluginCount, 74);
-  assert.equal(marketplace.plugins.length, 380);
+  assert.ok([74, 75].includes(sourceManifest.pluginCount));
+  assert.equal(marketplace.plugins.length, sourceManifest.pluginCount + 306);
   assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-swift-package-topology"));
+  if (sourceManifest.pluginCount === 75) {
+    assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage"));
+    assert.ok(marketplace.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage" && entry.source?.path === "./plugins/seis-core/seis-plugin-capability-coverage"));
+  }
 });

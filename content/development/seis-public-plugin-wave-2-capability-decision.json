@@ -83,9 +83,9 @@
     "initialWave2Status": "completed",
     "wave1HandoffId": "seis-public-plugin-wave-1-handoff",
     "wave1HandoffStatus": "completed-repository-local-handoff",
-    "applicationPluginCount": 74,
-    "expectedApplicationPluginCount": 74,
-    "publicCardCount": 380
+    "applicationPluginCount": 75,
+    "expectedApplicationPluginCount": 75,
+    "publicCardCount": 381
   },
   "risks": [
     {

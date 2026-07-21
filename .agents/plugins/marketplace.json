@@ -569,6 +569,18 @@
       "category": "Developer"
     },
     {
+      "name": "seis-plugin-capability-coverage",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-plugin-capability-coverage"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-plugin-discovery",
       "source": {
         "source": "local",

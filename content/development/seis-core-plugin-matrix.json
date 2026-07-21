@@ -21,9 +21,9 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 74,
-  "expectedPluginCount": 74,
-  "readyCount": 67,
+  "pluginCount": 75,
+  "expectedPluginCount": 75,
+  "readyCount": 68,
   "attentionCount": 7,
   "failureCount": 0,
   "failures": [],
@@ -673,6 +673,22 @@
       "version": "0.0.20",
       "releaseTrainVersion": "0.00000002",
       "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-plugin-capability-coverage",
+      "version": "0.0.20",
+      "releaseTrainVersion": "0.00000002",
+      "entrypoint": "scripts/seis-plugin-capability-coverage-mcp-server.mjs",
       "implementationState": "functional-local-demo",
       "permissionBoundary": {
         "write": [],

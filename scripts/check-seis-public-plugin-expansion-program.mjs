@@ -32,6 +32,9 @@ const wave4RepositoryLocalHandoffPath = path.join(root, "content", "development"
 const wave4FollowingWaveReviewPath = path.join(root, "content", "development", "seis-public-plugin-wave-4-following-wave-review.json");
 const wave4EvidenceRetentionPath = path.join(root, "content", "development", "seis-public-plugin-wave-4-evidence-retention.json");
 const wave4CloseoutPath = path.join(root, "content", "development", "seis-public-plugin-wave-4-closeout.json");
+const wave5ActivationDecisionPath = path.join(root, "content", "development", "seis-public-plugin-wave-5-activation-decision.json");
+const wave5ProgramPath = path.join(root, "content", "development", "seis-public-plugin-wave-5-program.json");
+const wave5CapabilityEvidencePath = path.join(root, "content", "development", "seis-plugin-capability-coverage.json");
 const continuityCadencePath = path.join(root, "content", "development", "seis-public-plugin-continuity-cadence.json");
 const record = JSON.parse(fs.readFileSync(recordPath, "utf8"));
 const handoff = fs.existsSync(handoffPath) ? JSON.parse(fs.readFileSync(handoffPath, "utf8")) : null;
@@ -60,6 +63,9 @@ const wave4RepositoryLocalHandoff = fs.existsSync(wave4RepositoryLocalHandoffPat
 const wave4FollowingWaveReview = fs.existsSync(wave4FollowingWaveReviewPath) ? JSON.parse(fs.readFileSync(wave4FollowingWaveReviewPath, "utf8")) : null;
 const wave4EvidenceRetention = fs.existsSync(wave4EvidenceRetentionPath) ? JSON.parse(fs.readFileSync(wave4EvidenceRetentionPath, "utf8")) : null;
 const wave4Closeout = fs.existsSync(wave4CloseoutPath) ? JSON.parse(fs.readFileSync(wave4CloseoutPath, "utf8")) : null;
+const wave5ActivationDecision = fs.existsSync(wave5ActivationDecisionPath) ? JSON.parse(fs.readFileSync(wave5ActivationDecisionPath, "utf8")) : null;
+const wave5Program = fs.existsSync(wave5ProgramPath) ? JSON.parse(fs.readFileSync(wave5ProgramPath, "utf8")) : null;
+const wave5CapabilityEvidence = fs.existsSync(wave5CapabilityEvidencePath) ? JSON.parse(fs.readFileSync(wave5CapabilityEvidencePath, "utf8")) : null;
 const continuityCadence = fs.existsSync(continuityCadencePath) ? JSON.parse(fs.readFileSync(continuityCadencePath, "utf8")) : null;
 const failures = [];
 
@@ -155,18 +161,107 @@ for (let index = 0; index < 5; index += 1) {
     ensure(isWave4FollowingWaveReview(wave4FollowingWaveReview), "wave 4 following-wave review is invalid");
     ensure(isWave4EvidenceRetention(wave4EvidenceRetention), "wave 4 evidence retention is invalid");
     ensure(isWave4Closeout(wave4Closeout), "wave 4 closeout is invalid");
-  } else {
-    ensure(wave?.status === "planned-gated", `wave ${index + 1} must remain planned-gated until its activation review`);
+  } else if (index === 4) {
+    ensure(wave?.status === "in-progress", "wave 5 must be marked in progress only after its separate activation decision");
     ensure(wave?.programId === `seis-public-plugin-wave-${index + 1}-program`, `wave ${index + 1} must identify its future program`);
     ensure(wave?.stepTemplateId === "seis-public-plugin-future-wave-template", `wave ${index + 1} must identify the 100-step template`);
     ensure(wave?.continuityCadencePath === "content/development/seis-public-plugin-continuity-cadence.json", `wave ${index + 1} must link the continuity record`);
-    ensure(wave?.candidateReviewPath === "content/development/seis-public-plugin-wave-4-following-wave-review.json" && wave?.selectedCapability === "seis-plugin-capability-coverage" && wave?.implementationApproved === false && wave?.activationApproved === false, "wave 5 must retain its planned public-only candidate gate");
+    ensure(wave?.programPath === "content/development/seis-public-plugin-wave-5-program.json" && wave?.candidateReviewPath === "content/development/seis-public-plugin-wave-4-following-wave-review.json" && wave?.activationDecisionPath === "content/development/seis-public-plugin-wave-5-activation-decision.json" && wave?.capabilityEvidencePath === "content/development/seis-plugin-capability-coverage.json" && wave?.selectedCapability === "seis-plugin-capability-coverage" && wave?.implementationApproved === true && wave?.activationApproved === true && wave?.implementationStarted === true && wave?.candidatePackageExists === true && wave?.candidatePublicCardExists === true && wave?.completedSteps === 30 && Array.isArray(wave?.inProgressSteps) && wave.inProgressSteps.join(",") === "31", "wave 5 active public-only contract is invalid");
+    ensure(isWave5ActiveProgram(wave5Program) && isWave5ActivationDecision(wave5ActivationDecision) && isWave5CapabilityEvidence(wave5CapabilityEvidence), "wave 5 activation, program, or evidence is invalid");
   }
 }
 
 ensure(continuityCadence?.id === "seis-public-plugin-continuity-cadence" && continuityCadence?.status === "active-evidence-led-cadence", "continuity cadence evidence is invalid");
-ensure(continuityCadence?.cadence?.bootstrap?.totalSteps === 30 && continuityCadence?.cadence?.waveSeries?.waveCount === 5 && continuityCadence?.cadence?.waveSeries?.stepsPerWave === 100 && continuityCadence?.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && continuityCadence?.cadence?.waveSeries?.activeWave === null && continuityCadence?.cadence?.waveSeries?.activeWaveState === "wave-4-completed-wave-5-planned-gated", "continuity cadence shape is invalid");
-ensure(Array.isArray(continuityCadence?.waves) && continuityCadence.waves.length === 5 && continuityCadence.waves[2]?.status === "completed" && continuityCadence.waves[2]?.completedSteps === 100 && Array.isArray(continuityCadence.waves[2]?.inProgressSteps) && continuityCadence.waves[2].inProgressSteps.length === 0 && continuityCadence.waves[2]?.closeoutPath === "content/development/seis-public-plugin-wave-3-closeout.json" && continuityCadence.waves[2]?.currentEvidencePath === "content/development/seis-public-plugin-wave-3-closeout.json" && isWave4IntegratedCadence(continuityCadence.waves[3]) && Array.isArray(continuityCadence?.futureWaveTemplate?.steps) && continuityCadence.futureWaveTemplate.steps.length === 100, "continuity cadence wave evidence is invalid");
+ensure(continuityCadence?.cadence?.bootstrap?.totalSteps === 30 && continuityCadence?.cadence?.waveSeries?.waveCount === 5 && continuityCadence?.cadence?.waveSeries?.stepsPerWave === 100 && continuityCadence?.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && continuityCadence?.cadence?.waveSeries?.activeWave === 5 && continuityCadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress", "continuity cadence shape is invalid");
+ensure(Array.isArray(continuityCadence?.waves) && continuityCadence.waves.length === 5 && continuityCadence.waves[2]?.status === "completed" && continuityCadence.waves[2]?.completedSteps === 100 && Array.isArray(continuityCadence.waves[2]?.inProgressSteps) && continuityCadence.waves[2].inProgressSteps.length === 0 && continuityCadence.waves[2]?.closeoutPath === "content/development/seis-public-plugin-wave-3-closeout.json" && continuityCadence.waves[2]?.currentEvidencePath === "content/development/seis-public-plugin-wave-3-closeout.json" && isWave4IntegratedCadence(continuityCadence.waves[3]) && isWave5ActiveCadence(continuityCadence.waves[4]) && Array.isArray(continuityCadence?.futureWaveTemplate?.steps) && continuityCadence.futureWaveTemplate.steps.length === 100, "continuity cadence wave evidence is invalid");
+
+function isWave5ActivationDecision(decision) {
+  return decision?.id === "seis-public-plugin-wave-5-activation-decision"
+    && decision?.status === "approved-public-local-wave-5-activation"
+    && decision?.decision?.selectedCapability === "seis-plugin-capability-coverage"
+    && decision?.decision?.activationApproved === true
+    && decision?.decision?.implementationApproved === true
+    && decision?.decision?.implementationStarted === true
+    && decision?.decision?.candidatePackageExists === true
+    && decision?.decision?.candidatePublicCardExists === true
+    && decision?.decision?.publicReleaseApproved === false
+    && decision?.publicBoundary?.marketplaceName === "seis-repo"
+    && decision?.publicBoundary?.personalMarketplaceRead === false
+    && decision?.publicBoundary?.personalMarketplaceMutation === false
+    && decision?.publicBoundary?.network === false
+    && decision?.publicBoundary?.externalWrites === false
+    && decision?.publicBoundary?.secrets === false
+    && decision?.publicBoundary?.protectedDefaultBranchWrites === false
+    && Object.values(decision?.externalClaims || {}).every((value) => value === false);
+}
+
+function isWave5CapabilityEvidence(evidence) {
+  return evidence?.id === "seis-plugin-capability-coverage"
+    && evidence?.status === "ready-public-static-capability-coverage-evidence"
+    && evidence?.activation?.activationApproved === true
+    && evidence?.activation?.implementationAuthorized === true
+    && evidence?.activation?.implementationObserved === true
+    && evidence?.activation?.publicReleaseApproved === false
+    && evidence?.audit?.ok === true
+    && evidence?.audit?.reconciliation?.reconciled === true
+    && Array.isArray(evidence?.safety?.write)
+    && evidence.safety.write.length === 0
+    && Array.isArray(evidence?.safety?.network)
+    && evidence.safety.network.length === 0
+    && Array.isArray(evidence?.safety?.secrets)
+    && evidence.safety.secrets.length === 0
+    && evidence?.publicBoundary?.marketplaceName === "seis-repo"
+    && evidence?.publicBoundary?.personalMarketplaceRead === false
+    && evidence?.publicBoundary?.personalMarketplaceMutation === false
+    && evidence?.publicBoundary?.network === false
+    && evidence?.publicBoundary?.externalWrites === false
+    && evidence?.publicBoundary?.secrets === false
+    && evidence?.publicBoundary?.publicReleaseAllowed === false;
+}
+
+function isWave5ActiveProgram(program) {
+  return program?.id === "seis-public-plugin-wave-5-program"
+    && program?.status === "in-progress"
+    && program?.maturity === "prototype"
+    && program?.wave?.number === 5
+    && program?.wave?.totalSteps === 100
+    && program?.scope?.selectedCapability === "seis-plugin-capability-coverage"
+    && program?.activationGate?.status === "implemented-repository-local"
+    && program?.activationGate?.activationDecisionPath === "content/development/seis-public-plugin-wave-5-activation-decision.json"
+    && program?.activationGate?.implementationStarted === true
+    && program?.activationGate?.candidatePackageExists === true
+    && program?.activationGate?.candidatePublicCardExists === true
+    && program?.activationGate?.publicReleaseApproved === false
+    && program?.progress?.completedStepCount === 30
+    && Array.isArray(program?.progress?.inProgressStepNumbers)
+    && program.progress.inProgressStepNumbers.join(",") === "31"
+    && program?.progress?.plannedStepCount === 69
+    && program?.progress?.completedRoundCount === 1
+    && program?.progress?.nextStepNumber === 31
+    && program?.evidence?.activationDecision === "content/development/seis-public-plugin-wave-5-activation-decision.json"
+    && program?.evidence?.capabilityEvidence === "content/development/seis-plugin-capability-coverage.json"
+    && Object.values(program?.checks || {}).every(Boolean)
+    && Object.values(program?.externalClaims || {}).every((value) => value === false);
+}
+
+function isWave5ActiveCadence(wave) {
+  return wave?.status === "in-progress"
+    && wave?.programId === "seis-public-plugin-wave-5-program"
+    && wave?.programPath === "content/development/seis-public-plugin-wave-5-program.json"
+    && wave?.activationDecisionPath === "content/development/seis-public-plugin-wave-5-activation-decision.json"
+    && wave?.capabilityEvidencePath === "content/development/seis-plugin-capability-coverage.json"
+    && wave?.selectedCapability === "seis-plugin-capability-coverage"
+    && wave?.implementationApproved === true
+    && wave?.activationApproved === true
+    && wave?.implementationStarted === true
+    && wave?.candidatePackageExists === true
+    && wave?.candidatePublicCardExists === true
+    && wave?.completedSteps === 30
+    && Array.isArray(wave?.inProgressSteps)
+    && wave.inProgressSteps.join(",") === "31"
+    && wave?.currentEvidencePath === "content/development/seis-plugin-capability-coverage.json"
+    && wave?.totalSteps === 100;
+}
 
 function isWave4IntegratedProgram(program) {
   return program?.id === "seis-public-plugin-wave-4-program"
@@ -304,10 +399,8 @@ function isWave4Closeout(closeout) {
 }
 
 function isWave4TopologyEvidence(evidence) {
-  return evidence?.id === "seis-swift-package-topology"
+  const shared = evidence?.id === "seis-swift-package-topology"
     && evidence?.status === "ready-public-static-topology-evidence"
-    && evidence?.marketplace?.applicationPluginCount === 74
-    && evidence?.marketplace?.publicCardCount === 380
     && evidence?.activation?.implementationObserved === true
     && evidence?.audit?.ok === true
     && evidence?.safety?.compilesSwift === false
@@ -315,6 +408,11 @@ function isWave4TopologyEvidence(evidence) {
     && evidence?.publicBoundary?.personalMarketplaceRead === false
     && evidence?.publicBoundary?.personalMarketplaceMutation === false
     && evidence?.publicBoundary?.publicReleaseAllowed === false;
+  const wave4Snapshot = evidence?.marketplace?.applicationPluginCount === 74
+    && evidence?.marketplace?.publicCardCount === 380;
+  const activeWave5 = evidence?.marketplace?.applicationPluginCount === 75
+    && evidence?.marketplace?.publicCardCount === 381;
+  return shared && (wave4Snapshot || activeWave5);
 }
 
 function isWave4IntegrationCheckpoint(checkpoint) {

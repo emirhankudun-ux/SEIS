@@ -11,6 +11,8 @@ const PLANNING_CHECKPOINT_COMMIT = "30c2dfa64ec0d1e6a3968179bcd126eedbd3a23e";
 const CANDIDATE_CAPABILITY = "seis-swift-package-topology";
 const HISTORICAL_INVENTORY = Object.freeze({ applicationPluginCount: 73, publicCardCount: 379 });
 const INTEGRATED_WAVE_4_INVENTORY = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
+const ACTIVE_WAVE_5_INVENTORY = Object.freeze({ applicationPluginCount: 75, publicCardCount: 381 });
+const ACTIVE_WAVE_5_CAPABILITY = "seis-plugin-capability-coverage";
 const PATHS = Object.freeze({
   finalValidation: "content/development/seis-public-plugin-wave-3-final-validation.json",
   finalPreflight: "content/development/seis-public-plugin-wave-3-final-preflight.json",
@@ -250,7 +252,26 @@ function assertSupportedCurrentWave4State({ wave4Program, sourceEntries, catalog
       || (wave4Program.progress?.completedStepCount === 99 && list(wave4Program.progress?.inProgressStepNumbers).join(",") === "100" && wave4Program.evidence?.evidenceRetentionPath === "content/development/seis-public-plugin-wave-4-evidence-retention.json" && wave4Program.evidenceRetention?.status === "completed-public-evidence-retention")
       || (wave4Program.status === "completed" && wave4Program.progress?.completedStepCount === 100 && list(wave4Program.progress?.inProgressStepNumbers).length === 0 && wave4Program.progress?.nextStepNumber === null && wave4Program.evidence?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json" && wave4Program.repositoryLocalCloseout?.status === "completed-repository-local-wave-closeout")
     );
-  assert(historicalInventory || integratedWave4Inventory, "current state no longer matches the Wave 3 snapshot or the single approved Wave 4 integration");
+  const activeWave5Inventory = sourceEntries.length === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+    && catalog.counts?.discovered === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+    && matrix.pluginCount === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+    && matrix.failureCount === 0
+    && marketplace.name === "seis-repo"
+    && marketplaceEntries.length === ACTIVE_WAVE_5_INVENTORY.publicCardCount
+    && sourceEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
+    && catalogEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
+    && matrixEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
+    && marketplaceEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${CANDIDATE_CAPABILITY}`).length === 1
+    && sourceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+    && catalogEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+    && matrixEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+    && marketplaceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${ACTIVE_WAVE_5_CAPABILITY}`).length === 1
+    && wave4Program.id === "seis-public-plugin-wave-4-program"
+    && wave4Program.status === "completed"
+    && wave4Program.progress?.completedStepCount === 100
+    && list(wave4Program.progress?.inProgressStepNumbers).length === 0
+    && wave4Program.repositoryLocalCloseout?.status === "completed-repository-local-wave-closeout";
+  assert(historicalInventory || integratedWave4Inventory || activeWave5Inventory, "current state no longer matches the Wave 3 snapshot, the single approved Wave 4 integration, or the active Wave 5 coverage state");
 }
 
 function validateRecord(record) {

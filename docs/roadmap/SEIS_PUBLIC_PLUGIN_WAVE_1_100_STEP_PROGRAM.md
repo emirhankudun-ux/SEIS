@@ -83,8 +83,9 @@ completed at `content/development/seis-public-plugin-wave-3-program.json` and
 its closeout is `content/development/seis-public-plugin-wave-3-closeout.json`.
 It selected and implemented the one bounded `seis-swift-concurrency-audit`
 package with a public `SEIS Repo` card while keeping release, installation,
-compiler, and native-runtime claims false. Wave 4 now has a separately
-planned-gated topology specification; it remains unimplemented until its own
-activation decision. Wave 5 remains planned-gated. This preserves the
+compiler, and native-runtime claims false. Wave 4 had a separately
+planned-gated topology specification at the time of this historical record.
+Later Wave 4 evidence and the active Wave 5 public-only cycle are tracked in
+`SEIS_PUBLIC_PLUGIN_CONTINUITY_CADENCE.md`. This preserves the
 requested ongoing cadence without turning it into a claim of autonomous
 background execution.

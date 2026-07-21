@@ -27,6 +27,8 @@ const EVIDENCE_RETENTION_PATH = "content/development/seis-public-plugin-wave-4-e
 const CLOSEOUT_PATH = "content/development/seis-public-plugin-wave-4-closeout.json";
 const BASELINE_INVENTORY = Object.freeze({ applicationPluginCount: 73, publicCardCount: 379 });
 const INTEGRATED_INVENTORY = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
+const ACTIVE_WAVE_5_INVENTORY = Object.freeze({ applicationPluginCount: 75, publicCardCount: 381 });
+const ACTIVE_WAVE_5_CAPABILITY = "seis-plugin-capability-coverage";
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 const SECRET_PATTERNS = [
   { id: "openai-like-api-key", regex: /\bsk-[A-Za-z0-9_-]{20,}\b/ },
@@ -441,26 +443,24 @@ function buildRecord() {
         && activationDecision.decision?.implementationApproved === true
         && activationDecision.decision?.implementationStarted === false
         && activationDecision.decision?.publicReleaseApproved === false,
-      publicInventory: sourceEntries.length === INTEGRATED_INVENTORY.applicationPluginCount
+      publicInventory: ((sourceEntries.length === INTEGRATED_INVENTORY.applicationPluginCount
         && catalog.counts?.discovered === INTEGRATED_INVENTORY.applicationPluginCount
         && matrix.pluginCount === INTEGRATED_INVENTORY.applicationPluginCount
         && matrix.failureCount === 0
         && marketplace.name === "seis-repo"
-        && marketplaceEntries.length === INTEGRATED_INVENTORY.publicCardCount,
+        && marketplaceEntries.length === INTEGRATED_INVENTORY.publicCardCount)
+        || (sourceEntries.length === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+          && catalog.counts?.discovered === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+          && matrix.pluginCount === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+          && matrix.failureCount === 0
+          && marketplace.name === "seis-repo"
+          && marketplaceEntries.length === ACTIVE_WAVE_5_INVENTORY.publicCardCount
+          && sourceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+          && catalogEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+          && matrixEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+          && marketplaceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1)),
       candidateIntegrated: Object.values(candidatePresence).every((value) => value === true),
-      topologyEvidence: topologyEvidence.id === CANDIDATE_CAPABILITY
-        && topologyEvidence.status === "ready-public-static-topology-evidence"
-        && topologyEvidence.plugin?.catalogStatus === "ready"
-        && topologyEvidence.plugin?.matrixStatus === "ready"
-        && topologyEvidence.plugin?.publicMarketplace === true
-        && topologyEvidence.marketplace?.applicationPluginCount === INTEGRATED_INVENTORY.applicationPluginCount
-        && topologyEvidence.marketplace?.publicCardCount === INTEGRATED_INVENTORY.publicCardCount
-        && topologyEvidence.activation?.implementationObserved === true
-        && topologyEvidence.audit?.ok === true
-        && topologyEvidence.safety?.compilesSwift === false
-        && topologyEvidence.safety?.runsSwiftTests === false
-        && topologyEvidence.publicBoundary?.personalMarketplaceRead === false
-        && topologyEvidence.publicBoundary?.personalMarketplaceMutation === false,
+      topologyEvidence: isSupportedTopologyEvidence(topologyEvidence),
       integrationCheckpoint: integrationCheckpoint.id === "seis-public-plugin-wave-4-integration-checkpoint"
         && integrationCheckpoint.status === "completed-repository-local-integration-checkpoint"
         && integrationCheckpoint.maturity === "prototype"
@@ -600,6 +600,25 @@ function validationFor(round, task) {
   if (round === 3) return task <= 17 ? "focused fixture and resilience-test plan" : "fixture safety, determinism, and resilience evidence review";
   if (round === 4) return task <= 15 ? "conditional post-activation repository integration plan" : "generated-artifact, documentation, and reversible checkpoint review";
   return task <= 15 ? "conditional post-activation validation and delivery plan" : "handoff, completion, and future-wave gate review";
+}
+
+function isSupportedTopologyEvidence(record) {
+  const shared = record?.id === CANDIDATE_CAPABILITY
+    && record?.status === "ready-public-static-topology-evidence"
+    && record?.plugin?.catalogStatus === "ready"
+    && record?.plugin?.matrixStatus === "ready"
+    && record?.plugin?.publicMarketplace === true
+    && record?.activation?.implementationObserved === true
+    && record?.audit?.ok === true
+    && record?.safety?.compilesSwift === false
+    && record?.safety?.runsSwiftTests === false
+    && record?.publicBoundary?.personalMarketplaceRead === false
+    && record?.publicBoundary?.personalMarketplaceMutation === false;
+  const wave4Snapshot = record?.marketplace?.applicationPluginCount === INTEGRATED_INVENTORY.applicationPluginCount
+    && record?.marketplace?.publicCardCount === INTEGRATED_INVENTORY.publicCardCount;
+  const activeWave5 = record?.marketplace?.applicationPluginCount === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+    && record?.marketplace?.publicCardCount === ACTIVE_WAVE_5_INVENTORY.publicCardCount;
+  return shared && (wave4Snapshot || activeWave5);
 }
 
 function stepStatus(number) {

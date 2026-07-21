@@ -10,7 +10,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const recordPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-4-evidence-retention.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-4-evidence-retention.mjs");
 
-test("retains bounded public-only evidence for Wave 4 step 99", () => {
+test("retains bounded Wave 4 evidence alongside the active public-only Wave 5 context", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -23,6 +23,10 @@ test("retains bounded public-only evidence for Wave 4 step 99", () => {
   assert.equal(retention.stateAtCheckpoint.completedStepCountBeforeTrackerUpdate, 98);
   assert.equal(retention.stateAtCheckpoint.activeStepBeforeTrackerUpdate, 99);
   assert.equal(retention.stateAtCheckpoint.nextPlannedDecisionStep, 100);
+  assert.equal(retention.currentContext.activeWave, 5);
+  assert.equal(retention.currentContext.status, "in-progress");
+  assert.equal(retention.currentContext.completedSteps, 30);
+  assert.deepEqual(retention.currentContext.inProgressSteps, [31]);
   assert.ok(Object.values(retention.checks).every(Boolean));
   assert.equal(retention.retention.status, "bounded-public-evidence-retained");
   assert.equal(retention.retention.relativePathOnly, true);

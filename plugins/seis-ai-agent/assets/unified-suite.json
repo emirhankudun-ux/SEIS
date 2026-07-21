@@ -87,6 +87,7 @@
       "seis-offline-mode-check",
       "seis-package-adoption",
       "seis-performance-budget",
+      "seis-plugin-capability-coverage",
       "seis-plugin-discovery",
       "seis-plugin-migration",
       "seis-pr-cycle-time",
@@ -163,6 +164,7 @@
       "seis-offline-mode-check",
       "seis-package-adoption",
       "seis-performance-budget",
+      "seis-plugin-capability-coverage",
       "seis-plugin-discovery",
       "seis-plugin-migration",
       "seis-pr-cycle-time",
@@ -210,8 +212,8 @@
       "seis-ai-agent@seis-repo"
     ],
     "embeddedModuleCount": 10,
-    "applicationOwnedPluginCount": 74,
-    "applicationMarketplacePluginCount": 74,
+    "applicationOwnedPluginCount": 75,
+    "applicationMarketplacePluginCount": 75,
     "applicationSourceRoot": "plugins/seis-core",
     "applicationSourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json"
   },
@@ -328,14 +330,14 @@
     "releaseTrain": "content/development/seis-core-plugin-release-train.json",
     "releaseLabel": "0.00000002",
     "releaseSemver": "0.0.20",
-    "pluginCount": 74,
+    "pluginCount": 75,
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
     "publicDistribution": "direct-repository-source",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 74,
+    "marketplaceEntryCount": 75,
     "installSurface": "repo-source-app",
     "executionMode": "task-scoped-local-demo-only",
     "publicReleaseAllowed": false,
@@ -1613,6 +1615,38 @@
         "permissions": {
           "read": [
             "bounded local performance JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-plugin-capability-coverage",
+        "displayName": "SEIS Plugin Capability Coverage",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-plugin-capability-coverage",
+        "version": "0.0.20",
+        "license": "MIT",
+        "sourceClassification": "public-SEIS-repository",
+        "lifecycleStatus": "approved-public-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.00000002",
+        "releaseSemver": "0.0.20",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": "seis-plugin-capability-coverage@seis-repo",
+        "installSurface": "repo-source-app",
+        "publicMarketplace": true,
+        "publicRepositoryAvailable": true,
+        "publicAudience": "everyone",
+        "publicStatus": "public-repo-marketplace",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "permissions": {
+          "read": [
+            "four fixed checked-in public SEIS Repo registry projections",
+            "bounded derived category and capability coverage metadata"
           ],
           "write": [],
           "network": [],

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-plugin-capability-coverage": {
+      "command": "node",
+      "args": [
+        "scripts/seis-plugin-capability-coverage-mcp-server.mjs"
+      ]
+    }
+  }
+}

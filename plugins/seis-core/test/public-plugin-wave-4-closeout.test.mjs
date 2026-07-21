@@ -10,7 +10,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const recordPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-4-closeout.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-4-closeout.mjs");
 
-test("closes Wave 4 locally while keeping Wave 5 planned-gated", () => {
+test("preserves the Wave 4 local closeout alongside the active public-only Wave 5 context", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -29,6 +29,10 @@ test("closes Wave 4 locally while keeping Wave 5 planned-gated", () => {
   assert.equal(closeout.stateAtCheckpoint.nextWaveStatus, "planned-gated");
   assert.equal(closeout.stateAtCheckpoint.nextWaveImplementationApproved, false);
   assert.equal(closeout.stateAtCheckpoint.nextWaveActivationApproved, false);
+  assert.equal(closeout.currentContext.activeWave, 5);
+  assert.equal(closeout.currentContext.status, "in-progress");
+  assert.equal(closeout.currentContext.completedSteps, 30);
+  assert.deepEqual(closeout.currentContext.inProgressSteps, [31]);
   assert.ok(Object.values(closeout.checks).every(Boolean));
   assert.equal(closeout.completion.nextWaveSelectedCapability, "seis-plugin-capability-coverage");
   assert.equal(closeout.completion.nextWaveImplementationApproved, false);

@@ -90,8 +90,10 @@ function buildRecord() {
         && topologyEvidence.safety?.publicReleaseAllowed === false,
       publicCountReconciliation: marketplace.name === "seis-repo"
         && marketplace.interface?.displayName === "SEIS Repo"
-        && list(marketplace.plugins).length === 380
-        && list(marketplace.plugins).filter((entry) => entry?.name === "seis-swift-package-topology").length === 1,
+        && [380, 381].includes(list(marketplace.plugins).length)
+        && list(marketplace.plugins).filter((entry) => entry?.name === "seis-swift-package-topology").length === 1
+        && (list(marketplace.plugins).length === 380
+          || list(marketplace.plugins).filter((entry) => entry?.name === "seis-plugin-capability-coverage").length === 1),
       releaseBoundary: lifecycle.status === "active-local-proof-public-release-gated"
         && lifecycle.externalInstallProofSummary?.publicReleaseAllowed === false
         && installState.decision === "not-ready-for-public-release"
@@ -258,7 +260,16 @@ function isSupportedContinuity(cadence) {
     && list(wave?.inProgressSteps).length === 0
     && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
-  return cadence?.id === "seis-public-plugin-continuity-cadence" && cadence?.status === "active-evidence-led-cadence" && (beforeDecision || afterDecision || afterCloseoutSequenceApproval || afterRepositoryLocalHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout);
+  const activeWave5 = cadence?.cadence?.waveSeries?.activeWave === 5
+    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress"
+    && wave?.status === "completed"
+    && wave?.completedSteps === 100
+    && list(wave?.inProgressSteps).length === 0
+    && cadence?.waves?.[4]?.status === "in-progress"
+    && cadence?.waves?.[4]?.selectedCapability === "seis-plugin-capability-coverage"
+    && cadence?.waves?.[4]?.completedSteps === 30
+    && list(cadence?.waves?.[4]?.inProgressSteps).join(",") === "31";
+  return cadence?.id === "seis-public-plugin-continuity-cadence" && cadence?.status === "active-evidence-led-cadence" && (beforeDecision || afterDecision || afterCloseoutSequenceApproval || afterRepositoryLocalHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout || activeWave5);
 }
 
 function validateRecord(record) {

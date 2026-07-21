@@ -10,7 +10,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const recordPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-3-following-wave-review.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-3-following-wave-review.mjs");
 
-test("preserves the Wave 3 candidate snapshot after one bounded Wave 4 integration", () => {
+test("preserves the Wave 3 candidate snapshot through a bounded later public-wave inventory", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -47,8 +47,12 @@ test("preserves the Wave 3 candidate snapshot after one bounded Wave 4 integrati
 
   const sourceManifest = JSON.parse(fs.readFileSync(path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json"), "utf8"));
   const marketplace = JSON.parse(fs.readFileSync(path.join(repositoryRoot, ".agents/plugins/marketplace.json"), "utf8"));
-  assert.equal(sourceManifest.pluginCount, 74);
-  assert.equal(marketplace.plugins.length, 380);
+  assert.ok([74, 75].includes(sourceManifest.pluginCount));
+  assert.equal(marketplace.plugins.length, sourceManifest.pluginCount + 306);
   assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-swift-package-topology"));
   assert.ok(marketplace.plugins.some((entry) => entry.name === "seis-swift-package-topology" && entry.source?.path === "./plugins/seis-core/seis-swift-package-topology"));
+  if (sourceManifest.pluginCount === 75) {
+    assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage"));
+    assert.ok(marketplace.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage" && entry.source?.path === "./plugins/seis-core/seis-plugin-capability-coverage"));
+  }
 });

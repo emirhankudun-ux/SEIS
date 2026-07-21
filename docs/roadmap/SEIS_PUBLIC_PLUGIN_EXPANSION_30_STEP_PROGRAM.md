@@ -20,7 +20,7 @@ must not be read or modified.
 | Phase | Shape | Rule |
 | --- | --- | --- |
 | Initial program | 30 steps / 5 rounds / 6 steps per round | Work only from current repository evidence. |
-| Subsequent expansion | Five waves of 100 steps | Waves 4–5 use the gated 100-step template; activation still requires current validation, scope, and risk review. |
+| Subsequent expansion | Five waves of 100 steps | Each wave requires its own current validation, scope, risk, rollback, and evidence review before activation. |
 
 Every validated, coherent round checkpoint is committed and sent to the current
 SEIS GitHub feature branch when the environment permits. Protected default
@@ -91,24 +91,23 @@ its step 97 repository-local handoff is
 `content/development/seis-public-plugin-wave-3-repository-local-handoff.json`.
 Step 98 is completed by
 `content/development/seis-public-plugin-wave-3-following-wave-review.json`:
-it identifies `seis-swift-package-topology` only as a planned, fixed-manifest,
-read-only candidate. It does not add that package or its card, activate Wave 4,
-or convert static manifest evidence into SwiftPM, compiler, runtime, install,
-or release proof. Step 99 is completed by
-`content/development/seis-public-plugin-wave-4-program.json`, a separate
-five-round, 100-step `planned-gated` specification. The Wave 3 closeout is
-`content/development/seis-public-plugin-wave-3-closeout.json`; it keeps the
-candidate unimplemented and unlisted in `SEIS Repo`, records all 100 Wave 3
-steps complete, and leaves Wave 4 activation false.
-The
-current contract is 73 packages / 379 `SEIS Repo` cards, without an
-independent installation, native-runtime, provider, deployment, or
-public-release claim. Waves 4–5 are now **planned-gated** with
-one reusable 100-step template at
-`content/development/seis-public-plugin-continuity-cadence.json`; they are
-not activated until their own scope, risk, validation, and rollback decisions
-exist. Continuation remains evidence-led, reversible, and delivered through
-the current GitHub feature branch rather than claimed as background execution.
+it identifies `seis-swift-package-topology` as a bounded, fixed-manifest,
+read-only candidate. Its original review did not equate static manifest
+evidence with SwiftPM, compiler, runtime, install, or release proof. Step 99
+is completed by `content/development/seis-public-plugin-wave-4-program.json`;
+Wave 4 subsequently completed its separate repository-local evidence cycle.
+Wave 5 is now active under its explicit activation decision and has completed
+its first 30 evidence steps. It adds the public, read-only
+`seis-plugin-capability-coverage` package and card.
+
+The current contract is 75 packages / 381 `SEIS Repo` cards. It remains
+repository-local evidence only: no independent installation, native-runtime,
+provider, deployment, or public-release claim is made. The active Wave 5
+program is recorded in
+`content/development/seis-public-plugin-wave-5-program.json`; its future
+rounds remain scoped, reversible, and subject to current validation and user
+authority. Continuation is delivered through the current GitHub feature branch
+rather than claimed as background execution.
 
 ## Completion Rule
 

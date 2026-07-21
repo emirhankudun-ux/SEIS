@@ -9,6 +9,8 @@ const OUTPUT_PATH = "content/development/seis-public-plugin-wave-4-activation-de
 const CANDIDATE_CAPABILITY = "seis-swift-package-topology";
 const BASELINE = Object.freeze({ applicationPluginCount: 73, publicCardCount: 379 });
 const ACTIVATED_INVENTORY = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
+const ACTIVE_WAVE_5_INVENTORY = Object.freeze({ applicationPluginCount: 75, publicCardCount: 381 });
+const ACTIVE_WAVE_5_CAPABILITY = "seis-plugin-capability-coverage";
 const PATHS = Object.freeze({
   wave3Closeout: "content/development/seis-public-plugin-wave-3-closeout.json",
   followingWaveReview: "content/development/seis-public-plugin-wave-3-following-wave-review.json",
@@ -66,6 +68,15 @@ function buildRecord() {
     && matrix.pluginCount === ACTIVATED_INVENTORY.applicationPluginCount
     && marketplaceEntries.length === ACTIVATED_INVENTORY.publicCardCount
     && Object.values(candidateCounts).every((count) => count === 1);
+  const activeWave5Inventory = sourceEntries.length === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+    && catalog.counts?.discovered === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+    && matrix.pluginCount === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
+    && marketplaceEntries.length === ACTIVE_WAVE_5_INVENTORY.publicCardCount
+    && Object.values(candidateCounts).every((count) => count === 1)
+    && countNamed(sourceEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
+    && countNamed(catalogEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
+    && countNamed(matrixEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
+    && countNamed(marketplaceEntries, ACTIVE_WAVE_5_CAPABILITY) === 1;
   const record = {
     schemaVersion: 1,
     id: "seis-public-plugin-wave-4-activation-decision",
@@ -156,7 +167,7 @@ function buildRecord() {
         && followingWaveReview.followingWaveDecision?.activationApproved === false
         && followingWaveReview.followingWaveDecision?.candidatePackageExists === false
         && followingWaveReview.followingWaveDecision?.candidatePublicCardExists === false,
-      currentInventoryCompatibility: (baselineInventory || postActivationInventory)
+      currentInventoryCompatibility: (baselineInventory || postActivationInventory || activeWave5Inventory)
         && matrix.failureCount === 0
         && marketplace.name === "seis-repo",
       fixedStaticBoundary: followingWaveReview.candidateContract?.input?.fixedManifestPath === "packages/seis_platform_swift/Package.swift"

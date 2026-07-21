@@ -9,6 +9,8 @@ const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(testDirectory, "../../..");
 const evidencePath = path.join(repositoryRoot, "content/development/seis-swift-package-topology.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-swift-package-topology.mjs");
+const sourceManifestPath = path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json");
+const marketplacePath = path.join(repositoryRoot, ".agents/plugins/marketplace.json");
 
 test("reconciles bounded Swift Package topology evidence with the public SEIS Repo contract", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
@@ -18,6 +20,8 @@ test("reconciles bounded Swift Package topology evidence with the public SEIS Re
   assert.equal(result.status, 0, result.stderr);
 
   const evidence = JSON.parse(fs.readFileSync(evidencePath, "utf8"));
+  const sourceManifest = JSON.parse(fs.readFileSync(sourceManifestPath, "utf8"));
+  const marketplace = JSON.parse(fs.readFileSync(marketplacePath, "utf8"));
   assert.equal(evidence.id, "seis-swift-package-topology");
   assert.equal(evidence.goalId, "SEIS-GOAL-021");
   assert.equal(evidence.wave, 4);
@@ -26,8 +30,8 @@ test("reconciles bounded Swift Package topology evidence with the public SEIS Re
   assert.equal(evidence.plugin.marketplaceDisplayName, "SEIS Repo");
   assert.equal(evidence.plugin.marketplaceCategory, "Developer");
   assert.equal(evidence.plugin.publicMarketplace, true);
-  assert.equal(evidence.marketplace.applicationPluginCount, 74);
-  assert.equal(evidence.marketplace.publicCardCount, 380);
+  assert.equal(evidence.marketplace.applicationPluginCount, sourceManifest.plugins.length);
+  assert.equal(evidence.marketplace.publicCardCount, marketplace.plugins.length);
   assert.equal(evidence.activation.selectedCapability, "seis-swift-package-topology");
   assert.equal(evidence.activation.implementationObserved, true);
   assert.equal(evidence.activation.publicReleaseApproved, false);

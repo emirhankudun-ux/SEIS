@@ -1,0 +1,857 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-plugin-capability-coverage",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 5,
+  "generatedAt": "2026-07-21",
+  "status": "ready-public-static-capability-coverage-evidence",
+  "purpose": "Record one bounded, read-only public SEIS Repo registry capability-coverage summary without returning raw registry content or claiming manifest correctness, installation, runtime, provider access, deployment, signing, or public release.",
+  "plugin": {
+    "name": "seis-plugin-capability-coverage",
+    "sourcePath": "plugins/seis-core/seis-plugin-capability-coverage",
+    "version": "0.0.20",
+    "releaseTrainVersion": "0.00000002",
+    "catalogStatus": "ready",
+    "matrixStatus": "ready",
+    "matrixOk": true,
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "marketplaceCategory": "Developer",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "marketplace": {
+    "publicCardCount": 381,
+    "expectedPublicCardCount": 381,
+    "applicationPluginCount": 75,
+    "expectedApplicationPluginCount": 75,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "topicPluginCount": 300
+  },
+  "activation": {
+    "id": "seis-public-plugin-wave-5-activation-decision",
+    "status": "approved-public-local-wave-5-activation",
+    "selectedCapability": "seis-plugin-capability-coverage",
+    "activationApproved": true,
+    "implementationAuthorized": true,
+    "implementationObserved": true,
+    "publicReleaseApproved": false
+  },
+  "audit": {
+    "state": "ready",
+    "ok": true,
+    "classification": "bounded-declared-seis-plugin-capability-coverage",
+    "reconciliationAvailable": true,
+    "sourcePluginCount": 75,
+    "catalogPluginCount": 75,
+    "matrixPluginCount": 75,
+    "marketplaceApplicationCardCount": 75,
+    "marketplacePublicCardCount": 381,
+    "declaredCategoryCount": 8,
+    "declaredCapabilityTokenKindCount": 171,
+    "declaredCapabilityTokenCount": 213,
+    "findingCodes": [],
+    "reconciliation": {
+      "sourcePluginCount": 75,
+      "catalogPluginCount": 75,
+      "matrixPluginCount": 75,
+      "marketplaceApplicationCardCount": 75,
+      "marketplacePublicCardCount": 381,
+      "sourceMissingFromCatalogCount": 0,
+      "catalogMissingFromSourceCount": 0,
+      "sourceMissingFromMatrixCount": 0,
+      "matrixMissingFromSourceCount": 0,
+      "sourceMissingFromMarketplaceCount": 0,
+      "marketplaceMissingFromSourceCount": 0,
+      "mismatchCount": 0,
+      "reconciled": true
+    },
+    "categoryCounts": [
+      {
+        "category": "developer",
+        "count": 41
+      },
+      {
+        "category": "security",
+        "count": 11
+      },
+      {
+        "category": "ai",
+        "count": 7
+      },
+      {
+        "category": "data",
+        "count": 7
+      },
+      {
+        "category": "design",
+        "count": 4
+      },
+      {
+        "category": "productivity",
+        "count": 3
+      },
+      {
+        "category": "governance",
+        "count": 1
+      },
+      {
+        "category": "observability",
+        "count": 1
+      }
+    ],
+    "capabilityTokenFrequencies": [
+      {
+        "token": "local-read-only",
+        "count": 24
+      },
+      {
+        "token": "local-readonly-analysis",
+        "count": 11
+      },
+      {
+        "token": "read-only-local-evidence",
+        "count": 3
+      },
+      {
+        "token": "release-evidence",
+        "count": 3
+      },
+      {
+        "token": "supply-chain-review",
+        "count": 3
+      },
+      {
+        "token": "manual-qa-handoff",
+        "count": 2
+      },
+      {
+        "token": "metadata-only",
+        "count": 2
+      },
+      {
+        "token": "read-only-governance-handoff",
+        "count": 2
+      },
+      {
+        "token": "accessibility-review",
+        "count": 1
+      },
+      {
+        "token": "activation-gate-audit",
+        "count": 1
+      },
+      {
+        "token": "actor-isolation-marker-review",
+        "count": 1
+      },
+      {
+        "token": "agent-contract-checks",
+        "count": 1
+      },
+      {
+        "token": "agent-governance",
+        "count": 1
+      },
+      {
+        "token": "apple-platform-strategy-check",
+        "count": 1
+      },
+      {
+        "token": "approval-and-demo-boundary-evidence",
+        "count": 1
+      },
+      {
+        "token": "approval-and-handoff-validation",
+        "count": 1
+      },
+      {
+        "token": "approval-boundary-review",
+        "count": 1
+      },
+      {
+        "token": "approval-boundary-summary",
+        "count": 1
+      },
+      {
+        "token": "approval-gate-hints",
+        "count": 1
+      },
+      {
+        "token": "bounded-evidence-index-summary",
+        "count": 1
+      },
+      {
+        "token": "bounded-local-document-search",
+        "count": 1
+      },
+      {
+        "token": "bounded-native-source-inventory",
+        "count": 1
+      },
+      {
+        "token": "bounded-registry-coverage-summary",
+        "count": 1
+      },
+      {
+        "token": "bounded-sha-256-inventory",
+        "count": 1
+      },
+      {
+        "token": "bounded-swift-concurrency-signal-audit",
+        "count": 1
+      },
+      {
+        "token": "bounded-swift-package-manifest-topology",
+        "count": 1
+      },
+      {
+        "token": "bounded-text-scan",
+        "count": 1
+      },
+      {
+        "token": "canonical-owner-evidence",
+        "count": 1
+      },
+      {
+        "token": "canonical-ownership-check",
+        "count": 1
+      },
+      {
+        "token": "canonical-source-reporting",
+        "count": 1
+      },
+      {
+        "token": "capability-token-frequency",
+        "count": 1
+      },
+      {
+        "token": "card-uniqueness-validation",
+        "count": 1
+      },
+      {
+        "token": "ci-and-manifest-detection",
+        "count": 1
+      },
+      {
+        "token": "community-review",
+        "count": 1
+      },
+      {
+        "token": "compatibility-report",
+        "count": 1
+      },
+      {
+        "token": "cost-metadata-audit",
+        "count": 1
+      },
+      {
+        "token": "cross-surface-distribution-validation",
+        "count": 1
+      },
+      {
+        "token": "current-and-stale-cache-summary",
+        "count": 1
+      },
+      {
+        "token": "declared-category-frequency",
+        "count": 1
+      },
+      {
+        "token": "declared-platform-review",
+        "count": 1
+      },
+      {
+        "token": "degraded-offline-gap-report",
+        "count": 1
+      },
+      {
+        "token": "degraded-state-report",
+        "count": 1
+      },
+      {
+        "token": "deny-by-default-permission-check",
+        "count": 1
+      },
+      {
+        "token": "deny-by-default-review",
+        "count": 1
+      },
+      {
+        "token": "deterministic-fallback-explanation",
+        "count": 1
+      },
+      {
+        "token": "deterministic-outlier-detection",
+        "count": 1
+      },
+      {
+        "token": "documentation-review",
+        "count": 1
+      },
+      {
+        "token": "drift-report",
+        "count": 1
+      },
+      {
+        "token": "dry-run",
+        "count": 1
+      },
+      {
+        "token": "duplicate-goal-detection",
+        "count": 1
+      },
+      {
+        "token": "duplicate-record-detection",
+        "count": 1
+      },
+      {
+        "token": "evidence-aggregation",
+        "count": 1
+      },
+      {
+        "token": "evidence-and-blocker-hints",
+        "count": 1
+      },
+      {
+        "token": "evidence-based-readiness-report",
+        "count": 1
+      },
+      {
+        "token": "evidence-linkage",
+        "count": 1
+      },
+      {
+        "token": "evidence-linked",
+        "count": 1
+      },
+      {
+        "token": "executable-resource-mapping",
+        "count": 1
+      },
+      {
+        "token": "explainable-route-proposal",
+        "count": 1
+      },
+      {
+        "token": "failed-skipped-check-separation",
+        "count": 1
+      },
+      {
+        "token": "gate-evidence-summary",
+        "count": 1
+      },
+      {
+        "token": "generated-artifact-comparison",
+        "count": 1
+      },
+      {
+        "token": "goal-dependency-review",
+        "count": 1
+      },
+      {
+        "token": "goal-id-validation",
+        "count": 1
+      },
+      {
+        "token": "governance-file-coverage",
+        "count": 1
+      },
+      {
+        "token": "handoff-map",
+        "count": 1
+      },
+      {
+        "token": "human-handoff",
+        "count": 1
+      },
+      {
+        "token": "human-release-gate-separation",
+        "count": 1
+      },
+      {
+        "token": "independent-install-proof-status",
+        "count": 1
+      },
+      {
+        "token": "independent-runner-evidence-status",
+        "count": 1
+      },
+      {
+        "token": "injection-audit",
+        "count": 1
+      },
+      {
+        "token": "keyboard-focus-evidence",
+        "count": 1
+      },
+      {
+        "token": "knowledge-evidence",
+        "count": 1
+      },
+      {
+        "token": "latency-metadata-audit",
+        "count": 1
+      },
+      {
+        "token": "legacy-terminology-isolation",
+        "count": 1
+      },
+      {
+        "token": "license-review",
+        "count": 1
+      },
+      {
+        "token": "lifecycle-status-checks",
+        "count": 1
+      },
+      {
+        "token": "local-artifact-evidence-summary",
+        "count": 1
+      },
+      {
+        "token": "local-deterministic-output",
+        "count": 1
+      },
+      {
+        "token": "local-deterministic-reports",
+        "count": 1
+      },
+      {
+        "token": "local-fallback-check",
+        "count": 1
+      },
+      {
+        "token": "local-static-ui-audit",
+        "count": 1
+      },
+      {
+        "token": "local-static-ui-state-audit",
+        "count": 1
+      },
+      {
+        "token": "local-stdio-boundary-review",
+        "count": 1
+      },
+      {
+        "token": "localization-review",
+        "count": 1
+      },
+      {
+        "token": "manifest-alignment-report",
+        "count": 1
+      },
+      {
+        "token": "marketplace-catalog",
+        "count": 1
+      },
+      {
+        "token": "marketplace-projection-audit",
+        "count": 1
+      },
+      {
+        "token": "mcp-governance",
+        "count": 1
+      },
+      {
+        "token": "mcp-permission-ledger",
+        "count": 1
+      },
+      {
+        "token": "migration-review",
+        "count": 1
+      },
+      {
+        "token": "missing-and-invalid-evidence-separation",
+        "count": 1
+      },
+      {
+        "token": "native-source-limit-detection",
+        "count": 1
+      },
+      {
+        "token": "no-upload-provenance-reports",
+        "count": 1
+      },
+      {
+        "token": "offline-posture-audit",
+        "count": 1
+      },
+      {
+        "token": "owner-and-status-checks",
+        "count": 1
+      },
+      {
+        "token": "ownership-review",
+        "count": 1
+      },
+      {
+        "token": "performance-review",
+        "count": 1
+      },
+      {
+        "token": "permission-boundary-checks",
+        "count": 1
+      },
+      {
+        "token": "permission-matrix",
+        "count": 1
+      },
+      {
+        "token": "permission-review",
+        "count": 1
+      },
+      {
+        "token": "platform-mapping-hints",
+        "count": 1
+      },
+      {
+        "token": "policy-review",
+        "count": 1
+      },
+      {
+        "token": "privacy-aware-policy-hints",
+        "count": 1
+      },
+      {
+        "token": "privacy-boundary-check",
+        "count": 1
+      },
+      {
+        "token": "private-path-detection",
+        "count": 1
+      },
+      {
+        "token": "private-path-exclusion",
+        "count": 1
+      },
+      {
+        "token": "product-target-mapping",
+        "count": 1
+      },
+      {
+        "token": "project-manifest-contract-audit",
+        "count": 1
+      },
+      {
+        "token": "prompt-safety-evidence",
+        "count": 1
+      },
+      {
+        "token": "provenance-reporting",
+        "count": 1
+      },
+      {
+        "token": "provenance-review",
+        "count": 1
+      },
+      {
+        "token": "provider-free-report",
+        "count": 1
+      },
+      {
+        "token": "provider-governance",
+        "count": 1
+      },
+      {
+        "token": "public-card-to-cache-comparison",
+        "count": 1
+      },
+      {
+        "token": "public-marketplace-card-validation",
+        "count": 1
+      },
+      {
+        "token": "public-marketplace-count-context",
+        "count": 1
+      },
+      {
+        "token": "public-marketplace-count-reconciliation",
+        "count": 1
+      },
+      {
+        "token": "public-marketplace-identity-check",
+        "count": 1
+      },
+      {
+        "token": "public-mcp-entrypoint-validation",
+        "count": 1
+      },
+      {
+        "token": "public-source-availability-summary",
+        "count": 1
+      },
+      {
+        "token": "public-source-boundary-check",
+        "count": 1
+      },
+      {
+        "token": "qa-review",
+        "count": 1
+      },
+      {
+        "token": "read-only-git-health-snapshot",
+        "count": 1
+      },
+      {
+        "token": "read-only-static-readiness-evidence",
+        "count": 1
+      },
+      {
+        "token": "read-only-workspace-inventory",
+        "count": 1
+      },
+      {
+        "token": "recorded-attention-state-reporting",
+        "count": 1
+      },
+      {
+        "token": "recovery-handoff",
+        "count": 1
+      },
+      {
+        "token": "redacted-aggregation",
+        "count": 1
+      },
+      {
+        "token": "redacted-findings",
+        "count": 1
+      },
+      {
+        "token": "redacted-secret-pattern-findings",
+        "count": 1
+      },
+      {
+        "token": "reduced-motion-evidence",
+        "count": 1
+      },
+      {
+        "token": "registry-id-validation",
+        "count": 1
+      },
+      {
+        "token": "registry-projection-reconciliation",
+        "count": 1
+      },
+      {
+        "token": "relationship-projection",
+        "count": 1
+      },
+      {
+        "token": "release-contract-check",
+        "count": 1
+      },
+      {
+        "token": "release-gate-separation",
+        "count": 1
+      },
+      {
+        "token": "release-train-audit",
+        "count": 1
+      },
+      {
+        "token": "retention-handoff",
+        "count": 1
+      },
+      {
+        "token": "retry-and-audit-checks",
+        "count": 1
+      },
+      {
+        "token": "rights-risk-hints",
+        "count": 1
+      },
+      {
+        "token": "risk-signals",
+        "count": 1
+      },
+      {
+        "token": "rollback-evidence",
+        "count": 1
+      },
+      {
+        "token": "rollback-reminder",
+        "count": 1
+      },
+      {
+        "token": "routing-review",
+        "count": 1
+      },
+      {
+        "token": "runtime-claim-separation",
+        "count": 1
+      },
+      {
+        "token": "safe-source-path-validation",
+        "count": 1
+      },
+      {
+        "token": "sanitized-evidence-contract-validation",
+        "count": 1
+      },
+      {
+        "token": "schema-registry-audit",
+        "count": 1
+      },
+      {
+        "token": "secret-risk-filename-findings",
+        "count": 1
+      },
+      {
+        "token": "security-review",
+        "count": 1
+      },
+      {
+        "token": "semantic-control-review",
+        "count": 1
+      },
+      {
+        "token": "semantic-state-checks",
+        "count": 1
+      },
+      {
+        "token": "snippet-extraction",
+        "count": 1
+      },
+      {
+        "token": "source-boundary-audit",
+        "count": 1
+      },
+      {
+        "token": "source-classification",
+        "count": 1
+      },
+      {
+        "token": "static-source-boundary-enforcement",
+        "count": 1
+      },
+      {
+        "token": "swift-package-contract-audit",
+        "count": 1
+      },
+      {
+        "token": "symlink-refusal",
+        "count": 1
+      },
+      {
+        "token": "symlink-safe-scanning",
+        "count": 1
+      },
+      {
+        "token": "target-dependency-mapping",
+        "count": 1
+      },
+      {
+        "token": "task-and-dispatch-marker-review",
+        "count": 1
+      },
+      {
+        "token": "technology-manifest-detection",
+        "count": 1
+      },
+      {
+        "token": "technology-taxonomy-search",
+        "count": 1
+      },
+      {
+        "token": "token-category-checks",
+        "count": 1
+      },
+      {
+        "token": "tool-scope-report",
+        "count": 1
+      },
+      {
+        "token": "trusted-source-intake-review",
+        "count": 1
+      },
+      {
+        "token": "unchecked-sendable-review",
+        "count": 1
+      },
+      {
+        "token": "undeclared-cache-record-count",
+        "count": 1
+      },
+      {
+        "token": "untrusted-content-boundary",
+        "count": 1
+      },
+      {
+        "token": "visible-terminology-guard",
+        "count": 1
+      },
+      {
+        "token": "workflow-stage-validation",
+        "count": 1
+      }
+    ]
+  },
+  "resilienceReview": {
+    "status": "completed-repository-local-resilience-review",
+    "coveredFailureModes": [
+      "missing-fixed-registry",
+      "non-regular-or-symlinked-registry",
+      "oversized-registry",
+      "invalid-registry-json",
+      "projection-mismatch",
+      "machine-path-and-credential-marker-redaction",
+      "MCP-arbitrary-report-path"
+    ],
+    "testPath": "plugins/seis-core/test/plugin-capability-coverage.test.mjs"
+  },
+  "safety": {
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "readsPersonalMarketplace": false,
+    "writesFiles": false,
+    "usesNetwork": false,
+    "readsSecrets": false,
+    "installsPlugins": false,
+    "invokesProviders": false,
+    "deploysArtifacts": false,
+    "signsArtifacts": false,
+    "publicReleaseAllowed": false
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "validation": [
+    "node plugins/seis-core/seis-plugin-capability-coverage/scripts/seis-plugin-capability-coverage-mcp-server.mjs --status",
+    "node plugins/seis-core/seis-plugin-capability-coverage/scripts/seis-plugin-capability-coverage-mcp-server.mjs --report --path .",
+    "node plugins/seis-core/seis-plugin-capability-coverage/scripts/seis-plugin-capability-coverage-mcp-server.mjs --evidence",
+    "npm run check:seis-plugin-capability-coverage",
+    "node --test plugins/seis-core/test/plugin-capability-coverage.test.mjs"
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the local package, one SEIS Repo card, and generated evidence record; no registry source, external system, or release state is mutated by the plugin runtime.",
+    "dataMigrationRequired": false
+  },
+  "publicSafetyReview": {
+    "runtimeContainsFixedScope": true,
+    "runtimeRefusesSymlinks": true,
+    "runtimeAvoidsRawRegistryOutput": true,
+    "testCoversRedaction": true,
+    "skillStatesStaticOnlyBoundary": true,
+    "rawValuesStored": false
+  },
+  "outputBoundary": {
+    "rawRegistryContentReturned": false,
+    "rawDescriptionsReturned": false,
+    "rawCapabilityPhrasesReturned": false,
+    "rawMatchedValuesReturned": false,
+    "absolutePathsReturned": false,
+    "machineSpecificPathsReturned": false
+  },
+  "nativeExecution": "not-run-and-not-claimed"
+}

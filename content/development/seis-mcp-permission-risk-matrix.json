@@ -50,18 +50,18 @@
     ]
   },
   "counts": {
-    "marketplaceCardCount": 380,
+    "marketplaceCardCount": 381,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 74,
+    "applicationPluginCount": 75,
     "topicPluginCount": 300,
-    "applicationMcpServerCount": 74,
-    "localStdioServerCount": 74,
+    "applicationMcpServerCount": 75,
+    "localStdioServerCount": 75,
     "remoteServerCount": 0,
     "writePermissionGrantCount": 0,
     "networkPermissionGrantCount": 0,
     "secretPermissionGrantCount": 0,
-    "validRecordCount": 74,
+    "validRecordCount": 75,
     "invalidRecordCount": 0
   },
   "records": [
@@ -833,6 +833,25 @@
       "serverName": "seis-performance-budget",
       "command": "node",
       "entrypoint": "scripts/seis-performance-budget-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-plugin-capability-coverage",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-plugin-capability-coverage",
+      "transport": "local-stdio",
+      "serverName": "seis-plugin-capability-coverage",
+      "command": "node",
+      "entrypoint": "scripts/seis-plugin-capability-coverage-mcp-server.mjs",
       "permissionState": "deny-by-default",
       "permissions": {
         "write": [],

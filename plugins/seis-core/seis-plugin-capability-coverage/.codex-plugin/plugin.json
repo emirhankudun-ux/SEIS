@@ -1,0 +1,38 @@
+{
+  "name": "seis-plugin-capability-coverage",
+  "version": "0.0.20",
+  "description": "Summarize bounded declared SEIS Repo plugin capability coverage without writing, networking, or exposing registry contents.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "plugin",
+    "capability",
+    "coverage",
+    "registry",
+    "read-only",
+    "public-repository"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Plugin Capability Coverage",
+    "shortDescription": "Summarize declared public SEIS plugin coverage safely.",
+    "longDescription": "Reads only four fixed checked-in public SEIS Repo registry projections and returns derived category counts, normalized capability-token frequencies, and reconciliation counts. It never returns raw registry content, follows symlinks, writes files, uses a network, reads secrets, inspects arbitrary paths, or treats static metadata as installation, runtime, provider, deployment, signing, or release proof.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "bounded-registry-coverage-summary",
+      "declared-category-frequency",
+      "capability-token-frequency",
+      "registry-projection-reconciliation",
+      "read-only-local-evidence"
+    ],
+    "defaultPrompt": [
+      "Summarize declared public SEIS Repo plugin capability coverage from the fixed local registry projections.",
+      "Keep static registry metadata separate from installation, runtime, provider, deployment, signing, and release claims."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

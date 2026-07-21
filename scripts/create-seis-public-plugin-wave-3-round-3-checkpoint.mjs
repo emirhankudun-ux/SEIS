@@ -153,7 +153,8 @@ function assertCurrentInventory(sourceManifest, marketplace, matrix) {
     && marketplaceCardCount === HISTORICAL_INVENTORY.marketplaceCardCount
     && matrixPluginCount === HISTORICAL_INVENTORY.matrixPluginCount;
   const wave4Integrated = applicationPluginCount === 74 && marketplaceCardCount === 380 && matrixPluginCount === 74;
-  assert(historical || wave4Integrated, "current public inventory is outside the supported historical or Wave 4 topology state");
+  const wave5CoverageActive = applicationPluginCount === 75 && marketplaceCardCount === 381 && matrixPluginCount === 75;
+  assert(historical || wave4Integrated || wave5CoverageActive, "current public inventory is outside the supported historical, Wave 4, or active Wave 5 coverage state");
 }
 
 function range(start, end) {

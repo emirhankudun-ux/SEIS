@@ -123,7 +123,7 @@ function buildRecord() {
         && ["in-progress", "completed"].includes(continuityCadence.waves?.[2]?.status)
         && number(continuityCadence.waves?.[2]?.completedSteps) >= 80
         && ["planned-gated", "in-progress", "completed"].includes(continuityCadence.waves?.[3]?.status)
-        && continuityCadence.waves?.[4]?.status === "planned-gated",
+        && ["planned-gated", "in-progress", "completed"].includes(continuityCadence.waves?.[4]?.status),
     },
     publicBoundary: {
       marketplaceName: wave3Program.publicBoundary?.marketplaceName || null,

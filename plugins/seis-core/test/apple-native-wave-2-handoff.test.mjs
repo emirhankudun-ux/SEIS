@@ -9,6 +9,8 @@ const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(testDirectory, "../../..");
 const handoffPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-2-handoff.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-2-handoff.mjs");
+const sourceManifestPath = path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json");
+const marketplacePath = path.join(repositoryRoot, ".agents/plugins/marketplace.json");
 
 test("keeps the Wave 2 handoff public-only, evidence-led, and explicit about native limits", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
@@ -18,14 +20,16 @@ test("keeps the Wave 2 handoff public-only, evidence-led, and explicit about nat
   assert.equal(result.status, 0, result.stderr);
 
   const handoff = JSON.parse(fs.readFileSync(handoffPath, "utf8"));
+  const sourceManifest = JSON.parse(fs.readFileSync(sourceManifestPath, "utf8"));
+  const marketplace = JSON.parse(fs.readFileSync(marketplacePath, "utf8"));
   assert.equal(handoff.status, "completed-repository-local-handoff");
   assert.equal(handoff.program.completedStepCount, 100);
   assert.equal(handoff.program.completedRoundCount, 5);
   assert.equal(handoff.program.selectedCapability, "seis-apple-native-readiness");
   assert.equal(handoff.marketplace.name, "seis-repo");
   assert.equal(handoff.marketplace.displayName, "SEIS Repo");
-  assert.equal(handoff.marketplace.applicationPluginCount, 74);
-  assert.equal(handoff.marketplace.publicCardCount, 380);
+  assert.equal(handoff.marketplace.applicationPluginCount, sourceManifest.plugins.length);
+  assert.equal(handoff.marketplace.publicCardCount, marketplace.plugins.length);
   assert.equal(handoff.publicBoundary.personalMarketplaceRead, false);
   assert.equal(handoff.publicBoundary.personalMarketplaceMutation, false);
   assert.equal(handoff.publicBoundary.network, false);

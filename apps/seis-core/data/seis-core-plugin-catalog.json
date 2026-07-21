@@ -15,7 +15,7 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 74,
+    "marketplaceEntryCount": 75,
     "coreSourceOwner": false
   },
   "release": {
@@ -48,13 +48,13 @@
     ]
   },
   "counts": {
-    "discovered": 74,
-    "returned": 74,
-    "contractValid": 74,
+    "discovered": 75,
+    "returned": 75,
+    "contractValid": 75,
     "contractInvalid": 0,
-    "statusReady": 67,
+    "statusReady": 68,
     "statusAttention": 7,
-    "statusOk": 74,
+    "statusOk": 75,
     "statusNotChecked": 0,
     "statusFailed": 0
   },
@@ -2159,6 +2159,75 @@
         "node scripts/seis-performance-budget-mcp-server.mjs --audit --path /path/to/tree"
       ],
       "rollback": "Disable or remove the local plugin; no source data is mutated."
+    },
+    {
+      "id": "seis-plugin-capability-coverage",
+      "name": "seis-plugin-capability-coverage",
+      "displayName": "SEIS Plugin Capability Coverage",
+      "description": "Summarize bounded declared SEIS Repo plugin capability coverage without writing, networking, or exposing registry contents.",
+      "category": "Developer",
+      "capabilities": [
+        "bounded-registry-coverage-summary",
+        "declared-category-frequency",
+        "capability-token-frequency",
+        "registry-projection-reconciliation",
+        "read-only-local-evidence"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-plugin-capability-coverage",
+      "entrypoint": "scripts/seis-plugin-capability-coverage-mcp-server.mjs",
+      "release": {
+        "label": "0.00000002",
+        "semver": "0.0.20",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 20
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-fixed-registry-capability-coverage",
+        "fixedRegistryPaths": [
+          "apps/seis-core/data/seis-core-plugin-sources.json",
+          "apps/seis-core/data/seis-core-plugin-catalog.json",
+          "content/development/seis-core-plugin-matrix.json",
+          ".agents/plugins/marketplace.json"
+        ],
+        "maxRegistryBytes": 524288,
+        "regularFilesRequired": true,
+        "symlinkRefusal": true,
+        "rawRegistryContentReturned": false
+      },
+      "permissions": {
+        "read": [
+          "four fixed checked-in public SEIS Repo registry projections",
+          "bounded derived category and capability coverage metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-plugin-capability-coverage-mcp-server.mjs --status",
+        "node scripts/seis-plugin-capability-coverage-mcp-server.mjs --report --path .",
+        "node scripts/seis-plugin-capability-coverage-mcp-server.mjs --evidence",
+        "npm run check:seis-plugin-capability-coverage",
+        "node --test plugins/seis-core/test/plugin-capability-coverage.test.mjs",
+        "node --test plugins/seis-core/test/plugin-capability-coverage-evidence.test.mjs"
+      ],
+      "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits registry data, marketplace state, an external system, or release state."
     },
     {
       "id": "seis-plugin-discovery",

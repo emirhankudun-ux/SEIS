@@ -8,7 +8,7 @@
   "status": "completed-public-evidence-retention",
   "maturity": "prototype",
   "generatedAt": "2026-07-21",
-  "purpose": "Retain a bounded, public-only inventory of the checked-in Wave 4 evidence needed for the final repository-local closeout. This records relative paths and safe file metadata only; it does not delete, export, publish, activate Wave 5, or claim installation, compilation, runtime, provider, deployment, signing, or release proof.",
+  "purpose": "Retain a bounded, public-only inventory of the checked-in Wave 4 evidence and its later active Wave 5 continuity context. This records relative paths and safe file metadata only; the Wave 4 checkpoint did not activate Wave 5, and this current retention record does not claim installation, compilation, runtime, provider, deployment, signing, or release proof.",
   "stateAtCheckpoint": {
     "completedStepCountBeforeTrackerUpdate": 98,
     "activeStepBeforeTrackerUpdate": 99,
@@ -17,18 +17,32 @@
     "wave5ImplementationApproved": false,
     "wave5ActivationApproved": false
   },
+  "currentContext": {
+    "activeWave": 5,
+    "activeWaveState": "wave-5-first-30-steps-completed-step-31-in-progress",
+    "status": "in-progress",
+    "completedSteps": 30,
+    "inProgressSteps": [
+      31
+    ],
+    "activationDecisionPath": "content/development/seis-public-plugin-wave-5-activation-decision.json",
+    "capabilityCoveragePath": "content/development/seis-plugin-capability-coverage.json",
+    "activationDecisionStatus": "approved-public-local-wave-5-activation",
+    "capabilityCoverageStatus": "ready-public-static-capability-coverage-evidence"
+  },
   "checks": {
     "wave4Tracker": true,
     "followingWaveReview": true,
     "continuity": true,
     "expansionProgram": true,
     "publicInventory": true,
+    "currentWave5": true,
     "retainedPaths": true,
     "evidenceBoundary": true
   },
   "retention": {
     "status": "bounded-public-evidence-retained",
-    "retainedArtifactCount": 16,
+    "retainedArtifactCount": 19,
     "relativePathOnly": true,
     "rawContentStored": false,
     "deletionPerformed": false,
@@ -93,6 +107,27 @@
         "bytes": 5485
       },
       {
+        "key": "wave5ActivationDecision",
+        "path": "content/development/seis-public-plugin-wave-5-activation-decision.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 5369
+      },
+      {
+        "key": "capabilityCoverage",
+        "path": "content/development/seis-plugin-capability-coverage.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 19442
+      },
+      {
+        "key": "wave5Program",
+        "path": "content/development/seis-public-plugin-wave-5-program.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 31186
+      },
+      {
         "key": "followingWaveReview",
         "path": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
         "regularFile": true,
@@ -111,42 +146,42 @@
         "path": "content/development/seis-public-plugin-continuity-cadence.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 39441
+        "bytes": 40187
       },
       {
         "key": "expansionProgram",
         "path": "content/development/seis-public-plugin-expansion-program.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 13459
+        "bytes": 14071
       },
       {
         "key": "sourceManifest",
         "path": "apps/seis-core/data/seis-core-plugin-sources.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 39864
+        "bytes": 40375
       },
       {
         "key": "catalog",
         "path": "apps/seis-core/data/seis-core-plugin-catalog.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 125033
+        "bytes": 127817
       },
       {
         "key": "matrix",
         "path": "content/development/seis-core-plugin-matrix.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 34146
+        "bytes": 34613
       },
       {
         "key": "marketplace",
         "path": ".agents/plugins/marketplace.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 125443
+        "bytes": 125762
       }
     ]
   },
@@ -176,6 +211,9 @@
     "followingWaveReviewPath": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
     "continuityCadencePath": "content/development/seis-public-plugin-continuity-cadence.json",
     "expansionProgramPath": "content/development/seis-public-plugin-expansion-program.json",
+    "wave5ActivationDecisionPath": "content/development/seis-public-plugin-wave-5-activation-decision.json",
+    "capabilityCoveragePath": "content/development/seis-plugin-capability-coverage.json",
+    "wave5ProgramPath": "content/development/seis-public-plugin-wave-5-program.json",
     "retainedPaths": [
       "content/development/seis-public-plugin-wave-4-activation-decision.json",
       "content/development/seis-swift-package-topology.json",
@@ -185,6 +223,9 @@
       "content/development/seis-public-plugin-wave-4-handoff-preparation.json",
       "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
       "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
+      "content/development/seis-public-plugin-wave-5-activation-decision.json",
+      "content/development/seis-plugin-capability-coverage.json",
+      "content/development/seis-public-plugin-wave-5-program.json",
       "content/development/seis-public-plugin-wave-4-following-wave-review.json",
       "content/development/seis-public-plugin-wave-4-program.json",
       "content/development/seis-public-plugin-continuity-cadence.json",
@@ -200,6 +241,9 @@
     "npm run check:seis-public-plugin-wave-4-program",
     "npm run check:seis-public-plugin-continuity-cadence",
     "npm run check:seis-public-plugin-expansion-program",
+    "npm run check:seis-public-plugin-wave-5-activation-decision",
+    "npm run check:seis-plugin-capability-coverage",
+    "npm run check:seis-public-plugin-wave-5-program",
     "npm run check:seis-repo-marketplace",
     "node --test plugins/seis-core/test/public-plugin-wave-4-evidence-retention.test.mjs"
   ],
@@ -213,8 +257,8 @@
     {
       "id": "RISK-W4-024",
       "status": "tracked",
-      "description": "Evidence retention could be mistaken for a publication, release, or Wave 5 activation decision.",
-      "mitigation": "Preserve publicRelease=false, no external storage, no deletion, and Wave 5 implementation/activation gates as false until separate decisions exist."
+      "description": "Historical Wave 4 retention could be mistaken for a publication or release, or its former Wave 5 gate could be mistaken for the current active Wave 5 decision.",
+      "mitigation": "Preserve the historical checkpoint gate separately, record current Wave 5 activation context explicitly, and keep publicRelease=false, no external storage, and no deletion."
     }
   ],
   "rollback": {
@@ -223,7 +267,7 @@
     "dataMigrationRequired": false
   },
   "inputSafetyScan": {
-    "inputCount": 16,
+    "inputCount": 19,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

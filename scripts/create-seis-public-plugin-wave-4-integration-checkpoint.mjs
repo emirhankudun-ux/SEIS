@@ -8,6 +8,9 @@ const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-4-integration-checkpoint.json";
 const CAPABILITY = "seis-swift-package-topology";
 const SOURCE_PATH = "plugins/seis-core/seis-swift-package-topology";
+const WAVE_4_INTEGRATED_PROJECTION = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
+const ACTIVE_WAVE_5_PROJECTION = Object.freeze({ applicationPluginCount: 75, publicCardCount: 381 });
+const ACTIVE_WAVE_5_CAPABILITY = "seis-plugin-capability-coverage";
 const PATHS = Object.freeze({
   sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
   catalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
@@ -60,6 +63,7 @@ function buildRecord() {
   const matrixEntry = exactOne(matrix.plugins, CAPABILITY, "matrix");
   const marketplaceEntry = exactOne(marketplace.plugins, CAPABILITY, "marketplace");
   const permissionEntry = exactOne(permissionMatrix.records, CAPABILITY, "permission matrix");
+  assertSupportedCurrentInventory(sourceManifest, catalog, matrix, marketplace);
   const record = {
     schemaVersion: 1,
     id: "seis-public-plugin-wave-4-integration-checkpoint",
@@ -84,11 +88,11 @@ function buildRecord() {
     publicProjection: {
       marketplaceName: marketplace.name || null,
       marketplaceDisplayName: marketplace.interface?.displayName || null,
-      applicationPluginCount: list(sourceManifest.plugins).length,
-      catalogPluginCount: catalog.counts?.discovered || 0,
-      matrixPluginCount: matrix.pluginCount || 0,
+      applicationPluginCount: WAVE_4_INTEGRATED_PROJECTION.applicationPluginCount,
+      catalogPluginCount: WAVE_4_INTEGRATED_PROJECTION.applicationPluginCount,
+      matrixPluginCount: WAVE_4_INTEGRATED_PROJECTION.applicationPluginCount,
       matrixFailureCount: matrix.failureCount || 0,
-      publicCardCount: list(marketplace.plugins).length,
+      publicCardCount: WAVE_4_INTEGRATED_PROJECTION.publicCardCount,
       marketplaceCategory: marketplaceEntry?.category || null,
       installationPolicy: marketplaceEntry?.policy?.installation || null,
       authenticationPolicy: marketplaceEntry?.policy?.authentication || null,
@@ -201,6 +205,28 @@ function validateRecord(record) {
   assert(record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "rollback boundary is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0 && record.inputSafetyScan?.rawValuesStored === false, "checkpoint inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "checkpoint must not contain a machine-specific path");
+}
+
+function assertSupportedCurrentInventory(sourceManifest, catalog, matrix, marketplace) {
+  const sourceEntries = list(sourceManifest.plugins);
+  const catalogEntries = list(catalog.plugins);
+  const matrixEntries = list(matrix.plugins);
+  const marketplaceEntries = list(marketplace.plugins);
+  const historicalWave4 = sourceEntries.length === WAVE_4_INTEGRATED_PROJECTION.applicationPluginCount
+    && catalog.counts?.discovered === WAVE_4_INTEGRATED_PROJECTION.applicationPluginCount
+    && matrix.pluginCount === WAVE_4_INTEGRATED_PROJECTION.applicationPluginCount
+    && matrix.failureCount === 0
+    && marketplaceEntries.length === WAVE_4_INTEGRATED_PROJECTION.publicCardCount;
+  const activeWave5 = sourceEntries.length === ACTIVE_WAVE_5_PROJECTION.applicationPluginCount
+    && catalog.counts?.discovered === ACTIVE_WAVE_5_PROJECTION.applicationPluginCount
+    && matrix.pluginCount === ACTIVE_WAVE_5_PROJECTION.applicationPluginCount
+    && matrix.failureCount === 0
+    && marketplaceEntries.length === ACTIVE_WAVE_5_PROJECTION.publicCardCount
+    && sourceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+    && catalogEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+    && matrixEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
+    && marketplaceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1;
+  assert(historicalWave4 || activeWave5, "current inventory is outside the Wave 4 snapshot or active Wave 5 coverage state");
 }
 
 function exactOne(entries, name, label) {

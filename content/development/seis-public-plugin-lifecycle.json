@@ -52,7 +52,7 @@
     "recordedGate": "npm run check:seis-public-plugin-independent-runner-evidence:recorded"
   },
   "marketplace": ".agents/plugins/marketplace.json",
-  "purpose": "Keep the canonical public SEIS-Agent suite, five migrated root repository cards, its embedded SEIS source modules, the 74 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+  "purpose": "Keep the canonical public SEIS-Agent suite, five migrated root repository cards, its embedded SEIS source modules, the 75 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
   "publicAudience": "everyone",
   "orchestrator": "seis-ai-agent@seis-repo",
   "publicDistribution": {
@@ -61,9 +61,9 @@
     "canonicalInstallId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
     "marketplaceName": "seis-repo",
-    "repoMarketplaceEntryCount": 380,
+    "repoMarketplaceEntryCount": 381,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 74,
+    "applicationPluginCount": 75,
     "topicPluginCount": 300
   },
   "releasePolicy": {

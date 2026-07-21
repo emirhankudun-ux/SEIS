@@ -9,6 +9,8 @@ const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(testDirectory, "../../..");
 const decisionPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-2-follow-up-decision.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-2-follow-up-decision.mjs");
+const sourceManifestPath = path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json");
+const marketplacePath = path.join(repositoryRoot, ".agents/plugins/marketplace.json");
 
 test("keeps the Apple-native follow-up decision evidence-based and non-duplicative", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
@@ -18,6 +20,8 @@ test("keeps the Apple-native follow-up decision evidence-based and non-duplicati
   assert.equal(result.status, 0, result.stderr);
 
   const decision = JSON.parse(fs.readFileSync(decisionPath, "utf8"));
+  const sourceManifest = JSON.parse(fs.readFileSync(sourceManifestPath, "utf8"));
+  const marketplace = JSON.parse(fs.readFileSync(marketplacePath, "utf8"));
   assert.equal(decision.status, "completed-no-additional-public-plugin-selected");
   assert.equal(decision.decision.selectedCapability, null);
   assert.equal(decision.decision.outcome, "no-additional-public-plugin-selected");
@@ -25,8 +29,8 @@ test("keeps the Apple-native follow-up decision evidence-based and non-duplicati
   assert.equal(decision.swiftPmEvidence.localToolingObservation.swiftTestCompletionClaim, "not-completed-and-not-claimed");
   assert.equal(decision.swiftPmEvidence.validationBoundary.testPassClaim, false);
   assert.equal(decision.publicDistribution.marketplaceName, "seis-repo");
-  assert.equal(decision.publicDistribution.applicationPluginCount, 74);
-  assert.equal(decision.publicDistribution.publicCardCount, 380);
+  assert.equal(decision.publicDistribution.applicationPluginCount, sourceManifest.plugins.length);
+  assert.equal(decision.publicDistribution.publicCardCount, marketplace.plugins.length);
   assert.equal(decision.publicDistribution.additionalCardAdded, false);
   assert.equal(decision.publicDistribution.personalMarketplaceRead, false);
   assert.equal(decision.publicDistribution.personalMarketplaceMutation, false);

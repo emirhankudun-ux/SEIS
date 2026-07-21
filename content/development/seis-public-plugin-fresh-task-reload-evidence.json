@@ -52,7 +52,7 @@
             "personalMarketplaceMutation": false,
             "discoveredPluginCount": 10,
             "uncoveredSourcePlugins": [],
-            "applicationOwnedPluginCount": 73,
+            "applicationOwnedPluginCount": 75,
             "applicationPluginIds": [
               "seis-a11y-regression",
               "seis-action-pin-audit",
@@ -95,6 +95,7 @@
               "seis-offline-mode-check",
               "seis-package-adoption",
               "seis-performance-budget",
+              "seis-plugin-capability-coverage",
               "seis-plugin-discovery",
               "seis-plugin-migration",
               "seis-pr-cycle-time",
@@ -118,6 +119,7 @@
               "seis-semver-audit",
               "seis-source-provenance",
               "seis-swift-concurrency-audit",
+              "seis-swift-package-topology",
               "seis-technology-ontology",
               "seis-test-flakiness",
               "seis-tool-permission-audit",
@@ -138,7 +140,7 @@
             "applicationPluginPublicRepositoryAvailable": true,
             "applicationPluginPublicAudience": "everyone",
             "applicationPluginDistribution": "direct-repository-source",
-            "applicationPluginMarketplaceEntryCount": 73,
+            "applicationPluginMarketplaceEntryCount": 75,
             "futurePluginDefaultRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets.",
             "futureApplicationPluginRule": "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and become available directly from this repository as individual seis-repo marketplace entries without entering packages/seis-ai."
           }

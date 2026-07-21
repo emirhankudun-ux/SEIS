@@ -123,7 +123,7 @@ function buildRecord() {
         && ["in-progress", "completed"].includes(expansionProgram.nextWaves?.[3]?.status)
         && (expansionProgram.nextWaves?.[3]?.status !== "completed"
           || expansionProgram.nextWaves?.[3]?.completionEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json")
-        && expansionProgram.nextWaves?.[4]?.status === "planned-gated",
+        && ["planned-gated", "in-progress", "completed"].includes(expansionProgram.nextWaves?.[4]?.status),
       releaseBoundary: lifecycle.status === "active-local-proof-public-release-gated"
         && lifecycle.externalInstallProofSummary?.publicReleaseAllowed === false
         && installState.decision === "not-ready-for-public-release"
@@ -283,7 +283,16 @@ function isSupportedContinuityState(cadence) {
     && list(wave?.inProgressSteps).length === 0
     && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
-  return shared && (beforeTrackerUpdate || afterTrackerUpdate || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout);
+  const activeWave5 = cadence?.cadence?.waveSeries?.activeWave === 5
+    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress"
+    && wave?.status === "completed"
+    && wave?.completedSteps === 100
+    && list(wave?.inProgressSteps).length === 0
+    && cadence?.waves?.[4]?.status === "in-progress"
+    && cadence?.waves?.[4]?.selectedCapability === "seis-plugin-capability-coverage"
+    && cadence?.waves?.[4]?.completedSteps === 30
+    && list(cadence?.waves?.[4]?.inProgressSteps).join(",") === "31";
+  return shared && (beforeTrackerUpdate || afterTrackerUpdate || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout || activeWave5);
 }
 
 function validateRecord(record) {

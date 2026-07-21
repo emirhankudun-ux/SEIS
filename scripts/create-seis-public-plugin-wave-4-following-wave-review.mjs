@@ -88,18 +88,30 @@ function buildRecord() {
         && closeoutSequenceDecision.decisionBoundary?.automaticStepStatusChangesAllowed === false
         && handoffPreparation.status === "completed-repository-local-handoff-preparation"
         && handoffPreparation.completionState?.completedStep === 96,
-      currentPublicInventory: sourceEntries.length === 74
+      currentPublicInventory: ((sourceEntries.length === 74
         && catalog.counts?.discovered === 74
         && matrix.pluginCount === 74
         && matrix.failureCount === 0
         && marketplace.name === "seis-repo"
         && marketplace.interface?.displayName === "SEIS Repo"
-        && marketplaceEntries.length === 380,
-      candidateIsNotAlreadyPublished: !fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH))
+        && marketplaceEntries.length === 380)
+        || (sourceEntries.length === 75
+          && catalog.counts?.discovered === 75
+          && matrix.pluginCount === 75
+          && matrix.failureCount === 0
+          && marketplace.name === "seis-repo"
+          && marketplace.interface?.displayName === "SEIS Repo"
+          && marketplaceEntries.length === 381)),
+      candidateIsNotAlreadyPublished: ((!fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH))
         && sourceEntries.every((entry) => entry?.name !== CANDIDATE)
         && catalogEntries.every((entry) => entry?.name !== CANDIDATE)
         && matrixEntries.every((entry) => entry?.name !== CANDIDATE)
-        && marketplaceEntries.every((entry) => entry?.name !== CANDIDATE),
+        && marketplaceEntries.every((entry) => entry?.name !== CANDIDATE))
+        || (fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH))
+          && sourceEntries.filter((entry) => entry?.name === CANDIDATE).length === 1
+          && catalogEntries.filter((entry) => entry?.name === CANDIDATE).length === 1
+          && matrixEntries.filter((entry) => entry?.name === CANDIDATE).length === 1
+          && marketplaceEntries.filter((entry) => entry?.name === CANDIDATE).length === 1)),
       existingCapabilityBoundaries: ["seis-marketplace-integrity", "seis-plugin-discovery", "seis-technology-ontology", "seis-canonical-registry-validator"].every((name) => catalogEntries.some((entry) => entry?.name === name)),
       continuity: isSupportedContinuity(continuityCadence),
     },
@@ -265,7 +277,16 @@ function isSupportedContinuity(cadence) {
     && list(wave?.inProgressSteps).length === 0
     && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
-  return shared && (beforeTrackerUpdate || afterTrackerUpdate || afterEvidenceRetention || afterCloseout);
+  const activeWave5 = cadence?.cadence?.waveSeries?.activeWave === 5
+    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress"
+    && wave?.status === "completed"
+    && wave?.completedSteps === 100
+    && list(wave?.inProgressSteps).length === 0
+    && cadence?.waves?.[4]?.status === "in-progress"
+    && cadence?.waves?.[4]?.selectedCapability === CANDIDATE
+    && cadence?.waves?.[4]?.completedSteps === 30
+    && list(cadence?.waves?.[4]?.inProgressSteps).join(",") === "31";
+  return shared && (beforeTrackerUpdate || afterTrackerUpdate || afterEvidenceRetention || afterCloseout || activeWave5);
 }
 
 function validateRecord(record) {
