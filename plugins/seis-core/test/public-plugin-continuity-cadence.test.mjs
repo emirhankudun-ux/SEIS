@@ -29,8 +29,8 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[0].status, "completed");
   assert.equal(cadence.waves[1].status, "completed");
   assert.equal(cadence.waves[2].status, "in-progress");
-  assert.equal(cadence.waves[2].completedSteps, 79);
-  assert.deepEqual(cadence.waves[2].inProgressSteps, [80]);
+  assert.equal(cadence.waves[2].completedSteps, 80);
+  assert.deepEqual(cadence.waves[2].inProgressSteps, [81]);
   assert.equal(cadence.waves[3].status, "planned-gated");
   assert.equal(cadence.waves[4].status, "planned-gated");
   assert.equal(cadence.futureWaveTemplate.steps.length, 100);

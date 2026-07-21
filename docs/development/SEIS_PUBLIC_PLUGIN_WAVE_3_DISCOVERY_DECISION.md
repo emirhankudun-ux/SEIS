@@ -7,10 +7,11 @@
 Wave 3 completed the bounded discovery gate and is now in an active,
 repository-local implementation state. The public
 `plugins/seis-core/seis-swift-concurrency-audit` package and its `SEIS Repo`
-card are present. The program has reconciled implementation and resilience
-review through step 79, with step 80 reserved for the evidence-led handoff.
-This does not claim an independent installation, public release, provider
-connection, deployment, native runtime, or completed SwiftPM test.
+card are present. The program has reconciled implementation, resilience review,
+and non-terminal handoff readiness through step 80; step 81 starts the final
+validation round. This does not claim an independent installation, public
+release, provider connection, deployment, native runtime, or completed SwiftPM
+test.
 
 ## Why this capability is distinct
 

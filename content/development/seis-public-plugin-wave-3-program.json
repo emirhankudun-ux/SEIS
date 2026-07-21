@@ -42,7 +42,8 @@
   },
   "evidence": {
     "round3CheckpointPath": "content/development/seis-public-plugin-wave-3-round-3-checkpoint.json",
-    "round4ReviewPath": "content/development/seis-public-plugin-wave-3-round-4-review.json"
+    "round4ReviewPath": "content/development/seis-public-plugin-wave-3-round-4-review.json",
+    "handoffReadinessPath": "content/development/seis-public-plugin-wave-3-handoff-readiness.json"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -144,7 +145,7 @@
       "round": 4,
       "name": "Resilience and public-contract review",
       "objective": "Review the approved scope for drift, safety, accessibility, performance, and evidence quality before handoff.",
-      "status": "in-progress",
+      "status": "completed",
       "steps": [
         61,
         62,
@@ -172,7 +173,7 @@
       "round": 5,
       "name": "Wave 3 handoff",
       "objective": "Complete the wave only with current evidence, feature-branch delivery, and a separate scope gate for any following wave.",
-      "status": "planned",
+      "status": "in-progress",
       "steps": [
         81,
         82,
@@ -755,14 +756,14 @@
       "number": 80,
       "round": 4,
       "title": "Prepare a handoff only when every affected local contract has current evidence.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "focused validation, risk update, and handoff readiness evidence"
     },
     {
       "number": 81,
       "round": 5,
       "title": "Run the Wave 3 tracker and capability-decision checks.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
@@ -900,13 +901,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 79,
-    "plannedStepCount": 20,
+    "completedStepCount": 80,
+    "plannedStepCount": 19,
     "inProgressStepNumbers": [
-      80
+      81
     ],
-    "completedRoundCount": 3,
-    "nextStepNumber": 80
+    "completedRoundCount": 4,
+    "nextStepNumber": 81
   },
   "qualityGates": [
     "npm run check:seis-public-plugin-expansion-program",

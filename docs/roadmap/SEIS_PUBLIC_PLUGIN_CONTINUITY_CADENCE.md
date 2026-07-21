@@ -11,7 +11,7 @@
 | Bootstrap | 30 steps / 5 rounds / 6 steps | Completed |
 | Wave 1 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 2 | 100 steps / 5 rounds / 20 steps | Completed |
-| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 79 complete, step 80 active |
+| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 80 complete, step 81 active |
 | Wave 4 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 | Wave 5 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 
@@ -35,8 +35,10 @@ empty write/network/secret permissions, no public UI change, no compiler or
 runtime claim, public-release gating, deterministic tests, and a focused
 checkpoint-diff review.
 
-Step 80 remains active: prepare the Wave 3 handoff only after every affected
-record has current validation.
+Step 80 is now reconciled by
+`content/development/seis-public-plugin-wave-3-handoff-readiness.json`.
+It proves readiness for the final validation round without completing Wave 3
+or activating Wave 4. Step 81 is the active final-validation entry point.
 
 ## GitHub Delivery Rule
 
