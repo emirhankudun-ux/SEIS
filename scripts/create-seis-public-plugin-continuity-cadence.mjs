@@ -13,6 +13,7 @@ const WAVE_2_PROGRAM_PATH = "content/development/seis-public-plugin-wave-2-progr
 const WAVE_2_HANDOFF_PATH = "content/development/seis-public-plugin-wave-2-handoff.json";
 const WAVE_3_PROGRAM_PATH = "content/development/seis-public-plugin-wave-3-program.json";
 const WAVE_3_ROUND_4_REVIEW_PATH = "content/development/seis-public-plugin-wave-3-round-4-review.json";
+const WAVE_3_FINAL_VALIDATION_PATH = "content/development/seis-public-plugin-wave-3-final-validation.json";
 const FEATURE_BRANCH = "plugins/seis-plugin-root-20260715";
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 
@@ -38,6 +39,8 @@ function buildRecord() {
   const wave2Handoff = readJson(WAVE_2_HANDOFF_PATH);
   const wave3Program = readJson(WAVE_3_PROGRAM_PATH);
   const wave3Round4Review = readJson(WAVE_3_ROUND_4_REVIEW_PATH);
+  const wave3FinalValidation = readJson(WAVE_3_FINAL_VALIDATION_PATH);
+  assert(wave3FinalValidation?.id === "seis-public-plugin-wave-3-final-validation" && wave3FinalValidation?.status === "completed-repository-local-final-validation" && wave3FinalValidation?.step === 81 && wave3FinalValidation?.futureWaveDecision?.activationApproved === false, "Wave 3 final validation evidence is invalid");
   const futureWaveTemplate = buildFutureWaveTemplate(wave3Program.steps);
   const record = {
     schemaVersion: 1,
@@ -115,7 +118,7 @@ function buildRecord() {
         programPath: WAVE_3_PROGRAM_PATH,
         completedSteps: completedStepCount(wave3Program),
         inProgressSteps: list(wave3Program.progress?.inProgressStepNumbers),
-        currentEvidencePath: WAVE_3_ROUND_4_REVIEW_PATH,
+        currentEvidencePath: WAVE_3_FINAL_VALIDATION_PATH,
         entryRule: "Wave 2 completed with a current handoff, an approved non-duplicative capability decision, and continued user authority.",
       },
       {
@@ -201,7 +204,7 @@ function validateRecord(record) {
   assert(record.cadence?.waveSeries?.waveCount === 5 && record.cadence?.waveSeries?.stepsPerWave === 100 && record.cadence?.waveSeries?.roundsPerWave === 5 && record.cadence?.waveSeries?.stepsPerRound === 20 && record.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && record.cadence?.waveSeries?.activeWave === 3, "five-wave cadence is invalid");
   assert(record.cadence?.githubDelivery?.branch === FEATURE_BRANCH && record.cadence?.githubDelivery?.protectedDefaultBranchWrites === false && record.cadence?.githubDelivery?.remoteReferenceVerificationRequired === true, "GitHub delivery boundary is invalid");
   assert(record.cadence?.afterFiveWaves?.nextBootstrapSteps === 30 && record.cadence?.afterFiveWaves?.nextWaveCount === 5 && record.cadence?.afterFiveWaves?.nextWaveSteps === 100 && record.cadence?.afterFiveWaves?.backgroundExecutionClaimed === false, "post-series continuation is invalid");
-  assert(list(record.waves).length === 5 && record.waves[0]?.status === "completed" && record.waves[0]?.completedSteps === 100 && record.waves[1]?.status === "completed" && record.waves[1]?.completedSteps === 100 && record.waves[2]?.status === "in-progress" && record.waves[2]?.completedSteps === 80 && list(record.waves[2]?.inProgressSteps).join(",") === "81" && record.waves[3]?.status === "planned-gated" && record.waves[3]?.totalSteps === 100 && record.waves[4]?.status === "planned-gated" && record.waves[4]?.totalSteps === 100, "wave states are invalid");
+  assert(list(record.waves).length === 5 && record.waves[0]?.status === "completed" && record.waves[0]?.completedSteps === 100 && record.waves[1]?.status === "completed" && record.waves[1]?.completedSteps === 100 && record.waves[2]?.status === "in-progress" && record.waves[2]?.completedSteps === 81 && list(record.waves[2]?.inProgressSteps).join(",") === "82" && record.waves[3]?.status === "planned-gated" && record.waves[3]?.totalSteps === 100 && record.waves[4]?.status === "planned-gated" && record.waves[4]?.totalSteps === 100, "wave states are invalid");
   assert(record.futureWaveTemplate?.id === "seis-public-plugin-future-wave-template" && record.futureWaveTemplate?.totalSteps === 100 && record.futureWaveTemplate?.roundCount === 5 && record.futureWaveTemplate?.stepsPerRound === 20 && list(record.futureWaveTemplate?.rounds).length === 5 && list(record.futureWaveTemplate?.steps).length === 100 && list(record.futureWaveTemplate?.steps).every((step, index) => step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && step?.status === "planned-template" && typeof step?.title === "string" && step.title.length > 0), "future wave template is invalid");
   assert(list(record.rolloutRules).length === 4 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "rollout rule or rollback boundary is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "cadence must not contain a machine-specific path");

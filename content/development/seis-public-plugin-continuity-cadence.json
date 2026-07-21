@@ -72,11 +72,11 @@
       "wave": 3,
       "status": "in-progress",
       "programPath": "content/development/seis-public-plugin-wave-3-program.json",
-      "completedSteps": 80,
+      "completedSteps": 81,
       "inProgressSteps": [
-        81
+        82
       ],
-      "currentEvidencePath": "content/development/seis-public-plugin-wave-3-round-4-review.json",
+      "currentEvidencePath": "content/development/seis-public-plugin-wave-3-final-validation.json",
       "entryRule": "Wave 2 completed with a current handoff, an approved non-duplicative capability decision, and continued user authority."
     },
     {

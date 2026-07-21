@@ -43,7 +43,8 @@
   "evidence": {
     "round3CheckpointPath": "content/development/seis-public-plugin-wave-3-round-3-checkpoint.json",
     "round4ReviewPath": "content/development/seis-public-plugin-wave-3-round-4-review.json",
-    "handoffReadinessPath": "content/development/seis-public-plugin-wave-3-handoff-readiness.json"
+    "handoffReadinessPath": "content/development/seis-public-plugin-wave-3-handoff-readiness.json",
+    "finalValidationPath": "content/development/seis-public-plugin-wave-3-final-validation.json"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -763,14 +764,14 @@
       "number": 81,
       "round": 5,
       "title": "Run the Wave 3 tracker and capability-decision checks.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 82,
       "round": 5,
       "title": "Run focused package generators, validators, and tests for the selected scope.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
@@ -901,13 +902,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 80,
-    "plannedStepCount": 19,
+    "completedStepCount": 81,
+    "plannedStepCount": 18,
     "inProgressStepNumbers": [
-      81
+      82
     ],
     "completedRoundCount": 4,
-    "nextStepNumber": 81
+    "nextStepNumber": 82
   },
   "qualityGates": [
     "npm run check:seis-public-plugin-expansion-program",

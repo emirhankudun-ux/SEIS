@@ -22,9 +22,9 @@ test("keeps Wave 3 as an evidence-led public SEIS Repo implementation with one a
   assert.equal(program.maturity, "prototype");
   assert.equal(program.wave.number, 3);
   assert.equal(program.steps.length, 100);
-  assert.equal(program.progress.completedStepCount, 80);
-  assert.equal(program.progress.plannedStepCount, 19);
-  assert.deepEqual(program.progress.inProgressStepNumbers, [81]);
+  assert.equal(program.progress.completedStepCount, 81);
+  assert.equal(program.progress.plannedStepCount, 18);
+  assert.deepEqual(program.progress.inProgressStepNumbers, [82]);
   assert.equal(program.progress.completedRoundCount, 4);
   assert.equal(program.selection.status, "implementation-approved");
   assert.equal(program.selection.selectedCapability, "seis-swift-concurrency-audit");
@@ -33,6 +33,7 @@ test("keeps Wave 3 as an evidence-led public SEIS Repo implementation with one a
   assert.equal(program.evidence.round3CheckpointPath, "content/development/seis-public-plugin-wave-3-round-3-checkpoint.json");
   assert.equal(program.evidence.round4ReviewPath, "content/development/seis-public-plugin-wave-3-round-4-review.json");
   assert.equal(program.evidence.handoffReadinessPath, "content/development/seis-public-plugin-wave-3-handoff-readiness.json");
+  assert.equal(program.evidence.finalValidationPath, "content/development/seis-public-plugin-wave-3-final-validation.json");
   assert.equal(program.publicBoundary.marketplaceName, "seis-repo");
   assert.equal(program.publicBoundary.marketplaceDisplayName, "SEIS Repo");
   assert.equal(program.publicBoundary.personalMarketplaceRead, false);

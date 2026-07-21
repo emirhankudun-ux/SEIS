@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-3-final-validation",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 3,
+  "step": 81,
+  "status": "completed-repository-local-final-validation",
+  "generatedAt": "2026-07-21",
+  "purpose": "Record the current Wave 3 tracker and capability-decision validation boundary without completing the wave, activating Wave 4, or claiming external installation, native execution, or release.",
+  "stateAtCheckpoint": {
+    "completedStepCountBeforeTrackerUpdate": 80,
+    "activeStepBeforeTrackerUpdate": 81,
+    "nextPlannedValidationStep": 82,
+    "finalWaveHandoffPublished": false,
+    "waveCompleted": false
+  },
+  "checks": {
+    "wave3Tracker": true,
+    "capabilityDecision": true,
+    "priorReadiness": true,
+    "resilienceReviews": true,
+    "selectedPackage": true,
+    "staticAudit": true,
+    "denyByDefaultMcp": true,
+    "continuityGate": true
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "compiledSwift": false,
+    "nativeRuntime": false,
+    "independentInstallation": false,
+    "publicRelease": false
+  },
+  "futureWaveDecision": {
+    "wave": 4,
+    "status": "planned-gated",
+    "activationApproved": false,
+    "selectedCapability": null,
+    "reason": "Step 81 validates the current Wave 3 tracker and capability decision only. Wave 3 final validation, handoff, and a fresh Wave 4 scope and risk decision remain required."
+  },
+  "delivery": {
+    "featureBranch": "plugins/seis-plugin-root-20260715",
+    "priorFeatureCheckpointCommit": "7382fdb448f20c33b7cd29a3efee33b31798743d",
+    "protectedDefaultBranchWritten": false,
+    "checkpointRule": "This repository-local validation record is committed and delivered only through the current feature branch after local validation. It does not predict a future commit SHA or assert a public release."
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-wave-3-final-validation",
+    "npm run check:seis-public-plugin-wave-3-program",
+    "npm run check:seis-public-plugin-wave-3-capability-decision",
+    "npm run check:seis-public-plugin-continuity"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W3-008",
+      "status": "tracked",
+      "description": "A tracker validation checkpoint could be mistaken for a completed Wave 3 or an approved Wave 4.",
+      "mitigation": "Keep Wave 3 in progress, retain later steps, and set Wave 4 activationApproved false."
+    },
+    {
+      "id": "RISK-W3-009",
+      "status": "tracked",
+      "description": "Static audit evidence could be confused with compiled Swift, native runtime, independent installation, or release proof.",
+      "mitigation": "Record each external claim as false and preserve the public-release gate."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this focused Wave 3 validation record and its tracking references on the feature branch; no external state, publication, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 12,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}
