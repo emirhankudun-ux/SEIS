@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-public-plugin-expansion-program",
   "goalId": "SEIS-GOAL-021",
-  "status": "in-progress",
+  "status": "completed",
   "scope": "public-seis-repo-plugin-program",
   "createdAt": "2026-07-20",
   "updatedAt": "2026-07-21",
@@ -12,6 +12,12 @@
     "personalMarketplaceMutation": false,
     "backgroundExecutionClaimed": false,
     "externalWriteRequiresApproval": true
+  },
+  "delivery": {
+    "branch": "plugins/seis-plugin-root-20260715",
+    "initialCheckpointCommit": "27e1bb8e57c7e23f7853ac5015b4327fc270de4f",
+    "initialRemoteReferenceVerified": true,
+    "protectedDefaultBranchWritten": false
   },
   "cadence": {
     "programSteps": 30,
@@ -91,8 +97,8 @@
     {"number": 26, "round": 5, "title": "Reconcile registry, documentation, and project manifest counts", "status": "completed", "validation": "registry and docs checks"},
     {"number": 27, "round": 5, "title": "Inspect diff, secret-safe boundary, and worktree", "status": "completed", "validation": "git diff --check"},
     {"number": 28, "round": 5, "title": "Prepare review-focused local commit sequence", "status": "completed", "validation": "cached diff review"},
-    {"number": 29, "round": 5, "title": "Deliver every validated checkpoint to the current GitHub feature branch and verify remote ref", "status": "in-progress", "validation": "git push and ls-remote"},
-    {"number": 30, "round": 5, "title": "Publish program report and plan five 100-step waves", "status": "planned", "validation": "program validator and final report"}
+    {"number": 29, "round": 5, "title": "Deliver every validated checkpoint to the current GitHub feature branch and verify remote ref", "status": "completed", "validation": "git push and ls-remote"},
+    {"number": 30, "round": 5, "title": "Publish program report and plan five 100-step waves", "status": "completed", "validation": "program validator and final report"}
   ],
   "nextWaves": [
     {"wave": 1, "steps": 100, "status": "not-planned", "entryCriteria": "All 30 initial steps have current evidence and a scope review."},

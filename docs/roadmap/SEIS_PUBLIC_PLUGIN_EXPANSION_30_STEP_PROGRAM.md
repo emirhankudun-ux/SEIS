@@ -2,7 +2,7 @@
 
 **Goal:** `SEIS-GOAL-021`
 
-**Status:** In progress
+**Status:** Completed
 
 **Scope:** Public `SEIS Repo` marketplace only
 
@@ -49,13 +49,25 @@ an external delivery blocker rather than represented as a successful push.
 
 ## Current Checkpoint
 
-Steps 1–26 have current evidence. The public regression, marketplace, release,
-registry, project-manifest, and baseline SEIS checks reconcile 70 application
-packages and 376 public `SEIS Repo` entries at release `0.00000002` / `0.0.20`.
-Steps 27–28 have passed the diff, secret-boundary, worktree, and cached-commit
-review. Step 29 is the active feature-branch delivery and remote-reference
-verification; the next-wave report remains deliberately pending until that
-delivery result is known.
+All thirty steps have current evidence. The public regression, marketplace,
+release, registry, project-manifest, and baseline SEIS checks reconcile 70
+application packages and 376 public `SEIS Repo` entries at release
+`0.00000002` / `0.0.20`. Steps 27–28 passed the diff, secret-boundary,
+worktree, and cached-commit review. Step 29 delivered the validated checkpoint
+to `plugins/seis-plugin-root-20260715`; remote reference verification confirmed
+`27e1bb8e57c7e23f7853ac5015b4327fc270de4f`. No protected default branch was
+written.
+
+## Next Five Waves
+
+The five 100-step waves are intentionally registered as *not planned*, not
+automatically started. Wave 1 needs a fresh portfolio-gap audit, acceptance
+criteria, validation plan, and risk review against this delivered baseline.
+Each later wave needs current evidence and the same review after its preceding
+wave. After Wave 5, repeat the cadence-design review before defining a new
+five-wave sequence; continuation must remain evidence-led, reversible, and
+delivered through the current GitHub feature branch rather than claimed as
+background execution.
 
 ## Completion Rule
 
