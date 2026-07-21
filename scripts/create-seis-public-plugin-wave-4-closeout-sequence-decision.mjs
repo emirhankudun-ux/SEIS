@@ -310,14 +310,14 @@ function isSupportedContinuityCadence(record) {
     && wave4?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave4?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
   const activeWave5 = record?.cadence?.waveSeries?.activeWave === 5
-    && record?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress"
+    && record?.cadence?.waveSeries?.activeWaveState === "wave-5-first-40-steps-completed-step-41-in-progress"
     && wave4?.status === "completed"
     && wave4?.completedSteps === 100
     && list(wave4?.inProgressSteps).length === 0
     && list(record?.waves)[4]?.status === "in-progress"
     && list(record?.waves)[4]?.selectedCapability === "seis-plugin-capability-coverage"
-    && list(record?.waves)[4]?.completedSteps === 30
-    && list(list(record?.waves)[4]?.inProgressSteps).join(",") === "31";
+    && list(record?.waves)[4]?.completedSteps === 40
+    && list(list(record?.waves)[4]?.inProgressSteps).join(",") === "41";
   return shared && (preApplication || postApplication || afterHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout || activeWave5);
 }
 

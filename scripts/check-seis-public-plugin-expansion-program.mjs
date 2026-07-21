@@ -166,13 +166,13 @@ for (let index = 0; index < 5; index += 1) {
     ensure(wave?.programId === `seis-public-plugin-wave-${index + 1}-program`, `wave ${index + 1} must identify its future program`);
     ensure(wave?.stepTemplateId === "seis-public-plugin-future-wave-template", `wave ${index + 1} must identify the 100-step template`);
     ensure(wave?.continuityCadencePath === "content/development/seis-public-plugin-continuity-cadence.json", `wave ${index + 1} must link the continuity record`);
-    ensure(wave?.programPath === "content/development/seis-public-plugin-wave-5-program.json" && wave?.candidateReviewPath === "content/development/seis-public-plugin-wave-4-following-wave-review.json" && wave?.activationDecisionPath === "content/development/seis-public-plugin-wave-5-activation-decision.json" && wave?.capabilityEvidencePath === "content/development/seis-plugin-capability-coverage.json" && wave?.selectedCapability === "seis-plugin-capability-coverage" && wave?.implementationApproved === true && wave?.activationApproved === true && wave?.implementationStarted === true && wave?.candidatePackageExists === true && wave?.candidatePublicCardExists === true && wave?.completedSteps === 30 && Array.isArray(wave?.inProgressSteps) && wave.inProgressSteps.join(",") === "31", "wave 5 active public-only contract is invalid");
+    ensure(wave?.programPath === "content/development/seis-public-plugin-wave-5-program.json" && wave?.candidateReviewPath === "content/development/seis-public-plugin-wave-4-following-wave-review.json" && wave?.activationDecisionPath === "content/development/seis-public-plugin-wave-5-activation-decision.json" && wave?.capabilityEvidencePath === "content/development/seis-plugin-capability-coverage.json" && wave?.selectedCapability === "seis-plugin-capability-coverage" && wave?.implementationApproved === true && wave?.activationApproved === true && wave?.implementationStarted === true && wave?.candidatePackageExists === true && wave?.candidatePublicCardExists === true && wave?.completedSteps === 40 && Array.isArray(wave?.inProgressSteps) && wave.inProgressSteps.join(",") === "41", "wave 5 active public-only contract is invalid");
     ensure(isWave5ActiveProgram(wave5Program) && isWave5ActivationDecision(wave5ActivationDecision) && isWave5CapabilityEvidence(wave5CapabilityEvidence), "wave 5 activation, program, or evidence is invalid");
   }
 }
 
 ensure(continuityCadence?.id === "seis-public-plugin-continuity-cadence" && continuityCadence?.status === "active-evidence-led-cadence", "continuity cadence evidence is invalid");
-ensure(continuityCadence?.cadence?.bootstrap?.totalSteps === 30 && continuityCadence?.cadence?.waveSeries?.waveCount === 5 && continuityCadence?.cadence?.waveSeries?.stepsPerWave === 100 && continuityCadence?.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && continuityCadence?.cadence?.waveSeries?.activeWave === 5 && continuityCadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress", "continuity cadence shape is invalid");
+ensure(continuityCadence?.cadence?.bootstrap?.totalSteps === 30 && continuityCadence?.cadence?.waveSeries?.waveCount === 5 && continuityCadence?.cadence?.waveSeries?.stepsPerWave === 100 && continuityCadence?.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && continuityCadence?.cadence?.waveSeries?.activeWave === 5 && continuityCadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-40-steps-completed-step-41-in-progress", "continuity cadence shape is invalid");
 ensure(Array.isArray(continuityCadence?.waves) && continuityCadence.waves.length === 5 && continuityCadence.waves[2]?.status === "completed" && continuityCadence.waves[2]?.completedSteps === 100 && Array.isArray(continuityCadence.waves[2]?.inProgressSteps) && continuityCadence.waves[2].inProgressSteps.length === 0 && continuityCadence.waves[2]?.closeoutPath === "content/development/seis-public-plugin-wave-3-closeout.json" && continuityCadence.waves[2]?.currentEvidencePath === "content/development/seis-public-plugin-wave-3-closeout.json" && isWave4IntegratedCadence(continuityCadence.waves[3]) && isWave5ActiveCadence(continuityCadence.waves[4]) && Array.isArray(continuityCadence?.futureWaveTemplate?.steps) && continuityCadence.futureWaveTemplate.steps.length === 100, "continuity cadence wave evidence is invalid");
 
 function isWave5ActivationDecision(decision) {
@@ -204,6 +204,9 @@ function isWave5CapabilityEvidence(evidence) {
     && evidence?.activation?.publicReleaseApproved === false
     && evidence?.audit?.ok === true
     && evidence?.audit?.reconciliation?.reconciled === true
+    && evidence?.fixedRegistrySafetyCoverage?.status === "ready-fixed-registry-safety-coverage"
+    && Array.isArray(evidence?.fixedRegistrySafetyCoverage?.coveredFailureModes)
+    && evidence.fixedRegistrySafetyCoverage.coveredFailureModes.length === 7
     && Array.isArray(evidence?.safety?.write)
     && evidence.safety.write.length === 0
     && Array.isArray(evidence?.safety?.network)
@@ -232,12 +235,12 @@ function isWave5ActiveProgram(program) {
     && program?.activationGate?.candidatePackageExists === true
     && program?.activationGate?.candidatePublicCardExists === true
     && program?.activationGate?.publicReleaseApproved === false
-    && program?.progress?.completedStepCount === 30
+    && program?.progress?.completedStepCount === 40
     && Array.isArray(program?.progress?.inProgressStepNumbers)
-    && program.progress.inProgressStepNumbers.join(",") === "31"
-    && program?.progress?.plannedStepCount === 69
-    && program?.progress?.completedRoundCount === 1
-    && program?.progress?.nextStepNumber === 31
+    && program.progress.inProgressStepNumbers.join(",") === "41"
+    && program?.progress?.plannedStepCount === 59
+    && program?.progress?.completedRoundCount === 2
+    && program?.progress?.nextStepNumber === 41
     && program?.evidence?.activationDecision === "content/development/seis-public-plugin-wave-5-activation-decision.json"
     && program?.evidence?.capabilityEvidence === "content/development/seis-plugin-capability-coverage.json"
     && Object.values(program?.checks || {}).every(Boolean)
@@ -256,9 +259,9 @@ function isWave5ActiveCadence(wave) {
     && wave?.implementationStarted === true
     && wave?.candidatePackageExists === true
     && wave?.candidatePublicCardExists === true
-    && wave?.completedSteps === 30
+    && wave?.completedSteps === 40
     && Array.isArray(wave?.inProgressSteps)
-    && wave.inProgressSteps.join(",") === "31"
+    && wave.inProgressSteps.join(",") === "41"
     && wave?.currentEvidencePath === "content/development/seis-plugin-capability-coverage.json"
     && wave?.totalSteps === 100;
 }

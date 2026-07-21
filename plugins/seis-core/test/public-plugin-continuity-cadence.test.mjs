@@ -26,7 +26,7 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.cadence.waveSeries.stepsPerWave, 100);
   assert.equal(cadence.cadence.waveSeries.totalPlannedWaveSteps, 500);
   assert.equal(cadence.cadence.waveSeries.activeWave, 5);
-  assert.equal(cadence.cadence.waveSeries.activeWaveState, "wave-5-first-30-steps-completed-step-31-in-progress");
+  assert.equal(cadence.cadence.waveSeries.activeWaveState, "wave-5-first-40-steps-completed-step-41-in-progress");
   assert.equal(cadence.waves.length, 5);
   assert.equal(cadence.waves[0].status, "completed");
   assert.equal(cadence.waves[1].status, "completed");
@@ -72,8 +72,8 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[4].implementationStarted, true);
   assert.equal(cadence.waves[4].candidatePackageExists, true);
   assert.equal(cadence.waves[4].candidatePublicCardExists, true);
-  assert.equal(cadence.waves[4].completedSteps, 30);
-  assert.deepEqual(cadence.waves[4].inProgressSteps, [31]);
+  assert.equal(cadence.waves[4].completedSteps, 40);
+  assert.deepEqual(cadence.waves[4].inProgressSteps, [41]);
   assert.equal(cadence.waves[4].currentEvidencePath, "content/development/seis-plugin-capability-coverage.json");
   assert.equal(cadence.futureWaveTemplate.steps.length, 100);
   assert.equal(cadence.executionBoundary.personalMarketplaceRead, false);

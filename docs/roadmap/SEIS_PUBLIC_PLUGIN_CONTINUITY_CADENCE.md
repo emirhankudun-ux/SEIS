@@ -13,7 +13,7 @@
 | Wave 2 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 3 | 100 steps / 5 rounds / 20 steps | Completed: 100 repository-local evidence steps |
 | Wave 4 | 100 steps / 5 rounds / 20 steps | Completed: repository-local evidence cycle |
-| Wave 5 | 100 steps / 5 rounds / 20 steps | In progress: steps 1–30 complete; step 31 active |
+| Wave 5 | 100 steps / 5 rounds / 20 steps | In progress: steps 1–40 complete; step 41 active |
 
 The machine-readable cadence is
 `content/development/seis-public-plugin-continuity-cadence.json`. Wave 4 is a

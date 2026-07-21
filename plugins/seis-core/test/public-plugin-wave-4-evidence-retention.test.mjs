@@ -25,8 +25,8 @@ test("retains bounded Wave 4 evidence alongside the active public-only Wave 5 co
   assert.equal(retention.stateAtCheckpoint.nextPlannedDecisionStep, 100);
   assert.equal(retention.currentContext.activeWave, 5);
   assert.equal(retention.currentContext.status, "in-progress");
-  assert.equal(retention.currentContext.completedSteps, 30);
-  assert.deepEqual(retention.currentContext.inProgressSteps, [31]);
+  assert.equal(retention.currentContext.completedSteps, 40);
+  assert.deepEqual(retention.currentContext.inProgressSteps, [41]);
   assert.ok(Object.values(retention.checks).every(Boolean));
   assert.equal(retention.retention.status, "bounded-public-evidence-retained");
   assert.equal(retention.retention.relativePathOnly, true);

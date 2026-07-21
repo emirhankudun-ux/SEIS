@@ -22,11 +22,11 @@
   },
   "currentContext": {
     "activeWave": 5,
-    "activeWaveState": "wave-5-first-30-steps-completed-step-31-in-progress",
+    "activeWaveState": "wave-5-first-40-steps-completed-step-41-in-progress",
     "status": "in-progress",
-    "completedSteps": 30,
+    "completedSteps": 40,
     "inProgressSteps": [
-      31
+      41
     ],
     "activationDecisionPath": "content/development/seis-public-plugin-wave-5-activation-decision.json",
     "capabilityCoveragePath": "content/development/seis-plugin-capability-coverage.json",
@@ -124,14 +124,14 @@
         "path": "content/development/seis-public-plugin-continuity-cadence.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 40187
+        "bytes": 40215
       },
       {
         "key": "expansionProgram",
         "path": "content/development/seis-public-plugin-expansion-program.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 14071
+        "bytes": 14099
       },
       {
         "key": "activationDecision",
@@ -180,14 +180,14 @@
         "path": "content/development/seis-plugin-capability-coverage.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 19442
+        "bytes": 19445
       },
       {
         "key": "wave5Program",
         "path": "content/development/seis-public-plugin-wave-5-program.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 31186
+        "bytes": 31964
       },
       {
         "key": "sourceManifest",

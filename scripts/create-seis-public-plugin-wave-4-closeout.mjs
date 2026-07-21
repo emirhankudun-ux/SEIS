@@ -243,13 +243,13 @@ function isSupportedContinuity(cadence) {
     && wave?.closeoutPath === OUTPUT_PATH
     && wave?.currentEvidencePath === OUTPUT_PATH;
   const activeWave5 = cadence?.cadence?.waveSeries?.activeWave === 5
-    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress"
+    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-40-steps-completed-step-41-in-progress"
     && wave?.status === "completed"
     && wave?.completedSteps === 100
     && wave?.closeoutPath === OUTPUT_PATH
     && wave5?.status === "in-progress"
-    && wave5?.completedSteps === 30
-    && list(wave5?.inProgressSteps).join(",") === "31"
+    && wave5?.completedSteps === 40
+    && list(wave5?.inProgressSteps).join(",") === "41"
     && wave5?.activationDecisionPath === PATHS.wave5ActivationDecision
     && wave5?.capabilityEvidencePath === PATHS.capabilityCoverage
     && wave5?.programPath === PATHS.wave5Program;
@@ -277,8 +277,8 @@ function isSupportedExpansionProgram(program) {
     && wave5?.implementationStarted === true
     && wave5?.candidatePackageExists === true
     && wave5?.candidatePublicCardExists === true
-    && wave5?.completedSteps === 30
-    && list(wave5?.inProgressSteps).join(",") === "31";
+    && wave5?.completedSteps === 40
+    && list(wave5?.inProgressSteps).join(",") === "41";
   return shared && (beforeTrackerUpdate || afterTrackerUpdate) && (plannedWave5 || activeWave5);
 }
 
@@ -317,8 +317,8 @@ function isSupportedActiveWave5(cadence, expansionProgram, activationDecision, c
     && capabilityCoverage?.audit?.reconciliation?.reconciled === true
     && wave5Program?.id === "seis-public-plugin-wave-5-program"
     && wave5Program?.status === "in-progress"
-    && wave5Program?.progress?.completedStepCount === 30
-    && list(wave5Program?.progress?.inProgressStepNumbers).join(",") === "31"
+    && wave5Program?.progress?.completedStepCount === 40
+    && list(wave5Program?.progress?.inProgressStepNumbers).join(",") === "41"
     && wave5?.status === "in-progress";
 }
 
@@ -350,7 +350,7 @@ function inputMetadataFor(key, relativePath) {
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-4-closeout" && record.goalId === "SEIS-GOAL-021" && record.parentGoalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.wave === 4 && record.step === 100 && record.status === "completed-repository-local-wave-closeout" && record.maturity === "prototype", "closeout identity is invalid");
   assert(record.stateAtCheckpoint?.completedStepCountBeforeTrackerUpdate === 99 && record.stateAtCheckpoint?.activeStepBeforeTrackerUpdate === 100 && record.stateAtCheckpoint?.completedStepCountAfterTrackerUpdate === 100 && record.stateAtCheckpoint?.completedRoundCountAfterTrackerUpdate === 5 && record.stateAtCheckpoint?.waveCompleted === true && record.stateAtCheckpoint?.nextActiveWave === null && record.stateAtCheckpoint?.nextWaveStatus === "planned-gated" && record.stateAtCheckpoint?.nextWaveImplementationApproved === false && record.stateAtCheckpoint?.nextWaveActivationApproved === false, "closeout state is invalid");
-  assert(record.currentContext?.activeWave === 5 && record.currentContext?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress" && record.currentContext?.status === "in-progress" && record.currentContext?.completedSteps === 30 && list(record.currentContext?.inProgressSteps).join(",") === "31" && record.currentContext?.activationDecisionPath === PATHS.wave5ActivationDecision && record.currentContext?.capabilityCoveragePath === PATHS.capabilityCoverage && record.currentContext?.activationDecisionStatus === "approved-public-local-wave-5-activation" && record.currentContext?.capabilityCoverageStatus === "ready-public-static-capability-coverage-evidence", "current Wave 5 context is invalid");
+  assert(record.currentContext?.activeWave === 5 && record.currentContext?.activeWaveState === "wave-5-first-40-steps-completed-step-41-in-progress" && record.currentContext?.status === "in-progress" && record.currentContext?.completedSteps === 40 && list(record.currentContext?.inProgressSteps).join(",") === "41" && record.currentContext?.activationDecisionPath === PATHS.wave5ActivationDecision && record.currentContext?.capabilityCoveragePath === PATHS.capabilityCoverage && record.currentContext?.activationDecisionStatus === "approved-public-local-wave-5-activation" && record.currentContext?.capabilityCoverageStatus === "ready-public-static-capability-coverage-evidence", "current Wave 5 context is invalid");
   assert(Object.values(record.checks || {}).every(Boolean), "a required closeout check is not current");
   assert(record.completion?.status === "completed-repository-local-current-evidence" && record.completion?.completedStepCount === 100 && record.completion?.completedRoundCount === 5 && record.completion?.nextActiveWave === null && record.completion?.nextWaveStatus === "planned-gated" && record.completion?.nextWaveSelectedCapability === "seis-plugin-capability-coverage" && record.completion?.nextWaveImplementationApproved === false && record.completion?.nextWaveActivationApproved === false && record.completion?.terminalHandoffPublished === false && record.completion?.protectedDefaultBranchWritten === false && record.completion?.publicReleaseAllowed === false, "completion state is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.protectedDefaultBranchWrites === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");

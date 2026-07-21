@@ -97,7 +97,7 @@ evidence with SwiftPM, compiler, runtime, install, or release proof. Step 99
 is completed by `content/development/seis-public-plugin-wave-4-program.json`;
 Wave 4 subsequently completed its separate repository-local evidence cycle.
 Wave 5 is now active under its explicit activation decision and has completed
-its first 30 evidence steps. It adds the public, read-only
+its first 40 evidence steps. It adds the public, read-only
 `seis-plugin-capability-coverage` package and card.
 
 The current contract is 75 packages / 381 `SEIS Repo` cards. It remains

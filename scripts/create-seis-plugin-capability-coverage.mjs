@@ -112,8 +112,8 @@ function buildRecord() {
       categoryCounts: audit.coverage.categoryCounts,
       capabilityTokenFrequencies: audit.coverage.capabilityTokenFrequencies,
     },
-    resilienceReview: {
-      status: "completed-repository-local-resilience-review",
+    fixedRegistrySafetyCoverage: {
+      status: "ready-fixed-registry-safety-coverage",
       coveredFailureModes: [
         "missing-fixed-registry",
         "non-regular-or-symlinked-registry",
@@ -185,7 +185,7 @@ function validateRecord(record) {
   assert(record.activation?.id === "seis-public-plugin-wave-5-activation-decision" && record.activation?.selectedCapability === PLUGIN_CAPABILITY_COVERAGE_ID && record.activation?.activationApproved === true && record.activation?.implementationAuthorized === true && record.activation?.implementationObserved === true && record.activation?.publicReleaseApproved === false, "Wave 5 activation linkage is invalid");
   assert(record.audit?.state === "ready" && record.audit?.ok === true && record.audit?.classification === "bounded-declared-seis-plugin-capability-coverage" && record.audit?.reconciliationAvailable === true && record.audit?.sourcePluginCount === APP_PLUGIN_EXPANSION_TARGET && record.audit?.catalogPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.audit?.matrixPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.audit?.marketplaceApplicationCardCount === APP_PLUGIN_EXPANSION_TARGET && record.audit?.reconciliation?.reconciled === true && record.audit?.reconciliation?.mismatchCount === 0, "capability coverage audit is invalid");
   assert(record.audit?.declaredCategoryCount > 0 && record.audit?.declaredCapabilityTokenKindCount > 0 && record.audit?.declaredCapabilityTokenCount > 0 && list(record.audit?.findingCodes).length === 0, "coverage summary is invalid");
-  assert(record.resilienceReview?.status === "completed-repository-local-resilience-review" && list(record.resilienceReview?.coveredFailureModes).length === 7, "resilience review is invalid");
+  assert(record.fixedRegistrySafetyCoverage?.status === "ready-fixed-registry-safety-coverage" && list(record.fixedRegistrySafetyCoverage?.coveredFailureModes).length === 7, "fixed registry safety coverage is invalid");
   assert(record.safety?.write?.length === 0 && record.safety?.network?.length === 0 && record.safety?.secrets?.length === 0 && record.safety?.readsPersonalMarketplace === false && record.safety?.writesFiles === false && record.safety?.usesNetwork === false && record.safety?.readsSecrets === false && record.safety?.installsPlugins === false && record.safety?.invokesProviders === false && record.safety?.deploysArtifacts === false && record.safety?.signsArtifacts === false && record.safety?.publicReleaseAllowed === false, "execution boundary is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(record.publicSafetyReview?.runtimeContainsFixedScope === true && record.publicSafetyReview?.runtimeRefusesSymlinks === true && record.publicSafetyReview?.runtimeAvoidsRawRegistryOutput === true && record.publicSafetyReview?.testCoversRedaction === true && record.publicSafetyReview?.skillStatesStaticOnlyBoundary === true && record.publicSafetyReview?.rawValuesStored === false, "public safety review is invalid");

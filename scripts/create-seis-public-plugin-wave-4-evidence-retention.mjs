@@ -252,13 +252,13 @@ function isSupportedContinuity(cadence) {
     && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
   const activeWave5 = cadence?.cadence?.waveSeries?.activeWave === 5
-    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress"
+    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-40-steps-completed-step-41-in-progress"
     && wave?.status === "completed"
     && wave?.completedSteps === 100
     && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave5?.status === "in-progress"
-    && wave5?.completedSteps === 30
-    && list(wave5?.inProgressSteps).join(",") === "31"
+    && wave5?.completedSteps === 40
+    && list(wave5?.inProgressSteps).join(",") === "41"
     && wave5?.activationDecisionPath === PATHS.wave5ActivationDecision
     && wave5?.capabilityEvidencePath === PATHS.capabilityCoverage
     && wave5?.programPath === PATHS.wave5Program;
@@ -286,8 +286,8 @@ function isSupportedExpansionProgram(program) {
     && wave5?.implementationStarted === true
     && wave5?.candidatePackageExists === true
     && wave5?.candidatePublicCardExists === true
-    && wave5?.completedSteps === 30
-    && list(wave5?.inProgressSteps).join(",") === "31";
+    && wave5?.completedSteps === 40
+    && list(wave5?.inProgressSteps).join(",") === "41";
   return shared && (plannedWave5 || activeWave5);
 }
 
@@ -326,8 +326,8 @@ function isSupportedActiveWave5(cadence, expansionProgram, activationDecision, c
     && capabilityCoverage?.audit?.reconciliation?.reconciled === true
     && wave5Program?.id === "seis-public-plugin-wave-5-program"
     && wave5Program?.status === "in-progress"
-    && wave5Program?.progress?.completedStepCount === 30
-    && list(wave5Program?.progress?.inProgressStepNumbers).join(",") === "31"
+    && wave5Program?.progress?.completedStepCount === 40
+    && list(wave5Program?.progress?.inProgressStepNumbers).join(",") === "41"
     && wave5?.status === "in-progress";
 }
 
@@ -360,7 +360,7 @@ function evidenceMetadata(key, relativePath) {
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-4-evidence-retention" && record.goalId === "SEIS-GOAL-021" && record.parentGoalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.wave === 4 && record.step === 99 && record.status === "completed-public-evidence-retention" && record.maturity === "prototype", "retention identity is invalid");
   assert(record.stateAtCheckpoint?.completedStepCountBeforeTrackerUpdate === 98 && record.stateAtCheckpoint?.activeStepBeforeTrackerUpdate === 99 && record.stateAtCheckpoint?.nextPlannedDecisionStep === 100 && record.stateAtCheckpoint?.waveCompleted === false && record.stateAtCheckpoint?.wave5ImplementationApproved === false && record.stateAtCheckpoint?.wave5ActivationApproved === false, "retention state is invalid");
-  assert(record.currentContext?.activeWave === 5 && record.currentContext?.activeWaveState === "wave-5-first-30-steps-completed-step-31-in-progress" && record.currentContext?.status === "in-progress" && record.currentContext?.completedSteps === 30 && list(record.currentContext?.inProgressSteps).join(",") === "31" && record.currentContext?.activationDecisionPath === PATHS.wave5ActivationDecision && record.currentContext?.capabilityCoveragePath === PATHS.capabilityCoverage && record.currentContext?.activationDecisionStatus === "approved-public-local-wave-5-activation" && record.currentContext?.capabilityCoverageStatus === "ready-public-static-capability-coverage-evidence", "current Wave 5 context is invalid");
+  assert(record.currentContext?.activeWave === 5 && record.currentContext?.activeWaveState === "wave-5-first-40-steps-completed-step-41-in-progress" && record.currentContext?.status === "in-progress" && record.currentContext?.completedSteps === 40 && list(record.currentContext?.inProgressSteps).join(",") === "41" && record.currentContext?.activationDecisionPath === PATHS.wave5ActivationDecision && record.currentContext?.capabilityCoveragePath === PATHS.capabilityCoverage && record.currentContext?.activationDecisionStatus === "approved-public-local-wave-5-activation" && record.currentContext?.capabilityCoverageStatus === "ready-public-static-capability-coverage-evidence", "current Wave 5 context is invalid");
   assert(Object.values(record.checks || {}).every(Boolean), "a required evidence-retention check is not current");
   assert(record.retention?.status === "bounded-public-evidence-retained" && record.retention?.retainedArtifactCount === RETAINED_PATH_KEYS.length && record.retention?.relativePathOnly === true && record.retention?.rawContentStored === false && record.retention?.deletionPerformed === false && record.retention?.externalStorageUsed === false && record.retention?.featureBranchOnly === true && record.retention?.nextActiveStep === 100 && list(record.retention?.retainedEvidence).length === RETAINED_PATH_KEYS.length, "retention boundary is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");

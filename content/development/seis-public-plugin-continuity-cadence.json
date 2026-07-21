@@ -35,7 +35,7 @@
       "stepsPerRound": 20,
       "totalPlannedWaveSteps": 500,
       "activeWave": 5,
-      "activeWaveState": "wave-5-first-30-steps-completed-step-31-in-progress"
+      "activeWaveState": "wave-5-first-40-steps-completed-step-41-in-progress"
     },
     "githubDelivery": {
       "branch": "plugins/seis-plugin-root-20260715",
@@ -131,12 +131,12 @@
       "implementationStarted": true,
       "candidatePackageExists": true,
       "candidatePublicCardExists": true,
-      "completedSteps": 30,
+      "completedSteps": 40,
       "inProgressSteps": [
-        31
+        41
       ],
       "currentEvidencePath": "content/development/seis-plugin-capability-coverage.json",
-      "entryRule": "Wave 4 closed with historical scope evidence; the separate Wave 5 activation decision records current user authority. The first 30 repository-local steps are complete and step 31 starts the bounded resilience-review tranche. This is not a merge, release, installation, external runtime, provider, deployment, signing, or public proof claim."
+      "entryRule": "Wave 4 closed with historical scope evidence; the separate Wave 5 activation decision records current user authority. The first 40 repository-local steps are complete and step 41 starts the bounded coverage-interpretation and resilience-review tranche. This is not a merge, release, installation, external runtime, provider, deployment, signing, or public proof claim."
     }
   ],
   "futureWaveTemplate": {

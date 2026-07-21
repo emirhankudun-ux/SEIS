@@ -31,8 +31,8 @@ test("preserves the Wave 4 local closeout alongside the active public-only Wave 
   assert.equal(closeout.stateAtCheckpoint.nextWaveActivationApproved, false);
   assert.equal(closeout.currentContext.activeWave, 5);
   assert.equal(closeout.currentContext.status, "in-progress");
-  assert.equal(closeout.currentContext.completedSteps, 30);
-  assert.deepEqual(closeout.currentContext.inProgressSteps, [31]);
+  assert.equal(closeout.currentContext.completedSteps, 40);
+  assert.deepEqual(closeout.currentContext.inProgressSteps, [41]);
   assert.ok(Object.values(closeout.checks).every(Boolean));
   assert.equal(closeout.completion.nextWaveSelectedCapability, "seis-plugin-capability-coverage");
   assert.equal(closeout.completion.nextWaveImplementationApproved, false);

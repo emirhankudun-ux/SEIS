@@ -23,7 +23,7 @@
       "SEIS"
     ],
     "selectedCapability": "seis-plugin-capability-coverage",
-    "outcome": "One public repository package now reports bounded, derived coverage across four fixed public SEIS Repo registry projections. The first 30 Wave 5 steps are implemented and validated locally; step 31 starts the next resilience-review tranche. No personal marketplace, external write, network, secret, installation, runtime, provider, deployment, signing, or release claim is authorized.",
+    "outcome": "One public repository package now reports bounded, derived coverage across four fixed public SEIS Repo registry projections. The first 40 Wave 5 steps are implemented and validated locally; step 41 starts the coverage-interpretation and resilience-review tranche. No personal marketplace, external write, network, secret, installation, runtime, provider, deployment, signing, or release claim is authorized.",
     "entryRule": "Wave 4 closed with a historical candidate review, the separate Wave 5 activation decision records current user authority and bounded scope, and the active package has current public source, catalog, matrix, marketplace, evidence, and deny-by-default permission projections."
   },
   "nonGoals": [
@@ -95,7 +95,7 @@
       "round": 2,
       "name": "Coverage implementation and public projection",
       "objective": "Complete the first 30 repository-local steps: deterministic coverage analysis, public card projection, evidence, and validation.",
-      "status": "in-progress",
+      "status": "completed",
       "steps": [
         21,
         22,
@@ -123,7 +123,7 @@
       "round": 3,
       "name": "Coverage interpretation and resilience review",
       "objective": "Extend only after the first public checkpoint proves the static contract remains clear, bounded, and useful.",
-      "status": "planned",
+      "status": "in-progress",
       "steps": [
         41,
         42,
@@ -350,146 +350,146 @@
       "round": 2,
       "title": "Implement fixed source-manifest plugin-name parsing.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 22,
       "round": 2,
       "title": "Implement fixed catalog category and capability-token parsing.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 23,
       "round": 2,
       "title": "Implement fixed matrix plugin-name parsing.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 24,
       "round": 2,
       "title": "Implement fixed app-owned marketplace-card parsing.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 25,
       "round": 2,
       "title": "Implement aggregate source, catalog, matrix, and marketplace reconciliation counts.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 26,
       "round": 2,
       "title": "Implement deterministic declared category-count summaries.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 27,
       "round": 2,
       "title": "Implement deterministic declared capability-token frequency summaries.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 28,
       "round": 2,
       "title": "Report aggregate projection drift as attention without returning plugin names.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 29,
       "round": 2,
       "title": "Expose status, report, and committed-evidence MCP tools with no arbitrary path access.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 30,
       "round": 2,
       "title": "Add focused fixture, safety, redaction, MCP, and non-mutation tests.",
       "status": "completed",
-      "validation": "public projection, evidence, and repository validation"
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 31,
       "round": 2,
       "title": "Generate the bounded public capability-coverage evidence record.",
-      "status": "in-progress",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 32,
       "round": 2,
       "title": "Register the candidate through the app-owned public source manifest projection.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 33,
       "round": 2,
       "title": "Refresh the public application catalog projection.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 34,
       "round": 2,
       "title": "Refresh the local status matrix projection.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 35,
       "round": 2,
       "title": "Refresh the one public SEIS Repo marketplace card projection.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 36,
       "round": 2,
       "title": "Refresh public-family, lifecycle, installation, runtime, permission, and provenance projections.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 37,
       "round": 2,
       "title": "Reconcile app and public-card count validators in one change.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 38,
       "round": 2,
       "title": "Run plugin-creator structural validation for the repo-backed package.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 39,
       "round": 2,
       "title": "Run focused package, evidence, and Wave 5 program checks.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 40,
       "round": 2,
       "title": "Run the full public marketplace and SEIS validation suite before the feature-branch checkpoint.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 41,
       "round": 3,
       "title": "Review aggregate coverage categories for clarity without collecting new private data.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "future evidence required before completion"
     },
     {
@@ -907,17 +907,24 @@
     }
   ],
   "progress": {
-    "completedStepCount": 30,
-    "plannedStepCount": 69,
+    "completedStepCount": 40,
+    "plannedStepCount": 59,
     "inProgressStepNumbers": [
-      31
+      41
     ],
-    "completedRoundCount": 1,
-    "nextStepNumber": 31,
+    "completedRoundCount": 2,
+    "nextStepNumber": 41,
     "firstDeliveryTranche": {
       "totalSteps": 30,
       "status": "completed-repository-local",
       "scope": "activation, fixed-registry runtime, tests, public projections, evidence, and validation"
+    },
+    "secondDeliveryTranche": {
+      "totalSteps": 20,
+      "completedSteps": 20,
+      "stepRange": "21-40",
+      "status": "completed-repository-local",
+      "scope": "coverage implementation, public registry projections, evidence generation, structural validation, focused checks, and full repository-local validation"
     }
   },
   "evidence": {
@@ -936,6 +943,7 @@
     "activationDecision": true,
     "publicCandidateProjection": true,
     "coverageEvidence": true,
+    "fixedRegistrySafetyCoverage": true,
     "permissions": true,
     "publicBoundary": true
   },

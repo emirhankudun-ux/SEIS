@@ -45,6 +45,8 @@ test("reconciles bounded public SEIS Repo capability coverage evidence", () => {
   assert.equal(evidence.audit.reconciliation.mismatchCount, 0);
   assert.ok(evidence.audit.declaredCategoryCount > 0);
   assert.ok(evidence.audit.declaredCapabilityTokenKindCount > 0);
+  assert.equal(evidence.fixedRegistrySafetyCoverage.status, "ready-fixed-registry-safety-coverage");
+  assert.equal(evidence.fixedRegistrySafetyCoverage.coveredFailureModes.length, 7);
   assert.deepEqual(evidence.safety.write, []);
   assert.deepEqual(evidence.safety.network, []);
   assert.deepEqual(evidence.safety.secrets, []);

@@ -788,8 +788,8 @@
       }
     ]
   },
-  "resilienceReview": {
-    "status": "completed-repository-local-resilience-review",
+  "fixedRegistrySafetyCoverage": {
+    "status": "ready-fixed-registry-safety-coverage",
     "coveredFailureModes": [
       "missing-fixed-registry",
       "non-regular-or-symlinked-registry",

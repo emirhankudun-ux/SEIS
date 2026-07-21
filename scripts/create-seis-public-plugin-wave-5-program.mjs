@@ -7,6 +7,10 @@ const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-5-program.json";
 const CANDIDATE = "seis-plugin-capability-coverage";
+const COMPLETED_STEP_COUNT = 40;
+const NEXT_STEP_NUMBER = 41;
+const PLANNED_STEP_COUNT = 59;
+const COMPLETED_ROUND_COUNT = 2;
 const PATHS = Object.freeze({
   activationDecision: "content/development/seis-public-plugin-wave-5-activation-decision.json",
   capabilityEvidence: "content/development/seis-plugin-capability-coverage.json",
@@ -185,7 +189,7 @@ function buildRecord() {
       number,
       round: roundIndex + 1,
       title,
-      status: number <= 30 ? "completed" : number === 31 ? "in-progress" : "planned",
+      status: number <= COMPLETED_STEP_COUNT ? "completed" : number === NEXT_STEP_NUMBER ? "in-progress" : "planned",
       validation: validationFor(number),
     };
   }));
@@ -209,6 +213,8 @@ function buildRecord() {
       && capabilityEvidence?.activation?.activationApproved === true
       && capabilityEvidence?.audit?.ok === true
       && capabilityEvidence?.audit?.reconciliation?.reconciled === true,
+    fixedRegistrySafetyCoverage: capabilityEvidence?.fixedRegistrySafetyCoverage?.status === "ready-fixed-registry-safety-coverage"
+      && list(capabilityEvidence?.fixedRegistrySafetyCoverage?.coveredFailureModes).length === 7,
     permissions: list(capabilityEvidence?.safety?.write).length === 0
       && list(capabilityEvidence?.safety?.network).length === 0
       && list(capabilityEvidence?.safety?.secrets).length === 0,
@@ -243,7 +249,7 @@ function buildRecord() {
     scope: {
       repositories: ["SEIS"],
       selectedCapability: CANDIDATE,
-      outcome: "One public repository package now reports bounded, derived coverage across four fixed public SEIS Repo registry projections. The first 30 Wave 5 steps are implemented and validated locally; step 31 starts the next resilience-review tranche. No personal marketplace, external write, network, secret, installation, runtime, provider, deployment, signing, or release claim is authorized.",
+      outcome: "One public repository package now reports bounded, derived coverage across four fixed public SEIS Repo registry projections. The first 40 Wave 5 steps are implemented and validated locally; step 41 starts the coverage-interpretation and resilience-review tranche. No personal marketplace, external write, network, secret, installation, runtime, provider, deployment, signing, or release claim is authorized.",
       entryRule: "Wave 4 closed with a historical candidate review, the separate Wave 5 activation decision records current user authority and bounded scope, and the active package has current public source, catalog, matrix, marketplace, evidence, and deny-by-default permission projections.",
     },
     nonGoals: [
@@ -286,20 +292,27 @@ function buildRecord() {
       round: index + 1,
       name: round.name,
       objective: round.objective,
-      status: index === 0 ? "completed" : index === 1 ? "in-progress" : "planned",
+      status: index < COMPLETED_ROUND_COUNT ? "completed" : index === COMPLETED_ROUND_COUNT ? "in-progress" : "planned",
       steps: Array.from({ length: 20 }, (_, taskIndex) => (index * 20) + taskIndex + 1),
     })),
     steps,
     progress: {
-      completedStepCount: 30,
-      plannedStepCount: 69,
-      inProgressStepNumbers: [31],
-      completedRoundCount: 1,
-      nextStepNumber: 31,
+      completedStepCount: COMPLETED_STEP_COUNT,
+      plannedStepCount: PLANNED_STEP_COUNT,
+      inProgressStepNumbers: [NEXT_STEP_NUMBER],
+      completedRoundCount: COMPLETED_ROUND_COUNT,
+      nextStepNumber: NEXT_STEP_NUMBER,
       firstDeliveryTranche: {
         totalSteps: 30,
         status: "completed-repository-local",
         scope: "activation, fixed-registry runtime, tests, public projections, evidence, and validation",
+      },
+      secondDeliveryTranche: {
+        totalSteps: 20,
+        completedSteps: 20,
+        stepRange: "21-40",
+        status: "completed-repository-local",
+        scope: "coverage implementation, public registry projections, evidence generation, structural validation, focused checks, and full repository-local validation",
       },
     },
     evidence: PATHS,
@@ -339,7 +352,7 @@ function buildRecord() {
 
 function validationFor(number) {
   if (number <= 20) return "focused runtime, MCP, and fixture test";
-  if (number <= 30) return "public projection, evidence, and repository validation";
+  if (number <= 40) return "public projection, structural, evidence, and repository validation";
   return "future evidence required before completion";
 }
 
@@ -348,8 +361,9 @@ function validateRecord(record) {
   assert(record.wave?.number === 5 && record.wave?.totalSteps === 100 && record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20, "wave shape is invalid");
   assert(record.scope?.selectedCapability === CANDIDATE && record.activationGate?.status === "implemented-repository-local" && record.activationGate?.implementationStarted === true && record.activationGate?.candidatePackageExists === true && record.activationGate?.candidatePublicCardExists === true && record.activationGate?.publicReleaseApproved === false, "activation gate is invalid");
   assert(list(record.rounds).length === 5 && list(record.steps).length === 100 && record.steps.every((step, index) => step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && typeof step?.title === "string" && step.title.length > 0), "step plan is invalid");
-  assert(record.steps.filter((step) => step.status === "completed").length === 30 && list(record.steps.filter((step) => step.status === "in-progress")).map((step) => step.number).join(",") === "31" && record.steps.filter((step) => step.status === "planned").length === 69, "step status plan is invalid");
-  assert(record.progress?.completedStepCount === 30 && record.progress?.plannedStepCount === 69 && list(record.progress?.inProgressStepNumbers).join(",") === "31" && record.progress?.completedRoundCount === 1 && record.progress?.nextStepNumber === 31 && record.progress?.firstDeliveryTranche?.totalSteps === 30 && record.progress?.firstDeliveryTranche?.status === "completed-repository-local", "progress is invalid");
+  assert(record.steps.filter((step) => step.status === "completed").length === COMPLETED_STEP_COUNT && list(record.steps.filter((step) => step.status === "in-progress")).map((step) => step.number).join(",") === String(NEXT_STEP_NUMBER) && record.steps.filter((step) => step.status === "planned").length === PLANNED_STEP_COUNT, "step status plan is invalid");
+  assert(list(record.rounds).slice(0, COMPLETED_ROUND_COUNT).every((round) => round?.status === "completed") && record.rounds?.[COMPLETED_ROUND_COUNT]?.status === "in-progress", "round status plan is invalid");
+  assert(record.progress?.completedStepCount === COMPLETED_STEP_COUNT && record.progress?.plannedStepCount === PLANNED_STEP_COUNT && list(record.progress?.inProgressStepNumbers).join(",") === String(NEXT_STEP_NUMBER) && record.progress?.completedRoundCount === COMPLETED_ROUND_COUNT && record.progress?.nextStepNumber === NEXT_STEP_NUMBER && record.progress?.firstDeliveryTranche?.totalSteps === 30 && record.progress?.firstDeliveryTranche?.status === "completed-repository-local" && record.progress?.secondDeliveryTranche?.stepRange === "21-40" && record.progress?.secondDeliveryTranche?.status === "completed-repository-local", "progress is invalid");
   assert(Object.values(record.checks || {}).every(Boolean), "required Wave 5 checks are not current");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.protectedDefaultBranchWrites === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(Object.values(record.externalClaims || {}).every((value) => value === false), "external claims must remain false");
