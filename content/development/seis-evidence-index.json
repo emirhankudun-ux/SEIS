@@ -4,7 +4,7 @@
   "goalId": "SEIS-GOAL-021",
   "backlogId": "SEIS-BL-021",
   "generatedAt": "2026-07-21",
-  "status": "active-public-evidence-index",
+  "status": "completed-public-evidence-index",
   "purpose": "Summarize bounded Wave 1 public marketplace, release, program, and recorded-attention evidence without returning raw records or creating a live installation, provider, GitHub, publication, deployment, or release claim.",
   "capabilityDecision": {
     "id": "seis-public-plugin-wave-1-capability-decision",
@@ -44,10 +44,8 @@
     "recordedAttentionContractIds": [
       "ui-state-contract"
     ],
-    "completedWaveStepCount": 80,
-    "inProgressWaveStepNumbers": [
-      81
-    ]
+    "completedWaveStepCount": 100,
+    "inProgressWaveStepNumbers": []
   },
   "checks": [
     {
@@ -75,7 +73,7 @@
       "observed": true
     },
     {
-      "id": "wave-program-progress",
+      "id": "wave-program-state",
       "observed": true
     }
   ],

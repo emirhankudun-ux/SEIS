@@ -23,6 +23,8 @@ test("SEIS Evidence Index summarizes checked-in public Wave 1 evidence without l
   assert.equal(result.summary.publicCardCount, result.summary.expectedCardCount);
   assert.equal(result.summary.applicationPluginCount > 0, true);
   assert.equal(result.summary.recordedAttentionContractIds.includes("ui-state-contract"), true);
+  assert.equal(result.summary.completedWaveStepCount, 100);
+  assert.deepEqual(result.summary.inProgressWaveStepNumbers, []);
   assert.deepEqual(result.permissions.write, []);
   assert.deepEqual(result.permissions.network, []);
   assert.deepEqual(result.permissions.secrets, []);

@@ -160,7 +160,7 @@ function buildRecord() {
   assert(initialProgram?.id === "seis-public-plugin-expansion-program", "initial program id is invalid");
   assert(initialProgram?.status === "completed", "initial 30-step program must be completed");
   assert(initialProgram?.steps?.length === 30 && initialProgram.steps.every((step) => step.status === "completed"), "initial program evidence is incomplete");
-  assert(initialProgram?.nextWaves?.[0]?.status === "in-progress", "Wave 1 must be active in the initial program");
+  assert(initialProgram?.nextWaves?.[0]?.status === "completed", "Wave 1 must be completed in the initial program");
   assert(initialProgram?.nextWaves?.[0]?.programId === "seis-public-plugin-wave-1-program", "Wave 1 program linkage is invalid");
 
   const steps = ROUND_DEFINITIONS.flatMap((round, roundIndex) => round.tasks.map((title, taskIndex) => {
@@ -169,7 +169,7 @@ function buildRecord() {
       number,
       round: roundIndex + 1,
       title,
-      status: number <= 80 ? "completed" : number === 81 ? "in-progress" : "planned",
+      status: "completed",
       validation: validationFor(number),
     };
   }));
@@ -178,7 +178,7 @@ function buildRecord() {
     id: "seis-public-plugin-wave-1-program",
     goalId: "SEIS-GOAL-021",
     parentProgramId: initialProgram.id,
-    status: "in-progress",
+    status: "completed",
     createdAt: "2026-07-21",
     updatedAt: "2026-07-21",
     wave: {
@@ -219,7 +219,7 @@ function buildRecord() {
       name: round.name,
       objective: round.objective,
       steps: Array.from({ length: 20 }, (_, taskIndex) => (index * 20) + taskIndex + 1),
-      status: index <= 3 ? "completed" : index === 4 ? "in-progress" : "planned",
+      status: "completed",
     })),
     steps,
     qualityGates: {
@@ -232,7 +232,8 @@ function buildRecord() {
     },
     nextWaveGate: {
       required: true,
-      rule: "Wave 2 remains not planned until Wave 1 has current validation, a scope review, and a risk review.",
+      handoffEvidencePath: "content/development/seis-public-plugin-wave-1-handoff.json",
+      rule: "Wave 2 is planned only after Wave 1 has current validation, a scope review, and a risk review; its implementation remains separately scoped.",
     },
   };
   validateRecord(record);
@@ -251,7 +252,7 @@ function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-1-program", "program id is invalid");
   assert(record.goalId === "SEIS-GOAL-021", "goal linkage is invalid");
   assert(record.parentProgramId === "seis-public-plugin-expansion-program", "parent program linkage is invalid");
-  assert(record.status === "in-progress", "Wave 1 must remain in progress");
+  assert(record.status === "completed", "Wave 1 must be completed only after the release-quality handoff");
   assert(record.wave?.number === 1 && record.wave?.totalSteps === 100, "Wave 1 must contain 100 steps");
   assert(record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20, "Wave 1 must contain five rounds of twenty");
   assert(record.executionBoundary?.publicMarketplace === "seis-repo", "Wave 1 must target the public SEIS Repo marketplace");
@@ -272,10 +273,10 @@ function validateRecord(record) {
     assert(round?.round === index + 1, `round ${index + 1} is invalid`);
     assert(Array.isArray(round?.steps) && round.steps.length === 20, `round ${index + 1} must contain twenty steps`);
   }
-  assert(record.steps.filter((step) => step.status === "completed").length === 80, "Round 4 completion count is invalid");
-  assert(record.steps.filter((step) => step.status === "in-progress").length === 1, "exactly one Wave 1 step must be in progress");
-  assert(record.steps[80]?.status === "in-progress", "step 81 must start Round 5");
-  assert(record.rounds[0]?.status === "completed" && record.rounds[1]?.status === "completed" && record.rounds[2]?.status === "completed" && record.rounds[3]?.status === "completed" && record.rounds[4]?.status === "in-progress", "Wave 1 round status is invalid");
+  assert(record.steps.filter((step) => step.status === "completed").length === 100, "Wave 1 completion count is invalid");
+  assert(record.steps.filter((step) => step.status === "in-progress").length === 0, "Wave 1 must not retain an in-progress step after handoff");
+  assert(record.rounds.every((round) => round.status === "completed"), "all Wave 1 rounds must be completed");
+  assert(record.nextWaveGate?.handoffEvidencePath === "content/development/seis-public-plugin-wave-1-handoff.json", "Wave 1 handoff evidence path is invalid");
   assert(Array.isArray(record.nonGoals) && record.nonGoals.length >= 4, "Wave 1 non-goals are incomplete");
   assert(!/(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m.test(JSON.stringify(record)), "record must not contain machine-specific paths");
 }

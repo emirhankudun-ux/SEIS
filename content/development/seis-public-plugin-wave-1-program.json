@@ -3,7 +3,7 @@
   "id": "seis-public-plugin-wave-1-program",
   "goalId": "SEIS-GOAL-021",
   "parentProgramId": "seis-public-plugin-expansion-program",
-  "status": "in-progress",
+  "status": "completed",
   "createdAt": "2026-07-21",
   "updatedAt": "2026-07-21",
   "wave": {
@@ -180,7 +180,7 @@
         99,
         100
       ],
-      "status": "in-progress"
+      "status": "completed"
     }
   ],
   "steps": [
@@ -748,140 +748,140 @@
       "number": 81,
       "round": 5,
       "title": "Run source, catalog, and matrix regressions.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 82,
       "round": 5,
       "title": "Run UI-state and focus-navigation regressions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 83,
       "round": 5,
       "title": "Run project-manifest and integration regressions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 84,
       "round": 5,
       "title": "Run public marketplace and install-state regressions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 85,
       "round": 5,
       "title": "Run lifecycle, provenance, and fresh-task regressions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 86,
       "round": 5,
       "title": "Run unified suite and AI Core registry regressions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 87,
       "round": 5,
       "title": "Run baseline SEIS web checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 88,
       "round": 5,
       "title": "Run Wave 1 tracker validation.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 89,
       "round": 5,
       "title": "Review documentation, registry, and count drift.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 90,
       "round": 5,
       "title": "Review release-readiness evidence if plugin source changed.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 91,
       "round": 5,
       "title": "Review diff for whitespace and generated-artifact consistency.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 92,
       "round": 5,
       "title": "Run public-safe boundary checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 93,
       "round": 5,
       "title": "Inspect worktree and staged scope.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 94,
       "round": 5,
       "title": "Prepare a focused local commit.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 95,
       "round": 5,
       "title": "Push the current feature branch when authorized.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 96,
       "round": 5,
       "title": "Verify the remote feature reference.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 97,
       "round": 5,
       "title": "Record exact validation evidence and skipped checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 98,
       "round": 5,
       "title": "Record risk, rollback, and follow-up work.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 99,
       "round": 5,
       "title": "Mark Wave 1 complete only when all evidence is current.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
       "number": 100,
       "round": 5,
       "title": "Run a fresh scope and risk review before activating Wave 2.",
-      "status": "planned",
+      "status": "completed",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     }
   ],
@@ -895,6 +895,7 @@
   },
   "nextWaveGate": {
     "required": true,
-    "rule": "Wave 2 remains not planned until Wave 1 has current validation, a scope review, and a risk review."
+    "handoffEvidencePath": "content/development/seis-public-plugin-wave-1-handoff.json",
+    "rule": "Wave 2 is planned only after Wave 1 has current validation, a scope review, and a risk review; its implementation remains separately scoped."
   }
 }

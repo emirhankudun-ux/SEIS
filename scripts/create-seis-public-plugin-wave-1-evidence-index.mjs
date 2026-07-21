@@ -144,8 +144,8 @@ function buildRecord() {
     },
     {
       id: "wave-1-tracker",
-      state: waveProgram.status === "in-progress" && completedStepCount(waveProgram) === 80 && inProgressStepNumbers(waveProgram).join(",") === "81" ? "ready" : "attention",
-      summary: "Wave 1 records the first four rounds as complete and starts its bounded release-quality handoff at step 81.",
+      state: waveProgram.status === "completed" && completedStepCount(waveProgram) === 100 && inProgressStepNumbers(waveProgram).length === 0 ? "ready" : "attention",
+      summary: "Wave 1 records all five rounds as complete after its bounded release-quality handoff.",
       evidencePaths: [PATHS.waveProgram],
     },
   ];
@@ -168,11 +168,11 @@ function buildRecord() {
     id: "seis-public-plugin-wave-1-evidence-index",
     goalId: "SEIS-GOAL-021",
     generatedAt: "2026-07-21",
-    status: "active-repo-local-evidence-index",
+    status: "completed-repo-local-evidence-index",
     scope: {
       programId: waveProgram.id,
       wave: 1,
-      round: 4,
+      round: 5,
       marketplace: "seis-repo",
       publicAudience: "everyone",
       sourceOnly: true,
@@ -236,8 +236,8 @@ function buildRecord() {
 function validateRecord(record, context) {
   assert(record.id === "seis-public-plugin-wave-1-evidence-index", "record id is invalid");
   assert(record.goalId === "SEIS-GOAL-021", "goal linkage is invalid");
-  assert(record.status === "active-repo-local-evidence-index", "record status is invalid");
-  assert(record.scope?.programId === "seis-public-plugin-wave-1-program" && record.scope?.wave === 1 && record.scope?.round === 4, "Wave 1 scope is invalid");
+  assert(record.status === "completed-repo-local-evidence-index", "record status is invalid");
+  assert(record.scope?.programId === "seis-public-plugin-wave-1-program" && record.scope?.wave === 1 && record.scope?.round === 5, "Wave 1 scope is invalid");
   assert(record.marketplace?.name === "seis-repo" && record.marketplace?.displayName === "SEIS Repo", "public marketplace identity is invalid");
   assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.expectedCardCount === EXPECTED_PUBLIC_CARD_COUNT, "public marketplace count is invalid");
   assert(record.marketplace?.canonicalOrchestratorCount === CANONICAL_ORCHESTRATOR_COUNT && record.marketplace?.migratedRootPluginCount === MIGRATED_ROOT_PLUGIN_COUNT && record.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.marketplace?.topicPluginCount === TOPIC_PLUGIN_COUNT, "public marketplace family counts are invalid");

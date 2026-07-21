@@ -3,11 +3,11 @@
   "id": "seis-public-plugin-wave-1-evidence-index",
   "goalId": "SEIS-GOAL-021",
   "generatedAt": "2026-07-21",
-  "status": "active-repo-local-evidence-index",
+  "status": "completed-repo-local-evidence-index",
   "scope": {
     "programId": "seis-public-plugin-wave-1-program",
     "wave": 1,
-    "round": 4,
+    "round": 5,
     "marketplace": "seis-repo",
     "publicAudience": "everyone",
     "sourceOnly": true
@@ -105,7 +105,7 @@
     {
       "id": "wave-1-tracker",
       "state": "ready",
-      "summary": "Wave 1 records the first four rounds as complete and starts its bounded release-quality handoff at step 81.",
+      "summary": "Wave 1 records all five rounds as complete after its bounded release-quality handoff.",
       "evidencePaths": [
         "content/development/seis-public-plugin-wave-1-program.json"
       ]

@@ -101,8 +101,8 @@
     {"number": 30, "round": 5, "title": "Publish program report and plan five 100-step waves", "status": "completed", "validation": "program validator and final report"}
   ],
   "nextWaves": [
-    {"wave": 1, "steps": 100, "status": "in-progress", "programId": "seis-public-plugin-wave-1-program", "entryCriteria": "All 30 initial steps have current evidence, the user requested continuation, and a current scope and risk review selected the Command Center UI-state boundary."},
-    {"wave": 2, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 1 has current evidence and a scope review."},
+    {"wave": 1, "steps": 100, "status": "completed", "programId": "seis-public-plugin-wave-1-program", "handoffEvidencePath": "content/development/seis-public-plugin-wave-1-handoff.json", "entryCriteria": "All 30 initial steps had current evidence, the user requested continuation, and the completed Wave 1 scope and risk review selected bounded public source work."},
+    {"wave": 2, "steps": 100, "status": "planned", "scopeRiskReviewPath": "content/development/seis-public-plugin-wave-1-handoff.json", "entryCriteria": "Wave 1 has current validation, a completed repository-local handoff, and a fresh scope and risk review. Wave 2 remains separately scoped before implementation."},
     {"wave": 3, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 2 has current evidence and a scope review."},
     {"wave": 4, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 3 has current evidence and a scope review."},
     {"wave": 5, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 4 has current evidence and a scope review."}

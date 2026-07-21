@@ -60,20 +60,21 @@ written.
 
 ## Next Five Waves
 
-Wave 1 is active because the owner requested continuation and a fresh
-portfolio-gap audit selected the Command Center UI-state boundary. Its exact
-100-step record is
-`content/development/seis-public-plugin-wave-1-program.json`; it starts by
-closing static, no-key source gaps without claiming a live provider or runtime
-transition. Waves 2–5 remain *not planned* until the preceding wave has current
-evidence, scope review, and risk review. After Wave 5, repeat the cadence-design
-review before defining a new five-wave sequence; continuation must remain
-evidence-led, reversible, and delivered through the current GitHub feature
-branch rather than claimed as background execution.
+Wave 1 is completed with a current repository-local handoff at
+`content/development/seis-public-plugin-wave-1-handoff.json`. It closed bounded
+static, no-key source gaps and added one public evidence package without
+claiming a live provider or runtime transition. Wave 2 is now *planned*, not
+implemented: it requires its own 100-step record and candidate-overlap review
+before any new package is scaffolded. Waves 3–5 remain *not planned* until the
+preceding wave has current evidence, scope review, and risk review. After Wave
+5, repeat the cadence-design review before defining a new five-wave sequence;
+continuation must remain evidence-led, reversible, and delivered through the
+current GitHub feature branch rather than claimed as background execution.
 
 ## Completion Rule
 
 Step 30 is a planning/reporting boundary, not automatic permission for the
-next 500 steps. It creates five *not-planned* 100-step wave placeholders. A
-new wave requires a fresh portfolio audit, acceptance criteria, validation
-plan, risk review, and current user authority before implementation starts.
+next 500 steps. Wave 1 is complete and Wave 2 is only *planned* after its
+handoff review. A new implementation wave still requires a fresh portfolio
+audit, acceptance criteria, validation plan, risk review, and current user
+authority before implementation starts.

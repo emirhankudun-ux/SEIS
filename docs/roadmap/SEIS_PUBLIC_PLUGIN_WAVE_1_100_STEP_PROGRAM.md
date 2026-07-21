@@ -2,7 +2,7 @@
 
 **Goal:** `SEIS-GOAL-021`
 
-**Status:** In progress
+**Status:** Completed repository-local handoff
 
 **Scope:** Public `SEIS Repo` marketplace and Command Center source only
 
@@ -29,12 +29,13 @@ rate-limited, provider-failed, and approval-required behavior.
 | 2 | 21–40 | Interaction and recovery semantics | Completed in the second Wave 1 checkpoint |
 | 3 | 41–60 | Public evidence and contract clarity | Completed in the third Wave 1 checkpoint |
 | 4 | 61–80 | Next capability selection | Completed with the public `seis-evidence-index` package |
-| 5 | 81–100 | Release-quality handoff | In progress |
+| 5 | 81–100 | Release-quality handoff | Completed with current regression and handoff evidence |
 
 ## Current Checkpoint
 
 Rounds 1–3 create an explicit, accessible Command Center panel for the four
-state boundaries, correct the visible app-plugin filter to 70 packages, bind
+state boundaries, correct the visible app-plugin filter to its 70-package
+baseline, bind
 semantic, focus, no-provider, no-storage, and filter-isolation source evidence
 to generated records, and add a deterministic Wave 1 evidence index. The state
 copy is deliberately no-key: it distinguishes catalog fallback, reduced static
@@ -48,7 +49,10 @@ Round 4 audits overlap before adding one package, promotes the former plan-only
 bounded local MCP surface and deterministic fixtures, and records its scope,
 non-goals, rollback, public-only placement, and no-personal/no-network/no-write
 boundary. The current contract is 71 app-owned public packages and 377 public
-`SEIS Repo` cards. It remains local evidence only: no external installation,
+`SEIS Repo` cards. Round 5 reruns the source, catalog, matrix, UI-state, focus,
+manifest, integration, lifecycle, provenance, fresh-task, unified-suite,
+registry, and baseline-web checks; it then records the focused feature-branch
+handoff. It remains local evidence only: no external installation,
 provider, publication, deployment, or public-release approval is claimed.
 
 The machine-readable 100-step source of truth is
@@ -62,9 +66,18 @@ boundary, generated evidence safety scan, and known desktop UI-state gap in one
 read-only record. Validate it with
 `npm run check:seis-public-plugin-wave-1-evidence-index`.
 
+The completed release-quality handoff is
+`content/development/seis-public-plugin-wave-1-handoff.json`. It records the
+current validation contract, known attention state, skipped external checks,
+risk, rollback, and the Wave 2 planning gate. Validate it with
+`npm run check:seis-public-plugin-wave-1-handoff`.
+
 ## Wave 2 Gate
 
-Portfolio Waves 2 through 5 remain unplanned until Wave 1 reaches a current,
-validated handoff and receives a fresh scope and risk review. This keeps the
-requested ongoing cadence evidence-led and reversible rather than turning it
-into claimed autonomous background execution.
+Wave 2 is planned because Wave 1 now has a current, validated handoff and a
+fresh scope and risk review. No Wave 2 implementation has begun: a separate
+100-step record and candidate-overlap review are required before another public
+package is created. Waves 3 through 5 remain unplanned until their preceding
+wave passes the same gate. This keeps the requested ongoing cadence evidence-led
+and reversible rather than turning it into claimed autonomous background
+execution.

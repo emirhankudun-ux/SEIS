@@ -46,7 +46,7 @@ function buildRecord() {
     goalId: "SEIS-GOAL-021",
     backlogId: "SEIS-BL-021",
     generatedAt: "2026-07-21",
-    status: "active-public-evidence-index",
+    status: "completed-public-evidence-index",
     purpose: "Summarize bounded Wave 1 public marketplace, release, program, and recorded-attention evidence without returning raw records or creating a live installation, provider, GitHub, publication, deployment, or release claim.",
     capabilityDecision: {
       id: decision.id,
@@ -97,6 +97,7 @@ function validateRecord(record, release) {
   assert(record.goalId === "SEIS-GOAL-021" && record.backlogId === "SEIS-BL-021", "goal linkage is invalid");
   assert(record.plugin?.marketplaceName === "seis-repo" && record.plugin?.marketplaceDisplayName === "SEIS Repo", "marketplace identity is invalid");
   assert(record.plugin?.releaseLabel === release.label && record.plugin?.releaseSemver === release.semver, "release metadata is invalid");
+  assert(record.status === "completed-public-evidence-index", "evidence record status is invalid");
   assert(record.plugin?.implementationState === "functional-local-demo", "implementation state is invalid");
   assert(record.plugin?.publicAudience === "everyone" && record.plugin?.publicMarketplace === true, "public distribution contract is invalid");
   assert(record.summary?.publicCardCount === record.summary?.expectedCardCount, "public marketplace evidence is inconsistent");

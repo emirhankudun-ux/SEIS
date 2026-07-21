@@ -62,7 +62,10 @@ export function auditEvidenceIndex(rootPath, options = {}) {
 
   if (program) {
     addCheck(checks, findings, "wave-program-id", program.id === "seis-public-plugin-wave-1-program");
-    addCheck(checks, findings, "wave-program-progress", program.status === "in-progress" && Array.isArray(program.steps) && program.steps.length === 100);
+    const steps = Array.isArray(program.steps) ? program.steps : [];
+    const activeProgram = program.status === "in-progress" && steps.length === 100;
+    const completedProgram = program.status === "completed" && steps.length === 100 && steps.every((step) => step?.status === "completed");
+    addCheck(checks, findings, "wave-program-state", activeProgram || completedProgram);
   }
 
   const serializedInputs = [evidence, program].filter(Boolean).map((record) => JSON.stringify(record)).join("\n");

@@ -6,7 +6,9 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const recordPath = path.join(root, "content", "development", "seis-public-plugin-expansion-program.json");
+const handoffPath = path.join(root, "content", "development", "seis-public-plugin-wave-1-handoff.json");
 const record = JSON.parse(fs.readFileSync(recordPath, "utf8"));
+const handoff = fs.existsSync(handoffPath) ? JSON.parse(fs.readFileSync(handoffPath, "utf8")) : null;
 const failures = [];
 
 function ensure(condition, message) {
@@ -46,8 +48,13 @@ for (let index = 0; index < 5; index += 1) {
   ensure(Array.isArray(round?.steps) && round.steps.length === 6, `round ${index + 1} must contain six step references`);
   ensure(wave?.wave === index + 1 && wave?.steps === 100, `wave ${index + 1} must contain 100 steps`);
   if (index === 0) {
-    ensure(wave?.status === "in-progress", "wave 1 must be active after its scoped continuation review");
+    ensure(wave?.status === "completed", "wave 1 must be completed after its release-quality handoff");
     ensure(wave?.programId === "seis-public-plugin-wave-1-program", "wave 1 must identify its 100-step program");
+    ensure(wave?.handoffEvidencePath === "content/development/seis-public-plugin-wave-1-handoff.json", "wave 1 must identify its handoff evidence");
+    ensure(handoff?.id === "seis-public-plugin-wave-1-handoff" && handoff?.status === "completed-repository-local-handoff", "wave 1 handoff evidence is invalid");
+  } else if (index === 1) {
+    ensure(wave?.status === "planned", "wave 2 must be planned only after the Wave 1 scope and risk review");
+    ensure(wave?.scopeRiskReviewPath === "content/development/seis-public-plugin-wave-1-handoff.json", "wave 2 must identify its scope and risk review");
   } else {
     ensure(wave?.status === "not-planned", `wave ${index + 1} must remain not-planned until its review`);
   }
