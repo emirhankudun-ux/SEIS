@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-core-plugin-change-evidence",
   "goalId": "SEIS-GOAL-021",
-  "baseCommit": "c28f375069c53ed5eb263a7c1f3025361509bab5",
+  "baseCommit": "c62d059898190f943802a11eb66ad35659e31d50",
   "generatedAt": "2026-07-15",
   "scope": {
     "application": "apps/seis-core",
@@ -29,31 +29,73 @@
     ]
   },
   "threshold": 500,
-  "codeLinesAdded": 275,
-  "codeLinesRemoved": 10,
-  "codeLinesChanged": 285,
-  "eligible": false,
+  "codeLinesAdded": 785,
+  "codeLinesRemoved": 26,
+  "codeLinesChanged": 811,
+  "eligible": true,
   "files": [
     {
-      "path": "scripts/create-seis-public-plugin-wave-2-follow-up-decision.mjs",
-      "added": 220,
+      "path": "scripts/create-seis-public-plugin-wave-3-program.mjs",
+      "added": 338,
       "removed": 0,
       "state": "untracked",
-      "changed": 220
+      "changed": 338
     },
     {
-      "path": "plugins/seis-core/test/apple-native-follow-up-decision.test.mjs",
-      "added": 35,
+      "path": "scripts/create-seis-public-plugin-wave-2-handoff.mjs",
+      "added": 272,
       "removed": 0,
       "state": "untracked",
-      "changed": 35
+      "changed": 272
     },
     {
       "path": "scripts/create-seis-public-plugin-wave-2-program.mjs",
-      "added": 20,
-      "removed": 10,
+      "added": 46,
+      "removed": 14,
       "state": "tracked-diff",
-      "changed": 30
+      "changed": 60
+    },
+    {
+      "path": "plugins/seis-core/test/apple-native-wave-2-handoff.test.mjs",
+      "added": 43,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 43
+    },
+    {
+      "path": "plugins/seis-core/test/public-plugin-wave-3-program.test.mjs",
+      "added": 39,
+      "removed": 0,
+      "state": "untracked",
+      "changed": 39
+    },
+    {
+      "path": "scripts/create-seis-public-plugin-wave-1-handoff.mjs",
+      "added": 26,
+      "removed": 7,
+      "state": "tracked-diff",
+      "changed": 33
+    },
+    {
+      "path": "scripts/check-seis-public-plugin-expansion-program.mjs",
+      "added": 15,
+      "removed": 3,
+      "state": "tracked-diff",
+      "changed": 18
+    },
+    {
+      "path": "scripts/create-seis-public-plugin-wave-2-distribution-review.mjs",
+      "added": 5,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 6
+    },
+    {
+      "path": "scripts/create-seis-public-plugin-wave-2-capability-decision.mjs",
+      "added": 1,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 2
     }
   ]
 }

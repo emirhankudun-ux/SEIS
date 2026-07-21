@@ -40,5 +40,6 @@ Representative current checks:
 
 ## Next Decision
 
-Wave 2 is planned, not implemented. It needs a separate 100-step program and
-candidate-overlap review before another public plugin is added.
+Wave 2 completed its separate 100-step program and repository-local handoff.
+Wave 3 is planned, but it has no selected capability or added public card: it
+must first complete a new discovery and overlap decision using current evidence.

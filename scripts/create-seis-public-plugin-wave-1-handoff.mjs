@@ -19,6 +19,8 @@ const PATHS = Object.freeze({
   capabilityDecision: "content/development/seis-public-plugin-wave-1-capability-decision.json",
   wave2Program: "content/development/seis-public-plugin-wave-2-program.json",
   wave2CapabilityDecision: "content/development/seis-public-plugin-wave-2-capability-decision.json",
+  wave2Handoff: "content/development/seis-public-plugin-wave-2-handoff.json",
+  wave3Program: "content/development/seis-public-plugin-wave-3-program.json",
   lifecycle: "content/development/seis-public-plugin-lifecycle.json",
   securityReview: "content/development/seis-public-plugin-security-provenance-review.json",
   freshTaskReload: "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
@@ -58,6 +60,8 @@ function buildRecord() {
   const capabilityDecision = readJson(PATHS.capabilityDecision);
   const wave2Program = readJson(PATHS.wave2Program);
   const wave2CapabilityDecision = readJson(PATHS.wave2CapabilityDecision);
+  const wave2Handoff = readJson(PATHS.wave2Handoff);
+  const wave3Program = readJson(PATHS.wave3Program);
   const lifecycle = readJson(PATHS.lifecycle);
   const securityReview = readJson(PATHS.securityReview);
   const freshTaskReload = readJson(PATHS.freshTaskReload);
@@ -107,13 +111,18 @@ function buildRecord() {
         && typeof releaseReadiness.decision === "string"
         && ["large-code-promotion-evidence-ready", "continue-code-before-large-code-promotion"].includes(releaseReadiness.decision),
       mcpBoundary: list(mcpPermission.safety?.write).length === 0 && list(mcpPermission.safety?.network).length === 0 && list(mcpPermission.safety?.secrets).length === 0,
-      wave2Activation: wave2Program.id === "seis-public-plugin-wave-2-program"
-        && wave2Program.status === "in-progress"
+      wave2Completion: wave2Program.id === "seis-public-plugin-wave-2-program"
+        && wave2Program.status === "completed"
         && Number.isInteger(wave2Program.progress?.completedStepCount)
-        && wave2Program.progress.completedStepCount >= 20
-        && wave2Program.progress.completedStepCount < 100
+        && wave2Program.progress.completedStepCount === 100
         && wave2CapabilityDecision.id === "seis-public-plugin-wave-2-capability-decision"
-        && wave2CapabilityDecision.decision?.selectedCapability === "seis-apple-native-readiness",
+        && wave2CapabilityDecision.decision?.selectedCapability === "seis-apple-native-readiness"
+        && wave2Handoff.id === "seis-public-plugin-wave-2-handoff"
+        && wave2Handoff.status === "completed-repository-local-handoff",
+      wave3Planning: wave3Program.id === "seis-public-plugin-wave-3-program"
+        && wave3Program.status === "planned"
+        && wave3Program.progress?.completedStepCount === 0
+        && wave3Program.selection?.status === "discovery-required",
     },
     publicBoundary: {
       marketplaceName: capabilityDecision.publicBoundary?.marketplaceName,
@@ -168,8 +177,17 @@ function buildRecord() {
       scopeReviewComplete: true,
       programId: wave2Program.id,
       capabilityDecisionPath: PATHS.wave2CapabilityDecision,
+      handoffPath: PATHS.wave2Handoff,
       completedStepCount: wave2Program.progress?.completedStepCount || 0,
-      activationRule: "Wave 2 is active only for the separately reviewed, bounded public Apple/Swift static-readiness scope; it must retain empty write, network, and secret permissions and cannot claim a native runtime or public release.",
+      completionRule: "Wave 2 completed only after its separately reviewed, bounded public Apple/Swift static-readiness scope retained empty write, network, and secret permissions and recorded no native-runtime or public-release claim.",
+    },
+    plannedContinuation: {
+      number: 3,
+      status: wave3Program.status,
+      programId: wave3Program.id,
+      scopeRiskReviewPath: PATHS.wave2Handoff,
+      selectionStatus: wave3Program.selection?.status || null,
+      activationRule: "Wave 3 remains a discovery-first plan. It cannot select or add a public plugin before a separate non-duplicative capability decision and current validation evidence.",
     },
     inputSafetyScan,
   };
@@ -191,7 +209,8 @@ function validateRecord(record) {
   assert(record.publicBoundary?.publicAudience === "everyone" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false, "public marketplace boundary is invalid");
   assert(record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
   assert(list(record.knownGaps).length === 1 && record.knownGaps[0]?.id === "ui-state-contract", "known attention record is invalid");
-  assert(record.nextWave?.number === 2 && record.nextWave?.status === "in-progress" && record.nextWave?.programId === "seis-public-plugin-wave-2-program" && Number.isInteger(record.nextWave?.completedStepCount) && record.nextWave.completedStepCount >= 20 && record.nextWave.completedStepCount < 100 && record.nextWave?.scopeReviewComplete === true, "Wave 2 scope decision is invalid");
+  assert(record.nextWave?.number === 2 && record.nextWave?.status === "completed" && record.nextWave?.programId === "seis-public-plugin-wave-2-program" && record.nextWave?.handoffPath === PATHS.wave2Handoff && Number.isInteger(record.nextWave?.completedStepCount) && record.nextWave.completedStepCount === 100 && record.nextWave?.scopeReviewComplete === true, "Wave 2 completion decision is invalid");
+  assert(record.plannedContinuation?.number === 3 && record.plannedContinuation?.status === "planned" && record.plannedContinuation?.programId === "seis-public-plugin-wave-3-program" && record.plannedContinuation?.scopeRiskReviewPath === PATHS.wave2Handoff && record.plannedContinuation?.selectionStatus === "discovery-required", "Wave 3 planning decision is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0, "handoff inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "handoff record must not contain machine-specific paths");
 }

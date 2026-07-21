@@ -3,7 +3,7 @@
   "id": "seis-public-plugin-wave-2-program",
   "goalId": "SEIS-GOAL-021",
   "parentProgramId": "seis-public-plugin-expansion-program",
-  "status": "in-progress",
+  "status": "completed",
   "createdAt": "2026-07-21",
   "updatedAt": "2026-07-21",
   "wave": {
@@ -15,6 +15,10 @@
       "initialProgramPath": "content/development/seis-public-plugin-expansion-program.json",
       "wave1HandoffPath": "content/development/seis-public-plugin-wave-1-handoff.json",
       "capabilityDecisionPath": "content/development/seis-public-plugin-wave-2-capability-decision.json"
+    },
+    "completionEvidence": {
+      "handoffPath": "content/development/seis-public-plugin-wave-2-handoff.json",
+      "nextWaveProgramPath": "content/development/seis-public-plugin-wave-3-program.json"
     }
   },
   "scope": {
@@ -26,7 +30,10 @@
       "plugins/seis-core/test/apple-native-readiness.test.mjs",
       "plugins/seis-core/test/apple-native-distribution-review.test.mjs",
       "plugins/seis-core/test/apple-native-follow-up-decision.test.mjs",
+      "plugins/seis-core/test/apple-native-wave-2-handoff.test.mjs",
       "content/development/seis-public-plugin-wave-2-follow-up-decision.json",
+      "content/development/seis-public-plugin-wave-2-handoff.json",
+      "content/development/seis-public-plugin-wave-3-program.json",
       "packages/seis_platform_swift/Package.swift",
       "packages/seis_platform_swift/Sources/SeisPlatformKit",
       "packages/seis_platform_swift/Sources/SeisAppleNativeShell",
@@ -161,7 +168,7 @@
       "round": 5,
       "name": "Wave 2 handoff",
       "objective": "Close the wave only with current evidence, explicit risks, a reversible handoff, and a feature-branch delivery record.",
-      "status": "planned",
+      "status": "completed",
       "steps": [
         81,
         82,
@@ -751,149 +758,149 @@
       "number": 81,
       "round": 5,
       "title": "Run the Wave 2 tracker and capability-decision checks.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "Wave 2 tracker and capability-decision checks"
     },
     {
       "number": 82,
       "round": 5,
       "title": "Run Apple-native readiness generator and focused tests.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "Apple-native readiness generator, focused tests, and plugin-creator validation"
     },
     {
       "number": 83,
       "round": 5,
       "title": "Run plugin-creator structural validation for every Wave 2 package.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "source, catalog, matrix, marketplace, AI Core, lifecycle, provenance, fresh-task, and install-boundary regressions"
     },
     {
       "number": 84,
       "round": 5,
       "title": "Run source, catalog, matrix, marketplace, and unified-suite regressions.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "source, catalog, matrix, marketplace, AI Core, lifecycle, provenance, fresh-task, and install-boundary regressions"
     },
     {
       "number": 85,
       "round": 5,
       "title": "Run AI Core integration and requested-plugin coverage regressions.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "source, catalog, matrix, marketplace, AI Core, lifecycle, provenance, fresh-task, and install-boundary regressions"
     },
     {
       "number": 86,
       "round": 5,
       "title": "Run public lifecycle, provenance, fresh-task, and install-boundary regressions.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "source, catalog, matrix, marketplace, AI Core, lifecycle, provenance, fresh-task, and install-boundary regressions"
     },
     {
       "number": 87,
       "round": 5,
       "title": "Run baseline SEIS repository checks where applicable.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review"
     },
     {
       "number": 88,
       "round": 5,
       "title": "Review generated artifacts for count, release, and terminology drift.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review"
     },
     {
       "number": 89,
       "round": 5,
       "title": "Review source and documentation for personal marketplace references.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review"
     },
     {
       "number": 90,
       "round": 5,
       "title": "Review source and generated evidence for secret-like or machine-specific values.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review"
     },
     {
       "number": 91,
       "round": 5,
       "title": "Review external install, provider, browser, deployment, and release gaps honestly.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review"
     },
     {
       "number": 92,
       "round": 5,
       "title": "Review release-readiness evidence without performing a promotion unless explicitly approved.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review"
     },
     {
       "number": 93,
       "round": 5,
       "title": "Inspect the working tree and diff for unrelated changes.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review"
     },
     {
       "number": 94,
       "round": 5,
       "title": "Run whitespace and focused security boundary checks.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review"
     },
     {
       "number": 95,
       "round": 5,
       "title": "Prepare a focused local commit with goal and Wave 2 context.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "focused feature-branch commit, push, and remote reference verification"
     },
     {
       "number": 96,
       "round": 5,
       "title": "Push only the current feature branch when authorized.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "focused feature-branch commit, push, and remote reference verification"
     },
     {
       "number": 97,
       "round": 5,
       "title": "Verify the remote feature reference when possible.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "focused feature-branch commit, push, and remote reference verification"
     },
     {
       "number": 98,
       "round": 5,
       "title": "Publish a Wave 2 repository-local handoff with risks and rollback.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "Wave 2 handoff and Wave 3 planning evidence"
     },
     {
       "number": 99,
       "round": 5,
       "title": "Plan Wave 3 only after current Wave 2 handoff evidence and scope review.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "Wave 2 handoff and Wave 3 planning evidence"
     },
     {
       "number": 100,
       "round": 5,
       "title": "Mark Wave 2 complete only when all one hundred steps have current evidence.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "Wave 2 handoff and Wave 3 planning evidence"
     }
   ],
   "progress": {
-    "completedStepCount": 80,
-    "plannedStepCount": 20,
+    "completedStepCount": 100,
+    "plannedStepCount": 0,
     "inProgressStepNumbers": [],
-    "completedRoundCount": 4,
-    "nextStepNumber": 81
+    "completedRoundCount": 5,
+    "nextStepNumber": null
   },
   "capability": {
     "decisionId": "seis-public-plugin-wave-2-capability-decision",
@@ -904,6 +911,14 @@
     "resilienceReview": "completed-repository-local-resilience-review",
     "distributionReview": "completed-repository-local-distribution-maintenance-review",
     "followUpDecision": "completed-no-additional-public-plugin-selected"
+  },
+  "completion": {
+    "handoffEvidencePath": "content/development/seis-public-plugin-wave-2-handoff.json",
+    "nextWaveProgramPath": "content/development/seis-public-plugin-wave-3-program.json",
+    "currentEvidenceOnly": true,
+    "externalReleaseClaimed": false,
+    "independentInstallClaimed": false,
+    "swiftPmTestPassClaimed": false
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -922,6 +937,8 @@
     "npm run check:seis-public-plugin-wave-2-capability-decision",
     "npm run check:seis-public-plugin-wave-2-distribution-review",
     "npm run check:seis-public-plugin-wave-2-follow-up-decision",
+    "npm run check:seis-public-plugin-wave-2-handoff",
+    "npm run check:seis-public-plugin-wave-3-program",
     "npm run check:seis-apple-native-readiness",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration",
@@ -941,6 +958,12 @@
       "status": "tracked",
       "description": "Public metadata can drift when app-owned plugin count changes.",
       "mitigation": "Regenerate and validate source, catalog, marketplace, matrix, registry, lifecycle, and project-manifest artifacts before each checkpoint."
+    },
+    {
+      "id": "RISK-W2-003",
+      "status": "tracked",
+      "description": "A local SwiftPM test was interrupted after a no-output observation window and cannot be represented as a successful native test run.",
+      "mitigation": "Preserve the non-claimable state in the follow-up decision and require an approved, controlled local or CI execution before any native-test completion claim."
     }
   ],
   "rollback": {

@@ -11,6 +11,8 @@ const DECISION_PATH = "content/development/seis-public-plugin-wave-2-capability-
 const EVIDENCE_PATH = "content/development/seis-apple-native-readiness.json";
 const DISTRIBUTION_REVIEW_PATH = "content/development/seis-public-plugin-wave-2-distribution-review.json";
 const FOLLOW_UP_DECISION_PATH = "content/development/seis-public-plugin-wave-2-follow-up-decision.json";
+const HANDOFF_PATH = "content/development/seis-public-plugin-wave-2-handoff.json";
+const WAVE_3_PROGRAM_PATH = "content/development/seis-public-plugin-wave-3-program.json";
 const PLUGIN_ROOT = "plugins/seis-core/seis-apple-native-readiness";
 
 const ROUND_DEFINITIONS = Object.freeze([
@@ -98,7 +100,7 @@ const ROUND_DEFINITIONS = Object.freeze([
   {
     name: "Apple-native follow-up selection",
     objective: "Select at most one follow-up only if current evidence shows a non-duplicative gap beyond static readiness.",
-    status: "planned",
+    status: "completed",
     tasks: [
       "Review whether a follow-up needs real SwiftPM validation rather than another metadata audit.",
       "Review whether a platform-specific test can run in the current environment.",
@@ -125,7 +127,7 @@ const ROUND_DEFINITIONS = Object.freeze([
   {
     name: "Wave 2 handoff",
     objective: "Close the wave only with current evidence, explicit risks, a reversible handoff, and a feature-branch delivery record.",
-    status: "planned",
+    status: "completed",
     tasks: [
       "Run the Wave 2 tracker and capability-decision checks.",
       "Run Apple-native readiness generator and focused tests.",
@@ -172,7 +174,7 @@ function buildRecord() {
   const distributionReview = readJson(DISTRIBUTION_REVIEW_PATH);
   const followUpDecision = readJson(FOLLOW_UP_DECISION_PATH);
   assert(initialProgram?.id === "seis-public-plugin-expansion-program" && initialProgram?.status === "completed", "initial program is invalid");
-  assert(initialProgram?.nextWaves?.[1]?.status === "in-progress" && initialProgram?.nextWaves?.[1]?.programId === "seis-public-plugin-wave-2-program", "Wave 2 is not activated in the initial program");
+  assert(initialProgram?.nextWaves?.[1]?.status === "completed" && initialProgram?.nextWaves?.[1]?.programId === "seis-public-plugin-wave-2-program" && initialProgram?.nextWaves?.[1]?.handoffEvidencePath === HANDOFF_PATH, "Wave 2 completion is not recorded in the initial program");
   assert(decision?.decision?.selectedCapability === "seis-apple-native-readiness" && decision?.status === "approved-public-local-implementation", "Wave 2 capability decision is invalid");
   assert(evidence?.id === "seis-apple-native-readiness" && evidence?.status === "completed-public-static-readiness-evidence", "Apple-native readiness evidence is invalid");
   assert(evidence?.resilienceReview?.status === "completed-repository-local-resilience-review", "Apple-native resilience evidence is invalid");
@@ -182,12 +184,12 @@ function buildRecord() {
   assert(fs.existsSync(path.join(ROOT, PLUGIN_ROOT, "runtime", "apple-native-readiness.mjs")), "Wave 2 plugin runtime is missing");
   assert(fs.existsSync(path.join(ROOT, "plugins", "seis-core", "test", "apple-native-readiness.test.mjs")), "Wave 2 plugin test is missing");
 
-  const completedStepCount = 80;
+  const completedStepCount = 100;
   const steps = ROUND_DEFINITIONS.flatMap((round, roundIndex) => round.tasks.map((title, taskIndex) => ({
     number: (roundIndex * 20) + taskIndex + 1,
     round: roundIndex + 1,
     title,
-    status: roundIndex < 4 ? "completed" : "planned",
+    status: "completed",
     validation: validationFor(roundIndex + 1, taskIndex + 1),
   })));
 
@@ -196,7 +198,7 @@ function buildRecord() {
     id: "seis-public-plugin-wave-2-program",
     goalId: "SEIS-GOAL-021",
     parentProgramId: initialProgram.id,
-    status: "in-progress",
+    status: "completed",
     createdAt: "2026-07-21",
     updatedAt: "2026-07-21",
     wave: {
@@ -209,6 +211,10 @@ function buildRecord() {
         wave1HandoffPath: "content/development/seis-public-plugin-wave-1-handoff.json",
         capabilityDecisionPath: DECISION_PATH,
       },
+      completionEvidence: {
+        handoffPath: HANDOFF_PATH,
+        nextWaveProgramPath: WAVE_3_PROGRAM_PATH,
+      },
     },
     scope: {
       repositories: ["SEIS"],
@@ -217,7 +223,10 @@ function buildRecord() {
         "plugins/seis-core/test/apple-native-readiness.test.mjs",
         "plugins/seis-core/test/apple-native-distribution-review.test.mjs",
         "plugins/seis-core/test/apple-native-follow-up-decision.test.mjs",
+        "plugins/seis-core/test/apple-native-wave-2-handoff.test.mjs",
         FOLLOW_UP_DECISION_PATH,
+        HANDOFF_PATH,
+        WAVE_3_PROGRAM_PATH,
         "packages/seis_platform_swift/Package.swift",
         "packages/seis_platform_swift/Sources/SeisPlatformKit",
         "packages/seis_platform_swift/Sources/SeisAppleNativeShell",
@@ -239,16 +248,16 @@ function buildRecord() {
       round: index + 1,
       name: round.name,
       objective: round.objective,
-      status: index < 4 ? "completed" : "planned",
+      status: "completed",
       steps: Array.from({ length: 20 }, (_, taskIndex) => (index * 20) + taskIndex + 1),
     })),
     steps,
     progress: {
       completedStepCount,
-      plannedStepCount: steps.filter((step) => step.status === "planned").length,
+      plannedStepCount: 0,
       inProgressStepNumbers: steps.filter((step) => step.status === "in-progress").map((step) => step.number),
-      completedRoundCount: 4,
-      nextStepNumber: 81,
+      completedRoundCount: 5,
+      nextStepNumber: null,
     },
     capability: {
       decisionId: decision.id,
@@ -259,6 +268,14 @@ function buildRecord() {
       resilienceReview: evidence.resilienceReview?.status || null,
       distributionReview: distributionReview.status || null,
       followUpDecision: followUpDecision.status || null,
+    },
+    completion: {
+      handoffEvidencePath: HANDOFF_PATH,
+      nextWaveProgramPath: WAVE_3_PROGRAM_PATH,
+      currentEvidenceOnly: true,
+      externalReleaseClaimed: false,
+      independentInstallClaimed: false,
+      swiftPmTestPassClaimed: false,
     },
     publicBoundary: {
       marketplaceName: "seis-repo",
@@ -277,6 +294,8 @@ function buildRecord() {
       "npm run check:seis-public-plugin-wave-2-capability-decision",
       "npm run check:seis-public-plugin-wave-2-distribution-review",
       "npm run check:seis-public-plugin-wave-2-follow-up-decision",
+      "npm run check:seis-public-plugin-wave-2-handoff",
+      "npm run check:seis-public-plugin-wave-3-program",
       "npm run check:seis-apple-native-readiness",
       "npm run check:seis-repo-marketplace",
       "npm run check:seis-agent-plugin-integration",
@@ -296,6 +315,12 @@ function buildRecord() {
         status: "tracked",
         description: "Public metadata can drift when app-owned plugin count changes.",
         mitigation: "Regenerate and validate source, catalog, marketplace, matrix, registry, lifecycle, and project-manifest artifacts before each checkpoint.",
+      },
+      {
+        id: "RISK-W2-003",
+        status: "tracked",
+        description: "A local SwiftPM test was interrupted after a no-output observation window and cannot be represented as a successful native test run.",
+        mitigation: "Preserve the non-claimable state in the follow-up decision and require an approved, controlled local or CI execution before any native-test completion claim.",
       },
     ],
     rollback: {
@@ -322,23 +347,30 @@ function validationFor(round, task) {
   if (round === 4 && task <= 8) return "SwiftPM package graph, local tooling, platform-role, and overlap review";
   if (round === 4 && task <= 16) return "no-duplicate decision, public boundary, and focused decision-test review";
   if (round === 4) return "external-validation-gap recording and feature-branch verification";
-  return "current evidence required before completion";
+  if (round === 5 && task === 1) return "Wave 2 tracker and capability-decision checks";
+  if (round === 5 && task === 2) return "Apple-native readiness generator, focused tests, and plugin-creator validation";
+  if (round === 5 && task <= 6) return "source, catalog, matrix, marketplace, AI Core, lifecycle, provenance, fresh-task, and install-boundary regressions";
+  if (round === 5 && task <= 14) return "baseline check, count/terminology, public-boundary, release-gate, worktree, whitespace, and secret-safe review";
+  if (round === 5 && task <= 17) return "focused feature-branch commit, push, and remote reference verification";
+  return "Wave 2 handoff and Wave 3 planning evidence";
 }
 
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-2-program", "record id is invalid");
   assert(record.goalId === "SEIS-GOAL-021" && record.parentProgramId === "seis-public-plugin-expansion-program", "goal linkage is invalid");
-  assert(record.status === "in-progress", "Wave 2 must remain in progress");
+  assert(record.status === "completed", "Wave 2 must be completed only after current evidence");
   assert(record.wave?.number === 2 && record.wave?.totalSteps === 100 && record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20, "Wave 2 cadence is invalid");
   assert(list(record.rounds).length === 5 && list(record.steps).length === 100, "Wave 2 structure is incomplete");
   for (let index = 0; index < 100; index += 1) {
     const step = record.steps[index];
     assert(step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1, `step ${index + 1} is invalid`);
     assert(typeof step?.title === "string" && step.title.length > 0 && typeof step?.validation === "string" && step.validation.length > 0, `step ${index + 1} lacks task metadata`);
-    assert(index < 80 ? step.status === "completed" : step.status === "planned", `step ${index + 1} has an invalid completion state`);
+    assert(step.status === "completed", `step ${index + 1} has an invalid completion state`);
   }
-  assert(record.progress?.completedStepCount === 80 && record.progress?.plannedStepCount === 20 && list(record.progress?.inProgressStepNumbers).length === 0 && record.progress?.completedRoundCount === 4 && record.progress?.nextStepNumber === 81, "Wave 2 progress is invalid");
+  assert(record.progress?.completedStepCount === 100 && record.progress?.plannedStepCount === 0 && list(record.progress?.inProgressStepNumbers).length === 0 && record.progress?.completedRoundCount === 5 && record.progress?.nextStepNumber === null, "Wave 2 progress is invalid");
   assert(record.capability?.selectedCapability === "seis-apple-native-readiness" && record.capability?.classification === "documented-static-readiness-only" && record.capability?.resilienceReview === "completed-repository-local-resilience-review" && record.capability?.distributionReview === "completed-repository-local-distribution-maintenance-review" && record.capability?.followUpDecision === "completed-no-additional-public-plugin-selected", "Wave 2 capability linkage is invalid");
+  assert(record.wave?.completionEvidence?.handoffPath === HANDOFF_PATH && record.wave?.completionEvidence?.nextWaveProgramPath === WAVE_3_PROGRAM_PATH, "Wave 2 completion evidence paths are invalid");
+  assert(record.completion?.handoffEvidencePath === HANDOFF_PATH && record.completion?.nextWaveProgramPath === WAVE_3_PROGRAM_PATH && record.completion?.currentEvidenceOnly === true && record.completion?.externalReleaseClaimed === false && record.completion?.independentInstallClaimed === false && record.completion?.swiftPmTestPassClaimed === false, "Wave 2 completion boundary is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
 }

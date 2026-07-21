@@ -63,25 +63,26 @@ written.
 Wave 1 is completed with a current repository-local handoff at
 `content/development/seis-public-plugin-wave-1-handoff.json`. It closed bounded
 static, no-key source gaps and added one public evidence package without
-claiming a live provider or runtime transition. Wave 2 is now *in progress*
-with its own 100-step record at
+claiming a live provider or runtime transition. Wave 2 is now **completed**
+with its 100-step record at
 `content/development/seis-public-plugin-wave-2-program.json` and a public-only
 candidate decision at
 `content/development/seis-public-plugin-wave-2-capability-decision.json`.
-Its first four completed rounds are limited to a read-only Apple/Swift Package
-readiness audit, its bounded-resilience review (depth/file/text limits, direct
-source-area symlink refusal, focused fixtures, and framed MCP path refusal),
-and a public-distribution maintenance review across source, catalog, matrix,
-registry, suite, permission, lifecycle, provenance, release, and manifest
-records. Round 4 also records a local SwiftPM package-graph inspection and an
-interrupted, non-claimable SwiftPM test attempt, then declines a duplicate
-public card until a bounded completed execution result exists. None of these
-rounds claims a native build, test pass, signing, release, provider, or App
-Store transition. Waves 3–5 remain *not planned* until the preceding
-wave has current evidence, scope review, and risk review. After Wave 5, repeat
-the cadence-design review before defining a new five-wave sequence;
-continuation must remain evidence-led, reversible, and delivered through the
-current GitHub feature branch rather than claimed as background execution.
+Its completed rounds cover the read-only Apple/Swift Package readiness audit,
+its bounded resilience review (depth/file/text limits, direct source-area
+symlink refusal, focused fixtures, and framed MCP path refusal), public
+distribution maintenance, and an explicit decision not to add a duplicate
+follow-up card. The repository-local handoff is
+`content/development/seis-public-plugin-wave-2-handoff.json`. It preserves the
+72-package / 378-card `SEIS Repo` contract and records that the interrupted
+SwiftPM test is not a compiled-Swift or test-pass claim. Wave 3 is now
+**planned**, not active, at
+`content/development/seis-public-plugin-wave-3-program.json`: it begins with
+discovery and a separate non-duplicative capability decision. No Wave 3 public
+card is preselected. Waves 4–5 remain *not planned* until the preceding wave
+has current evidence, scope review, and risk review. Continuation remains
+evidence-led, reversible, and delivered through the current GitHub feature
+branch rather than claimed as background execution.
 
 ## Completion Rule
 

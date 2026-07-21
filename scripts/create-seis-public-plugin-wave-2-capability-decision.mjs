@@ -162,7 +162,7 @@ function validateRecord(record) {
   assert(record.implementation?.implementationState === "functional-local-demo", "implementation state is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
-  assert(record.evidence?.initialProgramId === "seis-public-plugin-expansion-program" && record.evidence?.initialWave2Status === "in-progress", "Wave 2 activation evidence is invalid");
+  assert(record.evidence?.initialProgramId === "seis-public-plugin-expansion-program" && record.evidence?.initialWave2Status === "completed", "Wave 2 completion evidence is invalid");
   assert(record.evidence?.wave1HandoffId === "seis-public-plugin-wave-1-handoff" && record.evidence?.wave1HandoffStatus === "completed-repository-local-handoff", "Wave 1 handoff evidence is invalid");
   assert(record.evidence?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.evidence?.publicCardCount === APP_PLUGIN_EXPANSION_TARGET + 306, "public count evidence is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "record must not contain a machine-specific path");

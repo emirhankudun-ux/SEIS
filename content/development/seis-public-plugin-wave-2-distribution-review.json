@@ -58,7 +58,7 @@
       "securityPublicReleaseAllowed": false,
       "externalProofPublicReleaseAllowed": false,
       "lifecycleReleaseAuthority": "human_owner_required",
-      "releaseReadinessDecision": "continue-code-before-large-code-promotion",
+      "releaseReadinessDecision": "large-code-promotion-evidence-ready",
       "releasePromoted": false
     },
     "manifest": {

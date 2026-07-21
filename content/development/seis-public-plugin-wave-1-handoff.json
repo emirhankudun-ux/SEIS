@@ -30,7 +30,8 @@
     "freshTaskReload": true,
     "releaseReadiness": true,
     "mcpBoundary": true,
-    "wave2Activation": true
+    "wave2Completion": true,
+    "wave3Planning": true
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -58,8 +59,8 @@
   "releaseReadiness": {
     "currentLabel": "0.00000002",
     "currentSemver": "0.0.20",
-    "codeLinesChanged": 285,
-    "decision": "continue-code-before-large-code-promotion",
+    "codeLinesChanged": 811,
+    "decision": "large-code-promotion-evidence-ready",
     "promoted": false
   },
   "risks": [
@@ -83,15 +84,24 @@
   },
   "nextWave": {
     "number": 2,
-    "status": "in-progress",
+    "status": "completed",
     "scopeReviewComplete": true,
     "programId": "seis-public-plugin-wave-2-program",
     "capabilityDecisionPath": "content/development/seis-public-plugin-wave-2-capability-decision.json",
-    "completedStepCount": 80,
-    "activationRule": "Wave 2 is active only for the separately reviewed, bounded public Apple/Swift static-readiness scope; it must retain empty write, network, and secret permissions and cannot claim a native runtime or public release."
+    "handoffPath": "content/development/seis-public-plugin-wave-2-handoff.json",
+    "completedStepCount": 100,
+    "completionRule": "Wave 2 completed only after its separately reviewed, bounded public Apple/Swift static-readiness scope retained empty write, network, and secret permissions and recorded no native-runtime or public-release claim."
+  },
+  "plannedContinuation": {
+    "number": 3,
+    "status": "planned",
+    "programId": "seis-public-plugin-wave-3-program",
+    "scopeRiskReviewPath": "content/development/seis-public-plugin-wave-2-handoff.json",
+    "selectionStatus": "discovery-required",
+    "activationRule": "Wave 3 remains a discovery-first plan. It cannot select or add a public plugin before a separate non-duplicative capability decision and current validation evidence."
   },
   "inputSafetyScan": {
-    "inputCount": 14,
+    "inputCount": 16,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

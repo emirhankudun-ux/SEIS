@@ -80,7 +80,7 @@
   },
   "evidence": {
     "initialProgramId": "seis-public-plugin-expansion-program",
-    "initialWave2Status": "in-progress",
+    "initialWave2Status": "completed",
     "wave1HandoffId": "seis-public-plugin-wave-1-handoff",
     "wave1HandoffStatus": "completed-repository-local-handoff",
     "applicationPluginCount": 72,

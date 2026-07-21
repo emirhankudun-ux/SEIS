@@ -1,0 +1,940 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-3-program",
+  "goalId": "SEIS-GOAL-021",
+  "parentProgramId": "seis-public-plugin-expansion-program",
+  "status": "planned",
+  "maturity": "specification",
+  "createdAt": "2026-07-21",
+  "updatedAt": "2026-07-21",
+  "wave": {
+    "number": 3,
+    "totalSteps": 100,
+    "roundCount": 5,
+    "stepsPerRound": 20,
+    "predecessor": {
+      "programPath": "content/development/seis-public-plugin-wave-2-program.json",
+      "handoffPath": "content/development/seis-public-plugin-wave-2-handoff.json",
+      "requiredProgramStatus": "completed",
+      "requiredHandoffStatus": "completed-repository-local-handoff"
+    }
+  },
+  "scope": {
+    "repositories": [
+      "SEIS"
+    ],
+    "outcome": "Discover and, only if separately justified, deliver one non-duplicative public SEIS Repo capability through bounded repository-local evidence. Planning Wave 3 itself adds no public plugin card and changes no personal or external state.",
+    "entryRule": "Wave 3 cannot move from planned to in-progress until the Wave 2 handoff is current and a separate capability decision records an approved, testable, non-duplicative scope."
+  },
+  "nonGoals": [
+    "Reading or mutating the personal marketplace.",
+    "Creating a public plugin, card, or source scaffold before a Wave 3 capability decision is approved.",
+    "Protected default branch writes, force pushes, destructive repository actions, or background-execution claims.",
+    "Live provider, browser, deployment, native runtime, external installation, signing, App Store, or public-release claims without separate current evidence and authorization."
+  ],
+  "selection": {
+    "status": "discovery-required",
+    "selectedCapability": null,
+    "additionalPublicCardAdded": false,
+    "nonDuplicativeCapabilityRequired": true,
+    "separateDecisionRequiredBeforeImplementation": true
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "name": "Evidence-led discovery",
+      "objective": "Inspect current public evidence and identify one real, non-duplicative public capability gap before any package source is created.",
+      "status": "planned",
+      "steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "round": 2,
+      "name": "Bounded capability design",
+      "objective": "Design only the approved capability with least privilege, explicit limitations, and testable local contracts.",
+      "status": "planned",
+      "steps": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "round": 3,
+      "name": "Approved implementation and integration",
+      "objective": "Implement at most one approved, bounded public capability and reconcile every repository-local contract it affects.",
+      "status": "planned",
+      "steps": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ]
+    },
+    {
+      "round": 4,
+      "name": "Resilience and public-contract review",
+      "objective": "Review the approved scope for drift, safety, accessibility, performance, and evidence quality before handoff.",
+      "status": "planned",
+      "steps": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80
+      ]
+    },
+    {
+      "round": 5,
+      "name": "Wave 3 handoff",
+      "objective": "Complete the wave only with current evidence, feature-branch delivery, and a separate scope gate for any following wave.",
+      "status": "planned",
+      "steps": [
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "round": 1,
+      "title": "Confirm the completed Wave 2 program, its repository-local handoff requirement, and the public-only boundary.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 2,
+      "round": 1,
+      "title": "Confirm the current feature branch and the prohibition on personal marketplace access.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 3,
+      "round": 1,
+      "title": "Read the Wave 2 risk, rollback, native-validation, and external-proof limits before selecting work.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 4,
+      "round": 1,
+      "title": "Inventory current public plugin capabilities by responsibility rather than by card count.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 5,
+      "round": 1,
+      "title": "Inventory active attention findings, known gaps, and current repository-local evidence.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 6,
+      "round": 1,
+      "title": "Identify candidate work that adds measurable value without duplicating an existing public package.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 7,
+      "round": 1,
+      "title": "Reject candidates that need private context, credentials, external writes, or live provider access.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 8,
+      "round": 1,
+      "title": "Reject candidates whose value depends on an unverified release, installation, or deployment claim.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 9,
+      "round": 1,
+      "title": "Record candidate input paths, data classification, and bounded output expectations.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 10,
+      "round": 1,
+      "title": "Record candidate non-goals, public/private boundary, and no-network default.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 11,
+      "round": 1,
+      "title": "Check Apple-first, AI-core, accessibility, and documentation impact for each viable candidate.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 12,
+      "round": 1,
+      "title": "Check whether a focused existing plugin extension is safer than a new public card.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 13,
+      "round": 1,
+      "title": "Review package ownership and source-manifest placement for any proposed capability.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 14,
+      "round": 1,
+      "title": "Review testability and deterministic validation before a capability is selected.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 15,
+      "round": 1,
+      "title": "Review release, provenance, lifecycle, and install-boundary implications without promotion.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 16,
+      "round": 1,
+      "title": "Review no-personal terminology and public SEIS Repo naming for all planned evidence.",
+      "status": "planned",
+      "validation": "current repository evidence, public-boundary, and overlap review"
+    },
+    {
+      "number": 17,
+      "round": 1,
+      "title": "Run bounded source, catalog, matrix, and marketplace discovery checks.",
+      "status": "planned",
+      "validation": "bounded source/catalog/matrix/marketplace discovery and safety scan"
+    },
+    {
+      "number": 18,
+      "round": 1,
+      "title": "Run an evidence safety scan for secret-like and machine-specific values.",
+      "status": "planned",
+      "validation": "bounded source/catalog/matrix/marketplace discovery and safety scan"
+    },
+    {
+      "number": 19,
+      "round": 1,
+      "title": "Publish a capability-selection decision or explicitly keep the selection empty.",
+      "status": "planned",
+      "validation": "bounded source/catalog/matrix/marketplace discovery and safety scan"
+    },
+    {
+      "number": 20,
+      "round": 1,
+      "title": "Close discovery only when the decision has measurable acceptance criteria and rollback.",
+      "status": "planned",
+      "validation": "bounded source/catalog/matrix/marketplace discovery and safety scan"
+    },
+    {
+      "number": 21,
+      "round": 2,
+      "title": "Confirm the selected capability is approved by the Wave 3 discovery decision.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 22,
+      "round": 2,
+      "title": "Define its repository owner, source root, public card behavior, and non-goals.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 23,
+      "round": 2,
+      "title": "Define fixed relative input paths and reject arbitrary workspace paths.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 24,
+      "round": 2,
+      "title": "Define maximum traversal, text, record, and response bounds where source inspection is required.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 25,
+      "round": 2,
+      "title": "Define read-only, no-network, no-secret, and no-external-write permissions by default.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 26,
+      "round": 2,
+      "title": "Define output categories that distinguish ready, attention, unavailable, and approval-required states.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 27,
+      "round": 2,
+      "title": "Define no-live-provider, no-deployment, and no-public-release wording where applicable.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 28,
+      "round": 2,
+      "title": "Define source and generated-evidence boundaries that prevent raw private values from being returned.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 29,
+      "round": 2,
+      "title": "Define deterministic fixtures for positive, negative, malformed, and boundary scenarios.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 30,
+      "round": 2,
+      "title": "Define accessible, concise human-facing status language for the public card.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 31,
+      "round": 2,
+      "title": "Define MCP tool schemas only when they remain bounded and read-only.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 32,
+      "round": 2,
+      "title": "Define source-manifest, catalog, matrix, registry, and integration update requirements.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 33,
+      "round": 2,
+      "title": "Define lifecycle, provenance, fresh-task, and release-boundary inputs before implementation.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 34,
+      "round": 2,
+      "title": "Define no-duplicate and no-unrelated-refactor checks for the change set.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 35,
+      "round": 2,
+      "title": "Define validation commands, expected evidence, and skipped-check disclosure rules.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 36,
+      "round": 2,
+      "title": "Define the rollback scope as a focused feature-branch revert with no data migration.",
+      "status": "planned",
+      "validation": "capability decision and local contract design review"
+    },
+    {
+      "number": 37,
+      "round": 2,
+      "title": "Review the design against Apple-first and Swift-first long-term architecture constraints.",
+      "status": "planned",
+      "validation": "architecture, security, accessibility, performance, and rollback review"
+    },
+    {
+      "number": 38,
+      "round": 2,
+      "title": "Review security, privacy, accessibility, and performance effects before source scaffolding.",
+      "status": "planned",
+      "validation": "architecture, security, accessibility, performance, and rollback review"
+    },
+    {
+      "number": 39,
+      "round": 2,
+      "title": "Create a focused implementation plan only after the design contract validates.",
+      "status": "planned",
+      "validation": "architecture, security, accessibility, performance, and rollback review"
+    },
+    {
+      "number": 40,
+      "round": 2,
+      "title": "Keep the round planned if a safe, non-duplicative capability cannot be selected.",
+      "status": "planned",
+      "validation": "architecture, security, accessibility, performance, and rollback review"
+    },
+    {
+      "number": 41,
+      "round": 3,
+      "title": "Create a public package only when the Wave 3 capability decision selects one.",
+      "status": "planned",
+      "validation": "approved package implementation, focused tests, and plugin-creator validation"
+    },
+    {
+      "number": 42,
+      "round": 3,
+      "title": "Add public metadata, profile, and skill content with honest local-only limits.",
+      "status": "planned",
+      "validation": "approved package implementation, focused tests, and plugin-creator validation"
+    },
+    {
+      "number": 43,
+      "round": 3,
+      "title": "Implement only deterministic, bounded runtime behavior required by the approved scope.",
+      "status": "planned",
+      "validation": "approved package implementation, focused tests, and plugin-creator validation"
+    },
+    {
+      "number": 44,
+      "round": 3,
+      "title": "Add positive tests that prove the documented local contract.",
+      "status": "planned",
+      "validation": "approved package implementation, focused tests, and plugin-creator validation"
+    },
+    {
+      "number": 45,
+      "round": 3,
+      "title": "Add negative tests that prove path, size, malformed-input, and permission refusal boundaries.",
+      "status": "planned",
+      "validation": "approved package implementation, focused tests, and plugin-creator validation"
+    },
+    {
+      "number": 46,
+      "round": 3,
+      "title": "Validate the package structure with the plugin-creator validator.",
+      "status": "planned",
+      "validation": "approved package implementation, focused tests, and plugin-creator validation"
+    },
+    {
+      "number": 47,
+      "round": 3,
+      "title": "Generate bounded repository-local evidence without raw source, machine path, or secret leakage.",
+      "status": "planned",
+      "validation": "approved package implementation, focused tests, and plugin-creator validation"
+    },
+    {
+      "number": 48,
+      "round": 3,
+      "title": "Register the package only in the public SEIS Repo marketplace if a card is approved.",
+      "status": "planned",
+      "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
+    },
+    {
+      "number": 49,
+      "round": 3,
+      "title": "Refresh source-manifest, catalog, matrix, registry, and unified-suite contracts when the package changes.",
+      "status": "planned",
+      "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
+    },
+    {
+      "number": 50,
+      "round": 3,
+      "title": "Refresh agent integration and requested-capability coverage when applicable.",
+      "status": "planned",
+      "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
+    },
+    {
+      "number": 51,
+      "round": 3,
+      "title": "Refresh lifecycle, provenance, fresh-task, install, and release-boundary evidence when applicable.",
+      "status": "planned",
+      "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
+    },
+    {
+      "number": 52,
+      "round": 3,
+      "title": "Validate empty write, network, and secret permission grants for the changed public surface.",
+      "status": "planned",
+      "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
+    },
+    {
+      "number": 53,
+      "round": 3,
+      "title": "Validate public SEIS Repo terminology and absence of visible personal labels.",
+      "status": "planned",
+      "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
+    },
+    {
+      "number": 54,
+      "round": 3,
+      "title": "Validate project manifest counts only when a public card was actually added.",
+      "status": "planned",
+      "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
+    },
+    {
+      "number": 55,
+      "round": 3,
+      "title": "Validate documentation and roadmap references for the selected capability.",
+      "status": "planned",
+      "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
+    },
+    {
+      "number": 56,
+      "round": 3,
+      "title": "Run focused runtime and MCP tests before broad marketplace checks.",
+      "status": "planned",
+      "validation": "focused and broad repository-local regression evidence"
+    },
+    {
+      "number": 57,
+      "round": 3,
+      "title": "Run source, catalog, matrix, marketplace, and integration regressions.",
+      "status": "planned",
+      "validation": "focused and broad repository-local regression evidence"
+    },
+    {
+      "number": 58,
+      "round": 3,
+      "title": "Run baseline SEIS checks applicable to the changed source surface.",
+      "status": "planned",
+      "validation": "focused and broad repository-local regression evidence"
+    },
+    {
+      "number": 59,
+      "round": 3,
+      "title": "Record external validation gaps without turning them into success claims.",
+      "status": "planned",
+      "validation": "focused and broad repository-local regression evidence"
+    },
+    {
+      "number": 60,
+      "round": 3,
+      "title": "Prepare a focused feature-branch checkpoint only after all local gates pass.",
+      "status": "planned",
+      "validation": "focused and broad repository-local regression evidence"
+    },
+    {
+      "number": 61,
+      "round": 4,
+      "title": "Re-run capability overlap review after implementation to detect accidental duplication.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 62,
+      "round": 4,
+      "title": "Review fixed-path and path-escape refusal behavior with focused fixtures.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 63,
+      "round": 4,
+      "title": "Review source traversal, byte, record, and output limits for practical local safety.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 64,
+      "round": 4,
+      "title": "Review empty, malformed, stale, unavailable, and approval-required state handling.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 65,
+      "round": 4,
+      "title": "Review accessible naming, keyboard semantics, focus behavior, and reduced-motion impact where UI changes exist.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 66,
+      "round": 4,
+      "title": "Review performance impact and avoid broad scans or heavyweight dependencies.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 67,
+      "round": 4,
+      "title": "Review output for raw source, machine-path, secret-like, or private-context leakage.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 68,
+      "round": 4,
+      "title": "Review MCP permissions and tool boundaries for deny-by-default behavior.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 69,
+      "round": 4,
+      "title": "Review provider, deployment, browser, installation, and release wording for false claims.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 70,
+      "round": 4,
+      "title": "Review provenance, lifecycle, fresh-task, and public-install boundary records.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 71,
+      "round": 4,
+      "title": "Review source-manifest, catalog, matrix, registry, and project-manifest counts for drift.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 72,
+      "round": 4,
+      "title": "Review documentation for public SEIS Repo terminology and current capability status.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 73,
+      "round": 4,
+      "title": "Review integration tests and coverage for the newly selected capability or explicit no-change decision.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 74,
+      "round": 4,
+      "title": "Review release readiness without promotion, tagging, or protected-branch writes.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 75,
+      "round": 4,
+      "title": "Review working-tree diff for unrelated files and generated-artifact drift.",
+      "status": "planned",
+      "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
+    },
+    {
+      "number": 76,
+      "round": 4,
+      "title": "Run whitespace and focused secret-safe checks.",
+      "status": "planned",
+      "validation": "focused validation, risk update, and handoff readiness evidence"
+    },
+    {
+      "number": 77,
+      "round": 4,
+      "title": "Re-run plugin-creator validation for any changed public package.",
+      "status": "planned",
+      "validation": "focused validation, risk update, and handoff readiness evidence"
+    },
+    {
+      "number": 78,
+      "round": 4,
+      "title": "Re-run focused tests and broad public marketplace regressions.",
+      "status": "planned",
+      "validation": "focused validation, risk update, and handoff readiness evidence"
+    },
+    {
+      "number": 79,
+      "round": 4,
+      "title": "Publish explicit risks, blockers, and rollback updates.",
+      "status": "planned",
+      "validation": "focused validation, risk update, and handoff readiness evidence"
+    },
+    {
+      "number": 80,
+      "round": 4,
+      "title": "Prepare a handoff only when every affected local contract has current evidence.",
+      "status": "planned",
+      "validation": "focused validation, risk update, and handoff readiness evidence"
+    },
+    {
+      "number": 81,
+      "round": 5,
+      "title": "Run the Wave 3 tracker and capability-decision checks.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 82,
+      "round": 5,
+      "title": "Run focused package generators, validators, and tests for the selected scope.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 83,
+      "round": 5,
+      "title": "Run source, catalog, matrix, marketplace, registry, and unified-suite regressions.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 84,
+      "round": 5,
+      "title": "Run agent integration and requested-capability coverage regressions where applicable.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 85,
+      "round": 5,
+      "title": "Run lifecycle, provenance, fresh-task, install-boundary, and release-readiness checks.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 86,
+      "round": 5,
+      "title": "Run applicable baseline SEIS checks without expanding into unrelated systems.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 87,
+      "round": 5,
+      "title": "Review generated evidence for count, terminology, and public-boundary drift.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 88,
+      "round": 5,
+      "title": "Review source and documentation for personal marketplace references.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 89,
+      "round": 5,
+      "title": "Review source and generated records for secret-like or machine-specific values.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 90,
+      "round": 5,
+      "title": "Review native, provider, browser, deployment, installation, and release gaps honestly.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 91,
+      "round": 5,
+      "title": "Keep public release blocked unless independent evidence and explicit approval exist.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 92,
+      "round": 5,
+      "title": "Inspect the working tree and diff for unrelated changes.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 93,
+      "round": 5,
+      "title": "Run whitespace and focused security boundary checks.",
+      "status": "planned",
+      "validation": "current Wave 3 repository-local validation evidence"
+    },
+    {
+      "number": 94,
+      "round": 5,
+      "title": "Prepare a focused local commit with goal and Wave 3 context.",
+      "status": "planned",
+      "validation": "feature-branch delivery and remote-reference verification when authorized"
+    },
+    {
+      "number": 95,
+      "round": 5,
+      "title": "Push only the current feature branch when authorized.",
+      "status": "planned",
+      "validation": "feature-branch delivery and remote-reference verification when authorized"
+    },
+    {
+      "number": 96,
+      "round": 5,
+      "title": "Verify the remote feature reference when possible.",
+      "status": "planned",
+      "validation": "feature-branch delivery and remote-reference verification when authorized"
+    },
+    {
+      "number": 97,
+      "round": 5,
+      "title": "Publish a Wave 3 repository-local handoff with risks and rollback.",
+      "status": "planned",
+      "validation": "Wave 3 handoff and following-wave scope review evidence"
+    },
+    {
+      "number": 98,
+      "round": 5,
+      "title": "Review whether a following wave is justified by current evidence rather than cadence alone.",
+      "status": "planned",
+      "validation": "Wave 3 handoff and following-wave scope review evidence"
+    },
+    {
+      "number": 99,
+      "round": 5,
+      "title": "Create a separate plan for any following wave only after a new scope and risk review.",
+      "status": "planned",
+      "validation": "Wave 3 handoff and following-wave scope review evidence"
+    },
+    {
+      "number": 100,
+      "round": 5,
+      "title": "Mark Wave 3 complete only when all one hundred steps have current evidence.",
+      "status": "planned",
+      "validation": "Wave 3 handoff and following-wave scope review evidence"
+    }
+  ],
+  "progress": {
+    "completedStepCount": 0,
+    "plannedStepCount": 100,
+    "inProgressStepNumbers": [],
+    "completedRoundCount": 0,
+    "nextStepNumber": 1
+  },
+  "qualityGates": [
+    "npm run check:seis-public-plugin-expansion-program",
+    "npm run check:seis-public-plugin-wave-2-program",
+    "npm run check:seis-public-plugin-wave-2-handoff",
+    "npm run check:seis-public-plugin-wave-3-program",
+    "npm run check:seis-repo-marketplace",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-core-plugin-sources",
+    "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-matrix"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W3-001",
+      "status": "tracked",
+      "description": "Cadence pressure can create a duplicate public plugin instead of improving a validated capability gap.",
+      "mitigation": "Require discovery, overlap review, and an explicit selectedCapability before any source or marketplace change."
+    },
+    {
+      "id": "RISK-W3-002",
+      "status": "tracked",
+      "description": "A planned public card can be mistaken for an installed, released, or live external capability.",
+      "mitigation": "Keep selectedCapability null, public release false, and external proof requirements explicit until current evidence exists."
+    },
+    {
+      "id": "RISK-W3-003",
+      "status": "tracked",
+      "description": "A valid repository-local scope can drift into personal marketplace access or external writes.",
+      "mitigation": "Preserve deny-by-default permissions and reject any plan that needs personal configuration, credentials, network access, or external mutation."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the Wave 3 planning record and its references on the current feature branch; planning creates no public card, external state, or data migration.",
+    "dataMigrationRequired": false
+  }
+}

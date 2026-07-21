@@ -8,9 +8,13 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const recordPath = path.join(root, "content", "development", "seis-public-plugin-expansion-program.json");
 const handoffPath = path.join(root, "content", "development", "seis-public-plugin-wave-1-handoff.json");
 const wave2ProgramPath = path.join(root, "content", "development", "seis-public-plugin-wave-2-program.json");
+const wave2HandoffPath = path.join(root, "content", "development", "seis-public-plugin-wave-2-handoff.json");
+const wave3ProgramPath = path.join(root, "content", "development", "seis-public-plugin-wave-3-program.json");
 const record = JSON.parse(fs.readFileSync(recordPath, "utf8"));
 const handoff = fs.existsSync(handoffPath) ? JSON.parse(fs.readFileSync(handoffPath, "utf8")) : null;
 const wave2Program = fs.existsSync(wave2ProgramPath) ? JSON.parse(fs.readFileSync(wave2ProgramPath, "utf8")) : null;
+const wave2Handoff = fs.existsSync(wave2HandoffPath) ? JSON.parse(fs.readFileSync(wave2HandoffPath, "utf8")) : null;
+const wave3Program = fs.existsSync(wave3ProgramPath) ? JSON.parse(fs.readFileSync(wave3ProgramPath, "utf8")) : null;
 const failures = [];
 
 function ensure(condition, message) {
@@ -55,12 +59,20 @@ for (let index = 0; index < 5; index += 1) {
     ensure(wave?.handoffEvidencePath === "content/development/seis-public-plugin-wave-1-handoff.json", "wave 1 must identify its handoff evidence");
     ensure(handoff?.id === "seis-public-plugin-wave-1-handoff" && handoff?.status === "completed-repository-local-handoff", "wave 1 handoff evidence is invalid");
   } else if (index === 1) {
-    ensure(wave?.status === "in-progress", "wave 2 must be in progress only after the Wave 1 scope and risk review and current user authority");
+    ensure(wave?.status === "completed", "wave 2 must be completed only after current evidence, scope review, and risk review");
     ensure(wave?.programId === "seis-public-plugin-wave-2-program", "wave 2 must identify its 100-step program");
     ensure(wave?.scopeRiskReviewPath === "content/development/seis-public-plugin-wave-1-handoff.json", "wave 2 must identify its scope and risk review");
     ensure(wave?.capabilityDecisionPath === "content/development/seis-public-plugin-wave-2-capability-decision.json", "wave 2 must identify its capability decision");
-    ensure(wave2Program?.id === "seis-public-plugin-wave-2-program" && wave2Program?.status === "in-progress", "wave 2 program evidence is invalid");
-    ensure(Array.isArray(wave2Program?.steps) && wave2Program.steps.length === 100, "wave 2 must contain 100 steps");
+    ensure(wave?.handoffEvidencePath === "content/development/seis-public-plugin-wave-2-handoff.json", "wave 2 must identify its handoff evidence");
+    ensure(wave2Program?.id === "seis-public-plugin-wave-2-program" && wave2Program?.status === "completed" && wave2Program?.progress?.completedStepCount === 100, "wave 2 program evidence is invalid");
+    ensure(Array.isArray(wave2Program?.steps) && wave2Program.steps.length === 100 && wave2Program.steps.every((step) => step?.status === "completed"), "wave 2 must contain one hundred completed steps");
+    ensure(wave2Handoff?.id === "seis-public-plugin-wave-2-handoff" && wave2Handoff?.status === "completed-repository-local-handoff", "wave 2 handoff evidence is invalid");
+  } else if (index === 2) {
+    ensure(wave?.status === "planned", "wave 3 must remain planned until its discovery and capability-selection gate passes");
+    ensure(wave?.programId === "seis-public-plugin-wave-3-program", "wave 3 must identify its 100-step program");
+    ensure(wave?.scopeRiskReviewPath === "content/development/seis-public-plugin-wave-2-handoff.json", "wave 3 must identify its Wave 2 scope and risk review");
+    ensure(wave3Program?.id === "seis-public-plugin-wave-3-program" && wave3Program?.status === "planned" && wave3Program?.progress?.completedStepCount === 0, "wave 3 program evidence is invalid");
+    ensure(Array.isArray(wave3Program?.steps) && wave3Program.steps.length === 100 && wave3Program.steps.every((step) => step?.status === "planned"), "wave 3 must contain one hundred planned steps");
   } else {
     ensure(wave?.status === "not-planned", `wave ${index + 1} must remain not-planned until its review`);
   }

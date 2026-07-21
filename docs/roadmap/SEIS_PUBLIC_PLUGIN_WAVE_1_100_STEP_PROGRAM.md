@@ -72,12 +72,15 @@ current validation contract, known attention state, skipped external checks,
 risk, rollback, and the Wave 2 planning gate. Validate it with
 `npm run check:seis-public-plugin-wave-1-handoff`.
 
-## Wave 2 Gate
+## Wave 2 Gate — Current State
 
-Wave 2 is planned because Wave 1 now has a current, validated handoff and a
-fresh scope and risk review. No Wave 2 implementation has begun: a separate
-100-step record and candidate-overlap review are required before another public
-package is created. Waves 3 through 5 remain unplanned until their preceding
-wave passes the same gate. This keeps the requested ongoing cadence evidence-led
-and reversible rather than turning it into claimed autonomous background
-execution.
+Wave 2 passed the Wave 1 gate, completed its bounded 100-step record, and has a
+current repository-local handoff at
+`content/development/seis-public-plugin-wave-2-handoff.json`. Its only new
+public capability was the read-only `seis-apple-native-readiness` package; the
+subsequent overlap review deliberately selected no second card. Wave 3 is
+planned at `content/development/seis-public-plugin-wave-3-program.json`, but
+remains discovery-first with `selectedCapability: null`. Waves 4 and 5 remain
+unplanned until their preceding wave passes the same evidence, scope, and risk
+gate. This preserves the requested ongoing cadence without turning it into a
+claim of autonomous background execution.
