@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-3-round-4-review",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 3,
+  "round": 4,
+  "status": "completed-repository-local-round-review",
+  "generatedAt": "2026-07-21",
+  "purpose": "Close the Wave 3 resilience and public-contract review for the already approved static Swift concurrency package using repository-local evidence only.",
+  "completedSteps": [
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79
+  ],
+  "sourceCheckpoint": {
+    "path": "content/development/seis-public-plugin-wave-3-round-3-checkpoint.json",
+    "status": "completed-repository-local-checkpoint",
+    "commit": "d6bfaab79ec26451d8ef9ca1c9556c5cb689f186"
+  },
+  "overlapReview": {
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "sourceManifestEntryCount": 1,
+    "marketplaceCardCount": 1,
+    "matrixEntryCount": 1,
+    "mcpEntryCount": 1,
+    "nonDuplicative": true
+  },
+  "pathAndLimitReview": {
+    "fixedSourceRootCount": 2,
+    "sourceRootsSafe": true,
+    "maxSwiftFiles": 64,
+    "maxFileBytes": 131072,
+    "maxTotalBytes": 1048576,
+    "maxSourceDepth": 4,
+    "maxReportedPaths": 24,
+    "coveredFailureModeCount": 7,
+    "arbitraryPathRefusalCovered": true,
+    "symlinkRefusalCovered": true
+  },
+  "stateAndOutputReview": {
+    "staticState": "attention",
+    "staticOk": true,
+    "blockingFindingCount": 0,
+    "reviewRequired": true,
+    "rawSourceReturned": false,
+    "rawMatchedValuesReturned": false,
+    "machineSpecificPathReturned": false,
+    "sourceFilesCompiled": false
+  },
+  "accessibilityAndPerformance": {
+    "publicUiSurfaceChanged": false,
+    "accessibilityReview": "not-applicable-no-public-ui-surface-changed",
+    "dependencyManifestPresent": false,
+    "boundedStaticScan": true,
+    "maxTotalBytes": 1048576
+  },
+  "permissionsAndClaims": {
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "mcpTransport": "local-stdio",
+    "remoteEndpointDeclared": false,
+    "environmentInjectionDeclared": false,
+    "compilesSwift": false,
+    "runsSwiftTests": false,
+    "nativeRuntimeStarted": false,
+    "publicReleaseAllowed": false,
+    "providerOrDeploymentClaim": false
+  },
+  "lifecycleAndCounts": {
+    "lifecycleStatus": "active-local-proof-public-release-gated",
+    "externalProofStatus": "repo-local-clean-artifact-staged-external-proof-pending",
+    "independentRunnerEvidenceStatus": "pending-independent-clean-runner-or-public-install",
+    "publicReleaseAllowed": false,
+    "applicationPluginCount": 73,
+    "marketplaceCardCount": 379,
+    "matrixPluginCount": 73,
+    "matrixFailureCount": 0,
+    "matrixAttentionCount": 3
+  },
+  "documentationAndCoverage": {
+    "publicMarketplaceNamed": true,
+    "noCompileLimitNamed": true,
+    "staticAttentionExplained": true,
+    "skillNoCompileLimitNamed": true,
+    "runtimeTestPresent": true,
+    "evidenceTestPresent": true,
+    "pathRefusalFixturePresent": true,
+    "boundaryEvidenceFixturePresent": true,
+    "runtimeBoundaryMarkerPresent": true
+  },
+  "checkpointDiff": {
+    "commit": "d6bfaab79ec26451d8ef9ca1c9556c5cb689f186",
+    "changedFileCount": 67,
+    "unexpectedPathCount": 0,
+    "whitespaceCheckPassed": true,
+    "allowedChangeAreas": [
+      "public marketplace and application catalog",
+      "development evidence and reports",
+      "Wave documentation and roadmap",
+      "public plugin source, tests, and metadata",
+      "repository validation scripts and package scripts"
+    ]
+  },
+  "validation": [
+    "git diff --check d6bfaab7^ d6bfaab7",
+    "plugin-creator structural validator for plugins/seis-core/seis-swift-concurrency-audit",
+    "node --test plugins/seis-core/test/swift-concurrency-audit.test.mjs",
+    "node --test plugins/seis-core/test/swift-concurrency-audit-evidence.test.mjs",
+    "npm run check:seis-repo-marketplace",
+    "npm run seis:check"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W3-001",
+      "status": "tracked",
+      "description": "Cadence pressure could create a duplicate public package.",
+      "mitigation": "Require one source-manifest, marketplace, matrix, and MCP record for the selected capability."
+    },
+    {
+      "id": "RISK-W3-002",
+      "status": "tracked",
+      "description": "Static attention can be mistaken for a compiler, runtime, or release result.",
+      "mitigation": "Keep static-only limitations, blocking counts, and public-release gates explicit."
+    },
+    {
+      "id": "RISK-W3-003",
+      "status": "tracked",
+      "description": "A later wave could cross the public-only boundary.",
+      "mitigation": "Keep write, network, secret, remote endpoint, and personal-marketplace permissions denied by default."
+    },
+    {
+      "id": "RISK-W3-004",
+      "status": "tracked",
+      "description": "Checkpoint delivery can be confused with protected-branch merge or public release.",
+      "mitigation": "Record feature-branch-only delivery and retain independent installation and human approval gates."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the focused Wave 3 package, public card, generated evidence, and review records on the feature branch. No data migration or external mutation exists.",
+    "dataMigrationRequired": false
+  }
+}

@@ -9,9 +9,11 @@ const OUTPUT_PATH = "content/development/seis-public-plugin-wave-3-program.json"
 const INITIAL_PROGRAM_PATH = "content/development/seis-public-plugin-expansion-program.json";
 const WAVE_2_PROGRAM_PATH = "content/development/seis-public-plugin-wave-2-program.json";
 const WAVE_2_HANDOFF_PATH = "content/development/seis-public-plugin-wave-2-handoff.json";
+const ROUND_3_CHECKPOINT_PATH = "content/development/seis-public-plugin-wave-3-round-3-checkpoint.json";
+const ROUND_4_REVIEW_PATH = "content/development/seis-public-plugin-wave-3-round-4-review.json";
 const SELECTED_CAPABILITY = "seis-swift-concurrency-audit";
-const COMPLETED_STEP_COUNT = 46;
-const IN_PROGRESS_STEP_NUMBER = 47;
+const COMPLETED_STEP_COUNT = 79;
+const IN_PROGRESS_STEP_NUMBER = 80;
 
 const ROUND_DEFINITIONS = Object.freeze([
   {
@@ -163,10 +165,14 @@ if (CHECK_MODE) {
 function buildRecord() {
   const initialProgram = readJson(INITIAL_PROGRAM_PATH);
   const wave2Program = readJson(WAVE_2_PROGRAM_PATH);
+  const round3Checkpoint = readJson(ROUND_3_CHECKPOINT_PATH);
+  const round4Review = readJson(ROUND_4_REVIEW_PATH);
   assert(initialProgram?.id === "seis-public-plugin-expansion-program" && initialProgram?.status === "completed", "initial program is invalid");
   assert(initialProgram?.nextWaves?.[1]?.status === "completed" && initialProgram?.nextWaves?.[1]?.handoffEvidencePath === WAVE_2_HANDOFF_PATH, "Wave 2 completion is not recorded in the initial program");
   assert(initialProgram?.nextWaves?.[2]?.status === "in-progress" && initialProgram?.nextWaves?.[2]?.programId === "seis-public-plugin-wave-3-program", "Wave 3 is not active in the initial program");
   assert(wave2Program?.id === "seis-public-plugin-wave-2-program" && wave2Program?.status === "completed" && wave2Program?.progress?.completedStepCount === 100, "Wave 2 completion evidence is invalid");
+  assert(round3Checkpoint?.id === "seis-public-plugin-wave-3-round-3-checkpoint" && round3Checkpoint?.status === "completed-repository-local-checkpoint" && list(round3Checkpoint?.completedSteps).join(",") === Array.from({ length: 14 }, (_, index) => index + 47).join(","), "Wave 3 round 3 checkpoint evidence is invalid");
+  assert(round4Review?.id === "seis-public-plugin-wave-3-round-4-review" && round4Review?.status === "completed-repository-local-round-review" && list(round4Review?.completedSteps).join(",") === Array.from({ length: 19 }, (_, index) => index + 61).join(","), "Wave 3 round 4 review evidence is invalid");
 
   const steps = ROUND_DEFINITIONS.flatMap((round, roundIndex) => round.tasks.map((title, taskIndex) => ({
     number: (roundIndex * 20) + taskIndex + 1,
@@ -216,6 +222,10 @@ function buildRecord() {
       nonDuplicativeCapabilityRequired: true,
       separateDecisionRequiredBeforeImplementation: true,
     },
+    evidence: {
+      round3CheckpointPath: ROUND_3_CHECKPOINT_PATH,
+      round4ReviewPath: ROUND_4_REVIEW_PATH,
+    },
     publicBoundary: {
       marketplaceName: "seis-repo",
       marketplaceDisplayName: "SEIS Repo",
@@ -231,7 +241,7 @@ function buildRecord() {
       round: index + 1,
       name: round.name,
       objective: round.objective,
-      status: index < 2 ? "completed" : index === 2 ? "in-progress" : "planned",
+      status: index < 3 ? "completed" : index === 3 ? "in-progress" : "planned",
       steps: Array.from({ length: 20 }, (_, taskIndex) => (index * 20) + taskIndex + 1),
     })),
     steps,
@@ -239,7 +249,7 @@ function buildRecord() {
       completedStepCount: COMPLETED_STEP_COUNT,
       plannedStepCount: 100 - COMPLETED_STEP_COUNT - 1,
       inProgressStepNumbers: [IN_PROGRESS_STEP_NUMBER],
-      completedRoundCount: 2,
+      completedRoundCount: 3,
       nextStepNumber: IN_PROGRESS_STEP_NUMBER,
     },
     qualityGates: [
@@ -316,8 +326,9 @@ function validateRecord(record) {
     assert(step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1, `step ${index + 1} is invalid`);
     assert(step?.status === stepStatus(index + 1) && typeof step?.title === "string" && step.title.length > 0 && typeof step?.validation === "string" && step.validation.length > 0, `step ${index + 1} has invalid progress metadata`);
   }
-  assert(record.progress?.completedStepCount === COMPLETED_STEP_COUNT && record.progress?.plannedStepCount === 100 - COMPLETED_STEP_COUNT - 1 && list(record.progress?.inProgressStepNumbers).join(",") === String(IN_PROGRESS_STEP_NUMBER) && record.progress?.completedRoundCount === 2 && record.progress?.nextStepNumber === IN_PROGRESS_STEP_NUMBER, "Wave 3 progress is invalid");
+  assert(record.progress?.completedStepCount === COMPLETED_STEP_COUNT && record.progress?.plannedStepCount === 100 - COMPLETED_STEP_COUNT - 1 && list(record.progress?.inProgressStepNumbers).join(",") === String(IN_PROGRESS_STEP_NUMBER) && record.progress?.completedRoundCount === 3 && record.progress?.nextStepNumber === IN_PROGRESS_STEP_NUMBER, "Wave 3 progress is invalid");
   assert(record.selection?.status === "implementation-approved" && record.selection?.selectedCapability === SELECTED_CAPABILITY && record.selection?.additionalPublicCardAdded === true && record.selection?.implementationStarted === true && record.selection?.nonDuplicativeCapabilityRequired === true && record.selection?.separateDecisionRequiredBeforeImplementation === true, "Wave 3 selection boundary is invalid");
+  assert(record.evidence?.round3CheckpointPath === ROUND_3_CHECKPOINT_PATH && record.evidence?.round4ReviewPath === ROUND_4_REVIEW_PATH, "Wave 3 evidence linkage is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
   assert(list(record.nonGoals).length === 4 && list(record.risks).length === 3 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "scope, risks, or rollback is invalid");

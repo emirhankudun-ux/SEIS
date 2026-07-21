@@ -7,10 +7,10 @@
 Wave 3 completed the bounded discovery gate and is now in an active,
 repository-local implementation state. The public
 `plugins/seis-core/seis-swift-concurrency-audit` package and its `SEIS Repo`
-card are present; the program selects that one capability and records step 47
-as the current generated-evidence task. This does not claim an independent
-installation, public release, provider connection, deployment, native runtime,
-or completed SwiftPM test.
+card are present. The program has reconciled implementation and resilience
+review through step 79, with step 80 reserved for the evidence-led handoff.
+This does not claim an independent installation, public release, provider
+connection, deployment, native runtime, or completed SwiftPM test.
 
 ## Why this capability is distinct
 
@@ -42,11 +42,10 @@ precise credential-assignment scan found no matches.
 ## Current gate
 
 The package has its deny-by-default runtime, deterministic positive/negative
-fixtures, plugin-creator structural validation, and public-card reconciliation.
-Wave 3 remains in progress until current generated evidence, source/catalog/
-matrix/registry/lifecycle/provenance reconciliation, broad local regressions,
-and a focused feature-branch handoff are all recorded. No release or external
-installation authority is created by this gate.
+fixtures, plugin-creator structural validation, public-card reconciliation,
+and a completed repository-local resilience review. Wave 3 remains in progress
+until the current records are consolidated into the focused handoff. No release
+or external installation authority is created by this gate.
 
 ## Evidence and rollback
 

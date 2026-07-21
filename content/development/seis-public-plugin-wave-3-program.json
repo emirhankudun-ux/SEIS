@@ -40,6 +40,10 @@
     "nonDuplicativeCapabilityRequired": true,
     "separateDecisionRequiredBeforeImplementation": true
   },
+  "evidence": {
+    "round3CheckpointPath": "content/development/seis-public-plugin-wave-3-round-3-checkpoint.json",
+    "round4ReviewPath": "content/development/seis-public-plugin-wave-3-round-4-review.json"
+  },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
@@ -112,7 +116,7 @@
       "round": 3,
       "name": "Approved implementation and integration",
       "objective": "Implement at most one approved, bounded public capability and reconcile every repository-local contract it affects.",
-      "status": "in-progress",
+      "status": "completed",
       "steps": [
         41,
         42,
@@ -140,7 +144,7 @@
       "round": 4,
       "name": "Resilience and public-contract review",
       "objective": "Review the approved scope for drift, safety, accessibility, performance, and evidence quality before handoff.",
-      "status": "planned",
+      "status": "in-progress",
       "steps": [
         61,
         62,
@@ -520,238 +524,238 @@
       "number": 47,
       "round": 3,
       "title": "Generate bounded repository-local evidence without raw source, machine path, or secret leakage.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "approved package implementation, focused tests, and plugin-creator validation"
     },
     {
       "number": 48,
       "round": 3,
       "title": "Register the package only in the public SEIS Repo marketplace if a card is approved.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
     },
     {
       "number": 49,
       "round": 3,
       "title": "Refresh source-manifest, catalog, matrix, registry, and unified-suite contracts when the package changes.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
     },
     {
       "number": 50,
       "round": 3,
       "title": "Refresh agent integration and requested-capability coverage when applicable.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
     },
     {
       "number": 51,
       "round": 3,
       "title": "Refresh lifecycle, provenance, fresh-task, install, and release-boundary evidence when applicable.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
     },
     {
       "number": 52,
       "round": 3,
       "title": "Validate empty write, network, and secret permission grants for the changed public surface.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
     },
     {
       "number": 53,
       "round": 3,
       "title": "Validate public SEIS Repo terminology and absence of visible personal labels.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
     },
     {
       "number": 54,
       "round": 3,
       "title": "Validate project manifest counts only when a public card was actually added.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
     },
     {
       "number": 55,
       "round": 3,
       "title": "Validate documentation and roadmap references for the selected capability.",
-      "status": "planned",
+      "status": "completed",
       "validation": "public distribution, registry, lifecycle, provenance, and permission reconciliation"
     },
     {
       "number": 56,
       "round": 3,
       "title": "Run focused runtime and MCP tests before broad marketplace checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused and broad repository-local regression evidence"
     },
     {
       "number": 57,
       "round": 3,
       "title": "Run source, catalog, matrix, marketplace, and integration regressions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused and broad repository-local regression evidence"
     },
     {
       "number": 58,
       "round": 3,
       "title": "Run baseline SEIS checks applicable to the changed source surface.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused and broad repository-local regression evidence"
     },
     {
       "number": 59,
       "round": 3,
       "title": "Record external validation gaps without turning them into success claims.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused and broad repository-local regression evidence"
     },
     {
       "number": 60,
       "round": 3,
       "title": "Prepare a focused feature-branch checkpoint only after all local gates pass.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused and broad repository-local regression evidence"
     },
     {
       "number": 61,
       "round": 4,
       "title": "Re-run capability overlap review after implementation to detect accidental duplication.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 62,
       "round": 4,
       "title": "Review fixed-path and path-escape refusal behavior with focused fixtures.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 63,
       "round": 4,
       "title": "Review source traversal, byte, record, and output limits for practical local safety.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 64,
       "round": 4,
       "title": "Review empty, malformed, stale, unavailable, and approval-required state handling.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 65,
       "round": 4,
       "title": "Review accessible naming, keyboard semantics, focus behavior, and reduced-motion impact where UI changes exist.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 66,
       "round": 4,
       "title": "Review performance impact and avoid broad scans or heavyweight dependencies.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 67,
       "round": 4,
       "title": "Review output for raw source, machine-path, secret-like, or private-context leakage.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 68,
       "round": 4,
       "title": "Review MCP permissions and tool boundaries for deny-by-default behavior.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 69,
       "round": 4,
       "title": "Review provider, deployment, browser, installation, and release wording for false claims.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 70,
       "round": 4,
       "title": "Review provenance, lifecycle, fresh-task, and public-install boundary records.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 71,
       "round": 4,
       "title": "Review source-manifest, catalog, matrix, registry, and project-manifest counts for drift.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 72,
       "round": 4,
       "title": "Review documentation for public SEIS Repo terminology and current capability status.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 73,
       "round": 4,
       "title": "Review integration tests and coverage for the newly selected capability or explicit no-change decision.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 74,
       "round": 4,
       "title": "Review release readiness without promotion, tagging, or protected-branch writes.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 75,
       "round": 4,
       "title": "Review working-tree diff for unrelated files and generated-artifact drift.",
-      "status": "planned",
+      "status": "completed",
       "validation": "resilience, public-contract, accessibility, performance, and evidence-leakage review"
     },
     {
       "number": 76,
       "round": 4,
       "title": "Run whitespace and focused secret-safe checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused validation, risk update, and handoff readiness evidence"
     },
     {
       "number": 77,
       "round": 4,
       "title": "Re-run plugin-creator validation for any changed public package.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused validation, risk update, and handoff readiness evidence"
     },
     {
       "number": 78,
       "round": 4,
       "title": "Re-run focused tests and broad public marketplace regressions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused validation, risk update, and handoff readiness evidence"
     },
     {
       "number": 79,
       "round": 4,
       "title": "Publish explicit risks, blockers, and rollback updates.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused validation, risk update, and handoff readiness evidence"
     },
     {
       "number": 80,
       "round": 4,
       "title": "Prepare a handoff only when every affected local contract has current evidence.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "focused validation, risk update, and handoff readiness evidence"
     },
     {
@@ -896,13 +900,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 46,
-    "plannedStepCount": 53,
+    "completedStepCount": 79,
+    "plannedStepCount": 20,
     "inProgressStepNumbers": [
-      47
+      80
     ],
-    "completedRoundCount": 2,
-    "nextStepNumber": 47
+    "completedRoundCount": 3,
+    "nextStepNumber": 80
   },
   "qualityGates": [
     "npm run check:seis-public-plugin-expansion-program",

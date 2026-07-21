@@ -20,7 +20,7 @@ must not be read or modified.
 | Phase | Shape | Rule |
 | --- | --- | --- |
 | Initial program | 30 steps / 5 rounds / 6 steps per round | Work only from current repository evidence. |
-| Subsequent expansion | Five waves of 100 steps | Create each wave only after the previous wave has validation, scope, and risk review. |
+| Subsequent expansion | Five waves of 100 steps | Waves 4–5 use the gated 100-step template; activation still requires current validation, scope, and risk review. |
 
 Every validated, coherent round checkpoint is committed and sent to the current
 SEIS GitHub feature branch when the environment permits. Protected default
@@ -77,20 +77,20 @@ follow-up card. The repository-local handoff is
 the historical contract was 72 packages / 378 `SEIS Repo` cards, and the
 interrupted SwiftPM test remains neither a compiled-Swift nor a test-pass claim.
 Wave 3 is now **in progress** at
-`content/development/seis-public-plugin-wave-3-program.json`: it selected and
-implemented the one bounded `seis-swift-concurrency-audit` capability as a
-repository-local static-signal package. The current contract is 73 packages /
-379 `SEIS Repo` cards, without an independent installation, native-runtime,
-provider, deployment, or public-release claim.
-Waves 4–5 remain *not planned* until the preceding wave has current evidence,
-scope review, and risk review. Continuation remains evidence-led, reversible,
-and delivered through the current GitHub feature branch rather than claimed as
-background execution.
+`content/development/seis-public-plugin-wave-3-program.json`: the bounded
+`seis-swift-concurrency-audit` package has 79 completed steps and an active
+handoff-preparation step. The current contract is 73 packages / 379 `SEIS
+Repo` cards, without an independent installation, native-runtime, provider,
+deployment, or public-release claim. Waves 4–5 are now **planned-gated** with
+one reusable 100-step template at
+`content/development/seis-public-plugin-continuity-cadence.json`; they are
+not activated until their own scope, risk, validation, and rollback decisions
+exist. Continuation remains evidence-led, reversible, and delivered through
+the current GitHub feature branch rather than claimed as background execution.
 
 ## Completion Rule
 
-Step 30 is a planning/reporting boundary, not automatic permission for the
-next 500 steps. Wave 1 is complete. Wave 2 began only after a fresh portfolio
-audit, acceptance criteria, validation plan, risk review, and current user
-authority; its remaining steps still require their own current evidence before
-completion.
+Step 30 is a planning/reporting boundary, not automatic execution of the next
+500 steps. The five-wave shape is now explicit, while every individual future
+wave remains gated by current evidence and user authority. After Wave 5, a new
+30-step scope review starts the next five-wave series.

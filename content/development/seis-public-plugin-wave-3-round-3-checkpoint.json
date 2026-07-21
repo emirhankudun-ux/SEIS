@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-3-round-3-checkpoint",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 3,
+  "round": 3,
+  "status": "completed-repository-local-checkpoint",
+  "generatedAt": "2026-07-21",
+  "purpose": "Reconcile the completed public SEIS Repo implementation and integration steps for the bounded Swift concurrency audit without converting repository-local evidence into an installation, native-runtime, provider, deployment, or release claim.",
+  "completedSteps": [
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60
+  ],
+  "selectedCapability": {
+    "id": "seis-swift-concurrency-audit",
+    "implementationStarted": true,
+    "additionalPublicCardAdded": true,
+    "packagePresent": true
+  },
+  "publicDistribution": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "marketplaceCardPresent": true,
+    "applicationPluginCount": 73,
+    "marketplaceCardCount": 379,
+    "matrixPluginCount": 73,
+    "matrixReadyCount": 70,
+    "matrixAttentionCount": 3,
+    "matrixFailureCount": 0
+  },
+  "localEvidence": {
+    "staticAuditPath": "content/development/seis-swift-concurrency-audit.json",
+    "staticAuditStatus": "attention-public-static-concurrency-evidence",
+    "staticAuditOk": true,
+    "staticAuditState": "attention",
+    "staticAuditBlockingFindingCount": 0,
+    "sourceManifestRegistered": true,
+    "matrixStatus": "attention",
+    "matrixOk": true,
+    "publicReleaseAllowed": false
+  },
+  "permissions": {
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "transport": "local-stdio",
+    "remoteEndpointDeclared": false,
+    "environmentInjectionDeclared": false
+  },
+  "lifecycle": {
+    "status": "active-local-proof-public-release-gated",
+    "publicReleaseAllowed": false,
+    "externalProofStatus": "repo-local-clean-artifact-staged-external-proof-pending",
+    "externalProofReleaseAllowed": false,
+    "freshTaskReloadEvidence": "content/development/seis-public-plugin-fresh-task-reload-evidence.json"
+  },
+  "delivery": {
+    "commit": "d6bfaab79ec26451d8ef9ca1c9556c5cb689f186",
+    "branch": "plugins/seis-plugin-root-20260715",
+    "remoteReference": "refs/heads/plugins/seis-plugin-root-20260715",
+    "featureBranchOnly": true,
+    "protectedDefaultBranchWritten": false,
+    "remoteReferenceVerified": true
+  },
+  "validation": [
+    "npm run check:seis-swift-concurrency-audit",
+    "node --test plugins/seis-core/test/swift-concurrency-audit.test.mjs",
+    "node --test plugins/seis-core/test/swift-concurrency-audit-evidence.test.mjs",
+    "npm run check:seis-repo-marketplace",
+    "npm run seis:check",
+    "git diff --check"
+  ],
+  "externalGaps": [
+    "Swift compilation, SwiftPM test completion, and native runtime behavior are not run or claimed by this checkpoint.",
+    "Independent fresh-task reload and independent installation evidence remain external release gates.",
+    "No provider, deployment, signing, marketplace publication, or public release was performed."
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the focused feature-branch package, its public card, generated records, and checkpoint references; no external state or data migration exists.",
+    "dataMigrationRequired": false
+  }
+}
