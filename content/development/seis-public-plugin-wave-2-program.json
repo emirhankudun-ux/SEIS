@@ -24,6 +24,7 @@
     "paths": [
       "plugins/seis-core/seis-apple-native-readiness",
       "plugins/seis-core/test/apple-native-readiness.test.mjs",
+      "plugins/seis-core/test/apple-native-distribution-review.test.mjs",
       "packages/seis_platform_swift/Package.swift",
       "packages/seis_platform_swift/Sources/SeisPlatformKit",
       "packages/seis_platform_swift/Sources/SeisAppleNativeShell",
@@ -102,7 +103,7 @@
       "round": 3,
       "name": "Public contract maintenance",
       "objective": "Keep public distribution, catalog, release, and lifecycle artifacts coherent while preserving approval-gated external boundaries.",
-      "status": "planned",
+      "status": "completed",
       "steps": [
         41,
         42,
@@ -468,141 +469,141 @@
       "number": 41,
       "round": 3,
       "title": "Review public family and marketplace counts after any Wave 2 source change.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 42,
       "round": 3,
       "title": "Review source-manifest and catalog count reconciliation.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 43,
       "round": 3,
       "title": "Review plugin matrix, registry, and unified-suite source discovery.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 44,
       "round": 3,
       "title": "Review public install-state wording without claiming external installation.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 45,
       "round": 3,
       "title": "Review public runtime-status wording without claiming a provider or deployment.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 46,
       "round": 3,
       "title": "Review MCP permission ledger for empty write, network, and secret permissions.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 47,
       "round": 3,
       "title": "Review public security and provenance evidence for source-boundary drift.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 48,
       "round": 3,
       "title": "Review release readiness without promoting a version automatically.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 49,
       "round": 3,
       "title": "Review project manifest count and public-audience declarations.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 50,
       "round": 3,
       "title": "Review public marketplace terminology for personal-label leakage.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "public distribution, source/catalog, and registry/suite reconciliation"
     },
     {
       "number": 51,
       "round": 3,
       "title": "Run source, catalog, matrix, and public-family checks.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "permission, lifecycle, provenance, release-boundary, and machine-path review"
     },
     {
       "number": 52,
       "round": 3,
       "title": "Run AI Core integration and requested-plugin coverage checks.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "permission, lifecycle, provenance, release-boundary, and machine-path review"
     },
     {
       "number": 53,
       "round": 3,
       "title": "Run public lifecycle, provenance, fresh-task, and external-install boundary checks.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "permission, lifecycle, provenance, release-boundary, and machine-path review"
     },
     {
       "number": 54,
       "round": 3,
       "title": "Inspect generated records for machine-specific paths and secret-like values.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "permission, lifecycle, provenance, release-boundary, and machine-path review"
     },
     {
       "number": 55,
       "round": 3,
       "title": "Document any approval-gated external validation separately from repository evidence.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "permission, lifecycle, provenance, release-boundary, and machine-path review"
     },
     {
       "number": 56,
       "round": 3,
       "title": "Update non-goals if a public card begins to imply a live integration.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "permission, lifecycle, provenance, release-boundary, and machine-path review"
     },
     {
       "number": 57,
       "round": 3,
       "title": "Prepare a reversible checkpoint only after all relevant local checks pass.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "distribution-maintenance evidence and feature-branch verification"
     },
     {
       "number": 58,
       "round": 3,
       "title": "Commit and push the scoped checkpoint only with current user delivery authority.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "distribution-maintenance evidence and feature-branch verification"
     },
     {
       "number": 59,
       "round": 3,
       "title": "Verify the feature-branch reference when the network environment permits.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "distribution-maintenance evidence and feature-branch verification"
     },
     {
       "number": 60,
       "round": 3,
       "title": "Record failed or skipped external checks without converting them into success claims.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "distribution-maintenance evidence and feature-branch verification"
     },
     {
       "number": 61,
@@ -886,11 +887,11 @@
     }
   ],
   "progress": {
-    "completedStepCount": 40,
-    "plannedStepCount": 60,
+    "completedStepCount": 60,
+    "plannedStepCount": 40,
     "inProgressStepNumbers": [],
-    "completedRoundCount": 2,
-    "nextStepNumber": 41
+    "completedRoundCount": 3,
+    "nextStepNumber": 61
   },
   "capability": {
     "decisionId": "seis-public-plugin-wave-2-capability-decision",
@@ -898,7 +899,8 @@
     "evidencePath": "content/development/seis-apple-native-readiness.json",
     "implementationState": "functional-local-demo",
     "classification": "documented-static-readiness-only",
-    "resilienceReview": "completed-repository-local-resilience-review"
+    "resilienceReview": "completed-repository-local-resilience-review",
+    "distributionReview": "completed-repository-local-distribution-maintenance-review"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -915,6 +917,7 @@
     "npm run check:seis-public-plugin-expansion-program",
     "npm run check:seis-public-plugin-wave-2-program",
     "npm run check:seis-public-plugin-wave-2-capability-decision",
+    "npm run check:seis-public-plugin-wave-2-distribution-review",
     "npm run check:seis-apple-native-readiness",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration",

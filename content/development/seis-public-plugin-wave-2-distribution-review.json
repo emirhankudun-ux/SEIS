@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-2-distribution-review",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 2,
+  "status": "completed-repository-local-distribution-maintenance-review",
+  "generatedAt": "2026-07-21",
+  "purpose": "Reconcile the public SEIS Repo application-plugin distribution chain after Wave 2 resilience work without treating repository visibility, local artifacts, cache observations, or static checks as independent installation, activation, release, provider, deployment, or approval proof.",
+  "distribution": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "publicCardCount": 378,
+    "expectedPublicCardCount": 378,
+    "applicationPluginCount": 72,
+    "expectedApplicationPluginCount": 72,
+    "topicPluginCount": 300,
+    "sourceAvailableInRepository": true,
+    "publicRepositoryAvailable": true
+  },
+  "contracts": {
+    "sourceCatalog": {
+      "sourceStatus": "active-public-repository-boundary",
+      "catalogContractValid": true,
+      "sourcePluginCount": 72,
+      "catalogPluginCount": 72,
+      "applePluginStatus": "ready"
+    },
+    "matrixRegistrySuite": {
+      "matrixPluginCount": 72,
+      "matrixFailureCount": 0,
+      "matrixAppleStatus": "ready",
+      "registryEntryCount": 5000,
+      "registryAppleInstallId": "seis-apple-native-readiness@seis-repo",
+      "suiteApplicationPluginCount": 72,
+      "suitePublicReleaseAllowed": false
+    },
+    "permissions": {
+      "applicationMcpServerCount": 72,
+      "remoteServerCount": 0,
+      "writePermissionGrantCount": 0,
+      "networkPermissionGrantCount": 0,
+      "secretPermissionGrantCount": 0,
+      "publicReleaseAllowed": false
+    },
+    "installAndRuntime": {
+      "repositorySourceAvailable": true,
+      "localArtifactStageVerified": true,
+      "freshTaskReloadRecorded": true,
+      "independentInstallationVerified": false,
+      "humanReleaseApprovalRecorded": false,
+      "runtimeCacheIsInstallationProof": false,
+      "runtimeNetworkAllowed": false
+    },
+    "provenanceAndRelease": {
+      "securitySecretFindingCount": 0,
+      "securityBlockingFindingCount": 0,
+      "securityPublicReleaseAllowed": false,
+      "externalProofPublicReleaseAllowed": false,
+      "lifecycleReleaseAuthority": "human_owner_required",
+      "releaseReadinessDecision": "continue-code-before-large-code-promotion",
+      "releasePromoted": false
+    },
+    "manifest": {
+      "overallState": "ready",
+      "declaredMarketplaceEntryCount": 378,
+      "declaredApplicationMarketplaceEntryCount": 72,
+      "findingCount": 0
+    },
+    "appleReadiness": {
+      "status": "completed-public-static-readiness-evidence",
+      "staticState": "ready",
+      "resilienceStatus": "completed-repository-local-resilience-review",
+      "externalNativeValidation": "not-run-and-not-claimed"
+    }
+  },
+  "publicBoundary": {
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "writes": false,
+    "network": false,
+    "secrets": false,
+    "publicReleaseAllowed": false,
+    "externalInstallationProven": false,
+    "humanReleaseApprovalRecorded": false
+  },
+  "remainingGaps": [
+    "Independent clean-runner or public package installation evidence has not been recorded.",
+    "Human approval for public preview, release, publication, external writes, provider credentials, deployment, SSH, or protected-branch actions has not been recorded.",
+    "Apple-native validation remains documented static readiness only; no SwiftPM, simulator, device, signing, provisioning, or App Store claim is made."
+  ],
+  "validation": [
+    "npm run check:seis-core-plugin-sources",
+    "npm run check:seis-core-plugin-catalog",
+    "npm run check:seis-core-plugin-matrix",
+    "npm run check:seis-ai-core-plugin-registry",
+    "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-public-plugin-security-provenance-review",
+    "npm run check:seis-repo-marketplace",
+    "npm run check:seis-public-plugin-wave-2-distribution-review"
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this Wave 2 distribution-maintenance record and its program references on the feature branch; no external state, release state, or marketplace publication is changed.",
+    "dataMigrationRequired": false
+  }
+}
