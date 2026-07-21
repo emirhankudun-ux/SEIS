@@ -107,7 +107,7 @@ function buildRecord() {
         && followingWaveReview.followingWaveDecision?.candidatePackageExists === false
         && followingWaveReview.followingWaveDecision?.candidatePublicCardExists === false,
       separateWave4Plan: wave4Program.id === "seis-public-plugin-wave-4-program"
-        && wave4Program.status === "planned-gated"
+        && ["planned-gated", "in-progress"].includes(wave4Program.status)
         && wave4Program.wave?.number === 4
         && list(wave4Program.steps).length === 100
         && wave4Program.scope?.selectedCapability === CANDIDATE_CAPABILITY

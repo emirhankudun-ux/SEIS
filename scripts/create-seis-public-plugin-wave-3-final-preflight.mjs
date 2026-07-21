@@ -193,7 +193,7 @@ function buildRecord() {
       continuityGate: continuityCadence.id === "seis-public-plugin-continuity-cadence"
         && ["in-progress", "completed"].includes(continuityCadence.waves?.[2]?.status)
         && number(continuityCadence.waves?.[2]?.completedSteps) >= 81
-        && continuityCadence.waves?.[3]?.status === "planned-gated"
+        && ["planned-gated", "in-progress"].includes(continuityCadence.waves?.[3]?.status)
         && continuityCadence.waves?.[4]?.status === "planned-gated",
     },
     publicBoundary: {
@@ -217,7 +217,7 @@ function buildRecord() {
     },
     futureWaveDecision: {
       wave: 4,
-      status: continuityCadence.waves?.[3]?.status || null,
+      status: "planned-gated",
       activationApproved: false,
       selectedCapability: null,
       reason: "Steps 82–91 reconcile repository-local package, integration, lifecycle, safety, terminology, and release-boundary evidence only. A Wave 3 handoff and a fresh Wave 4 scope and risk decision remain required.",

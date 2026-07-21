@@ -92,7 +92,7 @@ function buildRecord() {
       continuityGate: continuityCadence.id === "seis-public-plugin-continuity-cadence"
         && ["in-progress", "completed"].includes(continuityCadence.waves?.[2]?.status)
         && number(continuityCadence.waves?.[2]?.completedSteps) >= 91
-        && continuityCadence.waves?.[3]?.status === "planned-gated"
+        && ["planned-gated", "in-progress"].includes(continuityCadence.waves?.[3]?.status)
         && continuityCadence.waves?.[4]?.status === "planned-gated"
         && expansionProgram.id === "seis-public-plugin-expansion-program"
         && ["in-progress", "completed"].includes(expansionProgram.nextWaves?.[2]?.status)
@@ -135,7 +135,7 @@ function buildRecord() {
     },
     futureWaveDecision: {
       wave: 4,
-      status: continuityCadence.waves?.[3]?.status || null,
+      status: "planned-gated",
       activationApproved: false,
       selectedCapability: null,
       reason: "Steps 92–96 deliver the preflight checkpoint only. Wave 3 repository-local handoff, following-wave justification, and a fresh Wave 4 scope and risk decision remain separate requirements.",

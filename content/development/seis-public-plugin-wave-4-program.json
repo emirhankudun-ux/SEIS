@@ -3,7 +3,7 @@
   "id": "seis-public-plugin-wave-4-program",
   "goalId": "SEIS-GOAL-021",
   "parentProgramId": "seis-public-plugin-expansion-program",
-  "status": "planned-gated",
+  "status": "in-progress",
   "maturity": "specification",
   "createdAt": "2026-07-21",
   "updatedAt": "2026-07-21",
@@ -13,6 +13,7 @@
     "roundCount": 5,
     "stepsPerRound": 20,
     "predecessor": {
+      "closeoutPath": "content/development/seis-public-plugin-wave-3-closeout.json",
       "scopeReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
       "requiredStatus": "completed-following-wave-scope-review",
       "requiredCandidate": "seis-swift-package-topology"
@@ -23,23 +24,24 @@
       "SEIS"
     ],
     "selectedCapability": "seis-swift-package-topology",
-    "outcome": "A future public repository package that reports bounded, derived Swift Package manifest topology only after a separate activation decision. The plan itself creates no package source, card, external integration, or release state.",
-    "entryRule": "Wave 4 must remain planned-gated until Wave 3 closes step 100 and a separate activation decision confirms current user authority, scope, risk, validation, rollback, and public-count reconciliation."
+    "outcome": "Begin one public repository package that reports bounded, derived Swift Package manifest topology after the separate activation decision. Until its focused implementation checkpoint, no package source, card, external integration, or release state exists.",
+    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Wave 4 begins with one in-progress static-contract step."
   },
   "nonGoals": [
-    "Starting Wave 4 implementation, adding a package, or adding a SEIS Repo card during this planning record.",
+    "Adding more than the one activation-approved public package or card without a new capability decision.",
     "Reading or mutating a personal marketplace, using a network, granting writes or secrets, or changing protected branches.",
     "Compiling, testing, resolving, describing, running, signing, installing, deploying, or publishing Swift or plugin artifacts.",
     "Treating static manifest topology as proof of graph validity, compiler correctness, runtime behavior, independent installation, or public release."
   ],
   "activationGate": {
-    "status": "not-approved",
+    "status": "approved",
+    "activationDecisionPath": "content/development/seis-public-plugin-wave-4-activation-decision.json",
     "implementationStarted": false,
     "candidatePackageExists": false,
     "candidatePublicCardExists": false,
     "requiredBeforeActivation": [
       "Wave 3 step 100 has current closure evidence.",
-      "A separate Wave 4 activation decision records current user authority, exact scope, risks, rollback, and validation gates.",
+      "The Wave 4 activation decision records current user authority, exact scope, risks, rollback, and validation gates.",
       "The candidate remains distinct from Apple readiness, Swift concurrency, and package-adoption responsibilities.",
       "No unreviewed permission, dependency, personal marketplace, secret, or external-write expansion is required."
     ]
@@ -69,7 +71,7 @@
       "round": 1,
       "name": "Scope, ownership, and static contract",
       "objective": "Keep the candidate bounded to one checked-in manifest and establish an unambiguous static-topology contract before any implementation is considered.",
-      "status": "planned",
+      "status": "in-progress",
       "steps": [
         1,
         2,
@@ -211,7 +213,7 @@
       "number": 1,
       "round": 1,
       "title": "Reconfirm the completed Wave 3 following-wave scope review and its unactivated candidate decision.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "scope, contract, and static-boundary review"
     },
     {
@@ -910,13 +912,17 @@
   ],
   "progress": {
     "completedStepCount": 0,
-    "plannedStepCount": 100,
-    "inProgressStepNumbers": [],
+    "plannedStepCount": 99,
+    "inProgressStepNumbers": [
+      1
+    ],
     "completedRoundCount": 0,
     "nextStepNumber": 1
   },
   "evidence": {
+    "wave3CloseoutPath": "content/development/seis-public-plugin-wave-3-closeout.json",
     "followingWaveReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
+    "activationDecisionPath": "content/development/seis-public-plugin-wave-4-activation-decision.json",
     "sourceManifestPath": "apps/seis-core/data/seis-core-plugin-sources.json",
     "catalogPath": "apps/seis-core/data/seis-core-plugin-catalog.json",
     "matrixPath": "content/development/seis-core-plugin-matrix.json",
@@ -924,6 +930,7 @@
   },
   "validation": [
     "npm run check:seis-public-plugin-wave-4-program",
+    "npm run check:seis-public-plugin-wave-4-activation-decision",
     "npm run check:seis-public-plugin-wave-3-following-wave-review",
     "npm run check:seis-public-plugin-continuity-cadence",
     "npm run check:seis-public-plugin-expansion-program",
@@ -961,7 +968,9 @@
     "dataMigrationRequired": false
   },
   "checks": {
+    "predecessorCloseout": true,
     "precedingReview": true,
+    "activationDecision": true,
     "publicInventory": true,
     "candidateAbsent": true
   },

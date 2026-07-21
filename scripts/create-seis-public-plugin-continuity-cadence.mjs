@@ -19,6 +19,7 @@ const WAVE_3_DELIVERY_EVIDENCE_PATH = "content/development/seis-public-plugin-wa
 const WAVE_3_REPOSITORY_LOCAL_HANDOFF_PATH = "content/development/seis-public-plugin-wave-3-repository-local-handoff.json";
 const WAVE_3_FOLLOWING_WAVE_REVIEW_PATH = "content/development/seis-public-plugin-wave-3-following-wave-review.json";
 const WAVE_3_CLOSEOUT_PATH = "content/development/seis-public-plugin-wave-3-closeout.json";
+const WAVE_4_ACTIVATION_DECISION_PATH = "content/development/seis-public-plugin-wave-4-activation-decision.json";
 const WAVE_4_PROGRAM_PATH = "content/development/seis-public-plugin-wave-4-program.json";
 const FEATURE_BRANCH = "plugins/seis-plugin-root-20260715";
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
@@ -51,6 +52,7 @@ function buildRecord() {
   const wave3RepositoryLocalHandoff = readJson(WAVE_3_REPOSITORY_LOCAL_HANDOFF_PATH);
   const wave3FollowingWaveReview = readJson(WAVE_3_FOLLOWING_WAVE_REVIEW_PATH);
   const wave3Closeout = readJson(WAVE_3_CLOSEOUT_PATH);
+  const wave4ActivationDecision = readJson(WAVE_4_ACTIVATION_DECISION_PATH);
   const wave4Program = readJson(WAVE_4_PROGRAM_PATH);
   assert(wave3FinalValidation?.id === "seis-public-plugin-wave-3-final-validation" && wave3FinalValidation?.status === "completed-repository-local-final-validation" && wave3FinalValidation?.step === 81 && wave3FinalValidation?.futureWaveDecision?.activationApproved === false, "Wave 3 final validation evidence is invalid");
   assert(wave3FinalPreflight?.id === "seis-public-plugin-wave-3-final-preflight" && wave3FinalPreflight?.status === "completed-repository-local-final-preflight" && list(wave3FinalPreflight?.completedSteps).join(",") === range(82, 91).join(",") && wave3FinalPreflight?.futureWaveDecision?.activationApproved === false, "Wave 3 final preflight evidence is invalid");
@@ -58,7 +60,8 @@ function buildRecord() {
   assert(wave3RepositoryLocalHandoff?.id === "seis-public-plugin-wave-3-repository-local-handoff" && wave3RepositoryLocalHandoff?.status === "completed-repository-local-handoff" && wave3RepositoryLocalHandoff?.step === 97 && wave3RepositoryLocalHandoff?.futureWaveDecision?.activationApproved === false, "Wave 3 repository-local handoff evidence is invalid");
   assert(wave3FollowingWaveReview?.id === "seis-public-plugin-wave-3-following-wave-review" && wave3FollowingWaveReview?.status === "completed-following-wave-scope-review" && wave3FollowingWaveReview?.step === 98 && wave3FollowingWaveReview?.followingWaveDecision?.selectedCapability === "seis-swift-package-topology" && wave3FollowingWaveReview?.followingWaveDecision?.implementationApproved === false && wave3FollowingWaveReview?.followingWaveDecision?.activationApproved === false, "Wave 3 following-wave review is invalid");
   assert(wave3Closeout?.id === "seis-public-plugin-wave-3-closeout" && wave3Closeout?.status === "completed-repository-local-wave-closeout" && wave3Closeout?.step === 100 && wave3Closeout?.completion?.completedStepCount === 100 && wave3Closeout?.completion?.completedRoundCount === 5 && wave3Closeout?.completion?.nextActiveWave === null && wave3Closeout?.completion?.nextWaveStatus === "planned-gated" && wave3Closeout?.completion?.nextWaveActivationApproved === false, "Wave 3 closeout is invalid");
-  assert(wave4Program?.id === "seis-public-plugin-wave-4-program" && wave4Program?.status === "planned-gated" && wave4Program?.wave?.number === 4 && wave4Program?.scope?.selectedCapability === "seis-swift-package-topology" && wave4Program?.activationGate?.implementationStarted === false && wave4Program?.activationGate?.candidatePackageExists === false && wave4Program?.activationGate?.candidatePublicCardExists === false, "Wave 4 plan is invalid");
+  assert(wave4ActivationDecision?.id === "seis-public-plugin-wave-4-activation-decision" && wave4ActivationDecision?.status === "approved-public-local-wave-4-activation" && wave4ActivationDecision?.decision?.selectedCapability === "seis-swift-package-topology" && wave4ActivationDecision?.decision?.activationApproved === true && wave4ActivationDecision?.decision?.implementationApproved === true && wave4ActivationDecision?.decision?.implementationStarted === false && wave4ActivationDecision?.decision?.publicReleaseApproved === false, "Wave 4 activation decision is invalid");
+  assert(wave4Program?.id === "seis-public-plugin-wave-4-program" && wave4Program?.status === "in-progress" && wave4Program?.wave?.number === 4 && wave4Program?.scope?.selectedCapability === "seis-swift-package-topology" && wave4Program?.activationGate?.status === "approved" && wave4Program?.activationGate?.activationDecisionPath === WAVE_4_ACTIVATION_DECISION_PATH && wave4Program?.activationGate?.implementationStarted === false && wave4Program?.activationGate?.candidatePackageExists === false && wave4Program?.activationGate?.candidatePublicCardExists === false && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "1", "Wave 4 activation is invalid");
   const futureWaveTemplate = buildFutureWaveTemplate(wave3Program.steps);
   const record = {
     schemaVersion: 1,
@@ -96,8 +99,8 @@ function buildRecord() {
         roundsPerWave: 5,
         stepsPerRound: 20,
         totalPlannedWaveSteps: 500,
-        activeWave: null,
-        activeWaveState: "none-pending-wave-4-activation",
+        activeWave: 4,
+        activeWaveState: "activation-approved-step-1-in-progress",
       },
       githubDelivery: {
         branch: FEATURE_BRANCH,
@@ -148,19 +151,23 @@ function buildRecord() {
       },
       {
         wave: 4,
-        status: "planned-gated",
+        status: "in-progress",
         programId: "seis-public-plugin-wave-4-program",
-        plannedProgramPath: WAVE_4_PROGRAM_PATH,
+        programPath: WAVE_4_PROGRAM_PATH,
         totalSteps: 100,
         stepTemplateId: futureWaveTemplate.id,
         scopeReviewPath: WAVE_3_FOLLOWING_WAVE_REVIEW_PATH,
+        activationDecisionPath: WAVE_4_ACTIVATION_DECISION_PATH,
         selectedCapability: "seis-swift-package-topology",
-        activationApproved: false,
+        activationApproved: true,
         implementationStarted: false,
         candidatePackageExists: false,
         candidatePublicCardExists: false,
+        completedSteps: completedStepCount(wave4Program),
+        inProgressSteps: list(wave4Program.progress?.inProgressStepNumbers),
+        currentEvidencePath: WAVE_4_ACTIVATION_DECISION_PATH,
         predecessor: "Wave 3 repository-local handoff",
-        entryRule: "Activate only after Wave 3 handoff, current validation, an explicit scope and risk decision, and current user authority.",
+        entryRule: "Wave 3 closed with current evidence and the separate activation decision approved only the fixed-manifest, repository-local static-contract scope.",
       },
       {
         wave: 5,
@@ -233,10 +240,10 @@ function validateRecord(record) {
   assert(record.id === "seis-public-plugin-continuity-cadence" && record.goalId === "SEIS-GOAL-021" && record.status === "active-evidence-led-cadence" && record.maturity === "specification", "record identity is invalid");
   assert(record.executionBoundary?.marketplaceName === "seis-repo" && record.executionBoundary?.marketplaceDisplayName === "SEIS Repo" && record.executionBoundary?.personalMarketplaceRead === false && record.executionBoundary?.personalMarketplaceMutation === false && record.executionBoundary?.network === false && record.executionBoundary?.externalWrites === false && record.executionBoundary?.secrets === false && record.executionBoundary?.protectedDefaultBranchWrites === false && record.executionBoundary?.backgroundExecutionClaimed === false && record.executionBoundary?.featureBranchDeliveryRequired === true, "execution boundary is invalid");
   assert(record.cadence?.bootstrap?.totalSteps === 30 && record.cadence?.bootstrap?.roundCount === 5 && record.cadence?.bootstrap?.stepsPerRound === 6 && record.cadence?.bootstrap?.status === "completed", "30-step bootstrap is invalid");
-  assert(record.cadence?.waveSeries?.waveCount === 5 && record.cadence?.waveSeries?.stepsPerWave === 100 && record.cadence?.waveSeries?.roundsPerWave === 5 && record.cadence?.waveSeries?.stepsPerRound === 20 && record.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && record.cadence?.waveSeries?.activeWave === null && record.cadence?.waveSeries?.activeWaveState === "none-pending-wave-4-activation", "five-wave cadence is invalid");
+  assert(record.cadence?.waveSeries?.waveCount === 5 && record.cadence?.waveSeries?.stepsPerWave === 100 && record.cadence?.waveSeries?.roundsPerWave === 5 && record.cadence?.waveSeries?.stepsPerRound === 20 && record.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && record.cadence?.waveSeries?.activeWave === 4 && record.cadence?.waveSeries?.activeWaveState === "activation-approved-step-1-in-progress", "five-wave cadence is invalid");
   assert(record.cadence?.githubDelivery?.branch === FEATURE_BRANCH && record.cadence?.githubDelivery?.protectedDefaultBranchWrites === false && record.cadence?.githubDelivery?.remoteReferenceVerificationRequired === true, "GitHub delivery boundary is invalid");
   assert(record.cadence?.afterFiveWaves?.nextBootstrapSteps === 30 && record.cadence?.afterFiveWaves?.nextWaveCount === 5 && record.cadence?.afterFiveWaves?.nextWaveSteps === 100 && record.cadence?.afterFiveWaves?.backgroundExecutionClaimed === false, "post-series continuation is invalid");
-  assert(list(record.waves).length === 5 && record.waves[0]?.status === "completed" && record.waves[0]?.completedSteps === 100 && record.waves[1]?.status === "completed" && record.waves[1]?.completedSteps === 100 && record.waves[2]?.status === "completed" && record.waves[2]?.completedSteps === 100 && list(record.waves[2]?.inProgressSteps).length === 0 && record.waves[2]?.priorValidationPath === WAVE_3_FINAL_VALIDATION_PATH && record.waves[2]?.preflightPath === WAVE_3_FINAL_PREFLIGHT_PATH && record.waves[2]?.deliveryEvidencePath === WAVE_3_DELIVERY_EVIDENCE_PATH && record.waves[2]?.repositoryLocalHandoffPath === WAVE_3_REPOSITORY_LOCAL_HANDOFF_PATH && record.waves[2]?.followingWaveReviewPath === WAVE_3_FOLLOWING_WAVE_REVIEW_PATH && record.waves[2]?.closeoutPath === WAVE_3_CLOSEOUT_PATH && record.waves[2]?.currentEvidencePath === WAVE_3_CLOSEOUT_PATH && record.waves[3]?.status === "planned-gated" && record.waves[3]?.plannedProgramPath === WAVE_4_PROGRAM_PATH && record.waves[3]?.scopeReviewPath === WAVE_3_FOLLOWING_WAVE_REVIEW_PATH && record.waves[3]?.selectedCapability === "seis-swift-package-topology" && record.waves[3]?.activationApproved === false && record.waves[3]?.implementationStarted === false && record.waves[3]?.candidatePackageExists === false && record.waves[3]?.candidatePublicCardExists === false && record.waves[3]?.totalSteps === 100 && record.waves[4]?.status === "planned-gated" && record.waves[4]?.totalSteps === 100, "wave states are invalid");
+  assert(list(record.waves).length === 5 && record.waves[0]?.status === "completed" && record.waves[0]?.completedSteps === 100 && record.waves[1]?.status === "completed" && record.waves[1]?.completedSteps === 100 && record.waves[2]?.status === "completed" && record.waves[2]?.completedSteps === 100 && list(record.waves[2]?.inProgressSteps).length === 0 && record.waves[2]?.priorValidationPath === WAVE_3_FINAL_VALIDATION_PATH && record.waves[2]?.preflightPath === WAVE_3_FINAL_PREFLIGHT_PATH && record.waves[2]?.deliveryEvidencePath === WAVE_3_DELIVERY_EVIDENCE_PATH && record.waves[2]?.repositoryLocalHandoffPath === WAVE_3_REPOSITORY_LOCAL_HANDOFF_PATH && record.waves[2]?.followingWaveReviewPath === WAVE_3_FOLLOWING_WAVE_REVIEW_PATH && record.waves[2]?.closeoutPath === WAVE_3_CLOSEOUT_PATH && record.waves[2]?.currentEvidencePath === WAVE_3_CLOSEOUT_PATH && record.waves[3]?.status === "in-progress" && record.waves[3]?.programPath === WAVE_4_PROGRAM_PATH && record.waves[3]?.scopeReviewPath === WAVE_3_FOLLOWING_WAVE_REVIEW_PATH && record.waves[3]?.activationDecisionPath === WAVE_4_ACTIVATION_DECISION_PATH && record.waves[3]?.selectedCapability === "seis-swift-package-topology" && record.waves[3]?.activationApproved === true && record.waves[3]?.implementationStarted === false && record.waves[3]?.candidatePackageExists === false && record.waves[3]?.candidatePublicCardExists === false && record.waves[3]?.completedSteps === 0 && list(record.waves[3]?.inProgressSteps).join(",") === "1" && record.waves[3]?.currentEvidencePath === WAVE_4_ACTIVATION_DECISION_PATH && record.waves[3]?.totalSteps === 100 && record.waves[4]?.status === "planned-gated" && record.waves[4]?.totalSteps === 100, "wave states are invalid");
   assert(record.futureWaveTemplate?.id === "seis-public-plugin-future-wave-template" && record.futureWaveTemplate?.totalSteps === 100 && record.futureWaveTemplate?.roundCount === 5 && record.futureWaveTemplate?.stepsPerRound === 20 && list(record.futureWaveTemplate?.rounds).length === 5 && list(record.futureWaveTemplate?.steps).length === 100 && list(record.futureWaveTemplate?.steps).every((step, index) => step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && step?.status === "planned-template" && typeof step?.title === "string" && step.title.length > 0), "future wave template is invalid");
   assert(list(record.rolloutRules).length === 4 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "rollout rule or rollback boundary is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "cadence must not contain a machine-specific path");

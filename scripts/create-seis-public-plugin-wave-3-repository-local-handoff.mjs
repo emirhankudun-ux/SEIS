@@ -109,7 +109,7 @@ function buildRecord() {
       continuityGate: continuityCadence.id === "seis-public-plugin-continuity-cadence"
         && ["in-progress", "completed"].includes(continuityCadence.waves?.[2]?.status)
         && number(continuityCadence.waves?.[2]?.completedSteps) >= 96
-        && continuityCadence.waves?.[3]?.status === "planned-gated"
+        && ["planned-gated", "in-progress"].includes(continuityCadence.waves?.[3]?.status)
         && continuityCadence.waves?.[4]?.status === "planned-gated"
         && continuityDocs.includes("SEIS Repo")
         && expansionDocs.includes("SEIS Repo"),
@@ -160,7 +160,7 @@ function buildRecord() {
     },
     futureWaveDecision: {
       wave: 4,
-      status: continuityCadence.waves?.[3]?.status || null,
+      status: "planned-gated",
       activationApproved: false,
       selectedCapability: null,
       reason: "This repository-local handoff closes only the current handoff record. It does not make a new capability selection or replace the required scope, dependency, risk, rollback, validation, and user-authority gate for Wave 4.",

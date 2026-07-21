@@ -34,8 +34,8 @@
       "roundsPerWave": 5,
       "stepsPerRound": 20,
       "totalPlannedWaveSteps": 500,
-      "activeWave": null,
-      "activeWaveState": "none-pending-wave-4-activation"
+      "activeWave": 4,
+      "activeWaveState": "activation-approved-step-1-in-progress"
     },
     "githubDelivery": {
       "branch": "plugins/seis-plugin-root-20260715",
@@ -86,19 +86,25 @@
     },
     {
       "wave": 4,
-      "status": "planned-gated",
+      "status": "in-progress",
       "programId": "seis-public-plugin-wave-4-program",
-      "plannedProgramPath": "content/development/seis-public-plugin-wave-4-program.json",
+      "programPath": "content/development/seis-public-plugin-wave-4-program.json",
       "totalSteps": 100,
       "stepTemplateId": "seis-public-plugin-future-wave-template",
       "scopeReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
+      "activationDecisionPath": "content/development/seis-public-plugin-wave-4-activation-decision.json",
       "selectedCapability": "seis-swift-package-topology",
-      "activationApproved": false,
+      "activationApproved": true,
       "implementationStarted": false,
       "candidatePackageExists": false,
       "candidatePublicCardExists": false,
+      "completedSteps": 0,
+      "inProgressSteps": [
+        1
+      ],
+      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-activation-decision.json",
       "predecessor": "Wave 3 repository-local handoff",
-      "entryRule": "Activate only after Wave 3 handoff, current validation, an explicit scope and risk decision, and current user authority."
+      "entryRule": "Wave 3 closed with current evidence and the separate activation decision approved only the fixed-manifest, repository-local static-contract scope."
     },
     {
       "wave": 5,

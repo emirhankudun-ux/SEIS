@@ -6,7 +6,9 @@ import path from "node:path";
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-4-program.json";
+const WAVE_3_CLOSEOUT_PATH = "content/development/seis-public-plugin-wave-3-closeout.json";
 const FOLLOWING_WAVE_REVIEW_PATH = "content/development/seis-public-plugin-wave-3-following-wave-review.json";
+const ACTIVATION_DECISION_PATH = "content/development/seis-public-plugin-wave-4-activation-decision.json";
 const SOURCE_MANIFEST_PATH = "apps/seis-core/data/seis-core-plugin-sources.json";
 const CATALOG_PATH = "apps/seis-core/data/seis-core-plugin-catalog.json";
 const MATRIX_PATH = "content/development/seis-core-plugin-matrix.json";
@@ -162,14 +164,16 @@ if (CHECK_MODE) {
     console.error(OUTPUT_PATH + " is stale. Run: npm run automation:seis-public-plugin-wave-4-program");
     process.exit(1);
   }
-  console.log("SEIS public plugin Wave 4 program check passed (planned-gated, 100 steps).");
+  console.log(`SEIS public plugin Wave 4 program check passed (${record.progress.completedStepCount} completed, step ${record.progress.nextStepNumber} in progress).`);
 } else {
   writeText(OUTPUT_PATH, expected);
-  console.log("Wrote " + OUTPUT_PATH + " as a planned-gated 100-step Wave 4 program.");
+  console.log("Wrote " + OUTPUT_PATH + " as an active 100-step Wave 4 program.");
 }
 
 function buildRecord() {
+  const wave3Closeout = readJson(WAVE_3_CLOSEOUT_PATH);
   const followingWaveReview = readJson(FOLLOWING_WAVE_REVIEW_PATH);
+  const activationDecision = readJson(ACTIVATION_DECISION_PATH);
   const sourceManifest = readJson(SOURCE_MANIFEST_PATH);
   const catalog = readJson(CATALOG_PATH);
   const matrix = readJson(MATRIX_PATH);
@@ -189,7 +193,7 @@ function buildRecord() {
     number: (roundIndex * 20) + taskIndex + 1,
     round: roundIndex + 1,
     title,
-    status: "planned",
+    status: stepStatus((roundIndex * 20) + taskIndex + 1),
     validation: validationFor(roundIndex + 1, taskIndex + 1),
   })));
   const inputSafetyScan = scanPublicSafeInputs([FOLLOWING_WAVE_REVIEW_PATH, SOURCE_MANIFEST_PATH, CATALOG_PATH, MATRIX_PATH, MARKETPLACE_PATH]);
@@ -198,7 +202,7 @@ function buildRecord() {
     id: "seis-public-plugin-wave-4-program",
     goalId: "SEIS-GOAL-021",
     parentProgramId: "seis-public-plugin-expansion-program",
-    status: "planned-gated",
+    status: "in-progress",
     maturity: "specification",
     createdAt: "2026-07-21",
     updatedAt: "2026-07-21",
@@ -208,6 +212,7 @@ function buildRecord() {
       roundCount: 5,
       stepsPerRound: 20,
       predecessor: {
+        closeoutPath: WAVE_3_CLOSEOUT_PATH,
         scopeReviewPath: FOLLOWING_WAVE_REVIEW_PATH,
         requiredStatus: "completed-following-wave-scope-review",
         requiredCandidate: CANDIDATE_CAPABILITY,
@@ -216,23 +221,24 @@ function buildRecord() {
     scope: {
       repositories: ["SEIS"],
       selectedCapability: CANDIDATE_CAPABILITY,
-      outcome: "A future public repository package that reports bounded, derived Swift Package manifest topology only after a separate activation decision. The plan itself creates no package source, card, external integration, or release state.",
-      entryRule: "Wave 4 must remain planned-gated until Wave 3 closes step 100 and a separate activation decision confirms current user authority, scope, risk, validation, rollback, and public-count reconciliation.",
+      outcome: "Begin one public repository package that reports bounded, derived Swift Package manifest topology after the separate activation decision. Until its focused implementation checkpoint, no package source, card, external integration, or release state exists.",
+      entryRule: "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Wave 4 begins with one in-progress static-contract step.",
     },
     nonGoals: [
-      "Starting Wave 4 implementation, adding a package, or adding a SEIS Repo card during this planning record.",
+      "Adding more than the one activation-approved public package or card without a new capability decision.",
       "Reading or mutating a personal marketplace, using a network, granting writes or secrets, or changing protected branches.",
       "Compiling, testing, resolving, describing, running, signing, installing, deploying, or publishing Swift or plugin artifacts.",
       "Treating static manifest topology as proof of graph validity, compiler correctness, runtime behavior, independent installation, or public release.",
     ],
     activationGate: {
-      status: "not-approved",
+      status: "approved",
+      activationDecisionPath: ACTIVATION_DECISION_PATH,
       implementationStarted: false,
       candidatePackageExists: false,
       candidatePublicCardExists: false,
       requiredBeforeActivation: [
         "Wave 3 step 100 has current closure evidence.",
-        "A separate Wave 4 activation decision records current user authority, exact scope, risks, rollback, and validation gates.",
+        "The Wave 4 activation decision records current user authority, exact scope, risks, rollback, and validation gates.",
         "The candidate remains distinct from Apple readiness, Swift concurrency, and package-adoption responsibilities.",
         "No unreviewed permission, dependency, personal marketplace, secret, or external-write expansion is required.",
       ],
@@ -261,19 +267,21 @@ function buildRecord() {
       round: index + 1,
       name: round.name,
       objective: round.objective,
-      status: "planned",
+      status: index === 0 ? "in-progress" : "planned",
       steps: Array.from({ length: 20 }, (_, taskIndex) => (index * 20) + taskIndex + 1),
     })),
     steps,
     progress: {
       completedStepCount: 0,
-      plannedStepCount: 100,
-      inProgressStepNumbers: [],
+      plannedStepCount: 99,
+      inProgressStepNumbers: [1],
       completedRoundCount: 0,
       nextStepNumber: 1,
     },
     evidence: {
+      wave3CloseoutPath: WAVE_3_CLOSEOUT_PATH,
       followingWaveReviewPath: FOLLOWING_WAVE_REVIEW_PATH,
+      activationDecisionPath: ACTIVATION_DECISION_PATH,
       sourceManifestPath: SOURCE_MANIFEST_PATH,
       catalogPath: CATALOG_PATH,
       matrixPath: MATRIX_PATH,
@@ -281,6 +289,7 @@ function buildRecord() {
     },
     validation: [
       "npm run check:seis-public-plugin-wave-4-program",
+      "npm run check:seis-public-plugin-wave-4-activation-decision",
       "npm run check:seis-public-plugin-wave-3-following-wave-review",
       "npm run check:seis-public-plugin-continuity-cadence",
       "npm run check:seis-public-plugin-expansion-program",
@@ -318,12 +327,24 @@ function buildRecord() {
       dataMigrationRequired: false,
     },
     checks: {
+      predecessorCloseout: wave3Closeout.id === "seis-public-plugin-wave-3-closeout"
+        && wave3Closeout.status === "completed-repository-local-wave-closeout"
+        && wave3Closeout.completion?.completedStepCount === 100
+        && wave3Closeout.completion?.nextWaveStatus === "planned-gated"
+        && wave3Closeout.completion?.nextWaveActivationApproved === false,
       precedingReview: followingWaveReview.id === "seis-public-plugin-wave-3-following-wave-review"
         && followingWaveReview.status === "completed-following-wave-scope-review"
         && followingWaveReview.step === 98
         && followingWaveReview.followingWaveDecision?.selectedCapability === CANDIDATE_CAPABILITY
         && followingWaveReview.followingWaveDecision?.implementationApproved === false
         && followingWaveReview.followingWaveDecision?.activationApproved === false,
+      activationDecision: activationDecision.id === "seis-public-plugin-wave-4-activation-decision"
+        && activationDecision.status === "approved-public-local-wave-4-activation"
+        && activationDecision.decision?.selectedCapability === CANDIDATE_CAPABILITY
+        && activationDecision.decision?.activationApproved === true
+        && activationDecision.decision?.implementationApproved === true
+        && activationDecision.decision?.implementationStarted === false
+        && activationDecision.decision?.publicReleaseApproved === false,
       publicInventory: sourceEntries.length === 73
         && catalog.counts?.discovered === 73
         && matrix.pluginCount === 73
@@ -346,18 +367,23 @@ function validationFor(round, task) {
   return task <= 15 ? "conditional post-activation validation and delivery plan" : "handoff, completion, and future-wave gate review";
 }
 
+function stepStatus(number) {
+  if (number === 1) return "in-progress";
+  return "planned";
+}
+
 function validateRecord(record) {
-  assert(record.id === "seis-public-plugin-wave-4-program" && record.goalId === "SEIS-GOAL-021" && record.parentProgramId === "seis-public-plugin-expansion-program" && record.status === "planned-gated" && record.maturity === "specification", "Wave 4 program identity is invalid");
-  assert(record.wave?.number === 4 && record.wave?.totalSteps === 100 && record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20 && record.wave?.predecessor?.scopeReviewPath === FOLLOWING_WAVE_REVIEW_PATH && record.wave?.predecessor?.requiredStatus === "completed-following-wave-scope-review" && record.wave?.predecessor?.requiredCandidate === CANDIDATE_CAPABILITY, "Wave 4 predecessor is invalid");
-  assert(record.scope?.selectedCapability === CANDIDATE_CAPABILITY && record.scope?.entryRule?.includes("planned-gated"), "Wave 4 scope is invalid");
+  assert(record.id === "seis-public-plugin-wave-4-program" && record.goalId === "SEIS-GOAL-021" && record.parentProgramId === "seis-public-plugin-expansion-program" && record.status === "in-progress" && record.maturity === "specification", "Wave 4 program identity is invalid");
+  assert(record.wave?.number === 4 && record.wave?.totalSteps === 100 && record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20 && record.wave?.predecessor?.closeoutPath === WAVE_3_CLOSEOUT_PATH && record.wave?.predecessor?.scopeReviewPath === FOLLOWING_WAVE_REVIEW_PATH && record.wave?.predecessor?.requiredStatus === "completed-following-wave-scope-review" && record.wave?.predecessor?.requiredCandidate === CANDIDATE_CAPABILITY, "Wave 4 predecessor is invalid");
+  assert(record.scope?.selectedCapability === CANDIDATE_CAPABILITY && record.scope?.entryRule?.includes("in-progress"), "Wave 4 scope is invalid");
   assert(list(record.nonGoals).length === 4, "Wave 4 non-goals are incomplete");
-  assert(record.activationGate?.status === "not-approved" && record.activationGate?.implementationStarted === false && record.activationGate?.candidatePackageExists === false && record.activationGate?.candidatePublicCardExists === false && list(record.activationGate?.requiredBeforeActivation).length === 4, "Wave 4 activation gate is invalid");
+  assert(record.activationGate?.status === "approved" && record.activationGate?.activationDecisionPath === ACTIVATION_DECISION_PATH && record.activationGate?.implementationStarted === false && record.activationGate?.candidatePackageExists === false && record.activationGate?.candidatePublicCardExists === false && list(record.activationGate?.requiredBeforeActivation).length === 4, "Wave 4 activation gate is invalid");
   assert(list(record.rounds).length === 5 && list(record.steps).length === 100, "Wave 4 structure is incomplete");
   for (let index = 0; index < 100; index += 1) {
     const step = record.steps[index];
-    assert(step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && step?.status === "planned" && typeof step?.title === "string" && step.title.length > 0 && typeof step?.validation === "string" && step.validation.length > 0, `Wave 4 step ${index + 1} is invalid`);
+    assert(step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && step?.status === stepStatus(index + 1) && typeof step?.title === "string" && step.title.length > 0 && typeof step?.validation === "string" && step.validation.length > 0, `Wave 4 step ${index + 1} is invalid`);
   }
-  assert(record.progress?.completedStepCount === 0 && record.progress?.plannedStepCount === 100 && list(record.progress?.inProgressStepNumbers).length === 0 && record.progress?.completedRoundCount === 0 && record.progress?.nextStepNumber === 1, "Wave 4 progress is invalid");
+  assert(record.progress?.completedStepCount === 0 && record.progress?.plannedStepCount === 99 && list(record.progress?.inProgressStepNumbers).join(",") === "1" && record.progress?.completedRoundCount === 0 && record.progress?.nextStepNumber === 1, "Wave 4 progress is invalid");
   assert(Object.values(record.checks).every(Boolean), "a required Wave 4 planning contract is not current");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");

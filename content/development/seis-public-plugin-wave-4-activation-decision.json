@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-4-activation-decision",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 4,
+  "step": 0,
+  "status": "approved-public-local-wave-4-activation",
+  "maturity": "implementation-authorized",
+  "generatedAt": "2026-07-21",
+  "purpose": "Authorize only a bounded, public SEIS Repo implementation of the static Swift Package topology capability after Wave 3 closed. This decision creates no package source or marketplace card by itself and does not authorize any external, personal, release, SwiftPM, compiler, runtime, provider, deployment, or secret-bearing action.",
+  "stateAtDecision": {
+    "wave3Completed": true,
+    "wave4PreviouslyActivated": false,
+    "candidatePackageExisted": false,
+    "candidatePublicCardExisted": false,
+    "applicationPluginCountBeforeActivation": 73,
+    "publicCardCountBeforeActivation": 379
+  },
+  "decision": {
+    "selectedCapability": "seis-swift-package-topology",
+    "activationApproved": true,
+    "implementationApproved": true,
+    "implementationStarted": false,
+    "candidatePackageAuthorized": true,
+    "candidatePublicCardAuthorized": true,
+    "publicReleaseApproved": false,
+    "currentUserContinuationObserved": true,
+    "outcome": "Wave 4 may begin its documented repository-local implementation only for one fixed-manifest, read-only topology package. A public SEIS Repo card may be added only together with its source, generated projections, and successful local validation; neither is present at this decision checkpoint."
+  },
+  "scope": {
+    "canonicalRepository": "SEIS",
+    "fixedManifestPath": "packages/seis_platform_swift/Package.swift",
+    "allowedRead": [
+      "one fixed checked-in Swift Package manifest"
+    ],
+    "maximumManifestBytes": 131072,
+    "allowedOutputs": [
+      "declared platform versions",
+      "library and executable product-to-target mappings",
+      "target kinds and declared dependencies",
+      "test-target dependencies",
+      "declared executable resource mappings"
+    ],
+    "nonGoals": [
+      "Compiling, testing, describing, resolving, or running SwiftPM packages.",
+      "Reading arbitrary paths, following symlinks, returning raw manifest text, or returning absolute paths.",
+      "Writing files, using a network, reading secrets, calling providers, deploying, signing, installing, or releasing artifacts.",
+      "Reading or mutating any personal marketplace or protected default branch."
+    ]
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "protectedDefaultBranchWrites": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "publicRelease": false
+  },
+  "evidence": {
+    "wave3CloseoutPath": "content/development/seis-public-plugin-wave-3-closeout.json",
+    "followingWaveReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
+    "sourceManifestPath": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "catalogPath": "apps/seis-core/data/seis-core-plugin-catalog.json",
+    "matrixPath": "content/development/seis-core-plugin-matrix.json",
+    "marketplacePath": ".agents/plugins/marketplace.json"
+  },
+  "checks": {
+    "wave3Closeout": true,
+    "priorScopeReview": true,
+    "currentInventoryCompatibility": true,
+    "fixedStaticBoundary": true
+  },
+  "risks": [
+    {
+      "id": "RISK-W4-005",
+      "status": "tracked",
+      "description": "Activation can be confused with a public release, independent installation, or native validation result.",
+      "mitigation": "Keep every external claim false, require repository-local validation, and keep public release separately approval-gated."
+    },
+    {
+      "id": "RISK-W4-006",
+      "status": "tracked",
+      "description": "A manually parsed Package.swift file can silently infer unsupported Swift syntax.",
+      "mitigation": "Use a narrow grammar subset, attention states for unsupported declarations, and derived outputs only."
+    },
+    {
+      "id": "RISK-W4-007",
+      "status": "tracked",
+      "description": "Adding a package could desynchronize source, catalog, matrix, marketplace, and count validators.",
+      "mitigation": "Require one atomic repository-local projection update and the full public marketplace suite before delivery."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this activation decision and any subsequently authorized Wave 4 package, card, generated evidence, and projections on the feature branch; no external state or data migration is created.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 6,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}
