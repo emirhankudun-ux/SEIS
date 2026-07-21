@@ -581,6 +581,18 @@
       "category": "Developer"
     },
     {
+      "name": "seis-project-manifest-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-project-manifest-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "seis-prompt-injection-audit",
       "source": {
         "source": "local",
@@ -843,6 +855,18 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Developer"
+    },
+    {
+      "name": "seis-ui-state-contract-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-ui-state-contract-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
     },
     {
       "name": "seis-vulnerability-triage",

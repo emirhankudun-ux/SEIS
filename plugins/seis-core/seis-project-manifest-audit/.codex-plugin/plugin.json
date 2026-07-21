@@ -1,0 +1,36 @@
+{
+  "name": "seis-project-manifest-audit",
+  "version": "0.0.20",
+  "description": "Audit the checked-in SEIS project manifest, ownership boundary, source inventory, and public marketplace count contract without writes.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "project-manifest",
+    "governance",
+    "ownership",
+    "public-repository",
+    "read-only"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Project Manifest Audit",
+    "shortDescription": "Check the public SEIS project-manifest boundary locally.",
+    "longDescription": "Audits the bounded project.ecosystem.yaml contract together with the app source inventory, public SEIS Repo marketplace, and public family projection. It reports declared ownership and count drift without parsing secrets, writing files, or claiming GitHub/runtime readiness.",
+    "developerName": "SEIS Repository",
+    "category": "Productivity",
+    "capabilities": [
+      "project-manifest-contract-audit",
+      "canonical-owner-evidence",
+      "public-marketplace-count-reconciliation",
+      "read-only-governance-handoff"
+    ],
+    "defaultPrompt": [
+      "Audit the local SEIS project manifest, source inventory, and public marketplace contract without writing files.",
+      "Show manifest or count drift separately from live GitHub, provider, or release claims."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

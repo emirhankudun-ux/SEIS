@@ -96,17 +96,19 @@ application:
 
 - source root: `plugins/seis-core`
 - source inventory: `apps/seis-core/data/seis-core-plugin-sources.json`
-- release train: `content/development/seis-core-plugin-release-train.json` (`0.000000018` / `0.0.18`)
+- release train: `content/development/seis-core-plugin-release-train.json` (`0.00000002` / `0.0.20`)
 - registry projection: `content/development/seis-ai-core-plugin-registry.json`
-- current app-owned source count: 68
+- current app-owned source count: 70
 - public audience: everyone; source license: MIT
 - public marketplace: `.agents/plugins/marketplace.json` (`seis-repo`)
-- public marketplace entries: 374 total — 1 canonical SEIS-Agent, 5 migrated root packages, 68 app packages, and 300 objective-derived topic packages
+- public marketplace entries: 376 total — 1 canonical SEIS-Agent, 5 migrated root packages, 70 app packages, and 300 objective-derived topic packages
 - objective-derived topic source root: `plugins/seis-topics`
 - objective taxonomy: `content/development/seis-topic-plugin-objective.json`
 - direct repo surface: `apps/seis-core` reads and activates these packages through the bounded local catalog
 - declared MCP boundary ledger: `content/development/seis-mcp-permission-risk-matrix.json`, checked by `npm run check:seis-mcp-permission` without starting servers or granting permissions
 - static focus-navigation evidence: `content/development/seis-focus-navigation-audit.json`, checked by `npm run check:seis-focus-navigation-audit` without launching a browser or claiming assistive-technology verification
+- static UI-state evidence: `content/development/seis-ui-state-contract-audit.json`, checked by `npm run check:seis-ui-state-contract-audit`; missing source markers remain attention findings rather than runtime or release claims
+- project-manifest evidence: `content/development/seis-project-manifest-audit.json`, checked by `npm run check:seis-project-manifest-audit`; it reconciles canonical ownership and public source/count declarations without claiming remote GitHub or release readiness
 
 `packages/seis-ai` remains the core contract, permission, registry, and
 read-only inspection layer. It must not own or execute the public app source
@@ -157,7 +159,7 @@ The public-family contract is generated at `content/development/seis-public-plug
 The one-file suite installed by default is
 `plugins/seis-ai-agent/assets/unified-suite.json`. It records every current
 SEIS public component, the shared `0.3.0+codex.20260712` release version, the
-68 app-owned `plugins/seis-core/*` source packages, canonical
+70 app-owned `plugins/seis-core/*` source packages, canonical
 `seis-ai-agent@seis-repo` install id, and the future plugin intake rules. A
 new embedded specialist `plugins/seis-*` manifest must be registered as an
 embedded source module. A new package for the user's Command Center application must be
@@ -317,10 +319,10 @@ The SEIS Agent also includes two runtime lanes to validate plugin and MCP surfac
 - Route every new embedded specialist `plugins/seis-*` package through `assets/unified-suite.json`, SEIS AI status, MCP routing, the suite generator, and its shared release version before treating it as an embedded SEIS capability; objective-derived `plugins/seis-topics` cards use their own taxonomy and read-only runtime checks.
 - Keep `seis-plugin-runtime` and `seis-mcp-runtime` embedded under SEIS-Agent for runtime contract evidence.
 - Keep public repository plugin source packages under `plugins/seis-core`; keep `packages/seis-ai` limited to contracts, registry metadata, permission policy, and read-only inspection.
-- Keep the 68 app-owned packages on one gradual shared release ladder; the current release is `0.000000018`, large-code changes advance exactly one micro/revision step, annual updates advance one major step, and the supported range ends at `45.0000` without bulk jumps.
+- Keep the 70 app-owned packages on one gradual shared release ladder; the current release is `0.00000002`, large-code changes advance exactly one micro/revision step, annual updates advance one major step, and the supported range ends at `45.0000` without bulk jumps.
 - Keep every app-owned package directly in the public SEIS repository under `plugins/seis-core` and consumed by `apps/seis-core`; a new package must not be placed under `packages/seis-ai` or a personal plugin root.
 - Do not claim connector authentication readiness from plugin inventory alone.
-- Validate the integration with `npm run check:seis-unified-plugin-suite`, `npm run check:seis-plugin-canonicalization`, `npm run check:seis-agent-plugin-integration`, `npm run check:seis-mcp-permission`, `npm run check:seis-core-mcp-permission`, `npm run check:seis-focus-navigation-audit`, `npm run check:seis-core-focus-navigation-audit`, `npm run check:seis-public-plugin-lifecycle`, `npm run check:seis-public-plugin-family`, `npm run check:seis-public-plugin-fresh-task-proof`, `npm run check:seis-public-plugin-fresh-task-reload-evidence`, `npm run check:seis-public-plugin-security-provenance-review`, `npm run check:seis-public-plugin-external-install-proof`, `npm run check:seis-public-plugin-independent-runner-evidence-contract`, `npm run check:seis-public-plugin-independent-runner-evidence`, `npm run check:seis-public-plugin-install-smoke`, and `npm run check:seis-public-plugin-install-smoke:mcp`.
+- Validate the integration with `npm run check:seis-unified-plugin-suite`, `npm run check:seis-plugin-canonicalization`, `npm run check:seis-agent-plugin-integration`, `npm run check:seis-mcp-permission`, `npm run check:seis-core-mcp-permission`, `npm run check:seis-focus-navigation-audit`, `npm run check:seis-core-focus-navigation-audit`, `npm run check:seis-ui-state-contract-audit`, `npm run check:seis-core-ui-state-contract-audit`, `npm run check:seis-project-manifest-audit`, `npm run check:seis-core-project-manifest-audit`, `npm run check:seis-public-plugin-lifecycle`, `npm run check:seis-public-plugin-family`, `npm run check:seis-public-plugin-fresh-task-proof`, `npm run check:seis-public-plugin-fresh-task-reload-evidence`, `npm run check:seis-public-plugin-security-provenance-review`, `npm run check:seis-public-plugin-external-install-proof`, `npm run check:seis-public-plugin-independent-runner-evidence-contract`, `npm run check:seis-public-plugin-independent-runner-evidence`, `npm run check:seis-public-plugin-install-smoke`, and `npm run check:seis-public-plugin-install-smoke:mcp`.
 - Keep Command Center and demo surfaces aligned with the manifest before release or handoff claims.
 
 ## Quality Gate

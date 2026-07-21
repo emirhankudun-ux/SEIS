@@ -1,7 +1,7 @@
 {
   "id": "seis-release-readiness",
   "name": "seis-release-readiness",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "Honest local release-readiness report from recorded checks and repository metadata.",
   "author": {
     "name": "emirhankudun-ux"

@@ -1,6 +1,6 @@
 {
   "name": "seis-focus-navigation-audit",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "Audit bounded local UI source for static keyboard, focus, semantic-control, and reduced-motion evidence without launching a browser.",
   "author": {
     "name": "SEIS Repository"

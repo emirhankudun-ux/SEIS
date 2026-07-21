@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-expansion-program",
+  "goalId": "SEIS-GOAL-021",
+  "status": "in-progress",
+  "scope": "public-seis-repo-plugin-program",
+  "createdAt": "2026-07-20",
+  "updatedAt": "2026-07-21",
+  "executionBoundary": {
+    "publicMarketplace": "seis-repo",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "backgroundExecutionClaimed": false,
+    "externalWriteRequiresApproval": true
+  },
+  "cadence": {
+    "programSteps": 30,
+    "roundCount": 5,
+    "stepsPerRound": 6,
+    "githubDelivery": {
+      "enabled": true,
+      "rule": "After each validated, reviewable, and reversible round checkpoint, commit the scoped work and push the current feature branch to the configured SEIS GitHub remote; verify the remote reference when the environment permits.",
+      "protectedDefaultBranchWrites": false,
+      "externalBlockerHandling": "Record network, approval, or platform limits honestly and retry only after a new explicit user delivery instruction or restored environment."
+    },
+    "afterProgram": {
+      "reviewRequired": true,
+      "nextWaveCount": 5,
+      "stepsPerWave": 100,
+      "rule": "Each 100-step wave is planned only after the prior wave has current validation evidence, a scope review, and an explicit risk review."
+    }
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "name": "Program and UI-state foundation",
+      "objective": "Record the 30-step cadence and build the first non-duplicative public UI-state audit.",
+      "steps": [1, 2, 3, 4, 5, 6]
+    },
+    {
+      "round": 2,
+      "name": "Public package integration",
+      "objective": "Connect the UI-state audit to source evidence, marketplace, catalog, and release contracts.",
+      "steps": [7, 8, 9, 10, 11, 12]
+    },
+    {
+      "round": 3,
+      "name": "Evidence and regression validation",
+      "objective": "Run focused and portfolio-level checks across public distribution, permissions, and application behavior.",
+      "steps": [13, 14, 15, 16, 17, 18]
+    },
+    {
+      "round": 4,
+      "name": "Second evidence-backed capability",
+      "objective": "Select and build a second non-duplicative public plugin only after an audited scope decision.",
+      "steps": [19, 20, 21, 22, 23, 24]
+    },
+    {
+      "round": 5,
+      "name": "Release-quality handoff",
+      "objective": "Run full regression, reconcile documentation, prepare commits, attempt approved delivery, and create the next-wave decision record.",
+      "steps": [25, 26, 27, 28, 29, 30]
+    }
+  ],
+  "steps": [
+    {"number": 1, "round": 1, "title": "Record the 30-step program", "status": "completed", "validation": "npm run check:seis-public-plugin-expansion-program"},
+    {"number": 2, "round": 1, "title": "Verify branch, remote delta, and no-personal boundary", "status": "completed", "validation": "git status --short --branch"},
+    {"number": 3, "round": 1, "title": "Inventory non-duplicative public plugin gaps", "status": "completed", "validation": "public plugin profile review"},
+    {"number": 4, "round": 1, "title": "Specify UI-state audit scope and non-goals", "status": "completed", "validation": "source-contract review"},
+    {"number": 5, "round": 1, "title": "Create the public UI-state audit package", "status": "completed", "validation": "plugin validator"},
+    {"number": 6, "round": 1, "title": "Add positive and negative static audit fixtures", "status": "completed", "validation": "node --test focused test"},
+    {"number": 7, "round": 2, "title": "Generate UI-state evidence", "status": "completed", "validation": "evidence generator --check"},
+    {"number": 8, "round": 2, "title": "Register only in the public SEIS Repo marketplace", "status": "completed", "validation": "marketplace terminology and migration checks"},
+    {"number": 9, "round": 2, "title": "Refresh application catalog counts and fallback metadata", "status": "completed", "validation": "application catalog check"},
+    {"number": 10, "round": 2, "title": "Bind integration and source-manifest contracts", "status": "completed", "validation": "agent plugin integration check"},
+    {"number": 11, "round": 2, "title": "Refresh release train and change evidence", "status": "completed", "validation": "release readiness check"},
+    {"number": 12, "round": 2, "title": "Validate the plugin package structure", "status": "completed", "validation": "plugin-creator validator"},
+    {"number": 13, "round": 3, "title": "Run focused UI-state unit and MCP tests", "status": "completed", "validation": "node --test focused test"},
+    {"number": 14, "round": 3, "title": "Run application source, catalog, and matrix checks", "status": "completed", "validation": "source, catalog, matrix checks"},
+    {"number": 15, "round": 3, "title": "Run public marketplace, install-state, and runtime checks", "status": "completed", "validation": "public marketplace suite"},
+    {"number": 16, "round": 3, "title": "Run public lifecycle, fresh-task, and provenance checks", "status": "completed", "validation": "public lifecycle suite"},
+    {"number": 17, "round": 3, "title": "Run AI Core integration and requested-plugin coverage", "status": "completed", "validation": "AI integration suite"},
+    {"number": 18, "round": 3, "title": "Run Command Center and baseline SEIS checks", "status": "completed", "validation": "npm run seis:check"},
+    {"number": 19, "round": 4, "title": "Audit the next public plugin gap", "status": "completed", "validation": "portfolio overlap review"},
+    {"number": 20, "round": 4, "title": "Record second plugin scope, non-goals, and safety boundary", "status": "completed", "validation": "scope decision review"},
+    {"number": 21, "round": 4, "title": "Implement the second public plugin package", "status": "completed", "validation": "plugin validator"},
+    {"number": 22, "round": 4, "title": "Add second plugin generator, evidence, and tests", "status": "completed", "validation": "focused generator and test"},
+    {"number": 23, "round": 4, "title": "Connect second plugin to marketplace, catalog, and integration", "status": "completed", "validation": "marketplace and integration checks"},
+    {"number": 24, "round": 4, "title": "Validate second plugin release evidence", "status": "completed", "validation": "release readiness check"},
+    {"number": 25, "round": 5, "title": "Run full public plugin regression and permission checks", "status": "completed", "validation": "unified plugin suite"},
+    {"number": 26, "round": 5, "title": "Reconcile registry, documentation, and project manifest counts", "status": "completed", "validation": "registry and docs checks"},
+    {"number": 27, "round": 5, "title": "Inspect diff, secret-safe boundary, and worktree", "status": "completed", "validation": "git diff --check"},
+    {"number": 28, "round": 5, "title": "Prepare review-focused local commit sequence", "status": "completed", "validation": "cached diff review"},
+    {"number": 29, "round": 5, "title": "Deliver every validated checkpoint to the current GitHub feature branch and verify remote ref", "status": "in-progress", "validation": "git push and ls-remote"},
+    {"number": 30, "round": 5, "title": "Publish program report and plan five 100-step waves", "status": "planned", "validation": "program validator and final report"}
+  ],
+  "nextWaves": [
+    {"wave": 1, "steps": 100, "status": "not-planned", "entryCriteria": "All 30 initial steps have current evidence and a scope review."},
+    {"wave": 2, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 1 has current evidence and a scope review."},
+    {"wave": 3, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 2 has current evidence and a scope review."},
+    {"wave": 4, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 3 has current evidence and a scope review."},
+    {"wave": 5, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 4 has current evidence and a scope review."}
+  ]
+}

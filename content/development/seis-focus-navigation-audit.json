@@ -11,8 +11,8 @@
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
     "sourcePath": "plugins/seis-core/seis-focus-navigation-audit",
-    "releaseLabel": "0.000000018",
-    "releaseSemver": "0.0.18",
+    "releaseLabel": "0.00000002",
+    "releaseSemver": "0.0.20",
     "publicAudience": "everyone",
     "publicMarketplace": true
   },

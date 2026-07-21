@@ -1,6 +1,6 @@
 {
   "name": "seis-marketplace-integrity",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "Validate public SEIS Repo marketplace cards and manifests without writing files.",
   "author": {
     "name": "SEIS Repository"

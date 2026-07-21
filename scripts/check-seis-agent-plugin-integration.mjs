@@ -37,6 +37,12 @@ const mcpPermissionMcpServerPath = path.join(root, "plugins", "seis-core", "seis
 const focusNavigationAuditScriptPath = path.join(root, "scripts", "create-seis-focus-navigation-audit.mjs");
 const focusNavigationAuditPath = path.join(root, "content", "development", "seis-focus-navigation-audit.json");
 const focusNavigationAuditMcpServerPath = path.join(root, "plugins", "seis-core", "seis-focus-navigation-audit", "scripts", "seis-focus-navigation-audit-mcp-server.mjs");
+const uiStateContractAuditScriptPath = path.join(root, "scripts", "create-seis-ui-state-contract-audit.mjs");
+const uiStateContractAuditPath = path.join(root, "content", "development", "seis-ui-state-contract-audit.json");
+const uiStateContractAuditMcpServerPath = path.join(root, "plugins", "seis-core", "seis-ui-state-contract-audit", "scripts", "seis-ui-state-contract-audit-mcp-server.mjs");
+const projectManifestAuditScriptPath = path.join(root, "scripts", "create-seis-project-manifest-audit.mjs");
+const projectManifestAuditPath = path.join(root, "content", "development", "seis-project-manifest-audit.json");
+const projectManifestAuditMcpServerPath = path.join(root, "plugins", "seis-core", "seis-project-manifest-audit", "scripts", "seis-project-manifest-audit-mcp-server.mjs");
 const pluginRegistryHelperPath = path.join(root, "packages", "seis-ai", "src", "lib", "plugin-registry.mjs");
 const pluginSourceCheckPath = path.join(root, "scripts", "check-seis-ai-core-plugin-sources.mjs");
 const installSmokePath = path.join(root, "scripts", "check-seis-public-plugin-install-smoke.mjs");
@@ -145,6 +151,12 @@ for (const [filePath, label] of [
   [focusNavigationAuditScriptPath, "SEIS focus-navigation audit generator"],
   [focusNavigationAuditPath, "SEIS focus-navigation audit evidence"],
   [focusNavigationAuditMcpServerPath, "SEIS focus-navigation audit MCP server"],
+  [uiStateContractAuditScriptPath, "SEIS UI-state contract audit generator"],
+  [uiStateContractAuditPath, "SEIS UI-state contract audit evidence"],
+  [uiStateContractAuditMcpServerPath, "SEIS UI-state contract audit MCP server"],
+  [projectManifestAuditScriptPath, "SEIS project-manifest audit generator"],
+  [projectManifestAuditPath, "SEIS project-manifest audit evidence"],
+  [projectManifestAuditMcpServerPath, "SEIS project-manifest audit MCP server"],
   [pluginRegistryHelperPath, "SEIS AI Core plugin registry helper"],
   [pluginSourceCheckPath, "SEIS AI Core plugin source checker"],
   [installSmokePath, "SEIS public plugin install smoke checker"],
@@ -216,6 +228,12 @@ const mcpPermissionMcpServer = readText(mcpPermissionMcpServerPath, "SEIS MCP pe
 const focusNavigationAudit = readJson(focusNavigationAuditPath, "SEIS focus-navigation audit evidence");
 const focusNavigationAuditScript = readText(focusNavigationAuditScriptPath, "SEIS focus-navigation audit generator");
 const focusNavigationAuditMcpServer = readText(focusNavigationAuditMcpServerPath, "SEIS focus-navigation audit MCP server");
+const uiStateContractAudit = readJson(uiStateContractAuditPath, "SEIS UI-state contract audit evidence");
+const uiStateContractAuditScript = readText(uiStateContractAuditScriptPath, "SEIS UI-state contract audit generator");
+const uiStateContractAuditMcpServer = readText(uiStateContractAuditMcpServerPath, "SEIS UI-state contract audit MCP server");
+const projectManifestAudit = readJson(projectManifestAuditPath, "SEIS project-manifest audit evidence");
+const projectManifestAuditScript = readText(projectManifestAuditScriptPath, "SEIS project-manifest audit generator");
+const projectManifestAuditMcpServer = readText(projectManifestAuditMcpServerPath, "SEIS project-manifest audit MCP server");
 const webIndex = readText(webIndexPath, "SEIS demo index");
 const webScript = readText(webScriptPath, "SEIS demo script");
 const desktopScript = readText(desktopScriptPath, "SEIS desktop script");
@@ -423,6 +441,10 @@ if (manifest) {
     "npm run check:seis-core-mcp-permission",
     "npm run check:seis-focus-navigation-audit",
     "npm run check:seis-core-focus-navigation-audit",
+    "npm run check:seis-ui-state-contract-audit",
+    "npm run check:seis-core-ui-state-contract-audit",
+    "npm run check:seis-project-manifest-audit",
+    "npm run check:seis-core-project-manifest-audit",
     "npm run check:seis-core-plugin-release",
     "npm run check:seis-core-plugin-release-policy",
     "npm run check:seis-core-plugin-catalog",
@@ -495,6 +517,10 @@ if (manifest) {
   ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-mcp-permission"), "app plugin source manifest must include the MCP permission runtime test");
   ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-focus-navigation-audit"), "app plugin source manifest must include focus-navigation static evidence");
   ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-focus-navigation-audit"), "app plugin source manifest must include focus-navigation runtime tests");
+  ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-ui-state-contract-audit"), "app plugin source manifest must include UI-state static evidence");
+  ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-ui-state-contract-audit"), "app plugin source manifest must include UI-state runtime tests");
+  ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-project-manifest-audit"), "app plugin source manifest must include project-manifest static evidence");
+  ensure(appPluginSources?.qualityGates?.includes("npm run check:seis-core-project-manifest-audit"), "app plugin source manifest must include project-manifest runtime tests");
   ensure(mcpPermission?.id === "seis-mcp-permission-risk-matrix", "MCP permission boundary ledger id is stale");
   ensure(mcpPermission?.plugin?.name === "seis-mcp-permission", "MCP permission boundary ledger plugin id is stale");
   ensure(mcpPermission?.plugin?.marketplaceName === "seis-repo", "MCP permission boundary ledger must remain public SEIS Repo scoped");
@@ -515,6 +541,32 @@ if (manifest) {
   ensure(focusNavigationAudit?.safety?.launchesBrowser === false && focusNavigationAudit?.safety?.controlsScreenReader === false && focusNavigationAudit?.safety?.publicReleaseAllowed === false, "focus-navigation audit must retain a non-executing public boundary");
   ensure(focusNavigationAuditScript.includes("SEIS-BL-028"), "focus-navigation audit generator must preserve backlog linkage");
   ensure(focusNavigationAuditMcpServer.includes("seis_focus_navigation_audit"), "focus-navigation audit MCP server must expose local static review");
+  ensure(uiStateContractAudit?.id === "seis-ui-state-contract-audit", "UI-state contract audit evidence id is stale");
+  ensure(uiStateContractAudit?.goalId === "SEIS-GOAL-021" && uiStateContractAudit?.backlogId === "SEIS-BL-038", "UI-state contract audit evidence must retain goal and backlog linkage");
+  ensure(uiStateContractAudit?.plugin?.name === "seis-ui-state-contract-audit", "UI-state contract audit plugin id is stale");
+  ensure(uiStateContractAudit?.plugin?.marketplaceName === "seis-repo" && uiStateContractAudit?.plugin?.marketplaceDisplayName === "SEIS Repo", "UI-state contract audit must remain public SEIS Repo scoped");
+  ensure(uiStateContractAudit?.plugin?.releaseLabel === appReleaseLabel && uiStateContractAudit?.plugin?.releaseSemver === appReleaseSemver, "UI-state contract audit release is stale");
+  ensure(uiStateContractAudit?.staticAuditCompleted === true && ["ready", "attention"].includes(uiStateContractAudit?.overallState), "UI-state contract audit must retain completed static evidence without a runtime claim");
+  ensure(Array.isArray(uiStateContractAudit?.surfaces) && uiStateContractAudit.surfaces.length === 2, "UI-state contract audit must cover two declared UI surfaces");
+  ensure(uiStateContractAudit?.surfaces?.every((surface) => ["ready", "attention"].includes(surface?.state) && Array.isArray(surface?.missingStateIds) && Array.isArray(surface?.findings) && surface.findings.every((finding) => finding?.severity !== "error")), "UI-state contract audit must retain safe static source results");
+  ensure(uiStateContractAudit?.safety?.write?.length === 0 && uiStateContractAudit?.safety?.network?.length === 0 && uiStateContractAudit?.safety?.secrets?.length === 0, "UI-state contract audit must retain no write, network, or secret permissions");
+  ensure(uiStateContractAudit?.safety?.executesUi === false && uiStateContractAudit?.safety?.publicReleaseAllowed === false, "UI-state contract audit must retain a non-executing public boundary");
+  ensure(uiStateContractAuditScript.includes("SEIS-BL-038"), "UI-state contract audit generator must preserve backlog linkage");
+  ensure(uiStateContractAuditMcpServer.includes("seis_ui_state_contract_audit"), "UI-state contract audit MCP server must expose local static review");
+  ensure(projectManifestAudit?.id === "seis-project-manifest-audit", "project-manifest audit evidence id is stale");
+  ensure(projectManifestAudit?.goalId === "SEIS-GOAL-021" && projectManifestAudit?.backlogId === "SEIS-BL-021", "project-manifest audit evidence must retain goal and backlog linkage");
+  ensure(projectManifestAudit?.plugin?.name === "seis-project-manifest-audit", "project-manifest audit evidence plugin id is stale");
+  ensure(projectManifestAudit?.plugin?.marketplaceName === "seis-repo" && projectManifestAudit?.plugin?.marketplaceDisplayName === "SEIS Repo", "project-manifest audit must remain public SEIS Repo scoped");
+  ensure(projectManifestAudit?.plugin?.releaseLabel === appReleaseLabel && projectManifestAudit?.plugin?.releaseSemver === appReleaseSemver, "project-manifest audit evidence release is stale");
+  ensure(projectManifestAudit?.manifestAuditCompleted === true && projectManifestAudit?.overallState === "ready", "project-manifest audit must retain a completed ready local declaration check");
+  ensure(Array.isArray(projectManifestAudit?.checks) && projectManifestAudit.checks.length >= 15 && projectManifestAudit.checks.every((check) => check?.observed === true), "project-manifest audit checks are incomplete");
+  ensure(projectManifestAudit?.counts?.declaredApplicationMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET && projectManifestAudit?.counts?.sourceManifestPluginCount === APP_PLUGIN_EXPANSION_TARGET && projectManifestAudit?.counts?.marketplaceApplicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "project-manifest audit application counts are stale");
+  ensure(projectManifestAudit?.counts?.declaredMarketplaceEntryCount === projectManifestAudit?.counts?.marketplaceEntryCount, "project-manifest audit marketplace counts are inconsistent");
+  ensure(Array.isArray(projectManifestAudit?.findings) && projectManifestAudit.findings.length === 0, "project-manifest audit must not conceal findings");
+  ensure(projectManifestAudit?.safety?.write?.length === 0 && projectManifestAudit?.safety?.network?.length === 0 && projectManifestAudit?.safety?.secrets?.length === 0, "project-manifest audit must retain no write, network, or secret permissions");
+  ensure(projectManifestAudit?.safety?.executesPlugin === false && projectManifestAudit?.safety?.publicReleaseAllowed === false, "project-manifest audit must retain a non-executing public boundary");
+  ensure(projectManifestAuditScript.includes("SEIS-BL-021"), "project-manifest audit generator must preserve backlog linkage");
+  ensure(projectManifestAuditMcpServer.includes("seis_project_manifest_audit"), "project-manifest audit MCP server must expose local governance review");
   ensure(appPluginCatalog?.id === "seis-core-application-plugin-catalog", "app plugin catalog id must be stable");
   ensure(appPluginCatalog?.sourceRoot === "plugins/seis-core", "app plugin catalog source root is invalid");
   ensure(appPluginCatalog?.distribution?.repository === "SEIS", "app plugin catalog must expose SEIS as the canonical repository");
@@ -658,12 +710,36 @@ if (packageJson) {
     "package.json must expose check:seis-core-focus-navigation-audit"
   );
   ensure(
+    packageJson.scripts?.["check:seis-ui-state-contract-audit"] === "node scripts/create-seis-ui-state-contract-audit.mjs --check",
+    "package.json must expose check:seis-ui-state-contract-audit"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-core-ui-state-contract-audit"] === "node --test plugins/seis-core/test/ui-state-contract-audit.test.mjs",
+    "package.json must expose check:seis-core-ui-state-contract-audit"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-project-manifest-audit"] === "node scripts/create-seis-project-manifest-audit.mjs --check",
+    "package.json must expose check:seis-project-manifest-audit"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-core-project-manifest-audit"] === "node --test plugins/seis-core/test/project-manifest-audit.test.mjs",
+    "package.json must expose check:seis-core-project-manifest-audit"
+  );
+  ensure(
     packageJson.scripts?.["automation:seis-mcp-permission"] === "node scripts/create-seis-mcp-permission.mjs",
     "package.json must expose automation:seis-mcp-permission"
   );
   ensure(
     packageJson.scripts?.["automation:seis-focus-navigation-audit"] === "node scripts/create-seis-focus-navigation-audit.mjs",
     "package.json must expose automation:seis-focus-navigation-audit"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-ui-state-contract-audit"] === "node scripts/create-seis-ui-state-contract-audit.mjs",
+    "package.json must expose automation:seis-ui-state-contract-audit"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-project-manifest-audit"] === "node scripts/create-seis-project-manifest-audit.mjs",
+    "package.json must expose automation:seis-project-manifest-audit"
   );
   ensure(
     packageJson.scripts?.["check:seis-ai-core-plugin-sources"] === "node scripts/check-seis-ai-core-plugin-sources.mjs",
@@ -814,12 +890,16 @@ for (const token of [
   "seis-public-plugin-independent-runner-evidence-contract.json",
   "seis-mcp-permission-risk-matrix.json",
   "seis-focus-navigation-audit.json",
+  "seis-ui-state-contract-audit.json",
+  "seis-project-manifest-audit.json",
   "unified-suite.json",
   "single-public-plugin",
   "source-module-only",
   "check:seis-unified-plugin-suite",
   "check:seis-mcp-permission",
   "check:seis-focus-navigation-audit",
+  "check:seis-ui-state-contract-audit",
+  "check:seis-project-manifest-audit",
   "check:seis-public-plugin-independent-runner-evidence:recorded",
   "seis-ai-agent@seis-repo",
   "Personal SEIS Plugin Bridge",

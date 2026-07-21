@@ -1,0 +1,42 @@
+{
+  "stableId": "seis-ui-state-contract-audit",
+  "slug": "seis-ui-state-contract-audit",
+  "version": "0.0.20",
+  "releaseMicroUnits": 20,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.00000002",
+  "category": "product-state",
+  "owner": "@seis-product",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-ui-state-contract-audit-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "bounded local HTML, JavaScript, and CSS UI source",
+      "committed static UI-state evidence contract"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-ui-state-contract-audit-mcp-server.mjs --status",
+    "node scripts/seis-ui-state-contract-audit-mcp-server.mjs --audit --path /path/to/local/ui-source",
+    "node scripts/seis-ui-state-contract-audit-mcp-server.mjs --evidence",
+    "npm run check:seis-ui-state-contract-audit",
+    "node --test plugins/seis-core/test/ui-state-contract-audit.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin and revert its generated static-evidence record; the plugin never edits source, starts a UI runtime, enables a provider, or changes state handling.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 and SEIS-BL-038 to separate static UI-state marker evidence from the existing offline posture, declared accessibility, and focus-navigation audits. Missing markers are reported as attention, not hidden as release-ready behavior.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

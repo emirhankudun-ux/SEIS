@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-ui-state-contract-audit": {
+      "command": "node",
+      "args": ["scripts/seis-ui-state-contract-audit-mcp-server.mjs"]
+    }
+  }
+}

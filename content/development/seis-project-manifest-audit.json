@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-project-manifest-audit",
+  "goalId": "SEIS-GOAL-021",
+  "backlogId": "SEIS-BL-021",
+  "generatedAt": "2026-07-21",
+  "status": "active-project-manifest-governance-evidence",
+  "purpose": "Keep the checked-in SEIS project manifest, app-owned source inventory, canonical ownership, and public SEIS Repo marketplace counts aligned without turning local metadata into a live GitHub, provider, or release claim.",
+  "portfolioPosition": {
+    "nonDuplicative": true,
+    "complements": [
+      "seis-canonical-registry-validator: JSON registry IDs, owner fields, and duplicate-record evidence",
+      "seis-public-distribution-audit: public marketplace projection consistency",
+      "seis-goal-integrity: goal lifecycle and evidence-hint validation"
+    ],
+    "adds": "Cross-file validation for project.ecosystem.yaml ownership, source-of-truth, public-distribution boundary, deny-by-default permissions, and marketplace count declarations."
+  },
+  "plugin": {
+    "name": "seis-project-manifest-audit",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "sourcePath": "plugins/seis-core/seis-project-manifest-audit",
+    "releaseLabel": "0.00000002",
+    "releaseSemver": "0.0.20",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "projectManifest": "project.ecosystem.yaml",
+  "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+  "manifestAuditCompleted": true,
+  "overallState": "ready",
+  "checks": [
+    {
+      "id": "project.id",
+      "expected": "seis-plugin-root",
+      "observed": true,
+      "line": 4
+    },
+    {
+      "id": "project.display_name",
+      "expected": "SEIS Core App-Owned Plugins",
+      "observed": true,
+      "line": 5
+    },
+    {
+      "id": "project.visibility",
+      "expected": "public-repo-internal-local",
+      "observed": true,
+      "line": 11
+    },
+    {
+      "id": "project.horizon",
+      "expected": "5-years",
+      "observed": true,
+      "line": 12
+    },
+    {
+      "id": "ecosystem.canonical_owner_repo",
+      "expected": "SEIS",
+      "observed": true,
+      "line": 22
+    },
+    {
+      "id": "plugin_boundary.application",
+      "expected": "apps/seis-core",
+      "observed": true,
+      "line": 25
+    },
+    {
+      "id": "plugin_boundary.source_root",
+      "expected": "plugins/seis-core",
+      "observed": true,
+      "line": 26
+    },
+    {
+      "id": "plugin_boundary.marketplace_mutation",
+      "expected": "false",
+      "observed": true,
+      "line": 28
+    },
+    {
+      "id": "plugin_boundary.direct_repo_distribution.enabled",
+      "expected": "true",
+      "observed": true,
+      "line": 31
+    },
+    {
+      "id": "plugin_boundary.direct_repo_distribution.public_repository_available",
+      "expected": "true",
+      "observed": true,
+      "line": 32
+    },
+    {
+      "id": "plugin_boundary.direct_repo_distribution.public_audience",
+      "expected": "everyone",
+      "observed": true,
+      "line": 33
+    },
+    {
+      "id": "plugin_boundary.direct_repo_distribution.marketplace_name",
+      "expected": "seis-repo",
+      "observed": true,
+      "line": 35
+    },
+    {
+      "id": "plugin_boundary.direct_repo_distribution.public_marketplace",
+      "expected": "true",
+      "observed": true,
+      "line": 36
+    },
+    {
+      "id": "architecture.source_of_truth",
+      "expected": "plugins/seis-core",
+      "observed": true,
+      "line": 63
+    },
+    {
+      "id": "security.default_plugin_permissions.write",
+      "expected": "[]",
+      "observed": true,
+      "line": 69
+    },
+    {
+      "id": "security.default_plugin_permissions.network",
+      "expected": "[]",
+      "observed": true,
+      "line": 70
+    },
+    {
+      "id": "security.default_plugin_permissions.secrets",
+      "expected": "[]",
+      "observed": true,
+      "line": 71
+    }
+  ],
+  "counts": {
+    "declaredMarketplaceEntryCount": 376,
+    "declaredApplicationMarketplaceEntryCount": 70,
+    "sourceManifestPluginCount": 70,
+    "marketplaceApplicationPluginCount": 70,
+    "marketplaceEntryCount": 376,
+    "publicFamilyApplicationPluginCount": 70,
+    "publicFamilyMarketplaceEntryCount": 376
+  },
+  "findings": [],
+  "manualEvidenceRequired": [
+    "human review before changing canonical ownership, visibility, or public/private policy",
+    "GitHub remote and branch-protection verification before release, protected-branch write, or publication claims",
+    "security review before broadening plugin permissions or enabling external writes"
+  ],
+  "safety": {
+    "reads": [
+      "project.ecosystem.yaml",
+      "apps/seis-core/data/seis-core-plugin-sources.json",
+      ".agents/plugins/marketplace.json",
+      "content/development/seis-public-plugin-family.json"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "executesPlugin": false,
+    "publicReleaseAllowed": false
+  },
+  "limitations": [
+    "The audit only validates checked-in local declarations and generated repository metadata.",
+    "It cannot prove remote GitHub state, branch protection, marketplace installation, live provider health, or runtime behavior.",
+    "A ready result requires separate human approval before any ownership transfer, publication, credentialed activation, external write, or release claim."
+  ]
+}

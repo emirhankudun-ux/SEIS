@@ -8,16 +8,16 @@
 ## Repo-Local Clean Artifact Staging
 
 - Mode: temporary-local-clean-artifact-staging
-  - Expected public marketplace packages: 374
+  - Expected public marketplace packages: 376
   - Canonical orchestrators: 1
   - Migrated root packages: 5
-  - Application packages: 68
+  - Application packages: 70
   - Objective-derived topic packages: 300
-- Staged public plugins: 374
+- Staged public plugins: 376
 - Embedded source modules: 10
-- Staged manifests: 374
-- Staged MCP entry scripts: 374
-- Staged files: 2541
+- Staged manifests: 376
+- Staged MCP entry scripts: 376
+- Staged files: 2553
 - Excluded source metadata files: 0
 - Disallowed source artifacts: 0
 - Forbidden files in stage: 0
@@ -75,6 +75,7 @@
 | seis-plugin-discovery | 5 | 5 | 0 | 1 | pass |
 | seis-plugin-migration | 5 | 5 | 0 | 1 | pass |
 | seis-pr-cycle-time | 5 | 5 | 0 | 1 | pass |
+| seis-project-manifest-audit | 6 | 6 | 0 | 1 | pass |
 | seis-prompt-injection-audit | 5 | 5 | 0 | 1 | pass |
 | seis-provider-health | 5 | 5 | 0 | 1 | pass |
 | seis-public-distribution-audit | 5 | 5 | 0 | 1 | pass |
@@ -97,6 +98,7 @@
 | seis-test-flakiness | 5 | 5 | 0 | 1 | pass |
 | seis-tool-permission-audit | 5 | 5 | 0 | 1 | pass |
 | seis-trusted-marketplace | 5 | 5 | 0 | 1 | pass |
+| seis-ui-state-contract-audit | 6 | 6 | 0 | 1 | pass |
 | seis-vulnerability-triage | 5 | 5 | 0 | 1 | pass |
 | seis-workflow-linter | 5 | 5 | 0 | 1 | pass |
 | seis-workflow-permission-audit | 5 | 5 | 0 | 1 | pass |

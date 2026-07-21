@@ -1,7 +1,7 @@
 {
   "id": "seis-repository-health",
   "name": "seis-repository-health",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "Read-only repository hygiene and public-safe health findings for SEIS.",
   "author": {
     "name": "emirhankudun-ux"

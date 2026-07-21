@@ -1,7 +1,7 @@
 {
   "id": "seis-cost-latency-budget",
   "name": "seis-cost-latency-budget",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "Verify that routing metadata keeps cost and latency considerations visible without calling providers.",
   "author": {
     "name": "emirhankudun-ux"

@@ -1,0 +1,1115 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-ui-state-contract-audit",
+  "goalId": "SEIS-GOAL-021",
+  "backlogId": "SEIS-BL-038",
+  "generatedAt": "2026-07-20",
+  "status": "active-static-source-evidence",
+  "purpose": "Keep static UI-state marker evidence visible for key SEIS UI surfaces without treating source text as a runtime state-machine, provider, browser, or release proof.",
+  "portfolioPosition": {
+    "nonDuplicative": true,
+    "complements": [
+      "seis-offline-mode-check: local-first and offline posture evidence",
+      "seis-a11y-regression: declared JSON accessibility coverage",
+      "seis-focus-navigation-audit: keyboard, focus, semantic-control, ARIA, and motion source evidence"
+    ],
+    "adds": "Static source evidence for loading, empty, degraded, offline, unavailable, rate-limited, validation, provider-failure, approval, demo, and live-boundary markers."
+  },
+  "plugin": {
+    "name": "seis-ui-state-contract-audit",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "sourcePath": "plugins/seis-core/seis-ui-state-contract-audit",
+    "releaseLabel": "0.00000002",
+    "releaseSemver": "0.0.20",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+  "requiredStateIds": [
+    "loading",
+    "ready",
+    "empty",
+    "degraded",
+    "offline",
+    "unavailable",
+    "rate-limited",
+    "validation-failed",
+    "provider-failed",
+    "approval-required",
+    "demo",
+    "live-boundary"
+  ],
+  "staticAuditCompleted": true,
+  "overallState": "attention",
+  "missingStateIds": [
+    "approval-required",
+    "degraded",
+    "loading",
+    "provider-failed",
+    "rate-limited",
+    "validation-failed"
+  ],
+  "surfaces": [
+    {
+      "id": "seis-command-center",
+      "sourceRoot": "apps/seis-core",
+      "sourceFiles": [
+        "apps/seis-core/index.html",
+        "apps/seis-core/script.js",
+        "apps/seis-core/styles.css"
+      ],
+      "state": "attention",
+      "filesScanned": 3,
+      "observedStateIds": [
+        "loading",
+        "ready",
+        "empty",
+        "offline",
+        "unavailable",
+        "validation-failed",
+        "demo",
+        "live-boundary"
+      ],
+      "missingStateIds": [
+        "degraded",
+        "rate-limited",
+        "provider-failed",
+        "approval-required"
+      ],
+      "states": [
+        {
+          "id": "loading",
+          "label": "Loading",
+          "description": "A visible initial or in-progress state marker.",
+          "observed": true,
+          "markerCount": 4,
+          "files": [
+            {
+              "file": "index.html",
+              "line": 387
+            },
+            {
+              "file": "index.html",
+              "line": 436
+            },
+            {
+              "file": "index.html",
+              "line": 453
+            },
+            {
+              "file": "script.js",
+              "line": 461
+            }
+          ]
+        },
+        {
+          "id": "ready",
+          "label": "Ready",
+          "description": "A visible ready or completed state marker.",
+          "observed": true,
+          "markerCount": 143,
+          "files": [
+            {
+              "file": "index.html",
+              "line": 167
+            },
+            {
+              "file": "index.html",
+              "line": 190
+            },
+            {
+              "file": "index.html",
+              "line": 204
+            },
+            {
+              "file": "index.html",
+              "line": 219
+            },
+            {
+              "file": "index.html",
+              "line": 246
+            },
+            {
+              "file": "index.html",
+              "line": 257
+            },
+            {
+              "file": "index.html",
+              "line": 266
+            },
+            {
+              "file": "index.html",
+              "line": 273
+            },
+            {
+              "file": "index.html",
+              "line": 281
+            },
+            {
+              "file": "index.html",
+              "line": 351
+            },
+            {
+              "file": "index.html",
+              "line": 399
+            },
+            {
+              "file": "index.html",
+              "line": 419
+            },
+            {
+              "file": "index.html",
+              "line": 436
+            },
+            {
+              "file": "index.html",
+              "line": 470
+            },
+            {
+              "file": "index.html",
+              "line": 485
+            },
+            {
+              "file": "index.html",
+              "line": 510
+            },
+            {
+              "file": "index.html",
+              "line": 525
+            },
+            {
+              "file": "index.html",
+              "line": 550
+            },
+            {
+              "file": "index.html",
+              "line": 558
+            },
+            {
+              "file": "index.html",
+              "line": 583
+            },
+            {
+              "file": "index.html",
+              "line": 604
+            },
+            {
+              "file": "index.html",
+              "line": 612
+            },
+            {
+              "file": "index.html",
+              "line": 624
+            },
+            {
+              "file": "script.js",
+              "line": 30
+            }
+          ]
+        },
+        {
+          "id": "empty",
+          "label": "Empty",
+          "description": "A visible empty-result or empty-content state marker.",
+          "observed": true,
+          "markerCount": 5,
+          "files": [
+            {
+              "file": "script.js",
+              "line": 1836
+            },
+            {
+              "file": "script.js",
+              "line": 2366
+            },
+            {
+              "file": "script.js",
+              "line": 2374
+            },
+            {
+              "file": "script.js",
+              "line": 2399
+            },
+            {
+              "file": "styles.css",
+              "line": 1331
+            }
+          ]
+        },
+        {
+          "id": "degraded",
+          "label": "Degraded",
+          "description": "A visible reduced-capability state marker.",
+          "observed": false,
+          "markerCount": 0,
+          "files": []
+        },
+        {
+          "id": "offline",
+          "label": "Offline",
+          "description": "A visible local/offline state marker.",
+          "observed": true,
+          "markerCount": 4,
+          "files": [
+            {
+              "file": "script.js",
+              "line": 211
+            },
+            {
+              "file": "script.js",
+              "line": 315
+            },
+            {
+              "file": "script.js",
+              "line": 722
+            },
+            {
+              "file": "script.js",
+              "line": 1016
+            }
+          ]
+        },
+        {
+          "id": "unavailable",
+          "label": "Unavailable",
+          "description": "A visible unavailable, missing-credential, or disabled state marker.",
+          "observed": true,
+          "markerCount": 3,
+          "files": [
+            {
+              "file": "index.html",
+              "line": 451
+            },
+            {
+              "file": "script.js",
+              "line": 2374
+            },
+            {
+              "file": "script.js",
+              "line": 2416
+            }
+          ]
+        },
+        {
+          "id": "rate-limited",
+          "label": "Rate limited",
+          "description": "A visible rate-limit state marker.",
+          "observed": false,
+          "markerCount": 0,
+          "files": []
+        },
+        {
+          "id": "validation-failed",
+          "label": "Validation failed",
+          "description": "A visible validation-failure state marker.",
+          "observed": true,
+          "markerCount": 4,
+          "files": [
+            {
+              "file": "script.js",
+              "line": 913
+            },
+            {
+              "file": "script.js",
+              "line": 2092
+            },
+            {
+              "file": "script.js",
+              "line": 2110
+            },
+            {
+              "file": "script.js",
+              "line": 2383
+            }
+          ]
+        },
+        {
+          "id": "provider-failed",
+          "label": "Provider failed",
+          "description": "A visible provider failure or unavailable state marker.",
+          "observed": false,
+          "markerCount": 0,
+          "files": []
+        },
+        {
+          "id": "approval-required",
+          "label": "Approval required",
+          "description": "A visible approval-gated state marker.",
+          "observed": false,
+          "markerCount": 0,
+          "files": []
+        },
+        {
+          "id": "demo",
+          "label": "Demo",
+          "description": "A visible demo-mode boundary marker.",
+          "observed": true,
+          "markerCount": 2,
+          "files": [
+            {
+              "file": "index.html",
+              "line": 385
+            },
+            {
+              "file": "script.js",
+              "line": 796
+            }
+          ]
+        },
+        {
+          "id": "live-boundary",
+          "label": "Live boundary",
+          "description": "A source marker that distinguishes live behavior from demo or blocked behavior.",
+          "observed": true,
+          "markerCount": 11,
+          "files": [
+            {
+              "file": "index.html",
+              "line": 102
+            },
+            {
+              "file": "index.html",
+              "line": 190
+            },
+            {
+              "file": "index.html",
+              "line": 230
+            },
+            {
+              "file": "index.html",
+              "line": 443
+            },
+            {
+              "file": "index.html",
+              "line": 445
+            },
+            {
+              "file": "index.html",
+              "line": 456
+            },
+            {
+              "file": "script.js",
+              "line": 182
+            },
+            {
+              "file": "script.js",
+              "line": 655
+            },
+            {
+              "file": "script.js",
+              "line": 1188
+            },
+            {
+              "file": "script.js",
+              "line": 1211
+            },
+            {
+              "file": "script.js",
+              "line": 1283
+            }
+          ]
+        }
+      ],
+      "findings": [
+        {
+          "severity": "warning",
+          "code": "missing-static-ui-state-evidence",
+          "stateId": "degraded"
+        },
+        {
+          "severity": "warning",
+          "code": "missing-static-ui-state-evidence",
+          "stateId": "rate-limited"
+        },
+        {
+          "severity": "warning",
+          "code": "missing-static-ui-state-evidence",
+          "stateId": "provider-failed"
+        },
+        {
+          "severity": "warning",
+          "code": "missing-static-ui-state-evidence",
+          "stateId": "approval-required"
+        }
+      ],
+      "manualEvidenceStillRequired": [
+        "loading-to-ready browser transcript",
+        "empty, offline, unavailable, rate-limit, and degraded-state interaction review",
+        "validation and provider-error recovery review",
+        "approval-gated action review",
+        "demo/live boundary review",
+        "human product and accessibility approval"
+      ]
+    },
+    {
+      "id": "seis-desktop-second-brain",
+      "sourceRoot": "apps/web",
+      "sourceFiles": [
+        "apps/web/desktop.html",
+        "apps/web/desktop.js",
+        "apps/web/desktop.css"
+      ],
+      "state": "attention",
+      "filesScanned": 3,
+      "observedStateIds": [
+        "ready",
+        "empty",
+        "offline",
+        "unavailable",
+        "rate-limited",
+        "approval-required",
+        "demo",
+        "live-boundary"
+      ],
+      "missingStateIds": [
+        "loading",
+        "degraded",
+        "validation-failed",
+        "provider-failed"
+      ],
+      "states": [
+        {
+          "id": "loading",
+          "label": "Loading",
+          "description": "A visible initial or in-progress state marker.",
+          "observed": false,
+          "markerCount": 0,
+          "files": []
+        },
+        {
+          "id": "ready",
+          "label": "Ready",
+          "description": "A visible ready or completed state marker.",
+          "observed": true,
+          "markerCount": 37,
+          "files": [
+            {
+              "file": "desktop.css",
+              "line": 2712
+            },
+            {
+              "file": "desktop.html",
+              "line": 106
+            },
+            {
+              "file": "desktop.html",
+              "line": 153
+            },
+            {
+              "file": "desktop.js",
+              "line": 1487
+            },
+            {
+              "file": "desktop.js",
+              "line": 1508
+            },
+            {
+              "file": "desktop.js",
+              "line": 1701
+            },
+            {
+              "file": "desktop.js",
+              "line": 1746
+            },
+            {
+              "file": "desktop.js",
+              "line": 1988
+            },
+            {
+              "file": "desktop.js",
+              "line": 2065
+            },
+            {
+              "file": "desktop.js",
+              "line": 2072
+            },
+            {
+              "file": "desktop.js",
+              "line": 2073
+            },
+            {
+              "file": "desktop.js",
+              "line": 2089
+            },
+            {
+              "file": "desktop.js",
+              "line": 2117
+            },
+            {
+              "file": "desktop.js",
+              "line": 2118
+            },
+            {
+              "file": "desktop.js",
+              "line": 4106
+            },
+            {
+              "file": "desktop.js",
+              "line": 4376
+            },
+            {
+              "file": "desktop.js",
+              "line": 4472
+            },
+            {
+              "file": "desktop.js",
+              "line": 4525
+            },
+            {
+              "file": "desktop.js",
+              "line": 4526
+            },
+            {
+              "file": "desktop.js",
+              "line": 4764
+            },
+            {
+              "file": "desktop.js",
+              "line": 4778
+            },
+            {
+              "file": "desktop.js",
+              "line": 4792
+            },
+            {
+              "file": "desktop.js",
+              "line": 4804
+            },
+            {
+              "file": "desktop.js",
+              "line": 4816
+            }
+          ]
+        },
+        {
+          "id": "empty",
+          "label": "Empty",
+          "description": "A visible empty-result or empty-content state marker.",
+          "observed": true,
+          "markerCount": 4,
+          "files": [
+            {
+              "file": "desktop.js",
+              "line": 4149
+            },
+            {
+              "file": "desktop.js",
+              "line": 4162
+            },
+            {
+              "file": "desktop.js",
+              "line": 8100
+            },
+            {
+              "file": "desktop.js",
+              "line": 8352
+            }
+          ]
+        },
+        {
+          "id": "degraded",
+          "label": "Degraded",
+          "description": "A visible reduced-capability state marker.",
+          "observed": false,
+          "markerCount": 0,
+          "files": []
+        },
+        {
+          "id": "offline",
+          "label": "Offline",
+          "description": "A visible local/offline state marker.",
+          "observed": true,
+          "markerCount": 8,
+          "files": [
+            {
+              "file": "desktop.css",
+              "line": 3847
+            },
+            {
+              "file": "desktop.js",
+              "line": 1368
+            },
+            {
+              "file": "desktop.js",
+              "line": 3032
+            },
+            {
+              "file": "desktop.js",
+              "line": 3033
+            },
+            {
+              "file": "desktop.js",
+              "line": 3313
+            },
+            {
+              "file": "desktop.js",
+              "line": 3392
+            },
+            {
+              "file": "desktop.js",
+              "line": 3393
+            },
+            {
+              "file": "desktop.js",
+              "line": 4105
+            }
+          ]
+        },
+        {
+          "id": "unavailable",
+          "label": "Unavailable",
+          "description": "A visible unavailable, missing-credential, or disabled state marker.",
+          "observed": true,
+          "markerCount": 77,
+          "files": [
+            {
+              "file": "desktop.css",
+              "line": 53
+            },
+            {
+              "file": "desktop.js",
+              "line": 1344
+            },
+            {
+              "file": "desktop.js",
+              "line": 1804
+            },
+            {
+              "file": "desktop.js",
+              "line": 1935
+            },
+            {
+              "file": "desktop.js",
+              "line": 2499
+            },
+            {
+              "file": "desktop.js",
+              "line": 2538
+            },
+            {
+              "file": "desktop.js",
+              "line": 5822
+            },
+            {
+              "file": "desktop.js",
+              "line": 5823
+            },
+            {
+              "file": "desktop.js",
+              "line": 7100
+            },
+            {
+              "file": "desktop.js",
+              "line": 7125
+            },
+            {
+              "file": "desktop.js",
+              "line": 1260
+            },
+            {
+              "file": "desktop.js",
+              "line": 1327
+            },
+            {
+              "file": "desktop.js",
+              "line": 1812
+            },
+            {
+              "file": "desktop.js",
+              "line": 5219
+            },
+            {
+              "file": "desktop.js",
+              "line": 6858
+            },
+            {
+              "file": "desktop.js",
+              "line": 7093
+            },
+            {
+              "file": "desktop.js",
+              "line": 8823
+            },
+            {
+              "file": "desktop.js",
+              "line": 8825
+            },
+            {
+              "file": "desktop.js",
+              "line": 8833
+            },
+            {
+              "file": "desktop.js",
+              "line": 9092
+            },
+            {
+              "file": "desktop.js",
+              "line": 10340
+            },
+            {
+              "file": "desktop.js",
+              "line": 10568
+            },
+            {
+              "file": "desktop.js",
+              "line": 239
+            },
+            {
+              "file": "desktop.js",
+              "line": 681
+            }
+          ]
+        },
+        {
+          "id": "rate-limited",
+          "label": "Rate limited",
+          "description": "A visible rate-limit state marker.",
+          "observed": true,
+          "markerCount": 2,
+          "files": [
+            {
+              "file": "desktop.js",
+              "line": 8823
+            },
+            {
+              "file": "desktop.js",
+              "line": 8835
+            }
+          ]
+        },
+        {
+          "id": "validation-failed",
+          "label": "Validation failed",
+          "description": "A visible validation-failure state marker.",
+          "observed": false,
+          "markerCount": 0,
+          "files": []
+        },
+        {
+          "id": "provider-failed",
+          "label": "Provider failed",
+          "description": "A visible provider failure or unavailable state marker.",
+          "observed": false,
+          "markerCount": 0,
+          "files": []
+        },
+        {
+          "id": "approval-required",
+          "label": "Approval required",
+          "description": "A visible approval-gated state marker.",
+          "observed": true,
+          "markerCount": 11,
+          "files": [
+            {
+              "file": "desktop.js",
+              "line": 723
+            },
+            {
+              "file": "desktop.js",
+              "line": 724
+            },
+            {
+              "file": "desktop.js",
+              "line": 725
+            },
+            {
+              "file": "desktop.js",
+              "line": 1750
+            },
+            {
+              "file": "desktop.js",
+              "line": 1830
+            },
+            {
+              "file": "desktop.js",
+              "line": 6873
+            },
+            {
+              "file": "desktop.js",
+              "line": 10404
+            },
+            {
+              "file": "desktop.js",
+              "line": 1528
+            },
+            {
+              "file": "desktop.js",
+              "line": 6856
+            },
+            {
+              "file": "desktop.js",
+              "line": 6859
+            },
+            {
+              "file": "desktop.js",
+              "line": 9469
+            }
+          ]
+        },
+        {
+          "id": "demo",
+          "label": "Demo",
+          "description": "A visible demo-mode boundary marker.",
+          "observed": true,
+          "markerCount": 151,
+          "files": [
+            {
+              "file": "desktop.html",
+              "line": 23
+            },
+            {
+              "file": "desktop.js",
+              "line": 111
+            },
+            {
+              "file": "desktop.js",
+              "line": 116
+            },
+            {
+              "file": "desktop.js",
+              "line": 204
+            },
+            {
+              "file": "desktop.js",
+              "line": 440
+            },
+            {
+              "file": "desktop.js",
+              "line": 443
+            },
+            {
+              "file": "desktop.js",
+              "line": 677
+            },
+            {
+              "file": "desktop.js",
+              "line": 678
+            },
+            {
+              "file": "desktop.js",
+              "line": 693
+            },
+            {
+              "file": "desktop.js",
+              "line": 708
+            },
+            {
+              "file": "desktop.js",
+              "line": 860
+            },
+            {
+              "file": "desktop.js",
+              "line": 892
+            },
+            {
+              "file": "desktop.js",
+              "line": 897
+            },
+            {
+              "file": "desktop.js",
+              "line": 902
+            },
+            {
+              "file": "desktop.js",
+              "line": 951
+            },
+            {
+              "file": "desktop.js",
+              "line": 971
+            },
+            {
+              "file": "desktop.js",
+              "line": 1007
+            },
+            {
+              "file": "desktop.js",
+              "line": 1026
+            },
+            {
+              "file": "desktop.js",
+              "line": 1036
+            },
+            {
+              "file": "desktop.js",
+              "line": 1248
+            },
+            {
+              "file": "desktop.js",
+              "line": 1251
+            },
+            {
+              "file": "desktop.js",
+              "line": 1253
+            },
+            {
+              "file": "desktop.js",
+              "line": 1263
+            },
+            {
+              "file": "desktop.js",
+              "line": 1308
+            }
+          ]
+        },
+        {
+          "id": "live-boundary",
+          "label": "Live boundary",
+          "description": "A source marker that distinguishes live behavior from demo or blocked behavior.",
+          "observed": true,
+          "markerCount": 66,
+          "files": [
+            {
+              "file": "desktop.css",
+              "line": 2248
+            },
+            {
+              "file": "desktop.css",
+              "line": 2255
+            },
+            {
+              "file": "desktop.css",
+              "line": 2269
+            },
+            {
+              "file": "desktop.css",
+              "line": 2277
+            },
+            {
+              "file": "desktop.css",
+              "line": 2281
+            },
+            {
+              "file": "desktop.js",
+              "line": 56
+            },
+            {
+              "file": "desktop.js",
+              "line": 278
+            },
+            {
+              "file": "desktop.js",
+              "line": 966
+            },
+            {
+              "file": "desktop.js",
+              "line": 1273
+            },
+            {
+              "file": "desktop.js",
+              "line": 1320
+            },
+            {
+              "file": "desktop.js",
+              "line": 1518
+            },
+            {
+              "file": "desktop.js",
+              "line": 1673
+            },
+            {
+              "file": "desktop.js",
+              "line": 1674
+            },
+            {
+              "file": "desktop.js",
+              "line": 1725
+            },
+            {
+              "file": "desktop.js",
+              "line": 1757
+            },
+            {
+              "file": "desktop.js",
+              "line": 1812
+            },
+            {
+              "file": "desktop.js",
+              "line": 1819
+            },
+            {
+              "file": "desktop.js",
+              "line": 1830
+            },
+            {
+              "file": "desktop.js",
+              "line": 1925
+            },
+            {
+              "file": "desktop.js",
+              "line": 3581
+            },
+            {
+              "file": "desktop.js",
+              "line": 4094
+            },
+            {
+              "file": "desktop.js",
+              "line": 4098
+            },
+            {
+              "file": "desktop.js",
+              "line": 4103
+            },
+            {
+              "file": "desktop.js",
+              "line": 4112
+            }
+          ]
+        }
+      ],
+      "findings": [
+        {
+          "severity": "warning",
+          "code": "missing-static-ui-state-evidence",
+          "stateId": "loading"
+        },
+        {
+          "severity": "warning",
+          "code": "missing-static-ui-state-evidence",
+          "stateId": "degraded"
+        },
+        {
+          "severity": "warning",
+          "code": "missing-static-ui-state-evidence",
+          "stateId": "validation-failed"
+        },
+        {
+          "severity": "warning",
+          "code": "missing-static-ui-state-evidence",
+          "stateId": "provider-failed"
+        }
+      ],
+      "manualEvidenceStillRequired": [
+        "loading-to-ready browser transcript",
+        "empty, offline, unavailable, rate-limit, and degraded-state interaction review",
+        "validation and provider-error recovery review",
+        "approval-gated action review",
+        "demo/live boundary review",
+        "human product and accessibility approval"
+      ]
+    }
+  ],
+  "manualEvidenceRequired": [
+    "browser loading, empty, offline, degraded, validation, provider failure, approval, and recovery transcripts",
+    "keyboard and assistive-technology review for state announcements",
+    "manual demo/live boundary and public-release approval review"
+  ],
+  "safety": {
+    "reads": [
+      "bounded local HTML, JavaScript, and CSS source for the declared surfaces",
+      "apps/seis-core/data/seis-core-plugin-sources.json",
+      "content/development/seis-core-plugin-release-train.json"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "executesUi": false,
+    "publicReleaseAllowed": false
+  },
+  "limitations": [
+    "Missing static evidence is an attention finding, not a claim that a runtime failure occurred.",
+    "Static source evidence cannot prove rendered state transitions, data recovery, provider behavior, network conditions, or screen-reader announcements.",
+    "Public release remains gated on manual product, accessibility, security, and approval evidence."
+  ]
+}

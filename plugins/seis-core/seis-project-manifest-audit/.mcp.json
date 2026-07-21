@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "seis-project-manifest-audit": {
+      "command": "node",
+      "args": ["scripts/seis-project-manifest-audit-mcp-server.mjs"]
+    }
+  }
+}

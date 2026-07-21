@@ -1,6 +1,6 @@
 {
   "name": "seis-public-runtime-status",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "Compare public SEIS Repo cards with bounded local cache records without installing or enabling packages.",
   "author": {
     "name": "SEIS Repository"

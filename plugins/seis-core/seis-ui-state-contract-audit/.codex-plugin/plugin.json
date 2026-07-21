@@ -1,0 +1,37 @@
+{
+  "name": "seis-ui-state-contract-audit",
+  "version": "0.0.20",
+  "description": "Audit bounded local UI source for explicit static loading, empty, degraded, offline, failure, approval, demo, and live-boundary state evidence.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "ui-state",
+    "offline",
+    "degraded",
+    "approval",
+    "read-only",
+    "public-repository"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS UI State Contract Audit",
+    "shortDescription": "Inspect static UI-state evidence and expose missing state markers.",
+    "longDescription": "Audits bounded local HTML, JavaScript, and CSS source for static loading, ready, empty, degraded, offline, unavailable, rate-limited, validation, provider-failure, approval, demo, and live-boundary markers. It never executes a UI or certifies runtime state transitions.",
+    "developerName": "SEIS Repository",
+    "category": "Design",
+    "capabilities": [
+      "local-static-ui-state-audit",
+      "degraded-offline-gap-report",
+      "approval-and-demo-boundary-evidence",
+      "manual-qa-handoff"
+    ],
+    "defaultPrompt": [
+      "Audit this local SEIS UI source for static loading, empty, degraded, offline, failure, approval, demo, and live-boundary state evidence without executing a UI.",
+      "Show missing source state markers separately from runtime behavior that still needs human review."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

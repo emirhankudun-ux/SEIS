@@ -317,7 +317,7 @@
       }
     ],
     "applicationSourceRoot": "plugins/seis-core",
-    "applicationOwnedCount": 68,
+    "applicationOwnedCount": 70,
     "applicationOwnedPluginIds": [
       "seis-a11y-regression",
       "seis-action-pin-audit",
@@ -361,6 +361,7 @@
       "seis-plugin-discovery",
       "seis-plugin-migration",
       "seis-pr-cycle-time",
+      "seis-project-manifest-audit",
       "seis-prompt-injection-audit",
       "seis-provider-health",
       "seis-public-distribution-audit",
@@ -383,12 +384,13 @@
       "seis-test-flakiness",
       "seis-tool-permission-audit",
       "seis-trusted-marketplace",
+      "seis-ui-state-contract-audit",
       "seis-vulnerability-triage",
       "seis-workflow-linter",
       "seis-workflow-permission-audit",
       "seis-workspace-inspector"
     ],
-    "applicationOnlyCount": 18,
+    "applicationOnlyCount": 20,
     "applicationOnlyPluginIds": [
       "seis-approval-gate-review",
       "seis-architecture-drift",
@@ -400,6 +402,7 @@
       "seis-marketplace-integrity",
       "seis-mcp-permission",
       "seis-offline-mode-check",
+      "seis-project-manifest-audit",
       "seis-prompt-injection-audit",
       "seis-public-distribution-audit",
       "seis-public-install-evidence",
@@ -407,7 +410,8 @@
       "seis-public-runtime-status",
       "seis-rollback-readiness",
       "seis-tool-permission-audit",
-      "seis-trusted-marketplace"
+      "seis-trusted-marketplace",
+      "seis-ui-state-contract-audit"
     ],
     "publicSourceProjection": {
       "refreshedAt": "2026-07-20",

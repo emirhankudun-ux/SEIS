@@ -20,8 +20,8 @@
     "sourceRoot": "plugins/seis-core",
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "releaseLabel": "0.000000018",
-    "releaseSemver": "0.0.18"
+    "releaseLabel": "0.00000002",
+    "releaseSemver": "0.0.20"
   },
   "policy": {
     "transport": "local-stdio",
@@ -50,18 +50,18 @@
     ]
   },
   "counts": {
-    "marketplaceCardCount": 374,
+    "marketplaceCardCount": 376,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 68,
+    "applicationPluginCount": 70,
     "topicPluginCount": 300,
-    "applicationMcpServerCount": 68,
-    "localStdioServerCount": 68,
+    "applicationMcpServerCount": 70,
+    "localStdioServerCount": 70,
     "remoteServerCount": 0,
     "writePermissionGrantCount": 0,
     "networkPermissionGrantCount": 0,
     "secretPermissionGrantCount": 0,
-    "validRecordCount": 68,
+    "validRecordCount": 70,
     "invalidRecordCount": 0
   },
   "records": [
@@ -864,6 +864,25 @@
       "state": "validated-declared-boundary"
     },
     {
+      "name": "seis-project-manifest-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-project-manifest-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-project-manifest-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-project-manifest-audit-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
       "name": "seis-prompt-injection-audit",
       "marketplaceCard": true,
       "sourcePath": "plugins/seis-core/seis-prompt-injection-audit",
@@ -1270,6 +1289,25 @@
       "serverName": "seis-trusted-marketplace",
       "command": "node",
       "entrypoint": "scripts/seis-trusted-marketplace-mcp-server.mjs",
+      "permissionState": "deny-by-default",
+      "permissions": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "remoteEndpointDeclared": false,
+      "environmentInjectionDeclared": false,
+      "risk": "low",
+      "state": "validated-declared-boundary"
+    },
+    {
+      "name": "seis-ui-state-contract-audit",
+      "marketplaceCard": true,
+      "sourcePath": "plugins/seis-core/seis-ui-state-contract-audit",
+      "transport": "local-stdio",
+      "serverName": "seis-ui-state-contract-audit",
+      "command": "node",
+      "entrypoint": "scripts/seis-ui-state-contract-audit-mcp-server.mjs",
       "permissionState": "deny-by-default",
       "permissions": {
         "write": [],
