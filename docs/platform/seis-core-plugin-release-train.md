@@ -5,7 +5,7 @@ strict package semver `0.0.20`.
 
 ## Scope
 
-This release train belongs to the 71 app-owned, public MIT-licensed plugin
+This release train belongs to the 72 app-owned, public MIT-licensed plugin
 packages in `plugins/seis-core/`. That directory is the canonical application
 source boundary inside the public SEIS repository. The ten public source modules directly
 under `plugins/` and the public `seis-ai-agent@seis-repo` suite remain on their
@@ -57,11 +57,19 @@ npm run check:seis-ai-core-plugin-registry
 npm run check:seis-core-plugin-matrix
 ```
 
-The promoter updates all 71 manifests and profiles together, regenerates the
+The promoter updates all 72 manifests and profiles together, regenerates the
 app inventory, AI Core projection, app catalog, release-readiness artifact, and
 integration metadata. A large-code apply requires a change-evidence artifact
 whose base commit matches `HEAD` and whose measured code delta is at least 500
 lines. It never mutates personal marketplace state or live external services.
+
+`npm run check:seis-core-plugin-change-evidence` validates the committed,
+canonical evidence snapshot (its schema, counts, paths, sort order, and local
+base commit). It deliberately does not regenerate a dirty-worktree delta after
+the snapshot has been committed. The promotion command remains the freshness
+gate: it independently requires an evidence artifact generated against the
+current `HEAD`. Run `npm run automation:seis-core-plugin-change-evidence`
+immediately before a proposed large-code promotion.
 
 ## Local runtime
 

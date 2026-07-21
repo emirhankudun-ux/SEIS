@@ -11,7 +11,7 @@ import {
   nextMajorRelease,
   parseReleaseLabel,
 } from "./seis-core-plugin-release-policy.mjs";
-import { collectSeisCorePluginChangeEvidence } from "./seis-core-plugin-change-evidence.mjs";
+import { readSeisCorePluginChangeEvidenceArtifact } from "./seis-core-plugin-change-evidence.mjs";
 
 const root = process.cwd();
 const releaseTrainPath = path.join(root, "content", "development", "seis-core-plugin-release-train.json");
@@ -20,7 +20,7 @@ const checkMode = process.argv.includes("--check");
 const releaseTrain = JSON.parse(fs.readFileSync(releaseTrainPath, "utf8"));
 const current = parseReleaseLabel(releaseTrain.currentRelease.label);
 const threshold = releaseTrain.policy?.largeCodeChangeThreshold ?? 500;
-const evidence = collectSeisCorePluginChangeEvidence(root, { threshold });
+const evidence = readSeisCorePluginChangeEvidenceArtifact(root, { threshold });
 const nextLargeCode = safeNext(() => nextLargeCodeRelease(current));
 const nextAnnual = safeNext(() => nextMajorRelease(current));
 const nextAnnualYear = releaseTrain.cadence?.nextAnnualYear ?? new Date().getUTCFullYear() + 1;

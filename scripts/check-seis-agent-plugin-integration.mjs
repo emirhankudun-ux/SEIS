@@ -637,7 +637,7 @@ if (manifest) {
   ensure(appPluginAuditRuntime.includes("permissions: { write: [], network: [], secrets: [] }"), "app plugin audit runtime must keep permissions empty");
   ensure(appPluginAuditDefinitions.includes("seis-prompt-injection-audit"), "app plugin audit definitions must include the prompt safety plugin");
   ensure(appPluginChangeEvidenceScript.includes("SEIS_CORE_PLUGIN_CHANGE_EVIDENCE_THRESHOLD"), "change evidence generator must declare the code threshold");
-  ensure(appPluginReadinessScript.includes("collectSeisCorePluginChangeEvidence"), "release readiness generator must use code evidence");
+  ensure(appPluginReadinessScript.includes("readSeisCorePluginChangeEvidenceArtifact"), "release readiness generator must read validated recorded code evidence");
   ensure(appPluginCatalogRuntime.includes("APP_PLUGIN_ALLOWED_INSPECTION_ACTIONS"), "app plugin catalog runtime must declare bounded inspection actions");
   ensure(appPluginCatalogRuntime.includes("approval-required"), "app plugin catalog runtime must expose approval-required plans");
   ensure(appPluginCli.includes("activation-plan"), "app plugin CLI must expose activation plans");
