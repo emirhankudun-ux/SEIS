@@ -1,7 +1,7 @@
 {
   "name": "seis-apple-native-readiness",
   "version": "0.0.20",
-  "description": "Audit bounded Apple-native Swift Package source, test, and strategy evidence without compiling, signing, deploying, or claiming a live native runtime.",
+  "description": "Audit bounded Apple-native Swift Package source, test, strategy, and traversal-limit evidence without compiling, signing, deploying, or claiming a live native runtime.",
   "author": {
     "name": "SEIS Repository"
   },
@@ -18,13 +18,14 @@
   "interface": {
     "displayName": "SEIS Apple Native Readiness",
     "shortDescription": "Read bounded Apple/Swift Package readiness evidence locally.",
-    "longDescription": "Checks declared Swift Package targets, bounded Swift source and test presence, and Apple platform strategy markers. It reports static local evidence only; it never compiles, signs, deploys, uses a network, reads secrets, or treats source markers as a native runtime, App Store, or release proof.",
+    "longDescription": "Checks declared Swift Package targets, bounded Swift source and test presence, Apple platform strategy markers, and explicit traversal limits. It reports static local evidence only; it never compiles, signs, deploys, uses a network, reads secrets, or treats source markers as a native runtime, App Store, or release proof.",
     "developerName": "SEIS Repository",
     "category": "Developer",
     "capabilities": [
       "swift-package-contract-audit",
       "apple-platform-strategy-check",
       "bounded-native-source-inventory",
+      "native-source-limit-detection",
       "read-only-static-readiness-evidence"
     ],
     "defaultPrompt": [

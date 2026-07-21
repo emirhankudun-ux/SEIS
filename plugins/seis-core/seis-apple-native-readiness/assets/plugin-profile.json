@@ -28,7 +28,11 @@
   "risk": "low",
   "audit": {
     "mode": "read-only-report",
-    "checkCount": 16
+    "checkCount": 16,
+    "maxTextBytes": 131072,
+    "maxSwiftFilesPerArea": 128,
+    "maxSourceDepth": 8,
+    "limitReachedState": "attention"
   },
   "validation": [
     "node scripts/seis-apple-native-readiness-mcp-server.mjs --status",
@@ -39,7 +43,7 @@
   ],
   "rollback": "Disable or remove the local plugin and revert its generated evidence record; the plugin never edits source, Swift packages, marketplace state, an external system, or release state.",
   "reviewState": "public-repository-preview",
-  "provenance": "Created for SEIS-GOAL-021 Wave 2 after an overlap review found no existing public app-owned plugin that jointly verifies bounded Swift Package targets, source/test presence, and Apple platform strategy evidence.",
+  "provenance": "Created for SEIS-GOAL-021 Wave 2 after an overlap review found no existing public app-owned plugin that jointly verifies bounded Swift Package targets, source/test presence, Apple platform strategy evidence, and explicit traversal-limit handling.",
   "publicRepositoryAvailable": true,
   "publicAudience": "everyone",
   "publicMarketplace": true,

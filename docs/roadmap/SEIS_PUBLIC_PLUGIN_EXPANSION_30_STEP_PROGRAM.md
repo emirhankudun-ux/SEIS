@@ -68,9 +68,11 @@ with its own 100-step record at
 `content/development/seis-public-plugin-wave-2-program.json` and a public-only
 candidate decision at
 `content/development/seis-public-plugin-wave-2-capability-decision.json`.
-Its first completed round is limited to a read-only Apple/Swift Package
-readiness audit; it does not claim a native build, signing, release, provider,
-or App Store transition. Waves 3–5 remain *not planned* until the preceding
+Its first two completed rounds are limited to a read-only Apple/Swift Package
+readiness audit and its bounded-resilience review: depth/file/text limits,
+direct source-area symlink refusal, focused fixtures, and framed MCP path
+refusal. They do not claim a native build, signing, release, provider, or App
+Store transition. Waves 3–5 remain *not planned* until the preceding
 wave has current evidence, scope review, and risk review. After Wave 5, repeat
 the cadence-design review before defining a new five-wave sequence;
 continuation must remain evidence-led, reversible, and delivered through the

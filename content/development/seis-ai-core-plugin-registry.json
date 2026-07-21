@@ -409,7 +409,7 @@
       "id": "seis-apple-native-readiness",
       "slug": "seis-apple-native-readiness",
       "displayName": "SEIS Apple Native Readiness",
-      "description": "Audit bounded Apple-native Swift Package source, test, and strategy evidence without compiling, signing, deploying, or claiming a live native runtime.",
+      "description": "Audit bounded Apple-native Swift Package source, test, strategy, and traversal-limit evidence without compiling, signing, deploying, or claiming a live native runtime.",
       "version": "0.0.20",
       "releaseTrainVersion": "0.00000002",
       "releaseSemver": "0.0.20",

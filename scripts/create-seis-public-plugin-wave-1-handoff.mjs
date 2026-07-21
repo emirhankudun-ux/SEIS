@@ -109,7 +109,9 @@ function buildRecord() {
       mcpBoundary: list(mcpPermission.safety?.write).length === 0 && list(mcpPermission.safety?.network).length === 0 && list(mcpPermission.safety?.secrets).length === 0,
       wave2Activation: wave2Program.id === "seis-public-plugin-wave-2-program"
         && wave2Program.status === "in-progress"
-        && wave2Program.progress?.completedStepCount === 20
+        && Number.isInteger(wave2Program.progress?.completedStepCount)
+        && wave2Program.progress.completedStepCount >= 20
+        && wave2Program.progress.completedStepCount < 100
         && wave2CapabilityDecision.id === "seis-public-plugin-wave-2-capability-decision"
         && wave2CapabilityDecision.decision?.selectedCapability === "seis-apple-native-readiness",
     },
@@ -189,7 +191,7 @@ function validateRecord(record) {
   assert(record.publicBoundary?.publicAudience === "everyone" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false, "public marketplace boundary is invalid");
   assert(record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
   assert(list(record.knownGaps).length === 1 && record.knownGaps[0]?.id === "ui-state-contract", "known attention record is invalid");
-  assert(record.nextWave?.number === 2 && record.nextWave?.status === "in-progress" && record.nextWave?.programId === "seis-public-plugin-wave-2-program" && record.nextWave?.completedStepCount === 20 && record.nextWave?.scopeReviewComplete === true, "Wave 2 scope decision is invalid");
+  assert(record.nextWave?.number === 2 && record.nextWave?.status === "in-progress" && record.nextWave?.programId === "seis-public-plugin-wave-2-program" && Number.isInteger(record.nextWave?.completedStepCount) && record.nextWave.completedStepCount >= 20 && record.nextWave.completedStepCount < 100 && record.nextWave?.scopeReviewComplete === true, "Wave 2 scope decision is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0, "handoff inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "handoff record must not contain machine-specific paths");
 }

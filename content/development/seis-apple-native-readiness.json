@@ -56,6 +56,31 @@
       "readyCheckCount": 16
     }
   },
+  "resilienceReview": {
+    "status": "completed-repository-local-resilience-review",
+    "limits": {
+      "maxTextBytes": 131072,
+      "maxSwiftFilesPerArea": 128,
+      "maxSourceDepth": 8
+    },
+    "limitReachedState": "attention",
+    "coveredFailureModes": [
+      "source-depth-limit",
+      "source-file-count-limit",
+      "direct-source-area-symlink",
+      "oversized-strategy-text",
+      "empty-source-area-or-missing-focused-test",
+      "MCP-external-audit-path"
+    ],
+    "outputBoundary": {
+      "rawSourceReturned": false,
+      "machineSpecificPathReturned": false,
+      "network": false,
+      "writes": false,
+      "secrets": false
+    },
+    "externalNativeValidation": "not-run-and-not-claimed"
+  },
   "safety": {
     "read": [
       "bounded Swift Package manifest markers",

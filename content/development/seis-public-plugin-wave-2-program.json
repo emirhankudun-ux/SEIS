@@ -74,7 +74,7 @@
       "round": 2,
       "name": "Native evidence resilience",
       "objective": "Strengthen test fixtures and bounded error handling only when real source evidence identifies a gap.",
-      "status": "planned",
+      "status": "completed",
       "steps": [
         21,
         22,
@@ -328,141 +328,141 @@
       "number": 21,
       "round": 2,
       "title": "Review Wave 2 Round 1 evidence for stale or overly broad static markers.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 22,
       "round": 2,
       "title": "Review path-boundary behavior against invalid and symlinked input scenarios.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 23,
       "round": 2,
       "title": "Review text-size and source-file traversal limits for practical local safety.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 24,
       "round": 2,
       "title": "Add fixture coverage only for an observed static-readiness failure mode.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 25,
       "round": 2,
       "title": "Review platform-version markers against the checked-in Package.swift declaration.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 26,
       "round": 2,
       "title": "Review source-area checks for false confidence caused by empty directories.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 27,
       "round": 2,
       "title": "Review test-file checks for changes in the focused Swift test contract.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 28,
       "round": 2,
       "title": "Review static evidence terminology for native-runtime ambiguity.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 29,
       "round": 2,
       "title": "Review accessibility and documentation wording for clear limitation disclosure.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 30,
       "round": 2,
       "title": "Review no-raw-source and no-machine-path output guarantees.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "bounded resilience fixture and static-contract review"
     },
     {
       "number": 31,
       "round": 2,
       "title": "Run focused runtime and MCP framing regressions.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "MCP framing, catalog, and public-boundary regression checks"
     },
     {
       "number": 32,
       "round": 2,
       "title": "Run package catalog status-only regression.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "MCP framing, catalog, and public-boundary regression checks"
     },
     {
       "number": 33,
       "round": 2,
       "title": "Reconcile generated evidence after any bounded source contract change.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "MCP framing, catalog, and public-boundary regression checks"
     },
     {
       "number": 34,
       "round": 2,
       "title": "Review public marketplace card labels for SEIS Repo terminology.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "MCP framing, catalog, and public-boundary regression checks"
     },
     {
       "number": 35,
       "round": 2,
       "title": "Review source-manifest permissions and implementation state.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "MCP framing, catalog, and public-boundary regression checks"
     },
     {
       "number": 36,
       "round": 2,
       "title": "Review AI Core registry treatment of the physical public package.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "MCP framing, catalog, and public-boundary regression checks"
     },
     {
       "number": 37,
       "round": 2,
       "title": "Record any unmet native validation need as a separate future goal.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "generated resilience evidence and feature-branch review"
     },
     {
       "number": 38,
       "round": 2,
       "title": "Update risk and rollback evidence if source boundaries change.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "generated resilience evidence and feature-branch review"
     },
     {
       "number": 39,
       "round": 2,
       "title": "Prepare a focused review checkpoint if Round 2 produces a real change.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "generated resilience evidence and feature-branch review"
     },
     {
       "number": 40,
       "round": 2,
       "title": "Validate Round 2 evidence before marking any of its tasks complete.",
-      "status": "planned",
-      "validation": "current evidence required before completion"
+      "status": "completed",
+      "validation": "generated resilience evidence and feature-branch review"
     },
     {
       "number": 41,
@@ -886,18 +886,19 @@
     }
   ],
   "progress": {
-    "completedStepCount": 20,
-    "plannedStepCount": 80,
+    "completedStepCount": 40,
+    "plannedStepCount": 60,
     "inProgressStepNumbers": [],
-    "completedRoundCount": 1,
-    "nextStepNumber": 21
+    "completedRoundCount": 2,
+    "nextStepNumber": 41
   },
   "capability": {
     "decisionId": "seis-public-plugin-wave-2-capability-decision",
     "selectedCapability": "seis-apple-native-readiness",
     "evidencePath": "content/development/seis-apple-native-readiness.json",
     "implementationState": "functional-local-demo",
-    "classification": "documented-static-readiness-only"
+    "classification": "documented-static-readiness-only",
+    "resilienceReview": "completed-repository-local-resilience-review"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",

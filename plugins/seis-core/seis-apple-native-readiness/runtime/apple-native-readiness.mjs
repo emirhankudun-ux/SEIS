@@ -10,9 +10,15 @@ export const APPLE_NATIVE_READINESS_SCOPE = Object.freeze({
   appleStrategy: "docs/APPLE_PLATFORM_STRATEGY.md",
 });
 
-const MAX_TEXT_BYTES = 128 * 1024;
-const MAX_SWIFT_FILES_PER_AREA = 128;
-const MAX_SOURCE_DEPTH = 8;
+export const APPLE_NATIVE_READINESS_LIMITS = Object.freeze({
+  maxTextBytes: 128 * 1024,
+  maxSwiftFilesPerArea: 128,
+  maxSourceDepth: 8,
+});
+
+const MAX_TEXT_BYTES = APPLE_NATIVE_READINESS_LIMITS.maxTextBytes;
+const MAX_SWIFT_FILES_PER_AREA = APPLE_NATIVE_READINESS_LIMITS.maxSwiftFilesPerArea;
+const MAX_SOURCE_DEPTH = APPLE_NATIVE_READINESS_LIMITS.maxSourceDepth;
 
 const PACKAGE_MARKERS = Object.freeze([
   ["package-name", 'name: "SeisPlatformKit"'],
@@ -124,8 +130,14 @@ function inspectSwiftArea(root, relativePath, id, findings) {
       return { id, swiftFileCount: 0, safe: false };
     }
     const result = countSwiftFiles(absolutePath);
-    if (result.limitExceeded) findings.push({ severity: "error", code: "swift-source-file-limit-exceeded", marker: id });
-    return { id, swiftFileCount: result.count, safe: !result.limitExceeded };
+    if (result.fileLimitExceeded) findings.push({ severity: "error", code: "swift-source-file-limit-exceeded", marker: id });
+    if (result.depthLimitExceeded) findings.push({ severity: "error", code: "swift-source-depth-limit-exceeded", marker: id });
+    if (result.unreadable) findings.push({ severity: "error", code: "swift-source-area-unreadable", marker: id });
+    return {
+      id,
+      swiftFileCount: result.count,
+      safe: !result.fileLimitExceeded && !result.depthLimitExceeded && !result.unreadable,
+    };
   } catch {
     findings.push({ severity: "error", code: "swift-source-area-unreadable", marker: id });
     return { id, swiftFileCount: 0, safe: false };
@@ -134,28 +146,39 @@ function inspectSwiftArea(root, relativePath, id, findings) {
 
 function countSwiftFiles(directory) {
   let count = 0;
-  let limitExceeded = false;
+  let fileLimitExceeded = false;
+  let depthLimitExceeded = false;
+  let unreadable = false;
   const visit = (currentPath, depth) => {
-    if (limitExceeded || depth > MAX_SOURCE_DEPTH) return;
+    if (fileLimitExceeded || depthLimitExceeded || unreadable) return;
+    if (depth > MAX_SOURCE_DEPTH) {
+      depthLimitExceeded = true;
+      return;
+    }
     let entries;
     try {
       entries = fs.readdirSync(currentPath, { withFileTypes: true });
     } catch {
-      limitExceeded = true;
+      unreadable = true;
       return;
     }
     for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name))) {
-      if (limitExceeded || entry.isSymbolicLink()) continue;
+      if (fileLimitExceeded || depthLimitExceeded || unreadable || entry.isSymbolicLink()) continue;
       const child = path.join(currentPath, entry.name);
       if (entry.isDirectory()) visit(child, depth + 1);
       else if (entry.isFile() && entry.name.endsWith(".swift")) {
         count += 1;
-        if (count > MAX_SWIFT_FILES_PER_AREA) limitExceeded = true;
+        if (count > MAX_SWIFT_FILES_PER_AREA) fileLimitExceeded = true;
       }
     }
   };
   visit(directory, 0);
-  return { count: Math.min(count, MAX_SWIFT_FILES_PER_AREA), limitExceeded };
+  return {
+    count: Math.min(count, MAX_SWIFT_FILES_PER_AREA),
+    fileLimitExceeded,
+    depthLimitExceeded,
+    unreadable,
+  };
 }
 
 function readBoundedText(root, relativePath, findings, label) {

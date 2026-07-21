@@ -4,7 +4,11 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
-import { APPLE_NATIVE_READINESS_ID, auditAppleNativeReadiness } from "../plugins/seis-core/seis-apple-native-readiness/runtime/apple-native-readiness.mjs";
+import {
+  APPLE_NATIVE_READINESS_ID,
+  APPLE_NATIVE_READINESS_LIMITS,
+  auditAppleNativeReadiness,
+} from "../plugins/seis-core/seis-apple-native-readiness/runtime/apple-native-readiness.mjs";
 
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
@@ -12,6 +16,9 @@ const OUTPUT_PATH = "content/development/seis-apple-native-readiness.json";
 const SOURCE_MANIFEST_PATH = "apps/seis-core/data/seis-core-plugin-sources.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
 const PROJECT_MANIFEST_PATH = "project.ecosystem.yaml";
+const RUNTIME_PATH = "plugins/seis-core/seis-apple-native-readiness/runtime/apple-native-readiness.mjs";
+const TEST_PATH = "plugins/seis-core/test/apple-native-readiness.test.mjs";
+const SKILL_PATH = "plugins/seis-core/seis-apple-native-readiness/skills/seis-apple-native-readiness/SKILL.md";
 const CANONICAL_ORCHESTRATOR_COUNT = 1;
 const MIGRATED_ROOT_PLUGIN_COUNT = 5;
 const TOPIC_PLUGIN_COUNT = 300;
@@ -38,6 +45,9 @@ function buildRecord() {
   const plugin = (sourceManifest.plugins || []).find((entry) => entry?.name === APPLE_NATIVE_READINESS_ID);
   const marketplaceEntry = (marketplace.plugins || []).find((entry) => entry?.name === APPLE_NATIVE_READINESS_ID);
   const audit = auditAppleNativeReadiness(ROOT);
+  const runtimeSource = readText(RUNTIME_PATH);
+  const testSource = readText(TEST_PATH);
+  const skillSource = readText(SKILL_PATH);
   const publicCardCount = list(marketplace.plugins).length;
   const applicationPluginCount = list(sourceManifest.plugins).length;
   const record = {
@@ -76,6 +86,7 @@ function buildRecord() {
       findingCodes: list(audit.findings).map((finding) => finding?.code).filter(Boolean).sort(),
       summary: audit.summary,
     },
+    resilienceReview: buildResilienceReview(runtimeSource, testSource, skillSource),
     safety: {
       read: audit.permissions?.read || [],
       write: [],
@@ -124,11 +135,60 @@ function validateRecord(record) {
   assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "public count contract is invalid");
   assert(record.audit?.state === "ready" && record.audit?.ok === true && record.audit?.classification === "documented-static-readiness-only", "static readiness audit is invalid");
   assert(record.audit?.checkCount >= 16 && record.audit?.readyCheckCount === record.audit?.checkCount && list(record.audit?.findingCodes).length === 0, "static readiness checks are incomplete");
+  assert(record.resilienceReview?.status === "completed-repository-local-resilience-review", "resilience review status is invalid");
+  assert(record.resilienceReview?.limits?.maxTextBytes === APPLE_NATIVE_READINESS_LIMITS.maxTextBytes && record.resilienceReview?.limits?.maxSwiftFilesPerArea === APPLE_NATIVE_READINESS_LIMITS.maxSwiftFilesPerArea && record.resilienceReview?.limits?.maxSourceDepth === APPLE_NATIVE_READINESS_LIMITS.maxSourceDepth, "resilience limits are invalid");
+  assert(record.resilienceReview?.limitReachedState === "attention" && list(record.resilienceReview?.coveredFailureModes).length === 6, "resilience coverage is incomplete");
   assert(record.safety?.write?.length === 0 && record.safety?.network?.length === 0 && record.safety?.secrets?.length === 0, "safety permissions must be empty");
   assert(record.safety?.compilesSwift === false && record.safety?.startsNativeApplication === false && record.safety?.signsArtifacts === false && record.safety?.installsPlugins === false && record.safety?.publicReleaseAllowed === false, "native execution boundary is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(record.inputSafety?.machineSpecificPathFindingCount === 0 && record.inputSafety?.rawSourceReturned === false && record.inputSafety?.sourceFilesCompiled === false, "input safety record is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "record must not contain a machine-specific path");
+}
+
+function buildResilienceReview(runtimeSource, testSource, skillSource) {
+  const requiredRuntimeMarkers = [
+    "swift-source-depth-limit-exceeded",
+    "swift-source-file-limit-exceeded",
+    "swift-source-area-unreadable",
+    "depthLimitExceeded = true",
+  ];
+  const requiredTestMarkers = [
+    "marks a source tree beyond the declared traversal depth as attention",
+    "marks a direct Swift source-area symlink as attention without following it",
+    "marks oversized strategy text as attention before it is read",
+    "marks Swift source areas above the declared file limit as attention",
+    "marks empty source areas and missing focused tests as attention",
+    "serves bounded MCP responses and refuses an external audit path",
+  ];
+  const requiredSkillMarker = "explicit `attention` result rather than partial-readiness proof";
+  assert(requiredRuntimeMarkers.every((marker) => runtimeSource.includes(marker)), "runtime resilience markers are missing");
+  assert(requiredTestMarkers.every((marker) => testSource.includes(marker)), "resilience regression fixtures are missing");
+  assert(skillSource.includes(requiredSkillMarker), "resilience limitation documentation is missing");
+  return {
+    status: "completed-repository-local-resilience-review",
+    limits: {
+      maxTextBytes: APPLE_NATIVE_READINESS_LIMITS.maxTextBytes,
+      maxSwiftFilesPerArea: APPLE_NATIVE_READINESS_LIMITS.maxSwiftFilesPerArea,
+      maxSourceDepth: APPLE_NATIVE_READINESS_LIMITS.maxSourceDepth,
+    },
+    limitReachedState: "attention",
+    coveredFailureModes: [
+      "source-depth-limit",
+      "source-file-count-limit",
+      "direct-source-area-symlink",
+      "oversized-strategy-text",
+      "empty-source-area-or-missing-focused-test",
+      "MCP-external-audit-path",
+    ],
+    outputBoundary: {
+      rawSourceReturned: false,
+      machineSpecificPathReturned: false,
+      network: false,
+      writes: false,
+      secrets: false,
+    },
+    externalNativeValidation: "not-run-and-not-claimed",
+  };
 }
 
 function readJson(relativePath) {

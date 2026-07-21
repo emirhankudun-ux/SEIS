@@ -15,7 +15,8 @@ deployment, App Store, provider, or release result.
   and Apple platform strategy markers within the selected local repository.
 - Never writes files, compiles Swift, starts an app, signs an artifact, installs
   a plugin, calls a provider, uses a network, or reads secrets.
-- Refuses audit paths outside the local repository boundary.
+- Refuses audit paths outside the local repository boundary, direct source-area
+  symlinks, and source trees that exceed its declared traversal limits.
 - A `ready` result means bounded static evidence is coherent; it is not native
   runtime, distribution, or human-approval proof.
 
@@ -30,6 +31,8 @@ deployment, App Store, provider, or release result.
 - `packages/seis_platform_swift/Package.swift` target and platform markers.
 - Presence of bounded Swift source areas for `SeisPlatformKit` and
   `SeisAppleNativeShell`.
+- Source-area depth, file-count, and readability limits; a reached limit is an
+  explicit `attention` result rather than partial-readiness proof.
 - Presence of the focused Swift test files.
 - Platform-role and anti-symbolic-code markers in `docs/APPLE_PLATFORM_STRATEGY.md`.
 

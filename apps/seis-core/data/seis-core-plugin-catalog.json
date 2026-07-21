@@ -261,12 +261,13 @@
       "id": "seis-apple-native-readiness",
       "name": "seis-apple-native-readiness",
       "displayName": "SEIS Apple Native Readiness",
-      "description": "Audit bounded Apple-native Swift Package source, test, and strategy evidence without compiling, signing, deploying, or claiming a live native runtime.",
+      "description": "Audit bounded Apple-native Swift Package source, test, strategy, and traversal-limit evidence without compiling, signing, deploying, or claiming a live native runtime.",
       "category": "Developer",
       "capabilities": [
         "swift-package-contract-audit",
         "apple-platform-strategy-check",
         "bounded-native-source-inventory",
+        "native-source-limit-detection",
         "read-only-static-readiness-evidence"
       ],
       "owner": "@seis-apple",
@@ -285,7 +286,11 @@
       "risk": "low",
       "audit": {
         "mode": "read-only-report",
-        "checkCount": 16
+        "checkCount": 16,
+        "maxTextBytes": 131072,
+        "maxSwiftFilesPerArea": 128,
+        "maxSourceDepth": 8,
+        "limitReachedState": "attention"
       },
       "permissions": {
         "read": [

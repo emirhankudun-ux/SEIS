@@ -58,8 +58,8 @@
   "releaseReadiness": {
     "currentLabel": "0.00000002",
     "currentSemver": "0.0.20",
-    "codeLinesChanged": 1155,
-    "decision": "large-code-promotion-evidence-ready",
+    "codeLinesChanged": 305,
+    "decision": "continue-code-before-large-code-promotion",
     "promoted": false
   },
   "risks": [
@@ -87,7 +87,7 @@
     "scopeReviewComplete": true,
     "programId": "seis-public-plugin-wave-2-program",
     "capabilityDecisionPath": "content/development/seis-public-plugin-wave-2-capability-decision.json",
-    "completedStepCount": 20,
+    "completedStepCount": 40,
     "activationRule": "Wave 2 is active only for the separately reviewed, bounded public Apple/Swift static-readiness scope; it must retain empty write, network, and secret permissions and cannot claim a native runtime or public release."
   },
   "inputSafetyScan": {
