@@ -35,7 +35,7 @@
       "stepsPerRound": 20,
       "totalPlannedWaveSteps": 500,
       "activeWave": 4,
-      "activeWaveState": "repository-local-validation-delivery-evidence-complete-step-91-in-progress"
+      "activeWaveState": "repository-local-public-boundary-decision-complete-step-96-in-progress"
     },
     "githubDelivery": {
       "branch": "plugins/seis-plugin-root-20260715",
@@ -98,14 +98,15 @@
       "implementationStarted": true,
       "candidatePackageExists": true,
       "candidatePublicCardExists": true,
-      "completedSteps": 90,
+      "completedSteps": 95,
       "inProgressSteps": [
-        91
+        96
       ],
       "topologyEvidencePath": "content/development/seis-swift-package-topology.json",
       "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
       "validationDeliveryEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
-      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
+      "publicBoundaryDecisionPath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
+      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
       "predecessor": "Wave 3 repository-local handoff",
       "entryRule": "Wave 3 closed with current evidence, the separate activation decision approved one fixed-manifest scope, and the package completed its first repository-local integration checkpoint without a release claim."
     },

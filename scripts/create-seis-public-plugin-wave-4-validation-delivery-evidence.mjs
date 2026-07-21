@@ -189,7 +189,10 @@ function isSupportedWave4Tracker(program) {
   const afterDelivery = program?.progress?.completedStepCount === 90
     && list(program?.progress?.inProgressStepNumbers).join(",") === "91"
     && program?.evidence?.validationDeliveryEvidencePath === OUTPUT_PATH;
-  return common && (beforeDelivery || afterDelivery);
+  const afterPublicBoundaryDecision = program?.progress?.completedStepCount === 95
+    && list(program?.progress?.inProgressStepNumbers).join(",") === "96"
+    && program?.evidence?.publicBoundaryDecisionPath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json";
+  return common && (beforeDelivery || afterDelivery || afterPublicBoundaryDecision);
 }
 
 function isSupportedContinuity(cadence) {
@@ -203,7 +206,12 @@ function isSupportedContinuity(cadence) {
     && list(wave?.inProgressSteps).join(",") === "91"
     && wave?.validationDeliveryEvidencePath === OUTPUT_PATH
     && wave?.currentEvidencePath === OUTPUT_PATH;
-  return cadence?.id === "seis-public-plugin-continuity-cadence" && cadence?.status === "active-evidence-led-cadence" && (beforeDelivery || afterDelivery);
+  const afterPublicBoundaryDecision = cadence?.cadence?.waveSeries?.activeWaveState === "repository-local-public-boundary-decision-complete-step-96-in-progress"
+    && wave?.completedSteps === 95
+    && list(wave?.inProgressSteps).join(",") === "96"
+    && wave?.publicBoundaryDecisionPath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json"
+    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json";
+  return cadence?.id === "seis-public-plugin-continuity-cadence" && cadence?.status === "active-evidence-led-cadence" && (beforeDelivery || afterDelivery || afterPublicBoundaryDecision);
 }
 
 function validateRecord(record) {

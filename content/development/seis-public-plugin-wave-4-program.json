@@ -25,7 +25,7 @@
     ],
     "selectedCapability": "seis-swift-package-topology",
     "outcome": "One public repository package now reports bounded, derived Swift Package manifest topology with a single checked-in source, SEIS Repo card, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
-    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–90 now have current repository-local evidence; step 91 is in-progress to record remote policy observations and remaining external-proof limits."
+    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–95 now have current repository-local evidence, including remote-policy observations and explicit external-proof limits; step 96 is in-progress only to prepare repository-local handoff readiness, not a final handoff, release, or completion claim."
   },
   "nonGoals": [
     "Adding more than the one activation-approved public package or card without a new capability decision.",
@@ -843,42 +843,42 @@
       "number": 91,
       "round": 5,
       "title": "Record protected-branch, pull-request, code-scanning, and signature-policy observations honestly.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 92,
       "round": 5,
       "title": "Record public marketplace count reconciliation only if a candidate card was actually added.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 93,
       "round": 5,
       "title": "Record no independent installation, SwiftPM, compiler, runtime, provider, deployment, signing, or release claims.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 94,
       "round": 5,
       "title": "Review whether external proof or human approval remains required.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 95,
       "round": 5,
       "title": "Create follow-up goals for any deferred environment, release, or runtime validation.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 96,
       "round": 5,
       "title": "Prepare a repository-local Wave 4 handoff only after all one hundred planned steps have current evidence.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "handoff, completion, and future-wave gate review"
     },
     {
@@ -911,13 +911,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 90,
-    "plannedStepCount": 9,
+    "completedStepCount": 95,
+    "plannedStepCount": 4,
     "inProgressStepNumbers": [
-      91
+      96
     ],
     "completedRoundCount": 4,
-    "nextStepNumber": 91
+    "nextStepNumber": 96
   },
   "evidence": {
     "wave3CloseoutPath": "content/development/seis-public-plugin-wave-3-closeout.json",
@@ -930,13 +930,15 @@
     "candidateSourcePath": "plugins/seis-core/seis-swift-package-topology",
     "candidateEvidencePath": "content/development/seis-swift-package-topology.json",
     "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
-    "validationDeliveryEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json"
+    "validationDeliveryEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
+    "publicBoundaryDecisionPath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json"
   },
   "validation": [
     "npm run check:seis-public-plugin-wave-4-program",
     "npm run check:seis-public-plugin-wave-4-activation-decision",
     "npm run check:seis-public-plugin-wave-4-integration-checkpoint",
     "npm run check:seis-public-plugin-wave-4-validation-delivery-evidence",
+    "npm run check:seis-public-plugin-wave-4-public-boundary-decision",
     "npm run check:seis-swift-package-topology",
     "npm run check:seis-public-plugin-wave-3-following-wave-review",
     "npm run check:seis-public-plugin-continuity-cadence",
@@ -982,10 +984,11 @@
     "candidateIntegrated": true,
     "topologyEvidence": true,
     "integrationCheckpoint": true,
-    "validationDeliveryEvidence": true
+    "validationDeliveryEvidence": true,
+    "publicBoundaryDecision": true
   },
   "inputSafetyScan": {
-    "inputCount": 6,
+    "inputCount": 7,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

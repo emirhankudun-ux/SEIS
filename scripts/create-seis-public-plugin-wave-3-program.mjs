@@ -351,6 +351,7 @@ function isSupportedWave4State(wave4Program) {
       (wave4Program?.progress?.completedStepCount === 73 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "74")
       || (wave4Program?.progress?.completedStepCount === 80 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "81" && wave4Program?.evidence?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json")
       || (wave4Program?.progress?.completedStepCount === 90 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "91" && wave4Program?.evidence?.validationDeliveryEvidencePath === "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json")
+      || (wave4Program?.progress?.completedStepCount === 95 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "96" && wave4Program?.evidence?.publicBoundaryDecisionPath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json")
     );
   return plannedSnapshot || integratedCheckpoint;
 }
