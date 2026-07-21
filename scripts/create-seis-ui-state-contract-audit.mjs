@@ -75,6 +75,7 @@ function buildRecord() {
       ],
     };
   });
+  const commandCenterStateBoundary = inspectCommandCenterStateBoundary();
   const missingStateIds = [...new Set(surfaces.flatMap((surface) => surface.missingStateIds))].sort();
   const overallState = surfaces.every((surface) => surface.state === "ready") ? "ready" : "attention";
 
@@ -83,7 +84,7 @@ function buildRecord() {
     id: "seis-ui-state-contract-audit",
     goalId: "SEIS-GOAL-021",
     backlogId: "SEIS-BL-038",
-    generatedAt: "2026-07-20",
+    generatedAt: "2026-07-21",
     status: "active-static-source-evidence",
     purpose: "Keep static UI-state marker evidence visible for key SEIS UI surfaces without treating source text as a runtime state-machine, provider, browser, or release proof.",
     portfolioPosition: {
@@ -111,6 +112,7 @@ function buildRecord() {
     overallState,
     missingStateIds,
     surfaces,
+    commandCenterStateBoundary,
     manualEvidenceRequired: [
       "browser loading, empty, offline, degraded, validation, provider failure, approval, and recovery transcripts",
       "keyboard and assistive-technology review for state announcements",
@@ -160,10 +162,45 @@ function validateRecord(record, release) {
     assert(Array.isArray(surface.findings) && surface.findings.every((finding) => finding.severity !== "error"), `${surface.id}: static source errors are not allowed`);
     assert(Array.isArray(surface.manualEvidenceStillRequired) && surface.manualEvidenceStillRequired.length > 0, `${surface.id}: manual evidence boundary is missing`);
   }
+  assert(record.commandCenterStateBoundary?.state === "ready", "Command Center state-boundary source review is not ready");
+  assert(Object.values(record.commandCenterStateBoundary?.staticEvidence || {}).every((value) => value === true), "Command Center state-boundary evidence is incomplete");
+  assert(Array.isArray(record.commandCenterStateBoundary?.manualEvidenceStillRequired) && record.commandCenterStateBoundary.manualEvidenceStillRequired.length > 0, "Command Center state-boundary manual evidence boundary is missing");
   assert(record.safety?.write?.length === 0 && record.safety?.network?.length === 0 && record.safety?.secrets?.length === 0, "safety permissions must remain empty");
   assert(record.safety?.executesUi === false && record.safety?.publicReleaseAllowed === false, "non-executing safety boundary is invalid");
   const serialized = JSON.stringify(record);
   assert(!/(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m.test(serialized), "record must not contain machine-specific paths");
+}
+
+function inspectCommandCenterStateBoundary() {
+  const markup = readText("apps/seis-core/index.html");
+  const source = readText("apps/seis-core/script.js");
+  const styles = readText("apps/seis-core/styles.css");
+  const start = source.indexOf("function renderPluginStateBoundaries()");
+  const end = source.indexOf("function renderPluginReleaseReadiness()", start);
+  const renderer = start >= 0 && end > start ? source.slice(start, end) : "";
+  const staticEvidence = {
+    semanticSection: /<section class="panel plugin-state-boundary-panel" aria-labelledby="plugin-state-boundary-title">/.test(markup),
+    headingHierarchy: /<h3 id="plugin-state-boundary-title">Operational State Boundaries<\/h3>/.test(markup) && /<h4>\$\{escapeHtml\(boundary\.label\)\}<\/h4>/.test(renderer),
+    politeAnnouncementBoundary: /id="plugin-state-boundary-grid" aria-live="polite"/.test(markup),
+    semanticCards: /<article class="plugin-state-boundary-card" data-state-boundary=/.test(renderer),
+    textStatusCues: /Current: \$\{escapeHtml\(boundary\.current\)\}/.test(renderer) && /status-pill/.test(renderer),
+    noActionControls: !/<(?:button|input|select|textarea)\b/i.test(renderer),
+    noProviderRequest: !/\b(?:fetch|XMLHttpRequest)\b/.test(renderer),
+    noStorageMutation: !/\b(?:localStorage|sessionStorage|saveState)\b/.test(renderer),
+    filterIsolation: !/\b(?:app-plugin-filter|pluginQuery)\b/.test(renderer),
+    responsiveLayout: /\.plugin-state-boundary-grid\s*\{[\s\S]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/.test(styles) && /\.plugin-state-boundary-grid,/.test(styles),
+  };
+  return {
+    state: Object.values(staticEvidence).every((value) => value === true) ? "ready" : "attention",
+    staticEvidence,
+    scope: "The Command Center panel is static, informational, and no-key; this source review is not a browser, screen-reader, provider, or runtime-transition claim.",
+    manualEvidenceStillRequired: [
+      "keyboard-only browser reading-order review",
+      "screen-reader announcement review for the polite region",
+      "contrast and non-color-cue review across supported themes",
+      "responsive viewport review for the two-column-to-one-column layout",
+    ],
+  };
 }
 
 function assert(condition, message) {

@@ -1,0 +1,55 @@
+# SEIS Public Plugin Expansion — Wave 1 / 100 Steps
+
+**Goal:** `SEIS-GOAL-021`
+
+**Status:** In progress
+
+**Scope:** Public `SEIS Repo` marketplace and Command Center source only
+
+Wave 1 follows the delivered 30-step program. It is a bounded 100-step
+execution record, not a background-work claim or permission for an unbounded
+plugin expansion. The first evidence review selected a concrete source gap:
+four missing Command Center state boundaries for degraded capability,
+rate-limited, provider-failed, and approval-required behavior.
+
+## Boundary
+
+- Personal marketplace read/mutation: prohibited.
+- Live providers, credentials, activation, and external writes: out of scope.
+- Default branch writes: prohibited.
+- Static source evidence: useful, but never browser, provider, or release proof.
+- Every coherent checkpoint: commit and send the current feature branch when
+  the environment and user authorization permit.
+
+## Rounds
+
+| Round | Steps | Focus | Current status |
+| --- | --- | --- | --- |
+| 1 | 1–20 | State-boundary foundation | Completed in the first Wave 1 checkpoint |
+| 2 | 21–40 | Interaction and recovery semantics | Completed in the second Wave 1 checkpoint |
+| 3 | 41–60 | Public evidence and contract clarity | In progress |
+| 4 | 61–80 | Next capability selection | Planned |
+| 5 | 81–100 | Release-quality handoff | Planned |
+
+## Current Checkpoint
+
+Rounds 1–2 create an explicit, accessible Command Center panel for the four
+state boundaries, correct the visible app-plugin filter to 70 packages, and
+bind semantic, focus, no-provider, no-storage, and filter-isolation source
+evidence to generated records. The state copy is deliberately no-key: it
+distinguishes catalog fallback, reduced static posture, future provider
+failure, rate limits, and human approval without claiming that a live provider
+has been called. The remaining desktop-web gaps are recorded separately in the
+UI-state evidence; they are not silently absorbed into this Command Center
+checkpoint.
+
+The machine-readable 100-step source of truth is
+`content/development/seis-public-plugin-wave-1-program.json`. Validate it with
+`npm run check:seis-public-plugin-wave-1-program`.
+
+## Wave 2 Gate
+
+Portfolio Waves 2 through 5 remain unplanned until Wave 1 reaches a current,
+validated handoff and receives a fresh scope and risk review. This keeps the
+requested ongoing cadence evidence-led and reversible rather than turning it
+into claimed autonomous background execution.

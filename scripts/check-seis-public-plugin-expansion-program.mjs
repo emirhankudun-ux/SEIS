@@ -45,7 +45,12 @@ for (let index = 0; index < 5; index += 1) {
   ensure(round?.round === index + 1, `round ${index + 1} is invalid`);
   ensure(Array.isArray(round?.steps) && round.steps.length === 6, `round ${index + 1} must contain six step references`);
   ensure(wave?.wave === index + 1 && wave?.steps === 100, `wave ${index + 1} must contain 100 steps`);
-  ensure(wave?.status === "not-planned", `wave ${index + 1} must remain not-planned until a review`);
+  if (index === 0) {
+    ensure(wave?.status === "in-progress", "wave 1 must be active after its scoped continuation review");
+    ensure(wave?.programId === "seis-public-plugin-wave-1-program", "wave 1 must identify its 100-step program");
+  } else {
+    ensure(wave?.status === "not-planned", `wave ${index + 1} must remain not-planned until its review`);
+  }
 }
 
 const completeSteps = record.steps.filter((step) => step.status === "completed").length;

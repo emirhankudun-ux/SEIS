@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -12,18 +12,39 @@ const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".
 const repoRoot = path.resolve(pluginRoot, "../..");
 const entrypoint = path.join(pluginRoot, "seis-ui-state-contract-audit", "scripts", "seis-ui-state-contract-audit-mcp-server.mjs");
 
-test("SEIS UI State Contract Audit exposes current Command Center source gaps without claiming runtime failure", () => {
+test("SEIS UI State Contract Audit recognizes the Command Center's explicit no-key state boundaries", () => {
   const result = auditUiStateContract(path.join(repoRoot, "apps", "seis-core"), {
     files: ["index.html", "script.js", "styles.css"],
   });
 
-  assert.equal(result.state, "attention");
+  assert.equal(result.state, "ready");
   assert.equal(result.ok, true);
   assert.equal(result.mode, "local-static-ui-state-contract-read-only");
-  assert.equal(result.missingStateIds.includes("degraded"), true);
-  assert.equal(result.missingStateIds.includes("rate-limited"), true);
-  assert.equal(result.findings.every((finding) => finding.severity === "warning"), true);
+  assert.deepEqual(result.missingStateIds, []);
+  assert.equal(result.findings.length, 0);
   assert.equal(JSON.stringify(result).includes(repoRoot), false);
+});
+
+test("Command Center state-boundary panel remains semantic, non-interactive, and isolated from provider or storage actions", () => {
+  const markup = readFileSync(path.join(repoRoot, "apps", "seis-core", "index.html"), "utf8");
+  const source = readFileSync(path.join(repoRoot, "apps", "seis-core", "script.js"), "utf8");
+  const styles = readFileSync(path.join(repoRoot, "apps", "seis-core", "styles.css"), "utf8");
+  const renderer = source.slice(
+    source.indexOf("function renderPluginStateBoundaries()"),
+    source.indexOf("function renderPluginReleaseReadiness()"),
+  );
+
+  assert.match(markup, /<section class="panel plugin-state-boundary-panel" aria-labelledby="plugin-state-boundary-title">/);
+  assert.match(markup, /<h3 id="plugin-state-boundary-title">Operational State Boundaries<\/h3>/);
+  assert.match(markup, /id="plugin-state-boundary-grid" aria-live="polite"/);
+  assert.match(renderer, /<article class="plugin-state-boundary-card" data-state-boundary=/);
+  assert.match(renderer, /<h4>\$\{escapeHtml\(boundary\.label\)\}<\/h4>/);
+  assert.match(renderer, /Current: \$\{escapeHtml\(boundary\.current\)\}/);
+  assert.match(styles, /\.plugin-state-boundary-grid\s*\{[\s\S]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.equal(/<(?:button|input|select|textarea)\b/i.test(renderer), false);
+  assert.equal(/\b(?:fetch|XMLHttpRequest)\b/.test(renderer), false);
+  assert.equal(/\b(?:localStorage|sessionStorage|saveState)\b/.test(renderer), false);
+  assert.equal(/\b(?:app-plugin-filter|pluginQuery)\b/.test(renderer), false);
 });
 
 test("SEIS UI State Contract Audit recognizes an explicit complete static state contract", () => {
@@ -61,7 +82,7 @@ test("SEIS UI State Contract Audit exposes bounded MCP tools and committed evide
   const toolNames = responses.find((response) => response.id === 2)?.result?.tools?.map((tool) => tool.name) || [];
   assert.deepEqual(toolNames.sort(), ["seis_ui_state_contract_audit", "seis_ui_state_contract_evidence", "seis_ui_state_contract_status"]);
   const audit = responses.find((response) => response.id === 3)?.result;
-  assert.equal(audit?.state, "attention");
+  assert.equal(audit?.state, "ready");
   assert.equal(audit?.ok, true);
   assert.deepEqual(audit?.permissions?.write, []);
   assert.deepEqual(audit?.permissions?.network, []);

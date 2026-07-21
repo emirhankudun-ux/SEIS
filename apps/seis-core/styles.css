@@ -1333,6 +1333,39 @@ select {
   color: var(--muted);
 }
 
+.plugin-state-boundary-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.plugin-state-boundary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.plugin-state-boundary-card {
+  display: grid;
+  gap: 8px;
+  min-height: 142px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.plugin-state-boundary-card h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.plugin-state-boundary-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .plugin-release-readiness-panel {
   display: grid;
   gap: 14px;
@@ -1957,6 +1990,7 @@ select {
   .ledger-summary-grid,
   .router-summary-grid,
   .release-readiness-grid,
+  .plugin-state-boundary-grid,
   .routing-matrix-row,
   .feature-growth-grid,
   .inspector {

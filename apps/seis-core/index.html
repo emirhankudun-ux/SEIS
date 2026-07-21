@@ -438,11 +438,21 @@
               <div class="plugin-catalog-toolbar">
                 <label class="search-field" for="app-plugin-filter">
                   <span class="sr-only">Filter app plugins</span>
-                  <input id="app-plugin-filter" type="search" placeholder="Filter 66 app plugins..." autocomplete="off" />
+                  <input id="app-plugin-filter" type="search" placeholder="Filter 70 app plugins..." autocomplete="off" />
                 </label>
                 <div class="meta-row" id="app-plugin-catalog-meta" aria-live="polite"></div>
               </div>
               <div class="app-plugin-catalog-list" id="app-plugin-catalog-list" aria-live="polite"></div>
+            </section>
+            <section class="panel plugin-state-boundary-panel" aria-labelledby="plugin-state-boundary-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="plugin-state-boundary-title">Operational State Boundaries</h3>
+                  <p class="panel-summary">Make degraded, rate-limit, provider, and approval states visible without inventing a live provider or external activation.</p>
+                </div>
+                <span class="status-pill attention" id="plugin-state-boundary-state">Boundary review</span>
+              </div>
+              <div class="plugin-state-boundary-grid" id="plugin-state-boundary-grid" aria-live="polite"></div>
             </section>
             <section class="panel plugin-release-readiness-panel" aria-labelledby="plugin-release-readiness-title">
               <div class="panel-header">

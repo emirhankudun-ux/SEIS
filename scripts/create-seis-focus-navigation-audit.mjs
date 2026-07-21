@@ -72,13 +72,14 @@ function buildRecord() {
       ],
     };
   });
+  const commandCenterStateBoundary = inspectCommandCenterStateBoundary();
 
   const record = {
     schemaVersion: 1,
     id: "seis-focus-navigation-audit",
     goalId: "SEIS-GOAL-021",
     backlogId: "SEIS-BL-028",
-    generatedAt: "2026-07-20",
+    generatedAt: "2026-07-21",
     status: "active-static-source-evidence",
     purpose: "Keep keyboard, focus, semantic-control, ARIA, and reduced-motion source evidence visible for key SEIS UI surfaces without treating static markers as browser or assistive-technology proof.",
     plugin: {
@@ -93,6 +94,7 @@ function buildRecord() {
     },
     sourceManifest: SOURCE_MANIFEST_PATH,
     surfaces,
+    commandCenterStateBoundary,
     manualEvidenceRequired: [
       "keyboard-only browser transcript",
       "screen-reader transcript",
@@ -140,10 +142,36 @@ function validateRecord(record, release) {
     assert(Array.isArray(surface.sourceFiles) && surface.sourceFiles.length === 3, `${surface.id}: source file contract is incomplete`);
     assert(Array.isArray(surface.manualEvidenceStillRequired) && surface.manualEvidenceStillRequired.length > 0, `${surface.id}: manual evidence boundary is missing`);
   }
+  assert(record.commandCenterStateBoundary?.state === "ready", "Command Center state-boundary focus evidence is not ready");
+  assert(Object.values(record.commandCenterStateBoundary?.staticEvidence || {}).every((value) => value === true), "Command Center state-boundary focus evidence is incomplete");
   assert(record.safety?.write?.length === 0 && record.safety?.network?.length === 0 && record.safety?.secrets?.length === 0, "safety permissions must remain empty");
   assert(record.safety?.launchesBrowser === false && record.safety?.controlsScreenReader === false && record.safety?.publicReleaseAllowed === false, "non-executing safety boundary is invalid");
   const serialized = JSON.stringify(record);
   assert(!/(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m.test(serialized), "record must not contain machine-specific paths");
+}
+
+function inspectCommandCenterStateBoundary() {
+  const markup = readText("apps/seis-core/index.html");
+  const source = readText("apps/seis-core/script.js");
+  const start = source.indexOf("function renderPluginStateBoundaries()");
+  const end = source.indexOf("function renderPluginReleaseReadiness()", start);
+  const renderer = start >= 0 && end > start ? source.slice(start, end) : "";
+  const staticEvidence = {
+    labelledSection: /<section class="panel plugin-state-boundary-panel" aria-labelledby="plugin-state-boundary-title">/.test(markup),
+    headingOrder: /<h3 id="plugin-state-boundary-title">Operational State Boundaries<\/h3>/.test(markup) && /<h4>\$\{escapeHtml\(boundary\.label\)\}<\/h4>/.test(renderer),
+    politeRegion: /id="plugin-state-boundary-grid" aria-live="polite"/.test(markup),
+    semanticCards: /<article class="plugin-state-boundary-card" data-state-boundary=/.test(renderer),
+    noAdditionalFocusTarget: !/<(?:button|input|select|textarea|a)\b/i.test(renderer),
+  };
+  return {
+    state: Object.values(staticEvidence).every((value) => value === true) ? "ready" : "attention",
+    staticEvidence,
+    manualEvidenceStillRequired: [
+      "keyboard-only browser reading-order review",
+      "screen-reader review for the labelled, polite region",
+      "manual focus-order and focus-obscuration review",
+    ],
+  };
 }
 
 function assert(condition, message) {

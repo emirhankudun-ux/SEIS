@@ -3,7 +3,7 @@
   "id": "seis-focus-navigation-audit",
   "goalId": "SEIS-GOAL-021",
   "backlogId": "SEIS-BL-028",
-  "generatedAt": "2026-07-20",
+  "generatedAt": "2026-07-21",
   "status": "active-static-source-evidence",
   "purpose": "Keep keyboard, focus, semantic-control, ARIA, and reduced-motion source evidence visible for key SEIS UI surfaces without treating static markers as browser or assistive-technology proof.",
   "plugin": {
@@ -43,7 +43,7 @@
         "focusManagementCalls": 4,
         "focusStyleRules": 6,
         "reducedMotionRules": 1,
-        "ariaStateMarkers": 63,
+        "ariaStateMarkers": 65,
         "pointerEventHandlers": 6
       },
       "findings": [],
@@ -95,6 +95,21 @@
       ]
     }
   ],
+  "commandCenterStateBoundary": {
+    "state": "ready",
+    "staticEvidence": {
+      "labelledSection": true,
+      "headingOrder": true,
+      "politeRegion": true,
+      "semanticCards": true,
+      "noAdditionalFocusTarget": true
+    },
+    "manualEvidenceStillRequired": [
+      "keyboard-only browser reading-order review",
+      "screen-reader review for the labelled, polite region",
+      "manual focus-order and focus-obscuration review"
+    ]
+  },
   "manualEvidenceRequired": [
     "keyboard-only browser transcript",
     "screen-reader transcript",

@@ -3,7 +3,7 @@
   "id": "seis-ui-state-contract-audit",
   "goalId": "SEIS-GOAL-021",
   "backlogId": "SEIS-BL-038",
-  "generatedAt": "2026-07-20",
+  "generatedAt": "2026-07-21",
   "status": "active-static-source-evidence",
   "purpose": "Keep static UI-state marker evidence visible for key SEIS UI surfaces without treating source text as a runtime state-machine, provider, browser, or release proof.",
   "portfolioPosition": {
@@ -43,11 +43,9 @@
   "staticAuditCompleted": true,
   "overallState": "attention",
   "missingStateIds": [
-    "approval-required",
     "degraded",
     "loading",
     "provider-failed",
-    "rate-limited",
     "validation-failed"
   ],
   "surfaces": [
@@ -59,24 +57,23 @@
         "apps/seis-core/script.js",
         "apps/seis-core/styles.css"
       ],
-      "state": "attention",
+      "state": "ready",
       "filesScanned": 3,
       "observedStateIds": [
         "loading",
         "ready",
         "empty",
+        "degraded",
         "offline",
         "unavailable",
+        "rate-limited",
         "validation-failed",
+        "provider-failed",
+        "approval-required",
         "demo",
         "live-boundary"
       ],
-      "missingStateIds": [
-        "degraded",
-        "rate-limited",
-        "provider-failed",
-        "approval-required"
-      ],
+      "missingStateIds": [],
       "states": [
         {
           "id": "loading",
@@ -95,7 +92,7 @@
             },
             {
               "file": "index.html",
-              "line": 453
+              "line": 463
             },
             {
               "file": "script.js",
@@ -164,43 +161,43 @@
             },
             {
               "file": "index.html",
-              "line": 470
+              "line": 480
             },
             {
               "file": "index.html",
-              "line": 485
+              "line": 495
             },
             {
               "file": "index.html",
-              "line": 510
+              "line": 520
             },
             {
               "file": "index.html",
-              "line": 525
+              "line": 535
             },
             {
               "file": "index.html",
-              "line": 550
+              "line": 560
             },
             {
               "file": "index.html",
-              "line": 558
+              "line": 568
             },
             {
               "file": "index.html",
-              "line": 583
+              "line": 593
             },
             {
               "file": "index.html",
-              "line": 604
+              "line": 614
             },
             {
               "file": "index.html",
-              "line": 612
+              "line": 622
             },
             {
               "file": "index.html",
-              "line": 624
+              "line": 634
             },
             {
               "file": "script.js",
@@ -217,19 +214,19 @@
           "files": [
             {
               "file": "script.js",
-              "line": 1836
+              "line": 1868
             },
             {
               "file": "script.js",
-              "line": 2366
+              "line": 2398
             },
             {
               "file": "script.js",
-              "line": 2374
+              "line": 2406
             },
             {
               "file": "script.js",
-              "line": 2399
+              "line": 2431
             },
             {
               "file": "styles.css",
@@ -241,9 +238,22 @@
           "id": "degraded",
           "label": "Degraded",
           "description": "A visible reduced-capability state marker.",
-          "observed": false,
-          "markerCount": 0,
-          "files": []
+          "observed": true,
+          "markerCount": 3,
+          "files": [
+            {
+              "file": "index.html",
+              "line": 451
+            },
+            {
+              "file": "script.js",
+              "line": 804
+            },
+            {
+              "file": "script.js",
+              "line": 805
+            }
+          ]
         },
         {
           "id": "offline",
@@ -266,7 +276,7 @@
             },
             {
               "file": "script.js",
-              "line": 1016
+              "line": 1047
             }
           ]
         },
@@ -279,15 +289,15 @@
           "files": [
             {
               "file": "index.html",
-              "line": 451
+              "line": 461
             },
             {
               "file": "script.js",
-              "line": 2374
+              "line": 2406
             },
             {
               "file": "script.js",
-              "line": 2416
+              "line": 2468
             }
           ]
         },
@@ -295,9 +305,22 @@
           "id": "rate-limited",
           "label": "Rate limited",
           "description": "A visible rate-limit state marker.",
-          "observed": false,
-          "markerCount": 0,
-          "files": []
+          "observed": true,
+          "markerCount": 3,
+          "files": [
+            {
+              "file": "script.js",
+              "line": 811
+            },
+            {
+              "file": "script.js",
+              "line": 812
+            },
+            {
+              "file": "script.js",
+              "line": 815
+            }
+          ]
         },
         {
           "id": "validation-failed",
@@ -308,19 +331,19 @@
           "files": [
             {
               "file": "script.js",
-              "line": 913
+              "line": 944
             },
             {
               "file": "script.js",
-              "line": 2092
+              "line": 2124
             },
             {
               "file": "script.js",
-              "line": 2110
+              "line": 2142
             },
             {
               "file": "script.js",
-              "line": 2383
+              "line": 2415
             }
           ]
         },
@@ -328,24 +351,38 @@
           "id": "provider-failed",
           "label": "Provider failed",
           "description": "A visible provider failure or unavailable state marker.",
-          "observed": false,
-          "markerCount": 0,
-          "files": []
+          "observed": true,
+          "markerCount": 2,
+          "files": [
+            {
+              "file": "script.js",
+              "line": 819
+            },
+            {
+              "file": "script.js",
+              "line": 822
+            }
+          ]
         },
         {
           "id": "approval-required",
           "label": "Approval required",
           "description": "A visible approval-gated state marker.",
-          "observed": false,
-          "markerCount": 0,
-          "files": []
+          "observed": true,
+          "markerCount": 1,
+          "files": [
+            {
+              "file": "script.js",
+              "line": 826
+            }
+          ]
         },
         {
           "id": "demo",
           "label": "Demo",
           "description": "A visible demo-mode boundary marker.",
           "observed": true,
-          "markerCount": 2,
+          "markerCount": 4,
           "files": [
             {
               "file": "index.html",
@@ -354,6 +391,14 @@
             {
               "file": "script.js",
               "line": 796
+            },
+            {
+              "file": "script.js",
+              "line": 807
+            },
+            {
+              "file": "script.js",
+              "line": 815
             }
           ]
         },
@@ -362,7 +407,7 @@
           "label": "Live boundary",
           "description": "A source marker that distinguishes live behavior from demo or blocked behavior.",
           "observed": true,
-          "markerCount": 11,
+          "markerCount": 17,
           "files": [
             {
               "file": "index.html",
@@ -386,7 +431,15 @@
             },
             {
               "file": "index.html",
-              "line": 456
+              "line": 451
+            },
+            {
+              "file": "index.html",
+              "line": 455
+            },
+            {
+              "file": "index.html",
+              "line": 466
             },
             {
               "file": "script.js",
@@ -398,41 +451,32 @@
             },
             {
               "file": "script.js",
-              "line": 1188
+              "line": 808
             },
             {
               "file": "script.js",
-              "line": 1211
+              "line": 814
             },
             {
               "file": "script.js",
-              "line": 1283
+              "line": 822
+            },
+            {
+              "file": "script.js",
+              "line": 1219
+            },
+            {
+              "file": "script.js",
+              "line": 1242
+            },
+            {
+              "file": "script.js",
+              "line": 1314
             }
           ]
         }
       ],
-      "findings": [
-        {
-          "severity": "warning",
-          "code": "missing-static-ui-state-evidence",
-          "stateId": "degraded"
-        },
-        {
-          "severity": "warning",
-          "code": "missing-static-ui-state-evidence",
-          "stateId": "rate-limited"
-        },
-        {
-          "severity": "warning",
-          "code": "missing-static-ui-state-evidence",
-          "stateId": "provider-failed"
-        },
-        {
-          "severity": "warning",
-          "code": "missing-static-ui-state-evidence",
-          "stateId": "approval-required"
-        }
-      ],
+      "findings": [],
       "manualEvidenceStillRequired": [
         "loading-to-ready browser transcript",
         "empty, offline, unavailable, rate-limit, and degraded-state interaction review",
@@ -1090,6 +1134,28 @@
       ]
     }
   ],
+  "commandCenterStateBoundary": {
+    "state": "ready",
+    "staticEvidence": {
+      "semanticSection": true,
+      "headingHierarchy": true,
+      "politeAnnouncementBoundary": true,
+      "semanticCards": true,
+      "textStatusCues": true,
+      "noActionControls": true,
+      "noProviderRequest": true,
+      "noStorageMutation": true,
+      "filterIsolation": true,
+      "responsiveLayout": true
+    },
+    "scope": "The Command Center panel is static, informational, and no-key; this source review is not a browser, screen-reader, provider, or runtime-transition claim.",
+    "manualEvidenceStillRequired": [
+      "keyboard-only browser reading-order review",
+      "screen-reader announcement review for the polite region",
+      "contrast and non-color-cue review across supported themes",
+      "responsive viewport review for the two-column-to-one-column layout"
+    ]
+  },
   "manualEvidenceRequired": [
     "browser loading, empty, offline, degraded, validation, provider failure, approval, and recovery transcripts",
     "keyboard and assistive-technology review for state announcements",

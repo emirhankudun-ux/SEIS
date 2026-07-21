@@ -60,14 +60,16 @@ written.
 
 ## Next Five Waves
 
-The five 100-step waves are intentionally registered as *not planned*, not
-automatically started. Wave 1 needs a fresh portfolio-gap audit, acceptance
-criteria, validation plan, and risk review against this delivered baseline.
-Each later wave needs current evidence and the same review after its preceding
-wave. After Wave 5, repeat the cadence-design review before defining a new
-five-wave sequence; continuation must remain evidence-led, reversible, and
-delivered through the current GitHub feature branch rather than claimed as
-background execution.
+Wave 1 is active because the owner requested continuation and a fresh
+portfolio-gap audit selected the Command Center UI-state boundary. Its exact
+100-step record is
+`content/development/seis-public-plugin-wave-1-program.json`; it starts by
+closing static, no-key source gaps without claiming a live provider or runtime
+transition. Waves 2–5 remain *not planned* until the preceding wave has current
+evidence, scope review, and risk review. After Wave 5, repeat the cadence-design
+review before defining a new five-wave sequence; continuation must remain
+evidence-led, reversible, and delivered through the current GitHub feature
+branch rather than claimed as background execution.
 
 ## Completion Rule
 

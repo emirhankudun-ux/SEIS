@@ -799,6 +799,37 @@ const pluginFamilies = [
   }
 ];
 
+const pluginStateBoundaries = [
+  {
+    id: "degraded",
+    label: "Degraded",
+    status: "Review",
+    current: "Not observed in the local demo",
+    summary: "If a bounded local artifact cannot load, the Command Center stays browsable in its reduced static posture rather than implying a live recovery."
+  },
+  {
+    id: "rate-limited",
+    label: "Rate limited",
+    status: "Review",
+    current: "Not applicable without a live provider",
+    summary: "The local demo makes no provider request; a future rate-limited result must remain separate from catalog, network, or authentication failure."
+  },
+  {
+    id: "provider-failed",
+    label: "Provider failed",
+    status: "Review",
+    current: "No provider call attempted",
+    summary: "No live provider is connected in this surface. A future provider failed state must disclose the boundary without presenting a demo response as live output."
+  },
+  {
+    id: "approval-required",
+    label: "Approval required",
+    status: "Review",
+    current: "Human approval gate",
+    summary: "External activation, repository writes, releases, credentials, and provider calls require explicit human approval before any action can run."
+  }
+];
+
 const automationWorkflows = [
   {
     name: "Quality Governance",
@@ -1526,6 +1557,7 @@ function render() {
   renderDocumentation();
   renderAgents();
   renderPlugins();
+  renderPluginStateBoundaries();
   renderPluginReleaseReadiness();
   renderAutomation();
   renderSecurity();
@@ -2397,6 +2429,26 @@ function renderPlugins() {
       </article>
     `).join("")
     : `<p class="empty-state">No app-owned plugin matches “${escapeHtml(state.pluginQuery)}”.</p>`;
+}
+
+function renderPluginStateBoundaries() {
+  const stateElement = $("#plugin-state-boundary-state");
+  if (stateElement) {
+    stateElement.textContent = `${pluginStateBoundaries.length} boundaries`;
+    stateElement.className = "status-pill attention";
+  }
+  const grid = $("#plugin-state-boundary-grid");
+  if (!grid) return;
+  grid.innerHTML = pluginStateBoundaries.map((boundary) => `
+    <article class="plugin-state-boundary-card" data-state-boundary="${escapeHtml(boundary.id)}">
+      <div class="card-topline">
+        <h4>${escapeHtml(boundary.label)}</h4>
+        <span class="status-pill ${statusClass(boundary.status)}">${escapeHtml(boundary.status)}</span>
+      </div>
+      <p>${escapeHtml(boundary.summary)}</p>
+      <span class="meta-chip">Current: ${escapeHtml(boundary.current)}</span>
+    </article>
+  `).join("");
 }
 
 function renderPluginReleaseReadiness() {

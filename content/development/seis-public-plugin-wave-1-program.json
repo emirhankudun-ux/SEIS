@@ -1,0 +1,899 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-1-program",
+  "goalId": "SEIS-GOAL-021",
+  "parentProgramId": "seis-public-plugin-expansion-program",
+  "status": "in-progress",
+  "createdAt": "2026-07-21",
+  "updatedAt": "2026-07-21",
+  "wave": {
+    "number": 1,
+    "totalSteps": 100,
+    "roundCount": 5,
+    "stepsPerRound": 20,
+    "initialProgramCommit": "27e1bb8e57c7e23f7853ac5015b4327fc270de4f"
+  },
+  "scope": {
+    "repositories": [
+      "SEIS"
+    ],
+    "paths": [
+      "apps/seis-core",
+      "plugins/seis-core/seis-ui-state-contract-audit",
+      "content/development",
+      "docs/roadmap"
+    ],
+    "outcome": "Make Command Center operational-state boundaries visible and testable without converting static source evidence into a live provider, deployment, or release claim."
+  },
+  "nonGoals": [
+    "Reading or mutating the personal marketplace.",
+    "Adding provider credentials, live provider calls, or external activation.",
+    "Writing to the protected default branch.",
+    "Treating static source evidence as browser, screen-reader, provider, or release proof."
+  ],
+  "executionBoundary": {
+    "publicMarketplace": "seis-repo",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "sourceWrites": "repository-only-and-reversible",
+    "protectedDefaultBranchWrites": false,
+    "backgroundExecutionClaimed": false
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "name": "State-boundary foundation",
+      "objective": "Close the Command Center's four missing static state markers with accessible, no-key, non-live UI copy and evidence.",
+      "steps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "status": "completed"
+    },
+    {
+      "round": 2,
+      "name": "Interaction and recovery semantics",
+      "objective": "Strengthen static interaction, focus, and recovery evidence for the new boundary surface without inventing remote behavior.",
+      "steps": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "status": "completed"
+    },
+    {
+      "round": 3,
+      "name": "Public evidence and contract clarity",
+      "objective": "Make source, generated artifacts, documentation, and public-distribution terminology agree without turning local evidence into release proof.",
+      "steps": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "status": "in-progress"
+    },
+    {
+      "round": 4,
+      "name": "Next capability selection",
+      "objective": "Select at most one non-duplicative public plugin capability from audited evidence; do not create a card solely to inflate the catalog.",
+      "steps": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "status": "planned"
+    },
+    {
+      "round": 5,
+      "name": "Release-quality handoff",
+      "objective": "Finish Wave 1 with current validation, public-safe documentation, focused commits, and feature-branch delivery.",
+      "steps": [
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+      ],
+      "status": "planned"
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "round": 1,
+      "title": "Verify the delivered 30-step public-plugin baseline.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 2,
+      "round": 1,
+      "title": "Verify the current feature branch and clean worktree.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 3,
+      "round": 1,
+      "title": "Verify the public SEIS Repo and no-personal-marketplace boundary.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 4,
+      "round": 1,
+      "title": "Read the project manifest and current public count contract.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 5,
+      "round": 1,
+      "title": "Inspect the Command Center plugin source surface.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 6,
+      "round": 1,
+      "title": "Capture the static UI-state audit baseline.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 7,
+      "round": 1,
+      "title": "Record Wave 1 scope and explicit non-goals.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 8,
+      "round": 1,
+      "title": "Record no-key, no-live-provider, and no-write safety boundaries.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 9,
+      "round": 1,
+      "title": "Define accessibility semantics for state-boundary content.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 10,
+      "round": 1,
+      "title": "Define focused test and generated-evidence requirements.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 11,
+      "round": 1,
+      "title": "Create the Wave 1 one-hundred-step record.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 12,
+      "round": 1,
+      "title": "Add deterministic Wave 1 validation.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 13,
+      "round": 1,
+      "title": "Expose Wave 1 through a package check command.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 14,
+      "round": 1,
+      "title": "Document the Wave 1 execution boundary and rounds.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 15,
+      "round": 1,
+      "title": "Add the Command Center state-boundary model.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 16,
+      "round": 1,
+      "title": "Render the accessible operational-state panel.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 17,
+      "round": 1,
+      "title": "Add responsive state-boundary panel styling.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 18,
+      "round": 1,
+      "title": "Reconcile the visible app-plugin filter count.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 19,
+      "round": 1,
+      "title": "Update focused UI-state contract expectations.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 20,
+      "round": 1,
+      "title": "Regenerate and validate UI-state evidence.",
+      "status": "completed",
+      "validation": "Wave 1 program validation, focused UI-state tests, generated evidence, and source review"
+    },
+    {
+      "number": 21,
+      "round": 2,
+      "title": "Review keyboard reachability of the state-boundary panel.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 22,
+      "round": 2,
+      "title": "Review the panel's reading order and heading hierarchy.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 23,
+      "round": 2,
+      "title": "Review aria-live use for catalog and boundary updates.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 24,
+      "round": 2,
+      "title": "Add source assertions for boundary panel semantic markers.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 25,
+      "round": 2,
+      "title": "Add state-transition fixture coverage without a live provider.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 26,
+      "round": 2,
+      "title": "Document catalog-fallback versus provider-failure separation.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 27,
+      "round": 2,
+      "title": "Document no-result versus degraded-mode separation.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 28,
+      "round": 2,
+      "title": "Review reduced-motion behavior around status updates.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 29,
+      "round": 2,
+      "title": "Review contrast and non-color state cues.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 30,
+      "round": 2,
+      "title": "Review filtering behavior with the new panel present.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 31,
+      "round": 2,
+      "title": "Extend focus-navigation source evidence if warranted.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 32,
+      "round": 2,
+      "title": "Capture static accessibility evidence for state labels.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 33,
+      "round": 2,
+      "title": "Verify no action control claims an unavailable capability.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 34,
+      "round": 2,
+      "title": "Verify no provider request is introduced by the panel.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 35,
+      "round": 2,
+      "title": "Verify no local storage mutation is introduced by the panel.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 36,
+      "round": 2,
+      "title": "Review desktop and Command Center state-contract overlap.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 37,
+      "round": 2,
+      "title": "Record web-surface gaps as separate planned work.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 38,
+      "round": 2,
+      "title": "Run focused Command Center source checks.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 39,
+      "round": 2,
+      "title": "Refresh related generated evidence.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 40,
+      "round": 2,
+      "title": "Publish the Round 2 evidence decision.",
+      "status": "completed",
+      "validation": "focused interaction, accessibility, and source-evidence checks"
+    },
+    {
+      "number": 41,
+      "round": 3,
+      "title": "Review public plugin family evidence after the state-boundary change.",
+      "status": "in-progress",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 42,
+      "round": 3,
+      "title": "Review UI-state audit limitations for accuracy.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 43,
+      "round": 3,
+      "title": "Review project-manifest count reconciliation.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 44,
+      "round": 3,
+      "title": "Review app catalog fallback metadata for current counts.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 45,
+      "round": 3,
+      "title": "Review release-readiness copy for local-only accuracy.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 46,
+      "round": 3,
+      "title": "Review marketplace terminology for personal-label leakage.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 47,
+      "round": 3,
+      "title": "Review public install-state language for activation claims.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 48,
+      "round": 3,
+      "title": "Review public runtime-status language for cache claims.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 49,
+      "round": 3,
+      "title": "Review source-provenance evidence boundaries.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 50,
+      "round": 3,
+      "title": "Review independent-runner evidence boundaries.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 51,
+      "round": 3,
+      "title": "Add a concise Wave 1 evidence index if needed.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 52,
+      "round": 3,
+      "title": "Validate generated JSON contains no machine-specific paths.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 53,
+      "round": 3,
+      "title": "Validate generated JSON contains no secret-like values.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 54,
+      "round": 3,
+      "title": "Validate source manifests retain empty permissions.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 55,
+      "round": 3,
+      "title": "Validate public app count remains reconciled.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 56,
+      "round": 3,
+      "title": "Validate catalog release labels remain reconciled.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 57,
+      "round": 3,
+      "title": "Validate public audience remains everyone.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 58,
+      "round": 3,
+      "title": "Run public marketplace terminology validation.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 59,
+      "round": 3,
+      "title": "Run public evidence-contract validation.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 60,
+      "round": 3,
+      "title": "Publish the Round 3 evidence decision.",
+      "status": "planned",
+      "validation": "public contract, provenance, and generated-artifact checks"
+    },
+    {
+      "number": 61,
+      "round": 4,
+      "title": "Inventory existing state, focus, and provenance plugin responsibilities.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 62,
+      "round": 4,
+      "title": "Audit candidate capability overlap.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 63,
+      "round": 4,
+      "title": "Choose a single next capability only if a clear gap remains.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 64,
+      "round": 4,
+      "title": "Write scope, non-goals, and rollback before scaffolding.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 65,
+      "round": 4,
+      "title": "Confirm public-only marketplace placement.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 66,
+      "round": 4,
+      "title": "Confirm no personal marketplace read or mutation is needed.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 67,
+      "round": 4,
+      "title": "Confirm no external write or network capability is needed.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 68,
+      "round": 4,
+      "title": "Define source inputs and bounded output schema.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 69,
+      "round": 4,
+      "title": "Define deterministic test fixtures.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 70,
+      "round": 4,
+      "title": "Define MCP tool boundaries when relevant.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 71,
+      "round": 4,
+      "title": "Create package metadata only after the decision gate passes.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 72,
+      "round": 4,
+      "title": "Create runtime module only after metadata passes validation.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 73,
+      "round": 4,
+      "title": "Create MCP server only when a bounded tool is justified.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 74,
+      "round": 4,
+      "title": "Create documentation and skill guidance.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 75,
+      "round": 4,
+      "title": "Register generated evidence.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 76,
+      "round": 4,
+      "title": "Integrate source, catalog, and matrix contracts.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 77,
+      "round": 4,
+      "title": "Validate plugin structure with plugin-creator rules.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 78,
+      "round": 4,
+      "title": "Run focused tests and MCP framing smoke.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 79,
+      "round": 4,
+      "title": "Review public/provenance security evidence.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 80,
+      "round": 4,
+      "title": "Publish the Round 4 capability decision.",
+      "status": "planned",
+      "validation": "portfolio overlap review, plugin validation, and focused tests"
+    },
+    {
+      "number": 81,
+      "round": 5,
+      "title": "Run source, catalog, and matrix regressions.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 82,
+      "round": 5,
+      "title": "Run UI-state and focus-navigation regressions.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 83,
+      "round": 5,
+      "title": "Run project-manifest and integration regressions.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 84,
+      "round": 5,
+      "title": "Run public marketplace and install-state regressions.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 85,
+      "round": 5,
+      "title": "Run lifecycle, provenance, and fresh-task regressions.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 86,
+      "round": 5,
+      "title": "Run unified suite and AI Core registry regressions.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 87,
+      "round": 5,
+      "title": "Run baseline SEIS web checks.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 88,
+      "round": 5,
+      "title": "Run Wave 1 tracker validation.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 89,
+      "round": 5,
+      "title": "Review documentation, registry, and count drift.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 90,
+      "round": 5,
+      "title": "Review release-readiness evidence if plugin source changed.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 91,
+      "round": 5,
+      "title": "Review diff for whitespace and generated-artifact consistency.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 92,
+      "round": 5,
+      "title": "Run public-safe boundary checks.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 93,
+      "round": 5,
+      "title": "Inspect worktree and staged scope.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 94,
+      "round": 5,
+      "title": "Prepare a focused local commit.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 95,
+      "round": 5,
+      "title": "Push the current feature branch when authorized.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 96,
+      "round": 5,
+      "title": "Verify the remote feature reference.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 97,
+      "round": 5,
+      "title": "Record exact validation evidence and skipped checks.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 98,
+      "round": 5,
+      "title": "Record risk, rollback, and follow-up work.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 99,
+      "round": 5,
+      "title": "Mark Wave 1 complete only when all evidence is current.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    },
+    {
+      "number": 100,
+      "round": 5,
+      "title": "Run a fresh scope and risk review before activating Wave 2.",
+      "status": "planned",
+      "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
+    }
+  ],
+  "qualityGates": {
+    "architecture": "required",
+    "security": "required",
+    "accessibility": "required",
+    "documentation": "required",
+    "publicBoundary": "required",
+    "liveProviderClaims": "forbidden"
+  },
+  "nextWaveGate": {
+    "required": true,
+    "rule": "Wave 2 remains not planned until Wave 1 has current validation, a scope review, and a risk review."
+  }
+}

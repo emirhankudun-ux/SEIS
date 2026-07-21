@@ -101,7 +101,7 @@
     {"number": 30, "round": 5, "title": "Publish program report and plan five 100-step waves", "status": "completed", "validation": "program validator and final report"}
   ],
   "nextWaves": [
-    {"wave": 1, "steps": 100, "status": "not-planned", "entryCriteria": "All 30 initial steps have current evidence and a scope review."},
+    {"wave": 1, "steps": 100, "status": "in-progress", "programId": "seis-public-plugin-wave-1-program", "entryCriteria": "All 30 initial steps have current evidence, the user requested continuation, and a current scope and risk review selected the Command Center UI-state boundary."},
     {"wave": 2, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 1 has current evidence and a scope review."},
     {"wave": 3, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 2 has current evidence and a scope review."},
     {"wave": 4, "steps": 100, "status": "not-planned", "entryCriteria": "Wave 3 has current evidence and a scope review."},
