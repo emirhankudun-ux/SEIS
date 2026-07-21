@@ -9,6 +9,7 @@ const OUTPUT_PATH = "content/development/seis-public-plugin-wave-4-handoff-prepa
 const FEATURE_BRANCH = "plugins/seis-plugin-root-20260715";
 const PREPARATION_BASELINE_COMMIT = "924f26541cacc76a7bcb9c76b1d4ec61c4bbb570";
 const REMAINING_STEPS = range(97, 100);
+const CLOSEOUT_SEQUENCE_DECISION_PATH = "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json";
 const PATHS = Object.freeze({
   wave4Program: "content/development/seis-public-plugin-wave-4-program.json",
   publicBoundaryDecision: "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
@@ -167,7 +168,8 @@ function buildRecord() {
     ],
     recommendedFollowUp: {
       goalId: "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
-      status: "proposed-not-created",
+      status: "created-proposed-owner-decision-required",
+      decisionPath: CLOSEOUT_SEQUENCE_DECISION_PATH,
       purpose: "Resolve the non-circular evidence order for steps 96 through 100 before any terminal handoff or status transition is asserted.",
     },
     risks: [
@@ -227,7 +229,7 @@ function validateRecord(record) {
   assert(record.remoteDeliveryBaseline?.featureBranch === FEATURE_BRANCH && record.remoteDeliveryBaseline?.precedingCommit === PREPARATION_BASELINE_COMMIT && record.remoteDeliveryBaseline?.remoteReferenceVerified === true && record.remoteDeliveryBaseline?.protectedDefaultBranchWritten === false, "remote delivery baseline is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(Object.values(record.externalClaims || {}).every((value) => value === false), "external claims must remain false");
-  assert(list(record.requiredBeforeTerminalHandoff).length === 4 && record.recommendedFollowUp?.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.recommendedFollowUp?.status === "proposed-not-created", "terminal handoff requirements are invalid");
+  assert(list(record.requiredBeforeTerminalHandoff).length === 4 && record.recommendedFollowUp?.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.recommendedFollowUp?.status === "created-proposed-owner-decision-required" && record.recommendedFollowUp?.decisionPath === CLOSEOUT_SEQUENCE_DECISION_PATH, "terminal handoff requirements are invalid");
   assert(list(record.risks).length === 2 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "risk or rollback record is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0 && record.inputSafetyScan?.rawValuesStored === false, "handoff-preparation inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "handoff-preparation record must not contain a machine-specific path");

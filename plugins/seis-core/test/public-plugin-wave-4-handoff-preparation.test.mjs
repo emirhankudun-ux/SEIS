@@ -30,6 +30,7 @@ test("keeps Wave 4 step 96 as a non-terminal handoff preparation gate", () => {
   assert.equal(preparation.handoffGate.waveCompleted, false);
   assert.equal(preparation.handoffGate.wave5ActivationApproved, false);
   assert.ok(Object.values(preparation.externalClaims).every((value) => value === false));
-  assert.equal(preparation.recommendedFollowUp.status, "proposed-not-created");
+  assert.equal(preparation.recommendedFollowUp.status, "created-proposed-owner-decision-required");
+  assert.equal(preparation.recommendedFollowUp.decisionPath, "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json");
   assert.equal(JSON.stringify(preparation).includes(repositoryRoot), false);
 });

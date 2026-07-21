@@ -932,7 +932,8 @@
     "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
     "validationDeliveryEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
     "publicBoundaryDecisionPath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
-    "handoffPreparationPath": "content/development/seis-public-plugin-wave-4-handoff-preparation.json"
+    "handoffPreparationPath": "content/development/seis-public-plugin-wave-4-handoff-preparation.json",
+    "closeoutSequenceDecisionPath": "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json"
   },
   "validation": [
     "npm run check:seis-public-plugin-wave-4-program",
@@ -941,6 +942,7 @@
     "npm run check:seis-public-plugin-wave-4-validation-delivery-evidence",
     "npm run check:seis-public-plugin-wave-4-public-boundary-decision",
     "npm run check:seis-public-plugin-wave-4-handoff-preparation",
+    "npm run check:seis-public-plugin-wave-4-closeout-sequence-decision",
     "npm run check:seis-swift-package-topology",
     "npm run check:seis-public-plugin-wave-3-following-wave-review",
     "npm run check:seis-public-plugin-continuity-cadence",

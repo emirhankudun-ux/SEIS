@@ -107,6 +107,7 @@
       "validationDeliveryEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
       "publicBoundaryDecisionPath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
       "handoffPreparationPath": "content/development/seis-public-plugin-wave-4-handoff-preparation.json",
+      "closeoutSequenceDecisionPath": "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
       "currentEvidencePath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
       "predecessor": "Wave 3 repository-local handoff",
       "entryRule": "Wave 3 closed with current evidence, the separate activation decision approved one fixed-manifest scope, and the package completed its first repository-local integration checkpoint without a release claim."

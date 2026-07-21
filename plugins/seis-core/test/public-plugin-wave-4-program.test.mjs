@@ -39,6 +39,7 @@ test("records the first bounded Wave 4 topology integration checkpoint", () => {
   assert.equal(program.evidence.validationDeliveryEvidencePath, "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json");
   assert.equal(program.evidence.publicBoundaryDecisionPath, "content/development/seis-public-plugin-wave-4-public-boundary-decision.json");
   assert.equal(program.evidence.handoffPreparationPath, "content/development/seis-public-plugin-wave-4-handoff-preparation.json");
+  assert.equal(program.evidence.closeoutSequenceDecisionPath, "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json");
   assert.ok(Object.values(program.checks).every(Boolean));
   assert.equal(program.publicBoundary.marketplaceName, "seis-repo");
   assert.equal(program.publicBoundary.personalMarketplaceRead, false);

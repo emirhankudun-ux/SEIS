@@ -87,7 +87,8 @@
   ],
   "recommendedFollowUp": {
     "goalId": "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
-    "status": "proposed-not-created",
+    "status": "created-proposed-owner-decision-required",
+    "decisionPath": "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
     "purpose": "Resolve the non-circular evidence order for steps 96 through 100 before any terminal handoff or status transition is asserted."
   },
   "risks": [
