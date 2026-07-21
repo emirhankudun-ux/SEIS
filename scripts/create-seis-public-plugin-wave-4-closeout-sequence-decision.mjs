@@ -33,7 +33,7 @@ if (CHECK_MODE) {
   console.log("SEIS public plugin Wave 4 closeout-sequence decision check passed.");
 } else {
   writeText(OUTPUT_PATH, expected);
-  console.log("Wrote " + OUTPUT_PATH + " as a non-terminal owner-decision gate.");
+  console.log("Wrote " + OUTPUT_PATH + " as an accepted non-terminal Wave 4 closeout-sequence decision.");
 }
 
 function buildRecord() {
@@ -49,14 +49,22 @@ function buildRecord() {
     parentGoalId: "SEIS-GOAL-021",
     wave: 4,
     round: 5,
-    status: "proposed-owner-decision-required",
+    status: "approved-current-user-continuation-authority",
     maturity: "specification",
     generatedAt: "2026-07-21",
-    purpose: "Expose the non-circular closeout-order decision required before Wave 4 steps 96 through 100 can change status. This proposed record does not create a terminal handoff, complete Wave 4, activate Wave 5, merge, publish, sign, install, deploy, or claim independent external proof.",
+    purpose: "Apply the user's active continuation objective to the non-circular Wave 4 closeout order. This records only the completed sequence-decision step and the next repository-local handoff-preparation step; it does not create a terminal handoff, complete Wave 4, activate Wave 5, merge, publish, sign, install, deploy, or claim independent external proof.",
     stateAtDecision: {
       completedStepCount: 95,
       activeStep: 96,
       plannedStepNumbers: REMAINING_STEPS,
+      terminalHandoffPublished: false,
+      waveCompleted: false,
+      wave5ActivationApproved: false,
+    },
+    stateAfterApplication: {
+      completedStepCount: 96,
+      activeStep: 97,
+      plannedStepNumbers: [98, 99, 100],
       terminalHandoffPublished: false,
       waveCompleted: false,
       wave5ActivationApproved: false,
@@ -69,10 +77,11 @@ function buildRecord() {
       continuityCadence: isSupportedContinuityCadence(continuityCadence),
     },
     decisionBoundary: {
-      status: "owner-decision-required",
+      status: "approved-owner-mapping-applied",
       approvalRequired: true,
-      approved: false,
-      appliedToCanonicalProgram: false,
+      approvalSource: "active-thread-user-continuation-objective",
+      approved: true,
+      appliedToCanonicalProgram: true,
       automaticStepStatusChangesAllowed: false,
       terminalHandoffPublished: false,
       waveCompleted: false,
@@ -83,41 +92,42 @@ function buildRecord() {
       summary: "Step 96 requires current evidence for all one hundred planned steps, while the following closeout actions are intended to create or classify evidence needed for terminal handoff and completion. Without an explicit ordering decision, automatically changing any remaining step would make a circular or inferred completion claim.",
       affectedSteps: [96, ...REMAINING_STEPS],
       safeguards: [
-        "Keep step 96 in progress and steps 97 through 100 planned until an owner-approved sequence is recorded in the canonical program.",
+        "Record step 96 as complete only because the active user continuation objective approved this explicit canonical mapping; keep step 97 active and steps 98 through 100 planned.",
         "Do not interpret a feature-branch push, local validation, or this proposal as a terminal handoff, merge, release, signing, installation, deployment, or independent external proof.",
         "Keep Wave 5 planned-gated until a separate scope and risk review is approved after any valid Wave 4 closeout.",
       ],
     },
     proposedResolution: {
-      status: "proposed-not-applied",
-      ownerDecisionRequired: true,
-      noStepStatusChanges: true,
+      status: "approved-applied",
+      ownerDecisionRequired: false,
+      noStepStatusChanges: false,
+      manualCanonicalStatusChangeApplied: true,
       sequence: [
         {
           order: 1,
-          action: "Record the closeout evidence-order decision.",
-          canonicalStep: null,
-          effect: "This is a proposal record only; it does not complete a Wave 4 program step.",
+          action: "Record the user-authorized non-circular closeout sequence.",
+          canonicalStep: 96,
+          effect: "Step 96 is complete as an explicit sequence decision only; it is not a terminal handoff, Wave 4 completion, Wave 5 activation, release, or external-proof claim.",
         },
         {
           order: 2,
-          action: "Obtain an explicit owner decision on whether to adopt a non-circular canonical mapping for steps 96 through 100.",
-          canonicalStep: null,
-          effect: "No tracker, handoff, completion, archive, report, or Wave 5 state changes before approval.",
+          action: "Prepare repository-local terminal-handoff evidence.",
+          canonicalStep: 97,
+          effect: "Step 97 is active and must keep repository-local, external-proof, release, and Wave 5 boundaries distinct.",
         },
         {
           order: 3,
-          action: "If approved, make one focused canonical-program update and collect each step's evidence only at the point its gate is satisfied.",
-          canonicalStep: null,
-          effect: "Preserve distinct repository-local, external-proof, release, and Wave 5 approval boundaries.",
+          action: "Keep the following-wave gate, retained evidence, and final report as separate closeout actions.",
+          canonicalStep: 98,
+          effect: "Steps 98 through 100 remain planned and require their own current evidence before any later transition.",
         },
       ],
     },
     ownerOptions: [
       {
         id: "accept-non-circular-mapping",
-        status: "not-selected",
-        effect: "Authorize a separate focused canonical-program change that records an explicit non-circular evidence order before any terminal closeout action.",
+        status: "selected-by-active-user-continuation-objective",
+        effect: "Apply one focused canonical-program change that records the explicit non-circular evidence order before any terminal closeout action.",
       },
       {
         id: "retain-current-order",
@@ -155,8 +165,8 @@ function buildRecord() {
       {
         id: "RISK-W4-017",
         status: "tracked",
-        description: "A proposal could be misread as authorization to rewrite the canonical closeout order or to mark remaining steps complete.",
-        mitigation: "Set approvalRequired=true, approved=false, appliedToCanonicalProgram=false, and noStepStatusChanges=true until an owner decision is recorded.",
+        description: "The accepted mapping could be misread as authorization to mark the remaining closeout steps complete automatically.",
+        mitigation: "Keep automaticStepStatusChangesAllowed=false, preserve step 97 as active, preserve steps 98 through 100 as planned, and require current evidence for each later transition.",
       },
       {
         id: "RISK-W4-018",
@@ -167,7 +177,7 @@ function buildRecord() {
     ],
     rollback: {
       strategy: "revert",
-      scope: "Revert this proposed closeout-sequence decision and its feature-branch references. No terminal handoff, external state, release, publication, data migration, or canonical step-status transition exists.",
+      scope: "Revert this accepted closeout-sequence decision and its focused canonical mapping on the feature branch. No terminal handoff, external state, release, publication, data migration, or automatic later step-status transition exists.",
       dataMigrationRequired: false,
     },
     inputSafetyScan: scanPublicSafeInputs(Object.values(PATHS)),
@@ -177,8 +187,7 @@ function buildRecord() {
 }
 
 function isSupportedHandoffPreparation(record) {
-  return record?.id === "seis-public-plugin-wave-4-handoff-preparation"
-    && record?.status === "in-progress-repository-local-handoff-preparation"
+  const shared = record?.id === "seis-public-plugin-wave-4-handoff-preparation"
     && record?.step === 96
     && record?.stateAtPreparation?.completedStepCount === 95
     && record?.stateAtPreparation?.activeStep === 96
@@ -188,20 +197,36 @@ function isSupportedHandoffPreparation(record) {
     && record?.handoffGate?.waveCompleted === false
     && record?.handoffGate?.wave5ActivationApproved === false
     && record?.recommendedFollowUp?.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE"
-    && record?.recommendedFollowUp?.status === "created-proposed-owner-decision-required"
     && record?.recommendedFollowUp?.decisionPath === OUTPUT_PATH
     && Object.values(record?.externalClaims || {}).every((value) => value === false);
+  const preApplication = record?.status === "in-progress-repository-local-handoff-preparation"
+    && record?.recommendedFollowUp?.status === "created-proposed-owner-decision-required";
+  const postApplication = record?.status === "completed-repository-local-handoff-preparation"
+    && record?.completionState?.completedStep === 96
+    && record?.completionState?.nextActiveStep === 97
+    && record?.recommendedFollowUp?.status === "accepted-applied-to-canonical-program"
+    && record?.recommendedFollowUp?.approvalSource === "active-thread-user-continuation-objective";
+  return shared && (preApplication || postApplication);
 }
 
 function isSupportedWave4Program(record) {
-  return record?.id === "seis-public-plugin-wave-4-program"
+  const shared = record?.id === "seis-public-plugin-wave-4-program"
     && record?.status === "in-progress"
-    && record?.progress?.completedStepCount === 95
-    && list(record?.progress?.inProgressStepNumbers).join(",") === "96"
-    && record?.progress?.plannedStepCount === 4
     && record?.evidence?.handoffPreparationPath === PATHS.handoffPreparation
     && record?.evidence?.closeoutSequenceDecisionPath === OUTPUT_PATH
     && Object.values(record?.externalClaims || {}).every((value) => value === false);
+  const preApplication = record?.progress?.completedStepCount === 95
+    && list(record?.progress?.inProgressStepNumbers).join(",") === "96"
+    && record?.progress?.plannedStepCount === 4;
+  const postApplication = record?.progress?.completedStepCount === 96
+    && list(record?.progress?.inProgressStepNumbers).join(",") === "97"
+    && record?.progress?.plannedStepCount === 3
+    && record?.closeoutSequence?.status === "approved-owner-mapping-applied";
+  const afterHandoff = record?.progress?.completedStepCount === 97
+    && list(record?.progress?.inProgressStepNumbers).join(",") === "98"
+    && record?.progress?.plannedStepCount === 2
+    && record?.repositoryLocalHandoff?.status === "completed-repository-local-handoff";
+  return shared && (preApplication || postApplication || afterHandoff);
 }
 
 function isSupportedPublicBoundaryDecision(record) {
@@ -228,24 +253,33 @@ function isSupportedExpansionProgram(record) {
 
 function isSupportedContinuityCadence(record) {
   const wave4 = list(record?.waves)[3];
-  return record?.id === "seis-public-plugin-continuity-cadence"
+  const shared = record?.id === "seis-public-plugin-continuity-cadence"
     && record?.status === "active-evidence-led-cadence"
     && record?.cadence?.waveSeries?.activeWave === 4
     && wave4?.status === "in-progress"
-    && wave4?.completedSteps === 95
-    && list(wave4?.inProgressSteps).join(",") === "96"
     && wave4?.handoffPreparationPath === PATHS.handoffPreparation
     && wave4?.closeoutSequenceDecisionPath === OUTPUT_PATH
     && list(record?.waves)[4]?.status === "planned-gated";
+  const preApplication = wave4?.completedSteps === 95
+    && list(wave4?.inProgressSteps).join(",") === "96";
+  const postApplication = wave4?.completedSteps === 96
+    && list(wave4?.inProgressSteps).join(",") === "97"
+    && wave4?.currentEvidencePath === OUTPUT_PATH;
+  const afterHandoff = wave4?.completedSteps === 97
+    && list(wave4?.inProgressSteps).join(",") === "98"
+    && wave4?.repositoryLocalHandoffPath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json"
+    && wave4?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json";
+  return shared && (preApplication || postApplication || afterHandoff);
 }
 
 function validateRecord(record) {
-  assert(record.id === "seis-public-plugin-wave-4-closeout-sequence-decision" && record.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.parentGoalId === "SEIS-GOAL-021" && record.wave === 4 && record.round === 5 && record.status === "proposed-owner-decision-required" && record.maturity === "specification", "closeout-sequence identity is invalid");
+  assert(record.id === "seis-public-plugin-wave-4-closeout-sequence-decision" && record.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.parentGoalId === "SEIS-GOAL-021" && record.wave === 4 && record.round === 5 && record.status === "approved-current-user-continuation-authority" && record.maturity === "specification", "closeout-sequence identity is invalid");
   assert(record.stateAtDecision?.completedStepCount === 95 && record.stateAtDecision?.activeStep === 96 && list(record.stateAtDecision?.plannedStepNumbers).join(",") === REMAINING_STEPS.join(",") && record.stateAtDecision?.terminalHandoffPublished === false && record.stateAtDecision?.waveCompleted === false && record.stateAtDecision?.wave5ActivationApproved === false, "closeout-sequence state is invalid");
+  assert(record.stateAfterApplication?.completedStepCount === 96 && record.stateAfterApplication?.activeStep === 97 && list(record.stateAfterApplication?.plannedStepNumbers).join(",") === "98,99,100" && record.stateAfterApplication?.terminalHandoffPublished === false && record.stateAfterApplication?.waveCompleted === false && record.stateAfterApplication?.wave5ActivationApproved === false, "closeout-sequence applied state is invalid");
   assert(Object.values(record.currentEvidence || {}).every(Boolean), "a required closeout-sequence evidence input is not current");
-  assert(record.decisionBoundary?.status === "owner-decision-required" && record.decisionBoundary?.approvalRequired === true && record.decisionBoundary?.approved === false && record.decisionBoundary?.appliedToCanonicalProgram === false && record.decisionBoundary?.automaticStepStatusChangesAllowed === false && record.decisionBoundary?.terminalHandoffPublished === false && record.decisionBoundary?.waveCompleted === false && record.decisionBoundary?.wave5ActivationApproved === false, "closeout-sequence decision boundary is invalid");
+  assert(record.decisionBoundary?.status === "approved-owner-mapping-applied" && record.decisionBoundary?.approvalRequired === true && record.decisionBoundary?.approvalSource === "active-thread-user-continuation-objective" && record.decisionBoundary?.approved === true && record.decisionBoundary?.appliedToCanonicalProgram === true && record.decisionBoundary?.automaticStepStatusChangesAllowed === false && record.decisionBoundary?.terminalHandoffPublished === false && record.decisionBoundary?.waveCompleted === false && record.decisionBoundary?.wave5ActivationApproved === false, "closeout-sequence decision boundary is invalid");
   assert(record.cycleAnalysis?.detected === true && list(record.cycleAnalysis?.affectedSteps).join(",") === [96, ...REMAINING_STEPS].join(",") && list(record.cycleAnalysis?.safeguards).length === 3, "closeout-sequence cycle analysis is invalid");
-  assert(record.proposedResolution?.status === "proposed-not-applied" && record.proposedResolution?.ownerDecisionRequired === true && record.proposedResolution?.noStepStatusChanges === true && list(record.proposedResolution?.sequence).length === 3 && list(record.ownerOptions).length === 3 && list(record.ownerOptions).every((option) => option?.status === "not-selected"), "closeout-sequence proposal is invalid");
+  assert(record.proposedResolution?.status === "approved-applied" && record.proposedResolution?.ownerDecisionRequired === false && record.proposedResolution?.noStepStatusChanges === false && record.proposedResolution?.manualCanonicalStatusChangeApplied === true && list(record.proposedResolution?.sequence).length === 3 && list(record.ownerOptions).length === 3 && record.ownerOptions?.[0]?.status === "selected-by-active-user-continuation-objective" && list(record.ownerOptions).slice(1).every((option) => option?.status === "not-selected"), "closeout-sequence proposal is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "closeout-sequence public boundary is invalid");
   assert(Object.values(record.externalClaims || {}).every((value) => value === false), "closeout-sequence external claims must remain false");
   assert(list(record.risks).length === 2 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "closeout-sequence risks or rollback are invalid");

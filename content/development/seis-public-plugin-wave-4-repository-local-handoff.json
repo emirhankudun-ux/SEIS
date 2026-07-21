@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-4-repository-local-handoff",
+  "goalId": "SEIS-GOAL-021",
+  "parentGoalId": "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
+  "wave": 4,
+  "round": 5,
+  "step": 97,
+  "status": "completed-repository-local-handoff",
+  "maturity": "prototype",
+  "generatedAt": "2026-07-21",
+  "purpose": "Record Wave 4's repository-local terminal-handoff evidence after the user-authorized closeout order and completed handoff preparation. It does not publish a terminal handoff, complete Wave 4, activate Wave 5, merge, release, sign, install, deploy, or claim independent external proof.",
+  "stateAtCheckpoint": {
+    "completedStepCountBeforeTrackerUpdate": 96,
+    "activeStepBeforeTrackerUpdate": 97,
+    "nextPlannedDecisionStep": 98,
+    "terminalHandoffPublished": false,
+    "waveCompleted": false,
+    "wave5ActivationApproved": false
+  },
+  "checks": {
+    "wave4Tracker": true,
+    "closeoutSequenceDecision": true,
+    "handoffPreparation": true,
+    "repositoryEvidence": true,
+    "continuity": true,
+    "releaseBoundary": true
+  },
+  "handoff": {
+    "scope": "One bounded, public SEIS Repo static Swift Package topology capability and its already reconciled repository-local evidence chain.",
+    "evidencePaths": {
+      "closeoutSequenceDecision": "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
+      "handoffPreparation": "content/development/seis-public-plugin-wave-4-handoff-preparation.json",
+      "publicBoundaryDecision": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
+      "validationDeliveryEvidence": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
+      "integrationCheckpoint": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
+      "topologyEvidence": "content/development/seis-swift-package-topology.json",
+      "continuityCadence": "content/development/seis-public-plugin-continuity-cadence.json"
+    },
+    "delivery": {
+      "featureBranch": "plugins/seis-plugin-root-20260715",
+      "priorRemoteReference": "9604666a57db30f7384a1c6939c2f828c4b00d69",
+      "priorRemoteReferenceVerified": true,
+      "currentCheckpointRemoteVerified": false,
+      "protectedDefaultBranchWritten": false,
+      "note": "This record is repository-local until this focused checkpoint is committed, pushed to the named feature branch, and its remote reference is independently verified. It is not a merge or public release claim."
+    },
+    "knownLimits": [
+      "No independent clean-runner or public package installation proof is recorded.",
+      "No compiled Swift, SwiftPM test, native runtime, live provider, deployment, signing, or public-release proof is recorded.",
+      "The terminal handoff has not been published and Wave 4 is not complete.",
+      "Wave 5 remains planned-gated without a selected capability or activation approval."
+    ],
+    "nextDecision": "Step 98 must keep or refine the Wave 5 gate through a separate scope and risk review; it may not activate a new capability automatically."
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "signing": false,
+    "publicRelease": false
+  },
+  "futureWaveDecision": {
+    "wave": 5,
+    "status": "planned-gated",
+    "selectedCapability": null,
+    "activationApproved": false,
+    "reason": "This handoff closes only step 97. Wave 5 requires a fresh scope, dependency, risk, rollback, validation, and user-authority decision after Wave 4 closeout evidence is current."
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-wave-4-repository-local-handoff",
+    "npm run check:seis-public-plugin-continuity",
+    "npm run check:seis-repo-marketplace",
+    "node --test plugins/seis-core/test/public-plugin-wave-4-repository-local-handoff.test.mjs",
+    "git diff --check"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W4-019",
+      "status": "tracked",
+      "description": "A repository-local handoff could be misread as a published terminal handoff, completed Wave 4, or Wave 5 authorization.",
+      "mitigation": "Keep terminalHandoffPublished=false, waveCompleted=false, and Wave 5 planned-gated with activationApproved=false."
+    },
+    {
+      "id": "RISK-W4-020",
+      "status": "tracked",
+      "description": "A prior feature-branch remote verification could be misread as proof for this new checkpoint.",
+      "mitigation": "Record currentCheckpointRemoteVerified=false until the focused checkpoint is committed, pushed, and independently checked after validation."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this Wave 4 repository-local handoff record and its focused tracker references on the feature branch; no external state, release, publication, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 13,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}

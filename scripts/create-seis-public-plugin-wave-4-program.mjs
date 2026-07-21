@@ -21,6 +21,7 @@ const VALIDATION_DELIVERY_EVIDENCE_PATH = "content/development/seis-public-plugi
 const PUBLIC_BOUNDARY_DECISION_PATH = "content/development/seis-public-plugin-wave-4-public-boundary-decision.json";
 const HANDOFF_PREPARATION_PATH = "content/development/seis-public-plugin-wave-4-handoff-preparation.json";
 const CLOSEOUT_SEQUENCE_DECISION_PATH = "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json";
+const REPOSITORY_LOCAL_HANDOFF_PATH = "content/development/seis-public-plugin-wave-4-repository-local-handoff.json";
 const BASELINE_INVENTORY = Object.freeze({ applicationPluginCount: 73, publicCardCount: 379 });
 const INTEGRATED_INVENTORY = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
@@ -155,11 +156,11 @@ const ROUND_DEFINITIONS = Object.freeze([
       "Record no independent installation, SwiftPM, compiler, runtime, provider, deployment, signing, or release claims.",
       "Review whether external proof or human approval remains required.",
       "Create follow-up goals for any deferred environment, release, or runtime validation.",
-      "Prepare a repository-local Wave 4 handoff only after all one hundred planned steps have current evidence.",
-      "Mark Wave 4 complete only after required evidence and quality gates are current.",
+      "Record the user-authorized non-circular closeout sequence before any terminal handoff or completion transition.",
+      "Prepare the repository-local Wave 4 terminal-handoff evidence only after its retained artifacts and quality gates are current.",
       "Keep Wave 5 planned-gated pending a separate scope and risk review.",
-      "Archive or retain artifacts according to public evidence and rollback policy.",
-      "Produce a final goal report with exact repository state and next recommended decision.",
+      "Retain all public evidence and rollback artifacts in place until the terminal closeout report is current.",
+      "Produce the final goal report with exact repository state, then mark Wave 4 complete only after all prior closeout evidence is current.",
     ],
   },
 ]);
@@ -191,6 +192,8 @@ function buildRecord() {
   const validationDeliveryEvidence = readJson(VALIDATION_DELIVERY_EVIDENCE_PATH);
   const publicBoundaryDecision = readJson(PUBLIC_BOUNDARY_DECISION_PATH);
   const handoffPreparation = readJson(HANDOFF_PREPARATION_PATH);
+  const closeoutSequenceDecision = readJson(CLOSEOUT_SEQUENCE_DECISION_PATH);
+  const repositoryLocalHandoff = readJson(REPOSITORY_LOCAL_HANDOFF_PATH);
   const sourceEntries = list(sourceManifest.plugins);
   const catalogEntries = list(catalog.plugins);
   const matrixEntries = list(matrix.plugins);
@@ -209,7 +212,7 @@ function buildRecord() {
     status: stepStatus((roundIndex * 20) + taskIndex + 1),
     validation: validationFor(roundIndex + 1, taskIndex + 1),
   })));
-  const inputSafetyScan = scanPublicSafeInputs([FOLLOWING_WAVE_REVIEW_PATH, SOURCE_MANIFEST_PATH, CATALOG_PATH, MATRIX_PATH, MARKETPLACE_PATH, CANDIDATE_EVIDENCE_PATH, PUBLIC_BOUNDARY_DECISION_PATH, HANDOFF_PREPARATION_PATH]);
+  const inputSafetyScan = scanPublicSafeInputs([FOLLOWING_WAVE_REVIEW_PATH, SOURCE_MANIFEST_PATH, CATALOG_PATH, MATRIX_PATH, MARKETPLACE_PATH, CANDIDATE_EVIDENCE_PATH, PUBLIC_BOUNDARY_DECISION_PATH, HANDOFF_PREPARATION_PATH, CLOSEOUT_SEQUENCE_DECISION_PATH, REPOSITORY_LOCAL_HANDOFF_PATH]);
   const record = {
     schemaVersion: 1,
     id: "seis-public-plugin-wave-4-program",
@@ -235,7 +238,7 @@ function buildRecord() {
       repositories: ["SEIS"],
       selectedCapability: CANDIDATE_CAPABILITY,
       outcome: "One public repository package now reports bounded, derived Swift Package manifest topology with a single checked-in source, SEIS Repo card, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
-      entryRule: "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–95 now have current repository-local evidence, including remote-policy observations and explicit external-proof limits; step 96 remains in-progress with a non-terminal handoff-preparation gate, not a final handoff, release, completion, or Wave 5 activation claim.",
+      entryRule: "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–97 now have current repository-local evidence: step 96 records the active user's non-circular closeout-sequence authority and step 97 records a non-published repository-local handoff; step 98 is in progress and is not a Wave 5 activation, release, or completion claim.",
     },
     nonGoals: [
       "Adding more than the one activation-approved public package or card without a new capability decision.",
@@ -285,11 +288,11 @@ function buildRecord() {
     })),
     steps,
     progress: {
-      completedStepCount: 95,
-      plannedStepCount: 4,
-      inProgressStepNumbers: [96],
+      completedStepCount: 97,
+      plannedStepCount: 2,
+      inProgressStepNumbers: [98],
       completedRoundCount: 4,
-      nextStepNumber: 96,
+      nextStepNumber: 98,
     },
     evidence: {
       wave3CloseoutPath: WAVE_3_CLOSEOUT_PATH,
@@ -306,6 +309,26 @@ function buildRecord() {
       publicBoundaryDecisionPath: PUBLIC_BOUNDARY_DECISION_PATH,
       handoffPreparationPath: HANDOFF_PREPARATION_PATH,
       closeoutSequenceDecisionPath: CLOSEOUT_SEQUENCE_DECISION_PATH,
+      repositoryLocalHandoffPath: REPOSITORY_LOCAL_HANDOFF_PATH,
+    },
+    closeoutSequence: {
+      status: "approved-owner-mapping-applied",
+      decisionPath: CLOSEOUT_SEQUENCE_DECISION_PATH,
+      approvalSource: "active-thread-user-continuation-objective",
+      completedSteps: [96, 97],
+      activeStep: 98,
+      terminalHandoffPublished: false,
+      waveCompleted: false,
+      wave5ActivationApproved: false,
+    },
+    repositoryLocalHandoff: {
+      status: "completed-repository-local-handoff",
+      handoffPath: REPOSITORY_LOCAL_HANDOFF_PATH,
+      completedStep: 97,
+      activeStep: 98,
+      terminalHandoffPublished: false,
+      waveCompleted: false,
+      wave5ActivationApproved: false,
     },
     validation: [
       "npm run check:seis-public-plugin-wave-4-program",
@@ -427,7 +450,7 @@ function buildRecord() {
         && publicBoundaryDecision.externalProofAndApprovals?.publicReleaseAllowed === false
         && publicBoundaryDecision.recommendedFollowUp?.status === "proposed-not-created",
       handoffPreparation: handoffPreparation.id === "seis-public-plugin-wave-4-handoff-preparation"
-        && handoffPreparation.status === "in-progress-repository-local-handoff-preparation"
+        && handoffPreparation.status === "completed-repository-local-handoff-preparation"
         && handoffPreparation.maturity === "prototype"
         && handoffPreparation.step === 96
         && handoffPreparation.stateAtPreparation?.completedStepCount === 95
@@ -436,12 +459,42 @@ function buildRecord() {
         && Object.values(handoffPreparation.completedEvidence || {}).every(Boolean)
         && handoffPreparation.handoffGate?.ready === false
         && handoffPreparation.handoffGate?.allOneHundredStepsHaveCurrentEvidence === false
+        && handoffPreparation.handoffGate?.preparationCompleted === true
+        && handoffPreparation.handoffGate?.nextActiveStep === 97
         && handoffPreparation.handoffGate?.terminalHandoffPublished === false
         && handoffPreparation.handoffGate?.waveCompleted === false
         && handoffPreparation.handoffGate?.wave5ActivationApproved === false
         && Object.values(handoffPreparation.externalClaims || {}).every((value) => value === false)
-        && handoffPreparation.recommendedFollowUp?.status === "created-proposed-owner-decision-required"
-        && handoffPreparation.recommendedFollowUp?.decisionPath === CLOSEOUT_SEQUENCE_DECISION_PATH,
+        && handoffPreparation.completionState?.completedStep === 96
+        && handoffPreparation.completionState?.nextActiveStep === 97
+        && handoffPreparation.recommendedFollowUp?.status === "accepted-applied-to-canonical-program"
+        && handoffPreparation.recommendedFollowUp?.decisionPath === CLOSEOUT_SEQUENCE_DECISION_PATH
+        && handoffPreparation.recommendedFollowUp?.approvalSource === "active-thread-user-continuation-objective",
+      closeoutSequenceDecision: closeoutSequenceDecision.id === "seis-public-plugin-wave-4-closeout-sequence-decision"
+        && closeoutSequenceDecision.status === "approved-current-user-continuation-authority"
+        && closeoutSequenceDecision.decisionBoundary?.status === "approved-owner-mapping-applied"
+        && closeoutSequenceDecision.decisionBoundary?.approvalSource === "active-thread-user-continuation-objective"
+        && closeoutSequenceDecision.decisionBoundary?.approved === true
+        && closeoutSequenceDecision.decisionBoundary?.appliedToCanonicalProgram === true
+        && closeoutSequenceDecision.decisionBoundary?.automaticStepStatusChangesAllowed === false
+        && closeoutSequenceDecision.stateAfterApplication?.completedStepCount === 96
+        && closeoutSequenceDecision.stateAfterApplication?.activeStep === 97
+        && closeoutSequenceDecision.stateAfterApplication?.terminalHandoffPublished === false
+        && closeoutSequenceDecision.stateAfterApplication?.waveCompleted === false
+        && closeoutSequenceDecision.stateAfterApplication?.wave5ActivationApproved === false
+        && Object.values(closeoutSequenceDecision.externalClaims || {}).every((value) => value === false),
+      repositoryLocalHandoff: repositoryLocalHandoff.id === "seis-public-plugin-wave-4-repository-local-handoff"
+        && repositoryLocalHandoff.status === "completed-repository-local-handoff"
+        && repositoryLocalHandoff.step === 97
+        && repositoryLocalHandoff.stateAtCheckpoint?.completedStepCountBeforeTrackerUpdate === 96
+        && repositoryLocalHandoff.stateAtCheckpoint?.activeStepBeforeTrackerUpdate === 97
+        && repositoryLocalHandoff.stateAtCheckpoint?.nextPlannedDecisionStep === 98
+        && Object.values(repositoryLocalHandoff.checks || {}).every(Boolean)
+        && repositoryLocalHandoff.handoff?.delivery?.currentCheckpointRemoteVerified === false
+        && repositoryLocalHandoff.handoff?.delivery?.protectedDefaultBranchWritten === false
+        && repositoryLocalHandoff.futureWaveDecision?.status === "planned-gated"
+        && repositoryLocalHandoff.futureWaveDecision?.activationApproved === false
+        && Object.values(repositoryLocalHandoff.externalClaims || {}).every((value) => value === false),
     },
     inputSafetyScan,
   };
@@ -458,15 +511,15 @@ function validationFor(round, task) {
 }
 
 function stepStatus(number) {
-  if (number <= 95) return "completed";
-  if (number === 96) return "in-progress";
+  if (number <= 97) return "completed";
+  if (number === 98) return "in-progress";
   return "planned";
 }
 
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-4-program" && record.goalId === "SEIS-GOAL-021" && record.parentProgramId === "seis-public-plugin-expansion-program" && record.status === "in-progress" && record.maturity === "prototype", "Wave 4 program identity is invalid");
   assert(record.wave?.number === 4 && record.wave?.totalSteps === 100 && record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20 && record.wave?.predecessor?.closeoutPath === WAVE_3_CLOSEOUT_PATH && record.wave?.predecessor?.scopeReviewPath === FOLLOWING_WAVE_REVIEW_PATH && record.wave?.predecessor?.requiredStatus === "completed-following-wave-scope-review" && record.wave?.predecessor?.requiredCandidate === CANDIDATE_CAPABILITY, "Wave 4 predecessor is invalid");
-  assert(record.scope?.selectedCapability === CANDIDATE_CAPABILITY && record.scope?.entryRule?.includes("in-progress"), "Wave 4 scope is invalid");
+  assert(record.scope?.selectedCapability === CANDIDATE_CAPABILITY && record.scope?.entryRule?.includes("step 98 is in progress"), "Wave 4 scope is invalid");
   assert(list(record.nonGoals).length === 4, "Wave 4 non-goals are incomplete");
   assert(record.activationGate?.status === "implemented-repository-local" && record.activationGate?.activationDecisionPath === ACTIVATION_DECISION_PATH && record.activationGate?.implementationStarted === true && record.activationGate?.candidatePackageExists === true && record.activationGate?.candidatePublicCardExists === true && list(record.activationGate?.requiredBeforeActivation).length === 4, "Wave 4 activation gate is invalid");
   assert(list(record.rounds).length === 5 && list(record.steps).length === 100, "Wave 4 structure is incomplete");
@@ -474,10 +527,13 @@ function validateRecord(record) {
     const step = record.steps[index];
     assert(step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && step?.status === stepStatus(index + 1) && typeof step?.title === "string" && step.title.length > 0 && typeof step?.validation === "string" && step.validation.length > 0, `Wave 4 step ${index + 1} is invalid`);
   }
-  assert(record.progress?.completedStepCount === 95 && record.progress?.plannedStepCount === 4 && list(record.progress?.inProgressStepNumbers).join(",") === "96" && record.progress?.completedRoundCount === 4 && record.progress?.nextStepNumber === 96, "Wave 4 progress is invalid");
+  assert(record.progress?.completedStepCount === 97 && record.progress?.plannedStepCount === 2 && list(record.progress?.inProgressStepNumbers).join(",") === "98" && record.progress?.completedRoundCount === 4 && record.progress?.nextStepNumber === 98, "Wave 4 progress is invalid");
   assert(record.evidence?.publicBoundaryDecisionPath === PUBLIC_BOUNDARY_DECISION_PATH, "Wave 4 public-boundary evidence path is invalid");
   assert(record.evidence?.handoffPreparationPath === HANDOFF_PREPARATION_PATH, "Wave 4 handoff-preparation evidence path is invalid");
   assert(record.evidence?.closeoutSequenceDecisionPath === CLOSEOUT_SEQUENCE_DECISION_PATH, "Wave 4 closeout-sequence evidence path is invalid");
+  assert(record.evidence?.repositoryLocalHandoffPath === REPOSITORY_LOCAL_HANDOFF_PATH, "Wave 4 repository-local handoff evidence path is invalid");
+  assert(record.closeoutSequence?.status === "approved-owner-mapping-applied" && record.closeoutSequence?.decisionPath === CLOSEOUT_SEQUENCE_DECISION_PATH && record.closeoutSequence?.approvalSource === "active-thread-user-continuation-objective" && list(record.closeoutSequence?.completedSteps).join(",") === "96,97" && record.closeoutSequence?.activeStep === 98 && record.closeoutSequence?.terminalHandoffPublished === false && record.closeoutSequence?.waveCompleted === false && record.closeoutSequence?.wave5ActivationApproved === false, "Wave 4 closeout-sequence state is invalid");
+  assert(record.repositoryLocalHandoff?.status === "completed-repository-local-handoff" && record.repositoryLocalHandoff?.handoffPath === REPOSITORY_LOCAL_HANDOFF_PATH && record.repositoryLocalHandoff?.completedStep === 97 && record.repositoryLocalHandoff?.activeStep === 98 && record.repositoryLocalHandoff?.terminalHandoffPublished === false && record.repositoryLocalHandoff?.waveCompleted === false && record.repositoryLocalHandoff?.wave5ActivationApproved === false, "Wave 4 repository-local handoff state is invalid");
   assert(Object.values(record.checks).every(Boolean), "a required Wave 4 planning contract is not current");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");

@@ -5,10 +5,10 @@
   "wave": 4,
   "round": 5,
   "step": 96,
-  "status": "in-progress-repository-local-handoff-preparation",
+  "status": "completed-repository-local-handoff-preparation",
   "maturity": "prototype",
   "generatedAt": "2026-07-21",
-  "purpose": "Record the Wave 4 terminal-handoff gate from current repository-local evidence without creating a terminal handoff, completing Wave 4, activating Wave 5, merging, publishing, signing, installing, deploying, or claiming independent external proof.",
+  "purpose": "Record completed non-terminal Wave 4 handoff preparation after the user's active continuation objective approved the non-circular closeout sequence. This advances only step 96 and leaves step 97 active; it does not create a terminal handoff, complete Wave 4, activate Wave 5, merge, publish, sign, install, deploy, or claim independent external proof.",
   "stateAtPreparation": {
     "completedStepCount": 95,
     "activeStep": 96,
@@ -19,6 +19,13 @@
       100
     ],
     "completedRoundCount": 4,
+    "terminalHandoffPublished": false,
+    "waveCompleted": false,
+    "wave5ActivationApproved": false
+  },
+  "completionState": {
+    "completedStep": 96,
+    "nextActiveStep": 97,
     "terminalHandoffPublished": false,
     "waveCompleted": false,
     "wave5ActivationApproved": false
@@ -34,10 +41,12 @@
     "releaseBoundary": true
   },
   "handoffGate": {
-    "status": "not-ready-for-terminal-handoff",
+    "status": "sequence-approved-not-ready-for-terminal-handoff",
     "ready": false,
     "allOneHundredStepsHaveCurrentEvidence": false,
-    "currentStepRemainsInProgress": true,
+    "preparationCompleted": true,
+    "currentStepRemainsInProgress": false,
+    "nextActiveStep": 97,
     "remainingStepNumbers": [
       97,
       98,
@@ -47,7 +56,7 @@
     "terminalHandoffPublished": false,
     "waveCompleted": false,
     "wave5ActivationApproved": false,
-    "reason": "Steps 97 through 100 remain planned. This record preserves their evidence and completion gates instead of reordering, completing, or inferring them."
+    "reason": "The user-authorized closeout sequence completed step 96 only. Step 97 is active and steps 98 through 100 remain planned; this record does not infer their evidence or completion."
   },
   "remoteDeliveryBaseline": {
     "featureBranch": "plugins/seis-plugin-root-20260715",
@@ -80,34 +89,35 @@
     "publicRelease": false
   },
   "requiredBeforeTerminalHandoff": [
-    "Current, non-circular evidence for each remaining closeout action without marking a future step complete in advance.",
+    "Current repository-local evidence for active step 97 without marking a future step complete in advance.",
     "Required repository-local quality gates for the terminal closeout state.",
     "An explicit terminal handoff record that preserves public-release, installation, runtime, and external-proof limits.",
     "A separate scope and risk decision before any Wave 5 activation."
   ],
   "recommendedFollowUp": {
     "goalId": "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
-    "status": "created-proposed-owner-decision-required",
+    "status": "accepted-applied-to-canonical-program",
     "decisionPath": "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
-    "purpose": "Resolve the non-circular evidence order for steps 96 through 100 before any terminal handoff or status transition is asserted."
+    "approvalSource": "active-thread-user-continuation-objective",
+    "purpose": "Prepare step 97 repository-local terminal-handoff evidence while retaining the later closeout, release, and Wave 5 gates."
   },
   "risks": [
     {
       "id": "RISK-W4-015",
       "status": "tracked",
       "description": "A readiness gate could be misread as a terminal Wave 4 handoff or completion.",
-      "mitigation": "Keep ready=false, retain steps 97 through 100 as planned, and record terminalHandoffPublished=false and waveCompleted=false."
+      "mitigation": "Keep ready=false, preserve step 97 as active, retain steps 98 through 100 as planned, and record terminalHandoffPublished=false and waveCompleted=false."
     },
     {
       "id": "RISK-W4-016",
       "status": "tracked",
       "description": "The closeout task sequence can encourage circular completion claims.",
-      "mitigation": "Require a separate non-circular evidence-order decision before changing any terminal step status."
+      "mitigation": "Preserve the explicit accepted sequence decision and require current evidence for every remaining step before any later transition."
     }
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert this active handoff-preparation gate and its tracker references on the feature branch; no external state, release, publication, or data migration exists.",
+    "scope": "Revert this completed handoff-preparation checkpoint and its focused tracker references on the feature branch; no external state, release, publication, or data migration exists.",
     "dataMigrationRequired": false
   },
   "inputSafetyScan": {

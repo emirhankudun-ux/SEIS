@@ -10,7 +10,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const recordPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-4-closeout-sequence-decision.mjs");
 
-test("records Wave 4 closeout ordering as a proposal without changing terminal state", () => {
+test("applies the user-authorized Wave 4 closeout ordering without changing terminal state", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -18,22 +18,30 @@ test("records Wave 4 closeout ordering as a proposal without changing terminal s
   assert.equal(result.status, 0, result.stderr);
 
   const decision = JSON.parse(fs.readFileSync(recordPath, "utf8"));
-  assert.equal(decision.status, "proposed-owner-decision-required");
+  assert.equal(decision.status, "approved-current-user-continuation-authority");
   assert.equal(decision.maturity, "specification");
   assert.equal(decision.parentGoalId, "SEIS-GOAL-021");
   assert.equal(decision.stateAtDecision.completedStepCount, 95);
   assert.equal(decision.stateAtDecision.activeStep, 96);
   assert.deepEqual(decision.stateAtDecision.plannedStepNumbers, [97, 98, 99, 100]);
+  assert.equal(decision.stateAfterApplication.completedStepCount, 96);
+  assert.equal(decision.stateAfterApplication.activeStep, 97);
+  assert.deepEqual(decision.stateAfterApplication.plannedStepNumbers, [98, 99, 100]);
   assert.ok(Object.values(decision.currentEvidence).every(Boolean));
   assert.equal(decision.decisionBoundary.approvalRequired, true);
-  assert.equal(decision.decisionBoundary.approved, false);
-  assert.equal(decision.decisionBoundary.appliedToCanonicalProgram, false);
+  assert.equal(decision.decisionBoundary.status, "approved-owner-mapping-applied");
+  assert.equal(decision.decisionBoundary.approvalSource, "active-thread-user-continuation-objective");
+  assert.equal(decision.decisionBoundary.approved, true);
+  assert.equal(decision.decisionBoundary.appliedToCanonicalProgram, true);
   assert.equal(decision.decisionBoundary.automaticStepStatusChangesAllowed, false);
   assert.equal(decision.decisionBoundary.terminalHandoffPublished, false);
   assert.equal(decision.decisionBoundary.waveCompleted, false);
   assert.equal(decision.decisionBoundary.wave5ActivationApproved, false);
-  assert.equal(decision.proposedResolution.noStepStatusChanges, true);
+  assert.equal(decision.proposedResolution.status, "approved-applied");
+  assert.equal(decision.proposedResolution.noStepStatusChanges, false);
+  assert.equal(decision.proposedResolution.manualCanonicalStatusChangeApplied, true);
   assert.equal(decision.ownerOptions.length, 3);
+  assert.equal(decision.ownerOptions[0].status, "selected-by-active-user-continuation-objective");
   assert.ok(Object.values(decision.externalClaims).every((value) => value === false));
   assert.equal(decision.publicBoundary.marketplaceName, "seis-repo");
   assert.equal(decision.publicBoundary.personalMarketplaceRead, false);

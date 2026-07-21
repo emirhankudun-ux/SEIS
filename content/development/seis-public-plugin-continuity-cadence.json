@@ -35,7 +35,7 @@
       "stepsPerRound": 20,
       "totalPlannedWaveSteps": 500,
       "activeWave": 4,
-      "activeWaveState": "repository-local-public-boundary-decision-complete-step-96-in-progress"
+      "activeWaveState": "repository-local-handoff-complete-step-98-in-progress"
     },
     "githubDelivery": {
       "branch": "plugins/seis-plugin-root-20260715",
@@ -98,9 +98,9 @@
       "implementationStarted": true,
       "candidatePackageExists": true,
       "candidatePublicCardExists": true,
-      "completedSteps": 95,
+      "completedSteps": 97,
       "inProgressSteps": [
-        96
+        98
       ],
       "topologyEvidencePath": "content/development/seis-swift-package-topology.json",
       "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
@@ -108,9 +108,10 @@
       "publicBoundaryDecisionPath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
       "handoffPreparationPath": "content/development/seis-public-plugin-wave-4-handoff-preparation.json",
       "closeoutSequenceDecisionPath": "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
-      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
+      "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
+      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
       "predecessor": "Wave 3 repository-local handoff",
-      "entryRule": "Wave 3 closed with current evidence, the separate activation decision approved one fixed-manifest scope, and the package completed its first repository-local integration checkpoint without a release claim."
+      "entryRule": "Wave 3 closed with current evidence, the separate activation decision approved one fixed-manifest scope, and Wave 4 completed a non-published repository-local handoff; step 98 remains a separate planned-gate review and is not a release claim."
     },
     {
       "wave": 5,

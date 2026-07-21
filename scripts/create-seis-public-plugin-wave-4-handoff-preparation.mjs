@@ -43,7 +43,7 @@ if (CHECK_MODE) {
   console.log("SEIS public plugin Wave 4 handoff-preparation check passed.");
 } else {
   writeText(OUTPUT_PATH, expected);
-  console.log("Wrote " + OUTPUT_PATH + " as an active non-terminal Wave 4 handoff gate.");
+  console.log("Wrote " + OUTPUT_PATH + " as a completed non-terminal Wave 4 handoff-preparation checkpoint.");
 }
 
 function buildRecord() {
@@ -66,15 +66,22 @@ function buildRecord() {
     wave: 4,
     round: 5,
     step: 96,
-    status: "in-progress-repository-local-handoff-preparation",
+    status: "completed-repository-local-handoff-preparation",
     maturity: "prototype",
     generatedAt: "2026-07-21",
-    purpose: "Record the Wave 4 terminal-handoff gate from current repository-local evidence without creating a terminal handoff, completing Wave 4, activating Wave 5, merging, publishing, signing, installing, deploying, or claiming independent external proof.",
+    purpose: "Record completed non-terminal Wave 4 handoff preparation after the user's active continuation objective approved the non-circular closeout sequence. This advances only step 96 and leaves step 97 active; it does not create a terminal handoff, complete Wave 4, activate Wave 5, merge, publish, sign, install, deploy, or claim independent external proof.",
     stateAtPreparation: {
       completedStepCount: 95,
       activeStep: 96,
       remainingStepNumbers: REMAINING_STEPS,
       completedRoundCount: 4,
+      terminalHandoffPublished: false,
+      waveCompleted: false,
+      wave5ActivationApproved: false,
+    },
+    completionState: {
+      completedStep: 96,
+      nextActiveStep: 97,
       terminalHandoffPublished: false,
       waveCompleted: false,
       wave5ActivationApproved: false,
@@ -120,15 +127,17 @@ function buildRecord() {
         && securityReview.publicReleaseAllowed === false,
     },
     handoffGate: {
-      status: "not-ready-for-terminal-handoff",
+      status: "sequence-approved-not-ready-for-terminal-handoff",
       ready: false,
       allOneHundredStepsHaveCurrentEvidence: false,
-      currentStepRemainsInProgress: true,
+      preparationCompleted: true,
+      currentStepRemainsInProgress: false,
+      nextActiveStep: 97,
       remainingStepNumbers: REMAINING_STEPS,
       terminalHandoffPublished: false,
       waveCompleted: false,
       wave5ActivationApproved: false,
-      reason: "Steps 97 through 100 remain planned. This record preserves their evidence and completion gates instead of reordering, completing, or inferring them.",
+      reason: "The user-authorized closeout sequence completed step 96 only. Step 97 is active and steps 98 through 100 remain planned; this record does not infer their evidence or completion.",
     },
     remoteDeliveryBaseline: {
       featureBranch: FEATURE_BRANCH,
@@ -161,34 +170,35 @@ function buildRecord() {
       publicRelease: false,
     },
     requiredBeforeTerminalHandoff: [
-      "Current, non-circular evidence for each remaining closeout action without marking a future step complete in advance.",
+      "Current repository-local evidence for active step 97 without marking a future step complete in advance.",
       "Required repository-local quality gates for the terminal closeout state.",
       "An explicit terminal handoff record that preserves public-release, installation, runtime, and external-proof limits.",
       "A separate scope and risk decision before any Wave 5 activation.",
     ],
     recommendedFollowUp: {
       goalId: "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
-      status: "created-proposed-owner-decision-required",
+      status: "accepted-applied-to-canonical-program",
       decisionPath: CLOSEOUT_SEQUENCE_DECISION_PATH,
-      purpose: "Resolve the non-circular evidence order for steps 96 through 100 before any terminal handoff or status transition is asserted.",
+      approvalSource: "active-thread-user-continuation-objective",
+      purpose: "Prepare step 97 repository-local terminal-handoff evidence while retaining the later closeout, release, and Wave 5 gates.",
     },
     risks: [
       {
         id: "RISK-W4-015",
         status: "tracked",
         description: "A readiness gate could be misread as a terminal Wave 4 handoff or completion.",
-        mitigation: "Keep ready=false, retain steps 97 through 100 as planned, and record terminalHandoffPublished=false and waveCompleted=false.",
+        mitigation: "Keep ready=false, preserve step 97 as active, retain steps 98 through 100 as planned, and record terminalHandoffPublished=false and waveCompleted=false.",
       },
       {
         id: "RISK-W4-016",
         status: "tracked",
         description: "The closeout task sequence can encourage circular completion claims.",
-        mitigation: "Require a separate non-circular evidence-order decision before changing any terminal step status.",
+        mitigation: "Preserve the explicit accepted sequence decision and require current evidence for every remaining step before any later transition.",
       },
     ],
     rollback: {
       strategy: "revert",
-      scope: "Revert this active handoff-preparation gate and its tracker references on the feature branch; no external state, release, publication, or data migration exists.",
+      scope: "Revert this completed handoff-preparation checkpoint and its focused tracker references on the feature branch; no external state, release, publication, or data migration exists.",
       dataMigrationRequired: false,
     },
     inputSafetyScan: scanPublicSafeInputs(Object.values(PATHS)),
@@ -198,38 +208,58 @@ function buildRecord() {
 }
 
 function isSupportedWave4Tracker(program) {
-  return program?.id === "seis-public-plugin-wave-4-program"
+  const shared = program?.id === "seis-public-plugin-wave-4-program"
     && program?.status === "in-progress"
     && program?.maturity === "prototype"
     && program?.scope?.selectedCapability === "seis-swift-package-topology"
-    && program?.progress?.completedStepCount === 95
-    && list(program?.progress?.inProgressStepNumbers).join(",") === "96"
-    && program?.progress?.nextStepNumber === 96
     && program?.evidence?.publicBoundaryDecisionPath === PATHS.publicBoundaryDecision
     && (!program?.evidence?.handoffPreparationPath || program.evidence.handoffPreparationPath === OUTPUT_PATH);
+  const beforeSequenceApplication = program?.progress?.completedStepCount === 95
+    && list(program?.progress?.inProgressStepNumbers).join(",") === "96"
+    && program?.progress?.nextStepNumber === 96;
+  const afterSequenceApplication = program?.progress?.completedStepCount === 96
+    && list(program?.progress?.inProgressStepNumbers).join(",") === "97"
+    && program?.progress?.nextStepNumber === 97
+    && program?.closeoutSequence?.status === "approved-owner-mapping-applied";
+  const afterRepositoryLocalHandoff = program?.progress?.completedStepCount === 97
+    && list(program?.progress?.inProgressStepNumbers).join(",") === "98"
+    && program?.progress?.nextStepNumber === 98
+    && program?.repositoryLocalHandoff?.status === "completed-repository-local-handoff";
+  return shared && (beforeSequenceApplication || afterSequenceApplication || afterRepositoryLocalHandoff);
 }
 
 function isSupportedContinuity(cadence) {
   const wave = cadence?.waves?.[3];
-  return cadence?.id === "seis-public-plugin-continuity-cadence"
+  const shared = cadence?.id === "seis-public-plugin-continuity-cadence"
     && cadence?.status === "active-evidence-led-cadence"
-    && cadence?.cadence?.waveSeries?.activeWaveState === "repository-local-public-boundary-decision-complete-step-96-in-progress"
+    && wave?.publicBoundaryDecisionPath === PATHS.publicBoundaryDecision
+    && (!wave?.handoffPreparationPath || wave.handoffPreparationPath === OUTPUT_PATH);
+  const beforeSequenceApplication = cadence?.cadence?.waveSeries?.activeWaveState === "repository-local-public-boundary-decision-complete-step-96-in-progress"
     && wave?.completedSteps === 95
     && list(wave?.inProgressSteps).join(",") === "96"
-    && wave?.publicBoundaryDecisionPath === PATHS.publicBoundaryDecision
-    && wave?.currentEvidencePath === PATHS.publicBoundaryDecision
-    && (!wave?.handoffPreparationPath || wave.handoffPreparationPath === OUTPUT_PATH);
+    && wave?.currentEvidencePath === PATHS.publicBoundaryDecision;
+  const afterSequenceApplication = cadence?.cadence?.waveSeries?.activeWaveState === "repository-local-closeout-sequence-approved-step-97-in-progress"
+    && wave?.completedSteps === 96
+    && list(wave?.inProgressSteps).join(",") === "97"
+    && wave?.currentEvidencePath === CLOSEOUT_SEQUENCE_DECISION_PATH;
+  const afterRepositoryLocalHandoff = cadence?.cadence?.waveSeries?.activeWaveState === "repository-local-handoff-complete-step-98-in-progress"
+    && wave?.completedSteps === 97
+    && list(wave?.inProgressSteps).join(",") === "98"
+    && wave?.repositoryLocalHandoffPath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json"
+    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json";
+  return shared && (beforeSequenceApplication || afterSequenceApplication || afterRepositoryLocalHandoff);
 }
 
 function validateRecord(record) {
-  assert(record.id === "seis-public-plugin-wave-4-handoff-preparation" && record.goalId === "SEIS-GOAL-021" && record.wave === 4 && record.round === 5 && record.step === 96 && record.status === "in-progress-repository-local-handoff-preparation" && record.maturity === "prototype", "handoff-preparation identity is invalid");
+  assert(record.id === "seis-public-plugin-wave-4-handoff-preparation" && record.goalId === "SEIS-GOAL-021" && record.wave === 4 && record.round === 5 && record.step === 96 && record.status === "completed-repository-local-handoff-preparation" && record.maturity === "prototype", "handoff-preparation identity is invalid");
   assert(record.stateAtPreparation?.completedStepCount === 95 && record.stateAtPreparation?.activeStep === 96 && list(record.stateAtPreparation?.remainingStepNumbers).join(",") === REMAINING_STEPS.join(",") && record.stateAtPreparation?.completedRoundCount === 4 && record.stateAtPreparation?.terminalHandoffPublished === false && record.stateAtPreparation?.waveCompleted === false && record.stateAtPreparation?.wave5ActivationApproved === false, "handoff-preparation state is invalid");
+  assert(record.completionState?.completedStep === 96 && record.completionState?.nextActiveStep === 97 && record.completionState?.terminalHandoffPublished === false && record.completionState?.waveCompleted === false && record.completionState?.wave5ActivationApproved === false, "handoff-preparation completion state is invalid");
   assert(Object.values(record.completedEvidence || {}).every(Boolean), "a required handoff-preparation evidence check is not current");
-  assert(record.handoffGate?.status === "not-ready-for-terminal-handoff" && record.handoffGate?.ready === false && record.handoffGate?.allOneHundredStepsHaveCurrentEvidence === false && record.handoffGate?.currentStepRemainsInProgress === true && list(record.handoffGate?.remainingStepNumbers).join(",") === REMAINING_STEPS.join(",") && record.handoffGate?.terminalHandoffPublished === false && record.handoffGate?.waveCompleted === false && record.handoffGate?.wave5ActivationApproved === false, "terminal handoff gate is invalid");
+  assert(record.handoffGate?.status === "sequence-approved-not-ready-for-terminal-handoff" && record.handoffGate?.ready === false && record.handoffGate?.allOneHundredStepsHaveCurrentEvidence === false && record.handoffGate?.preparationCompleted === true && record.handoffGate?.currentStepRemainsInProgress === false && record.handoffGate?.nextActiveStep === 97 && list(record.handoffGate?.remainingStepNumbers).join(",") === REMAINING_STEPS.join(",") && record.handoffGate?.terminalHandoffPublished === false && record.handoffGate?.waveCompleted === false && record.handoffGate?.wave5ActivationApproved === false, "terminal handoff gate is invalid");
   assert(record.remoteDeliveryBaseline?.featureBranch === FEATURE_BRANCH && record.remoteDeliveryBaseline?.precedingCommit === PREPARATION_BASELINE_COMMIT && record.remoteDeliveryBaseline?.remoteReferenceVerified === true && record.remoteDeliveryBaseline?.protectedDefaultBranchWritten === false, "remote delivery baseline is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(Object.values(record.externalClaims || {}).every((value) => value === false), "external claims must remain false");
-  assert(list(record.requiredBeforeTerminalHandoff).length === 4 && record.recommendedFollowUp?.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.recommendedFollowUp?.status === "created-proposed-owner-decision-required" && record.recommendedFollowUp?.decisionPath === CLOSEOUT_SEQUENCE_DECISION_PATH, "terminal handoff requirements are invalid");
+  assert(list(record.requiredBeforeTerminalHandoff).length === 4 && record.recommendedFollowUp?.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.recommendedFollowUp?.status === "accepted-applied-to-canonical-program" && record.recommendedFollowUp?.decisionPath === CLOSEOUT_SEQUENCE_DECISION_PATH && record.recommendedFollowUp?.approvalSource === "active-thread-user-continuation-objective", "terminal handoff requirements are invalid");
   assert(list(record.risks).length === 2 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "risk or rollback record is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0 && record.inputSafetyScan?.rawValuesStored === false, "handoff-preparation inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "handoff-preparation record must not contain a machine-specific path");

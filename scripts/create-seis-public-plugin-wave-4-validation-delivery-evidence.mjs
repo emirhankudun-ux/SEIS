@@ -192,7 +192,15 @@ function isSupportedWave4Tracker(program) {
   const afterPublicBoundaryDecision = program?.progress?.completedStepCount === 95
     && list(program?.progress?.inProgressStepNumbers).join(",") === "96"
     && program?.evidence?.publicBoundaryDecisionPath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json";
-  return common && (beforeDelivery || afterDelivery || afterPublicBoundaryDecision);
+  const afterCloseoutSequenceApproval = program?.progress?.completedStepCount === 96
+    && list(program?.progress?.inProgressStepNumbers).join(",") === "97"
+    && program?.evidence?.closeoutSequenceDecisionPath === "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json"
+    && program?.closeoutSequence?.status === "approved-owner-mapping-applied";
+  const afterRepositoryLocalHandoff = program?.progress?.completedStepCount === 97
+    && list(program?.progress?.inProgressStepNumbers).join(",") === "98"
+    && program?.evidence?.repositoryLocalHandoffPath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json"
+    && program?.repositoryLocalHandoff?.status === "completed-repository-local-handoff";
+  return common && (beforeDelivery || afterDelivery || afterPublicBoundaryDecision || afterCloseoutSequenceApproval || afterRepositoryLocalHandoff);
 }
 
 function isSupportedContinuity(cadence) {
@@ -211,7 +219,17 @@ function isSupportedContinuity(cadence) {
     && list(wave?.inProgressSteps).join(",") === "96"
     && wave?.publicBoundaryDecisionPath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json"
     && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json";
-  return cadence?.id === "seis-public-plugin-continuity-cadence" && cadence?.status === "active-evidence-led-cadence" && (beforeDelivery || afterDelivery || afterPublicBoundaryDecision);
+  const afterCloseoutSequenceApproval = cadence?.cadence?.waveSeries?.activeWaveState === "repository-local-closeout-sequence-approved-step-97-in-progress"
+    && wave?.completedSteps === 96
+    && list(wave?.inProgressSteps).join(",") === "97"
+    && wave?.closeoutSequenceDecisionPath === "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json"
+    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json";
+  const afterRepositoryLocalHandoff = cadence?.cadence?.waveSeries?.activeWaveState === "repository-local-handoff-complete-step-98-in-progress"
+    && wave?.completedSteps === 97
+    && list(wave?.inProgressSteps).join(",") === "98"
+    && wave?.repositoryLocalHandoffPath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json"
+    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json";
+  return cadence?.id === "seis-public-plugin-continuity-cadence" && cadence?.status === "active-evidence-led-cadence" && (beforeDelivery || afterDelivery || afterPublicBoundaryDecision || afterCloseoutSequenceApproval || afterRepositoryLocalHandoff);
 }
 
 function validateRecord(record) {

@@ -352,6 +352,8 @@ function isSupportedWave4State(wave4Program) {
       || (wave4Program?.progress?.completedStepCount === 80 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "81" && wave4Program?.evidence?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json")
       || (wave4Program?.progress?.completedStepCount === 90 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "91" && wave4Program?.evidence?.validationDeliveryEvidencePath === "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json")
       || (wave4Program?.progress?.completedStepCount === 95 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "96" && wave4Program?.evidence?.publicBoundaryDecisionPath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json")
+      || (wave4Program?.progress?.completedStepCount === 96 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "97" && wave4Program?.evidence?.closeoutSequenceDecisionPath === "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json" && wave4Program?.closeoutSequence?.status === "approved-owner-mapping-applied")
+      || (wave4Program?.progress?.completedStepCount === 97 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "98" && wave4Program?.evidence?.repositoryLocalHandoffPath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json" && wave4Program?.repositoryLocalHandoff?.status === "completed-repository-local-handoff")
     );
   return plannedSnapshot || integratedCheckpoint;
 }
