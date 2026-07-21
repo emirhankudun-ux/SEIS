@@ -78,11 +78,11 @@ Wave 2 passed the Wave 1 gate, completed its bounded 100-step record, and has a
 current repository-local handoff at
 `content/development/seis-public-plugin-wave-2-handoff.json`. Its only new
 public capability was the read-only `seis-apple-native-readiness` package; the
-subsequent overlap review deliberately selected no second card. Wave 3 is
-planned at `content/development/seis-public-plugin-wave-3-program.json`, but
-keeps its program-level `selectedCapability: null`. Its later discovery record
-selects `seis-swift-concurrency-audit` as a candidate only, with implementation
-unstarted and no new card. Waves 4 and 5 remain unplanned until their preceding
-wave passes the same evidence, scope, and risk gate. This preserves the
-requested ongoing cadence without turning it into a claim of autonomous
-background execution.
+subsequent overlap review deliberately selected no second card. Wave 3 is now
+in progress at `content/development/seis-public-plugin-wave-3-program.json`.
+It selected and implemented the one bounded `seis-swift-concurrency-audit`
+package with a public `SEIS Repo` card; its remaining evidence and handoff work
+does not imply release, installation, compiler, or native-runtime success.
+Waves 4 and 5 remain unplanned until their preceding wave passes the same
+evidence, scope, and risk gate. This preserves the requested ongoing cadence
+without turning it into a claim of autonomous background execution.

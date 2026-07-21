@@ -58,8 +58,8 @@
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
     "distributionScope": "direct-repository-source",
-    "applicationOwnedPluginCount": 72,
-    "publicMarketplaceEntryCount": 72,
+    "applicationOwnedPluginCount": 73,
+    "publicMarketplaceEntryCount": 73,
     "publicReleaseAllowed": false,
     "coreSourceOwner": false,
     "futureIntake": "New public plugins for the SEIS Command Center are created under plugins/seis-core/<plugin-name>, use MIT metadata, regenerated into the app inventory/catalog, published as seis-repo entries, and covered by the unified suite without entering packages/seis-ai or becoming personal sources."

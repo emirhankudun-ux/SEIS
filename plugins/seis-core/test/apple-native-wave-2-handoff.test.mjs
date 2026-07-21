@@ -24,8 +24,8 @@ test("keeps the Wave 2 handoff public-only, evidence-led, and explicit about nat
   assert.equal(handoff.program.selectedCapability, "seis-apple-native-readiness");
   assert.equal(handoff.marketplace.name, "seis-repo");
   assert.equal(handoff.marketplace.displayName, "SEIS Repo");
-  assert.equal(handoff.marketplace.applicationPluginCount, 72);
-  assert.equal(handoff.marketplace.publicCardCount, 378);
+  assert.equal(handoff.marketplace.applicationPluginCount, 73);
+  assert.equal(handoff.marketplace.publicCardCount, 379);
   assert.equal(handoff.publicBoundary.personalMarketplaceRead, false);
   assert.equal(handoff.publicBoundary.personalMarketplaceMutation, false);
   assert.equal(handoff.publicBoundary.network, false);
@@ -36,8 +36,12 @@ test("keeps the Wave 2 handoff public-only, evidence-led, and explicit about nat
   assert.equal(handoff.nativeValidationBoundary.testPassClaim, false);
   assert.equal(handoff.releaseReadiness.promoted, false);
   assert.equal(handoff.nextWave.number, 3);
-  assert.equal(handoff.nextWave.status, "planned");
-  assert.equal(handoff.nextWave.selectionStatus, "discovery-required");
-  assert.equal(handoff.nextWave.selectedCapability, null);
+  assert.equal(handoff.historicalWave3Planning.statusAtWave2Handoff, "planned");
+  assert.equal(handoff.historicalWave3Planning.selectionStatusAtWave2Handoff, "discovery-required");
+  assert.equal(handoff.nextWave.status, "in-progress");
+  assert.equal(handoff.nextWave.selectionStatus, "implementation-approved");
+  assert.equal(handoff.nextWave.selectedCapability, "seis-swift-concurrency-audit");
+  assert.equal(handoff.nextWave.implementationStarted, true);
+  assert.equal(handoff.nextWave.additionalPublicCardAdded, true);
   assert.equal(JSON.stringify(handoff).includes(repositoryRoot), false);
 });

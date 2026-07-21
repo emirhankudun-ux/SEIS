@@ -73,14 +73,15 @@ its bounded resilience review (depth/file/text limits, direct source-area
 symlink refusal, focused fixtures, and framed MCP path refusal), public
 distribution maintenance, and an explicit decision not to add a duplicate
 follow-up card. The repository-local handoff is
-`content/development/seis-public-plugin-wave-2-handoff.json`. It preserves the
-72-package / 378-card `SEIS Repo` contract and records that the interrupted
-SwiftPM test is not a compiled-Swift or test-pass claim. Wave 3 is now
-**planned**, not active, at
-`content/development/seis-public-plugin-wave-3-program.json`: it begins with
-discovery and a separate non-duplicative capability decision. That decision
-selects `seis-swift-concurrency-audit` as a bounded candidate, but no Wave 3
-package or public card exists yet and the program-level selection remains empty.
+`content/development/seis-public-plugin-wave-2-handoff.json`. At that handoff,
+the historical contract was 72 packages / 378 `SEIS Repo` cards, and the
+interrupted SwiftPM test remains neither a compiled-Swift nor a test-pass claim.
+Wave 3 is now **in progress** at
+`content/development/seis-public-plugin-wave-3-program.json`: it selected and
+implemented the one bounded `seis-swift-concurrency-audit` capability as a
+repository-local static-signal package. The current contract is 73 packages /
+379 `SEIS Repo` cards, without an independent installation, native-runtime,
+provider, deployment, or public-release claim.
 Waves 4–5 remain *not planned* until the preceding wave has current evidence,
 scope review, and risk review. Continuation remains evidence-led, reversible,
 and delivered through the current GitHub feature branch rather than claimed as

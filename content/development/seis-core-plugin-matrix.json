@@ -21,10 +21,10 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 72,
-  "expectedPluginCount": 72,
+  "pluginCount": 73,
+  "expectedPluginCount": 73,
   "readyCount": 70,
-  "attentionCount": 2,
+  "attentionCount": 3,
   "failureCount": 0,
   "failures": [],
   "plugins": [
@@ -1032,6 +1032,22 @@
         "secrets": []
       },
       "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-swift-concurrency-audit",
+      "version": "0.0.20",
+      "releaseTrainVersion": "0.00000002",
+      "entrypoint": "scripts/seis-swift-concurrency-audit-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "attention",
       "ok": true,
       "execution": "status-only",
       "failures": []

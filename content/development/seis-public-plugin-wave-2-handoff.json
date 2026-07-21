@@ -4,7 +4,7 @@
   "goalId": "SEIS-GOAL-021",
   "generatedAt": "2026-07-21",
   "status": "completed-repository-local-handoff",
-  "purpose": "Record a reproducible repository-local Wave 2 completion, its public SEIS Repo boundary, its known native and external validation limits, and its Wave 3 discovery gate. This is not a public release, independent installation, provider, deployment, or approval claim.",
+  "purpose": "Record a reproducible repository-local Wave 2 completion, its public SEIS Repo boundary, its known native and external validation limits, and its current Wave 3 continuation reference. This is not a public release, independent installation, provider, deployment, or approval claim.",
   "program": {
     "id": "seis-public-plugin-wave-2-program",
     "status": "completed",
@@ -16,10 +16,10 @@
   "marketplace": {
     "name": "seis-repo",
     "displayName": "SEIS Repo",
-    "publicCardCount": 378,
-    "expectedCardCount": 378,
-    "applicationPluginCount": 72,
-    "expectedApplicationPluginCount": 72
+    "publicCardCount": 379,
+    "expectedCardCount": 379,
+    "applicationPluginCount": 73,
+    "expectedApplicationPluginCount": 73
   },
   "validation": {
     "wave1Continuity": true,
@@ -34,7 +34,7 @@
     "freshTaskReload": true,
     "releaseReadiness": true,
     "mcpBoundary": true,
-    "wave3Planning": true
+    "wave3Continuation": true
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -46,6 +46,14 @@
     "externalWrites": false,
     "secrets": false,
     "publicReleaseAllowed": false
+  },
+  "historicalWave3Planning": {
+    "statusAtWave2Handoff": "planned",
+    "selectionStatusAtWave2Handoff": "discovery-required",
+    "selectedCapabilityAtWave2Handoff": null,
+    "implementationStartedAtWave2Handoff": false,
+    "additionalPublicCardAddedAtWave2Handoff": false,
+    "note": "This preserves the Wave 3 state recorded when the completed Wave 2 handoff was first prepared; the current continuation is tracked separately below."
   },
   "nativeValidationBoundary": {
     "packageGraphStatus": "completed-local-package-graph-inspection",
@@ -105,7 +113,7 @@
       "id": "RISK-W2-003",
       "status": "tracked",
       "description": "The next wave could add a duplicate card merely to satisfy cadence.",
-      "mitigation": "Wave 3 remains discovery-required with selectedCapability null until a separate non-duplicative decision passes its scope and validation gate."
+      "mitigation": "Wave 3 became active only after a separate non-duplicative decision selected the bounded concurrency audit; future public cards still require a separate scope, overlap, and validation gate."
     }
   ],
   "rollback": {
@@ -115,12 +123,16 @@
   },
   "nextWave": {
     "number": 3,
-    "status": "planned",
+    "status": "in-progress",
     "programId": "seis-public-plugin-wave-3-program",
-    "selectionStatus": "discovery-required",
-    "selectedCapability": null,
+    "selectionStatus": "implementation-approved",
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "implementationStarted": true,
+    "additionalPublicCardAdded": true,
+    "historicalStatusAtWave2Handoff": "planned",
+    "historicalSelectionStatusAtWave2Handoff": "discovery-required",
     "scopeRiskReviewPath": "content/development/seis-public-plugin-wave-2-handoff.json",
-    "activationRule": "Wave 3 remains planned until a separate non-duplicative capability decision, current validation evidence, and continued user authority authorize an in-progress implementation scope."
+    "activationRule": "Wave 3 entered an in-progress implementation scope only after a separate non-duplicative capability decision, current repository-local validation evidence, and continued user authority; this does not authorize external release or protected-branch writes."
   },
   "inputSafetyScan": {
     "inputCount": 15,

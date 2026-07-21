@@ -9,6 +9,9 @@ const OUTPUT_PATH = "content/development/seis-public-plugin-wave-3-program.json"
 const INITIAL_PROGRAM_PATH = "content/development/seis-public-plugin-expansion-program.json";
 const WAVE_2_PROGRAM_PATH = "content/development/seis-public-plugin-wave-2-program.json";
 const WAVE_2_HANDOFF_PATH = "content/development/seis-public-plugin-wave-2-handoff.json";
+const SELECTED_CAPABILITY = "seis-swift-concurrency-audit";
+const COMPLETED_STEP_COUNT = 46;
+const IN_PROGRESS_STEP_NUMBER = 47;
 
 const ROUND_DEFINITIONS = Object.freeze([
   {
@@ -151,10 +154,10 @@ if (CHECK_MODE) {
     console.error(`${OUTPUT_PATH} is stale. Run: npm run automation:seis-public-plugin-wave-3-program`);
     process.exit(1);
   }
-  console.log(`SEIS public plugin Wave 3 program check passed (${record.steps.length} planned steps).`);
+  console.log(`SEIS public plugin Wave 3 program check passed (${record.progress.completedStepCount} completed, step ${record.progress.nextStepNumber} in progress).`);
 } else {
   writeText(OUTPUT_PATH, expected);
-  console.log(`Wrote ${OUTPUT_PATH} with ${record.steps.length} planned Wave 3 steps.`);
+  console.log(`Wrote ${OUTPUT_PATH} with ${record.progress.completedStepCount} completed Wave 3 steps.`);
 }
 
 function buildRecord() {
@@ -162,14 +165,14 @@ function buildRecord() {
   const wave2Program = readJson(WAVE_2_PROGRAM_PATH);
   assert(initialProgram?.id === "seis-public-plugin-expansion-program" && initialProgram?.status === "completed", "initial program is invalid");
   assert(initialProgram?.nextWaves?.[1]?.status === "completed" && initialProgram?.nextWaves?.[1]?.handoffEvidencePath === WAVE_2_HANDOFF_PATH, "Wave 2 completion is not recorded in the initial program");
-  assert(initialProgram?.nextWaves?.[2]?.status === "planned" && initialProgram?.nextWaves?.[2]?.programId === "seis-public-plugin-wave-3-program", "Wave 3 is not planned in the initial program");
+  assert(initialProgram?.nextWaves?.[2]?.status === "in-progress" && initialProgram?.nextWaves?.[2]?.programId === "seis-public-plugin-wave-3-program", "Wave 3 is not active in the initial program");
   assert(wave2Program?.id === "seis-public-plugin-wave-2-program" && wave2Program?.status === "completed" && wave2Program?.progress?.completedStepCount === 100, "Wave 2 completion evidence is invalid");
 
   const steps = ROUND_DEFINITIONS.flatMap((round, roundIndex) => round.tasks.map((title, taskIndex) => ({
     number: (roundIndex * 20) + taskIndex + 1,
     round: roundIndex + 1,
     title,
-    status: "planned",
+    status: stepStatus((roundIndex * 20) + taskIndex + 1),
     validation: validationFor(roundIndex + 1, taskIndex + 1),
   })));
 
@@ -178,8 +181,8 @@ function buildRecord() {
     id: "seis-public-plugin-wave-3-program",
     goalId: "SEIS-GOAL-021",
     parentProgramId: initialProgram.id,
-    status: "planned",
-    maturity: "specification",
+    status: "in-progress",
+    maturity: "prototype",
     createdAt: "2026-07-21",
     updatedAt: "2026-07-21",
     wave: {
@@ -196,19 +199,20 @@ function buildRecord() {
     },
     scope: {
       repositories: ["SEIS"],
-      outcome: "Discover and, only if separately justified, deliver one non-duplicative public SEIS Repo capability through bounded repository-local evidence. Planning Wave 3 itself adds no public plugin card and changes no personal or external state.",
-      entryRule: "Wave 3 cannot move from planned to in-progress until the Wave 2 handoff is current and a separate capability decision records an approved, testable, non-duplicative scope.",
+      outcome: "Deliver one non-duplicative public SEIS Repo capability through bounded repository-local evidence. The selected Swift concurrency package remains static-only, deny-by-default, and release-gated.",
+      entryRule: "Wave 3 entered in-progress only after the Wave 2 handoff and a separate capability decision recorded an approved, testable, non-duplicative scope.",
     },
     nonGoals: [
       "Reading or mutating the personal marketplace.",
-      "Creating a public plugin, card, or source scaffold before a Wave 3 capability decision is approved.",
+      "Adding more than the one approved public package or card without a new capability decision.",
       "Protected default branch writes, force pushes, destructive repository actions, or background-execution claims.",
       "Live provider, browser, deployment, native runtime, external installation, signing, App Store, or public-release claims without separate current evidence and authorization.",
     ],
     selection: {
-      status: "discovery-required",
-      selectedCapability: null,
-      additionalPublicCardAdded: false,
+      status: "implementation-approved",
+      selectedCapability: SELECTED_CAPABILITY,
+      additionalPublicCardAdded: true,
+      implementationStarted: true,
       nonDuplicativeCapabilityRequired: true,
       separateDecisionRequiredBeforeImplementation: true,
     },
@@ -227,16 +231,16 @@ function buildRecord() {
       round: index + 1,
       name: round.name,
       objective: round.objective,
-      status: "planned",
+      status: index < 2 ? "completed" : index === 2 ? "in-progress" : "planned",
       steps: Array.from({ length: 20 }, (_, taskIndex) => (index * 20) + taskIndex + 1),
     })),
     steps,
     progress: {
-      completedStepCount: 0,
-      plannedStepCount: 100,
-      inProgressStepNumbers: [],
-      completedRoundCount: 0,
-      nextStepNumber: 1,
+      completedStepCount: COMPLETED_STEP_COUNT,
+      plannedStepCount: 100 - COMPLETED_STEP_COUNT - 1,
+      inProgressStepNumbers: [IN_PROGRESS_STEP_NUMBER],
+      completedRoundCount: 2,
+      nextStepNumber: IN_PROGRESS_STEP_NUMBER,
     },
     qualityGates: [
       "npm run check:seis-public-plugin-expansion-program",
@@ -259,8 +263,8 @@ function buildRecord() {
       {
         id: "RISK-W3-002",
         status: "tracked",
-        description: "A planned public card can be mistaken for an installed, released, or live external capability.",
-        mitigation: "Keep selectedCapability null, public release false, and external proof requirements explicit until current evidence exists.",
+        description: "An in-progress public card can be mistaken for an installed, released, or live external capability.",
+        mitigation: "Keep public release false and external proof requirements explicit while the selected package remains repository-local static evidence.",
       },
       {
         id: "RISK-W3-003",
@@ -271,7 +275,7 @@ function buildRecord() {
     ],
     rollback: {
       strategy: "revert",
-      scope: "Revert the Wave 3 planning record and its references on the current feature branch; planning creates no public card, external state, or data migration.",
+      scope: "Revert the focused Wave 3 package, public card, generated evidence, and program references on the current feature branch; no external state or data migration is created.",
       dataMigrationRequired: false,
     },
   };
@@ -294,20 +298,26 @@ function validationFor(round, task) {
   return "Wave 3 handoff and following-wave scope review evidence";
 }
 
+function stepStatus(number) {
+  if (number <= COMPLETED_STEP_COUNT) return "completed";
+  if (number === IN_PROGRESS_STEP_NUMBER) return "in-progress";
+  return "planned";
+}
+
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-3-program", "record id is invalid");
   assert(record.goalId === "SEIS-GOAL-021" && record.parentProgramId === "seis-public-plugin-expansion-program", "goal linkage is invalid");
-  assert(record.status === "planned" && record.maturity === "specification", "Wave 3 must remain a planned specification");
+  assert(record.status === "in-progress" && record.maturity === "prototype", "Wave 3 must remain an in-progress prototype");
   assert(record.wave?.number === 3 && record.wave?.totalSteps === 100 && record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20, "Wave 3 cadence is invalid");
   assert(record.wave?.predecessor?.programPath === WAVE_2_PROGRAM_PATH && record.wave?.predecessor?.handoffPath === WAVE_2_HANDOFF_PATH && record.wave?.predecessor?.requiredProgramStatus === "completed" && record.wave?.predecessor?.requiredHandoffStatus === "completed-repository-local-handoff", "Wave 3 predecessor is invalid");
   assert(list(record.rounds).length === 5 && list(record.steps).length === 100, "Wave 3 structure is incomplete");
   for (let index = 0; index < 100; index += 1) {
     const step = record.steps[index];
     assert(step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1, `step ${index + 1} is invalid`);
-    assert(step?.status === "planned" && typeof step?.title === "string" && step.title.length > 0 && typeof step?.validation === "string" && step.validation.length > 0, `step ${index + 1} lacks planned-task metadata`);
+    assert(step?.status === stepStatus(index + 1) && typeof step?.title === "string" && step.title.length > 0 && typeof step?.validation === "string" && step.validation.length > 0, `step ${index + 1} has invalid progress metadata`);
   }
-  assert(record.progress?.completedStepCount === 0 && record.progress?.plannedStepCount === 100 && list(record.progress?.inProgressStepNumbers).length === 0 && record.progress?.completedRoundCount === 0 && record.progress?.nextStepNumber === 1, "Wave 3 progress is invalid");
-  assert(record.selection?.status === "discovery-required" && record.selection?.selectedCapability === null && record.selection?.additionalPublicCardAdded === false && record.selection?.nonDuplicativeCapabilityRequired === true && record.selection?.separateDecisionRequiredBeforeImplementation === true, "Wave 3 selection boundary is invalid");
+  assert(record.progress?.completedStepCount === COMPLETED_STEP_COUNT && record.progress?.plannedStepCount === 100 - COMPLETED_STEP_COUNT - 1 && list(record.progress?.inProgressStepNumbers).join(",") === String(IN_PROGRESS_STEP_NUMBER) && record.progress?.completedRoundCount === 2 && record.progress?.nextStepNumber === IN_PROGRESS_STEP_NUMBER, "Wave 3 progress is invalid");
+  assert(record.selection?.status === "implementation-approved" && record.selection?.selectedCapability === SELECTED_CAPABILITY && record.selection?.additionalPublicCardAdded === true && record.selection?.implementationStarted === true && record.selection?.nonDuplicativeCapabilityRequired === true && record.selection?.separateDecisionRequiredBeforeImplementation === true, "Wave 3 selection boundary is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
   assert(list(record.nonGoals).length === 4 && list(record.risks).length === 3 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "scope, risks, or rollback is invalid");

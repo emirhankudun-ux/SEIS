@@ -15,10 +15,10 @@
   "marketplace": {
     "name": "seis-repo",
     "displayName": "SEIS Repo",
-    "publicCardCount": 378,
-    "expectedCardCount": 378,
-    "applicationPluginCount": 72,
-    "expectedApplicationPluginCount": 72
+    "publicCardCount": 379,
+    "expectedCardCount": 379,
+    "applicationPluginCount": 73,
+    "expectedApplicationPluginCount": 73
   },
   "validation": {
     "sourceAndCatalog": true,
@@ -31,7 +31,7 @@
     "releaseReadiness": true,
     "mcpBoundary": true,
     "wave2Completion": true,
-    "wave3Planning": true
+    "wave3Continuation": true
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -43,6 +43,14 @@
     "externalWrites": false,
     "secrets": false,
     "publicReleaseAllowed": false
+  },
+  "historicalWave3Planning": {
+    "statusAtWave1Handoff": "planned",
+    "selectionStatusAtWave1Handoff": "discovery-required",
+    "selectedCapabilityAtWave1Handoff": null,
+    "implementationStartedAtWave1Handoff": false,
+    "additionalPublicCardAddedAtWave1Handoff": false,
+    "note": "This preserves the Wave 3 state recorded when the completed Wave 1 handoff was first prepared; the current continuation is tracked separately below."
   },
   "knownGaps": [
     {
@@ -92,13 +100,18 @@
     "completedStepCount": 100,
     "completionRule": "Wave 2 completed only after its separately reviewed, bounded public Apple/Swift static-readiness scope retained empty write, network, and secret permissions and recorded no native-runtime or public-release claim."
   },
-  "plannedContinuation": {
+  "currentContinuation": {
     "number": 3,
-    "status": "planned",
+    "status": "in-progress",
     "programId": "seis-public-plugin-wave-3-program",
     "scopeRiskReviewPath": "content/development/seis-public-plugin-wave-2-handoff.json",
-    "selectionStatus": "discovery-required",
-    "activationRule": "Wave 3 remains a discovery-first plan. It cannot select or add a public plugin before a separate non-duplicative capability decision and current validation evidence."
+    "selectionStatus": "implementation-approved",
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "implementationStarted": true,
+    "additionalPublicCardAdded": true,
+    "historicalStatusAtWave1Handoff": "planned",
+    "historicalSelectionStatusAtWave1Handoff": "discovery-required",
+    "activationRule": "Wave 3 entered an in-progress implementation scope only after a separate non-duplicative capability decision and current repository-local validation evidence; it does not imply external release, installation, provider, deployment, or native-runtime proof."
   },
   "inputSafetyScan": {
     "inputCount": 16,

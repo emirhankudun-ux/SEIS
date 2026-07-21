@@ -14,9 +14,11 @@ distribution around it. The final overlap review intentionally added no second
 card: one well-scoped Apple/Swift static-readiness capability is more useful
 than a duplicate plugin.
 
-The current public contract remains 72 application-owned packages and 378
-`SEIS Repo` cards. Neither the personal marketplace nor external write,
-network, or secret permissions are involved.
+At Wave 2 completion, the historical public contract was 72 application-owned
+packages and 378 `SEIS Repo` cards. The current Wave 3 public contract is 73
+application-owned packages and 379 `SEIS Repo` cards after the separately
+selected bounded concurrency-audit package. Neither the personal marketplace
+nor external write, network, or secret permissions are involved.
 
 ## Evidence
 
@@ -44,14 +46,13 @@ CI execution is required before any such claim is made.
 
 ## Wave 3 Gate
 
-Wave 3 is recorded as a 100-step **planned specification** at
-`content/development/seis-public-plugin-wave-3-program.json`. It starts with
-evidence-led discovery. `selectedCapability` is `null`, so it does not add a
-card or imply a release. The separate discovery decision now selects
-`seis-swift-concurrency-audit` as a candidate while keeping implementation and
-the public-card count unchanged. It can become active only after the Wave 2
-handoff, a focused implementation design, current validation evidence, and
-continued user authority.
+Wave 3 is an active, 100-step **in-progress** implementation at
+`content/development/seis-public-plugin-wave-3-program.json`. It selected the
+single `seis-swift-concurrency-audit` package and added its public `SEIS Repo`
+card only after its Wave 2 handoff, focused implementation design, current
+repository-local validation evidence, and continued user authority. It still
+does not imply a public release, independent installation, compiler result, or
+native-runtime claim.
 
 ## Rollback
 

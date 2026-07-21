@@ -15,7 +15,7 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 72,
+    "marketplaceEntryCount": 73,
     "coreSourceOwner": false
   },
   "release": {
@@ -48,13 +48,13 @@
     ]
   },
   "counts": {
-    "discovered": 72,
-    "returned": 72,
-    "contractValid": 72,
+    "discovered": 73,
+    "returned": 73,
+    "contractValid": 73,
     "contractInvalid": 0,
     "statusReady": 70,
-    "statusAttention": 2,
-    "statusOk": 72,
+    "statusAttention": 3,
+    "statusOk": 73,
     "statusNotChecked": 0,
     "statusFailed": 0
   },
@@ -3286,6 +3286,72 @@
         "node scripts/seis-source-provenance-mcp-server.mjs --scan --path <workspace> --max-files 25"
       ],
       "rollback": "Disable or remove the local plugin; hashes are emitted to stdout and no report file is written."
+    },
+    {
+      "id": "seis-swift-concurrency-audit",
+      "name": "seis-swift-concurrency-audit",
+      "displayName": "SEIS Swift Concurrency Audit",
+      "description": "Audit bounded checked-in Swift concurrency markers without compiling, running, writing, or claiming concurrency correctness.",
+      "category": "Developer",
+      "capabilities": [
+        "bounded-swift-concurrency-signal-audit",
+        "unchecked-sendable-review",
+        "actor-isolation-marker-review",
+        "task-and-dispatch-marker-review",
+        "static-source-boundary-enforcement",
+        "read-only-local-evidence"
+      ],
+      "owner": "@seis-apple",
+      "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
+      "entrypoint": "scripts/seis-swift-concurrency-audit-mcp-server.mjs",
+      "release": {
+        "label": "0.00000002",
+        "semver": "0.0.20",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 20
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-static-signal-report",
+        "maxSwiftFiles": 64,
+        "maxFileBytes": 131072,
+        "maxTotalBytes": 1048576,
+        "maxSourceDepth": 4,
+        "maxReportedPaths": 24,
+        "limitReachedState": "attention"
+      },
+      "permissions": {
+        "read": [
+          "two fixed checked-in Swift source roots",
+          "bounded Swift source metadata and derived static concurrency markers"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "attention",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-swift-concurrency-audit-mcp-server.mjs --status",
+        "node scripts/seis-swift-concurrency-audit-mcp-server.mjs --audit --path .",
+        "node scripts/seis-swift-concurrency-audit-mcp-server.mjs --evidence",
+        "npm run check:seis-swift-concurrency-audit",
+        "node --test plugins/seis-core/test/swift-concurrency-audit.test.mjs",
+        "node --test plugins/seis-core/test/swift-concurrency-audit-evidence.test.mjs"
+      ],
+      "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits Swift source, marketplace state, an external system, or release state."
     },
     {
       "id": "seis-technology-ontology",

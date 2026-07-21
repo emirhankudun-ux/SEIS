@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-swift-concurrency-audit": {
+      "command": "node",
+      "args": [
+        "scripts/seis-swift-concurrency-audit-mcp-server.mjs"
+      ]
+    }
+  }
+}

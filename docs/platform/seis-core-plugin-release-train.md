@@ -5,7 +5,7 @@ strict package semver `0.0.20`.
 
 ## Scope
 
-This release train belongs to the 72 app-owned, public MIT-licensed plugin
+This release train belongs to the 73 app-owned, public MIT-licensed plugin
 packages in `plugins/seis-core/`. That directory is the canonical application
 source boundary inside the public SEIS repository. The ten public source modules directly
 under `plugins/` and the public `seis-ai-agent@seis-repo` suite remain on their

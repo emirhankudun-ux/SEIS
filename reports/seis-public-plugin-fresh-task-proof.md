@@ -42,9 +42,9 @@ Required runtime observations:
 
 ## Fresh Task Reload Evidence
 
-- Evidence status: recorded-local-fresh-task-evidence
+- Evidence status: incomplete-local-fresh-task-evidence
 - Task/thread id recorded: yes
-- Command output recorded: yes
+- Command output recorded: no
 - MCP inventory recorded: yes
 - SEIS AI bridge recorded: yes
 - Evidence contract: `content/development/seis-public-plugin-fresh-task-reload-evidence.json`
@@ -92,6 +92,7 @@ Required runtime observations:
 
 ## Current Blockers
 
+- No fresh-task command output has been recorded.
 - External clean-runner or public package installation proof has not been recorded.
 - Human approval for public preview, release, publish, push, merge, tag, deploy, SSH, or live provider access has not been recorded.
 

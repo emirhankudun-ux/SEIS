@@ -119,10 +119,14 @@ function buildRecord() {
         && wave2CapabilityDecision.decision?.selectedCapability === "seis-apple-native-readiness"
         && wave2Handoff.id === "seis-public-plugin-wave-2-handoff"
         && wave2Handoff.status === "completed-repository-local-handoff",
-      wave3Planning: wave3Program.id === "seis-public-plugin-wave-3-program"
-        && wave3Program.status === "planned"
-        && wave3Program.progress?.completedStepCount === 0
-        && wave3Program.selection?.status === "discovery-required",
+      wave3Continuation: wave3Program.id === "seis-public-plugin-wave-3-program"
+        && wave3Program.status === "in-progress"
+        && Number.isInteger(wave3Program.progress?.completedStepCount)
+        && wave3Program.progress.completedStepCount >= 46
+        && wave3Program.selection?.status === "implementation-approved"
+        && wave3Program.selection?.selectedCapability === "seis-swift-concurrency-audit"
+        && wave3Program.selection?.implementationStarted === true
+        && wave3Program.selection?.additionalPublicCardAdded === true,
     },
     publicBoundary: {
       marketplaceName: capabilityDecision.publicBoundary?.marketplaceName,
@@ -134,6 +138,14 @@ function buildRecord() {
       externalWrites: capabilityDecision.publicBoundary?.externalWrites,
       secrets: capabilityDecision.publicBoundary?.secrets,
       publicReleaseAllowed: capabilityDecision.publicBoundary?.publicReleaseAllowed,
+    },
+    historicalWave3Planning: {
+      statusAtWave1Handoff: "planned",
+      selectionStatusAtWave1Handoff: "discovery-required",
+      selectedCapabilityAtWave1Handoff: null,
+      implementationStartedAtWave1Handoff: false,
+      additionalPublicCardAddedAtWave1Handoff: false,
+      note: "This preserves the Wave 3 state recorded when the completed Wave 1 handoff was first prepared; the current continuation is tracked separately below.",
     },
     knownGaps: attentionContractIds.map((id) => ({
       id,
@@ -181,13 +193,18 @@ function buildRecord() {
       completedStepCount: wave2Program.progress?.completedStepCount || 0,
       completionRule: "Wave 2 completed only after its separately reviewed, bounded public Apple/Swift static-readiness scope retained empty write, network, and secret permissions and recorded no native-runtime or public-release claim.",
     },
-    plannedContinuation: {
+    currentContinuation: {
       number: 3,
       status: wave3Program.status,
       programId: wave3Program.id,
       scopeRiskReviewPath: PATHS.wave2Handoff,
       selectionStatus: wave3Program.selection?.status || null,
-      activationRule: "Wave 3 remains a discovery-first plan. It cannot select or add a public plugin before a separate non-duplicative capability decision and current validation evidence.",
+      selectedCapability: wave3Program.selection?.selectedCapability || null,
+      implementationStarted: wave3Program.selection?.implementationStarted === true,
+      additionalPublicCardAdded: wave3Program.selection?.additionalPublicCardAdded === true,
+      historicalStatusAtWave1Handoff: "planned",
+      historicalSelectionStatusAtWave1Handoff: "discovery-required",
+      activationRule: "Wave 3 entered an in-progress implementation scope only after a separate non-duplicative capability decision and current repository-local validation evidence; it does not imply external release, installation, provider, deployment, or native-runtime proof.",
     },
     inputSafetyScan,
   };
@@ -210,7 +227,8 @@ function validateRecord(record) {
   assert(record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
   assert(list(record.knownGaps).length === 1 && record.knownGaps[0]?.id === "ui-state-contract", "known attention record is invalid");
   assert(record.nextWave?.number === 2 && record.nextWave?.status === "completed" && record.nextWave?.programId === "seis-public-plugin-wave-2-program" && record.nextWave?.handoffPath === PATHS.wave2Handoff && Number.isInteger(record.nextWave?.completedStepCount) && record.nextWave.completedStepCount === 100 && record.nextWave?.scopeReviewComplete === true, "Wave 2 completion decision is invalid");
-  assert(record.plannedContinuation?.number === 3 && record.plannedContinuation?.status === "planned" && record.plannedContinuation?.programId === "seis-public-plugin-wave-3-program" && record.plannedContinuation?.scopeRiskReviewPath === PATHS.wave2Handoff && record.plannedContinuation?.selectionStatus === "discovery-required", "Wave 3 planning decision is invalid");
+  assert(record.historicalWave3Planning?.statusAtWave1Handoff === "planned" && record.historicalWave3Planning?.selectionStatusAtWave1Handoff === "discovery-required" && record.historicalWave3Planning?.selectedCapabilityAtWave1Handoff === null && record.historicalWave3Planning?.implementationStartedAtWave1Handoff === false && record.historicalWave3Planning?.additionalPublicCardAddedAtWave1Handoff === false, "Wave 3 historical planning snapshot is invalid");
+  assert(record.currentContinuation?.number === 3 && record.currentContinuation?.status === "in-progress" && record.currentContinuation?.programId === "seis-public-plugin-wave-3-program" && record.currentContinuation?.scopeRiskReviewPath === PATHS.wave2Handoff && record.currentContinuation?.selectionStatus === "implementation-approved" && record.currentContinuation?.selectedCapability === "seis-swift-concurrency-audit" && record.currentContinuation?.implementationStarted === true && record.currentContinuation?.additionalPublicCardAdded === true && record.currentContinuation?.historicalStatusAtWave1Handoff === "planned" && record.currentContinuation?.historicalSelectionStatusAtWave1Handoff === "discovery-required", "Wave 3 continuation decision is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0, "handoff inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "handoff record must not contain machine-specific paths");
 }

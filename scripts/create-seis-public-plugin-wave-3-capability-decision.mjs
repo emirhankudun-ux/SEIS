@@ -48,7 +48,7 @@ if (CHECK_MODE) {
   console.log("SEIS public plugin Wave 3 capability decision check passed.");
 } else {
   writeText(OUTPUT_PATH, expected);
-  console.log(`Wrote ${OUTPUT_PATH} for the bounded ${CANDIDATE_ID} discovery candidate.`);
+  console.log(`Wrote ${OUTPUT_PATH} for the bounded ${CANDIDATE_ID} repository-local implementation.`);
 }
 
 function buildRecord() {
@@ -68,16 +68,16 @@ function buildRecord() {
     goalId: "SEIS-GOAL-021",
     backlogId: "SEIS-BL-021",
     generatedAt: "2026-07-21",
-    status: "approved-discovery-candidate",
+    status: "approved-public-local-implementation",
     wave: 3,
-    purpose: "Record one non-duplicative, bounded, public-only Swift concurrency audit candidate before any Wave 3 package, marketplace card, provider call, or external state is created.",
+    purpose: "Record the one non-duplicative, bounded, public-only Swift concurrency audit package and SEIS Repo card now implemented through repository-local evidence. This remains static-only and does not claim an external installation, provider, deployment, native runtime, or public release.",
     decision: {
       selectedCapability: CANDIDATE_ID,
       displayName: "SEIS Swift Concurrency Audit",
-      implementationStarted: false,
-      additionalPublicCardAdded: false,
+      implementationStarted: true,
+      additionalPublicCardAdded: true,
       selectionReason: "The existing public Apple Native Readiness package verifies declared Swift Package, source/test-presence, and platform-strategy evidence, but deliberately does not inspect concurrency annotations or static risk signals. A focused concurrency audit can provide a distinct, bounded review of checked-in Swift source markers without compiling, running, or claiming concurrency correctness.",
-      implementationGate: "Keep the Wave 3 program planned until a focused package contract, deny-by-default runtime, fixtures, structural validation, and full repository-local reconciliation are ready. This discovery decision alone creates no package or public card.",
+      implementationGate: "The Wave 3 program is active because a focused package contract, deny-by-default runtime, deterministic fixtures, structural validation, and the public SEIS Repo card now exist. Full repository-local regression, provenance, lifecycle, fresh-task, and handoff evidence remain required before any Wave 3 completion or release claim.",
       overlapReview: [
         {
           plugin: "seis-apple-native-readiness",
@@ -105,7 +105,7 @@ function buildRecord() {
       repositories: ["SEIS"],
       sourceInputs: SOURCE_ROOTS,
       dataClassification: "public-checked-in-Swift-source-metadata-and-derived-static-signals",
-      outcome: "If separately implemented, provide a bounded static-only concurrency signal review using aggregate counts and capped repository-relative filenames, never raw source content.",
+      outcome: "Provide a bounded static-only concurrency signal review using aggregate counts and capped repository-relative filenames, never raw source content.",
     },
     nonGoals: [
       "Compiling, testing, building, running, signing, provisioning, deploying, or releasing a Swift package or native application.",
@@ -114,19 +114,19 @@ function buildRecord() {
       "Reading or mutating a personal marketplace, making network calls, writing external state, or adding a card merely to increase counts.",
     ],
     acceptanceCriteria: [
-      "A future package uses only the fixed source roots and rejects arbitrary paths and symlinks.",
-      "A future package enforces file-count, file-size, total-byte, depth, and output-path limits.",
+      "The package uses only the fixed source roots and rejects arbitrary paths and symlinks.",
+      "The package enforces file-count, file-size, total-byte, depth, and output-path limits.",
       "Its output distinguishes static attention signals from a concurrency-correctness claim and excludes raw source.",
       "Its write, network, and secret permissions remain empty.",
-      "A public SEIS Repo card is added only after focused tests, plugin validation, metadata reconciliation, and current repository-local evidence pass.",
+      "The public SEIS Repo card is reconciled with focused tests, plugin validation, metadata generation, and current repository-local evidence.",
     ],
     implementation: {
       sourcePath: sourceCandidate?.sourcePath || null,
       marketplaceSourcePath: marketplaceCandidate?.source?.path || null,
       packageExists: sourceCandidate !== null,
       publicCardExists: marketplaceCandidate !== null,
-      implementationStarted: false,
-      additionalPublicCardAdded: false,
+      implementationStarted: true,
+      additionalPublicCardAdded: true,
     },
     preconditions: {
       wave2HandoffId: wave2Handoff.id || null,
@@ -144,7 +144,7 @@ function buildRecord() {
       expectedApplicationPluginCount: APP_PLUGIN_EXPANSION_TARGET,
       publicCardCount: marketplaceEntries.length,
       expectedPublicCardCount: APP_PLUGIN_EXPANSION_TARGET + 306,
-      additionalPublicCardAdded: false,
+      additionalPublicCardAdded: true,
       personalMarketplaceRead: false,
       personalMarketplaceMutation: false,
       network: false,
@@ -191,12 +191,12 @@ function buildRecord() {
         id: "RISK-W3-003",
         status: "tracked",
         description: "The public marketplace could gain a duplicate or premature card.",
-        mitigation: "Keep implementationStarted and additionalPublicCardAdded false until the future package and all repository contracts pass their dedicated gate.",
+        mitigation: "Keep the selected package singular, retain its overlap review, and require focused and broad repository-local validation before Wave 3 handoff or any external release decision.",
       },
     ],
     rollback: {
       strategy: "revert",
-      scope: "Revert this discovery decision, test, and documentation checkpoint on the feature branch. It creates no package, marketplace card, external state, or data migration.",
+      scope: "Revert the focused Wave 3 package, its SEIS Repo card, generated evidence, decision, tests, and documentation on the feature branch. It creates no external state or data migration.",
       dataMigrationRequired: false,
     },
   };
@@ -316,12 +316,12 @@ function walkSourceTree(directoryPath, sourceRootPath, rootRecord, snapshot, sig
 function validateRecord(record) {
   const evidence = record.staticEvidence || {};
   assert(record.id === "seis-public-plugin-wave-3-capability-decision" && record.goalId === "SEIS-GOAL-021" && record.backlogId === "SEIS-BL-021" && record.wave === 3, "decision identity is invalid");
-  assert(record.status === "approved-discovery-candidate" && record.decision?.selectedCapability === CANDIDATE_ID && record.decision?.implementationStarted === false && record.decision?.additionalPublicCardAdded === false, "discovery decision state is invalid");
+  assert(record.status === "approved-public-local-implementation" && record.decision?.selectedCapability === CANDIDATE_ID && record.decision?.implementationStarted === true && record.decision?.additionalPublicCardAdded === true, "implementation decision state is invalid");
   assert(list(record.decision?.overlapReview).length === 4 && list(record.nonGoals).length === 4 && list(record.acceptanceCriteria).length === 5, "scope is incomplete");
-  assert(record.implementation?.packageExists === false && record.implementation?.publicCardExists === false && record.implementation?.sourcePath === null && record.implementation?.marketplaceSourcePath === null && record.implementation?.implementationStarted === false && record.implementation?.additionalPublicCardAdded === false, "implementation must remain unstarted");
+  assert(record.implementation?.packageExists === true && record.implementation?.publicCardExists === true && record.implementation?.sourcePath === `plugins/seis-core/${CANDIDATE_ID}` && record.implementation?.marketplaceSourcePath === `./plugins/seis-core/${CANDIDATE_ID}` && record.implementation?.implementationStarted === true && record.implementation?.additionalPublicCardAdded === true, "implementation evidence is invalid");
   assert(record.preconditions?.wave2HandoffId === "seis-public-plugin-wave-2-handoff" && record.preconditions?.wave2HandoffStatus === "completed-repository-local-handoff", "Wave 2 handoff precondition is invalid");
-  assert(record.preconditions?.wave3ProgramId === "seis-public-plugin-wave-3-program" && record.preconditions?.wave3ProgramStatus === "planned" && record.preconditions?.wave3ProgramSelectionStatus === "discovery-required" && record.preconditions?.wave3ProgramSelectedCapability === null, "Wave 3 planning precondition is invalid");
-  assert(record.publicDistribution?.marketplaceName === "seis-repo" && record.publicDistribution?.marketplaceDisplayName === "SEIS Repo" && record.publicDistribution?.publicAudience === "everyone" && record.publicDistribution?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.publicDistribution?.expectedApplicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.publicDistribution?.publicCardCount === APP_PLUGIN_EXPANSION_TARGET + 306 && record.publicDistribution?.expectedPublicCardCount === APP_PLUGIN_EXPANSION_TARGET + 306 && record.publicDistribution?.additionalPublicCardAdded === false, "public distribution contract is invalid");
+  assert(record.preconditions?.wave3ProgramId === "seis-public-plugin-wave-3-program" && record.preconditions?.wave3ProgramStatus === "in-progress" && record.preconditions?.wave3ProgramSelectionStatus === "implementation-approved" && record.preconditions?.wave3ProgramSelectedCapability === CANDIDATE_ID, "Wave 3 implementation precondition is invalid");
+  assert(record.publicDistribution?.marketplaceName === "seis-repo" && record.publicDistribution?.marketplaceDisplayName === "SEIS Repo" && record.publicDistribution?.publicAudience === "everyone" && record.publicDistribution?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.publicDistribution?.expectedApplicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.publicDistribution?.publicCardCount === APP_PLUGIN_EXPANSION_TARGET + 306 && record.publicDistribution?.expectedPublicCardCount === APP_PLUGIN_EXPANSION_TARGET + 306 && record.publicDistribution?.additionalPublicCardAdded === true, "public distribution contract is invalid");
   assert(record.publicDistribution?.personalMarketplaceRead === false && record.publicDistribution?.personalMarketplaceMutation === false && record.publicDistribution?.network === false && record.publicDistribution?.externalWrites === false && record.publicDistribution?.secrets === false && record.publicDistribution?.publicReleaseAllowed === false, "public distribution safety boundary is invalid");
   assert(evidence.classification === "bounded-static-concurrency-signals-only" && evidence.state === "bounded-static-signals-collected" && evidence.rootCount === SOURCE_ROOTS.length && evidence.discoveredSwiftFileCount > 0 && evidence.discoveredSwiftFileCount <= LIMITS.maxSwiftFiles && evidence.scannedSwiftFileCount === evidence.discoveredSwiftFileCount && evidence.boundedSwiftByteCount <= LIMITS.maxTotalBytes && evidence.maxFileBytesObserved <= LIMITS.maxFileBytes && evidence.maxRelativeDepthObserved <= LIMITS.maxRelativeDepth, "static source bounds are invalid");
   assert(evidence.symlinkCount === 0 && evidence.fileLimitExceeded === false && evidence.fileSizeLimitExceeded === false && evidence.totalByteLimitExceeded === false && evidence.depthLimitExceeded === false && evidence.unreadableFileCount === 0, "static source traversal is unsafe or incomplete");

@@ -6,11 +6,16 @@
 
 ## Completed
 
-Wave 2 closes its 100 bounded steps with one public, local, read-only
-Apple/Swift static-readiness package: `seis-apple-native-readiness`. Its public
-distribution remains at 72 application-owned packages and 378 `SEIS Repo`
-cards. The Wave 2 follow-up review chose no additional public package, avoiding
-feature-count-driven duplication.
+Wave 2 closed its 100 bounded steps with one public, local, read-only
+Apple/Swift static-readiness package: `seis-apple-native-readiness`. At that
+handoff, its public distribution was 72 application-owned packages and 378
+`SEIS Repo` cards. The Wave 2 follow-up review chose no additional public
+package, avoiding feature-count-driven duplication.
+
+Current Wave 3 repository-local work has since added the single, separately
+selected `seis-swift-concurrency-audit` package. The current public contract is
+73 application-owned packages and 379 `SEIS Repo` cards; this remains neither
+an independent installation nor a release claim.
 
 ## Safety Boundary
 
@@ -30,11 +35,12 @@ feature-count-driven duplication.
 
 ## Next Decision
 
-Wave 3 remains planned and not active in its program record, whose
-`selectedCapability` remains `null`. Its completed discovery decision selects
-`seis-swift-concurrency-audit` as a bounded candidate only; implementation has
-not started and no new public card was added. Its own implementation gate still
-requires current design, validation, and user authority.
+The historical Wave 2 handoff retains its original Wave 3 planned snapshot.
+The current Wave 3 program is now `in-progress`, selects
+`seis-swift-concurrency-audit`, and records the new public card as
+repository-local implementation work. Its remaining gate requires current
+generated evidence, broad local validation, and a focused feature-branch
+handoff; no external release or installation is implied.
 
 ## Machine-Readable Evidence
 

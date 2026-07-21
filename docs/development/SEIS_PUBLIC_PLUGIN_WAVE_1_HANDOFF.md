@@ -42,6 +42,9 @@ Representative current checks:
 
 Wave 2 completed its separate 100-step program and repository-local handoff.
 At this Wave 1 handoff, Wave 3 had no selected capability or added public card.
-Its later discovery decision now selects `seis-swift-concurrency-audit` as a
-bounded candidate only; implementation remains unstarted and no public card has
-been added. See `content/development/seis-public-plugin-wave-3-capability-decision.json`.
+That historical state remains recorded in the handoff snapshot. The later
+Wave 3 decision now selects and implements the bounded
+`seis-swift-concurrency-audit` package with one public `SEIS Repo` card;
+implementation is repository-local and static-only, not an independent
+installation or release claim. See
+`content/development/seis-public-plugin-wave-3-capability-decision.json`.

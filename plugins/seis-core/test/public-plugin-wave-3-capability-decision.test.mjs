@@ -10,7 +10,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const decisionPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-3-capability-decision.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-3-capability-decision.mjs");
 
-test("selects a bounded non-duplicative Wave 3 concurrency candidate without starting a package or card", () => {
+test("records the bounded non-duplicative Wave 3 concurrency package and SEIS Repo card", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -18,22 +18,23 @@ test("selects a bounded non-duplicative Wave 3 concurrency candidate without sta
   assert.equal(result.status, 0, result.stderr);
 
   const decision = JSON.parse(fs.readFileSync(decisionPath, "utf8"));
-  assert.equal(decision.status, "approved-discovery-candidate");
+  assert.equal(decision.status, "approved-public-local-implementation");
   assert.equal(decision.decision.selectedCapability, "seis-swift-concurrency-audit");
-  assert.equal(decision.decision.implementationStarted, false);
-  assert.equal(decision.decision.additionalPublicCardAdded, false);
-  assert.equal(decision.implementation.packageExists, false);
-  assert.equal(decision.implementation.publicCardExists, false);
-  assert.equal(decision.implementation.sourcePath, null);
-  assert.equal(decision.implementation.marketplaceSourcePath, null);
+  assert.equal(decision.decision.implementationStarted, true);
+  assert.equal(decision.decision.additionalPublicCardAdded, true);
+  assert.equal(decision.implementation.packageExists, true);
+  assert.equal(decision.implementation.publicCardExists, true);
+  assert.equal(decision.implementation.sourcePath, "plugins/seis-core/seis-swift-concurrency-audit");
+  assert.equal(decision.implementation.marketplaceSourcePath, "./plugins/seis-core/seis-swift-concurrency-audit");
   assert.equal(decision.preconditions.wave2HandoffStatus, "completed-repository-local-handoff");
-  assert.equal(decision.preconditions.wave3ProgramStatus, "planned");
-  assert.equal(decision.preconditions.wave3ProgramSelectedCapability, null);
+  assert.equal(decision.preconditions.wave3ProgramStatus, "in-progress");
+  assert.equal(decision.preconditions.wave3ProgramSelectionStatus, "implementation-approved");
+  assert.equal(decision.preconditions.wave3ProgramSelectedCapability, "seis-swift-concurrency-audit");
   assert.equal(decision.publicDistribution.marketplaceName, "seis-repo");
   assert.equal(decision.publicDistribution.marketplaceDisplayName, "SEIS Repo");
-  assert.equal(decision.publicDistribution.applicationPluginCount, 72);
-  assert.equal(decision.publicDistribution.publicCardCount, 378);
-  assert.equal(decision.publicDistribution.additionalPublicCardAdded, false);
+  assert.equal(decision.publicDistribution.applicationPluginCount, 73);
+  assert.equal(decision.publicDistribution.publicCardCount, 379);
+  assert.equal(decision.publicDistribution.additionalPublicCardAdded, true);
   assert.equal(decision.publicDistribution.personalMarketplaceRead, false);
   assert.equal(decision.publicDistribution.personalMarketplaceMutation, false);
   assert.equal(decision.publicDistribution.network, false);

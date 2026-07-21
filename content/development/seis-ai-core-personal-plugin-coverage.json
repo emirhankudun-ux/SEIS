@@ -317,7 +317,7 @@
       }
     ],
     "applicationSourceRoot": "plugins/seis-core",
-    "applicationOwnedCount": 72,
+    "applicationOwnedCount": 73,
     "applicationOwnedPluginIds": [
       "seis-a11y-regression",
       "seis-action-pin-audit",
@@ -382,6 +382,7 @@
       "seis-secret-boundary-scan",
       "seis-semver-audit",
       "seis-source-provenance",
+      "seis-swift-concurrency-audit",
       "seis-technology-ontology",
       "seis-test-flakiness",
       "seis-tool-permission-audit",
@@ -392,7 +393,7 @@
       "seis-workflow-permission-audit",
       "seis-workspace-inspector"
     ],
-    "applicationOnlyCount": 22,
+    "applicationOnlyCount": 23,
     "applicationOnlyPluginIds": [
       "seis-apple-native-readiness",
       "seis-approval-gate-review",
@@ -413,6 +414,7 @@
       "seis-public-install-state",
       "seis-public-runtime-status",
       "seis-rollback-readiness",
+      "seis-swift-concurrency-audit",
       "seis-tool-permission-audit",
       "seis-trusted-marketplace",
       "seis-ui-state-contract-audit"

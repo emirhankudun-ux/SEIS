@@ -109,6 +109,7 @@
       "seis-secret-boundary-scan",
       "seis-semver-audit",
       "seis-source-provenance",
+      "seis-swift-concurrency-audit",
       "seis-technology-ontology",
       "seis-test-flakiness",
       "seis-tool-permission-audit",
@@ -183,6 +184,7 @@
       "seis-secret-boundary-scan",
       "seis-semver-audit",
       "seis-source-provenance",
+      "seis-swift-concurrency-audit",
       "seis-technology-ontology",
       "seis-test-flakiness",
       "seis-tool-permission-audit",
@@ -206,8 +208,8 @@
       "seis-ai-agent@seis-repo"
     ],
     "embeddedModuleCount": 10,
-    "applicationOwnedPluginCount": 72,
-    "applicationMarketplacePluginCount": 72,
+    "applicationOwnedPluginCount": 73,
+    "applicationMarketplacePluginCount": 73,
     "applicationSourceRoot": "plugins/seis-core",
     "applicationSourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json"
   },
@@ -324,14 +326,14 @@
     "releaseTrain": "content/development/seis-core-plugin-release-train.json",
     "releaseLabel": "0.00000002",
     "releaseSemver": "0.0.20",
-    "pluginCount": 72,
+    "pluginCount": 73,
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
     "publicDistribution": "direct-repository-source",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 72,
+    "marketplaceEntryCount": 73,
     "installSurface": "repo-source-app",
     "executionMode": "task-scoped-local-demo-only",
     "publicReleaseAllowed": false,
@@ -2297,6 +2299,38 @@
         "permissions": {
           "read": [
             "bounded regular files under an explicit workspace"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-swift-concurrency-audit",
+        "displayName": "SEIS Swift Concurrency Audit",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
+        "version": "0.0.20",
+        "license": "MIT",
+        "sourceClassification": "public-SEIS-repository",
+        "lifecycleStatus": "approved-public-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.00000002",
+        "releaseSemver": "0.0.20",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": "seis-swift-concurrency-audit@seis-repo",
+        "installSurface": "repo-source-app",
+        "publicMarketplace": true,
+        "publicRepositoryAvailable": true,
+        "publicAudience": "everyone",
+        "publicStatus": "public-repo-marketplace",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "permissions": {
+          "read": [
+            "two fixed checked-in Swift source roots",
+            "bounded Swift source metadata and derived static concurrency markers"
           ],
           "write": [],
           "network": [],

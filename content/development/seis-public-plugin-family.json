@@ -3,7 +3,7 @@
   "id": "seis-public-plugin-family",
   "generatedAt": "2026-07-12",
   "mode": "public_seis_agent_with_migrated_root_app_and_topic_repository_plugins",
-  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 72 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
+  "summary": "SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, 73 app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.",
   "defaultInstall": {
     "installId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
@@ -16,10 +16,10 @@
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL",
     "publicAudience": "everyone",
-    "publicPluginCount": 378,
+    "publicPluginCount": 379,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 72,
+    "applicationPluginCount": 73,
     "topicPluginCount": 300,
     "entries": [
       {
@@ -502,6 +502,13 @@
         "name": "seis-source-provenance",
         "sourcePath": "./plugins/seis-core/seis-source-provenance",
         "category": "Productivity",
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      {
+        "name": "seis-swift-concurrency-audit",
+        "sourcePath": "./plugins/seis-core/seis-swift-concurrency-audit",
+        "category": "Developer",
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
@@ -3234,6 +3241,15 @@
       "sourcePath": "./plugins/seis-core/seis-source-provenance",
       "category": "Productivity",
       "installId": "seis-source-provenance@seis-repo",
+      "license": "MIT",
+      "publicStatus": "repo_marketplace_available",
+      "liveRuntimeStatus": "local_demo_or_auth_gated"
+    },
+    {
+      "name": "seis-swift-concurrency-audit",
+      "sourcePath": "./plugins/seis-core/seis-swift-concurrency-audit",
+      "category": "Developer",
+      "installId": "seis-swift-concurrency-audit@seis-repo",
       "license": "MIT",
       "publicStatus": "repo_marketplace_available",
       "liveRuntimeStatus": "local_demo_or_auth_gated"

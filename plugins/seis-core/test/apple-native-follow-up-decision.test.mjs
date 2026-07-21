@@ -25,8 +25,8 @@ test("keeps the Apple-native follow-up decision evidence-based and non-duplicati
   assert.equal(decision.swiftPmEvidence.localToolingObservation.swiftTestCompletionClaim, "not-completed-and-not-claimed");
   assert.equal(decision.swiftPmEvidence.validationBoundary.testPassClaim, false);
   assert.equal(decision.publicDistribution.marketplaceName, "seis-repo");
-  assert.equal(decision.publicDistribution.applicationPluginCount, 72);
-  assert.equal(decision.publicDistribution.publicCardCount, 378);
+  assert.equal(decision.publicDistribution.applicationPluginCount, 73);
+  assert.equal(decision.publicDistribution.publicCardCount, 379);
   assert.equal(decision.publicDistribution.additionalCardAdded, false);
   assert.equal(decision.publicDistribution.personalMarketplaceRead, false);
   assert.equal(decision.publicDistribution.personalMarketplaceMutation, false);

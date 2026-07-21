@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-swift-concurrency-audit",
+  "goalId": "SEIS-GOAL-021",
+  "generatedAt": "2026-07-21",
+  "status": "attention-public-static-concurrency-evidence",
+  "purpose": "Record bounded, read-only Swift concurrency static signals without claiming compiler diagnostics, Sendable or actor correctness, data-race freedom, SwiftPM test completion, native runtime, signing, deployment, provider, or release outcomes.",
+  "plugin": {
+    "name": "seis-swift-concurrency-audit",
+    "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
+    "version": "0.0.20",
+    "releaseTrainVersion": "0.00000002",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "marketplace": {
+    "publicCardCount": 379,
+    "expectedPublicCardCount": 379,
+    "applicationPluginCount": 73,
+    "expectedApplicationPluginCount": 73,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "topicPluginCount": 300
+  },
+  "decision": {
+    "id": "seis-public-plugin-wave-3-capability-decision",
+    "status": "approved-public-local-implementation",
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "implementationStarted": true,
+    "additionalPublicCardAdded": true
+  },
+  "audit": {
+    "state": "attention",
+    "ok": true,
+    "mode": "swift-concurrency-static-signal-read-only",
+    "classification": "bounded-static-concurrency-signals-only",
+    "scannedSwiftFileCount": 30,
+    "boundedSwiftByteCount": 509640,
+    "maxFileBytesObserved": 95258,
+    "maxRelativeDepthObserved": 1,
+    "sourceRootCount": 2,
+    "sourceRootStates": [
+      {
+        "id": "platform-kit-sources",
+        "safe": true
+      },
+      {
+        "id": "apple-shell-sources",
+        "safe": true
+      }
+    ],
+    "signalCounts": {
+      "uncheckedSendable": 3,
+      "mainActor": 8,
+      "actorDeclaration": 0,
+      "sendableDeclaration": 55,
+      "taskDetached": 0,
+      "taskMainActor": 4,
+      "dispatchQueue": 2,
+      "await": 12
+    },
+    "reportedPathCounts": {
+      "uncheckedSendable": 3,
+      "mainActor": 5,
+      "actorDeclaration": 0,
+      "sendableDeclaration": 17,
+      "taskDetached": 0,
+      "taskMainActor": 3,
+      "dispatchQueue": 1,
+      "await": 4
+    },
+    "findingCodes": [
+      "machine-path-marker-redacted",
+      "unchecked-sendable-review-required"
+    ],
+    "reviewRequired": true,
+    "blockingFindingCount": 0
+  },
+  "resilienceReview": {
+    "status": "completed-repository-local-resilience-review",
+    "limits": {
+      "maxSwiftFiles": 64,
+      "maxFileBytes": 131072,
+      "maxTotalBytes": 1048576,
+      "maxSourceDepth": 4,
+      "maxReportedPaths": 24
+    },
+    "limitReachedState": "attention",
+    "coveredFailureModes": [
+      "source-depth-limit",
+      "source-file-count-limit",
+      "source-file-size-limit",
+      "source-total-byte-limit",
+      "source-symlink",
+      "credential-assignment-marker",
+      "MCP-arbitrary-audit-path"
+    ],
+    "outputBoundary": {
+      "rawSourceReturned": false,
+      "rawMatchedValuesReturned": false,
+      "machineSpecificPathReturned": false,
+      "network": false,
+      "writes": false,
+      "secrets": false
+    },
+    "nativeExecution": "not-run-and-not-claimed"
+  },
+  "safety": {
+    "read": [
+      "two fixed checked-in Swift source roots",
+      "bounded Swift source metadata and derived static concurrency markers"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "compilesSwift": false,
+    "runsSwiftTests": false,
+    "startsNativeApplication": false,
+    "signsArtifacts": false,
+    "installsPlugins": false,
+    "publicReleaseAllowed": false
+  },
+  "limitations": [
+    "This audit reads bounded static Swift source evidence only and does not compile or run Swift.",
+    "Static markers do not prove Sendable conformance, actor isolation, data-race freedom, task safety, compiler diagnostics, test success, or runtime behavior.",
+    "The audit never returns raw source or matched values, writes files, follows symlinks, calls a provider, uses a network, reads credentials, or changes release state."
+  ],
+  "inputSafety": {
+    "machineSpecificPathMarkerCount": 1,
+    "credentialAssignmentFindingCount": 0,
+    "rawSourceReturned": false,
+    "rawMatchedValuesReturned": false,
+    "sourceFilesCompiled": false
+  },
+  "validation": [
+    "node plugins/seis-core/seis-swift-concurrency-audit/scripts/seis-swift-concurrency-audit-mcp-server.mjs --status",
+    "node plugins/seis-core/seis-swift-concurrency-audit/scripts/seis-swift-concurrency-audit-mcp-server.mjs --audit --path .",
+    "node plugins/seis-core/seis-swift-concurrency-audit/scripts/seis-swift-concurrency-audit-mcp-server.mjs --evidence",
+    "node --test plugins/seis-core/test/swift-concurrency-audit.test.mjs",
+    "npm run check:seis-swift-concurrency-audit"
+  ],
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  }
+}

@@ -10,10 +10,10 @@
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
     "publicAudience": "everyone",
-    "publicCardCount": 378,
-    "expectedPublicCardCount": 378,
-    "applicationPluginCount": 72,
-    "expectedApplicationPluginCount": 72,
+    "publicCardCount": 379,
+    "expectedPublicCardCount": 379,
+    "applicationPluginCount": 73,
+    "expectedApplicationPluginCount": 73,
     "topicPluginCount": 300,
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true
@@ -22,21 +22,21 @@
     "sourceCatalog": {
       "sourceStatus": "active-public-repository-boundary",
       "catalogContractValid": true,
-      "sourcePluginCount": 72,
-      "catalogPluginCount": 72,
+      "sourcePluginCount": 73,
+      "catalogPluginCount": 73,
       "applePluginStatus": "ready"
     },
     "matrixRegistrySuite": {
-      "matrixPluginCount": 72,
+      "matrixPluginCount": 73,
       "matrixFailureCount": 0,
       "matrixAppleStatus": "ready",
       "registryEntryCount": 5000,
       "registryAppleInstallId": "seis-apple-native-readiness@seis-repo",
-      "suiteApplicationPluginCount": 72,
+      "suiteApplicationPluginCount": 73,
       "suitePublicReleaseAllowed": false
     },
     "permissions": {
-      "applicationMcpServerCount": 72,
+      "applicationMcpServerCount": 73,
       "remoteServerCount": 0,
       "writePermissionGrantCount": 0,
       "networkPermissionGrantCount": 0,
@@ -46,7 +46,8 @@
     "installAndRuntime": {
       "repositorySourceAvailable": true,
       "localArtifactStageVerified": true,
-      "freshTaskReloadRecorded": true,
+      "freshTaskReloadRecorded": false,
+      "freshTaskReloadState": "incomplete-local-fresh-task-evidence",
       "independentInstallationVerified": false,
       "humanReleaseApprovalRecorded": false,
       "runtimeCacheIsInstallationProof": false,
@@ -63,8 +64,8 @@
     },
     "manifest": {
       "overallState": "ready",
-      "declaredMarketplaceEntryCount": 378,
-      "declaredApplicationMarketplaceEntryCount": 72,
+      "declaredMarketplaceEntryCount": 379,
+      "declaredApplicationMarketplaceEntryCount": 73,
       "findingCount": 0
     },
     "appleReadiness": {
@@ -85,6 +86,7 @@
     "humanReleaseApprovalRecorded": false
   },
   "remainingGaps": [
+    "Fresh-task reload evidence remains incomplete; it is not treated as a successful local reload or installation claim.",
     "Independent clean-runner or public package installation evidence has not been recorded.",
     "Human approval for public preview, release, publication, external writes, provider credentials, deployment, SSH, or protected-branch actions has not been recorded.",
     "Apple-native validation remains documented static readiness only; no SwiftPM, simulator, device, signing, provisioning, or App Store claim is made."

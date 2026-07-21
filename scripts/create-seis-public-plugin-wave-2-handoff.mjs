@@ -73,7 +73,7 @@ function buildRecord() {
     goalId: "SEIS-GOAL-021",
     generatedAt: "2026-07-21",
     status: "completed-repository-local-handoff",
-    purpose: "Record a reproducible repository-local Wave 2 completion, its public SEIS Repo boundary, its known native and external validation limits, and its Wave 3 discovery gate. This is not a public release, independent installation, provider, deployment, or approval claim.",
+    purpose: "Record a reproducible repository-local Wave 2 completion, its public SEIS Repo boundary, its known native and external validation limits, and its current Wave 3 continuation reference. This is not a public release, independent installation, provider, deployment, or approval claim.",
     program: {
       id: wave2Program.id,
       status: wave2Program.status,
@@ -108,11 +108,14 @@ function buildRecord() {
         && typeof releaseReadiness.decision === "string"
         && ["large-code-promotion-evidence-ready", "continue-code-before-large-code-promotion"].includes(releaseReadiness.decision),
       mcpBoundary: list(mcpPermission.safety?.write).length === 0 && list(mcpPermission.safety?.network).length === 0 && list(mcpPermission.safety?.secrets).length === 0,
-      wave3Planning: wave3Program.id === "seis-public-plugin-wave-3-program"
-        && wave3Program.status === "planned"
-        && wave3Program.progress?.completedStepCount === 0
-        && wave3Program.selection?.status === "discovery-required"
-        && wave3Program.selection?.selectedCapability === null,
+      wave3Continuation: wave3Program.id === "seis-public-plugin-wave-3-program"
+        && wave3Program.status === "in-progress"
+        && Number.isInteger(wave3Program.progress?.completedStepCount)
+        && wave3Program.progress.completedStepCount >= 46
+        && wave3Program.selection?.status === "implementation-approved"
+        && wave3Program.selection?.selectedCapability === "seis-swift-concurrency-audit"
+        && wave3Program.selection?.implementationStarted === true
+        && wave3Program.selection?.additionalPublicCardAdded === true,
     },
     publicBoundary: {
       marketplaceName: wave2Program.publicBoundary?.marketplaceName,
@@ -124,6 +127,14 @@ function buildRecord() {
       externalWrites: wave2Program.publicBoundary?.externalWrites,
       secrets: wave2Program.publicBoundary?.secrets,
       publicReleaseAllowed: wave2Program.publicBoundary?.publicReleaseAllowed,
+    },
+    historicalWave3Planning: {
+      statusAtWave2Handoff: "planned",
+      selectionStatusAtWave2Handoff: "discovery-required",
+      selectedCapabilityAtWave2Handoff: null,
+      implementationStartedAtWave2Handoff: false,
+      additionalPublicCardAddedAtWave2Handoff: false,
+      note: "This preserves the Wave 3 state recorded when the completed Wave 2 handoff was first prepared; the current continuation is tracked separately below.",
     },
     nativeValidationBoundary: {
       packageGraphStatus: followUpDecision.swiftPmEvidence?.packageGraph?.manifestInspection || null,
@@ -183,7 +194,7 @@ function buildRecord() {
         id: "RISK-W2-003",
         status: "tracked",
         description: "The next wave could add a duplicate card merely to satisfy cadence.",
-        mitigation: "Wave 3 remains discovery-required with selectedCapability null until a separate non-duplicative decision passes its scope and validation gate.",
+        mitigation: "Wave 3 became active only after a separate non-duplicative decision selected the bounded concurrency audit; future public cards still require a separate scope, overlap, and validation gate.",
       },
     ],
     rollback: {
@@ -197,8 +208,12 @@ function buildRecord() {
       programId: wave3Program.id,
       selectionStatus: wave3Program.selection?.status || null,
       selectedCapability: wave3Program.selection?.selectedCapability || null,
+      implementationStarted: wave3Program.selection?.implementationStarted === true,
+      additionalPublicCardAdded: wave3Program.selection?.additionalPublicCardAdded === true,
+      historicalStatusAtWave2Handoff: "planned",
+      historicalSelectionStatusAtWave2Handoff: "discovery-required",
       scopeRiskReviewPath: OUTPUT_PATH,
-      activationRule: "Wave 3 remains planned until a separate non-duplicative capability decision, current validation evidence, and continued user authority authorize an in-progress implementation scope.",
+      activationRule: "Wave 3 entered an in-progress implementation scope only after a separate non-duplicative capability decision, current repository-local validation evidence, and continued user authority; this does not authorize external release or protected-branch writes.",
     },
     inputSafetyScan,
   };
@@ -220,7 +235,8 @@ function validateRecord(record) {
   assert(record.delivery?.featureBranch === "plugins/seis-plugin-root-20260715" && record.delivery?.priorRemoteReferenceVerified === true && record.delivery?.protectedDefaultBranchWritten === false, "delivery boundary is invalid");
   assert(list(record.knownGaps).length === 2 && record.knownGaps[0]?.id === "swiftpm-test-completion" && record.knownGaps[1]?.id === "independent-public-installation", "known gaps are invalid");
   assert(record.releaseReadiness?.promoted === false && ["large-code-promotion-evidence-ready", "continue-code-before-large-code-promotion"].includes(record.releaseReadiness?.decision), "handoff must not claim a release promotion");
-  assert(record.nextWave?.number === 3 && record.nextWave?.status === "planned" && record.nextWave?.programId === "seis-public-plugin-wave-3-program" && record.nextWave?.selectionStatus === "discovery-required" && record.nextWave?.selectedCapability === null && record.nextWave?.scopeRiskReviewPath === OUTPUT_PATH, "Wave 3 planning decision is invalid");
+  assert(record.historicalWave3Planning?.statusAtWave2Handoff === "planned" && record.historicalWave3Planning?.selectionStatusAtWave2Handoff === "discovery-required" && record.historicalWave3Planning?.selectedCapabilityAtWave2Handoff === null && record.historicalWave3Planning?.implementationStartedAtWave2Handoff === false && record.historicalWave3Planning?.additionalPublicCardAddedAtWave2Handoff === false, "Wave 3 historical planning snapshot is invalid");
+  assert(record.nextWave?.number === 3 && record.nextWave?.status === "in-progress" && record.nextWave?.programId === "seis-public-plugin-wave-3-program" && record.nextWave?.selectionStatus === "implementation-approved" && record.nextWave?.selectedCapability === "seis-swift-concurrency-audit" && record.nextWave?.implementationStarted === true && record.nextWave?.additionalPublicCardAdded === true && record.nextWave?.historicalStatusAtWave2Handoff === "planned" && record.nextWave?.historicalSelectionStatusAtWave2Handoff === "discovery-required" && record.nextWave?.scopeRiskReviewPath === OUTPUT_PATH, "Wave 3 continuation decision is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0 && record.inputSafetyScan?.rawValuesStored === false, "handoff inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "handoff record must not contain a machine-specific path");
 }

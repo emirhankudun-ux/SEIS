@@ -833,6 +833,18 @@
       "category": "Productivity"
     },
     {
+      "name": "seis-swift-concurrency-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-swift-concurrency-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-technology-ontology",
       "source": {
         "source": "local",

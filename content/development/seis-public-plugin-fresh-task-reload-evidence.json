@@ -2,7 +2,7 @@
   "id": "seis-public-plugin-fresh-task-reload-evidence",
   "version": 1,
   "generatedAt": "2026-07-12",
-  "status": "recorded-local-fresh-task-evidence",
+  "status": "incomplete-local-fresh-task-evidence",
   "decision": "not-ready-for-public-preview",
   "sourcePath": "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
   "reportPath": "reports/seis-public-plugin-fresh-task-reload-evidence.md",
@@ -52,7 +52,7 @@
             "personalMarketplaceMutation": false,
             "discoveredPluginCount": 10,
             "uncoveredSourcePlugins": [],
-            "applicationOwnedPluginCount": 72,
+            "applicationOwnedPluginCount": 73,
             "applicationPluginIds": [
               "seis-a11y-regression",
               "seis-action-pin-audit",
@@ -117,6 +117,7 @@
               "seis-secret-boundary-scan",
               "seis-semver-audit",
               "seis-source-provenance",
+              "seis-swift-concurrency-audit",
               "seis-technology-ontology",
               "seis-test-flakiness",
               "seis-tool-permission-audit",
@@ -137,7 +138,7 @@
             "applicationPluginPublicRepositoryAvailable": true,
             "applicationPluginPublicAudience": "everyone",
             "applicationPluginDistribution": "direct-repository-source",
-            "applicationPluginMarketplaceEntryCount": 72,
+            "applicationPluginMarketplaceEntryCount": 73,
             "futurePluginDefaultRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets.",
             "futureApplicationPluginRule": "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and become available directly from this repository as individual seis-repo marketplace entries without entering packages/seis-ai."
           }
@@ -173,11 +174,11 @@
     "agentIntegration": {
       "id": "agent-plugin-integration",
       "command": "npm run check:seis-agent-plugin-integration",
-      "ok": true,
-      "exitCode": 0,
+      "ok": false,
+      "exitCode": 1,
       "signal": null,
       "summary": {
-        "passed": true,
+        "passed": false,
         "check": "npm run check:seis-agent-plugin-integration"
       }
     },

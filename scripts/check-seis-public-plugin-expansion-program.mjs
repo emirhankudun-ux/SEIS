@@ -10,11 +10,13 @@ const handoffPath = path.join(root, "content", "development", "seis-public-plugi
 const wave2ProgramPath = path.join(root, "content", "development", "seis-public-plugin-wave-2-program.json");
 const wave2HandoffPath = path.join(root, "content", "development", "seis-public-plugin-wave-2-handoff.json");
 const wave3ProgramPath = path.join(root, "content", "development", "seis-public-plugin-wave-3-program.json");
+const wave3DecisionPath = path.join(root, "content", "development", "seis-public-plugin-wave-3-capability-decision.json");
 const record = JSON.parse(fs.readFileSync(recordPath, "utf8"));
 const handoff = fs.existsSync(handoffPath) ? JSON.parse(fs.readFileSync(handoffPath, "utf8")) : null;
 const wave2Program = fs.existsSync(wave2ProgramPath) ? JSON.parse(fs.readFileSync(wave2ProgramPath, "utf8")) : null;
 const wave2Handoff = fs.existsSync(wave2HandoffPath) ? JSON.parse(fs.readFileSync(wave2HandoffPath, "utf8")) : null;
 const wave3Program = fs.existsSync(wave3ProgramPath) ? JSON.parse(fs.readFileSync(wave3ProgramPath, "utf8")) : null;
+const wave3Decision = fs.existsSync(wave3DecisionPath) ? JSON.parse(fs.readFileSync(wave3DecisionPath, "utf8")) : null;
 const failures = [];
 
 function ensure(condition, message) {
@@ -68,11 +70,14 @@ for (let index = 0; index < 5; index += 1) {
     ensure(Array.isArray(wave2Program?.steps) && wave2Program.steps.length === 100 && wave2Program.steps.every((step) => step?.status === "completed"), "wave 2 must contain one hundred completed steps");
     ensure(wave2Handoff?.id === "seis-public-plugin-wave-2-handoff" && wave2Handoff?.status === "completed-repository-local-handoff", "wave 2 handoff evidence is invalid");
   } else if (index === 2) {
-    ensure(wave?.status === "planned", "wave 3 must remain planned until its discovery and capability-selection gate passes");
+    ensure(wave?.status === "in-progress", "wave 3 must be active only after its discovery and capability-selection gate passes");
     ensure(wave?.programId === "seis-public-plugin-wave-3-program", "wave 3 must identify its 100-step program");
     ensure(wave?.scopeRiskReviewPath === "content/development/seis-public-plugin-wave-2-handoff.json", "wave 3 must identify its Wave 2 scope and risk review");
-    ensure(wave3Program?.id === "seis-public-plugin-wave-3-program" && wave3Program?.status === "planned" && wave3Program?.progress?.completedStepCount === 0, "wave 3 program evidence is invalid");
-    ensure(Array.isArray(wave3Program?.steps) && wave3Program.steps.length === 100 && wave3Program.steps.every((step) => step?.status === "planned"), "wave 3 must contain one hundred planned steps");
+    ensure(wave?.capabilityDecisionPath === "content/development/seis-public-plugin-wave-3-capability-decision.json", "wave 3 must identify its capability decision");
+    ensure(wave3Program?.id === "seis-public-plugin-wave-3-program" && wave3Program?.status === "in-progress" && wave3Program?.progress?.completedStepCount === 46 && wave3Program?.progress?.plannedStepCount === 53 && Array.isArray(wave3Program?.progress?.inProgressStepNumbers) && wave3Program.progress.inProgressStepNumbers.length === 1 && wave3Program.progress.inProgressStepNumbers[0] === 47, "wave 3 program evidence is invalid");
+    ensure(wave3Program?.selection?.status === "implementation-approved" && wave3Program?.selection?.selectedCapability === "seis-swift-concurrency-audit" && wave3Program?.selection?.implementationStarted === true && wave3Program?.selection?.additionalPublicCardAdded === true, "wave 3 selection evidence is invalid");
+    ensure(Array.isArray(wave3Program?.steps) && wave3Program.steps.length === 100 && wave3Program.steps.every((step, stepIndex) => step?.status === (stepIndex < 46 ? "completed" : stepIndex === 46 ? "in-progress" : "planned")), "wave 3 step state is invalid");
+    ensure(wave3Decision?.id === "seis-public-plugin-wave-3-capability-decision" && wave3Decision?.status === "approved-public-local-implementation" && wave3Decision?.decision?.selectedCapability === "seis-swift-concurrency-audit" && wave3Decision?.decision?.implementationStarted === true && wave3Decision?.decision?.additionalPublicCardAdded === true, "wave 3 decision evidence is invalid");
   } else {
     ensure(wave?.status === "not-planned", `wave ${index + 1} must remain not-planned until its review`);
   }

@@ -1,0 +1,52 @@
+{
+  "stableId": "seis-swift-concurrency-audit",
+  "slug": "seis-swift-concurrency-audit",
+  "version": "0.0.20",
+  "releaseMicroUnits": 20,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.00000002",
+  "category": "swift-concurrency-audit",
+  "owner": "@seis-apple",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-swift-concurrency-audit-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "two fixed checked-in Swift source roots",
+      "bounded Swift source metadata and derived static concurrency markers"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "audit": {
+    "mode": "read-only-static-signal-report",
+    "maxSwiftFiles": 64,
+    "maxFileBytes": 131072,
+    "maxTotalBytes": 1048576,
+    "maxSourceDepth": 4,
+    "maxReportedPaths": 24,
+    "limitReachedState": "attention"
+  },
+  "validation": [
+    "node scripts/seis-swift-concurrency-audit-mcp-server.mjs --status",
+    "node scripts/seis-swift-concurrency-audit-mcp-server.mjs --audit --path .",
+    "node scripts/seis-swift-concurrency-audit-mcp-server.mjs --evidence",
+    "npm run check:seis-swift-concurrency-audit",
+    "node --test plugins/seis-core/test/swift-concurrency-audit.test.mjs",
+    "node --test plugins/seis-core/test/swift-concurrency-audit-evidence.test.mjs"
+  ],
+  "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits Swift source, marketplace state, an external system, or release state.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 Wave 3 after the discovery decision found a bounded static Swift concurrency review gap distinct from Apple package readiness, workspace inventory, technology taxonomy, and source provenance.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

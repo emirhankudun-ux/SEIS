@@ -1,0 +1,39 @@
+{
+  "name": "seis-swift-concurrency-audit",
+  "version": "0.0.20",
+  "description": "Audit bounded checked-in Swift concurrency markers without compiling, running, writing, or claiming concurrency correctness.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "swift",
+    "concurrency",
+    "sendable",
+    "mainactor",
+    "read-only",
+    "public-repository"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Swift Concurrency Audit",
+    "shortDescription": "Review bounded Swift concurrency signals locally.",
+    "longDescription": "Reads two fixed checked-in SEIS Swift source roots and reports bounded aggregate concurrency markers such as unchecked Sendable, MainActor, actor, Task, DispatchQueue, and await usage. It never compiles or runs Swift, returns raw source, follows symlinks, writes files, uses a network, reads secrets, or treats static markers as concurrency-correctness, device, deployment, or release proof.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "bounded-swift-concurrency-signal-audit",
+      "unchecked-sendable-review",
+      "actor-isolation-marker-review",
+      "task-and-dispatch-marker-review",
+      "static-source-boundary-enforcement",
+      "read-only-local-evidence"
+    ],
+    "defaultPrompt": [
+      "Audit the checked-in SEIS Swift concurrency markers without compiling or changing files.",
+      "Keep static findings separate from compiler, runtime, data-race, release, or deployment claims."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

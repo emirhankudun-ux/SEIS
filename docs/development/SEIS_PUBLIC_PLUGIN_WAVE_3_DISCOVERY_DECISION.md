@@ -1,13 +1,16 @@
-# SEIS Public Plugin Wave 3 Discovery Decision
+# SEIS Public Plugin Wave 3 Capability Decision
 
 **Goal:** `SEIS-GOAL-021`
-**Status:** `approved-discovery-candidate`
+**Status:** `approved-public-local-implementation`
 **Candidate:** `seis-swift-concurrency-audit`
 
-Wave 3 has selected one bounded candidate for design review. This is a
-repository-local discovery decision only: no package exists yet, no `SEIS Repo`
-card was added, and the Wave 3 program remains `planned` with its own selection
-field empty until the implementation gate passes.
+Wave 3 completed the bounded discovery gate and is now in an active,
+repository-local implementation state. The public
+`plugins/seis-core/seis-swift-concurrency-audit` package and its `SEIS Repo`
+card are present; the program selects that one capability and records step 47
+as the current generated-evidence task. This does not claim an independent
+installation, public release, provider connection, deployment, native runtime,
+or completed SwiftPM test.
 
 ## Why this capability is distinct
 
@@ -38,11 +41,12 @@ precise credential-assignment scan found no matches.
 
 ## Current gate
 
-Before the candidate can become a public package, the implementation must add
-its own deny-by-default runtime, deterministic positive/negative fixtures,
-plugin-creator structural validation, and all app-source, catalog, matrix,
-registry, lifecycle, provenance, and public `SEIS Repo` reconciliation. Only
-then may Wave 3 move from `planned` to a focused implementation scope.
+The package has its deny-by-default runtime, deterministic positive/negative
+fixtures, plugin-creator structural validation, and public-card reconciliation.
+Wave 3 remains in progress until current generated evidence, source/catalog/
+matrix/registry/lifecycle/provenance reconciliation, broad local regressions,
+and a focused feature-branch handoff are all recorded. No release or external
+installation authority is created by this gate.
 
 ## Evidence and rollback
 
@@ -50,6 +54,6 @@ Machine-readable evidence is generated at
 `content/development/seis-public-plugin-wave-3-capability-decision.json` by
 `scripts/create-seis-public-plugin-wave-3-capability-decision.mjs`.
 
-Rollback is a focused feature-branch revert of this decision, test, and
-documentation checkpoint. It has no data migration, package, marketplace-card,
-or external-state cleanup because none has been created.
+Rollback is a focused feature-branch revert of the package, `SEIS Repo` card,
+generated evidence, tests, decision, and documentation. It has no data
+migration or external-state cleanup.
