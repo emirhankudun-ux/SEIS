@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-4-validation-delivery-evidence",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 4,
+  "round": 5,
+  "status": "completed-repository-local-validation-delivery-evidence",
+  "maturity": "prototype",
+  "generatedAt": "2026-07-21",
+  "purpose": "Record Wave 4's completed focused validation, full public-marketplace validation, complete test suite, general SEIS check, diff review, feature-branch commit, feature-branch push, and remote-reference verification for the Swift Package topology integration. The record does not treat repository-local validation or feature-branch delivery as independent installation, protected-branch approval, Swift execution, or public release.",
+  "completedSteps": [
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90
+  ],
+  "stateAtCheckpoint": {
+    "completedStepCountBeforeTrackerUpdate": 80,
+    "activeStepBeforeTrackerUpdate": 81,
+    "nextPlannedStep": 91,
+    "waveCompleted": false,
+    "finalHandoffPublished": false
+  },
+  "checks": {
+    "wave4Tracker": true,
+    "integrationCheckpoint": true,
+    "topologyEvidence": true,
+    "publicProjection": true,
+    "continuity": true,
+    "featureBranchDelivery": true,
+    "localValidationCommandsCompleted": true,
+    "whitespaceCheckPassed": true,
+    "remoteReferenceVerified": true
+  },
+  "observedDelivery": {
+    "sourceIntegrationCommit": "e3cc34d6138c0e47fa582c5fa09e3c92c04a005e",
+    "featureBranch": "plugins/seis-plugin-root-20260715",
+    "remote": "origin",
+    "remoteReference": "refs/heads/plugins/seis-plugin-root-20260715",
+    "committed": true,
+    "pushed": true,
+    "remoteReferenceVerified": true,
+    "protectedDefaultBranchWritten": false
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-wave-4-integration-checkpoint",
+    "npm run check:seis-public-plugin-wave-4-program",
+    "npm run check:seis-public-plugin-continuity-cadence",
+    "npm run check:seis-public-plugin-continuity",
+    "node --test plugins/seis-core/test/*.test.mjs",
+    "npm run check:seis-repo-marketplace",
+    "npm run seis:check",
+    "git diff --check",
+    "git commit -m \"feat(plugins): checkpoint Wave 4 topology integration\"",
+    "git push origin plugins/seis-plugin-root-20260715",
+    "git ls-remote origin refs/heads/plugins/seis-plugin-root-20260715"
+  ],
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "signing": false,
+    "publicRelease": false
+  },
+  "remainingWork": {
+    "nextStep": 91,
+    "scope": "Record remote policy observations, count reconciliation, external-proof limits, and explicit follow-up decision without marking Wave 4 complete.",
+    "humanApprovalRequiredFor": [
+      "pull request review and merge",
+      "code-scanning outcome",
+      "verified-signature policy compliance",
+      "independent installation or release action"
+    ]
+  },
+  "risks": [
+    {
+      "id": "RISK-W4-011",
+      "status": "tracked",
+      "description": "A feature-branch push can be mistaken for protected-branch acceptance or a public release.",
+      "mitigation": "Bind this record to one feature branch and commit, retain protectedDefaultBranchWritten=false, and keep all release claims false."
+    },
+    {
+      "id": "RISK-W4-012",
+      "status": "tracked",
+      "description": "A validation record can become stale when a later checkpoint changes Wave 4 tracker state.",
+      "mitigation": "Permit only the pre-delivery and post-delivery tracker states tied to this exact source-integration commit."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the focused topology integration commit and this delivery-evidence record on the feature branch; no external state, manifest mutation, publication, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 6,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}

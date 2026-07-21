@@ -26,7 +26,7 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.cadence.waveSeries.stepsPerWave, 100);
   assert.equal(cadence.cadence.waveSeries.totalPlannedWaveSteps, 500);
   assert.equal(cadence.cadence.waveSeries.activeWave, 4);
-  assert.equal(cadence.cadence.waveSeries.activeWaveState, "repository-local-integration-checkpoint-complete-step-81-in-progress");
+  assert.equal(cadence.cadence.waveSeries.activeWaveState, "repository-local-validation-delivery-evidence-complete-step-91-in-progress");
   assert.equal(cadence.waves.length, 5);
   assert.equal(cadence.waves[0].status, "completed");
   assert.equal(cadence.waves[1].status, "completed");
@@ -48,11 +48,12 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[3].implementationStarted, true);
   assert.equal(cadence.waves[3].candidatePackageExists, true);
   assert.equal(cadence.waves[3].candidatePublicCardExists, true);
-  assert.equal(cadence.waves[3].completedSteps, 80);
-  assert.deepEqual(cadence.waves[3].inProgressSteps, [81]);
+  assert.equal(cadence.waves[3].completedSteps, 90);
+  assert.deepEqual(cadence.waves[3].inProgressSteps, [91]);
   assert.equal(cadence.waves[3].topologyEvidencePath, "content/development/seis-swift-package-topology.json");
   assert.equal(cadence.waves[3].integrationCheckpointPath, "content/development/seis-public-plugin-wave-4-integration-checkpoint.json");
-  assert.equal(cadence.waves[3].currentEvidencePath, "content/development/seis-public-plugin-wave-4-integration-checkpoint.json");
+  assert.equal(cadence.waves[3].validationDeliveryEvidencePath, "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json");
+  assert.equal(cadence.waves[3].currentEvidencePath, "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json");
   assert.equal(cadence.waves[4].status, "planned-gated");
   assert.equal(cadence.futureWaveTemplate.steps.length, 100);
   assert.equal(cadence.executionBoundary.personalMarketplaceRead, false);

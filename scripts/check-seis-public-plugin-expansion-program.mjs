@@ -24,6 +24,7 @@ const wave4ActivationDecisionPath = path.join(root, "content", "development", "s
 const wave4ProgramPath = path.join(root, "content", "development", "seis-public-plugin-wave-4-program.json");
 const wave4TopologyEvidencePath = path.join(root, "content", "development", "seis-swift-package-topology.json");
 const wave4IntegrationCheckpointPath = path.join(root, "content", "development", "seis-public-plugin-wave-4-integration-checkpoint.json");
+const wave4ValidationDeliveryEvidencePath = path.join(root, "content", "development", "seis-public-plugin-wave-4-validation-delivery-evidence.json");
 const continuityCadencePath = path.join(root, "content", "development", "seis-public-plugin-continuity-cadence.json");
 const record = JSON.parse(fs.readFileSync(recordPath, "utf8"));
 const handoff = fs.existsSync(handoffPath) ? JSON.parse(fs.readFileSync(handoffPath, "utf8")) : null;
@@ -44,6 +45,7 @@ const wave4ActivationDecision = fs.existsSync(wave4ActivationDecisionPath) ? JSO
 const wave4Program = fs.existsSync(wave4ProgramPath) ? JSON.parse(fs.readFileSync(wave4ProgramPath, "utf8")) : null;
 const wave4TopologyEvidence = fs.existsSync(wave4TopologyEvidencePath) ? JSON.parse(fs.readFileSync(wave4TopologyEvidencePath, "utf8")) : null;
 const wave4IntegrationCheckpoint = fs.existsSync(wave4IntegrationCheckpointPath) ? JSON.parse(fs.readFileSync(wave4IntegrationCheckpointPath, "utf8")) : null;
+const wave4ValidationDeliveryEvidence = fs.existsSync(wave4ValidationDeliveryEvidencePath) ? JSON.parse(fs.readFileSync(wave4ValidationDeliveryEvidencePath, "utf8")) : null;
 const continuityCadence = fs.existsSync(continuityCadencePath) ? JSON.parse(fs.readFileSync(continuityCadencePath, "utf8")) : null;
 const failures = [];
 
@@ -126,11 +128,12 @@ for (let index = 0; index < 5; index += 1) {
     ensure(wave?.programId === "seis-public-plugin-wave-4-program" && wave?.programPath === "content/development/seis-public-plugin-wave-4-program.json", "wave 4 must identify its active program");
     ensure(wave?.scopeRiskReviewPath === "content/development/seis-public-plugin-wave-3-following-wave-review.json", "wave 4 must identify its scope review");
     ensure(wave?.activationDecisionPath === "content/development/seis-public-plugin-wave-4-activation-decision.json" && wave?.activationApproved === true, "wave 4 must identify its activation decision");
-    ensure(wave?.implementationStarted === true && wave?.candidatePackageExists === true && wave?.candidatePublicCardExists === true && wave?.topologyEvidencePath === "content/development/seis-swift-package-topology.json" && wave?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json", "wave 4 integration projection is invalid");
+    ensure(wave?.implementationStarted === true && wave?.candidatePackageExists === true && wave?.candidatePublicCardExists === true && wave?.topologyEvidencePath === "content/development/seis-swift-package-topology.json" && wave?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json" && wave?.validationDeliveryEvidencePath === "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json", "wave 4 validation-delivery projection is invalid");
     ensure(wave4ActivationDecision?.id === "seis-public-plugin-wave-4-activation-decision" && wave4ActivationDecision?.status === "approved-public-local-wave-4-activation" && wave4ActivationDecision?.decision?.selectedCapability === "seis-swift-package-topology" && wave4ActivationDecision?.decision?.activationApproved === true && wave4ActivationDecision?.decision?.implementationApproved === true && wave4ActivationDecision?.decision?.implementationStarted === false && wave4ActivationDecision?.decision?.publicReleaseApproved === false, "wave 4 activation decision is invalid");
     ensure(isWave4IntegratedProgram(wave4Program), "wave 4 active program is invalid");
     ensure(isWave4TopologyEvidence(wave4TopologyEvidence), "wave 4 topology evidence is invalid");
     ensure(isWave4IntegrationCheckpoint(wave4IntegrationCheckpoint), "wave 4 integration checkpoint is invalid");
+    ensure(isWave4ValidationDeliveryEvidence(wave4ValidationDeliveryEvidence), "wave 4 validation-delivery evidence is invalid");
   } else {
     ensure(wave?.status === "planned-gated", `wave ${index + 1} must remain planned-gated until its activation review`);
     ensure(wave?.programId === `seis-public-plugin-wave-${index + 1}-program`, `wave ${index + 1} must identify its future program`);
@@ -140,7 +143,7 @@ for (let index = 0; index < 5; index += 1) {
 }
 
 ensure(continuityCadence?.id === "seis-public-plugin-continuity-cadence" && continuityCadence?.status === "active-evidence-led-cadence", "continuity cadence evidence is invalid");
-ensure(continuityCadence?.cadence?.bootstrap?.totalSteps === 30 && continuityCadence?.cadence?.waveSeries?.waveCount === 5 && continuityCadence?.cadence?.waveSeries?.stepsPerWave === 100 && continuityCadence?.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && continuityCadence?.cadence?.waveSeries?.activeWave === 4 && continuityCadence?.cadence?.waveSeries?.activeWaveState === "repository-local-integration-checkpoint-complete-step-81-in-progress", "continuity cadence shape is invalid");
+ensure(continuityCadence?.cadence?.bootstrap?.totalSteps === 30 && continuityCadence?.cadence?.waveSeries?.waveCount === 5 && continuityCadence?.cadence?.waveSeries?.stepsPerWave === 100 && continuityCadence?.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && continuityCadence?.cadence?.waveSeries?.activeWave === 4 && continuityCadence?.cadence?.waveSeries?.activeWaveState === "repository-local-validation-delivery-evidence-complete-step-91-in-progress", "continuity cadence shape is invalid");
 ensure(Array.isArray(continuityCadence?.waves) && continuityCadence.waves.length === 5 && continuityCadence.waves[2]?.status === "completed" && continuityCadence.waves[2]?.completedSteps === 100 && Array.isArray(continuityCadence.waves[2]?.inProgressSteps) && continuityCadence.waves[2].inProgressSteps.length === 0 && continuityCadence.waves[2]?.closeoutPath === "content/development/seis-public-plugin-wave-3-closeout.json" && continuityCadence.waves[2]?.currentEvidencePath === "content/development/seis-public-plugin-wave-3-closeout.json" && isWave4IntegratedCadence(continuityCadence.waves[3]) && Array.isArray(continuityCadence?.futureWaveTemplate?.steps) && continuityCadence.futureWaveTemplate.steps.length === 100, "continuity cadence wave evidence is invalid");
 
 function isWave4IntegratedProgram(program) {
@@ -154,11 +157,12 @@ function isWave4IntegratedProgram(program) {
     && program?.activationGate?.implementationStarted === true
     && program?.activationGate?.candidatePackageExists === true
     && program?.activationGate?.candidatePublicCardExists === true
-    && program?.progress?.completedStepCount === 80
+    && program?.progress?.completedStepCount === 90
     && Array.isArray(program?.progress?.inProgressStepNumbers)
     && program.progress.inProgressStepNumbers.length === 1
-    && program.progress.inProgressStepNumbers[0] === 81
-    && program?.evidence?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json";
+    && program.progress.inProgressStepNumbers[0] === 91
+    && program?.evidence?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json"
+    && program?.evidence?.validationDeliveryEvidencePath === "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json";
 }
 
 function isWave4TopologyEvidence(evidence) {
@@ -194,6 +198,19 @@ function isWave4IntegrationCheckpoint(checkpoint) {
     && Object.values(checkpoint?.externalClaims || {}).every((value) => value === false);
 }
 
+function isWave4ValidationDeliveryEvidence(evidence) {
+  return evidence?.id === "seis-public-plugin-wave-4-validation-delivery-evidence"
+    && evidence?.status === "completed-repository-local-validation-delivery-evidence"
+    && evidence?.maturity === "prototype"
+    && Array.isArray(evidence?.completedSteps)
+    && evidence.completedSteps.join(",") === "81,82,83,84,85,86,87,88,89,90"
+    && evidence?.observedDelivery?.sourceIntegrationCommit === "e3cc34d6138c0e47fa582c5fa09e3c92c04a005e"
+    && evidence?.observedDelivery?.pushed === true
+    && evidence?.observedDelivery?.remoteReferenceVerified === true
+    && evidence?.observedDelivery?.protectedDefaultBranchWritten === false
+    && Object.values(evidence?.externalClaims || {}).every((value) => value === false);
+}
+
 function isWave4IntegratedCadence(wave) {
   return wave?.status === "in-progress"
     && wave?.programPath === "content/development/seis-public-plugin-wave-4-program.json"
@@ -203,13 +220,14 @@ function isWave4IntegratedCadence(wave) {
     && wave?.implementationStarted === true
     && wave?.candidatePackageExists === true
     && wave?.candidatePublicCardExists === true
-    && wave?.completedSteps === 80
+    && wave?.completedSteps === 90
     && Array.isArray(wave?.inProgressSteps)
     && wave.inProgressSteps.length === 1
-    && wave.inProgressSteps[0] === 81
+    && wave.inProgressSteps[0] === 91
     && wave?.topologyEvidencePath === "content/development/seis-swift-package-topology.json"
     && wave?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json"
-    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json";
+    && wave?.validationDeliveryEvidencePath === "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json"
+    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json";
 }
 
 const completeSteps = record.steps.filter((step) => step.status === "completed").length;

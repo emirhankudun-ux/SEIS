@@ -17,6 +17,7 @@ const CANDIDATE_CAPABILITY = "seis-swift-package-topology";
 const CANDIDATE_SOURCE_PATH = `plugins/seis-core/${CANDIDATE_CAPABILITY}`;
 const CANDIDATE_EVIDENCE_PATH = "content/development/seis-swift-package-topology.json";
 const INTEGRATION_CHECKPOINT_PATH = "content/development/seis-public-plugin-wave-4-integration-checkpoint.json";
+const VALIDATION_DELIVERY_EVIDENCE_PATH = "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json";
 const BASELINE_INVENTORY = Object.freeze({ applicationPluginCount: 73, publicCardCount: 379 });
 const INTEGRATED_INVENTORY = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
@@ -184,6 +185,7 @@ function buildRecord() {
   const marketplace = readJson(MARKETPLACE_PATH);
   const topologyEvidence = readJson(CANDIDATE_EVIDENCE_PATH);
   const integrationCheckpoint = readJson(INTEGRATION_CHECKPOINT_PATH);
+  const validationDeliveryEvidence = readJson(VALIDATION_DELIVERY_EVIDENCE_PATH);
   const sourceEntries = list(sourceManifest.plugins);
   const catalogEntries = list(catalog.plugins);
   const matrixEntries = list(matrix.plugins);
@@ -228,7 +230,7 @@ function buildRecord() {
       repositories: ["SEIS"],
       selectedCapability: CANDIDATE_CAPABILITY,
       outcome: "One public repository package now reports bounded, derived Swift Package manifest topology with a single checked-in source, SEIS Repo card, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
-      entryRule: "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–80 now have current repository-local evidence; step 81 is in-progress as the focused validation-and-delivery checkpoint.",
+      entryRule: "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–90 now have current repository-local evidence; step 91 is in-progress to record remote policy observations and remaining external-proof limits.",
     },
     nonGoals: [
       "Adding more than the one activation-approved public package or card without a new capability decision.",
@@ -278,11 +280,11 @@ function buildRecord() {
     })),
     steps,
     progress: {
-      completedStepCount: 80,
-      plannedStepCount: 19,
-      inProgressStepNumbers: [81],
+      completedStepCount: 90,
+      plannedStepCount: 9,
+      inProgressStepNumbers: [91],
       completedRoundCount: 4,
-      nextStepNumber: 81,
+      nextStepNumber: 91,
     },
     evidence: {
       wave3CloseoutPath: WAVE_3_CLOSEOUT_PATH,
@@ -295,11 +297,13 @@ function buildRecord() {
       candidateSourcePath: CANDIDATE_SOURCE_PATH,
       candidateEvidencePath: CANDIDATE_EVIDENCE_PATH,
       integrationCheckpointPath: INTEGRATION_CHECKPOINT_PATH,
+      validationDeliveryEvidencePath: VALIDATION_DELIVERY_EVIDENCE_PATH,
     },
     validation: [
       "npm run check:seis-public-plugin-wave-4-program",
       "npm run check:seis-public-plugin-wave-4-activation-decision",
       "npm run check:seis-public-plugin-wave-4-integration-checkpoint",
+      "npm run check:seis-public-plugin-wave-4-validation-delivery-evidence",
       "npm run check:seis-swift-package-topology",
       "npm run check:seis-public-plugin-wave-3-following-wave-review",
       "npm run check:seis-public-plugin-continuity-cadence",
@@ -388,6 +392,15 @@ function buildRecord() {
         && list(integrationCheckpoint.permissions?.network).length === 0
         && list(integrationCheckpoint.permissions?.secrets).length === 0
         && Object.values(integrationCheckpoint.externalClaims || {}).every((value) => value === false),
+      validationDeliveryEvidence: validationDeliveryEvidence.id === "seis-public-plugin-wave-4-validation-delivery-evidence"
+        && validationDeliveryEvidence.status === "completed-repository-local-validation-delivery-evidence"
+        && validationDeliveryEvidence.maturity === "prototype"
+        && list(validationDeliveryEvidence.completedSteps).join(",") === range(81, 90).join(",")
+        && validationDeliveryEvidence.observedDelivery?.sourceIntegrationCommit === "e3cc34d6138c0e47fa582c5fa09e3c92c04a005e"
+        && validationDeliveryEvidence.observedDelivery?.pushed === true
+        && validationDeliveryEvidence.observedDelivery?.remoteReferenceVerified === true
+        && validationDeliveryEvidence.observedDelivery?.protectedDefaultBranchWritten === false
+        && Object.values(validationDeliveryEvidence.externalClaims || {}).every((value) => value === false),
     },
     inputSafetyScan,
   };
@@ -404,8 +417,8 @@ function validationFor(round, task) {
 }
 
 function stepStatus(number) {
-  if (number <= 80) return "completed";
-  if (number === 81) return "in-progress";
+  if (number <= 90) return "completed";
+  if (number === 91) return "in-progress";
   return "planned";
 }
 
@@ -420,7 +433,7 @@ function validateRecord(record) {
     const step = record.steps[index];
     assert(step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && step?.status === stepStatus(index + 1) && typeof step?.title === "string" && step.title.length > 0 && typeof step?.validation === "string" && step.validation.length > 0, `Wave 4 step ${index + 1} is invalid`);
   }
-  assert(record.progress?.completedStepCount === 80 && record.progress?.plannedStepCount === 19 && list(record.progress?.inProgressStepNumbers).join(",") === "81" && record.progress?.completedRoundCount === 4 && record.progress?.nextStepNumber === 81, "Wave 4 progress is invalid");
+  assert(record.progress?.completedStepCount === 90 && record.progress?.plannedStepCount === 9 && list(record.progress?.inProgressStepNumbers).join(",") === "91" && record.progress?.completedRoundCount === 4 && record.progress?.nextStepNumber === 91, "Wave 4 progress is invalid");
   assert(Object.values(record.checks).every(Boolean), "a required Wave 4 planning contract is not current");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");

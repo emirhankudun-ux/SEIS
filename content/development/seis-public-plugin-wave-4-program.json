@@ -25,7 +25,7 @@
     ],
     "selectedCapability": "seis-swift-package-topology",
     "outcome": "One public repository package now reports bounded, derived Swift Package manifest topology with a single checked-in source, SEIS Repo card, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
-    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–80 now have current repository-local evidence; step 81 is in-progress as the focused validation-and-delivery checkpoint."
+    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–90 now have current repository-local evidence; step 91 is in-progress to record remote policy observations and remaining external-proof limits."
   },
   "nonGoals": [
     "Adding more than the one activation-approved public package or card without a new capability decision.",
@@ -773,77 +773,77 @@
       "number": 81,
       "round": 5,
       "title": "Run the dedicated Wave 4 program and candidate-contract checks.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 82,
       "round": 5,
       "title": "Run the full SEIS public plugin continuity check.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 83,
       "round": 5,
       "title": "Run the SEIS Repo marketplace validation with public-only terminology checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 84,
       "round": 5,
       "title": "Run the complete plugin test suite and disclose failures or skips.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 85,
       "round": 5,
       "title": "Run the repository web and governance checks applicable to the change.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 86,
       "round": 5,
       "title": "Run whitespace and generated-artifact drift checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 87,
       "round": 5,
       "title": "Inspect the feature-branch worktree and focused diff before commit.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 88,
       "round": 5,
       "title": "Create a focused reversible commit after validation succeeds.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 89,
       "round": 5,
       "title": "Push only the current feature branch when authorization and network conditions permit.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 90,
       "round": 5,
       "title": "Verify the remote feature-branch reference without claiming a merge.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
       "number": 91,
       "round": 5,
       "title": "Record protected-branch, pull-request, code-scanning, and signature-policy observations honestly.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
@@ -911,13 +911,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 80,
-    "plannedStepCount": 19,
+    "completedStepCount": 90,
+    "plannedStepCount": 9,
     "inProgressStepNumbers": [
-      81
+      91
     ],
     "completedRoundCount": 4,
-    "nextStepNumber": 81
+    "nextStepNumber": 91
   },
   "evidence": {
     "wave3CloseoutPath": "content/development/seis-public-plugin-wave-3-closeout.json",
@@ -929,12 +929,14 @@
     "marketplacePath": ".agents/plugins/marketplace.json",
     "candidateSourcePath": "plugins/seis-core/seis-swift-package-topology",
     "candidateEvidencePath": "content/development/seis-swift-package-topology.json",
-    "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json"
+    "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
+    "validationDeliveryEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json"
   },
   "validation": [
     "npm run check:seis-public-plugin-wave-4-program",
     "npm run check:seis-public-plugin-wave-4-activation-decision",
     "npm run check:seis-public-plugin-wave-4-integration-checkpoint",
+    "npm run check:seis-public-plugin-wave-4-validation-delivery-evidence",
     "npm run check:seis-swift-package-topology",
     "npm run check:seis-public-plugin-wave-3-following-wave-review",
     "npm run check:seis-public-plugin-continuity-cadence",
@@ -979,7 +981,8 @@
     "publicInventory": true,
     "candidateIntegrated": true,
     "topologyEvidence": true,
-    "integrationCheckpoint": true
+    "integrationCheckpoint": true,
+    "validationDeliveryEvidence": true
   },
   "inputSafetyScan": {
     "inputCount": 6,
