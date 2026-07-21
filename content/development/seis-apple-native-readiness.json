@@ -16,10 +16,10 @@
     "publicMarketplace": true
   },
   "marketplace": {
-    "publicCardCount": 379,
-    "expectedPublicCardCount": 379,
-    "applicationPluginCount": 73,
-    "expectedApplicationPluginCount": 73,
+    "publicCardCount": 380,
+    "expectedPublicCardCount": 380,
+    "applicationPluginCount": 74,
+    "expectedApplicationPluginCount": 74,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
     "topicPluginCount": 300

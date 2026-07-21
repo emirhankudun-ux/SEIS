@@ -17,6 +17,7 @@ const EXTERNAL_PROOF_PATH = "content/development/seis-public-plugin-external-ins
 const PACKAGE_PATH = "plugins/seis-core/seis-swift-concurrency-audit";
 const CHECKPOINT_COMMIT = "d6bfaab79ec26451d8ef9ca1c9556c5cb689f186";
 const FEATURE_BRANCH = "plugins/seis-plugin-root-20260715";
+const HISTORICAL_INVENTORY = Object.freeze({ applicationPluginCount: 73, marketplaceCardCount: 379, matrixPluginCount: 73, matrixReadyCount: 70, matrixAttentionCount: 3 });
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 
 const record = buildRecord();
@@ -46,6 +47,7 @@ function buildRecord() {
   const marketplaceEntry = list(marketplace.plugins).find((entry) => entry?.name === "seis-swift-concurrency-audit");
   const matrixEntry = list(matrix.plugins).find((entry) => entry?.name === "seis-swift-concurrency-audit");
   const mcpEntry = list(mcpPermission.records).find((entry) => entry?.name === "seis-swift-concurrency-audit");
+  assertCurrentInventory(sourceManifest, marketplace, matrix);
   const record = {
     schemaVersion: 1,
     id: "seis-public-plugin-wave-3-round-3-checkpoint",
@@ -66,11 +68,11 @@ function buildRecord() {
       marketplaceName: marketplace.name || null,
       marketplaceDisplayName: marketplace.interface?.displayName || null,
       marketplaceCardPresent: marketplaceEntry?.source?.path === "./plugins/seis-core/seis-swift-concurrency-audit",
-      applicationPluginCount: list(sourceManifest.plugins).length,
-      marketplaceCardCount: list(marketplace.plugins).length,
-      matrixPluginCount: matrix.pluginCount || 0,
-      matrixReadyCount: matrix.readyCount || 0,
-      matrixAttentionCount: matrix.attentionCount || 0,
+      applicationPluginCount: HISTORICAL_INVENTORY.applicationPluginCount,
+      marketplaceCardCount: HISTORICAL_INVENTORY.marketplaceCardCount,
+      matrixPluginCount: HISTORICAL_INVENTORY.matrixPluginCount,
+      matrixReadyCount: HISTORICAL_INVENTORY.matrixReadyCount,
+      matrixAttentionCount: HISTORICAL_INVENTORY.matrixAttentionCount,
       matrixFailureCount: matrix.failureCount || 0,
     },
     localEvidence: {
@@ -141,6 +143,17 @@ function validateRecord(record) {
   assert(record.lifecycle?.publicReleaseAllowed === false && record.lifecycle?.externalProofReleaseAllowed === false && record.delivery?.commit === CHECKPOINT_COMMIT && record.delivery?.branch === FEATURE_BRANCH && record.delivery?.featureBranchOnly === true && record.delivery?.protectedDefaultBranchWritten === false && record.delivery?.remoteReferenceVerified === true, "lifecycle or delivery boundary is invalid");
   assert(record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false && list(record.externalGaps).length === 3, "rollback or external gap record is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "checkpoint must not contain a machine-specific path");
+}
+
+function assertCurrentInventory(sourceManifest, marketplace, matrix) {
+  const applicationPluginCount = list(sourceManifest.plugins).length;
+  const marketplaceCardCount = list(marketplace.plugins).length;
+  const matrixPluginCount = matrix.pluginCount || 0;
+  const historical = applicationPluginCount === HISTORICAL_INVENTORY.applicationPluginCount
+    && marketplaceCardCount === HISTORICAL_INVENTORY.marketplaceCardCount
+    && matrixPluginCount === HISTORICAL_INVENTORY.matrixPluginCount;
+  const wave4Integrated = applicationPluginCount === 74 && marketplaceCardCount === 380 && matrixPluginCount === 74;
+  assert(historical || wave4Integrated, "current public inventory is outside the supported historical or Wave 4 topology state");
 }
 
 function range(start, end) {

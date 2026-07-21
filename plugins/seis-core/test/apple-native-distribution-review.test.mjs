@@ -20,8 +20,8 @@ test("keeps the Wave 2 public distribution review deterministic and release-gate
   const review = JSON.parse(fs.readFileSync(reviewPath, "utf8"));
   assert.equal(review.status, "completed-repository-local-distribution-maintenance-review");
   assert.equal(review.distribution.marketplaceName, "seis-repo");
-  assert.equal(review.distribution.publicCardCount, 379);
-  assert.equal(review.distribution.applicationPluginCount, 73);
+  assert.equal(review.distribution.publicCardCount, 380);
+  assert.equal(review.distribution.applicationPluginCount, 74);
   assert.equal(review.contracts.permissions.writePermissionGrantCount, 0);
   assert.equal(review.contracts.permissions.networkPermissionGrantCount, 0);
   assert.equal(review.contracts.permissions.secretPermissionGrantCount, 0);

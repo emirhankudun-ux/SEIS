@@ -36,9 +36,9 @@
   "summary": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "publicCardCount": 379,
-    "expectedCardCount": 379,
-    "applicationPluginCount": 73,
+    "publicCardCount": 380,
+    "expectedCardCount": 380,
+    "applicationPluginCount": 74,
     "releaseLabel": "0.00000002",
     "releaseSemver": "0.0.20",
     "recordedAttentionContractIds": [

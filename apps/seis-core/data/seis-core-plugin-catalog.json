@@ -15,7 +15,7 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 73,
+    "marketplaceEntryCount": 74,
     "coreSourceOwner": false
   },
   "release": {
@@ -48,13 +48,13 @@
     ]
   },
   "counts": {
-    "discovered": 73,
-    "returned": 73,
-    "contractValid": 73,
+    "discovered": 74,
+    "returned": 74,
+    "contractValid": 74,
     "contractInvalid": 0,
-    "statusReady": 70,
-    "statusAttention": 3,
-    "statusOk": 73,
+    "statusReady": 67,
+    "statusAttention": 7,
+    "statusOk": 74,
     "statusNotChecked": 0,
     "statusFailed": 0
   },
@@ -2514,7 +2514,7 @@
         "failures": []
       },
       "status": {
-        "state": "ready",
+        "state": "attention",
         "ok": true,
         "execution": "status-only",
         "failures": []
@@ -2566,7 +2566,7 @@
         "failures": []
       },
       "status": {
-        "state": "ready",
+        "state": "attention",
         "ok": true,
         "execution": "status-only",
         "failures": []
@@ -2620,7 +2620,7 @@
         "failures": []
       },
       "status": {
-        "state": "ready",
+        "state": "attention",
         "ok": true,
         "execution": "status-only",
         "failures": []
@@ -2673,7 +2673,7 @@
         "failures": []
       },
       "status": {
-        "state": "ready",
+        "state": "attention",
         "ok": true,
         "execution": "status-only",
         "failures": []
@@ -3352,6 +3352,71 @@
         "node --test plugins/seis-core/test/swift-concurrency-audit-evidence.test.mjs"
       ],
       "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits Swift source, marketplace state, an external system, or release state."
+    },
+    {
+      "id": "seis-swift-package-topology",
+      "name": "seis-swift-package-topology",
+      "displayName": "SEIS Swift Package Topology",
+      "description": "Report bounded declared Swift Package topology from one fixed checked-in manifest without resolving, compiling, running, or writing.",
+      "category": "Developer",
+      "capabilities": [
+        "bounded-swift-package-manifest-topology",
+        "declared-platform-review",
+        "product-target-mapping",
+        "target-dependency-mapping",
+        "executable-resource-mapping",
+        "read-only-local-evidence"
+      ],
+      "owner": "@seis-apple",
+      "sourcePath": "plugins/seis-core/seis-swift-package-topology",
+      "entrypoint": "scripts/seis-swift-package-topology-mcp-server.mjs",
+      "release": {
+        "label": "0.00000002",
+        "semver": "0.0.20",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 20
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": {
+        "mode": "read-only-static-manifest-topology",
+        "fixedManifestPath": "packages/seis_platform_swift/Package.swift",
+        "maxManifestBytes": 131072,
+        "regularFileRequired": true,
+        "symlinkRefusal": true,
+        "unsupportedSyntaxState": "attention"
+      },
+      "permissions": {
+        "read": [
+          "one fixed checked-in Swift Package manifest",
+          "bounded derived package topology metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "ready",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-swift-package-topology-mcp-server.mjs --status",
+        "node scripts/seis-swift-package-topology-mcp-server.mjs --audit --path .",
+        "node scripts/seis-swift-package-topology-mcp-server.mjs --evidence",
+        "npm run check:seis-swift-package-topology",
+        "node --test plugins/seis-core/test/swift-package-topology.test.mjs",
+        "node --test plugins/seis-core/test/swift-package-topology-evidence.test.mjs"
+      ],
+      "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits the Swift manifest, marketplace state, an external system, or release state."
     },
     {
       "id": "seis-technology-ontology",

@@ -24,8 +24,8 @@ test("keeps the Wave 2 handoff public-only, evidence-led, and explicit about nat
   assert.equal(handoff.program.selectedCapability, "seis-apple-native-readiness");
   assert.equal(handoff.marketplace.name, "seis-repo");
   assert.equal(handoff.marketplace.displayName, "SEIS Repo");
-  assert.equal(handoff.marketplace.applicationPluginCount, 73);
-  assert.equal(handoff.marketplace.publicCardCount, 379);
+  assert.equal(handoff.marketplace.applicationPluginCount, 74);
+  assert.equal(handoff.marketplace.publicCardCount, 380);
   assert.equal(handoff.publicBoundary.personalMarketplaceRead, false);
   assert.equal(handoff.publicBoundary.personalMarketplaceMutation, false);
   assert.equal(handoff.publicBoundary.network, false);

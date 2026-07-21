@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-4-integration-checkpoint",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 4,
+  "round": 4,
+  "status": "completed-repository-local-integration-checkpoint",
+  "maturity": "prototype",
+  "generatedAt": "2026-07-21",
+  "purpose": "Record the completed public-repository integration steps for one bounded static Swift Package topology plugin. This checkpoint reconciles source, catalog, matrix, SEIS Repo card, generated evidence, and deny-by-default permissions without treating repository-local checks as independent installation, SwiftPM, compiler, runtime, provider, deployment, signing, or public-release proof.",
+  "completedSteps": [
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80
+  ],
+  "capability": {
+    "id": "seis-swift-package-topology",
+    "sourceDirectoryPresent": true,
+    "fixedManifestPath": "packages/seis_platform_swift/Package.swift",
+    "staticOnly": true,
+    "sourceManifestRegistered": true,
+    "catalogRegistered": true,
+    "matrixRegistered": true,
+    "marketplaceCardRegistered": true
+  },
+  "publicProjection": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "applicationPluginCount": 74,
+    "catalogPluginCount": 74,
+    "matrixPluginCount": 74,
+    "matrixFailureCount": 0,
+    "publicCardCount": 380,
+    "marketplaceCategory": "Developer",
+    "installationPolicy": "AVAILABLE",
+    "authenticationPolicy": "ON_INSTALL"
+  },
+  "topologyEvidence": {
+    "path": "content/development/seis-swift-package-topology.json",
+    "status": "ready-public-static-topology-evidence",
+    "auditOk": true,
+    "auditState": "ready",
+    "declaredPlatformCount": 2,
+    "productCount": 2,
+    "targetCount": 3,
+    "targetDependencyEdgeCount": 1,
+    "testTargetDependencyCount": 1,
+    "executableResourceCount": 2,
+    "staticOnlyClaims": {
+      "compilesSwift": false,
+      "runsSwiftTests": false,
+      "startsNativeApplication": false,
+      "publicReleaseAllowed": false
+    }
+  },
+  "permissions": {
+    "transport": "local-stdio",
+    "permissionState": "deny-by-default",
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "remoteEndpointDeclared": false,
+    "environmentInjectionDeclared": false,
+    "risk": "low"
+  },
+  "publicSafety": {
+    "lifecycleStatus": "active-local-proof-public-release-gated",
+    "lifecyclePublicReleaseAllowed": false,
+    "installStateStatus": "public-seis-repo-source-available-independent-install-pending",
+    "installStatePublicReleaseAllowed": false,
+    "installEvidenceStatus": "public-seis-repo-independent-install-evidence-gate",
+    "installEvidencePublicReleaseAllowed": false,
+    "runtimeStatus": "public-seis-repo-runtime-cache-observation",
+    "runtimePublicReleaseAllowed": false,
+    "securityReviewStatus": "repo-local-security-provenance-reviewed",
+    "securityReviewPublicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "signing": false,
+    "publicRelease": false
+  },
+  "validation": [
+    "npm run check:seis-swift-package-topology",
+    "node --test plugins/seis-core/test/swift-package-topology.test.mjs",
+    "node --test plugins/seis-core/test/swift-package-topology-evidence.test.mjs",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-public-marketplace-terminology",
+    "npm run check:seis-public-plugin-security-provenance-review",
+    "npm run check:seis-public-plugin-continuity"
+  ],
+  "externalGaps": [
+    "Independent clean-runner or public-install evidence remains pending and is not created by this checkpoint.",
+    "SwiftPM resolution, compilation, tests, and native runtime behavior are not run or claimed by this static topology package.",
+    "No provider, deployment, signing, marketplace publication, protected-branch update, or public release was performed."
+  ],
+  "risks": [
+    {
+      "id": "RISK-W4-008",
+      "status": "tracked",
+      "description": "A public SEIS Repo card could be mistaken for independent installation or release proof.",
+      "mitigation": "Keep the independent evidence and human-approval gates false and link their current repository records."
+    },
+    {
+      "id": "RISK-W4-009",
+      "status": "tracked",
+      "description": "A static parser result could be mistaken for a compiler, SwiftPM, or runtime validation result.",
+      "mitigation": "Expose only derived manifest topology and preserve all execution claims as false."
+    },
+    {
+      "id": "RISK-W4-010",
+      "status": "tracked",
+      "description": "Projection metadata could drift across source, catalog, matrix, marketplace, and permission records.",
+      "mitigation": "Require exact single-entry reconciliation and generated evidence checks before a feature-branch delivery."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the focused source package, its one SEIS Repo card, generated topology evidence, integration checkpoint, and aligned projections on the feature branch; no manifest mutation, external state, release, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 11,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}

@@ -22,7 +22,10 @@ const SKILL_PATH = "plugins/seis-core/seis-swift-concurrency-audit/skills/seis-s
 const CANONICAL_ORCHESTRATOR_COUNT = 1;
 const MIGRATED_ROOT_PLUGIN_COUNT = 5;
 const TOPIC_PLUGIN_COUNT = 300;
-const EXPECTED_PUBLIC_CARD_COUNT = CANONICAL_ORCHESTRATOR_COUNT + MIGRATED_ROOT_PLUGIN_COUNT + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_COUNT;
+const HISTORICAL_APPLICATION_PLUGIN_COUNT = 73;
+const HISTORICAL_PUBLIC_CARD_COUNT = 379;
+const CURRENT_EXPECTED_PUBLIC_CARD_COUNT = CANONICAL_ORCHESTRATOR_COUNT + MIGRATED_ROOT_PLUGIN_COUNT + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_COUNT;
+const WAVE_4_CANDIDATE_ID = "seis-swift-package-topology";
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 
 const record = buildRecord();
@@ -43,6 +46,7 @@ function buildRecord() {
   const sourceManifest = readJson(SOURCE_MANIFEST_PATH);
   const marketplace = readJson(MARKETPLACE_PATH);
   const decision = readJson(DECISION_PATH);
+  assertCurrentInventory(sourceManifest, marketplace);
   const plugin = list(sourceManifest.plugins).find((entry) => entry?.name === SWIFT_CONCURRENCY_AUDIT_ID);
   const marketplaceEntry = list(marketplace.plugins).find((entry) => entry?.name === SWIFT_CONCURRENCY_AUDIT_ID);
   const audit = auditSwiftConcurrency(ROOT);
@@ -69,10 +73,10 @@ function buildRecord() {
       publicMarketplace: marketplaceEntry?.source?.path === `./plugins/seis-core/${SWIFT_CONCURRENCY_AUDIT_ID}`,
     },
     marketplace: {
-      publicCardCount: list(marketplace.plugins).length,
-      expectedPublicCardCount: EXPECTED_PUBLIC_CARD_COUNT,
-      applicationPluginCount: list(sourceManifest.plugins).length,
-      expectedApplicationPluginCount: APP_PLUGIN_EXPANSION_TARGET,
+      publicCardCount: HISTORICAL_PUBLIC_CARD_COUNT,
+      expectedPublicCardCount: HISTORICAL_PUBLIC_CARD_COUNT,
+      applicationPluginCount: HISTORICAL_APPLICATION_PLUGIN_COUNT,
+      expectedApplicationPluginCount: HISTORICAL_APPLICATION_PLUGIN_COUNT,
       canonicalOrchestratorCount: CANONICAL_ORCHESTRATOR_COUNT,
       migratedRootPluginCount: MIGRATED_ROOT_PLUGIN_COUNT,
       topicPluginCount: TOPIC_PLUGIN_COUNT,
@@ -197,7 +201,7 @@ function validateRecord(record) {
   assert(record.status === "attention-public-static-concurrency-evidence", "record status is invalid");
   assert(record.plugin?.name === SWIFT_CONCURRENCY_AUDIT_ID && record.plugin?.sourcePath === `plugins/seis-core/${SWIFT_CONCURRENCY_AUDIT_ID}`, "plugin source contract is invalid");
   assert(record.plugin?.marketplaceName === "seis-repo" && record.plugin?.marketplaceDisplayName === "SEIS Repo" && record.plugin?.publicMarketplace === true, "public marketplace contract is invalid");
-  assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "public count contract is invalid");
+  assert(record.marketplace?.publicCardCount === HISTORICAL_PUBLIC_CARD_COUNT && record.marketplace?.expectedPublicCardCount === HISTORICAL_PUBLIC_CARD_COUNT && record.marketplace?.applicationPluginCount === HISTORICAL_APPLICATION_PLUGIN_COUNT && record.marketplace?.expectedApplicationPluginCount === HISTORICAL_APPLICATION_PLUGIN_COUNT, "historical Wave 3 count contract is invalid");
   assert(record.decision?.id === "seis-public-plugin-wave-3-capability-decision" && record.decision?.selectedCapability === SWIFT_CONCURRENCY_AUDIT_ID && record.decision?.implementationStarted === true && record.decision?.additionalPublicCardAdded === true, "Wave 3 decision linkage is invalid");
   assert(record.audit?.state === "attention" && record.audit?.ok === true && record.audit?.classification === "bounded-static-concurrency-signals-only" && record.audit?.sourceRootCount === 2 && record.audit?.scannedSwiftFileCount > 0 && record.audit?.blockingFindingCount === 0, "static concurrency audit is invalid");
   assert((record.audit?.signalCounts?.uncheckedSendable || 0) > 0 && (record.audit?.signalCounts?.sendableDeclaration || 0) > 0 && list(record.audit?.findingCodes).includes("unchecked-sendable-review-required"), "expected static review signals are missing");
@@ -206,6 +210,16 @@ function validateRecord(record) {
   assert(record.inputSafety?.credentialAssignmentFindingCount === 0 && record.inputSafety?.rawSourceReturned === false && record.inputSafety?.rawMatchedValuesReturned === false && record.inputSafety?.sourceFilesCompiled === false, "input safety record is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "record must not contain a machine-specific path");
+}
+
+function assertCurrentInventory(sourceManifest, marketplace) {
+  const applicationPluginCount = list(sourceManifest?.plugins).length;
+  const publicCardCount = list(marketplace?.plugins).length;
+  const wave4SourcePresent = list(sourceManifest?.plugins).some((entry) => entry?.name === WAVE_4_CANDIDATE_ID);
+  const wave4CardPresent = list(marketplace?.plugins).some((entry) => entry?.name === WAVE_4_CANDIDATE_ID && entry?.source?.path === `./plugins/seis-core/${WAVE_4_CANDIDATE_ID}`);
+  const historicalInventory = applicationPluginCount === HISTORICAL_APPLICATION_PLUGIN_COUNT && publicCardCount === HISTORICAL_PUBLIC_CARD_COUNT;
+  const integratedWave4Inventory = applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && publicCardCount === CURRENT_EXPECTED_PUBLIC_CARD_COUNT && wave4SourcePresent && wave4CardPresent;
+  assert(historicalInventory || integratedWave4Inventory, "current inventory is neither the Wave 3 snapshot nor the one-package Wave 4 integration");
 }
 
 function readJson(relativePath) {

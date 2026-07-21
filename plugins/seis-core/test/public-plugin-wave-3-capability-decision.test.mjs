@@ -32,8 +32,8 @@ test("records the bounded non-duplicative Wave 3 concurrency package and SEIS Re
   assert.equal(decision.preconditions.wave3ProgramSelectedCapability, "seis-swift-concurrency-audit");
   assert.equal(decision.publicDistribution.marketplaceName, "seis-repo");
   assert.equal(decision.publicDistribution.marketplaceDisplayName, "SEIS Repo");
-  assert.equal(decision.publicDistribution.applicationPluginCount, 73);
-  assert.equal(decision.publicDistribution.publicCardCount, 379);
+  assert.equal(decision.publicDistribution.applicationPluginCount, 74);
+  assert.equal(decision.publicDistribution.publicCardCount, 380);
   assert.equal(decision.publicDistribution.additionalPublicCardAdded, true);
   assert.equal(decision.publicDistribution.personalMarketplaceRead, false);
   assert.equal(decision.publicDistribution.personalMarketplaceMutation, false);

@@ -1,0 +1,39 @@
+{
+  "name": "seis-swift-package-topology",
+  "version": "0.0.20",
+  "description": "Report bounded declared Swift Package topology from one fixed checked-in manifest without resolving, compiling, running, or writing.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "swift",
+    "swiftpm",
+    "package",
+    "topology",
+    "read-only",
+    "public-repository"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Swift Package Topology",
+    "shortDescription": "Inspect declared Swift Package relationships locally.",
+    "longDescription": "Reads only the checked-in packages/seis_platform_swift/Package.swift file and reports a bounded derived view of declared platforms, products, target kinds, dependencies, test relationships, and executable resources. It never resolves packages, compiles or runs Swift, returns raw manifest text, follows symlinks, writes files, uses a network, reads secrets, or treats static declarations as compiler, runtime, installation, deployment, or release proof.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "bounded-swift-package-manifest-topology",
+      "declared-platform-review",
+      "product-target-mapping",
+      "target-dependency-mapping",
+      "executable-resource-mapping",
+      "read-only-local-evidence"
+    ],
+    "defaultPrompt": [
+      "Inspect the fixed checked-in SEIS Swift Package manifest without resolving, compiling, running, or changing files.",
+      "Keep declared static topology separate from SwiftPM, compiler, test, runtime, installation, deployment, and release claims."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

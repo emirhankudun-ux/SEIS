@@ -10,10 +10,10 @@
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
     "publicAudience": "everyone",
-    "publicCardCount": 379,
-    "expectedPublicCardCount": 379,
-    "applicationPluginCount": 73,
-    "expectedApplicationPluginCount": 73,
+    "publicCardCount": 380,
+    "expectedPublicCardCount": 380,
+    "applicationPluginCount": 74,
+    "expectedApplicationPluginCount": 74,
     "topicPluginCount": 300,
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true
@@ -22,21 +22,21 @@
     "sourceCatalog": {
       "sourceStatus": "active-public-repository-boundary",
       "catalogContractValid": true,
-      "sourcePluginCount": 73,
-      "catalogPluginCount": 73,
+      "sourcePluginCount": 74,
+      "catalogPluginCount": 74,
       "applePluginStatus": "ready"
     },
     "matrixRegistrySuite": {
-      "matrixPluginCount": 73,
+      "matrixPluginCount": 74,
       "matrixFailureCount": 0,
       "matrixAppleStatus": "ready",
       "registryEntryCount": 5000,
       "registryAppleInstallId": "seis-apple-native-readiness@seis-repo",
-      "suiteApplicationPluginCount": 73,
+      "suiteApplicationPluginCount": 74,
       "suitePublicReleaseAllowed": false
     },
     "permissions": {
-      "applicationMcpServerCount": 73,
+      "applicationMcpServerCount": 74,
       "remoteServerCount": 0,
       "writePermissionGrantCount": 0,
       "networkPermissionGrantCount": 0,
@@ -64,8 +64,8 @@
     },
     "manifest": {
       "overallState": "ready",
-      "declaredMarketplaceEntryCount": 379,
-      "declaredApplicationMarketplaceEntryCount": 73,
+      "declaredMarketplaceEntryCount": 380,
+      "declaredApplicationMarketplaceEntryCount": 74,
       "findingCount": 0
     },
     "appleReadiness": {

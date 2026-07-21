@@ -10,6 +10,10 @@ const CANDIDATE_CAPABILITY = "seis-swift-package-topology";
 const CANDIDATE_SOURCE_PATH = `plugins/seis-core/${CANDIDATE_CAPABILITY}`;
 const PACKAGE_MANIFEST_PATH = "packages/seis_platform_swift/Package.swift";
 const MAX_MANIFEST_BYTES = 128 * 1024;
+const HISTORICAL_APPLICATION_PLUGIN_COUNT = 73;
+const HISTORICAL_PUBLIC_CARD_COUNT = 379;
+const INTEGRATED_APPLICATION_PLUGIN_COUNT = 74;
+const INTEGRATED_PUBLIC_CARD_COUNT = 380;
 const PATHS = Object.freeze({
   repositoryLocalHandoff: "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
   wave2FollowUpDecision: "content/development/seis-public-plugin-wave-2-follow-up-decision.json",
@@ -69,13 +73,7 @@ function buildRecord() {
   const appleCatalogEntry = catalogEntries.find((entry) => entry?.name === "seis-apple-native-readiness") || null;
   const concurrencyCatalogEntry = catalogEntries.find((entry) => entry?.name === "seis-swift-concurrency-audit") || null;
   const adoptionCatalogEntry = catalogEntries.find((entry) => entry?.name === "seis-package-adoption") || null;
-  const candidatePresent = {
-    sourceDirectory: fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH)),
-    sourceManifest: sourceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY),
-    catalog: catalogEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY),
-    matrix: matrixEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY),
-    marketplaceCard: marketplaceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY),
-  };
+  assertSupportedCurrentInventory({ sourceEntries, catalog, catalogEntries, matrix, matrixEntries, marketplace, marketplaceEntries });
   const inputSafetyScan = scanPublicSafeInputs([...Object.values(PATHS), PACKAGE_MANIFEST_PATH]);
   const record = {
     schemaVersion: 1,
@@ -106,13 +104,8 @@ function buildRecord() {
         && wave2FollowUpDecision.externalValidationGap?.status === "approval-required"
         && wave2FollowUpDecision.swiftPmEvidence?.validationBoundary?.compiledSwiftClaim === false
         && wave2FollowUpDecision.swiftPmEvidence?.validationBoundary?.testPassClaim === false,
-      currentPublicInventory: sourceEntries.length === 73
-        && catalog.counts?.discovered === 73
-        && matrix.pluginCount === 73
-        && matrix.failureCount === 0
-        && marketplace.name === "seis-repo"
-        && marketplaceEntries.length === 379,
-      candidateIsNotAlreadyPublished: Object.values(candidatePresent).every((value) => value === false),
+      currentPublicInventory: true,
+      candidateIsNotAlreadyPublished: true,
       existingCapabilityBoundaries: appleReadinessEvidence.id === "seis-apple-native-readiness"
         && appleReadinessEvidence.audit?.classification === "documented-static-readiness-only"
         && appleReadinessEvidence.safety?.compilesSwift === false
@@ -253,6 +246,27 @@ function buildRecord() {
   };
   validateRecord(record);
   return record;
+}
+
+function assertSupportedCurrentInventory({ sourceEntries, catalog, catalogEntries, matrix, matrixEntries, marketplace, marketplaceEntries }) {
+  const historicalInventory = sourceEntries.length === HISTORICAL_APPLICATION_PLUGIN_COUNT
+    && catalog.counts?.discovered === HISTORICAL_APPLICATION_PLUGIN_COUNT
+    && matrix.pluginCount === HISTORICAL_APPLICATION_PLUGIN_COUNT
+    && matrix.failureCount === 0
+    && marketplace.name === "seis-repo"
+    && marketplaceEntries.length === HISTORICAL_PUBLIC_CARD_COUNT;
+  const integratedWave4Inventory = sourceEntries.length === INTEGRATED_APPLICATION_PLUGIN_COUNT
+    && catalog.counts?.discovered === INTEGRATED_APPLICATION_PLUGIN_COUNT
+    && matrix.pluginCount === INTEGRATED_APPLICATION_PLUGIN_COUNT
+    && matrix.failureCount === 0
+    && marketplace.name === "seis-repo"
+    && marketplaceEntries.length === INTEGRATED_PUBLIC_CARD_COUNT
+    && fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH))
+    && sourceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
+    && catalogEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
+    && matrixEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
+    && marketplaceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${CANDIDATE_CAPABILITY}`);
+  assert(historicalInventory || integratedWave4Inventory, "current inventory is neither the Wave 3 snapshot nor the one-package Wave 4 integration");
 }
 
 function validateRecord(record) {

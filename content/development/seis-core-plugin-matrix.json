@@ -21,10 +21,10 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 73,
-  "expectedPluginCount": 73,
-  "readyCount": 70,
-  "attentionCount": 3,
+  "pluginCount": 74,
+  "expectedPluginCount": 74,
+  "readyCount": 67,
+  "attentionCount": 7,
   "failureCount": 0,
   "failures": [],
   "plugins": [
@@ -791,7 +791,7 @@
         "network": [],
         "secrets": []
       },
-      "status": "ready",
+      "status": "attention",
       "ok": true,
       "execution": "status-only",
       "failures": []
@@ -807,7 +807,7 @@
         "network": [],
         "secrets": []
       },
-      "status": "ready",
+      "status": "attention",
       "ok": true,
       "execution": "status-only",
       "failures": []
@@ -823,7 +823,7 @@
         "network": [],
         "secrets": []
       },
-      "status": "ready",
+      "status": "attention",
       "ok": true,
       "execution": "status-only",
       "failures": []
@@ -839,7 +839,7 @@
         "network": [],
         "secrets": []
       },
-      "status": "ready",
+      "status": "attention",
       "ok": true,
       "execution": "status-only",
       "failures": []
@@ -1048,6 +1048,22 @@
         "secrets": []
       },
       "status": "attention",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-swift-package-topology",
+      "version": "0.0.20",
+      "releaseTrainVersion": "0.00000002",
+      "entrypoint": "scripts/seis-swift-package-topology-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "ready",
       "ok": true,
       "execution": "status-only",
       "failures": []

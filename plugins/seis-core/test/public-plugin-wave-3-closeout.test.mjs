@@ -10,7 +10,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const recordPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-3-closeout.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-3-closeout.mjs");
 
-test("closes Wave 3 at 100 repository-local evidence steps without activating Wave 4", () => {
+test("preserves the Wave 3 closeout snapshot after the single Wave 4 integration", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -39,4 +39,10 @@ test("closes Wave 3 at 100 repository-local evidence steps without activating Wa
   assert.equal(closeout.externalClaims.swiftPmTestPass, false);
   assert.equal(closeout.externalClaims.publicRelease, false);
   assert.equal(JSON.stringify(closeout).includes(repositoryRoot), false);
+
+  const sourceManifest = JSON.parse(fs.readFileSync(path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json"), "utf8"));
+  const marketplace = JSON.parse(fs.readFileSync(path.join(repositoryRoot, ".agents/plugins/marketplace.json"), "utf8"));
+  assert.equal(sourceManifest.pluginCount, 74);
+  assert.equal(marketplace.plugins.length, 380);
+  assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-swift-package-topology"));
 });

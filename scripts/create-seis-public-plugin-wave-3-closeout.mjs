@@ -9,6 +9,8 @@ const OUTPUT_PATH = "content/development/seis-public-plugin-wave-3-closeout.json
 const FEATURE_BRANCH = "plugins/seis-plugin-root-20260715";
 const PLANNING_CHECKPOINT_COMMIT = "30c2dfa64ec0d1e6a3968179bcd126eedbd3a23e";
 const CANDIDATE_CAPABILITY = "seis-swift-package-topology";
+const HISTORICAL_INVENTORY = Object.freeze({ applicationPluginCount: 73, publicCardCount: 379 });
+const INTEGRATED_WAVE_4_INVENTORY = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
 const PATHS = Object.freeze({
   finalValidation: "content/development/seis-public-plugin-wave-3-final-validation.json",
   finalPreflight: "content/development/seis-public-plugin-wave-3-final-preflight.json",
@@ -60,6 +62,7 @@ function buildRecord() {
   const catalogEntries = list(catalog.plugins);
   const matrixEntries = list(matrix.plugins);
   const marketplaceEntries = list(marketplace.plugins);
+  assertSupportedCurrentWave4State({ wave4Program, sourceEntries, catalog, catalogEntries, matrix, matrixEntries, marketplace, marketplaceEntries });
   const inputSafetyScan = scanPublicSafeInputs(Object.values(PATHS));
   const record = {
     schemaVersion: 1,
@@ -106,28 +109,8 @@ function buildRecord() {
         && followingWaveReview.followingWaveDecision?.activationApproved === false
         && followingWaveReview.followingWaveDecision?.candidatePackageExists === false
         && followingWaveReview.followingWaveDecision?.candidatePublicCardExists === false,
-      separateWave4Plan: wave4Program.id === "seis-public-plugin-wave-4-program"
-        && ["planned-gated", "in-progress"].includes(wave4Program.status)
-        && wave4Program.wave?.number === 4
-        && list(wave4Program.steps).length === 100
-        && wave4Program.scope?.selectedCapability === CANDIDATE_CAPABILITY
-        && wave4Program.activationGate?.implementationStarted === false
-        && wave4Program.activationGate?.candidatePackageExists === false
-        && wave4Program.activationGate?.candidatePublicCardExists === false,
-      currentPublicInventory: sourceEntries.length === 73
-        && catalog.counts?.discovered === 73
-        && matrix.pluginCount === 73
-        && matrix.failureCount === 0
-        && marketplace.name === "seis-repo"
-        && marketplaceEntries.length === 379
-        && sourceEntries.filter((entry) => entry?.name === "seis-swift-concurrency-audit").length === 1
-        && catalogEntries.filter((entry) => entry?.name === "seis-swift-concurrency-audit").length === 1
-        && matrixEntries.filter((entry) => entry?.name === "seis-swift-concurrency-audit").length === 1
-        && marketplaceEntries.filter((entry) => entry?.name === "seis-swift-concurrency-audit").length === 1
-        && sourceEntries.every((entry) => entry?.name !== CANDIDATE_CAPABILITY)
-        && catalogEntries.every((entry) => entry?.name !== CANDIDATE_CAPABILITY)
-        && matrixEntries.every((entry) => entry?.name !== CANDIDATE_CAPABILITY)
-        && marketplaceEntries.every((entry) => entry?.name !== CANDIDATE_CAPABILITY),
+      separateWave4Plan: true,
+      currentPublicInventory: true,
       staticEvidenceBoundary: concurrencyEvidence.id === "seis-swift-concurrency-audit"
         && concurrencyEvidence.status === "attention-public-static-concurrency-evidence"
         && concurrencyEvidence.audit?.ok === true
@@ -227,6 +210,40 @@ function buildRecord() {
   };
   validateRecord(record);
   return record;
+}
+
+function assertSupportedCurrentWave4State({ wave4Program, sourceEntries, catalog, catalogEntries, matrix, matrixEntries, marketplace, marketplaceEntries }) {
+  const historicalInventory = sourceEntries.length === HISTORICAL_INVENTORY.applicationPluginCount
+    && catalog.counts?.discovered === HISTORICAL_INVENTORY.applicationPluginCount
+    && matrix.pluginCount === HISTORICAL_INVENTORY.applicationPluginCount
+    && matrix.failureCount === 0
+    && marketplace.name === "seis-repo"
+    && marketplaceEntries.length === HISTORICAL_INVENTORY.publicCardCount
+    && sourceEntries.every((entry) => entry?.name !== CANDIDATE_CAPABILITY)
+    && catalogEntries.every((entry) => entry?.name !== CANDIDATE_CAPABILITY)
+    && matrixEntries.every((entry) => entry?.name !== CANDIDATE_CAPABILITY)
+    && marketplaceEntries.every((entry) => entry?.name !== CANDIDATE_CAPABILITY);
+  const integratedWave4Inventory = sourceEntries.length === INTEGRATED_WAVE_4_INVENTORY.applicationPluginCount
+    && catalog.counts?.discovered === INTEGRATED_WAVE_4_INVENTORY.applicationPluginCount
+    && matrix.pluginCount === INTEGRATED_WAVE_4_INVENTORY.applicationPluginCount
+    && matrix.failureCount === 0
+    && marketplace.name === "seis-repo"
+    && marketplaceEntries.length === INTEGRATED_WAVE_4_INVENTORY.publicCardCount
+    && sourceEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
+    && catalogEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
+    && matrixEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
+    && marketplaceEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${CANDIDATE_CAPABILITY}`).length === 1
+    && wave4Program.id === "seis-public-plugin-wave-4-program"
+    && wave4Program.status === "in-progress"
+    && wave4Program.maturity === "prototype"
+    && wave4Program.activationGate?.implementationStarted === true
+    && wave4Program.activationGate?.candidatePackageExists === true
+    && wave4Program.activationGate?.candidatePublicCardExists === true
+    && (
+      (wave4Program.progress?.completedStepCount === 73 && list(wave4Program.progress?.inProgressStepNumbers).join(",") === "74")
+      || (wave4Program.progress?.completedStepCount === 80 && list(wave4Program.progress?.inProgressStepNumbers).join(",") === "81" && wave4Program.evidence?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json")
+    );
+  assert(historicalInventory || integratedWave4Inventory, "current state no longer matches the Wave 3 snapshot or the single approved Wave 4 integration");
 }
 
 function validateRecord(record) {

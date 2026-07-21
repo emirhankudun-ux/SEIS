@@ -194,7 +194,7 @@ function buildRecord() {
   assert(deliveryEvidence?.id === "seis-public-plugin-wave-3-delivery-evidence" && deliveryEvidence?.status === "completed-repository-local-delivery-evidence" && list(deliveryEvidence?.completedSteps).join(",") === Array.from({ length: 5 }, (_, index) => index + 92).join(",") && deliveryEvidence?.observedDelivery?.remoteReferenceVerified === true && deliveryEvidence?.futureWaveDecision?.activationApproved === false, "Wave 3 delivery evidence is invalid");
   assert(repositoryLocalHandoff?.id === "seis-public-plugin-wave-3-repository-local-handoff" && repositoryLocalHandoff?.status === "completed-repository-local-handoff" && repositoryLocalHandoff?.step === 97 && repositoryLocalHandoff?.futureWaveDecision?.activationApproved === false, "Wave 3 repository-local handoff evidence is invalid");
   assert(followingWaveReview?.id === "seis-public-plugin-wave-3-following-wave-review" && followingWaveReview?.status === "completed-following-wave-scope-review" && followingWaveReview?.step === 98 && followingWaveReview?.followingWaveDecision?.selectedCapability === "seis-swift-package-topology" && followingWaveReview?.followingWaveDecision?.implementationApproved === false && followingWaveReview?.followingWaveDecision?.activationApproved === false, "Wave 3 following-wave review is invalid");
-  assert(wave4Program?.id === "seis-public-plugin-wave-4-program" && ["planned-gated", "in-progress"].includes(wave4Program?.status) && wave4Program?.wave?.number === 4 && wave4Program?.scope?.selectedCapability === "seis-swift-package-topology" && wave4Program?.activationGate?.implementationStarted === false && wave4Program?.activationGate?.candidatePackageExists === false && wave4Program?.activationGate?.candidatePublicCardExists === false, "Wave 4 plan is invalid");
+  assert(isSupportedWave4State(wave4Program), "Wave 4 plan is invalid");
   assert(closeout?.id === "seis-public-plugin-wave-3-closeout" && closeout?.status === "completed-repository-local-wave-closeout" && closeout?.step === 100 && closeout?.completion?.completedStepCount === 100 && closeout?.completion?.nextWaveStatus === "planned-gated" && closeout?.completion?.nextWaveActivationApproved === false, "Wave 3 closeout is invalid");
 
   const steps = ROUND_DEFINITIONS.flatMap((round, roundIndex) => round.tasks.map((title, taskIndex) => ({
@@ -328,6 +328,30 @@ function buildRecord() {
   };
   validateRecord(record);
   return record;
+}
+
+function isSupportedWave4State(wave4Program) {
+  const common = wave4Program?.id === "seis-public-plugin-wave-4-program"
+    && ["planned-gated", "in-progress"].includes(wave4Program?.status)
+    && wave4Program?.wave?.number === 4
+    && wave4Program?.scope?.selectedCapability === "seis-swift-package-topology";
+  const plannedSnapshot = common
+    && wave4Program?.activationGate?.implementationStarted === false
+    && wave4Program?.activationGate?.candidatePackageExists === false
+    && wave4Program?.activationGate?.candidatePublicCardExists === false
+    && wave4Program?.progress?.completedStepCount === 0
+    && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "1";
+  const integratedCheckpoint = common
+    && wave4Program?.maturity === "prototype"
+    && wave4Program?.activationGate?.status === "implemented-repository-local"
+    && wave4Program?.activationGate?.implementationStarted === true
+    && wave4Program?.activationGate?.candidatePackageExists === true
+    && wave4Program?.activationGate?.candidatePublicCardExists === true
+    && (
+      (wave4Program?.progress?.completedStepCount === 73 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "74")
+      || (wave4Program?.progress?.completedStepCount === 80 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "81" && wave4Program?.evidence?.integrationCheckpointPath === "content/development/seis-public-plugin-wave-4-integration-checkpoint.json")
+    );
+  return plannedSnapshot || integratedCheckpoint;
 }
 
 function validationFor(round, task) {

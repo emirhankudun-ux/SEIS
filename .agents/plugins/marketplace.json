@@ -845,6 +845,18 @@
       "category": "Developer"
     },
     {
+      "name": "seis-swift-package-topology",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-swift-package-topology"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-technology-ontology",
       "source": {
         "source": "local",

@@ -8,16 +8,16 @@
 ## Repo-Local Clean Artifact Staging
 
 - Mode: temporary-local-clean-artifact-staging
-  - Expected public marketplace packages: 379
+  - Expected public marketplace packages: 380
   - Canonical orchestrators: 1
   - Migrated root packages: 5
-  - Application packages: 73
+  - Application packages: 74
   - Objective-derived topic packages: 300
-- Staged public plugins: 379
+- Staged public plugins: 380
 - Embedded source modules: 10
-- Staged manifests: 379
-- Staged MCP entry scripts: 379
-- Staged files: 2571
+- Staged manifests: 380
+- Staged MCP entry scripts: 380
+- Staged files: 2577
 - Excluded source metadata files: 0
 - Disallowed source artifacts: 0
 - Forbidden files in stage: 0
@@ -97,6 +97,7 @@
 | seis-semver-audit | 5 | 5 | 0 | 1 | pass |
 | seis-source-provenance | 5 | 5 | 0 | 1 | pass |
 | seis-swift-concurrency-audit | 6 | 6 | 0 | 1 | pass |
+| seis-swift-package-topology | 6 | 6 | 0 | 1 | pass |
 | seis-technology-ontology | 5 | 5 | 0 | 1 | pass |
 | seis-test-flakiness | 5 | 5 | 0 | 1 | pass |
 | seis-tool-permission-audit | 5 | 5 | 0 | 1 | pass |

@@ -14,7 +14,7 @@
     "revision": 0,
     "microUnits": 20,
     "scope": "plugins/seis-core",
-    "pluginCount": 73
+    "pluginCount": 74
   },
   "purpose": "Keep every SEIS AI plugin record in the public SEIS repository and expose a deterministic 5000-entry capability catalog to the AI Core without creating 5000 artificial source folders. Public app plugin source packages remain owned by the SEIS Command Center application.",
   "canonicalOwnership": {
@@ -42,19 +42,19 @@
   "target": {
     "requestedPluginCount": 5000,
     "registryEntryCount": 5000,
-    "physicalPluginCount": 83,
-    "appOwnedPluginCount": 73,
+    "physicalPluginCount": 84,
+    "appOwnedPluginCount": 74,
     "appReleaseLabel": "0.00000002",
     "appReleaseSemver": "0.0.20",
     "appReleaseMajor": 0,
     "appReleaseRevision": 0,
     "appReleaseMicroUnits": 20,
-    "catalogOnlyEntryCount": 4917,
-    "functionalLocalDemoCount": 73,
-    "publicMarketplacePluginCount": 379,
+    "catalogOnlyEntryCount": 4916,
+    "functionalLocalDemoCount": 74,
+    "publicMarketplacePluginCount": 380,
     "migratedRootMarketplacePluginCount": 5,
-    "applicationMarketplacePluginCount": 73,
-    "publicRepositoryPluginCount": 73,
+    "applicationMarketplacePluginCount": 74,
+    "publicRepositoryPluginCount": 74,
     "personalPluginCount": 55,
     "personalRepoCounterpartCount": 55,
     "countRule": "registryEntryCount must equal requestedPluginCount; physical and catalog-only states must remain distinct"
@@ -69,7 +69,7 @@
     "destinationOwner": "apps/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "migratedOn": "2026-07-15",
-    "migratedPluginCount": 73,
+    "migratedPluginCount": 74,
     "legacyCompatibilityCount": 55,
     "legacyRepoCounterpartCount": 55,
     "legacyCompatibilityCoveragePath": "content/development/seis-ai-core-personal-plugin-coverage.json",
@@ -3749,6 +3749,60 @@
         "node --test plugins/seis-core/test/swift-concurrency-audit-evidence.test.mjs"
       ],
       "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits Swift source, marketplace state, an external system, or release state.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
+      "relatedGoalIds": [
+        "SEIS-GOAL-021"
+      ],
+      "declaredMcpServerCount": 1
+    },
+    {
+      "recordType": "physical-repo-plugin",
+      "id": "seis-swift-package-topology",
+      "slug": "seis-swift-package-topology",
+      "displayName": "SEIS Swift Package Topology",
+      "description": "Report bounded declared Swift Package topology from one fixed checked-in manifest without resolving, compiling, running, or writing.",
+      "version": "0.0.20",
+      "releaseTrainVersion": "0.00000002",
+      "releaseSemver": "0.0.20",
+      "releaseMajor": 0,
+      "releaseRevision": 0,
+      "releaseMicroUnits": 20,
+      "category": "swift-package-topology",
+      "owner": "@seis-apple",
+      "publisher": "SEIS Repository",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
+      "implementationState": "functional-local-demo",
+      "availability": "local-demo",
+      "sourcePath": "plugins/seis-core/seis-swift-package-topology",
+      "entrypoint": "scripts/seis-swift-package-topology-mcp-server.mjs",
+      "canonicalInstallId": "seis-swift-package-topology@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
+      "permissions": {
+        "read": [
+          "one fixed checked-in Swift Package manifest",
+          "bounded derived package topology metadata"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "privacyClass": "repo-internal-public-safe-boundary",
+      "riskClass": "low",
+      "validation": [
+        "node scripts/seis-swift-package-topology-mcp-server.mjs --status",
+        "node scripts/seis-swift-package-topology-mcp-server.mjs --audit --path .",
+        "node scripts/seis-swift-package-topology-mcp-server.mjs --evidence",
+        "npm run check:seis-swift-package-topology",
+        "node --test plugins/seis-core/test/swift-package-topology.test.mjs",
+        "node --test plugins/seis-core/test/swift-package-topology-evidence.test.mjs"
+      ],
+      "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits the Swift manifest, marketplace state, an external system, or release state.",
       "reviewState": "public-repository-preview",
       "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
@@ -220506,50 +220560,6 @@
       "declaredMcpServerCount": 0,
       "domain": "public-private-boundary",
       "operation": "migrate"
-    },
-    {
-      "recordType": "capability-plugin-slot",
-      "id": "seis-ai-catalog-4918",
-      "slug": "seis-public-private-boundary-rollback",
-      "displayName": "SEIS Public Private Boundary Rollback",
-      "description": "Plan-only rollback capability for the public-private-boundary registry surface in SEIS AI Core.",
-      "version": "0.1.0-catalog",
-      "category": "Security and Governance",
-      "owner": "@seis-security",
-      "publisher": "SEIS",
-      "sourceClassification": "generated-SEIS-catalog",
-      "license": "SEIS-CATALOG-INTERNAL",
-      "status": "cataloged",
-      "implementationState": "catalog-contract",
-      "availability": "plan-only",
-      "sourcePath": null,
-      "entrypoint": "packages/seis-ai/src/lib/plugin-registry.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
-      "permissions": {
-        "read": [
-          "bounded SEIS registry metadata"
-        ],
-        "write": [],
-        "network": [],
-        "secrets": []
-      },
-      "privacyClass": "public-safe-metadata",
-      "riskClass": "medium",
-      "validation": [
-        "npm run check:seis-ai-core-plugin-registry",
-        "SEIS-Agent catalog status review"
-      ],
-      "rollback": "Disable or remove this catalog record before implementation; no runtime capability is enabled by catalog presence.",
-      "reviewState": "catalog-review-required",
-      "provenance": "Generated from the SEIS master prompt taxonomy; not evidence of an implemented or connected plugin.",
-      "relatedGoalIds": [
-        "SEIS-GOAL-021"
-      ],
-      "declaredMcpServerCount": 0,
-      "domain": "public-private-boundary",
-      "operation": "rollback"
     }
   ]
 }

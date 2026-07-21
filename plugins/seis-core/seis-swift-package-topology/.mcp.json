@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-swift-package-topology": {
+      "command": "node",
+      "args": [
+        "scripts/seis-swift-package-topology-mcp-server.mjs"
+      ]
+    }
+  }
+}

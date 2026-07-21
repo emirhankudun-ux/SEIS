@@ -1,0 +1,51 @@
+{
+  "stableId": "seis-swift-package-topology",
+  "slug": "seis-swift-package-topology",
+  "version": "0.0.20",
+  "releaseMicroUnits": 20,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.00000002",
+  "category": "swift-package-topology",
+  "owner": "@seis-apple",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-swift-package-topology-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "one fixed checked-in Swift Package manifest",
+      "bounded derived package topology metadata"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "audit": {
+    "mode": "read-only-static-manifest-topology",
+    "fixedManifestPath": "packages/seis_platform_swift/Package.swift",
+    "maxManifestBytes": 131072,
+    "regularFileRequired": true,
+    "symlinkRefusal": true,
+    "unsupportedSyntaxState": "attention"
+  },
+  "validation": [
+    "node scripts/seis-swift-package-topology-mcp-server.mjs --status",
+    "node scripts/seis-swift-package-topology-mcp-server.mjs --audit --path .",
+    "node scripts/seis-swift-package-topology-mcp-server.mjs --evidence",
+    "npm run check:seis-swift-package-topology",
+    "node --test plugins/seis-core/test/swift-package-topology.test.mjs",
+    "node --test plugins/seis-core/test/swift-package-topology-evidence.test.mjs"
+  ],
+  "rollback": "Disable or remove the local package and revert its generated evidence record; the package never edits the Swift manifest, marketplace state, an external system, or release state.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 Wave 4 after a distinct static-topology scope review confirmed that declared manifest relationships are not covered by Apple readiness, Swift concurrency, package adoption, workspace inspection, technology taxonomy, or source provenance.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

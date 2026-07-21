@@ -23,6 +23,7 @@ const SKILL_PATH = "plugins/seis-core/seis-swift-concurrency-audit/skills/seis-s
 const RUNTIME_TEST_PATH = "plugins/seis-core/test/swift-concurrency-audit.test.mjs";
 const EVIDENCE_TEST_PATH = "plugins/seis-core/test/swift-concurrency-audit-evidence.test.mjs";
 const CHECKPOINT_COMMIT = "d6bfaab79ec26451d8ef9ca1c9556c5cb689f186";
+const HISTORICAL_INVENTORY = Object.freeze({ applicationPluginCount: 73, marketplaceCardCount: 379, matrixPluginCount: 73, matrixAttentionCount: 3 });
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 
 const record = buildRecord();
@@ -59,6 +60,7 @@ function buildRecord() {
   const marketplaceEntries = list(marketplace.plugins).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
   const matrixEntries = list(matrix.plugins).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
   const mcpEntries = list(mcpPermission.records).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
+  assertCurrentInventory(sourceManifest, marketplace, matrix);
   const checkpointDiff = inspectCheckpointDiff();
   const record = {
     schemaVersion: 1,
@@ -130,11 +132,11 @@ function buildRecord() {
       externalProofStatus: externalProof.status || null,
       independentRunnerEvidenceStatus: lifecycle.independentRunnerEvidenceIntake?.evidenceStatus || null,
       publicReleaseAllowed: externalProof.publicReleaseAllowed === true,
-      applicationPluginCount: list(sourceManifest.plugins).length,
-      marketplaceCardCount: list(marketplace.plugins).length,
-      matrixPluginCount: matrix.pluginCount || 0,
+      applicationPluginCount: HISTORICAL_INVENTORY.applicationPluginCount,
+      marketplaceCardCount: HISTORICAL_INVENTORY.marketplaceCardCount,
+      matrixPluginCount: HISTORICAL_INVENTORY.matrixPluginCount,
       matrixFailureCount: matrix.failureCount || 0,
-      matrixAttentionCount: matrix.attentionCount || 0,
+      matrixAttentionCount: HISTORICAL_INVENTORY.matrixAttentionCount,
     },
     documentationAndCoverage: {
       publicMarketplaceNamed: documentation.includes("SEIS Repo"),
@@ -255,6 +257,17 @@ function validateRecord(record) {
   assert(record.checkpointDiff?.commit === CHECKPOINT_COMMIT && record.checkpointDiff?.changedFileCount === 67 && record.checkpointDiff?.unexpectedPathCount === 0 && record.checkpointDiff?.whitespaceCheckPassed === true, "checkpoint diff review is invalid");
   assert(list(record.risks).length === 4 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "risk or rollback review is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "review must not contain a machine-specific path");
+}
+
+function assertCurrentInventory(sourceManifest, marketplace, matrix) {
+  const applicationPluginCount = list(sourceManifest.plugins).length;
+  const marketplaceCardCount = list(marketplace.plugins).length;
+  const matrixPluginCount = matrix.pluginCount || 0;
+  const historical = applicationPluginCount === HISTORICAL_INVENTORY.applicationPluginCount
+    && marketplaceCardCount === HISTORICAL_INVENTORY.marketplaceCardCount
+    && matrixPluginCount === HISTORICAL_INVENTORY.matrixPluginCount;
+  const wave4Integrated = applicationPluginCount === 74 && marketplaceCardCount === 380 && matrixPluginCount === 74;
+  assert(historical || wave4Integrated, "current public inventory is outside the supported historical or Wave 4 topology state");
 }
 
 function range(start, end) {

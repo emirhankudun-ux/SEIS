@@ -4,7 +4,7 @@
   "goalId": "SEIS-GOAL-021",
   "parentProgramId": "seis-public-plugin-expansion-program",
   "status": "in-progress",
-  "maturity": "specification",
+  "maturity": "prototype",
   "createdAt": "2026-07-21",
   "updatedAt": "2026-07-21",
   "wave": {
@@ -24,8 +24,8 @@
       "SEIS"
     ],
     "selectedCapability": "seis-swift-package-topology",
-    "outcome": "Begin one public repository package that reports bounded, derived Swift Package manifest topology after the separate activation decision. Until its focused implementation checkpoint, no package source, card, external integration, or release state exists.",
-    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Wave 4 begins with one in-progress static-contract step."
+    "outcome": "One public repository package now reports bounded, derived Swift Package manifest topology with a single checked-in source, SEIS Repo card, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
+    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–80 now have current repository-local evidence; step 81 is in-progress as the focused validation-and-delivery checkpoint."
   },
   "nonGoals": [
     "Adding more than the one activation-approved public package or card without a new capability decision.",
@@ -34,11 +34,11 @@
     "Treating static manifest topology as proof of graph validity, compiler correctness, runtime behavior, independent installation, or public release."
   ],
   "activationGate": {
-    "status": "approved",
+    "status": "implemented-repository-local",
     "activationDecisionPath": "content/development/seis-public-plugin-wave-4-activation-decision.json",
-    "implementationStarted": false,
-    "candidatePackageExists": false,
-    "candidatePublicCardExists": false,
+    "implementationStarted": true,
+    "candidatePackageExists": true,
+    "candidatePublicCardExists": true,
     "requiredBeforeActivation": [
       "Wave 3 step 100 has current closure evidence.",
       "The Wave 4 activation decision records current user authority, exact scope, risks, rollback, and validation gates.",
@@ -71,7 +71,7 @@
       "round": 1,
       "name": "Scope, ownership, and static contract",
       "objective": "Keep the candidate bounded to one checked-in manifest and establish an unambiguous static-topology contract before any implementation is considered.",
-      "status": "in-progress",
+      "status": "completed",
       "steps": [
         1,
         2,
@@ -99,7 +99,7 @@
       "round": 2,
       "name": "Bounded parser and MCP design",
       "objective": "Specify the implementation only after Wave 4 activation, with a deterministic static parser and no execution side effects.",
-      "status": "planned",
+      "status": "completed",
       "steps": [
         21,
         22,
@@ -127,7 +127,7 @@
       "round": 3,
       "name": "Focused tests and resilience",
       "objective": "Define a fixture-backed test suite proving the planned parser remains bounded, static, and honest about malformed evidence.",
-      "status": "planned",
+      "status": "completed",
       "steps": [
         41,
         42,
@@ -155,7 +155,7 @@
       "round": 4,
       "name": "Public repository integration",
       "objective": "Plan only the reversible repository projections needed after implementation and focused validation pass; do not alter public counts before activation.",
-      "status": "planned",
+      "status": "completed",
       "steps": [
         61,
         62,
@@ -183,7 +183,7 @@
       "round": 5,
       "name": "Validation, delivery, and closeout",
       "objective": "Plan a reviewable release-quality handoff while preserving the distinction between repository-local validation and external proof.",
-      "status": "planned",
+      "status": "in-progress",
       "steps": [
         81,
         82,
@@ -213,567 +213,567 @@
       "number": 1,
       "round": 1,
       "title": "Reconfirm the completed Wave 3 following-wave scope review and its unactivated candidate decision.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 2,
       "round": 1,
       "title": "Reconfirm that no candidate source directory, source entry, catalog entry, matrix entry, or SEIS Repo card exists.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 3,
       "round": 1,
       "title": "Confirm SEIS remains the canonical repository owner for the public package and its generated evidence.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 4,
       "round": 1,
       "title": "Lock the only permitted input to packages/seis_platform_swift/Package.swift.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 5,
       "round": 1,
       "title": "Define the supported static manifest grammar subset and an attention state for unsupported syntax.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 6,
       "round": 1,
       "title": "Define a derived declared-platform record without returning raw manifest text.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 7,
       "round": 1,
       "title": "Define a derived product-to-target mapping record.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 8,
       "round": 1,
       "title": "Define a derived target-kind record for target, executableTarget, and testTarget declarations.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 9,
       "round": 1,
       "title": "Define a derived target-dependency edge record.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 10,
       "round": 1,
       "title": "Define a derived executable-resource mapping record.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 11,
       "round": 1,
       "title": "Define a derived test-target dependency record.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 12,
       "round": 1,
       "title": "Set bounded file-size, regular-file, and symlink-refusal rules for the fixed manifest.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 13,
       "round": 1,
       "title": "Set malformed, missing, unreadable, and oversized manifest attention states.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 14,
       "round": 1,
       "title": "Set raw-source, raw-match, absolute-path, and machine-path output prohibitions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 15,
       "round": 1,
       "title": "Set deny-by-default write, network, and secret permissions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 16,
       "round": 1,
       "title": "Set explicit non-claims for SwiftPM resolution, compiler diagnostics, test success, and native runtime behavior.",
-      "status": "planned",
+      "status": "completed",
       "validation": "scope, contract, and static-boundary review"
     },
     {
       "number": 17,
       "round": 1,
       "title": "Draft public plugin metadata, summary wording, and implementation maturity labels without publishing a card.",
-      "status": "planned",
+      "status": "completed",
       "validation": "overlap, risk, rollback, and activation-gate review"
     },
     {
       "number": 18,
       "round": 1,
       "title": "Define zero-dependency and no-provider requirements for the planned package.",
-      "status": "planned",
+      "status": "completed",
       "validation": "overlap, risk, rollback, and activation-gate review"
     },
     {
       "number": 19,
       "round": 1,
       "title": "Review contract overlap against Apple readiness, Swift concurrency, and package-adoption responsibilities.",
-      "status": "planned",
+      "status": "completed",
       "validation": "overlap, risk, rollback, and activation-gate review"
     },
     {
       "number": 20,
       "round": 1,
       "title": "Record Round 1 scope, risk, rollback, and activation-gate evidence.",
-      "status": "planned",
+      "status": "completed",
       "validation": "overlap, risk, rollback, and activation-gate review"
     },
     {
       "number": 21,
       "round": 2,
       "title": "Create the public package skeleton only after an explicit Wave 4 activation decision.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 22,
       "round": 2,
       "title": "Implement fixed-root and fixed-manifest path resolution with outside-root refusal.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 23,
       "round": 2,
       "title": "Implement regular-file and symlink checks before any manifest read.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 24,
       "round": 2,
       "title": "Implement the manifest byte limit before parsing.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 25,
       "round": 2,
       "title": "Implement deterministic platform extraction for the supported grammar subset.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 26,
       "round": 2,
       "title": "Implement deterministic library and executable product extraction.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 27,
       "round": 2,
       "title": "Implement deterministic target-kind extraction.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 28,
       "round": 2,
       "title": "Implement deterministic target-dependency extraction.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 29,
       "round": 2,
       "title": "Implement deterministic test-target relation extraction.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 30,
       "round": 2,
       "title": "Implement deterministic executable-resource extraction.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 31,
       "round": 2,
       "title": "Represent unsupported syntax as bounded attention rather than a guessed topology.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 32,
       "round": 2,
       "title": "Emit only derived topology fields and counts, never raw manifest content.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 33,
       "round": 2,
       "title": "Add bounded status output that reports local static mode and limitations.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 34,
       "round": 2,
       "title": "Add bounded audit output with a fixed default root only.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 35,
       "round": 2,
       "title": "Add bounded evidence output that declares public, deny-by-default permissions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 36,
       "round": 2,
       "title": "Refuse arbitrary path arguments through the MCP and CLI surfaces.",
-      "status": "planned",
+      "status": "completed",
       "validation": "bounded parser and no-side-effect design review"
     },
     {
       "number": 37,
       "round": 2,
       "title": "Document no compile, test, resolve, run, install, signing, provider, deployment, or release behavior.",
-      "status": "planned",
+      "status": "completed",
       "validation": "deterministic output, leakage, and limitation review"
     },
     {
       "number": 38,
       "round": 2,
       "title": "Add deterministic ordering for every product, target, edge, and resource record.",
-      "status": "planned",
+      "status": "completed",
       "validation": "deterministic output, leakage, and limitation review"
     },
     {
       "number": 39,
       "round": 2,
       "title": "Review parser error paths for secret, raw-text, and absolute-path leakage.",
-      "status": "planned",
+      "status": "completed",
       "validation": "deterministic output, leakage, and limitation review"
     },
     {
       "number": 40,
       "round": 2,
       "title": "Record Round 2 implementation-design evidence without promoting release maturity.",
-      "status": "planned",
+      "status": "completed",
       "validation": "deterministic output, leakage, and limitation review"
     },
     {
       "number": 41,
       "round": 3,
       "title": "Add a happy-path fixture that matches the checked-in declared platform and product topology.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 42,
       "round": 3,
       "title": "Test deterministic target, dependency, test-target, and resource ordering.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 43,
       "round": 3,
       "title": "Test missing manifest handling without returning a fixture path.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 44,
       "round": 3,
       "title": "Test oversized manifest refusal before content is read.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 45,
       "round": 3,
       "title": "Test direct manifest symlink refusal without following it.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 46,
       "round": 3,
       "title": "Test an unsupported platform declaration as attention rather than an inferred value.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 47,
       "round": 3,
       "title": "Test malformed product declarations as attention without raw manifest echo.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 48,
       "round": 3,
       "title": "Test malformed target declarations as attention without raw manifest echo.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 49,
       "round": 3,
       "title": "Test unsupported dependency syntax as attention without a guessed edge.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 50,
       "round": 3,
       "title": "Test malformed resource declarations as attention without raw manifest echo.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 51,
       "round": 3,
       "title": "Test an arbitrary audit path is refused before filesystem traversal.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 52,
       "round": 3,
       "title": "Test outside-workspace roots are refused.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 53,
       "round": 3,
       "title": "Test output never contains absolute or machine-specific paths.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 54,
       "round": 3,
       "title": "Test output never contains raw manifest or matched fragments.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 55,
       "round": 3,
       "title": "Test declared permissions remain empty for write, network, and secrets.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 56,
       "round": 3,
       "title": "Test status mode remains non-mutating and does not install packages.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 57,
       "round": 3,
       "title": "Test evidence mode preserves compiler, SwiftPM, runtime, and release claims as false.",
-      "status": "planned",
+      "status": "completed",
       "validation": "focused fixture and resilience-test plan"
     },
     {
       "number": 58,
       "round": 3,
       "title": "Test generated evidence remains deterministic across repeated local runs.",
-      "status": "planned",
+      "status": "completed",
       "validation": "fixture safety, determinism, and resilience evidence review"
     },
     {
       "number": 59,
       "round": 3,
       "title": "Review fixture safety and remove any accidental credential-like values.",
-      "status": "planned",
+      "status": "completed",
       "validation": "fixture safety, determinism, and resilience evidence review"
     },
     {
       "number": 60,
       "round": 3,
       "title": "Record Round 3 resilience, limitations, and rollback evidence.",
-      "status": "planned",
+      "status": "completed",
       "validation": "fixture safety, determinism, and resilience evidence review"
     },
     {
       "number": 61,
       "round": 4,
       "title": "Reconfirm current source, catalog, matrix, and SEIS Repo counts before any planned integration.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 62,
       "round": 4,
       "title": "Add the candidate to the app source generator only after focused parser tests pass.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 63,
       "round": 4,
       "title": "Add the candidate to the public SEIS Repo marketplace only after source validation passes.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 64,
       "round": 4,
       "title": "Update the app catalog generator and assert a single catalog entry.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 65,
       "round": 4,
       "title": "Update the plugin matrix generator and assert a single matrix entry.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 66,
       "round": 4,
       "title": "Update count-based validators from the previous baseline only as one reconciled change.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 67,
       "round": 4,
       "title": "Update lifecycle, provenance, and permission records with static-only limitations.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 68,
       "round": 4,
       "title": "Update public terminology checks without reintroducing personal marketplace wording.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 69,
       "round": 4,
       "title": "Update installation and runtime records without claiming independent installation or runtime proof.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 70,
       "round": 4,
       "title": "Update evidence indexing with the fixed-manifest topology boundary.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 71,
       "round": 4,
       "title": "Update plugin catalog search metadata with a distinct topology responsibility.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 72,
       "round": 4,
       "title": "Update package and MCP validation commands without granting writes or network access.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 73,
       "round": 4,
       "title": "Run plugin-creator structural validation against the new repo-backed package.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 74,
       "round": 4,
       "title": "Run focused source, catalog, matrix, marketplace, and terminology checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 75,
       "round": 4,
       "title": "Run public permission and release-boundary checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
     {
       "number": 76,
       "round": 4,
       "title": "Review generated files for stale counts, duplicate labels, and personal marketplace wording.",
-      "status": "planned",
+      "status": "completed",
       "validation": "generated-artifact, documentation, and reversible checkpoint review"
     },
     {
       "number": 77,
       "round": 4,
       "title": "Review public docs for static-only, no-execution language.",
-      "status": "planned",
+      "status": "completed",
       "validation": "generated-artifact, documentation, and reversible checkpoint review"
     },
     {
       "number": 78,
       "round": 4,
       "title": "Review accessibility and clarity of the public card metadata.",
-      "status": "planned",
+      "status": "completed",
       "validation": "generated-artifact, documentation, and reversible checkpoint review"
     },
     {
       "number": 79,
       "round": 4,
       "title": "Record a focused integration checkpoint with no default-branch update.",
-      "status": "planned",
+      "status": "completed",
       "validation": "generated-artifact, documentation, and reversible checkpoint review"
     },
     {
       "number": 80,
       "round": 4,
       "title": "Record Round 4 integration risks, rollback, and remaining external-proof limits.",
-      "status": "planned",
+      "status": "completed",
       "validation": "generated-artifact, documentation, and reversible checkpoint review"
     },
     {
       "number": 81,
       "round": 5,
       "title": "Run the dedicated Wave 4 program and candidate-contract checks.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "conditional post-activation validation and delivery plan"
     },
     {
@@ -911,13 +911,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 0,
-    "plannedStepCount": 99,
+    "completedStepCount": 80,
+    "plannedStepCount": 19,
     "inProgressStepNumbers": [
-      1
+      81
     ],
-    "completedRoundCount": 0,
-    "nextStepNumber": 1
+    "completedRoundCount": 4,
+    "nextStepNumber": 81
   },
   "evidence": {
     "wave3CloseoutPath": "content/development/seis-public-plugin-wave-3-closeout.json",
@@ -926,11 +926,16 @@
     "sourceManifestPath": "apps/seis-core/data/seis-core-plugin-sources.json",
     "catalogPath": "apps/seis-core/data/seis-core-plugin-catalog.json",
     "matrixPath": "content/development/seis-core-plugin-matrix.json",
-    "marketplacePath": ".agents/plugins/marketplace.json"
+    "marketplacePath": ".agents/plugins/marketplace.json",
+    "candidateSourcePath": "plugins/seis-core/seis-swift-package-topology",
+    "candidateEvidencePath": "content/development/seis-swift-package-topology.json",
+    "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json"
   },
   "validation": [
     "npm run check:seis-public-plugin-wave-4-program",
     "npm run check:seis-public-plugin-wave-4-activation-decision",
+    "npm run check:seis-public-plugin-wave-4-integration-checkpoint",
+    "npm run check:seis-swift-package-topology",
     "npm run check:seis-public-plugin-wave-3-following-wave-review",
     "npm run check:seis-public-plugin-continuity-cadence",
     "npm run check:seis-public-plugin-expansion-program",
@@ -946,8 +951,8 @@
     {
       "id": "RISK-W4-002",
       "status": "tracked",
-      "description": "A planned Wave 4 program could be mistaken for permission to create a package or marketplace card.",
-      "mitigation": "Keep planned-gated status, implementationStarted false, candidate absence checks, and a separate activation gate."
+      "description": "A repository-local Wave 4 integration could be mistaken for independent installation, a public release, or an unbounded expansion.",
+      "mitigation": "Keep exactly one source and card, preserve external claims as false, retain the 74/380 reconciliation checks, and require separate approval for release or another package."
     },
     {
       "id": "RISK-W4-003",
@@ -964,7 +969,7 @@
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert this planned Wave 4 program and its Wave 3 tracker references on the feature branch; no package, card, external state, release, or data migration exists.",
+    "scope": "Revert the one Wave 4 source package, SEIS Repo card, generated projections, topology evidence, and this program update on the feature branch; no manifest mutation, external state, release, or data migration exists.",
     "dataMigrationRequired": false
   },
   "checks": {
@@ -972,10 +977,12 @@
     "precedingReview": true,
     "activationDecision": true,
     "publicInventory": true,
-    "candidateAbsent": true
+    "candidateIntegrated": true,
+    "topologyEvidence": true,
+    "integrationCheckpoint": true
   },
   "inputSafetyScan": {
-    "inputCount": 5,
+    "inputCount": 6,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

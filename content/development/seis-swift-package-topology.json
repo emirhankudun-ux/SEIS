@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-swift-package-topology",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 4,
+  "generatedAt": "2026-07-21",
+  "status": "ready-public-static-topology-evidence",
+  "purpose": "Record one bounded, read-only Swift Package manifest topology report without claiming SwiftPM resolution, compiler diagnostics, test completion, native runtime, signing, independent installation, provider access, deployment, or public release.",
+  "plugin": {
+    "name": "seis-swift-package-topology",
+    "sourcePath": "plugins/seis-core/seis-swift-package-topology",
+    "version": "0.0.20",
+    "releaseTrainVersion": "0.00000002",
+    "catalogStatus": "ready",
+    "matrixStatus": "ready",
+    "matrixOk": true,
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "marketplaceCategory": "Developer",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "marketplace": {
+    "publicCardCount": 380,
+    "expectedPublicCardCount": 380,
+    "applicationPluginCount": 74,
+    "expectedApplicationPluginCount": 74,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "topicPluginCount": 300
+  },
+  "activation": {
+    "id": "seis-public-plugin-wave-4-activation-decision",
+    "status": "approved-public-local-wave-4-activation",
+    "selectedCapability": "seis-swift-package-topology",
+    "activationApproved": true,
+    "implementationAuthorized": true,
+    "implementationObserved": true,
+    "publicReleaseApproved": false
+  },
+  "audit": {
+    "state": "ready",
+    "ok": true,
+    "mode": "swift-package-manifest-topology-static-read-only",
+    "classification": "bounded-static-swift-package-manifest-topology",
+    "manifestRelativePath": "packages/seis_platform_swift/Package.swift",
+    "boundedManifestByteCount": 800,
+    "topologyAvailable": true,
+    "declaredPlatformCount": 2,
+    "productCount": 2,
+    "targetCount": 3,
+    "targetDependencyEdgeCount": 1,
+    "testTargetDependencyCount": 1,
+    "executableResourceCount": 2,
+    "platforms": [
+      {
+        "name": "iOS",
+        "version": "v16"
+      },
+      {
+        "name": "macOS",
+        "version": "v13"
+      }
+    ],
+    "products": [
+      {
+        "kind": "executable",
+        "name": "SeisAppleNativeShell",
+        "targets": [
+          "SeisAppleNativeShell"
+        ]
+      },
+      {
+        "kind": "library",
+        "name": "SeisPlatformKit",
+        "targets": [
+          "SeisPlatformKit"
+        ]
+      }
+    ],
+    "targets": [
+      {
+        "name": "SeisAppleNativeShell",
+        "kind": "executable-target"
+      },
+      {
+        "name": "SeisPlatformKit",
+        "kind": "target"
+      },
+      {
+        "name": "SeisPlatformKitTests",
+        "kind": "test-target"
+      }
+    ],
+    "targetDependencies": [
+      {
+        "from": "SeisAppleNativeShell",
+        "to": "SeisPlatformKit"
+      }
+    ],
+    "testTargetDependencies": [
+      {
+        "from": "SeisPlatformKitTests",
+        "to": "SeisPlatformKit"
+      }
+    ],
+    "executableResources": [
+      {
+        "target": "SeisAppleNativeShell",
+        "resource": "Resources/seis-demo-contract.json"
+      },
+      {
+        "target": "SeisAppleNativeShell",
+        "resource": "Resources/seisdemo-urlscheme-template.plist"
+      }
+    ],
+    "findingCodes": []
+  },
+  "resilienceReview": {
+    "status": "completed-repository-local-resilience-review",
+    "limitReachedState": "attention",
+    "coveredFailureModes": [
+      "fixed-manifest-missing-or-unreadable",
+      "fixed-manifest-non-regular-or-symlink",
+      "fixed-manifest-byte-limit",
+      "unsupported-or-malformed-syntax",
+      "unsupported-dependency-or-resource-syntax",
+      "machine-path-and-credential-marker-redaction",
+      "MCP-arbitrary-audit-path"
+    ],
+    "outputBoundary": {
+      "rawManifestReturned": false,
+      "rawMatchedValuesReturned": false,
+      "machineSpecificPathReturned": false,
+      "absolutePathsReturned": false,
+      "network": false,
+      "writes": false,
+      "secrets": false
+    },
+    "nativeExecution": "not-run-and-not-claimed"
+  },
+  "safety": {
+    "read": [
+      "one fixed checked-in Swift Package manifest",
+      "bounded derived package topology metadata"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "resolvesSwiftPackages": false,
+    "compilesSwift": false,
+    "runsSwiftTests": false,
+    "startsNativeApplication": false,
+    "signsArtifacts": false,
+    "installsPlugins": false,
+    "publicReleaseAllowed": false
+  },
+  "limitations": [
+    "This audit reads one bounded static Swift Package manifest and does not resolve, describe, compile, test, or run SwiftPM.",
+    "Declared relationships do not prove package graph validity, dependency availability, compiler diagnostics, test success, runtime behavior, signing, installation, deployment, or release readiness.",
+    "Unsupported or malformed syntax is reported as attention without guessing topology or returning raw manifest content.",
+    "The audit never follows symlinks, writes files, uses a network, reads credentials, or calls providers."
+  ],
+  "validation": [
+    "node plugins/seis-core/seis-swift-package-topology/scripts/seis-swift-package-topology-mcp-server.mjs --status",
+    "node plugins/seis-core/seis-swift-package-topology/scripts/seis-swift-package-topology-mcp-server.mjs --audit --path .",
+    "node plugins/seis-core/seis-swift-package-topology/scripts/seis-swift-package-topology-mcp-server.mjs --evidence",
+    "node --test plugins/seis-core/test/swift-package-topology.test.mjs",
+    "npm run check:seis-swift-package-topology"
+  ],
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the source package, public SEIS Repo card, generated topology evidence, and their reconciled projections on the feature branch; no manifest mutation, external state, release, or data migration exists.",
+    "dataMigrationRequired": false
+  }
+}
