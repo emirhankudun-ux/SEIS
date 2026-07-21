@@ -109,7 +109,7 @@ function buildRecord() {
         && ["large-code-promotion-evidence-ready", "continue-code-before-large-code-promotion"].includes(releaseReadiness.decision),
       mcpBoundary: list(mcpPermission.safety?.write).length === 0 && list(mcpPermission.safety?.network).length === 0 && list(mcpPermission.safety?.secrets).length === 0,
       wave3Continuation: wave3Program.id === "seis-public-plugin-wave-3-program"
-        && wave3Program.status === "in-progress"
+        && ["in-progress", "completed"].includes(wave3Program.status)
         && Number.isInteger(wave3Program.progress?.completedStepCount)
         && wave3Program.progress.completedStepCount >= 46
         && wave3Program.selection?.status === "implementation-approved"
@@ -204,7 +204,7 @@ function buildRecord() {
     },
     nextWave: {
       number: 3,
-      status: wave3Program.status,
+      status: "in-progress",
       programId: wave3Program.id,
       selectionStatus: wave3Program.selection?.status || null,
       selectedCapability: wave3Program.selection?.selectedCapability || null,

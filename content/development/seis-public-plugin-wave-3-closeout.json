@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-3-closeout",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 3,
+  "step": 100,
+  "status": "completed-repository-local-wave-closeout",
+  "generatedAt": "2026-07-21",
+  "purpose": "Close the 100-step Wave 3 public repository-local evidence chain without activating Wave 4, adding the planned topology package or card, or claiming independent installation, Swift execution, provider activity, deployment, or public release.",
+  "stateAtCheckpoint": {
+    "completedStepCountBeforeTrackerUpdate": 99,
+    "activeStepBeforeTrackerUpdate": 100,
+    "completedStepCountAfterTrackerUpdate": 100,
+    "wave3Completed": true,
+    "wave4Activated": false
+  },
+  "checks": {
+    "finalValidation": true,
+    "finalPreflight": true,
+    "deliveryAndHandoff": true,
+    "followingWaveReview": true,
+    "separateWave4Plan": true,
+    "currentPublicInventory": true,
+    "staticEvidenceBoundary": true,
+    "repositoryLocalDelivery": true
+  },
+  "completion": {
+    "status": "completed-repository-local-current-evidence",
+    "completedStepCount": 100,
+    "completedRoundCount": 5,
+    "nextActiveWave": null,
+    "nextWaveStatus": "planned-gated",
+    "nextWaveSelectedCapability": "seis-swift-package-topology",
+    "nextWaveActivationApproved": false,
+    "summary": "Wave 3 is complete as a repository-local public evidence program. Wave 4 has only a separate planned-gated specification and is not implementation-authorized."
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "publicRelease": false
+  },
+  "evidence": {
+    "finalValidationPath": "content/development/seis-public-plugin-wave-3-final-validation.json",
+    "finalPreflightPath": "content/development/seis-public-plugin-wave-3-final-preflight.json",
+    "deliveryEvidencePath": "content/development/seis-public-plugin-wave-3-delivery-evidence.json",
+    "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
+    "followingWaveReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
+    "wave4ProgramPath": "content/development/seis-public-plugin-wave-4-program.json",
+    "concurrencyEvidencePath": "content/development/seis-swift-concurrency-audit.json",
+    "sourceManifestPath": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "catalogPath": "apps/seis-core/data/seis-core-plugin-catalog.json",
+    "matrixPath": "content/development/seis-core-plugin-matrix.json",
+    "marketplacePath": ".agents/plugins/marketplace.json"
+  },
+  "delivery": {
+    "priorPlanningCheckpointCommit": "30c2dfa64ec0d1e6a3968179bcd126eedbd3a23e",
+    "priorPlanningCheckpointRemoteVerified": true,
+    "featureBranch": "plugins/seis-plugin-root-20260715",
+    "protectedDefaultBranchWritten": false,
+    "note": "This closeout record is repository-local until its own focused feature-branch commit and remote-reference verification are completed. It is never a merge or public release claim."
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-wave-3-closeout",
+    "npm run check:seis-public-plugin-continuity",
+    "npm run check:seis-repo-marketplace",
+    "node --test plugins/seis-core/test/public-plugin-wave-3-closeout.test.mjs",
+    "node --test plugins/seis-core/test/*.test.mjs",
+    "npm run seis:check",
+    "git diff --check"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W3-019",
+      "status": "tracked",
+      "description": "Repository-local completion could be mistaken for public release or independent installation proof.",
+      "mitigation": "Retain every external claim as false and preserve explicit release, installation, SwiftPM, compiler, runtime, provider, and deployment limits."
+    },
+    {
+      "id": "RISK-W3-020",
+      "status": "tracked",
+      "description": "Wave 4 planning could be mistaken for activation or permission to add a public card.",
+      "mitigation": "Keep Wave 4 planned-gated with implementationStarted=false, candidate absence checks, and a separate activation decision requirement."
+    },
+    {
+      "id": "RISK-W3-021",
+      "status": "tracked",
+      "description": "Historical checkpoint records can become misleading after Wave 3 transitions from in-progress to completed.",
+      "mitigation": "Preserve each checkpoint's original scope while allowing current completion state to satisfy its bounded historical evidence predicate."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this Wave 3 closeout and its tracker references on the feature branch; no external state, package, card, release, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 11,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}

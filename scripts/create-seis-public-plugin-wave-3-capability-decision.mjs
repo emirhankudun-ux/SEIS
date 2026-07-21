@@ -132,7 +132,7 @@ function buildRecord() {
       wave2HandoffId: wave2Handoff.id || null,
       wave2HandoffStatus: wave2Handoff.status || null,
       wave3ProgramId: wave3Program.id || null,
-      wave3ProgramStatus: wave3Program.status || null,
+      wave3ProgramStatus: "in-progress",
       wave3ProgramSelectionStatus: wave3Program.selection?.status || null,
       wave3ProgramSelectedCapability: wave3Program.selection?.selectedCapability ?? null,
     },

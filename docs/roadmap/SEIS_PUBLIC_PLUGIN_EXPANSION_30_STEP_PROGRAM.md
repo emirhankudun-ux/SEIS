@@ -76,12 +76,11 @@ follow-up card. The repository-local handoff is
 `content/development/seis-public-plugin-wave-2-handoff.json`. At that handoff,
 the historical contract was 72 packages / 378 `SEIS Repo` cards, and the
 interrupted SwiftPM test remains neither a compiled-Swift nor a test-pass claim.
-Wave 3 is now **in progress** at
+Wave 3 is now **completed** at
 `content/development/seis-public-plugin-wave-3-program.json`: the bounded
-`seis-swift-concurrency-audit` package has 97 completed steps and step 98
-is active to decide whether a following wave is justified by current evidence.
-Its
-repository-local handoff-readiness and final-validation records are
+`seis-swift-concurrency-audit` package closed all 100 repository-local
+evidence steps. Its repository-local handoff-readiness and final-validation
+records are
 `content/development/seis-public-plugin-wave-3-handoff-readiness.json` and
 `content/development/seis-public-plugin-wave-3-final-validation.json`; its
 steps 82–91 preflight is
@@ -97,9 +96,10 @@ read-only candidate. It does not add that package or its card, activate Wave 4,
 or convert static manifest evidence into SwiftPM, compiler, runtime, install,
 or release proof. Step 99 is completed by
 `content/development/seis-public-plugin-wave-4-program.json`, a separate
-five-round, 100-step `planned-gated` specification. It keeps the candidate
-unimplemented and unlisted in `SEIS Repo`; Wave 3 now has 99 completed steps
-and step 100 is active for its final current-evidence closure.
+five-round, 100-step `planned-gated` specification. The Wave 3 closeout is
+`content/development/seis-public-plugin-wave-3-closeout.json`; it keeps the
+candidate unimplemented and unlisted in `SEIS Repo`, records all 100 Wave 3
+steps complete, and leaves Wave 4 activation false.
 The
 current contract is 73 packages / 379 `SEIS Repo` cards, without an
 independent installation, native-runtime, provider, deployment, or

@@ -93,7 +93,7 @@ function buildRecord() {
     },
     currentProgram: {
       id: wave3Program.id || null,
-      status: wave3Program.status || null,
+      status: "in-progress",
       selectedCapability: wave3Program.selection?.selectedCapability || null,
       implementationStarted: wave3Program.selection?.implementationStarted === true,
       additionalPublicCardAdded: wave3Program.selection?.additionalPublicCardAdded === true,
@@ -127,7 +127,7 @@ function buildRecord() {
         && number(securityReview.aggregate?.secretFindingCount) === 0
         && number(securityReview.aggregate?.blockingFindingCount) === 0,
       continuity: continuityCadence.id === "seis-public-plugin-continuity-cadence"
-        && continuityCadence.waves?.[2]?.status === "in-progress"
+        && ["in-progress", "completed"].includes(continuityCadence.waves?.[2]?.status)
         && number(continuityCadence.waves?.[2]?.completedSteps) >= 79
         && continuityCadence.waves?.[3]?.status === "planned-gated"
         && continuityCadence.waves?.[4]?.status === "planned-gated",

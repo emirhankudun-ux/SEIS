@@ -34,7 +34,8 @@
       "roundsPerWave": 5,
       "stepsPerRound": 20,
       "totalPlannedWaveSteps": 500,
-      "activeWave": 3
+      "activeWave": null,
+      "activeWaveState": "none-pending-wave-4-activation"
     },
     "githubDelivery": {
       "branch": "plugins/seis-plugin-root-20260715",
@@ -70,19 +71,18 @@
     },
     {
       "wave": 3,
-      "status": "in-progress",
+      "status": "completed",
       "programPath": "content/development/seis-public-plugin-wave-3-program.json",
-      "completedSteps": 99,
-      "inProgressSteps": [
-        100
-      ],
+      "completedSteps": 100,
+      "inProgressSteps": [],
       "priorValidationPath": "content/development/seis-public-plugin-wave-3-final-validation.json",
       "preflightPath": "content/development/seis-public-plugin-wave-3-final-preflight.json",
       "deliveryEvidencePath": "content/development/seis-public-plugin-wave-3-delivery-evidence.json",
       "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
       "followingWaveReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
-      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-program.json",
-      "entryRule": "Wave 2 completed with a current handoff, an approved non-duplicative capability decision, and continued user authority."
+      "closeoutPath": "content/development/seis-public-plugin-wave-3-closeout.json",
+      "currentEvidencePath": "content/development/seis-public-plugin-wave-3-closeout.json",
+      "entryRule": "Wave 2 completed with a current handoff, an approved non-duplicative capability decision, and continued user authority; Wave 3 then closed with current repository-local evidence."
     },
     {
       "wave": 4,

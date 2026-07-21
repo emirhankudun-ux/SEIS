@@ -46,13 +46,15 @@ CI execution is required before any such claim is made.
 
 ## Wave 3 Gate
 
-Wave 3 is an active, 100-step **in-progress** implementation at
-`content/development/seis-public-plugin-wave-3-program.json`. It selected the
+Wave 3 is a completed, 100-step repository-local evidence program at
+`content/development/seis-public-plugin-wave-3-program.json`. Its closeout is
+`content/development/seis-public-plugin-wave-3-closeout.json`. It selected the
 single `seis-swift-concurrency-audit` package and added its public `SEIS Repo`
 card only after its Wave 2 handoff, focused implementation design, current
 repository-local validation evidence, and continued user authority. It still
 does not imply a public release, independent installation, compiler result, or
-native-runtime claim.
+native-runtime claim. Wave 4 has a planned-gated topology specification only;
+its package and card remain absent until a separate activation decision.
 
 ## Rollback
 

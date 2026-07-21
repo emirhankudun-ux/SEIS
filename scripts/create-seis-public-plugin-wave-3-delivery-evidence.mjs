@@ -67,9 +67,9 @@ function buildRecord() {
     },
     checks: {
       wave3Tracker: wave3Program.id === "seis-public-plugin-wave-3-program"
-        && wave3Program.status === "in-progress"
+        && ["in-progress", "completed"].includes(wave3Program.status)
         && number(wave3Program.progress?.completedStepCount) >= 91
-        && number(wave3Program.progress?.nextStepNumber) >= 92
+        && (wave3Program.status === "completed" || number(wave3Program.progress?.nextStepNumber) >= 92)
         && wave3Program.publicBoundary?.marketplaceName === "seis-repo"
         && wave3Program.publicBoundary?.personalMarketplaceRead === false
         && wave3Program.publicBoundary?.personalMarketplaceMutation === false,
@@ -90,12 +90,12 @@ function buildRecord() {
       remoteReference: true,
       whitespaceAndBoundary: true,
       continuityGate: continuityCadence.id === "seis-public-plugin-continuity-cadence"
-        && continuityCadence.waves?.[2]?.status === "in-progress"
+        && ["in-progress", "completed"].includes(continuityCadence.waves?.[2]?.status)
         && number(continuityCadence.waves?.[2]?.completedSteps) >= 91
         && continuityCadence.waves?.[3]?.status === "planned-gated"
         && continuityCadence.waves?.[4]?.status === "planned-gated"
         && expansionProgram.id === "seis-public-plugin-expansion-program"
-        && expansionProgram.nextWaves?.[2]?.status === "in-progress"
+        && ["in-progress", "completed"].includes(expansionProgram.nextWaves?.[2]?.status)
         && continuityDocs.includes("SEIS Repo")
         && expansionDocs.includes("SEIS Repo"),
     },

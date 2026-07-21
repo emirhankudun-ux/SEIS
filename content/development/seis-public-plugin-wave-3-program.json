@@ -3,7 +3,7 @@
   "id": "seis-public-plugin-wave-3-program",
   "goalId": "SEIS-GOAL-021",
   "parentProgramId": "seis-public-plugin-expansion-program",
-  "status": "in-progress",
+  "status": "completed",
   "maturity": "prototype",
   "createdAt": "2026-07-21",
   "updatedAt": "2026-07-21",
@@ -49,7 +49,8 @@
     "deliveryEvidencePath": "content/development/seis-public-plugin-wave-3-delivery-evidence.json",
     "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
     "followingWaveReviewPath": "content/development/seis-public-plugin-wave-3-following-wave-review.json",
-    "wave4ProgramPath": "content/development/seis-public-plugin-wave-4-program.json"
+    "wave4ProgramPath": "content/development/seis-public-plugin-wave-4-program.json",
+    "closeoutPath": "content/development/seis-public-plugin-wave-3-closeout.json"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -179,7 +180,7 @@
       "round": 5,
       "name": "Wave 3 handoff",
       "objective": "Complete the wave only with current evidence, feature-branch delivery, and a separate scope gate for any following wave.",
-      "status": "in-progress",
+      "status": "completed",
       "steps": [
         81,
         82,
@@ -902,18 +903,16 @@
       "number": 100,
       "round": 5,
       "title": "Mark Wave 3 complete only when all one hundred steps have current evidence.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "Wave 3 handoff and following-wave scope review evidence"
     }
   ],
   "progress": {
-    "completedStepCount": 99,
+    "completedStepCount": 100,
     "plannedStepCount": 0,
-    "inProgressStepNumbers": [
-      100
-    ],
-    "completedRoundCount": 4,
-    "nextStepNumber": 100
+    "inProgressStepNumbers": [],
+    "completedRoundCount": 5,
+    "nextStepNumber": null
   },
   "qualityGates": [
     "npm run check:seis-public-plugin-expansion-program",
@@ -925,6 +924,7 @@
     "npm run check:seis-public-plugin-wave-3-repository-local-handoff",
     "npm run check:seis-public-plugin-wave-3-following-wave-review",
     "npm run check:seis-public-plugin-wave-4-program",
+    "npm run check:seis-public-plugin-wave-3-closeout",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-core-plugin-sources",

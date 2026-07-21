@@ -107,9 +107,9 @@ function buildRecord() {
     },
     checks: {
       wave3Tracker: wave3Program.id === "seis-public-plugin-wave-3-program"
-        && wave3Program.status === "in-progress"
+        && ["in-progress", "completed"].includes(wave3Program.status)
         && number(wave3Program.progress?.completedStepCount) >= 81
-        && number(wave3Program.progress?.nextStepNumber) >= 82
+        && (wave3Program.status === "completed" || number(wave3Program.progress?.nextStepNumber) >= 82)
         && wave3Program.selection?.selectedCapability === SELECTED_CAPABILITY,
       priorFinalValidation: finalValidation.id === "seis-public-plugin-wave-3-final-validation"
         && finalValidation.status === "completed-repository-local-final-validation"
@@ -191,7 +191,7 @@ function buildRecord() {
         && capabilityDocs.includes("No release")
         && capabilityDocs.includes("external installation authority"),
       continuityGate: continuityCadence.id === "seis-public-plugin-continuity-cadence"
-        && continuityCadence.waves?.[2]?.status === "in-progress"
+        && ["in-progress", "completed"].includes(continuityCadence.waves?.[2]?.status)
         && number(continuityCadence.waves?.[2]?.completedSteps) >= 81
         && continuityCadence.waves?.[3]?.status === "planned-gated"
         && continuityCadence.waves?.[4]?.status === "planned-gated",

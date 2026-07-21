@@ -11,16 +11,17 @@
 | Bootstrap | 30 steps / 5 rounds / 6 steps | Completed |
 | Wave 1 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 2 | 100 steps / 5 rounds / 20 steps | Completed |
-| Wave 3 | 100 steps / 5 rounds / 20 steps | In progress: 99 complete, step 100 active |
+| Wave 3 | 100 steps / 5 rounds / 20 steps | Completed: 100 repository-local evidence steps |
 | Wave 4 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 | Wave 5 | 100 steps / 5 rounds / 20 steps | Planned-gated |
 
 The machine-readable cadence is
-`content/development/seis-public-plugin-continuity-cadence.json`. It defines
-the 100-step reusable template for Waves 4–5 without selecting a capability,
-adding a card, or claiming that future work has started.
+`content/development/seis-public-plugin-continuity-cadence.json`. Wave 4 has a
+separate planned-gated candidate and 100-step specification, but it does not
+add a package or card, activate implementation, or claim that future work has
+started.
 
-## Current Wave 3 Evidence
+## Wave 3 Closeout Evidence
 
 Steps 47–60 are reconciled by
 `content/development/seis-public-plugin-wave-3-round-3-checkpoint.json`.
@@ -63,8 +64,12 @@ package and public card absent, activation false, and every SwiftPM/compiler/
 runtime/release claim false. Step 99 is completed by
 `content/development/seis-public-plugin-wave-4-program.json`, which defines
 five explicit rounds and 100 planned steps for the candidate without starting
-implementation. Step 100 is active to close Wave 3 with current evidence;
-Wave 4 remains planned-gated.
+implementation. Step 100 is completed by
+`content/development/seis-public-plugin-wave-3-closeout.json`. It closes all
+100 Wave 3 steps with current repository-local evidence, preserves every
+independent installation, SwiftPM/compiler, runtime, provider, deployment,
+and release claim as false, and leaves Wave 4 planned-gated with activation
+false.
 
 ## GitHub Delivery Rule
 
@@ -103,5 +108,6 @@ npm run check:seis-public-plugin-wave-3-delivery-evidence
 npm run check:seis-public-plugin-wave-3-repository-local-handoff
 npm run check:seis-public-plugin-wave-3-following-wave-review
 npm run check:seis-public-plugin-wave-4-program
+npm run check:seis-public-plugin-wave-3-closeout
 npm run check:seis-public-plugin-expansion-program
 ```

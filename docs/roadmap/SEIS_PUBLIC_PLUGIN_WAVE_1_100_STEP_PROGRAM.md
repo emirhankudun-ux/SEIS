@@ -79,10 +79,12 @@ current repository-local handoff at
 `content/development/seis-public-plugin-wave-2-handoff.json`. Its only new
 public capability was the read-only `seis-apple-native-readiness` package; the
 subsequent overlap review deliberately selected no second card. Wave 3 is now
-in progress at `content/development/seis-public-plugin-wave-3-program.json`.
+completed at `content/development/seis-public-plugin-wave-3-program.json` and
+its closeout is `content/development/seis-public-plugin-wave-3-closeout.json`.
 It selected and implemented the one bounded `seis-swift-concurrency-audit`
-package with a public `SEIS Repo` card; its remaining evidence and handoff work
-does not imply release, installation, compiler, or native-runtime success.
-Waves 4 and 5 remain unplanned until their preceding wave passes the same
-evidence, scope, and risk gate. This preserves the requested ongoing cadence
-without turning it into a claim of autonomous background execution.
+package with a public `SEIS Repo` card while keeping release, installation,
+compiler, and native-runtime claims false. Wave 4 now has a separately
+planned-gated topology specification; it remains unimplemented until its own
+activation decision. Wave 5 remains planned-gated. This preserves the
+requested ongoing cadence without turning it into a claim of autonomous
+background execution.
