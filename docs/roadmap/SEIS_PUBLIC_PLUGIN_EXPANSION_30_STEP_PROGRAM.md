@@ -90,6 +90,13 @@ its steps 92–96 delivery evidence is
 `content/development/seis-public-plugin-wave-3-delivery-evidence.json`, and
 its step 97 repository-local handoff is
 `content/development/seis-public-plugin-wave-3-repository-local-handoff.json`.
+Step 98 is completed by
+`content/development/seis-public-plugin-wave-3-following-wave-review.json`:
+it identifies `seis-swift-package-topology` only as a planned, fixed-manifest,
+read-only candidate. It does not add that package or its card, activate Wave 4,
+or convert static manifest evidence into SwiftPM, compiler, runtime, install,
+or release proof. Wave 3 now has 98 completed steps and step 99 is active to
+create a separately reviewable following-wave plan.
 The
 current contract is 73 packages / 379 `SEIS Repo` cards, without an
 independent installation, native-runtime, provider, deployment, or

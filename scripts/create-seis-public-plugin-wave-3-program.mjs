@@ -16,9 +16,10 @@ const FINAL_VALIDATION_PATH = "content/development/seis-public-plugin-wave-3-fin
 const FINAL_PREFLIGHT_PATH = "content/development/seis-public-plugin-wave-3-final-preflight.json";
 const DELIVERY_EVIDENCE_PATH = "content/development/seis-public-plugin-wave-3-delivery-evidence.json";
 const REPOSITORY_LOCAL_HANDOFF_PATH = "content/development/seis-public-plugin-wave-3-repository-local-handoff.json";
+const FOLLOWING_WAVE_REVIEW_PATH = "content/development/seis-public-plugin-wave-3-following-wave-review.json";
 const SELECTED_CAPABILITY = "seis-swift-concurrency-audit";
-const COMPLETED_STEP_COUNT = 97;
-const IN_PROGRESS_STEP_NUMBER = 98;
+const COMPLETED_STEP_COUNT = 98;
+const IN_PROGRESS_STEP_NUMBER = 99;
 
 const ROUND_DEFINITIONS = Object.freeze([
   {
@@ -177,6 +178,7 @@ function buildRecord() {
   const finalPreflight = readJson(FINAL_PREFLIGHT_PATH);
   const deliveryEvidence = readJson(DELIVERY_EVIDENCE_PATH);
   const repositoryLocalHandoff = readJson(REPOSITORY_LOCAL_HANDOFF_PATH);
+  const followingWaveReview = readJson(FOLLOWING_WAVE_REVIEW_PATH);
   assert(initialProgram?.id === "seis-public-plugin-expansion-program" && initialProgram?.status === "completed", "initial program is invalid");
   assert(initialProgram?.nextWaves?.[1]?.status === "completed" && initialProgram?.nextWaves?.[1]?.handoffEvidencePath === WAVE_2_HANDOFF_PATH, "Wave 2 completion is not recorded in the initial program");
   assert(initialProgram?.nextWaves?.[2]?.status === "in-progress" && initialProgram?.nextWaves?.[2]?.programId === "seis-public-plugin-wave-3-program", "Wave 3 is not active in the initial program");
@@ -188,6 +190,7 @@ function buildRecord() {
   assert(finalPreflight?.id === "seis-public-plugin-wave-3-final-preflight" && finalPreflight?.status === "completed-repository-local-final-preflight" && list(finalPreflight?.completedSteps).join(",") === Array.from({ length: 10 }, (_, index) => index + 82).join(",") && finalPreflight?.futureWaveDecision?.activationApproved === false, "Wave 3 final preflight evidence is invalid");
   assert(deliveryEvidence?.id === "seis-public-plugin-wave-3-delivery-evidence" && deliveryEvidence?.status === "completed-repository-local-delivery-evidence" && list(deliveryEvidence?.completedSteps).join(",") === Array.from({ length: 5 }, (_, index) => index + 92).join(",") && deliveryEvidence?.observedDelivery?.remoteReferenceVerified === true && deliveryEvidence?.futureWaveDecision?.activationApproved === false, "Wave 3 delivery evidence is invalid");
   assert(repositoryLocalHandoff?.id === "seis-public-plugin-wave-3-repository-local-handoff" && repositoryLocalHandoff?.status === "completed-repository-local-handoff" && repositoryLocalHandoff?.step === 97 && repositoryLocalHandoff?.futureWaveDecision?.activationApproved === false, "Wave 3 repository-local handoff evidence is invalid");
+  assert(followingWaveReview?.id === "seis-public-plugin-wave-3-following-wave-review" && followingWaveReview?.status === "completed-following-wave-scope-review" && followingWaveReview?.step === 98 && followingWaveReview?.followingWaveDecision?.selectedCapability === "seis-swift-package-topology" && followingWaveReview?.followingWaveDecision?.implementationApproved === false && followingWaveReview?.followingWaveDecision?.activationApproved === false, "Wave 3 following-wave review is invalid");
 
   const steps = ROUND_DEFINITIONS.flatMap((round, roundIndex) => round.tasks.map((title, taskIndex) => ({
     number: (roundIndex * 20) + taskIndex + 1,
@@ -245,6 +248,7 @@ function buildRecord() {
       finalPreflightPath: FINAL_PREFLIGHT_PATH,
       deliveryEvidencePath: DELIVERY_EVIDENCE_PATH,
       repositoryLocalHandoffPath: REPOSITORY_LOCAL_HANDOFF_PATH,
+      followingWaveReviewPath: FOLLOWING_WAVE_REVIEW_PATH,
     },
     publicBoundary: {
       marketplaceName: "seis-repo",
@@ -280,6 +284,7 @@ function buildRecord() {
       "npm run check:seis-public-plugin-wave-3-final-preflight",
       "npm run check:seis-public-plugin-wave-3-delivery-evidence",
       "npm run check:seis-public-plugin-wave-3-repository-local-handoff",
+      "npm run check:seis-public-plugin-wave-3-following-wave-review",
       "npm run check:seis-repo-marketplace",
       "npm run check:seis-agent-plugin-integration",
       "npm run check:seis-core-plugin-sources",
@@ -351,7 +356,7 @@ function validateRecord(record) {
   }
   assert(record.progress?.completedStepCount === COMPLETED_STEP_COUNT && record.progress?.plannedStepCount === 100 - COMPLETED_STEP_COUNT - 1 && list(record.progress?.inProgressStepNumbers).join(",") === String(IN_PROGRESS_STEP_NUMBER) && record.progress?.completedRoundCount === 4 && record.progress?.nextStepNumber === IN_PROGRESS_STEP_NUMBER, "Wave 3 progress is invalid");
   assert(record.selection?.status === "implementation-approved" && record.selection?.selectedCapability === SELECTED_CAPABILITY && record.selection?.additionalPublicCardAdded === true && record.selection?.implementationStarted === true && record.selection?.nonDuplicativeCapabilityRequired === true && record.selection?.separateDecisionRequiredBeforeImplementation === true, "Wave 3 selection boundary is invalid");
-  assert(record.evidence?.round3CheckpointPath === ROUND_3_CHECKPOINT_PATH && record.evidence?.round4ReviewPath === ROUND_4_REVIEW_PATH && record.evidence?.handoffReadinessPath === HANDOFF_READINESS_PATH && record.evidence?.finalValidationPath === FINAL_VALIDATION_PATH && record.evidence?.finalPreflightPath === FINAL_PREFLIGHT_PATH && record.evidence?.deliveryEvidencePath === DELIVERY_EVIDENCE_PATH && record.evidence?.repositoryLocalHandoffPath === REPOSITORY_LOCAL_HANDOFF_PATH, "Wave 3 evidence linkage is invalid");
+  assert(record.evidence?.round3CheckpointPath === ROUND_3_CHECKPOINT_PATH && record.evidence?.round4ReviewPath === ROUND_4_REVIEW_PATH && record.evidence?.handoffReadinessPath === HANDOFF_READINESS_PATH && record.evidence?.finalValidationPath === FINAL_VALIDATION_PATH && record.evidence?.finalPreflightPath === FINAL_PREFLIGHT_PATH && record.evidence?.deliveryEvidencePath === DELIVERY_EVIDENCE_PATH && record.evidence?.repositoryLocalHandoffPath === REPOSITORY_LOCAL_HANDOFF_PATH && record.evidence?.followingWaveReviewPath === FOLLOWING_WAVE_REVIEW_PATH, "Wave 3 evidence linkage is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public safety boundary is invalid");
   assert(list(record.nonGoals).length === 4 && list(record.risks).length === 3 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "scope, risks, or rollback is invalid");

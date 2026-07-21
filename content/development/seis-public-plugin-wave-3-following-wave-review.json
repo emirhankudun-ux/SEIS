@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-3-following-wave-review",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 3,
+  "step": 98,
+  "status": "completed-following-wave-scope-review",
+  "generatedAt": "2026-07-21",
+  "purpose": "Decide whether a following public SEIS Repo wave is justified by current repository evidence rather than cadence alone, without creating a package or card, activating Wave 4, claiming Swift execution, or changing the public release boundary.",
+  "stateAtCheckpoint": {
+    "completedStepCountBeforeTrackerUpdate": 97,
+    "activeStepBeforeTrackerUpdate": 98,
+    "nextPlannedDecisionStep": 99,
+    "wave3Completed": false,
+    "wave4Activated": false
+  },
+  "checks": {
+    "predecessorHandoff": true,
+    "priorFollowUpRequirement": true,
+    "currentPublicInventory": true,
+    "candidateIsNotAlreadyPublished": true,
+    "existingCapabilityBoundaries": true,
+    "boundedManifestEvidence": true
+  },
+  "followingWaveDecision": {
+    "wave": 4,
+    "status": "candidate-identified-plan-required",
+    "activationApproved": false,
+    "implementationApproved": false,
+    "selectedCapability": "seis-swift-package-topology",
+    "candidatePackageExists": false,
+    "candidatePublicCardExists": false,
+    "outcome": "A narrowly bounded manifest-topology capability is justified for a later plan because it formalizes a reusable public static contract that the existing readiness, concurrency, and adoption packages do not own. The candidate remains unimplemented until a separate 100-step plan, risk review, and activation decision are complete.",
+    "reviewedExecutionLimit": "The prior SwiftPM result remains incomplete and unclaimed. This candidate is limited to checked-in manifest topology and must not imply SwiftPM, compiler, test, signing, simulator, device, runtime, provider, deployment, installation, or release proof."
+  },
+  "candidateContract": {
+    "packageName": "seis-swift-package-topology",
+    "intendedDisplayName": "SEIS Swift Package Topology",
+    "maturity": "planned",
+    "input": {
+      "fixedManifestPath": "packages/seis_platform_swift/Package.swift",
+      "allowedRead": [
+        "one fixed checked-in Swift Package manifest"
+      ],
+      "maximumTextBytes": 131072,
+      "regularFileRequired": true,
+      "symlinkRefusal": true
+    },
+    "output": [
+      "declared platform versions",
+      "library and executable product to target mappings",
+      "target kinds and declared dependencies",
+      "test-target dependencies",
+      "declared executable resource mappings"
+    ],
+    "distinctFrom": [
+      {
+        "package": "seis-apple-native-readiness",
+        "boundary": "It verifies static markers, source/test presence, and platform strategy; it does not provide a reusable graph relation report for product, target, dependency, and resource mappings."
+      },
+      {
+        "package": "seis-swift-concurrency-audit",
+        "boundary": "It analyzes bounded Swift source concurrency signals; it does not parse the Swift Package manifest topology."
+      },
+      {
+        "package": "seis-package-adoption",
+        "boundary": "It summarizes recorded adoption signals; it does not inspect checked-in package topology."
+      }
+    ],
+    "nonGoals": [
+      "Compiling, testing, describing, resolving, or running SwiftPM packages.",
+      "Reading arbitrary paths, traversing source trees, or following symlinks.",
+      "Claiming graph validity, compiler correctness, runtime behavior, signing, installation, deployment, provider behavior, or public release.",
+      "Adding a source directory, public card, dependency, permission, network call, secret, external write, or personal marketplace access during this review."
+    ],
+    "permissions": {
+      "read": [
+        "one fixed checked-in Swift Package manifest"
+      ],
+      "write": [],
+      "network": [],
+      "secrets": []
+    }
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "publicRelease": false
+  },
+  "evidence": {
+    "predecessorHandoffPath": "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
+    "priorFollowUpDecisionPath": "content/development/seis-public-plugin-wave-2-follow-up-decision.json",
+    "appleReadinessEvidencePath": "content/development/seis-apple-native-readiness.json",
+    "swiftConcurrencyEvidencePath": "content/development/seis-swift-concurrency-audit.json",
+    "sourceManifestPath": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "catalogPath": "apps/seis-core/data/seis-core-plugin-catalog.json",
+    "matrixPath": "content/development/seis-core-plugin-matrix.json",
+    "marketplacePath": ".agents/plugins/marketplace.json",
+    "reviewedManifestPath": "packages/seis_platform_swift/Package.swift"
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-wave-3-following-wave-review",
+    "npm run check:seis-public-plugin-wave-3-program",
+    "npm run check:seis-public-plugin-continuity-cadence",
+    "npm run check:seis-repo-marketplace",
+    "node --test plugins/seis-core/test/public-plugin-wave-3-following-wave-review.test.mjs"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W3-016",
+      "status": "tracked",
+      "description": "A static package topology report could duplicate Apple readiness or be misread as a compiled SwiftPM graph.",
+      "mitigation": "Restrict the contract to product, target, dependency, and resource relationships; retain compiler, SwiftPM, runtime, and release claims as false."
+    },
+    {
+      "id": "RISK-W3-017",
+      "status": "tracked",
+      "description": "Selecting a later capability candidate could be mistaken for Wave 4 activation or a new public card.",
+      "mitigation": "Keep implementationApproved and activationApproved false, preserve candidate absence across source/catalog/matrix/marketplace, and require step 99 planning before any implementation."
+    },
+    {
+      "id": "RISK-W3-018",
+      "status": "tracked",
+      "description": "Manifest text could expose unsafe local information if future scope expands beyond the fixed checked-in file.",
+      "mitigation": "Use one fixed regular-file path, cap text size, refuse symlinks, return derived topology only, and retain no raw text in the evidence record."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this focused Wave 3 following-wave review and tracker references on the feature branch; no package, card, external state, release, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 9,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}

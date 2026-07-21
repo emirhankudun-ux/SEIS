@@ -29,12 +29,13 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[0].status, "completed");
   assert.equal(cadence.waves[1].status, "completed");
   assert.equal(cadence.waves[2].status, "in-progress");
-  assert.equal(cadence.waves[2].completedSteps, 97);
-  assert.deepEqual(cadence.waves[2].inProgressSteps, [98]);
+  assert.equal(cadence.waves[2].completedSteps, 98);
+  assert.deepEqual(cadence.waves[2].inProgressSteps, [99]);
   assert.equal(cadence.waves[2].priorValidationPath, "content/development/seis-public-plugin-wave-3-final-validation.json");
   assert.equal(cadence.waves[2].preflightPath, "content/development/seis-public-plugin-wave-3-final-preflight.json");
   assert.equal(cadence.waves[2].deliveryEvidencePath, "content/development/seis-public-plugin-wave-3-delivery-evidence.json");
-  assert.equal(cadence.waves[2].currentEvidencePath, "content/development/seis-public-plugin-wave-3-repository-local-handoff.json");
+  assert.equal(cadence.waves[2].repositoryLocalHandoffPath, "content/development/seis-public-plugin-wave-3-repository-local-handoff.json");
+  assert.equal(cadence.waves[2].currentEvidencePath, "content/development/seis-public-plugin-wave-3-following-wave-review.json");
   assert.equal(cadence.waves[3].status, "planned-gated");
   assert.equal(cadence.waves[4].status, "planned-gated");
   assert.equal(cadence.futureWaveTemplate.steps.length, 100);
