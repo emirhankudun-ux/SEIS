@@ -15,6 +15,7 @@ const wave3Round3CheckpointPath = path.join(root, "content", "development", "sei
 const wave3Round4ReviewPath = path.join(root, "content", "development", "seis-public-plugin-wave-3-round-4-review.json");
 const wave3HandoffReadinessPath = path.join(root, "content", "development", "seis-public-plugin-wave-3-handoff-readiness.json");
 const wave3FinalValidationPath = path.join(root, "content", "development", "seis-public-plugin-wave-3-final-validation.json");
+const wave3FinalPreflightPath = path.join(root, "content", "development", "seis-public-plugin-wave-3-final-preflight.json");
 const continuityCadencePath = path.join(root, "content", "development", "seis-public-plugin-continuity-cadence.json");
 const record = JSON.parse(fs.readFileSync(recordPath, "utf8"));
 const handoff = fs.existsSync(handoffPath) ? JSON.parse(fs.readFileSync(handoffPath, "utf8")) : null;
@@ -26,6 +27,7 @@ const wave3Round3Checkpoint = fs.existsSync(wave3Round3CheckpointPath) ? JSON.pa
 const wave3Round4Review = fs.existsSync(wave3Round4ReviewPath) ? JSON.parse(fs.readFileSync(wave3Round4ReviewPath, "utf8")) : null;
 const wave3HandoffReadiness = fs.existsSync(wave3HandoffReadinessPath) ? JSON.parse(fs.readFileSync(wave3HandoffReadinessPath, "utf8")) : null;
 const wave3FinalValidation = fs.existsSync(wave3FinalValidationPath) ? JSON.parse(fs.readFileSync(wave3FinalValidationPath, "utf8")) : null;
+const wave3FinalPreflight = fs.existsSync(wave3FinalPreflightPath) ? JSON.parse(fs.readFileSync(wave3FinalPreflightPath, "utf8")) : null;
 const continuityCadence = fs.existsSync(continuityCadencePath) ? JSON.parse(fs.readFileSync(continuityCadencePath, "utf8")) : null;
 const failures = [];
 
@@ -86,14 +88,15 @@ for (let index = 0; index < 5; index += 1) {
     ensure(wave?.programId === "seis-public-plugin-wave-3-program", "wave 3 must identify its 100-step program");
     ensure(wave?.scopeRiskReviewPath === "content/development/seis-public-plugin-wave-2-handoff.json", "wave 3 must identify its Wave 2 scope and risk review");
     ensure(wave?.capabilityDecisionPath === "content/development/seis-public-plugin-wave-3-capability-decision.json", "wave 3 must identify its capability decision");
-    ensure(wave3Program?.id === "seis-public-plugin-wave-3-program" && wave3Program?.status === "in-progress" && wave3Program?.progress?.completedStepCount === 81 && wave3Program?.progress?.plannedStepCount === 18 && Array.isArray(wave3Program?.progress?.inProgressStepNumbers) && wave3Program.progress.inProgressStepNumbers.length === 1 && wave3Program.progress.inProgressStepNumbers[0] === 82, "wave 3 program evidence is invalid");
+    ensure(wave3Program?.id === "seis-public-plugin-wave-3-program" && wave3Program?.status === "in-progress" && wave3Program?.progress?.completedStepCount === 91 && wave3Program?.progress?.plannedStepCount === 8 && Array.isArray(wave3Program?.progress?.inProgressStepNumbers) && wave3Program.progress.inProgressStepNumbers.length === 1 && wave3Program.progress.inProgressStepNumbers[0] === 92, "wave 3 program evidence is invalid");
     ensure(wave3Program?.selection?.status === "implementation-approved" && wave3Program?.selection?.selectedCapability === "seis-swift-concurrency-audit" && wave3Program?.selection?.implementationStarted === true && wave3Program?.selection?.additionalPublicCardAdded === true, "wave 3 selection evidence is invalid");
-    ensure(Array.isArray(wave3Program?.steps) && wave3Program.steps.length === 100 && wave3Program.steps.every((step, stepIndex) => step?.status === (stepIndex < 81 ? "completed" : stepIndex === 81 ? "in-progress" : "planned")), "wave 3 step state is invalid");
+    ensure(Array.isArray(wave3Program?.steps) && wave3Program.steps.length === 100 && wave3Program.steps.every((step, stepIndex) => step?.status === (stepIndex < 91 ? "completed" : stepIndex === 91 ? "in-progress" : "planned")), "wave 3 step state is invalid");
     ensure(wave3Decision?.id === "seis-public-plugin-wave-3-capability-decision" && wave3Decision?.status === "approved-public-local-implementation" && wave3Decision?.decision?.selectedCapability === "seis-swift-concurrency-audit" && wave3Decision?.decision?.implementationStarted === true && wave3Decision?.decision?.additionalPublicCardAdded === true, "wave 3 decision evidence is invalid");
     ensure(wave3Round3Checkpoint?.id === "seis-public-plugin-wave-3-round-3-checkpoint" && wave3Round3Checkpoint?.status === "completed-repository-local-checkpoint" && Array.isArray(wave3Round3Checkpoint?.completedSteps) && wave3Round3Checkpoint.completedSteps.length === 14, "wave 3 round 3 checkpoint evidence is invalid");
     ensure(wave3Round4Review?.id === "seis-public-plugin-wave-3-round-4-review" && wave3Round4Review?.status === "completed-repository-local-round-review" && Array.isArray(wave3Round4Review?.completedSteps) && wave3Round4Review.completedSteps.length === 19, "wave 3 round 4 review evidence is invalid");
     ensure(wave3HandoffReadiness?.id === "seis-public-plugin-wave-3-handoff-readiness" && wave3HandoffReadiness?.status === "completed-repository-local-handoff-readiness" && wave3HandoffReadiness?.step === 80 && wave3HandoffReadiness?.futureWaveDecision?.activationApproved === false, "wave 3 handoff readiness evidence is invalid");
     ensure(wave3FinalValidation?.id === "seis-public-plugin-wave-3-final-validation" && wave3FinalValidation?.status === "completed-repository-local-final-validation" && wave3FinalValidation?.step === 81 && wave3FinalValidation?.futureWaveDecision?.activationApproved === false, "wave 3 final validation evidence is invalid");
+    ensure(wave3FinalPreflight?.id === "seis-public-plugin-wave-3-final-preflight" && wave3FinalPreflight?.status === "completed-repository-local-final-preflight" && Array.isArray(wave3FinalPreflight?.completedSteps) && wave3FinalPreflight.completedSteps.length === 10 && wave3FinalPreflight.completedSteps.every((step, stepIndex) => step === stepIndex + 82) && wave3FinalPreflight?.futureWaveDecision?.activationApproved === false, "wave 3 final preflight evidence is invalid");
   } else {
     ensure(wave?.status === "planned-gated", `wave ${index + 1} must remain planned-gated until its activation review`);
     ensure(wave?.programId === `seis-public-plugin-wave-${index + 1}-program`, `wave ${index + 1} must identify its future program`);
@@ -104,7 +107,7 @@ for (let index = 0; index < 5; index += 1) {
 
 ensure(continuityCadence?.id === "seis-public-plugin-continuity-cadence" && continuityCadence?.status === "active-evidence-led-cadence", "continuity cadence evidence is invalid");
 ensure(continuityCadence?.cadence?.bootstrap?.totalSteps === 30 && continuityCadence?.cadence?.waveSeries?.waveCount === 5 && continuityCadence?.cadence?.waveSeries?.stepsPerWave === 100 && continuityCadence?.cadence?.waveSeries?.totalPlannedWaveSteps === 500, "continuity cadence shape is invalid");
-ensure(Array.isArray(continuityCadence?.waves) && continuityCadence.waves.length === 5 && continuityCadence.waves[2]?.completedSteps === 81 && Array.isArray(continuityCadence?.futureWaveTemplate?.steps) && continuityCadence.futureWaveTemplate.steps.length === 100, "continuity cadence wave evidence is invalid");
+ensure(Array.isArray(continuityCadence?.waves) && continuityCadence.waves.length === 5 && continuityCadence.waves[2]?.completedSteps === 91 && Array.isArray(continuityCadence.waves[2]?.inProgressSteps) && continuityCadence.waves[2].inProgressSteps[0] === 92 && Array.isArray(continuityCadence?.futureWaveTemplate?.steps) && continuityCadence.futureWaveTemplate.steps.length === 100, "continuity cadence wave evidence is invalid");
 
 const completeSteps = record.steps.filter((step) => step.status === "completed").length;
 const inProgressSteps = record.steps.filter((step) => step.status === "in-progress").length;

@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-3-final-preflight",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 3,
+  "completedSteps": [
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91
+  ],
+  "status": "completed-repository-local-final-preflight",
+  "generatedAt": "2026-07-21",
+  "purpose": "Reconcile current repository-local evidence for Wave 3 steps 82–91 without claiming final handoff, external installation, native execution, public release, or Wave 4 activation.",
+  "stateAtCheckpoint": {
+    "completedStepCountBeforeTrackerUpdate": 81,
+    "activeStepBeforeTrackerUpdate": 82,
+    "nextPlannedValidationStep": 92,
+    "finalWaveHandoffPublished": false,
+    "waveCompleted": false
+  },
+  "checks": {
+    "wave3Tracker": true,
+    "priorFinalValidation": true,
+    "capabilityDecision": true,
+    "selectedPackageAndMatrix": true,
+    "denyByDefaultMcp": true,
+    "agentIntegration": true,
+    "lifecycleAndProvenance": true,
+    "freshTaskAndInstallBoundaries": true,
+    "releaseLimit": true,
+    "publicTerminologyPolicy": true,
+    "continuityGate": true
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "compiledSwift": false,
+    "nativeRuntime": false,
+    "independentInstallation": false,
+    "liveProvider": false,
+    "deployment": false,
+    "publicRelease": false
+  },
+  "futureWaveDecision": {
+    "wave": 4,
+    "status": "planned-gated",
+    "activationApproved": false,
+    "selectedCapability": null,
+    "reason": "Steps 82–91 reconcile repository-local package, integration, lifecycle, safety, terminology, and release-boundary evidence only. A Wave 3 handoff and a fresh Wave 4 scope and risk decision remain required."
+  },
+  "delivery": {
+    "featureBranch": "plugins/seis-plugin-root-20260715",
+    "priorFeatureCheckpointCommit": "a10e61b3b0ce1d52246c50548d0cf80d47563c0a",
+    "priorFeatureCheckpointRemoteVerified": true,
+    "protectedDefaultBranchWritten": false,
+    "checkpointRule": "This preflight records repository-local state only. Its own commit and push must be validated separately on the current feature branch; it does not predict a future commit SHA or assert a public release."
+  },
+  "validationScope": {
+    "focusedPackage": [
+      "npm run check:seis-public-plugin-wave-3-final-validation",
+      "npm run check:seis-core-plugin-sources",
+      "npm run check:seis-core-plugin-catalog",
+      "npm run check:seis-core-plugin-matrix"
+    ],
+    "integrationAndLifecycle": [
+      "npm run check:seis-agent-plugin-integration",
+      "npm run check:seis-core-requested-plugin-coverage",
+      "npm run check:seis-public-plugin-lifecycle",
+      "npm run check:seis-public-plugin-security-provenance-review",
+      "npm run check:seis-public-plugin-fresh-task-proof",
+      "npm run check:seis-public-plugin-fresh-task-reload-evidence",
+      "npm run check:seis-public-plugin-external-install-proof",
+      "npm run check:seis-public-install-state",
+      "npm run check:seis-public-install-evidence",
+      "npm run check:seis-core-plugin-release-readiness"
+    ],
+    "baselineAndBoundary": [
+      "npm run check:seis-repo-marketplace",
+      "npm run seis:check",
+      "git diff --check"
+    ]
+  },
+  "risks": [
+    {
+      "id": "RISK-W3-010",
+      "status": "tracked",
+      "description": "A broad local validation preflight can be mistaken for final delivery, a public release, or independent installation proof.",
+      "mitigation": "Keep finalWaveHandoffPublished false, record external claims as false, and require later feature-branch delivery plus release approval evidence."
+    },
+    {
+      "id": "RISK-W3-011",
+      "status": "tracked",
+      "description": "Repeated generated evidence can drift from source, marketplace, lifecycle, or terminology records.",
+      "mitigation": "Assert current package, source, card, matrix, integration, lifecycle, safety, and documentation boundaries from fixed public-safe inputs."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this focused preflight record and its Wave 3 tracking references on the feature branch; no external state, publication, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 22,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}

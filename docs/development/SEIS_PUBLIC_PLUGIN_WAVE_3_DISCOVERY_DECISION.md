@@ -9,10 +9,11 @@ repository-local implementation state. The public
 `plugins/seis-core/seis-swift-concurrency-audit` package and its `SEIS Repo`
 card are present. The program has reconciled implementation, resilience review,
 non-terminal handoff readiness through step 80, and tracker plus
-capability-decision validation through step 81. Step 82 continues focused
-package generators, validators, and tests. This does not claim an independent installation, public
-release, provider connection, deployment, native runtime, or completed SwiftPM
-test.
+capability-decision validation through step 81. The repository-local final
+preflight reconciles steps 82–91, and step 92 continues the focused
+working-tree and diff review. This does not claim an independent installation,
+public release, provider connection, deployment, native runtime, or completed
+SwiftPM test.
 
 ## Why this capability is distinct
 

@@ -78,11 +78,13 @@ the historical contract was 72 packages / 378 `SEIS Repo` cards, and the
 interrupted SwiftPM test remains neither a compiled-Swift nor a test-pass claim.
 Wave 3 is now **in progress** at
 `content/development/seis-public-plugin-wave-3-program.json`: the bounded
-`seis-swift-concurrency-audit` package has 81 completed steps and step 82
-is active for focused package generators, validators, and tests. Its
+`seis-swift-concurrency-audit` package has 91 completed steps and step 92
+is active for the focused working-tree and diff review. Its
 repository-local handoff-readiness and final-validation records are
 `content/development/seis-public-plugin-wave-3-handoff-readiness.json` and
-`content/development/seis-public-plugin-wave-3-final-validation.json`. The
+`content/development/seis-public-plugin-wave-3-final-validation.json`; its
+steps 82–91 preflight is
+`content/development/seis-public-plugin-wave-3-final-preflight.json`. The
 current contract is 73 packages / 379 `SEIS Repo` cards, without an
 independent installation, native-runtime, provider, deployment, or
 public-release claim. Waves 4–5 are now **planned-gated** with

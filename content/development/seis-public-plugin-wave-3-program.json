@@ -44,7 +44,8 @@
     "round3CheckpointPath": "content/development/seis-public-plugin-wave-3-round-3-checkpoint.json",
     "round4ReviewPath": "content/development/seis-public-plugin-wave-3-round-4-review.json",
     "handoffReadinessPath": "content/development/seis-public-plugin-wave-3-handoff-readiness.json",
-    "finalValidationPath": "content/development/seis-public-plugin-wave-3-final-validation.json"
+    "finalValidationPath": "content/development/seis-public-plugin-wave-3-final-validation.json",
+    "finalPreflightPath": "content/development/seis-public-plugin-wave-3-final-preflight.json"
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -771,77 +772,77 @@
       "number": 82,
       "round": 5,
       "title": "Run focused package generators, validators, and tests for the selected scope.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 83,
       "round": 5,
       "title": "Run source, catalog, matrix, marketplace, registry, and unified-suite regressions.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 84,
       "round": 5,
       "title": "Run agent integration and requested-capability coverage regressions where applicable.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 85,
       "round": 5,
       "title": "Run lifecycle, provenance, fresh-task, install-boundary, and release-readiness checks.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 86,
       "round": 5,
       "title": "Run applicable baseline SEIS checks without expanding into unrelated systems.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 87,
       "round": 5,
       "title": "Review generated evidence for count, terminology, and public-boundary drift.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 88,
       "round": 5,
       "title": "Review source and documentation for personal marketplace references.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 89,
       "round": 5,
       "title": "Review source and generated records for secret-like or machine-specific values.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 90,
       "round": 5,
       "title": "Review native, provider, browser, deployment, installation, and release gaps honestly.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 91,
       "round": 5,
       "title": "Keep public release blocked unless independent evidence and explicit approval exist.",
-      "status": "planned",
+      "status": "completed",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
       "number": 92,
       "round": 5,
       "title": "Inspect the working tree and diff for unrelated changes.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "current Wave 3 repository-local validation evidence"
     },
     {
@@ -902,19 +903,20 @@
     }
   ],
   "progress": {
-    "completedStepCount": 81,
-    "plannedStepCount": 18,
+    "completedStepCount": 91,
+    "plannedStepCount": 8,
     "inProgressStepNumbers": [
-      82
+      92
     ],
     "completedRoundCount": 4,
-    "nextStepNumber": 82
+    "nextStepNumber": 92
   },
   "qualityGates": [
     "npm run check:seis-public-plugin-expansion-program",
     "npm run check:seis-public-plugin-wave-2-program",
     "npm run check:seis-public-plugin-wave-2-handoff",
     "npm run check:seis-public-plugin-wave-3-program",
+    "npm run check:seis-public-plugin-wave-3-final-preflight",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-core-plugin-sources",
