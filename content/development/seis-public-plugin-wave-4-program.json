@@ -25,7 +25,7 @@
     ],
     "selectedCapability": "seis-swift-package-topology",
     "outcome": "One public repository package now reports bounded, derived Swift Package manifest topology with a single checked-in source, SEIS Repo card, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
-    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–95 now have current repository-local evidence, including remote-policy observations and explicit external-proof limits; step 96 is in-progress only to prepare repository-local handoff readiness, not a final handoff, release, or completion claim."
+    "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–95 now have current repository-local evidence, including remote-policy observations and explicit external-proof limits; step 96 remains in-progress with a non-terminal handoff-preparation gate, not a final handoff, release, completion, or Wave 5 activation claim."
   },
   "nonGoals": [
     "Adding more than the one activation-approved public package or card without a new capability decision.",
@@ -931,7 +931,8 @@
     "candidateEvidencePath": "content/development/seis-swift-package-topology.json",
     "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
     "validationDeliveryEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
-    "publicBoundaryDecisionPath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json"
+    "publicBoundaryDecisionPath": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
+    "handoffPreparationPath": "content/development/seis-public-plugin-wave-4-handoff-preparation.json"
   },
   "validation": [
     "npm run check:seis-public-plugin-wave-4-program",
@@ -939,6 +940,7 @@
     "npm run check:seis-public-plugin-wave-4-integration-checkpoint",
     "npm run check:seis-public-plugin-wave-4-validation-delivery-evidence",
     "npm run check:seis-public-plugin-wave-4-public-boundary-decision",
+    "npm run check:seis-public-plugin-wave-4-handoff-preparation",
     "npm run check:seis-swift-package-topology",
     "npm run check:seis-public-plugin-wave-3-following-wave-review",
     "npm run check:seis-public-plugin-continuity-cadence",
@@ -985,10 +987,11 @@
     "topologyEvidence": true,
     "integrationCheckpoint": true,
     "validationDeliveryEvidence": true,
-    "publicBoundaryDecision": true
+    "publicBoundaryDecision": true,
+    "handoffPreparation": true
   },
   "inputSafetyScan": {
-    "inputCount": 7,
+    "inputCount": 8,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

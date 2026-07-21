@@ -54,6 +54,7 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[3].integrationCheckpointPath, "content/development/seis-public-plugin-wave-4-integration-checkpoint.json");
   assert.equal(cadence.waves[3].validationDeliveryEvidencePath, "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json");
   assert.equal(cadence.waves[3].publicBoundaryDecisionPath, "content/development/seis-public-plugin-wave-4-public-boundary-decision.json");
+  assert.equal(cadence.waves[3].handoffPreparationPath, "content/development/seis-public-plugin-wave-4-handoff-preparation.json");
   assert.equal(cadence.waves[3].currentEvidencePath, "content/development/seis-public-plugin-wave-4-public-boundary-decision.json");
   assert.equal(cadence.waves[4].status, "planned-gated");
   assert.equal(cadence.futureWaveTemplate.steps.length, 100);

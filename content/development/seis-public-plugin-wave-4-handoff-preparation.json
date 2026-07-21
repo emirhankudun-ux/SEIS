@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-4-handoff-preparation",
+  "goalId": "SEIS-GOAL-021",
+  "wave": 4,
+  "round": 5,
+  "step": 96,
+  "status": "in-progress-repository-local-handoff-preparation",
+  "maturity": "prototype",
+  "generatedAt": "2026-07-21",
+  "purpose": "Record the Wave 4 terminal-handoff gate from current repository-local evidence without creating a terminal handoff, completing Wave 4, activating Wave 5, merging, publishing, signing, installing, deploying, or claiming independent external proof.",
+  "stateAtPreparation": {
+    "completedStepCount": 95,
+    "activeStep": 96,
+    "remainingStepNumbers": [
+      97,
+      98,
+      99,
+      100
+    ],
+    "completedRoundCount": 4,
+    "terminalHandoffPublished": false,
+    "waveCompleted": false,
+    "wave5ActivationApproved": false
+  },
+  "completedEvidence": {
+    "wave4Tracker": true,
+    "publicBoundaryDecision": true,
+    "validationDeliveryEvidence": true,
+    "integrationCheckpoint": true,
+    "topologyEvidence": true,
+    "publicProjection": true,
+    "continuity": true,
+    "releaseBoundary": true
+  },
+  "handoffGate": {
+    "status": "not-ready-for-terminal-handoff",
+    "ready": false,
+    "allOneHundredStepsHaveCurrentEvidence": false,
+    "currentStepRemainsInProgress": true,
+    "remainingStepNumbers": [
+      97,
+      98,
+      99,
+      100
+    ],
+    "terminalHandoffPublished": false,
+    "waveCompleted": false,
+    "wave5ActivationApproved": false,
+    "reason": "Steps 97 through 100 remain planned. This record preserves their evidence and completion gates instead of reordering, completing, or inferring them."
+  },
+  "remoteDeliveryBaseline": {
+    "featureBranch": "plugins/seis-plugin-root-20260715",
+    "precedingCommit": "924f26541cacc76a7bcb9c76b1d4ec61c4bbb570",
+    "remote": "origin",
+    "remoteReference": "refs/heads/plugins/seis-plugin-root-20260715",
+    "remoteReferenceVerified": true,
+    "protectedDefaultBranchWritten": false,
+    "interpretation": "The preceding checkpoint was verified on the named feature branch only. This preparation does not claim a merge, protected-branch write, code-scanning result, signature compliance, or release."
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "signing": false,
+    "publicRelease": false
+  },
+  "requiredBeforeTerminalHandoff": [
+    "Current, non-circular evidence for each remaining closeout action without marking a future step complete in advance.",
+    "Required repository-local quality gates for the terminal closeout state.",
+    "An explicit terminal handoff record that preserves public-release, installation, runtime, and external-proof limits.",
+    "A separate scope and risk decision before any Wave 5 activation."
+  ],
+  "recommendedFollowUp": {
+    "goalId": "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
+    "status": "proposed-not-created",
+    "purpose": "Resolve the non-circular evidence order for steps 96 through 100 before any terminal handoff or status transition is asserted."
+  },
+  "risks": [
+    {
+      "id": "RISK-W4-015",
+      "status": "tracked",
+      "description": "A readiness gate could be misread as a terminal Wave 4 handoff or completion.",
+      "mitigation": "Keep ready=false, retain steps 97 through 100 as planned, and record terminalHandoffPublished=false and waveCompleted=false."
+    },
+    {
+      "id": "RISK-W4-016",
+      "status": "tracked",
+      "description": "The closeout task sequence can encourage circular completion claims.",
+      "mitigation": "Require a separate non-circular evidence-order decision before changing any terminal step status."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this active handoff-preparation gate and its tracker references on the feature branch; no external state, release, publication, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 12,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}

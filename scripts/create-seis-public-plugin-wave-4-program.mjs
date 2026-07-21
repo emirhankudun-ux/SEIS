@@ -19,6 +19,7 @@ const CANDIDATE_EVIDENCE_PATH = "content/development/seis-swift-package-topology
 const INTEGRATION_CHECKPOINT_PATH = "content/development/seis-public-plugin-wave-4-integration-checkpoint.json";
 const VALIDATION_DELIVERY_EVIDENCE_PATH = "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json";
 const PUBLIC_BOUNDARY_DECISION_PATH = "content/development/seis-public-plugin-wave-4-public-boundary-decision.json";
+const HANDOFF_PREPARATION_PATH = "content/development/seis-public-plugin-wave-4-handoff-preparation.json";
 const BASELINE_INVENTORY = Object.freeze({ applicationPluginCount: 73, publicCardCount: 379 });
 const INTEGRATED_INVENTORY = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
@@ -188,6 +189,7 @@ function buildRecord() {
   const integrationCheckpoint = readJson(INTEGRATION_CHECKPOINT_PATH);
   const validationDeliveryEvidence = readJson(VALIDATION_DELIVERY_EVIDENCE_PATH);
   const publicBoundaryDecision = readJson(PUBLIC_BOUNDARY_DECISION_PATH);
+  const handoffPreparation = readJson(HANDOFF_PREPARATION_PATH);
   const sourceEntries = list(sourceManifest.plugins);
   const catalogEntries = list(catalog.plugins);
   const matrixEntries = list(matrix.plugins);
@@ -206,7 +208,7 @@ function buildRecord() {
     status: stepStatus((roundIndex * 20) + taskIndex + 1),
     validation: validationFor(roundIndex + 1, taskIndex + 1),
   })));
-  const inputSafetyScan = scanPublicSafeInputs([FOLLOWING_WAVE_REVIEW_PATH, SOURCE_MANIFEST_PATH, CATALOG_PATH, MATRIX_PATH, MARKETPLACE_PATH, CANDIDATE_EVIDENCE_PATH, PUBLIC_BOUNDARY_DECISION_PATH]);
+  const inputSafetyScan = scanPublicSafeInputs([FOLLOWING_WAVE_REVIEW_PATH, SOURCE_MANIFEST_PATH, CATALOG_PATH, MATRIX_PATH, MARKETPLACE_PATH, CANDIDATE_EVIDENCE_PATH, PUBLIC_BOUNDARY_DECISION_PATH, HANDOFF_PREPARATION_PATH]);
   const record = {
     schemaVersion: 1,
     id: "seis-public-plugin-wave-4-program",
@@ -232,7 +234,7 @@ function buildRecord() {
       repositories: ["SEIS"],
       selectedCapability: CANDIDATE_CAPABILITY,
       outcome: "One public repository package now reports bounded, derived Swift Package manifest topology with a single checked-in source, SEIS Repo card, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
-      entryRule: "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–95 now have current repository-local evidence, including remote-policy observations and explicit external-proof limits; step 96 is in-progress only to prepare repository-local handoff readiness, not a final handoff, release, or completion claim.",
+      entryRule: "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. Steps 1–95 now have current repository-local evidence, including remote-policy observations and explicit external-proof limits; step 96 remains in-progress with a non-terminal handoff-preparation gate, not a final handoff, release, completion, or Wave 5 activation claim.",
     },
     nonGoals: [
       "Adding more than the one activation-approved public package or card without a new capability decision.",
@@ -301,6 +303,7 @@ function buildRecord() {
       integrationCheckpointPath: INTEGRATION_CHECKPOINT_PATH,
       validationDeliveryEvidencePath: VALIDATION_DELIVERY_EVIDENCE_PATH,
       publicBoundaryDecisionPath: PUBLIC_BOUNDARY_DECISION_PATH,
+      handoffPreparationPath: HANDOFF_PREPARATION_PATH,
     },
     validation: [
       "npm run check:seis-public-plugin-wave-4-program",
@@ -308,6 +311,7 @@ function buildRecord() {
       "npm run check:seis-public-plugin-wave-4-integration-checkpoint",
       "npm run check:seis-public-plugin-wave-4-validation-delivery-evidence",
       "npm run check:seis-public-plugin-wave-4-public-boundary-decision",
+      "npm run check:seis-public-plugin-wave-4-handoff-preparation",
       "npm run check:seis-swift-package-topology",
       "npm run check:seis-public-plugin-wave-3-following-wave-review",
       "npm run check:seis-public-plugin-continuity-cadence",
@@ -419,6 +423,21 @@ function buildRecord() {
         && Object.values(publicBoundaryDecision.externalClaims || {}).every((value) => value === false)
         && publicBoundaryDecision.externalProofAndApprovals?.publicReleaseAllowed === false
         && publicBoundaryDecision.recommendedFollowUp?.status === "proposed-not-created",
+      handoffPreparation: handoffPreparation.id === "seis-public-plugin-wave-4-handoff-preparation"
+        && handoffPreparation.status === "in-progress-repository-local-handoff-preparation"
+        && handoffPreparation.maturity === "prototype"
+        && handoffPreparation.step === 96
+        && handoffPreparation.stateAtPreparation?.completedStepCount === 95
+        && handoffPreparation.stateAtPreparation?.activeStep === 96
+        && list(handoffPreparation.stateAtPreparation?.remainingStepNumbers).join(",") === range(97, 100).join(",")
+        && Object.values(handoffPreparation.completedEvidence || {}).every(Boolean)
+        && handoffPreparation.handoffGate?.ready === false
+        && handoffPreparation.handoffGate?.allOneHundredStepsHaveCurrentEvidence === false
+        && handoffPreparation.handoffGate?.terminalHandoffPublished === false
+        && handoffPreparation.handoffGate?.waveCompleted === false
+        && handoffPreparation.handoffGate?.wave5ActivationApproved === false
+        && Object.values(handoffPreparation.externalClaims || {}).every((value) => value === false)
+        && handoffPreparation.recommendedFollowUp?.status === "proposed-not-created",
     },
     inputSafetyScan,
   };
@@ -453,6 +472,7 @@ function validateRecord(record) {
   }
   assert(record.progress?.completedStepCount === 95 && record.progress?.plannedStepCount === 4 && list(record.progress?.inProgressStepNumbers).join(",") === "96" && record.progress?.completedRoundCount === 4 && record.progress?.nextStepNumber === 96, "Wave 4 progress is invalid");
   assert(record.evidence?.publicBoundaryDecisionPath === PUBLIC_BOUNDARY_DECISION_PATH, "Wave 4 public-boundary evidence path is invalid");
+  assert(record.evidence?.handoffPreparationPath === HANDOFF_PREPARATION_PATH, "Wave 4 handoff-preparation evidence path is invalid");
   assert(Object.values(record.checks).every(Boolean), "a required Wave 4 planning contract is not current");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone", "public marketplace identity is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
