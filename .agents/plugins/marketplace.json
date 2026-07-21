@@ -353,6 +353,18 @@
       "category": "Data"
     },
     {
+      "name": "seis-evidence-index",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-core/seis-evidence-index"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
       "name": "seis-focus-navigation-audit",
       "source": {
         "source": "local",

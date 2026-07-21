@@ -14,7 +14,7 @@
     "revision": 0,
     "microUnits": 20,
     "scope": "plugins/seis-core",
-    "pluginCount": 70
+    "pluginCount": 71
   },
   "purpose": "Keep every SEIS AI plugin record in the public SEIS repository and expose a deterministic 5000-entry capability catalog to the AI Core without creating 5000 artificial source folders. Public app plugin source packages remain owned by the SEIS Command Center application.",
   "canonicalOwnership": {
@@ -42,19 +42,19 @@
   "target": {
     "requestedPluginCount": 5000,
     "registryEntryCount": 5000,
-    "physicalPluginCount": 80,
-    "appOwnedPluginCount": 70,
+    "physicalPluginCount": 81,
+    "appOwnedPluginCount": 71,
     "appReleaseLabel": "0.00000002",
     "appReleaseSemver": "0.0.20",
     "appReleaseMajor": 0,
     "appReleaseRevision": 0,
     "appReleaseMicroUnits": 20,
-    "catalogOnlyEntryCount": 4920,
-    "functionalLocalDemoCount": 70,
-    "publicMarketplacePluginCount": 376,
+    "catalogOnlyEntryCount": 4919,
+    "functionalLocalDemoCount": 71,
+    "publicMarketplacePluginCount": 377,
     "migratedRootMarketplacePluginCount": 5,
-    "applicationMarketplacePluginCount": 70,
-    "publicRepositoryPluginCount": 70,
+    "applicationMarketplacePluginCount": 71,
+    "publicRepositoryPluginCount": 71,
     "personalPluginCount": 55,
     "personalRepoCounterpartCount": 55,
     "countRule": "registryEntryCount must equal requestedPluginCount; physical and catalog-only states must remain distinct"
@@ -69,7 +69,7 @@
     "destinationOwner": "apps/seis-core",
     "applicationPluginManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "migratedOn": "2026-07-15",
-    "migratedPluginCount": 70,
+    "migratedPluginCount": 71,
     "legacyCompatibilityCount": 55,
     "legacyRepoCounterpartCount": 55,
     "legacyCompatibilityCoveragePath": "content/development/seis-ai-core-personal-plugin-coverage.json",
@@ -1555,6 +1555,60 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no metric data is mutated.",
+      "reviewState": "public-repository-preview",
+      "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
+      "relatedGoalIds": [
+        "SEIS-GOAL-021"
+      ],
+      "declaredMcpServerCount": 1
+    },
+    {
+      "recordType": "physical-repo-plugin",
+      "id": "seis-evidence-index",
+      "slug": "seis-evidence-index",
+      "displayName": "SEIS Evidence Index",
+      "description": "Summarize the bounded SEIS Wave 1 evidence index and its recorded attention states without writes, network access, or release claims.",
+      "version": "0.0.20",
+      "releaseTrainVersion": "0.00000002",
+      "releaseSemver": "0.0.20",
+      "releaseMajor": 0,
+      "releaseRevision": 0,
+      "releaseMicroUnits": 20,
+      "category": "evidence-governance",
+      "owner": "@seis-governance",
+      "publisher": "SEIS Repository",
+      "sourceClassification": "public-SEIS-repository",
+      "license": "MIT",
+      "status": "approved-public-readonly",
+      "implementationState": "functional-local-demo",
+      "availability": "local-demo",
+      "sourcePath": "plugins/seis-core/seis-evidence-index",
+      "entrypoint": "scripts/seis-evidence-index-mcp-server.mjs",
+      "canonicalInstallId": "seis-evidence-index@seis-repo",
+      "publicMarketplace": true,
+      "publicRepositoryAvailable": true,
+      "publicAudience": "everyone",
+      "routeEligible": true,
+      "permissions": {
+        "read": [
+          "checked-in Wave 1 evidence index",
+          "checked-in Wave 1 program",
+          "checked-in evidence-index plugin record"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "privacyClass": "repo-internal-public-safe-boundary",
+      "riskClass": "low",
+      "validation": [
+        "node scripts/seis-evidence-index-mcp-server.mjs --status",
+        "node scripts/seis-evidence-index-mcp-server.mjs --audit --path .",
+        "node scripts/seis-evidence-index-mcp-server.mjs --evidence",
+        "npm run check:seis-evidence-index",
+        "node --test plugins/seis-core/test/evidence-index.test.mjs"
+      ],
+      "rollback": "Disable or remove the local plugin and revert its generated evidence record; the plugin never edits an evidence source, marketplace, program, external system, or release state.",
       "reviewState": "public-repository-preview",
       "provenance": "Public SEIS repository source owned by the SEIS Command Center application boundary.",
       "relatedGoalIds": [
@@ -26524,50 +26578,6 @@
       "declaredMcpServerCount": 0,
       "domain": "evidence",
       "operation": "classify"
-    },
-    {
-      "recordType": "capability-plugin-slot",
-      "id": "seis-ai-catalog-0512",
-      "slug": "seis-evidence-index",
-      "displayName": "SEIS Evidence Index",
-      "description": "Plan-only index capability for the evidence registry surface in SEIS AI Core.",
-      "version": "0.1.0-catalog",
-      "category": "SEIS Core",
-      "owner": "@seis-governance",
-      "publisher": "SEIS",
-      "sourceClassification": "generated-SEIS-catalog",
-      "license": "SEIS-CATALOG-INTERNAL",
-      "status": "cataloged",
-      "implementationState": "catalog-contract",
-      "availability": "plan-only",
-      "sourcePath": null,
-      "entrypoint": "packages/seis-ai/src/lib/plugin-registry.mjs",
-      "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "publicMarketplace": false,
-      "routeEligible": false,
-      "permissions": {
-        "read": [
-          "bounded SEIS registry metadata"
-        ],
-        "write": [],
-        "network": [],
-        "secrets": []
-      },
-      "privacyClass": "public-safe-metadata",
-      "riskClass": "low",
-      "validation": [
-        "npm run check:seis-ai-core-plugin-registry",
-        "SEIS-Agent catalog status review"
-      ],
-      "rollback": "Disable or remove this catalog record before implementation; no runtime capability is enabled by catalog presence.",
-      "reviewState": "catalog-review-required",
-      "provenance": "Generated from the SEIS master prompt taxonomy; not evidence of an implemented or connected plugin.",
-      "relatedGoalIds": [
-        "SEIS-GOAL-021"
-      ],
-      "declaredMcpServerCount": 0,
-      "domain": "evidence",
-      "operation": "index"
     },
     {
       "recordType": "capability-plugin-slot",

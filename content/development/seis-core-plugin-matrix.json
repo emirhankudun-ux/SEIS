@@ -21,10 +21,10 @@
     "writePermissionsRequired": false,
     "timeoutMs": 5000
   },
-  "pluginCount": 70,
-  "expectedPluginCount": 70,
+  "pluginCount": 71,
+  "expectedPluginCount": 71,
   "readyCount": 69,
-  "attentionCount": 1,
+  "attentionCount": 2,
   "failureCount": 0,
   "failures": [],
   "plugins": [
@@ -392,6 +392,22 @@
         "secrets": []
       },
       "status": "ready",
+      "ok": true,
+      "execution": "status-only",
+      "failures": []
+    },
+    {
+      "name": "seis-evidence-index",
+      "version": "0.0.20",
+      "releaseTrainVersion": "0.00000002",
+      "entrypoint": "scripts/seis-evidence-index-mcp-server.mjs",
+      "implementationState": "functional-local-demo",
+      "permissionBoundary": {
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "status": "attention",
       "ok": true,
       "execution": "status-only",
       "failures": []

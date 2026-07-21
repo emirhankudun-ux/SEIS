@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-evidence-index": {
+      "command": "node",
+      "args": [
+        "scripts/seis-evidence-index-mcp-server.mjs"
+      ]
+    }
+  }
+}

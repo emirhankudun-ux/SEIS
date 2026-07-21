@@ -69,6 +69,7 @@
       "seis-docs-freshness",
       "seis-dora-metrics",
       "seis-download-anomaly",
+      "seis-evidence-index",
       "seis-focus-navigation-audit",
       "seis-github-metrics-collector",
       "seis-goal-dependency-map",
@@ -141,6 +142,7 @@
       "seis-docs-freshness",
       "seis-dora-metrics",
       "seis-download-anomaly",
+      "seis-evidence-index",
       "seis-focus-navigation-audit",
       "seis-github-metrics-collector",
       "seis-goal-dependency-map",
@@ -202,8 +204,8 @@
       "seis-ai-agent@seis-repo"
     ],
     "embeddedModuleCount": 10,
-    "applicationOwnedPluginCount": 70,
-    "applicationMarketplacePluginCount": 70,
+    "applicationOwnedPluginCount": 71,
+    "applicationMarketplacePluginCount": 71,
     "applicationSourceRoot": "plugins/seis-core",
     "applicationSourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json"
   },
@@ -320,14 +322,14 @@
     "releaseTrain": "content/development/seis-core-plugin-release-train.json",
     "releaseLabel": "0.00000002",
     "releaseSemver": "0.0.20",
-    "pluginCount": 70,
+    "pluginCount": 71,
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
     "publicDistribution": "direct-repository-source",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 70,
+    "marketplaceEntryCount": 71,
     "installSurface": "repo-source-app",
     "executionMode": "task-scoped-local-demo-only",
     "publicReleaseAllowed": false,
@@ -1041,6 +1043,39 @@
         "permissions": {
           "read": [
             "bounded local download metrics JSON"
+          ],
+          "write": [],
+          "network": [],
+          "secrets": []
+        }
+      },
+      {
+        "moduleId": "seis-evidence-index",
+        "displayName": "SEIS Evidence Index",
+        "category": "Developer",
+        "sourcePath": "plugins/seis-core/seis-evidence-index",
+        "version": "0.0.20",
+        "license": "MIT",
+        "sourceClassification": "public-SEIS-repository",
+        "lifecycleStatus": "approved-public-readonly",
+        "implementationState": "functional-local-demo",
+        "releaseTrainVersion": "0.00000002",
+        "releaseSemver": "0.0.20",
+        "canonicalApplicationId": "seis-core",
+        "applicationPath": "apps/seis-core",
+        "canonicalInstallId": "seis-evidence-index@seis-repo",
+        "installSurface": "repo-source-app",
+        "publicMarketplace": true,
+        "publicRepositoryAvailable": true,
+        "publicAudience": "everyone",
+        "publicStatus": "public-repo-marketplace",
+        "publicReleaseAllowed": false,
+        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "permissions": {
+          "read": [
+            "checked-in Wave 1 evidence index",
+            "checked-in Wave 1 program",
+            "checked-in evidence-index plugin record"
           ],
           "write": [],
           "network": [],

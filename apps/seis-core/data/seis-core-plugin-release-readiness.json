@@ -44,11 +44,11 @@
     "bulkPromotionAllowed": false
   },
   "workingTree": {
-    "baseCommit": "eab9d5cf0028f3b5d70b0c597f823139ce2b9024",
-    "codeLinesAdded": 1461,
-    "codeLinesRemoved": 6,
-    "codeLinesChanged": 1467,
-    "changedCodeFileCount": 13,
+    "baseCommit": "804e0a1afe57db93448c3ddfb6b8fba7be78840d",
+    "codeLinesAdded": 809,
+    "codeLinesRemoved": 19,
+    "codeLinesChanged": 828,
+    "changedCodeFileCount": 12,
     "largeCodeEligible": true,
     "evidenceArtifact": "content/development/seis-core-plugin-change-evidence.json"
   },

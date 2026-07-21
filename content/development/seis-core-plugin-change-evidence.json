@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "seis-core-plugin-change-evidence",
   "goalId": "SEIS-GOAL-021",
-  "baseCommit": "eab9d5cf0028f3b5d70b0c597f823139ce2b9024",
+  "baseCommit": "804e0a1afe57db93448c3ddfb6b8fba7be78840d",
   "generatedAt": "2026-07-15",
   "scope": {
     "application": "apps/seis-core",
@@ -29,94 +29,87 @@
     ]
   },
   "threshold": 500,
-  "codeLinesAdded": 1461,
-  "codeLinesRemoved": 6,
-  "codeLinesChanged": 1467,
+  "codeLinesAdded": 809,
+  "codeLinesRemoved": 19,
+  "codeLinesChanged": 828,
   "eligible": true,
   "files": [
     {
-      "path": "plugins/seis-core/seis-ui-state-contract-audit/runtime/static-ui-state-audit.mjs",
-      "added": 309,
+      "path": "scripts/create-seis-public-plugin-wave-1-capability-decision.mjs",
+      "added": 193,
       "removed": 0,
       "state": "untracked",
-      "changed": 309
+      "changed": 193
     },
     {
-      "path": "plugins/seis-core/seis-project-manifest-audit/runtime/project-manifest-audit.mjs",
-      "added": 187,
+      "path": "plugins/seis-core/seis-evidence-index/runtime/evidence-index.mjs",
+      "added": 169,
       "removed": 0,
       "state": "untracked",
-      "changed": 187
+      "changed": 169
     },
     {
-      "path": "scripts/create-seis-ui-state-contract-audit.mjs",
-      "added": 186,
+      "path": "plugins/seis-core/seis-evidence-index/scripts/seis-evidence-index-mcp-server.mjs",
+      "added": 155,
       "removed": 0,
       "state": "untracked",
-      "changed": 186
+      "changed": 155
     },
     {
-      "path": "plugins/seis-core/seis-ui-state-contract-audit/scripts/seis-ui-state-contract-audit-mcp-server.mjs",
-      "added": 154,
+      "path": "scripts/create-seis-evidence-index.mjs",
+      "added": 126,
       "removed": 0,
       "state": "untracked",
-      "changed": 154
+      "changed": 126
     },
     {
-      "path": "scripts/create-seis-project-manifest-audit.mjs",
-      "added": 135,
+      "path": "plugins/seis-core/test/evidence-index.test.mjs",
+      "added": 108,
       "removed": 0,
       "state": "untracked",
-      "changed": 135
+      "changed": 108
     },
     {
-      "path": "plugins/seis-core/seis-project-manifest-audit/scripts/seis-project-manifest-audit-mcp-server.mjs",
-      "added": 134,
-      "removed": 0,
-      "state": "untracked",
-      "changed": 134
-    },
-    {
-      "path": "plugins/seis-core/test/ui-state-contract-audit.test.mjs",
-      "added": 99,
-      "removed": 0,
-      "state": "untracked",
-      "changed": 99
-    },
-    {
-      "path": "plugins/seis-core/test/project-manifest-audit.test.mjs",
-      "added": 97,
-      "removed": 0,
-      "state": "untracked",
-      "changed": 97
-    },
-    {
-      "path": "scripts/check-seis-agent-plugin-integration.mjs",
-      "added": 80,
-      "removed": 0,
+      "path": "scripts/create-seis-public-plugin-wave-1-evidence-index.mjs",
+      "added": 37,
+      "removed": 9,
       "state": "tracked-diff",
-      "changed": 80
+      "changed": 46
     },
     {
-      "path": "scripts/check-seis-public-plugin-expansion-program.mjs",
-      "added": 70,
-      "removed": 0,
-      "state": "untracked",
-      "changed": 70
+      "path": "scripts/create-seis-public-plugin-wave-1-program.mjs",
+      "added": 6,
+      "removed": 5,
+      "state": "tracked-diff",
+      "changed": 11
+    },
+    {
+      "path": "scripts/create-seis-ai-core-plugin-registry.mjs",
+      "added": 8,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 9
     },
     {
       "path": "apps/seis-core/script.js",
-      "added": 5,
-      "removed": 5,
+      "added": 2,
+      "removed": 2,
       "state": "tracked-diff",
-      "changed": 10
+      "changed": 4
     },
     {
       "path": "scripts/create-seis-core-plugin-sources.mjs",
-      "added": 4,
+      "added": 3,
       "removed": 0,
       "state": "tracked-diff",
-      "changed": 4
+      "changed": 3
+    },
+    {
+      "path": "apps/seis-core/index.html",
+      "added": 1,
+      "removed": 1,
+      "state": "tracked-diff",
+      "changed": 2
     },
     {
       "path": "plugins/seis-core/runtime/plugin-audit-definitions.mjs",

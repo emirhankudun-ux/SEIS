@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-evidence-index",
+  "goalId": "SEIS-GOAL-021",
+  "backlogId": "SEIS-BL-021",
+  "generatedAt": "2026-07-21",
+  "status": "active-public-evidence-index",
+  "purpose": "Summarize bounded Wave 1 public marketplace, release, program, and recorded-attention evidence without returning raw records or creating a live installation, provider, GitHub, publication, deployment, or release claim.",
+  "capabilityDecision": {
+    "id": "seis-public-plugin-wave-1-capability-decision",
+    "status": "approved-public-local-implementation",
+    "selectedCapability": "seis-evidence-index",
+    "priorCatalogState": {
+      "implementationState": "catalog-contract",
+      "availability": "plan-only",
+      "evidence": "The selection review ran before this physical app package was introduced; the public package now takes precedence over the generated plan-only slot."
+    }
+  },
+  "plugin": {
+    "name": "seis-evidence-index",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "sourcePath": "plugins/seis-core/seis-evidence-index",
+    "releaseLabel": "0.00000002",
+    "releaseSemver": "0.0.20",
+    "implementationState": "functional-local-demo",
+    "publicAudience": "everyone",
+    "publicMarketplace": true
+  },
+  "inputs": {
+    "waveEvidenceIndex": "content/development/seis-public-plugin-wave-1-evidence-index.json",
+    "waveProgram": "content/development/seis-public-plugin-wave-1-program.json",
+    "capabilityDecision": "content/development/seis-public-plugin-wave-1-capability-decision.json",
+    "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json"
+  },
+  "summary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 377,
+    "expectedCardCount": 377,
+    "applicationPluginCount": 71,
+    "releaseLabel": "0.00000002",
+    "releaseSemver": "0.0.20",
+    "recordedAttentionContractIds": [
+      "ui-state-contract"
+    ],
+    "completedWaveStepCount": 80,
+    "inProgressWaveStepNumbers": [
+      81
+    ]
+  },
+  "checks": [
+    {
+      "id": "wave-evidence-id",
+      "observed": true
+    },
+    {
+      "id": "wave-evidence-marketplace",
+      "observed": true
+    },
+    {
+      "id": "wave-evidence-public-count",
+      "observed": true
+    },
+    {
+      "id": "wave-evidence-app-count",
+      "observed": true
+    },
+    {
+      "id": "wave-evidence-contracts",
+      "observed": true
+    },
+    {
+      "id": "wave-program-id",
+      "observed": true
+    },
+    {
+      "id": "wave-program-progress",
+      "observed": true
+    }
+  ],
+  "findings": [],
+  "safety": {
+    "read": [
+      "content/development/seis-public-plugin-wave-1-evidence-index.json",
+      "content/development/seis-public-plugin-wave-1-program.json"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": [],
+    "publicReleaseAllowed": false,
+    "rawInputValuesReturned": false
+  },
+  "limitations": [
+    "This generated record is bounded local evidence, not an external installation, publication, release, GitHub, provider, browser, or deployment proof.",
+    "Recorded attention contract identifiers remain visible and are not converted into a release decision.",
+    "The plugin does not replace the underlying focused audit packages or their validation."
+  ]
+}

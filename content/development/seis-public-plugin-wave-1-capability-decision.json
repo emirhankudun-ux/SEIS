@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-1-capability-decision",
+  "goalId": "SEIS-GOAL-021",
+  "backlogId": "SEIS-BL-021",
+  "generatedAt": "2026-07-21",
+  "status": "approved-public-local-implementation",
+  "decision": {
+    "selectedCapability": "seis-evidence-index",
+    "displayName": "SEIS Evidence Index",
+    "selectionReason": "The capability existed only as a plan-only AI Core catalog slot. No public app-owned package safely summarized the checked-in Wave 1 evidence index, its known attention states, and its program progress without returning raw source records.",
+    "priorCatalogState": {
+      "implementationState": "catalog-contract",
+      "availability": "plan-only",
+      "evidence": "The selection review ran before this physical app package was introduced; the public package now takes precedence over the generated plan-only slot."
+    },
+    "scope": [
+      "Read two bounded checked-in Wave 1 JSON records and one generated plugin evidence record.",
+      "Return only derived marketplace, release, progress, and recorded-attention summaries.",
+      "Expose three local MCP tools for status, bounded audit, and committed evidence metadata."
+    ],
+    "nonGoals": [
+      "Replacing project-manifest, UI-state, focus-navigation, distribution, provenance, install, or lifecycle audits.",
+      "Reading or mutating a personal marketplace.",
+      "Writing evidence, program, marketplace, source, GitHub, provider, or release state from the runtime.",
+      "Claiming an external installation, public release, live provider, browser, deployment, or GitHub verification."
+    ]
+  },
+  "overlapReview": [
+    {
+      "capability": "seis-project-manifest-audit",
+      "relationship": "Validates ownership and count declarations.",
+      "decision": "Complementary; it does not summarize Wave 1 evidence or its recorded attention states."
+    },
+    {
+      "capability": "seis-ui-state-contract-audit",
+      "relationship": "Audits static UI-state source markers.",
+      "decision": "Complementary; it remains the authoritative source for UI-state findings."
+    },
+    {
+      "capability": "seis-focus-navigation-audit",
+      "relationship": "Audits focus and navigation source evidence.",
+      "decision": "Complementary; it remains the authoritative source for focus findings."
+    },
+    {
+      "capability": "seis-public-distribution-audit",
+      "relationship": "Audits public marketplace projection and local distribution metadata.",
+      "decision": "Complementary; it remains the authoritative source for distribution findings."
+    },
+    {
+      "capability": "seis-public-install-evidence",
+      "relationship": "Records bounded install evidence and release gates.",
+      "decision": "Complementary; it remains the authoritative source for install-state evidence."
+    }
+  ],
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "publicMarketplace": true,
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false,
+    "protectedDefaultBranchWrites": false
+  },
+  "sourceInputs": [
+    "content/development/seis-public-plugin-wave-1-evidence-index.json",
+    "content/development/seis-public-plugin-wave-1-program.json"
+  ],
+  "boundedOutput": {
+    "fields": [
+      "marketplace identity and counts",
+      "release label and semver",
+      "recorded attention contract identifiers",
+      "completed and in-progress Wave 1 step numbers",
+      "concise structural finding codes"
+    ],
+    "excludes": [
+      "raw JSON inputs",
+      "machine-specific paths",
+      "secret-like values",
+      "provider credentials",
+      "external installation or release assertions"
+    ]
+  },
+  "deterministicFixtures": [
+    "checked-in repository evidence index and program",
+    "temporary malformed bounded fixture with a redacted unsafe-input finding",
+    "Content-Length framed MCP initialize, tool list, audit, and evidence requests"
+  ],
+  "mcpBoundary": {
+    "tools": [
+      "seis_evidence_index_status",
+      "seis_evidence_index",
+      "seis_evidence_index_evidence"
+    ],
+    "writes": [],
+    "network": [],
+    "secrets": [],
+    "pathScope": "SEIS_REPO_ROOT only"
+  },
+  "implementation": {
+    "sourcePath": "plugins/seis-core/seis-evidence-index",
+    "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "marketplacePath": ".agents/plugins/marketplace.json",
+    "entrypoint": "scripts/seis-evidence-index-mcp-server.mjs",
+    "releaseTrainVersion": "0.00000002",
+    "releaseSemver": "0.0.20",
+    "implementationState": "functional-local-demo"
+  },
+  "validation": [
+    "plugin-creator structural validation for plugins/seis-core/seis-evidence-index",
+    "node --test plugins/seis-core/test/evidence-index.test.mjs",
+    "node scripts/create-seis-evidence-index.mjs --check",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "rollback": {
+    "strategy": "revert the focused package, one marketplace card, the capability decision record, and generated outputs together",
+    "dataMigrationRequired": false,
+    "externalCleanupRequired": false,
+    "releaseClaimRollback": "No external installation or release claim is created by this local package."
+  }
+}

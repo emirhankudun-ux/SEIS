@@ -7,7 +7,7 @@
   "scope": {
     "programId": "seis-public-plugin-wave-1-program",
     "wave": 1,
-    "round": 3,
+    "round": 4,
     "marketplace": "seis-repo",
     "publicAudience": "everyone",
     "sourceOnly": true
@@ -16,11 +16,11 @@
   "marketplace": {
     "name": "seis-repo",
     "displayName": "SEIS Repo",
-    "publicCardCount": 376,
-    "expectedCardCount": 376,
+    "publicCardCount": 377,
+    "expectedCardCount": 377,
     "canonicalOrchestratorCount": 1,
     "migratedRootPluginCount": 5,
-    "applicationPluginCount": 70,
+    "applicationPluginCount": 71,
     "topicPluginCount": 300,
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL"
@@ -28,7 +28,7 @@
   "release": {
     "label": "0.00000002",
     "semver": "0.0.20",
-    "appPluginCount": 70,
+    "appPluginCount": 71,
     "maturity": "functional-local-demo",
     "publicReleaseBlocked": true
   },
@@ -95,9 +95,17 @@
       ]
     },
     {
+      "id": "round-4-capability-decision",
+      "state": "ready",
+      "summary": "The Round 4 evidence-index capability decision remains public-only, read-only, no-network, no-secret, and non-releasing.",
+      "evidencePaths": [
+        "content/development/seis-public-plugin-wave-1-capability-decision.json"
+      ]
+    },
+    {
       "id": "wave-1-tracker",
       "state": "ready",
-      "summary": "Wave 1 records the first three rounds as complete and starts the bounded capability-selection review at step 61.",
+      "summary": "Wave 1 records the first four rounds as complete and starts its bounded release-quality handoff at step 81.",
       "evidencePaths": [
         "content/development/seis-public-plugin-wave-1-program.json"
       ]
@@ -123,7 +131,7 @@
     }
   ],
   "inputSafetyScan": {
-    "inputCount": 14,
+    "inputCount": 15,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],
@@ -162,6 +170,7 @@
       "content/development/seis-project-manifest-audit.json",
       "content/development/seis-public-plugin-lifecycle.json",
       "content/development/seis-public-plugin-security-provenance-review.json",
+      "content/development/seis-public-plugin-wave-1-capability-decision.json",
       "content/development/seis-public-plugin-wave-1-program.json"
     ],
     "write": [],
@@ -180,6 +189,8 @@
   "qualityGates": [
     "npm run check:seis-public-plugin-wave-1-program",
     "npm run check:seis-public-plugin-wave-1-evidence-index",
+    "npm run check:seis-public-plugin-wave-1-capability-decision",
+    "npm run check:seis-evidence-index",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration"
   ]

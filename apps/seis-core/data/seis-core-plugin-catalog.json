@@ -15,7 +15,7 @@
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 70,
+    "marketplaceEntryCount": 71,
     "coreSourceOwner": false
   },
   "release": {
@@ -48,13 +48,13 @@
     ]
   },
   "counts": {
-    "discovered": 70,
-    "returned": 70,
-    "contractValid": 70,
+    "discovered": 71,
+    "returned": 71,
+    "contractValid": 71,
     "contractInvalid": 0,
     "statusReady": 69,
-    "statusAttention": 1,
-    "statusOk": 70,
+    "statusAttention": 2,
+    "statusOk": 71,
     "statusNotChecked": 0,
     "statusFailed": 0
   },
@@ -1221,6 +1221,62 @@
         "MCP initialize/tools/list/tools/call smoke"
       ],
       "rollback": "Disable or remove the local plugin; no metric data is mutated."
+    },
+    {
+      "id": "seis-evidence-index",
+      "name": "seis-evidence-index",
+      "displayName": "SEIS Evidence Index",
+      "description": "Summarize the bounded SEIS Wave 1 evidence index and its recorded attention states without writes, network access, or release claims.",
+      "category": "Developer",
+      "capabilities": [
+        "bounded-evidence-index-summary",
+        "recorded-attention-state-reporting",
+        "public-marketplace-count-context",
+        "read-only-governance-handoff"
+      ],
+      "owner": "@seis-governance",
+      "sourcePath": "plugins/seis-core/seis-evidence-index",
+      "entrypoint": "scripts/seis-evidence-index-mcp-server.mjs",
+      "release": {
+        "label": "0.00000002",
+        "semver": "0.0.20",
+        "kind": "large-code-change",
+        "major": 0,
+        "revision": 0,
+        "microUnits": 20
+      },
+      "implementationState": "functional-local-demo",
+      "lifecycleStatus": "approved-public-readonly",
+      "risk": "low",
+      "audit": null,
+      "permissions": {
+        "read": [
+          "checked-in Wave 1 evidence index",
+          "checked-in Wave 1 program",
+          "checked-in evidence-index plugin record"
+        ],
+        "write": [],
+        "network": [],
+        "secrets": []
+      },
+      "contract": {
+        "valid": true,
+        "failures": []
+      },
+      "status": {
+        "state": "attention",
+        "ok": true,
+        "execution": "status-only",
+        "failures": []
+      },
+      "validation": [
+        "node scripts/seis-evidence-index-mcp-server.mjs --status",
+        "node scripts/seis-evidence-index-mcp-server.mjs --audit --path .",
+        "node scripts/seis-evidence-index-mcp-server.mjs --evidence",
+        "npm run check:seis-evidence-index",
+        "node --test plugins/seis-core/test/evidence-index.test.mjs"
+      ],
+      "rollback": "Disable or remove the local plugin and revert its generated evidence record; the plugin never edits an evidence source, marketplace, program, external system, or release state."
     },
     {
       "id": "seis-focus-navigation-audit",

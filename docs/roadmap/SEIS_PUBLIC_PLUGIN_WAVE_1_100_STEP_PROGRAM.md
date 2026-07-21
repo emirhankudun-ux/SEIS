@@ -28,8 +28,8 @@ rate-limited, provider-failed, and approval-required behavior.
 | 1 | 1–20 | State-boundary foundation | Completed in the first Wave 1 checkpoint |
 | 2 | 21–40 | Interaction and recovery semantics | Completed in the second Wave 1 checkpoint |
 | 3 | 41–60 | Public evidence and contract clarity | Completed in the third Wave 1 checkpoint |
-| 4 | 61–80 | Next capability selection | In progress |
-| 5 | 81–100 | Release-quality handoff | Planned |
+| 4 | 61–80 | Next capability selection | Completed with the public `seis-evidence-index` package |
+| 5 | 81–100 | Release-quality handoff | In progress |
 
 ## Current Checkpoint
 
@@ -43,13 +43,21 @@ claiming that a live provider has been called. The remaining desktop-web gaps
 are recorded separately in the UI-state evidence; they are not silently
 absorbed into this Command Center checkpoint.
 
+Round 4 audits overlap before adding one package, promotes the former plan-only
+`seis-evidence-index` slot into a public SEIS Repo source package, adds a
+bounded local MCP surface and deterministic fixtures, and records its scope,
+non-goals, rollback, public-only placement, and no-personal/no-network/no-write
+boundary. The current contract is 71 app-owned public packages and 377 public
+`SEIS Repo` cards. It remains local evidence only: no external installation,
+provider, publication, deployment, or public-release approval is claimed.
+
 The machine-readable 100-step source of truth is
 `content/development/seis-public-plugin-wave-1-program.json`. Validate it with
 `npm run check:seis-public-plugin-wave-1-program`.
 
 The cross-contract index is
 `content/development/seis-public-plugin-wave-1-evidence-index.json`. It keeps
-the 376-card public marketplace contract, release labels, deny-by-default MCP
+the current 377-card public marketplace contract, release labels, deny-by-default MCP
 boundary, generated evidence safety scan, and known desktop UI-state gap in one
 read-only record. Validate it with
 `npm run check:seis-public-plugin-wave-1-evidence-index`.

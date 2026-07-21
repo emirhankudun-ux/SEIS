@@ -1,0 +1,43 @@
+{
+  "stableId": "seis-evidence-index",
+  "slug": "seis-evidence-index",
+  "version": "0.0.20",
+  "releaseMicroUnits": 20,
+  "releaseRevision": 0,
+  "releaseMajor": 0,
+  "releaseKind": "large-code-change",
+  "releaseTrainVersion": "0.00000002",
+  "category": "evidence-governance",
+  "owner": "@seis-governance",
+  "publisher": "SEIS Repository",
+  "sourceClassification": "public-SEIS-repository",
+  "license": "MIT",
+  "status": "approved-public-readonly",
+  "implementationState": "functional-local-demo",
+  "entrypoint": "scripts/seis-evidence-index-mcp-server.mjs",
+  "permissions": {
+    "read": [
+      "checked-in Wave 1 evidence index",
+      "checked-in Wave 1 program",
+      "checked-in evidence-index plugin record"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "risk": "low",
+  "validation": [
+    "node scripts/seis-evidence-index-mcp-server.mjs --status",
+    "node scripts/seis-evidence-index-mcp-server.mjs --audit --path .",
+    "node scripts/seis-evidence-index-mcp-server.mjs --evidence",
+    "npm run check:seis-evidence-index",
+    "node --test plugins/seis-core/test/evidence-index.test.mjs"
+  ],
+  "rollback": "Disable or remove the local plugin and revert its generated evidence record; the plugin never edits an evidence source, marketplace, program, external system, or release state.",
+  "reviewState": "public-repository-preview",
+  "provenance": "Created for SEIS-GOAL-021 and SEIS-BL-021 after the Wave 1 overlap review promoted the prior plan-only evidence-index catalog slot into one bounded public repository implementation.",
+  "publicRepositoryAvailable": true,
+  "publicAudience": "everyone",
+  "publicMarketplace": true,
+  "liveRuntimeStatus": "local-demo-or-auth-gated"
+}

@@ -13,6 +13,9 @@ const targetCount = 5000;
 const canonicalInstallId = "seis-ai-agent@seis-repo";
 const sourceRoots = ["plugins", "plugins/seis-core"];
 const applicationPluginSourceRoot = "plugins/seis-core";
+const promotedCatalogSlotSequences = Object.freeze({
+  "seis-evidence-index": 512,
+});
 const applicationPluginManifest = "apps/seis-core/data/seis-core-plugin-sources.json";
 const releaseTrainPath = "content/development/seis-core-plugin-release-train.json";
 const personalCoveragePath = "content/development/seis-ai-core-personal-plugin-coverage.json";
@@ -58,7 +61,11 @@ function buildRegistry() {
     for (const operation of operations) {
       if (catalogEntries.length >= targetCount - physicalEntries.length) break;
       const slug = `seis-${domain}-${operation}`;
-      if (occupiedSlugs.has(slug)) continue;
+      if (occupiedSlugs.has(slug)) {
+        const promotedSequence = promotedCatalogSlotSequences[slug];
+        if (Number.isInteger(promotedSequence)) sequence = Math.max(sequence, promotedSequence + 1);
+        continue;
+      }
       occupiedSlugs.add(slug);
       catalogEntries.push(createCatalogEntry({ domain, operation, sequence }));
       sequence += 1;

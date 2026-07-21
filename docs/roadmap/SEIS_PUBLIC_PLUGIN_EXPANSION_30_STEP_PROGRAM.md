@@ -50,9 +50,9 @@ an external delivery blocker rather than represented as a successful push.
 ## Current Checkpoint
 
 All thirty steps have current evidence. The public regression, marketplace,
-release, registry, project-manifest, and baseline SEIS checks reconcile 70
+release, registry, project-manifest, and baseline SEIS checks reconciled 70
 application packages and 376 public `SEIS Repo` entries at release
-`0.00000002` / `0.0.20`. Steps 27–28 passed the diff, secret-boundary,
+`0.00000002` / `0.0.20`. That is the completed initial-program baseline; Wave 1 may add a separately validated package without rewriting this historical evidence. Steps 27–28 passed the diff, secret-boundary,
 worktree, and cached-commit review. Step 29 delivered the validated checkpoint
 to `plugins/seis-plugin-root-20260715`; remote reference verification confirmed
 `27e1bb8e57c7e23f7853ac5015b4327fc270de4f`. No protected default branch was

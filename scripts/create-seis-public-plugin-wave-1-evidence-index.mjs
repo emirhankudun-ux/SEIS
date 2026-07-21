@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-1-evidence-index.json";
@@ -20,9 +22,14 @@ const PATHS = Object.freeze({
   manifestAudit: "content/development/seis-project-manifest-audit.json",
   lifecycle: "content/development/seis-public-plugin-lifecycle.json",
   securityReview: "content/development/seis-public-plugin-security-provenance-review.json",
+  capabilityDecision: "content/development/seis-public-plugin-wave-1-capability-decision.json",
   waveProgram: "content/development/seis-public-plugin-wave-1-program.json",
 });
 const EXPECTED_DESKTOP_GAPS = ["degraded", "loading", "provider-failed", "validation-failed"];
+const CANONICAL_ORCHESTRATOR_COUNT = 1;
+const MIGRATED_ROOT_PLUGIN_COUNT = 5;
+const TOPIC_PLUGIN_COUNT = 300;
+const EXPECTED_PUBLIC_CARD_COUNT = CANONICAL_ORCHESTRATOR_COUNT + MIGRATED_ROOT_PLUGIN_COUNT + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_COUNT;
 const SECRET_PATTERNS = [
   { id: "openai-like-api-key", regex: /\bsk-[A-Za-z0-9_-]{20,}\b/ },
   { id: "github-token", regex: /\bgh[pousr]_[A-Za-z0-9_]{20,}\b/ },
@@ -59,6 +66,7 @@ function buildRecord() {
   const manifestAudit = readJson(PATHS.manifestAudit);
   const lifecycle = readJson(PATHS.lifecycle);
   const securityReview = readJson(PATHS.securityReview);
+  const capabilityDecision = readJson(PATHS.capabilityDecision);
   const waveProgram = readJson(PATHS.waveProgram);
   const cards = list(marketplace.plugins);
   const applicationPlugins = list(sourceManifest.plugins);
@@ -118,9 +126,26 @@ function buildRecord() {
       evidencePaths: [PATHS.securityReview],
     },
     {
+      id: "round-4-capability-decision",
+      state: capabilityDecision.id === "seis-public-plugin-wave-1-capability-decision"
+        && capabilityDecision.status === "approved-public-local-implementation"
+        && capabilityDecision.decision?.selectedCapability === "seis-evidence-index"
+        && capabilityDecision.publicBoundary?.marketplaceName === "seis-repo"
+        && capabilityDecision.publicBoundary?.personalMarketplaceRead === false
+        && capabilityDecision.publicBoundary?.personalMarketplaceMutation === false
+        && capabilityDecision.publicBoundary?.network === false
+        && capabilityDecision.publicBoundary?.externalWrites === false
+        && capabilityDecision.publicBoundary?.secrets === false
+        && capabilityDecision.publicBoundary?.publicReleaseAllowed === false
+        ? "ready"
+        : "attention",
+      summary: "The Round 4 evidence-index capability decision remains public-only, read-only, no-network, no-secret, and non-releasing.",
+      evidencePaths: [PATHS.capabilityDecision],
+    },
+    {
       id: "wave-1-tracker",
-      state: waveProgram.status === "in-progress" && completedStepCount(waveProgram) === 60 && inProgressStepNumbers(waveProgram).join(",") === "61" ? "ready" : "attention",
-      summary: "Wave 1 records the first three rounds as complete and starts the bounded capability-selection review at step 61.",
+      state: waveProgram.status === "in-progress" && completedStepCount(waveProgram) === 80 && inProgressStepNumbers(waveProgram).join(",") === "81" ? "ready" : "attention",
+      summary: "Wave 1 records the first four rounds as complete and starts its bounded release-quality handoff at step 81.",
       evidencePaths: [PATHS.waveProgram],
     },
   ];
@@ -147,7 +172,7 @@ function buildRecord() {
     scope: {
       programId: waveProgram.id,
       wave: 1,
-      round: 3,
+      round: 4,
       marketplace: "seis-repo",
       publicAudience: "everyone",
       sourceOnly: true,
@@ -198,6 +223,8 @@ function buildRecord() {
     qualityGates: [
       "npm run check:seis-public-plugin-wave-1-program",
       "npm run check:seis-public-plugin-wave-1-evidence-index",
+      "npm run check:seis-public-plugin-wave-1-capability-decision",
+      "npm run check:seis-evidence-index",
       "npm run check:seis-repo-marketplace",
       "npm run check:seis-agent-plugin-integration",
     ],
@@ -210,15 +237,16 @@ function validateRecord(record, context) {
   assert(record.id === "seis-public-plugin-wave-1-evidence-index", "record id is invalid");
   assert(record.goalId === "SEIS-GOAL-021", "goal linkage is invalid");
   assert(record.status === "active-repo-local-evidence-index", "record status is invalid");
-  assert(record.scope?.programId === "seis-public-plugin-wave-1-program" && record.scope?.wave === 1 && record.scope?.round === 3, "Wave 1 scope is invalid");
+  assert(record.scope?.programId === "seis-public-plugin-wave-1-program" && record.scope?.wave === 1 && record.scope?.round === 4, "Wave 1 scope is invalid");
   assert(record.marketplace?.name === "seis-repo" && record.marketplace?.displayName === "SEIS Repo", "public marketplace identity is invalid");
-  assert(record.marketplace?.publicCardCount === 376 && record.marketplace?.expectedCardCount === 376, "public marketplace count is invalid");
-  assert(record.marketplace?.canonicalOrchestratorCount === 1 && record.marketplace?.migratedRootPluginCount === 5 && record.marketplace?.applicationPluginCount === 70 && record.marketplace?.topicPluginCount === 300, "public marketplace family counts are invalid");
+  assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.expectedCardCount === EXPECTED_PUBLIC_CARD_COUNT, "public marketplace count is invalid");
+  assert(record.marketplace?.canonicalOrchestratorCount === CANONICAL_ORCHESTRATOR_COUNT && record.marketplace?.migratedRootPluginCount === MIGRATED_ROOT_PLUGIN_COUNT && record.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.marketplace?.topicPluginCount === TOPIC_PLUGIN_COUNT, "public marketplace family counts are invalid");
   assert(record.marketplace?.installationPolicy === "AVAILABLE" && record.marketplace?.authenticationPolicy === "ON_INSTALL", "public marketplace policy is invalid");
-  assert(record.release?.label === "0.00000002" && record.release?.semver === "0.0.20" && record.release?.appPluginCount === 70, "app release reconciliation is invalid");
+  assert(record.release?.label === "0.00000002" && record.release?.semver === "0.0.20" && record.release?.appPluginCount === APP_PLUGIN_EXPANSION_TARGET, "app release reconciliation is invalid");
   assert(record.release?.publicReleaseBlocked === true, "app release policy must retain the public-release block");
-  assert(Array.isArray(record.contracts) && record.contracts.length === 8, "cross-contract evidence is incomplete");
-  assert(record.contracts.filter((contract) => contract.state === "ready").length === 7, "expected ready cross-contract evidence is incomplete");
+  assert(Array.isArray(record.contracts) && record.contracts.length === 9, "cross-contract evidence is incomplete");
+  assert(record.contracts.filter((contract) => contract.state === "ready").length === 8, "expected ready cross-contract evidence is incomplete");
+  assert(record.contracts.find((contract) => contract.id === "round-4-capability-decision")?.state === "ready", "Round 4 capability decision evidence is incomplete");
   assert(record.contracts.find((contract) => contract.id === "ui-state-contract")?.state === "attention", "desktop UI-state evidence must remain an attention finding");
   assert(context.commandCenter?.state === "ready", "Command Center state evidence is not ready");
   assert(context.desktop?.state === "attention" && sameStrings(sortedStrings(context.desktop?.missingStateIds), EXPECTED_DESKTOP_GAPS), "desktop UI-state gap is invalid");

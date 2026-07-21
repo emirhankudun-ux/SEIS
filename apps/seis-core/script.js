@@ -448,7 +448,7 @@ let seisRouterArtifact = {
 let seisCorePluginArtifact = {
   sourceRoot: "plugins/seis-core",
   release: { label: "0.00000002", semver: "0.0.20", kind: "large-code-change" },
-  counts: { discovered: 70, returned: 0, contractValid: 70, statusReady: 0, statusAttention: 0, statusOk: 0, statusNotChecked: 0, statusFailed: 0 },
+  counts: { discovered: 71, returned: 0, contractValid: 71, statusReady: 0, statusAttention: 0, statusOk: 0, statusNotChecked: 0, statusFailed: 0 },
   plugins: [],
   loadError: "Application plugin catalog has not loaded yet."
 };
@@ -795,7 +795,7 @@ const pluginFamilies = [
     name: "SEIS Command Center App Plugins",
     health: "Local Demo",
     permissions: "Read-only, task-scoped",
-    summary: "70 app-owned plugin packages under plugins/seis-core at app release 0.00000002; AI Core indexes metadata without owning their source."
+    summary: "71 app-owned plugin packages under plugins/seis-core at app release 0.00000002; AI Core indexes metadata without owning their source."
   }
 ];
 

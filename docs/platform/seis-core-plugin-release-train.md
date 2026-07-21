@@ -5,7 +5,7 @@ strict package semver `0.0.20`.
 
 ## Scope
 
-This release train belongs to the 70 app-owned, public MIT-licensed plugin
+This release train belongs to the 71 app-owned, public MIT-licensed plugin
 packages in `plugins/seis-core/`. That directory is the canonical application
 source boundary inside the public SEIS repository. The ten public source modules directly
 under `plugins/` and the public `seis-ai-agent@seis-repo` suite remain on their
@@ -57,7 +57,7 @@ npm run check:seis-ai-core-plugin-registry
 npm run check:seis-core-plugin-matrix
 ```
 
-The promoter updates all 70 manifests and profiles together, regenerates the
+The promoter updates all 71 manifests and profiles together, regenerates the
 app inventory, AI Core projection, app catalog, release-readiness artifact, and
 integration metadata. A large-code apply requires a change-evidence artifact
 whose base commit matches `HEAD` and whose measured code delta is at least 500

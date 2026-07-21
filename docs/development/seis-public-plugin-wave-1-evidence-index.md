@@ -3,15 +3,15 @@
 `seis-public-plugin-wave-1-evidence-index` is a repository-owned, generated
 record for Wave 1 of `SEIS-GOAL-021`. It reconciles the public `SEIS Repo`
 marketplace, app-owned package count, release train, public-install evidence,
-MCP permission boundary, UI evidence, and public-release gate in one bounded
-view.
+MCP permission boundary, UI evidence, Round 4 capability decision, and
+public-release gate in one bounded view.
 
 ## What it proves
 
-- The repository marketplace remains `seis-repo` / `SEIS Repo` with 376 public
-  cards: one canonical orchestrator, five migrated root packages, 70 app-owned
+- The repository marketplace remains `seis-repo` / `SEIS Repo` with 377 public
+  cards: one canonical orchestrator, five migrated root packages, 71 app-owned
   packages, and 300 topic packages.
-- The 70 app-owned packages agree with the current app release label and
+- The 71 app-owned packages agree with the current app release label and
   semver.
 - The declared MCP ledger remains deny-by-default: write, network, and secret
   permissions are empty and public release remains disallowed.
@@ -32,6 +32,8 @@ view.
 
     npm run automation:seis-public-plugin-wave-1-evidence-index
     npm run check:seis-public-plugin-wave-1-evidence-index
+    npm run check:seis-public-plugin-wave-1-capability-decision
+    npm run check:seis-evidence-index
     npm run check:seis-repo-marketplace
 
 The generated record is

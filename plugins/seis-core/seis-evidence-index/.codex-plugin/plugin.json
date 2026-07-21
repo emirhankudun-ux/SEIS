@@ -1,0 +1,36 @@
+{
+  "name": "seis-evidence-index",
+  "version": "0.0.20",
+  "description": "Summarize the bounded SEIS Wave 1 evidence index and its recorded attention states without writes, network access, or release claims.",
+  "author": {
+    "name": "SEIS Repository"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "evidence",
+    "governance",
+    "wave-1",
+    "public-repository",
+    "read-only"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Evidence Index",
+    "shortDescription": "Read a bounded public SEIS evidence summary locally.",
+    "longDescription": "Summarizes the checked-in Wave 1 evidence index, program progress, public marketplace counts, recorded attention states, and release boundary. It never returns raw source files, writes data, calls a provider, uses a network, or treats local evidence as publication proof.",
+    "developerName": "SEIS Repository",
+    "category": "Developer",
+    "capabilities": [
+      "bounded-evidence-index-summary",
+      "recorded-attention-state-reporting",
+      "public-marketplace-count-context",
+      "read-only-governance-handoff"
+    ],
+    "defaultPrompt": [
+      "Summarize the checked-in SEIS Wave 1 evidence index without writing files.",
+      "Keep recorded local evidence separate from live GitHub, provider, installation, or release claims."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

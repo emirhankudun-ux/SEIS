@@ -169,7 +169,7 @@ function buildRecord() {
       number,
       round: roundIndex + 1,
       title,
-      status: number <= 60 ? "completed" : number === 61 ? "in-progress" : "planned",
+      status: number <= 80 ? "completed" : number === 81 ? "in-progress" : "planned",
       validation: validationFor(number),
     };
   }));
@@ -193,6 +193,7 @@ function buildRecord() {
       paths: [
         "apps/seis-core",
         "plugins/seis-core/seis-ui-state-contract-audit",
+        "plugins/seis-core/seis-evidence-index",
         "content/development",
         "docs/roadmap",
       ],
@@ -218,7 +219,7 @@ function buildRecord() {
       name: round.name,
       objective: round.objective,
       steps: Array.from({ length: 20 }, (_, taskIndex) => (index * 20) + taskIndex + 1),
-      status: index <= 2 ? "completed" : index === 3 ? "in-progress" : "planned",
+      status: index <= 3 ? "completed" : index === 4 ? "in-progress" : "planned",
     })),
     steps,
     qualityGates: {
@@ -271,10 +272,10 @@ function validateRecord(record) {
     assert(round?.round === index + 1, `round ${index + 1} is invalid`);
     assert(Array.isArray(round?.steps) && round.steps.length === 20, `round ${index + 1} must contain twenty steps`);
   }
-  assert(record.steps.filter((step) => step.status === "completed").length === 60, "Round 3 completion count is invalid");
+  assert(record.steps.filter((step) => step.status === "completed").length === 80, "Round 4 completion count is invalid");
   assert(record.steps.filter((step) => step.status === "in-progress").length === 1, "exactly one Wave 1 step must be in progress");
-  assert(record.steps[60]?.status === "in-progress", "step 61 must start Round 4");
-  assert(record.rounds[0]?.status === "completed" && record.rounds[1]?.status === "completed" && record.rounds[2]?.status === "completed" && record.rounds[3]?.status === "in-progress", "Wave 1 round status is invalid");
+  assert(record.steps[80]?.status === "in-progress", "step 81 must start Round 5");
+  assert(record.rounds[0]?.status === "completed" && record.rounds[1]?.status === "completed" && record.rounds[2]?.status === "completed" && record.rounds[3]?.status === "completed" && record.rounds[4]?.status === "in-progress", "Wave 1 round status is invalid");
   assert(Array.isArray(record.nonGoals) && record.nonGoals.length >= 4, "Wave 1 non-goals are incomplete");
   assert(!/(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m.test(JSON.stringify(record)), "record must not contain machine-specific paths");
 }

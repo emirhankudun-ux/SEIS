@@ -20,6 +20,7 @@
     "paths": [
       "apps/seis-core",
       "plugins/seis-core/seis-ui-state-contract-audit",
+      "plugins/seis-core/seis-evidence-index",
       "content/development",
       "docs/roadmap"
     ],
@@ -151,7 +152,7 @@
         79,
         80
       ],
-      "status": "in-progress"
+      "status": "completed"
     },
     {
       "round": 5,
@@ -179,7 +180,7 @@
         99,
         100
       ],
-      "status": "planned"
+      "status": "in-progress"
     }
   ],
   "steps": [
@@ -607,147 +608,147 @@
       "number": 61,
       "round": 4,
       "title": "Inventory existing state, focus, and provenance plugin responsibilities.",
-      "status": "in-progress",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 62,
       "round": 4,
       "title": "Audit candidate capability overlap.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 63,
       "round": 4,
       "title": "Choose a single next capability only if a clear gap remains.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 64,
       "round": 4,
       "title": "Write scope, non-goals, and rollback before scaffolding.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 65,
       "round": 4,
       "title": "Confirm public-only marketplace placement.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 66,
       "round": 4,
       "title": "Confirm no personal marketplace read or mutation is needed.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 67,
       "round": 4,
       "title": "Confirm no external write or network capability is needed.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 68,
       "round": 4,
       "title": "Define source inputs and bounded output schema.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 69,
       "round": 4,
       "title": "Define deterministic test fixtures.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 70,
       "round": 4,
       "title": "Define MCP tool boundaries when relevant.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 71,
       "round": 4,
       "title": "Create package metadata only after the decision gate passes.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 72,
       "round": 4,
       "title": "Create runtime module only after metadata passes validation.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 73,
       "round": 4,
       "title": "Create MCP server only when a bounded tool is justified.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 74,
       "round": 4,
       "title": "Create documentation and skill guidance.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 75,
       "round": 4,
       "title": "Register generated evidence.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 76,
       "round": 4,
       "title": "Integrate source, catalog, and matrix contracts.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 77,
       "round": 4,
       "title": "Validate plugin structure with plugin-creator rules.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 78,
       "round": 4,
       "title": "Run focused tests and MCP framing smoke.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 79,
       "round": 4,
       "title": "Review public/provenance security evidence.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 80,
       "round": 4,
       "title": "Publish the Round 4 capability decision.",
-      "status": "planned",
+      "status": "completed",
       "validation": "portfolio overlap review, plugin validation, and focused tests"
     },
     {
       "number": 81,
       "round": 5,
       "title": "Run source, catalog, and matrix regressions.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "full regression, diff review, feature-branch delivery, and remote-ref verification"
     },
     {
