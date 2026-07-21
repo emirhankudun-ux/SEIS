@@ -34,8 +34,8 @@
       "roundsPerWave": 5,
       "stepsPerRound": 20,
       "totalPlannedWaveSteps": 500,
-      "activeWave": 4,
-      "activeWaveState": "repository-local-handoff-complete-step-98-in-progress"
+      "activeWave": null,
+      "activeWaveState": "wave-4-completed-wave-5-planned-gated"
     },
     "githubDelivery": {
       "branch": "plugins/seis-plugin-root-20260715",
@@ -86,7 +86,7 @@
     },
     {
       "wave": 4,
-      "status": "in-progress",
+      "status": "completed",
       "programId": "seis-public-plugin-wave-4-program",
       "programPath": "content/development/seis-public-plugin-wave-4-program.json",
       "totalSteps": 100,
@@ -98,10 +98,8 @@
       "implementationStarted": true,
       "candidatePackageExists": true,
       "candidatePublicCardExists": true,
-      "completedSteps": 97,
-      "inProgressSteps": [
-        98
-      ],
+      "completedSteps": 100,
+      "inProgressSteps": [],
       "topologyEvidencePath": "content/development/seis-swift-package-topology.json",
       "integrationCheckpointPath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
       "validationDeliveryEvidencePath": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
@@ -109,9 +107,12 @@
       "handoffPreparationPath": "content/development/seis-public-plugin-wave-4-handoff-preparation.json",
       "closeoutSequenceDecisionPath": "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
       "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
-      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
+      "followingWaveReviewPath": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
+      "evidenceRetentionPath": "content/development/seis-public-plugin-wave-4-evidence-retention.json",
+      "closeoutPath": "content/development/seis-public-plugin-wave-4-closeout.json",
+      "currentEvidencePath": "content/development/seis-public-plugin-wave-4-closeout.json",
       "predecessor": "Wave 3 repository-local handoff",
-      "entryRule": "Wave 3 closed with current evidence, the separate activation decision approved one fixed-manifest scope, and Wave 4 completed a non-published repository-local handoff; step 98 remains a separate planned-gate review and is not a release claim."
+      "entryRule": "Wave 3 closed with current evidence, the separate activation decision approved one fixed-manifest scope, and Wave 4 completed all 100 repository-local steps including handoff, Wave 5 candidate review, evidence retention, and closeout. This is not a merge, release, installation, or external proof claim."
     },
     {
       "wave": 5,
@@ -119,8 +120,12 @@
       "programId": "seis-public-plugin-wave-5-program",
       "totalSteps": 100,
       "stepTemplateId": "seis-public-plugin-future-wave-template",
-      "predecessor": "Wave 4 repository-local handoff",
-      "entryRule": "Activate only after Wave 4 handoff, current validation, an explicit scope and risk decision, and current user authority."
+      "predecessor": "Wave 4 following-wave scope review",
+      "candidateReviewPath": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
+      "selectedCapability": "seis-plugin-capability-coverage",
+      "implementationApproved": false,
+      "activationApproved": false,
+      "entryRule": "Activate only after Wave 4 closes with current validation, a Wave 5-specific scope and risk decision, an explicit activation decision, and current user authority."
     }
   ],
   "futureWaveTemplate": {

@@ -25,8 +25,8 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.cadence.waveSeries.waveCount, 5);
   assert.equal(cadence.cadence.waveSeries.stepsPerWave, 100);
   assert.equal(cadence.cadence.waveSeries.totalPlannedWaveSteps, 500);
-  assert.equal(cadence.cadence.waveSeries.activeWave, 4);
-  assert.equal(cadence.cadence.waveSeries.activeWaveState, "repository-local-handoff-complete-step-98-in-progress");
+  assert.equal(cadence.cadence.waveSeries.activeWave, null);
+  assert.equal(cadence.cadence.waveSeries.activeWaveState, "wave-4-completed-wave-5-planned-gated");
   assert.equal(cadence.waves.length, 5);
   assert.equal(cadence.waves[0].status, "completed");
   assert.equal(cadence.waves[1].status, "completed");
@@ -40,7 +40,7 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[2].followingWaveReviewPath, "content/development/seis-public-plugin-wave-3-following-wave-review.json");
   assert.equal(cadence.waves[2].closeoutPath, "content/development/seis-public-plugin-wave-3-closeout.json");
   assert.equal(cadence.waves[2].currentEvidencePath, "content/development/seis-public-plugin-wave-3-closeout.json");
-  assert.equal(cadence.waves[3].status, "in-progress");
+  assert.equal(cadence.waves[3].status, "completed");
   assert.equal(cadence.waves[3].programPath, "content/development/seis-public-plugin-wave-4-program.json");
   assert.equal(cadence.waves[3].activationDecisionPath, "content/development/seis-public-plugin-wave-4-activation-decision.json");
   assert.equal(cadence.waves[3].selectedCapability, "seis-swift-package-topology");
@@ -48,8 +48,8 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[3].implementationStarted, true);
   assert.equal(cadence.waves[3].candidatePackageExists, true);
   assert.equal(cadence.waves[3].candidatePublicCardExists, true);
-  assert.equal(cadence.waves[3].completedSteps, 97);
-  assert.deepEqual(cadence.waves[3].inProgressSteps, [98]);
+  assert.equal(cadence.waves[3].completedSteps, 100);
+  assert.deepEqual(cadence.waves[3].inProgressSteps, []);
   assert.equal(cadence.waves[3].topologyEvidencePath, "content/development/seis-swift-package-topology.json");
   assert.equal(cadence.waves[3].integrationCheckpointPath, "content/development/seis-public-plugin-wave-4-integration-checkpoint.json");
   assert.equal(cadence.waves[3].validationDeliveryEvidencePath, "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json");
@@ -57,8 +57,15 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[3].handoffPreparationPath, "content/development/seis-public-plugin-wave-4-handoff-preparation.json");
   assert.equal(cadence.waves[3].closeoutSequenceDecisionPath, "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json");
   assert.equal(cadence.waves[3].repositoryLocalHandoffPath, "content/development/seis-public-plugin-wave-4-repository-local-handoff.json");
-  assert.equal(cadence.waves[3].currentEvidencePath, "content/development/seis-public-plugin-wave-4-repository-local-handoff.json");
+  assert.equal(cadence.waves[3].followingWaveReviewPath, "content/development/seis-public-plugin-wave-4-following-wave-review.json");
+  assert.equal(cadence.waves[3].evidenceRetentionPath, "content/development/seis-public-plugin-wave-4-evidence-retention.json");
+  assert.equal(cadence.waves[3].closeoutPath, "content/development/seis-public-plugin-wave-4-closeout.json");
+  assert.equal(cadence.waves[3].currentEvidencePath, "content/development/seis-public-plugin-wave-4-closeout.json");
   assert.equal(cadence.waves[4].status, "planned-gated");
+  assert.equal(cadence.waves[4].candidateReviewPath, "content/development/seis-public-plugin-wave-4-following-wave-review.json");
+  assert.equal(cadence.waves[4].selectedCapability, "seis-plugin-capability-coverage");
+  assert.equal(cadence.waves[4].implementationApproved, false);
+  assert.equal(cadence.waves[4].activationApproved, false);
   assert.equal(cadence.futureWaveTemplate.steps.length, 100);
   assert.equal(cadence.executionBoundary.personalMarketplaceRead, false);
   assert.equal(cadence.executionBoundary.personalMarketplaceMutation, false);

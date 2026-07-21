@@ -332,7 +332,7 @@ function buildRecord() {
 
 function isSupportedWave4State(wave4Program) {
   const common = wave4Program?.id === "seis-public-plugin-wave-4-program"
-    && ["planned-gated", "in-progress"].includes(wave4Program?.status)
+    && ["planned-gated", "in-progress", "completed"].includes(wave4Program?.status)
     && wave4Program?.wave?.number === 4
     && wave4Program?.scope?.selectedCapability === "seis-swift-package-topology";
   const plannedSnapshot = common
@@ -354,6 +354,9 @@ function isSupportedWave4State(wave4Program) {
       || (wave4Program?.progress?.completedStepCount === 95 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "96" && wave4Program?.evidence?.publicBoundaryDecisionPath === "content/development/seis-public-plugin-wave-4-public-boundary-decision.json")
       || (wave4Program?.progress?.completedStepCount === 96 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "97" && wave4Program?.evidence?.closeoutSequenceDecisionPath === "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json" && wave4Program?.closeoutSequence?.status === "approved-owner-mapping-applied")
       || (wave4Program?.progress?.completedStepCount === 97 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "98" && wave4Program?.evidence?.repositoryLocalHandoffPath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json" && wave4Program?.repositoryLocalHandoff?.status === "completed-repository-local-handoff")
+      || (wave4Program?.progress?.completedStepCount === 98 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "99" && wave4Program?.evidence?.wave4FollowingWaveReviewPath === "content/development/seis-public-plugin-wave-4-following-wave-review.json" && wave4Program?.followingWaveReview?.status === "completed-following-wave-scope-review")
+      || (wave4Program?.progress?.completedStepCount === 99 && list(wave4Program?.progress?.inProgressStepNumbers).join(",") === "100" && wave4Program?.evidence?.evidenceRetentionPath === "content/development/seis-public-plugin-wave-4-evidence-retention.json" && wave4Program?.evidenceRetention?.status === "completed-public-evidence-retention")
+      || (wave4Program?.status === "completed" && wave4Program?.progress?.completedStepCount === 100 && list(wave4Program?.progress?.inProgressStepNumbers).length === 0 && wave4Program?.progress?.nextStepNumber === null && wave4Program?.evidence?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json" && wave4Program?.repositoryLocalCloseout?.status === "completed-repository-local-wave-closeout")
     );
   return plannedSnapshot || integratedCheckpoint;
 }

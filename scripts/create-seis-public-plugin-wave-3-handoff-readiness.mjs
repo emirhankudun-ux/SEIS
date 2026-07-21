@@ -129,7 +129,7 @@ function buildRecord() {
       continuity: continuityCadence.id === "seis-public-plugin-continuity-cadence"
         && ["in-progress", "completed"].includes(continuityCadence.waves?.[2]?.status)
         && number(continuityCadence.waves?.[2]?.completedSteps) >= 79
-        && ["planned-gated", "in-progress"].includes(continuityCadence.waves?.[3]?.status)
+        && ["planned-gated", "in-progress", "completed"].includes(continuityCadence.waves?.[3]?.status)
         && continuityCadence.waves?.[4]?.status === "planned-gated",
     },
     publicBoundary: {

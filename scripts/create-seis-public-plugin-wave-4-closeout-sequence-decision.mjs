@@ -211,7 +211,7 @@ function isSupportedHandoffPreparation(record) {
 
 function isSupportedWave4Program(record) {
   const shared = record?.id === "seis-public-plugin-wave-4-program"
-    && record?.status === "in-progress"
+    && ["in-progress", "completed"].includes(record?.status)
     && record?.evidence?.handoffPreparationPath === PATHS.handoffPreparation
     && record?.evidence?.closeoutSequenceDecisionPath === OUTPUT_PATH
     && Object.values(record?.externalClaims || {}).every((value) => value === false);
@@ -226,7 +226,21 @@ function isSupportedWave4Program(record) {
     && list(record?.progress?.inProgressStepNumbers).join(",") === "98"
     && record?.progress?.plannedStepCount === 2
     && record?.repositoryLocalHandoff?.status === "completed-repository-local-handoff";
-  return shared && (preApplication || postApplication || afterHandoff);
+  const afterFollowingWaveReview = record?.progress?.completedStepCount === 98
+    && list(record?.progress?.inProgressStepNumbers).join(",") === "99"
+    && record?.progress?.plannedStepCount === 1
+    && record?.followingWaveReview?.status === "completed-following-wave-scope-review";
+  const afterEvidenceRetention = record?.progress?.completedStepCount === 99
+    && list(record?.progress?.inProgressStepNumbers).join(",") === "100"
+    && record?.progress?.plannedStepCount === 0
+    && record?.evidenceRetention?.status === "completed-public-evidence-retention";
+  const afterCloseout = record?.status === "completed"
+    && record?.progress?.completedStepCount === 100
+    && list(record?.progress?.inProgressStepNumbers).length === 0
+    && record?.progress?.nextStepNumber === null
+    && record?.evidence?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
+    && record?.repositoryLocalCloseout?.status === "completed-repository-local-wave-closeout";
+  return shared && (preApplication || postApplication || afterHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout);
 }
 
 function isSupportedPublicBoundaryDecision(record) {
@@ -243,33 +257,59 @@ function isSupportedPublicBoundaryDecision(record) {
 
 function isSupportedExpansionProgram(record) {
   const wave4 = list(record?.nextWaves)[3];
-  return record?.id === "seis-public-plugin-expansion-program"
-    && wave4?.status === "in-progress"
+  const shared = record?.id === "seis-public-plugin-expansion-program"
+    && ["in-progress", "completed"].includes(wave4?.status)
     && wave4?.programPath === PATHS.wave4Program
     && wave4?.handoffPreparationPath === PATHS.handoffPreparation
     && wave4?.closeoutSequenceDecisionPath === OUTPUT_PATH
     && list(record?.nextWaves)[4]?.status === "planned-gated";
+  const afterCloseout = wave4?.status === "completed"
+    && wave4?.completionEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
+  return shared && (wave4?.status === "in-progress" || afterCloseout);
 }
 
 function isSupportedContinuityCadence(record) {
   const wave4 = list(record?.waves)[3];
   const shared = record?.id === "seis-public-plugin-continuity-cadence"
     && record?.status === "active-evidence-led-cadence"
-    && record?.cadence?.waveSeries?.activeWave === 4
-    && wave4?.status === "in-progress"
     && wave4?.handoffPreparationPath === PATHS.handoffPreparation
     && wave4?.closeoutSequenceDecisionPath === OUTPUT_PATH
     && list(record?.waves)[4]?.status === "planned-gated";
-  const preApplication = wave4?.completedSteps === 95
+  const preApplication = record?.cadence?.waveSeries?.activeWave === 4
+    && wave4?.status === "in-progress"
+    && wave4?.completedSteps === 95
     && list(wave4?.inProgressSteps).join(",") === "96";
-  const postApplication = wave4?.completedSteps === 96
+  const postApplication = record?.cadence?.waveSeries?.activeWave === 4
+    && wave4?.status === "in-progress"
+    && wave4?.completedSteps === 96
     && list(wave4?.inProgressSteps).join(",") === "97"
     && wave4?.currentEvidencePath === OUTPUT_PATH;
-  const afterHandoff = wave4?.completedSteps === 97
+  const afterHandoff = record?.cadence?.waveSeries?.activeWave === 4
+    && wave4?.status === "in-progress"
+    && wave4?.completedSteps === 97
     && list(wave4?.inProgressSteps).join(",") === "98"
     && wave4?.repositoryLocalHandoffPath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json"
     && wave4?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-repository-local-handoff.json";
-  return shared && (preApplication || postApplication || afterHandoff);
+  const afterFollowingWaveReview = record?.cadence?.waveSeries?.activeWave === 4
+    && wave4?.status === "in-progress"
+    && wave4?.completedSteps === 98
+    && list(wave4?.inProgressSteps).join(",") === "99"
+    && wave4?.followingWaveReviewPath === "content/development/seis-public-plugin-wave-4-following-wave-review.json"
+    && wave4?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-following-wave-review.json";
+  const afterEvidenceRetention = record?.cadence?.waveSeries?.activeWave === 4
+    && wave4?.status === "in-progress"
+    && wave4?.completedSteps === 99
+    && list(wave4?.inProgressSteps).join(",") === "100"
+    && wave4?.evidenceRetentionPath === "content/development/seis-public-plugin-wave-4-evidence-retention.json"
+    && wave4?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-evidence-retention.json";
+  const afterCloseout = record?.cadence?.waveSeries?.activeWave === null
+    && record?.cadence?.waveSeries?.activeWaveState === "wave-4-completed-wave-5-planned-gated"
+    && wave4?.status === "completed"
+    && wave4?.completedSteps === 100
+    && list(wave4?.inProgressSteps).length === 0
+    && wave4?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
+    && wave4?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
+  return shared && (preApplication || postApplication || afterHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout);
 }
 
 function validateRecord(record) {

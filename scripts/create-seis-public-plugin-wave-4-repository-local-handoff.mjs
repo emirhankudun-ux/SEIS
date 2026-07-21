@@ -120,7 +120,9 @@ function buildRecord() {
         && Object.values(integrationCheckpoint.externalClaims || {}).every((value) => value === false),
       continuity: isSupportedContinuityState(continuityCadence)
         && expansionProgram.id === "seis-public-plugin-expansion-program"
-        && expansionProgram.nextWaves?.[3]?.status === "in-progress"
+        && ["in-progress", "completed"].includes(expansionProgram.nextWaves?.[3]?.status)
+        && (expansionProgram.nextWaves?.[3]?.status !== "completed"
+          || expansionProgram.nextWaves?.[3]?.completionEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json")
         && expansionProgram.nextWaves?.[4]?.status === "planned-gated",
       releaseBoundary: lifecycle.status === "active-local-proof-public-release-gated"
         && lifecycle.externalInstallProofSummary?.publicReleaseAllowed === false
@@ -218,7 +220,7 @@ function buildRecord() {
 
 function isPreHandoffWave4Tracker(program) {
   const shared = program?.id === "seis-public-plugin-wave-4-program"
-    && program?.status === "in-progress"
+    && ["in-progress", "completed"].includes(program?.status)
     && program?.maturity === "prototype"
     && program?.evidence?.closeoutSequenceDecisionPath === PATHS.closeoutSequenceDecision
     && Object.values(program?.externalClaims || {}).every((value) => value === false);
@@ -233,7 +235,22 @@ function isPreHandoffWave4Tracker(program) {
     && program?.progress?.nextStepNumber === 98
     && program?.repositoryLocalHandoff?.status === "completed-repository-local-handoff"
     && program?.repositoryLocalHandoff?.handoffPath === OUTPUT_PATH;
-  return shared && (beforeTrackerUpdate || afterTrackerUpdate);
+  const afterFollowingWaveReview = program?.progress?.completedStepCount === 98
+    && list(program?.progress?.inProgressStepNumbers).join(",") === "99"
+    && program?.progress?.nextStepNumber === 99
+    && program?.followingWaveReview?.status === "completed-following-wave-scope-review"
+    && program?.followingWaveReview?.reviewPath === "content/development/seis-public-plugin-wave-4-following-wave-review.json";
+  const afterEvidenceRetention = program?.progress?.completedStepCount === 99
+    && list(program?.progress?.inProgressStepNumbers).join(",") === "100"
+    && program?.progress?.nextStepNumber === 100
+    && program?.evidenceRetention?.status === "completed-public-evidence-retention"
+    && program?.evidenceRetention?.retentionPath === "content/development/seis-public-plugin-wave-4-evidence-retention.json";
+  const afterCloseout = program?.status === "completed"
+    && program?.progress?.completedStepCount === 100
+    && list(program?.progress?.inProgressStepNumbers).length === 0
+    && program?.progress?.nextStepNumber === null
+    && program?.repositoryLocalCloseout?.status === "completed-repository-local-wave-closeout";
+  return shared && (beforeTrackerUpdate || afterTrackerUpdate || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout);
 }
 
 function isSupportedContinuityState(cadence) {
@@ -249,7 +266,24 @@ function isSupportedContinuityState(cadence) {
     && list(wave?.inProgressSteps).join(",") === "98"
     && wave?.repositoryLocalHandoffPath === OUTPUT_PATH
     && wave?.currentEvidencePath === OUTPUT_PATH;
-  return shared && (beforeTrackerUpdate || afterTrackerUpdate);
+  const afterFollowingWaveReview = cadence?.cadence?.waveSeries?.activeWaveState === "following-wave-review-complete-step-99-in-progress"
+    && wave?.completedSteps === 98
+    && list(wave?.inProgressSteps).join(",") === "99"
+    && wave?.followingWaveReviewPath === "content/development/seis-public-plugin-wave-4-following-wave-review.json"
+    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-following-wave-review.json";
+  const afterEvidenceRetention = cadence?.cadence?.waveSeries?.activeWaveState === "public-evidence-retention-complete-step-100-in-progress"
+    && wave?.completedSteps === 99
+    && list(wave?.inProgressSteps).join(",") === "100"
+    && wave?.evidenceRetentionPath === "content/development/seis-public-plugin-wave-4-evidence-retention.json"
+    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-evidence-retention.json";
+  const afterCloseout = cadence?.cadence?.waveSeries?.activeWave === null
+    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-4-completed-wave-5-planned-gated"
+    && wave?.status === "completed"
+    && wave?.completedSteps === 100
+    && list(wave?.inProgressSteps).length === 0
+    && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
+    && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
+  return shared && (beforeTrackerUpdate || afterTrackerUpdate || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout);
 }
 
 function validateRecord(record) {

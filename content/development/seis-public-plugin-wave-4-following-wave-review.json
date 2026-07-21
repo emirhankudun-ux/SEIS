@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-4-following-wave-review",
+  "goalId": "SEIS-GOAL-021",
+  "parentGoalId": "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
+  "wave": 4,
+  "step": 98,
+  "status": "completed-following-wave-scope-review",
+  "maturity": "specification",
+  "generatedAt": "2026-07-21",
+  "purpose": "Select a non-duplicative, public-only Wave 5 candidate from current SEIS Repo evidence without creating a package or card, activating Wave 5, changing the release boundary, or claiming installation, runtime, provider, deployment, signing, or release proof.",
+  "stateAtCheckpoint": {
+    "completedStepCountBeforeTrackerUpdate": 97,
+    "activeStepBeforeTrackerUpdate": 98,
+    "nextPlannedDecisionStep": 99,
+    "waveCompleted": false,
+    "wave5ActivationApproved": false
+  },
+  "checks": {
+    "wave4Tracker": true,
+    "repositoryLocalHandoff": true,
+    "priorCloseoutSequence": true,
+    "currentPublicInventory": true,
+    "candidateIsNotAlreadyPublished": true,
+    "existingCapabilityBoundaries": true,
+    "continuity": true
+  },
+  "followingWaveDecision": {
+    "wave": 5,
+    "status": "candidate-identified-plan-required",
+    "selectedCapability": "seis-plugin-capability-coverage",
+    "implementationApproved": false,
+    "activationApproved": false,
+    "candidatePackageExists": false,
+    "candidatePublicCardExists": false,
+    "outcome": "A bounded capability-coverage report is justified for a later public Wave 5 plan because it summarizes declared plugin categories and capabilities across fixed SEIS Repo registries without replacing integrity validation, discovery, ontology, or canonical-registry ownership checks.",
+    "reviewedExecutionLimit": "The candidate may read only the fixed checked-in source manifest, catalog, matrix, and repo marketplace projection. It must not read a personal marketplace, inspect arbitrary paths, write files, use secrets or a network, or imply installation, compilation, runtime, provider, deployment, signing, or release proof."
+  },
+  "candidateContract": {
+    "packageName": "seis-plugin-capability-coverage",
+    "intendedDisplayName": "SEIS Plugin Capability Coverage",
+    "maturity": "planned",
+    "input": {
+      "fixedRegistryPaths": [
+        "apps/seis-core/data/seis-core-plugin-sources.json",
+        "apps/seis-core/data/seis-core-plugin-catalog.json",
+        "content/development/seis-core-plugin-matrix.json",
+        ".agents/plugins/marketplace.json"
+      ],
+      "maximumRegistryBytes": 524288,
+      "regularFilesRequired": true,
+      "symlinkRefusal": true
+    },
+    "output": [
+      "declared category counts",
+      "declared capability-token frequencies",
+      "registry projection reconciliation",
+      "bounded coverage and attention summaries"
+    ],
+    "distinctFrom": [
+      {
+        "package": "seis-marketplace-integrity",
+        "boundary": "It validates marketplace and manifest correctness; it does not summarize capability coverage across fixed registry projections."
+      },
+      {
+        "package": "seis-plugin-discovery",
+        "boundary": "It lists bounded plugin metadata; it does not calculate category and capability-coverage summaries."
+      },
+      {
+        "package": "seis-technology-ontology",
+        "boundary": "It maps technology taxonomy; it does not reconcile the declared capability coverage of public SEIS plugins."
+      },
+      {
+        "package": "seis-canonical-registry-validator",
+        "boundary": "It validates registry ownership and identity; it does not provide a coverage-focused public capability report."
+      }
+    ],
+    "nonGoals": [
+      "Creating a package, public card, generated projection, dependency, or permission change during this review.",
+      "Reading any personal marketplace, arbitrary path, secret, or remote service.",
+      "Compiling, installing, executing native code, invoking a provider, deploying, signing, publishing, or releasing artifacts.",
+      "Replacing existing marketplace integrity, discovery, ontology, or canonical-registry checks."
+    ],
+    "permissions": {
+      "read": [
+        "four fixed public SEIS Repo registry files"
+      ],
+      "write": [],
+      "network": [],
+      "secrets": []
+    }
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "signing": false,
+    "publicRelease": false
+  },
+  "evidence": {
+    "wave4ProgramPath": "content/development/seis-public-plugin-wave-4-program.json",
+    "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
+    "closeoutSequenceDecisionPath": "content/development/seis-public-plugin-wave-4-closeout-sequence-decision.json",
+    "handoffPreparationPath": "content/development/seis-public-plugin-wave-4-handoff-preparation.json",
+    "continuityCadencePath": "content/development/seis-public-plugin-continuity-cadence.json",
+    "sourceManifestPath": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "catalogPath": "apps/seis-core/data/seis-core-plugin-catalog.json",
+    "matrixPath": "content/development/seis-core-plugin-matrix.json",
+    "marketplacePath": ".agents/plugins/marketplace.json"
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-wave-4-following-wave-review",
+    "npm run check:seis-public-plugin-wave-4-program",
+    "npm run check:seis-public-plugin-continuity",
+    "npm run check:seis-repo-marketplace",
+    "node --test plugins/seis-core/test/public-plugin-wave-4-following-wave-review.test.mjs"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W4-021",
+      "status": "tracked",
+      "description": "A Wave 5 candidate selection could be mistaken for implementation or public marketplace activation.",
+      "mitigation": "Keep implementationApproved=false, activationApproved=false, and candidate absence checks true until a separate Wave 5 plan and activation decision exist."
+    },
+    {
+      "id": "RISK-W4-022",
+      "status": "tracked",
+      "description": "Capability coverage could duplicate existing registry, discovery, integrity, or ontology responsibilities.",
+      "mitigation": "Define fixed inputs, bounded summary outputs, explicit distinctness boundaries, and no replacement of current validators."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this Wave 4 following-wave scope review and tracker references on the feature branch; no package, card, external state, release, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 9,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}

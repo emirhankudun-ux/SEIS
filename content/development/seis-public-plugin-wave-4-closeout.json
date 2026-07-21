@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-4-closeout",
+  "goalId": "SEIS-GOAL-021",
+  "parentGoalId": "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
+  "wave": 4,
+  "step": 100,
+  "status": "completed-repository-local-wave-closeout",
+  "maturity": "prototype",
+  "generatedAt": "2026-07-21",
+  "purpose": "Close the current 100-step Wave 4 program with repository-local, public-only evidence while keeping Wave 5 planned-gated. This records no package or card addition, no personal marketplace access, no protected-default-branch write, no publication, and no installation, compiler, runtime, provider, deployment, signing, or release claim.",
+  "stateAtCheckpoint": {
+    "completedStepCountBeforeTrackerUpdate": 99,
+    "activeStepBeforeTrackerUpdate": 100,
+    "completedStepCountAfterTrackerUpdate": 100,
+    "completedRoundCountAfterTrackerUpdate": 5,
+    "waveCompleted": true,
+    "nextActiveWave": null,
+    "nextWaveStatus": "planned-gated",
+    "nextWaveImplementationApproved": false,
+    "nextWaveActivationApproved": false
+  },
+  "checks": {
+    "wave4Tracker": true,
+    "evidenceRetention": true,
+    "followingWaveReview": true,
+    "repositoryLocalHandoff": true,
+    "continuity": true,
+    "expansionProgram": true,
+    "publicInventory": true,
+    "boundedInputs": true,
+    "evidenceBoundary": true
+  },
+  "completion": {
+    "status": "completed-repository-local-current-evidence",
+    "completedStepCount": 100,
+    "completedRoundCount": 5,
+    "nextActiveWave": null,
+    "nextWaveStatus": "planned-gated",
+    "nextWaveSelectedCapability": "seis-plugin-capability-coverage",
+    "nextWaveImplementationApproved": false,
+    "nextWaveActivationApproved": false,
+    "terminalHandoffPublished": false,
+    "protectedDefaultBranchWritten": false,
+    "publicReleaseAllowed": false
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "protectedDefaultBranchWrites": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "compiledSwift": false,
+    "swiftPmTestPass": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "signing": false,
+    "publicRelease": false
+  },
+  "evidence": {
+    "wave4ProgramPath": "content/development/seis-public-plugin-wave-4-program.json",
+    "evidenceRetentionPath": "content/development/seis-public-plugin-wave-4-evidence-retention.json",
+    "followingWaveReviewPath": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
+    "repositoryLocalHandoffPath": "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
+    "continuityCadencePath": "content/development/seis-public-plugin-continuity-cadence.json",
+    "expansionProgramPath": "content/development/seis-public-plugin-expansion-program.json",
+    "inputMetadata": [
+      {
+        "key": "wave4Program",
+        "path": "content/development/seis-public-plugin-wave-4-program.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 38433
+      },
+      {
+        "key": "evidenceRetention",
+        "path": "content/development/seis-public-plugin-wave-4-evidence-retention.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 8621
+      },
+      {
+        "key": "followingWaveReview",
+        "path": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 7121
+      },
+      {
+        "key": "repositoryLocalHandoff",
+        "path": "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 5485
+      },
+      {
+        "key": "continuityCadence",
+        "path": "content/development/seis-public-plugin-continuity-cadence.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 39441
+      },
+      {
+        "key": "expansionProgram",
+        "path": "content/development/seis-public-plugin-expansion-program.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 13459
+      },
+      {
+        "key": "activationDecision",
+        "path": "content/development/seis-public-plugin-wave-4-activation-decision.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 5142
+      },
+      {
+        "key": "topologyEvidence",
+        "path": "content/development/seis-swift-package-topology.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 6225
+      },
+      {
+        "key": "integrationCheckpoint",
+        "path": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 5431
+      },
+      {
+        "key": "validationDeliveryEvidence",
+        "path": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 4455
+      },
+      {
+        "key": "publicBoundaryDecision",
+        "path": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 4605
+      },
+      {
+        "key": "sourceManifest",
+        "path": "apps/seis-core/data/seis-core-plugin-sources.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 39864
+      },
+      {
+        "key": "catalog",
+        "path": "apps/seis-core/data/seis-core-plugin-catalog.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 125033
+      },
+      {
+        "key": "matrix",
+        "path": "content/development/seis-core-plugin-matrix.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 34146
+      },
+      {
+        "key": "marketplace",
+        "path": ".agents/plugins/marketplace.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 125443
+      }
+    ]
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-wave-4-closeout",
+    "npm run check:seis-public-plugin-wave-4-evidence-retention",
+    "npm run check:seis-public-plugin-wave-4-program",
+    "npm run check:seis-public-plugin-continuity-cadence",
+    "npm run check:seis-public-plugin-expansion-program",
+    "npm run check:seis-repo-marketplace",
+    "node --test plugins/seis-core/test/public-plugin-wave-4-closeout.test.mjs"
+  ],
+  "risks": [
+    {
+      "id": "RISK-W4-025",
+      "status": "tracked",
+      "description": "A repository-local closeout could be misread as a public release, merge, or independent installation proof.",
+      "mitigation": "Keep terminalHandoffPublished, protectedDefaultBranchWritten, and publicReleaseAllowed false and preserve all external claims as false."
+    },
+    {
+      "id": "RISK-W4-026",
+      "status": "tracked",
+      "description": "The selected Wave 5 candidate could be activated by implication when Wave 4 closes.",
+      "mitigation": "Record nextWaveStatus=planned-gated and implementation/activation=false; require a separate Wave 5 scope and activation decision."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert this Wave 4 closeout record and its program/cadence references on the feature branch; no external state, publication, release, package, card, or data migration exists.",
+    "dataMigrationRequired": false
+  },
+  "inputSafetyScan": {
+    "inputCount": 15,
+    "machineSpecificPathFindingCount": 0,
+    "secretLikeFindingCount": 0,
+    "findings": [],
+    "rawValuesStored": false
+  }
+}
