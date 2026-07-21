@@ -47,9 +47,11 @@ CI execution is required before any such claim is made.
 Wave 3 is recorded as a 100-step **planned specification** at
 `content/development/seis-public-plugin-wave-3-program.json`. It starts with
 evidence-led discovery. `selectedCapability` is `null`, so it does not add a
-card or imply a release. It can become active only after the Wave 2 handoff,
-a separate non-duplicative capability decision, current validation evidence,
-and continued user authority.
+card or imply a release. The separate discovery decision now selects
+`seis-swift-concurrency-audit` as a candidate while keeping implementation and
+the public-card count unchanged. It can become active only after the Wave 2
+handoff, a focused implementation design, current validation evidence, and
+continued user authority.
 
 ## Rollback
 

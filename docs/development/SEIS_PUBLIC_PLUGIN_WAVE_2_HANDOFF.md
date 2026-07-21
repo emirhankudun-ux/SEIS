@@ -30,11 +30,14 @@ feature-count-driven duplication.
 
 ## Next Decision
 
-Wave 3 is planned but not active. Its initial task is discovery and a separate
-non-duplicative capability decision. It has no selected capability and adds no
-new public card until its own evidence gate passes.
+Wave 3 remains planned and not active in its program record, whose
+`selectedCapability` remains `null`. Its completed discovery decision selects
+`seis-swift-concurrency-audit` as a bounded candidate only; implementation has
+not started and no new public card was added. Its own implementation gate still
+requires current design, validation, and user authority.
 
 ## Machine-Readable Evidence
 
 - `content/development/seis-public-plugin-wave-2-handoff.json`
 - `content/development/seis-public-plugin-wave-3-program.json`
+- `content/development/seis-public-plugin-wave-3-capability-decision.json`

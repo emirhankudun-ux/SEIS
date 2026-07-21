@@ -80,7 +80,9 @@ current repository-local handoff at
 public capability was the read-only `seis-apple-native-readiness` package; the
 subsequent overlap review deliberately selected no second card. Wave 3 is
 planned at `content/development/seis-public-plugin-wave-3-program.json`, but
-remains discovery-first with `selectedCapability: null`. Waves 4 and 5 remain
-unplanned until their preceding wave passes the same evidence, scope, and risk
-gate. This preserves the requested ongoing cadence without turning it into a
-claim of autonomous background execution.
+keeps its program-level `selectedCapability: null`. Its later discovery record
+selects `seis-swift-concurrency-audit` as a candidate only, with implementation
+unstarted and no new card. Waves 4 and 5 remain unplanned until their preceding
+wave passes the same evidence, scope, and risk gate. This preserves the
+requested ongoing cadence without turning it into a claim of autonomous
+background execution.

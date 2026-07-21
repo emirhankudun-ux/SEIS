@@ -78,11 +78,13 @@ follow-up card. The repository-local handoff is
 SwiftPM test is not a compiled-Swift or test-pass claim. Wave 3 is now
 **planned**, not active, at
 `content/development/seis-public-plugin-wave-3-program.json`: it begins with
-discovery and a separate non-duplicative capability decision. No Wave 3 public
-card is preselected. Waves 4–5 remain *not planned* until the preceding wave
-has current evidence, scope review, and risk review. Continuation remains
-evidence-led, reversible, and delivered through the current GitHub feature
-branch rather than claimed as background execution.
+discovery and a separate non-duplicative capability decision. That decision
+selects `seis-swift-concurrency-audit` as a bounded candidate, but no Wave 3
+package or public card exists yet and the program-level selection remains empty.
+Waves 4–5 remain *not planned* until the preceding wave has current evidence,
+scope review, and risk review. Continuation remains evidence-led, reversible,
+and delivered through the current GitHub feature branch rather than claimed as
+background execution.
 
 ## Completion Rule
 

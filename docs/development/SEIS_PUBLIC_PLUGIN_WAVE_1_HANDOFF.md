@@ -41,5 +41,7 @@ Representative current checks:
 ## Next Decision
 
 Wave 2 completed its separate 100-step program and repository-local handoff.
-Wave 3 is planned, but it has no selected capability or added public card: it
-must first complete a new discovery and overlap decision using current evidence.
+At this Wave 1 handoff, Wave 3 had no selected capability or added public card.
+Its later discovery decision now selects `seis-swift-concurrency-audit` as a
+bounded candidate only; implementation remains unstarted and no public card has
+been added. See `content/development/seis-public-plugin-wave-3-capability-decision.json`.
