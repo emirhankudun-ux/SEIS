@@ -45,9 +45,10 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.round11Cycle.historicalWave5CloseoutClaimed, false);
   assert.equal(program.tenYearHorizon.length, 10);
   assert.ok(program.tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background"));
-  assert.equal(program.automationRoles.length, 6);
+  assert.deepEqual(program.automationRoles.map((role) => role.id), ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"]);
   assert.equal(program.executionModel.persistentProcess, false);
   assert.equal(program.executionModel.backgroundExecution, false);
+  assert.equal(program.executionModel.roleExecution, "foreground-sequential-reviewed-allowlist");
   assert.equal(program.executionModel.intentionalNetworkActions, false);
   assert.equal(program.executionModel.intentionalSecretAccess, false);
   assert.equal(program.executionModel.isolationLevel, "reviewed-allowlist-no-os-sandbox");
@@ -60,7 +61,8 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.executionModel.release, false);
   assert.equal(program.executionModel.deployment, false);
   assert.equal(program.commandAllowlist.length, 48);
-  assert.ok(program.commandAllowlist.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false));
+  assert.ok(program.commandAllowlist.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false && typeof entry.automationRoleId === "string"));
+  assert.ok(program.automationRoles.every((role) => program.commandAllowlist.some((entry) => entry.automationRoleId === role.id)));
 });
 
 test("plan mode is read-only and reports a foreground-only plan", () => {
@@ -89,6 +91,10 @@ test("plan mode is read-only and reports a foreground-only plan", () => {
   assert.equal(report.plan.nextSeriesStepsPerWave, 200);
   assert.equal(report.plan.round11StepCount, 200);
   assert.equal(report.plan.round11Status, "in-progress-plan-and-local-build");
+  assert.equal(report.plan.roleExecution, "foreground-sequential-reviewed-allowlist");
+  assert.deepEqual(report.roleLanes.map((lane) => lane.id), ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"]);
+  assert.equal(report.roleLanes.reduce((count, lane) => count + lane.phaseCount, 0), 48);
+  assert.ok(report.roleLanes.every((lane) => lane.execution === "foreground-sequential-reviewed-allowlist" && lane.phaseCount === lane.phases.length && lane.phaseCount > 0));
   assert.equal(report.githubDelivery.automaticPush, false);
   assert.deepEqual([digest(programPath), digest(roadmapPath)], before);
 });
@@ -129,6 +135,24 @@ test("runner rejects a policy-range card count that is not the exact current 34-
   }
 });
 
+test("runner rejects a tampered reviewed phase-to-role assignment", () => {
+  const fixture = makeRunnerFixture();
+  const fixtureProgramPath = path.join(fixture.root, "content/development/seis-public-plugin-supervised-autopilot.json");
+  try {
+    const fixtureProgram = JSON.parse(fs.readFileSync(fixtureProgramPath, "utf8"));
+    fixtureProgram.commandAllowlist[0].automationRoleId = "delivery-coordinator";
+    fs.writeFileSync(fixtureProgramPath, `${JSON.stringify(fixtureProgram, null, 2)}\n`);
+    const result = spawnSync(process.execPath, [path.join(fixture.root, "scripts/run-seis-public-plugin-supervised-autopilot.mjs"), "--plan"], {
+      cwd: fixture.root,
+      encoding: "utf8",
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /allowlist automation role mismatch/);
+  } finally {
+    fs.rmSync(fixture.parent, { recursive: true, force: true });
+  }
+});
+
 test("runner rejects a symlinked allowlisted phase target in an anchored fixture", () => {
   const fixture = makeRunnerFixture();
   const outside = path.join(fixture.parent, "outside-phase.mjs");
@@ -156,6 +180,7 @@ test("runner has a fixed local allowlist and no shell or external-delivery path"
   assert.match(source, /fileURLToPath\(import\.meta\.url\)/);
   assert.match(source, /rev-parse/);
   assert.match(source, /phase target changed after allowlist validation/);
+  assert.match(source, /automationRoleId/);
   assert.match(source, /GIT_CONFIG_NOSYSTEM/);
   assert.match(source, /GIT_CONFIG_GLOBAL/);
   assert.match(source, /MAX_PHASE_OUTPUT_BYTES/);

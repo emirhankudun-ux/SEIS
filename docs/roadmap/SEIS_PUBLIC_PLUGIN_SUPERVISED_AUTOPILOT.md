@@ -6,6 +6,7 @@
 - Reviewed local phases: 48
 - Canonical install: `seis-ai-agent@seis-repo`
 - Execution: supervised foreground plan-and-build only; no background execution.
+- Role execution: foreground-sequential-reviewed-allowlist; each reviewed local phase is assigned exactly once.
 - Round 11: 200 steps, in-progress-plan-and-local-build; historical Wave 5 closeout is not claimed.
 - Isolation: reviewed-allowlist-no-os-sandbox; ambient network/filesystem isolation and descendant termination are not OS-enforced.
 
@@ -16,7 +17,7 @@ npm run seis:public-plugin-autopilot -- --plan
 npm run seis:public-plugin-autopilot -- --apply-safe
 ```
 
-`--plan` reads local evidence and reports the next safe phases. `--apply-safe` runs only the reviewed local generator and validation allowlist during the current command invocation. Neither mode intentionally commits, pushes, merges, installs, releases, deploys, accesses a provider, reads a secret, or opens the network. This is source-reviewed command containment, not a kernel sandbox; child code retains ambient process permissions, and descendant termination is not guaranteed after a hostile child. The reviewed phases are foreground local scripts and are not designed to spawn persistent descendants.
+`--plan` reads local evidence and reports the next safe phases. `--apply-safe` runs only the reviewed local generator and validation allowlist during the current command invocation. The named roles below are deterministic, sequential automation lanes inside that one process; they are not persistent or parallel sub-agent processes. Neither mode intentionally commits, pushes, merges, installs, releases, deploys, accesses a provider, reads a secret, or opens the network. This is source-reviewed command containment, not a kernel sandbox; child code retains ambient process permissions, and descendant termination is not guaranteed after a hostile child. The reviewed phases are foreground local scripts and are not designed to spawn persistent descendants.
 
 ## 30-Step Immediate Cycle
 
@@ -339,12 +340,16 @@ Review discovery clarity, installation choices, documentation, risks, rollback, 
 
 ## Automation Roles
 
-- **architect-planner** — Check goal, source-of-truth inputs, current marketplace boundary, risks, and the next bounded cycle.
-- **bundle-builder** — Regenerate deterministic marketplace, bundle-package, and consolidation artifacts only through the allowlist.
-- **safety-reviewer** — Verify no network, secret, external-write, source-deletion, or bulk-install claim enters the generated contract.
-- **qa-validator** — Run deterministic freshness and node test suites and expose failures directly.
-- **evidence-reporter** — Return a bounded foreground report with success, failure, blocked-delivery, and next-action state.
-- **delivery-coordinator** — Prepare but never execute a separate feature-branch GitHub delivery decision.
+Named roles are a reviewable execution ledger, not independently running agents. Phases always run sequentially in the reviewed allowlist order.
+
+| Role | Reviewed local phases | Responsibility |
+| --- | ---: | --- |
+| architect-planner | 1 | Check goal, source-of-truth inputs, current marketplace boundary, risks, and the next bounded cycle. |
+| bundle-builder | 4 | Regenerate deterministic marketplace, bundle-package, and consolidation artifacts only through the allowlist. |
+| safety-reviewer | 9 | Verify no network, secret, external-write, source-deletion, or bulk-install claim enters the generated contract. |
+| qa-validator | 19 | Run deterministic freshness and node test suites and expose failures directly. |
+| evidence-reporter | 14 | Return a bounded foreground report with success, failure, blocked-delivery, and next-action state. |
+| delivery-coordinator | 1 | Prepare but never execute a separate feature-branch GitHub delivery decision. |
 
 ## GitHub Delivery
 

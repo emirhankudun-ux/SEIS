@@ -51,7 +51,8 @@ function buildProgram() {
   const immediateCycle = buildImmediateCycle();
   const round11Cycle = buildRound11Cycle();
   const tenYearHorizon = buildTenYearHorizon();
-  const commandAllowlist = buildCommandAllowlist();
+  const automationRoles = buildAutomationRoles();
+  const commandAllowlist = assignAutomationRoles(buildCommandAllowlist(), automationRoles);
 
   const checks = {
     activeGoal: goalText.includes("id: SEIS-GOAL-0025")
@@ -97,6 +98,9 @@ function buildProgram() {
       && tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background"),
     commandAllowlist: commandAllowlist.every((command) => command.command === "node" || command.command === "git")
       && commandAllowlist.every((command) => command.externalWrite === false && command.network === false && command.secrets === false),
+    automationRoleAssignments: commandAllowlist.length === 48
+      && commandAllowlist.every((command) => automationRoles.some((role) => role.id === command.automationRoleId))
+      && automationRoles.every((role) => commandAllowlist.some((command) => command.automationRoleId === role.id)),
   };
 
   const result = {
@@ -121,6 +125,7 @@ function buildProgram() {
       persistentProcess: false,
       backgroundExecution: false,
       subagentsAreAutomationRoles: true,
+      roleExecution: "foreground-sequential-reviewed-allowlist",
       externalWrites: false,
       intentionalNetworkActions: false,
       intentionalSecretAccess: false,
@@ -136,38 +141,7 @@ function buildProgram() {
       destructiveActions: false,
       rule: "The runner exists only while its foreground command is running. It cannot continue work after the command exits.",
     },
-    automationRoles: [
-      {
-        id: "architect-planner",
-        responsibility: "Check goal, source-of-truth inputs, current marketplace boundary, risks, and the next bounded cycle.",
-        automatedActions: ["read approved local artifacts", "produce a deterministic plan"],
-      },
-      {
-        id: "bundle-builder",
-        responsibility: "Regenerate deterministic marketplace, bundle-package, and consolidation artifacts only through the allowlist.",
-        automatedActions: ["run reviewed local generators"],
-      },
-      {
-        id: "safety-reviewer",
-        responsibility: "Verify no network, secret, external-write, source-deletion, or bulk-install claim enters the generated contract.",
-        automatedActions: ["run local safety validations"],
-      },
-      {
-        id: "qa-validator",
-        responsibility: "Run deterministic freshness and node test suites and expose failures directly.",
-        automatedActions: ["run reviewed local checks"],
-      },
-      {
-        id: "evidence-reporter",
-        responsibility: "Return a bounded foreground report with success, failure, blocked-delivery, and next-action state.",
-        automatedActions: ["format local report"],
-      },
-      {
-        id: "delivery-coordinator",
-        responsibility: "Prepare but never execute a separate feature-branch GitHub delivery decision.",
-        automatedActions: ["report approval-gated next step"],
-      },
-    ],
+    automationRoles,
     immediateCycle,
     fiveWaveSeries: {
       source: PATHS.continuity,
@@ -393,6 +367,66 @@ function buildTenYearHorizon() {
   }));
 }
 
+function buildAutomationRoles() {
+  return [
+    {
+      id: "architect-planner",
+      responsibility: "Check goal, source-of-truth inputs, current marketplace boundary, risks, and the next bounded cycle.",
+      automatedActions: ["read approved local artifacts", "produce a deterministic plan"],
+    },
+    {
+      id: "bundle-builder",
+      responsibility: "Regenerate deterministic marketplace, bundle-package, and consolidation artifacts only through the allowlist.",
+      automatedActions: ["run reviewed local generators"],
+    },
+    {
+      id: "safety-reviewer",
+      responsibility: "Verify no network, secret, external-write, source-deletion, or bulk-install claim enters the generated contract.",
+      automatedActions: ["run local safety validations"],
+    },
+    {
+      id: "qa-validator",
+      responsibility: "Run deterministic freshness and node test suites and expose failures directly.",
+      automatedActions: ["run reviewed local checks"],
+    },
+    {
+      id: "evidence-reporter",
+      responsibility: "Return a bounded foreground report with success, failure, blocked-delivery, and next-action state.",
+      automatedActions: ["format local report"],
+    },
+    {
+      id: "delivery-coordinator",
+      responsibility: "Prepare but never execute a separate feature-branch GitHub delivery decision.",
+      automatedActions: ["report approval-gated next step"],
+    },
+  ];
+}
+
+function assignAutomationRoles(commands, roles) {
+  const roleIds = new Set(roles.map((role) => role.id));
+  const assigned = commands.map((command, index) => ({
+    ...command,
+    automationRoleId: automationRoleForPhaseIndex(index),
+  }));
+  assert(assigned.length === 48, "automation role assignment length is invalid");
+  assert(assigned.every((command) => roleIds.has(command.automationRoleId)), "automation role assignment is invalid");
+  assert(roles.every((role) => assigned.some((command) => command.automationRoleId === role.id)), "automation role coverage is invalid");
+  return assigned;
+}
+
+function automationRoleForPhaseIndex(index) {
+  if (index >= 0 && index <= 3) return "bundle-builder";
+  if (index >= 4 && index <= 8) return "safety-reviewer";
+  if (index >= 9 && index <= 22) return "evidence-reporter";
+  if (index >= 23 && index <= 35) return "qa-validator";
+  if (index === 36) return "architect-planner";
+  if (index === 37) return "qa-validator";
+  if (index >= 38 && index <= 41) return "safety-reviewer";
+  if (index >= 42 && index <= 46) return "qa-validator";
+  if (index === 47) return "delivery-coordinator";
+  throw new Error("automation role assignment index is invalid");
+}
+
 function buildCommandAllowlist() {
   return [
     command("node", ["scripts/create-seis-public-plugin-family.mjs"], "regenerate curated marketplace projection"),
@@ -468,6 +502,7 @@ function buildDocument(value) {
     `- Reviewed local phases: ${value.commandAllowlist.length}`,
     `- Canonical install: \`${value.currentMarketplace.canonicalInstall}\``,
     "- Execution: supervised foreground plan-and-build only; no background execution.",
+    `- Role execution: ${value.executionModel.roleExecution}; each reviewed local phase is assigned exactly once.`,
     `- Round 11: ${value.round11Cycle.totalSteps} steps, ${value.round11Cycle.status}; historical Wave 5 closeout is not claimed.`,
     `- Isolation: ${value.executionModel.isolationLevel}; ambient network/filesystem isolation and descendant termination are not OS-enforced.`,
     "",
@@ -478,7 +513,7 @@ function buildDocument(value) {
     "npm run seis:public-plugin-autopilot -- --apply-safe",
     "```",
     "",
-    "`--plan` reads local evidence and reports the next safe phases. `--apply-safe` runs only the reviewed local generator and validation allowlist during the current command invocation. Neither mode intentionally commits, pushes, merges, installs, releases, deploys, accesses a provider, reads a secret, or opens the network. This is source-reviewed command containment, not a kernel sandbox; child code retains ambient process permissions, and descendant termination is not guaranteed after a hostile child. The reviewed phases are foreground local scripts and are not designed to spawn persistent descendants.",
+    "`--plan` reads local evidence and reports the next safe phases. `--apply-safe` runs only the reviewed local generator and validation allowlist during the current command invocation. The named roles below are deterministic, sequential automation lanes inside that one process; they are not persistent or parallel sub-agent processes. Neither mode intentionally commits, pushes, merges, installs, releases, deploys, accesses a provider, reads a secret, or opens the network. This is source-reviewed command containment, not a kernel sandbox; child code retains ambient process permissions, and descendant termination is not guaranteed after a hostile child. The reviewed phases are foreground local scripts and are not designed to spawn persistent descendants.",
     "",
     "## 30-Step Immediate Cycle",
     "",
@@ -511,7 +546,11 @@ function buildDocument(value) {
     "",
     "## Automation Roles",
     "",
-    ...value.automationRoles.map((role) => `- **${role.id}** — ${role.responsibility}`),
+    "Named roles are a reviewable execution ledger, not independently running agents. Phases always run sequentially in the reviewed allowlist order.",
+    "",
+    "| Role | Reviewed local phases | Responsibility |",
+    "| --- | ---: | --- |",
+    ...value.automationRoles.map((role) => `| ${role.id} | ${value.commandAllowlist.filter((command) => command.automationRoleId === role.id).length} | ${role.responsibility} |`),
     "",
     "## GitHub Delivery",
     "",
@@ -527,13 +566,15 @@ function validateProgram(value) {
   assert(value.id === "seis-public-plugin-supervised-autopilot" && value.goalId === "SEIS-GOAL-0025" && value.parentGoalId === "SEIS-GOAL-0024", "program identity is invalid");
   assert(value.status === "active-supervised-foreground-automation" && value.maturity === "prototype", "program status is invalid");
   assert(value.currentMarketplace?.canonicalInstall === "seis-ai-agent@seis-repo" && value.currentMarketplace?.publicCardCount === 34 && value.currentMarketplace?.optionalBundleCardCount === 33 && value.currentMarketplace?.retainedSourceCapabilityCount === 380 && value.currentMarketplace?.maximumBundleSize === 15, "marketplace state is invalid");
-  assert(value.executionModel?.planAndBuildInOneInvocation === true && value.executionModel?.persistentProcess === false && value.executionModel?.backgroundExecution === false && value.executionModel?.githubPush === false && value.executionModel?.externalWrites === false && value.executionModel?.intentionalNetworkActions === false && value.executionModel?.intentionalSecretAccess === false && value.executionModel?.destructiveActions === false, "execution boundary is invalid");
+  assert(value.executionModel?.planAndBuildInOneInvocation === true && value.executionModel?.persistentProcess === false && value.executionModel?.backgroundExecution === false && value.executionModel?.roleExecution === "foreground-sequential-reviewed-allowlist" && value.executionModel?.githubPush === false && value.executionModel?.externalWrites === false && value.executionModel?.intentionalNetworkActions === false && value.executionModel?.intentionalSecretAccess === false && value.executionModel?.destructiveActions === false, "execution boundary is invalid");
   assert(value.executionModel?.isolationLevel === "reviewed-allowlist-no-os-sandbox" && value.executionModel?.ambientNetworkIsolationEnforced === false && value.executionModel?.ambientFilesystemIsolationEnforced === false && value.executionModel?.descendantTerminationGuaranteed === false, "isolation disclosure is invalid");
-  assert(value.automationRoles?.length === 6 && value.immediateCycle?.totalSteps === 30 && value.immediateCycle?.rounds?.length === 5 && value.immediateCycle?.rounds?.every((round) => round.steps?.length === 6), "immediate cycle is invalid");
+  const roleIds = ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"];
+  assert(value.automationRoles?.length === roleIds.length && value.automationRoles.every((role, index) => role?.id === roleIds[index]), "automation roles are invalid");
+  assert(value.immediateCycle?.totalSteps === 30 && value.immediateCycle?.rounds?.length === 5 && value.immediateCycle?.rounds?.every((round) => round.steps?.length === 6), "immediate cycle is invalid");
   assert(value.fiveWaveSeries?.waves === 5 && value.fiveWaveSeries?.stepsPerWave === 100 && value.fiveWaveSeries?.roundsPerWave === 5 && value.fiveWaveSeries?.nextSeries?.waves === 5 && value.fiveWaveSeries?.nextSeries?.stepsPerWave === 200 && value.fiveWaveSeries?.nextSeries?.status === "active-round-11-plan-and-local-build" && value.fiveWaveSeries?.backgroundExecution === false, "five-wave series is invalid");
   assert(value.round11Cycle?.round === 11 && value.round11Cycle?.totalSteps === 200 && value.round11Cycle?.roundCount === 10 && value.round11Cycle?.stepsPerRound === 20 && value.round11Cycle?.status === "in-progress-plan-and-local-build" && value.round11Cycle?.historicalWave5CloseoutClaimed === false && value.round11Cycle?.rounds?.every((round) => round.steps?.length === 20), "Round 11 cycle is invalid");
   assert(value.tenYearHorizon?.length === 10 && value.tenYearHorizon?.every((year, index) => year?.year === index + 1 && year?.execution === "strategic-gated-not-background"), "ten-year horizon is invalid");
-  assert(value.commandAllowlist?.length === 48 && value.commandAllowlist?.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false), "command allowlist is invalid");
+  assert(value.commandAllowlist?.length === 48 && value.commandAllowlist?.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false && roleIds.includes(entry.automationRoleId)) && roleIds.every((roleId) => value.commandAllowlist.some((entry) => entry.automationRoleId === roleId)), "command allowlist is invalid");
   assert(Object.values(value.checks || {}).every(Boolean), "one or more source checks are invalid");
   assert(value.publicBoundary?.personalMarketplaceRead === false && value.publicBoundary?.personalMarketplaceMutation === false && value.publicBoundary?.network === false && value.publicBoundary?.externalWrites === false && value.publicBoundary?.secrets === false && value.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(value)), "program must not contain a machine-specific path");

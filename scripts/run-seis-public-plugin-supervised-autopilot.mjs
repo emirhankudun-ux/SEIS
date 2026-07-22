@@ -46,8 +46,10 @@ const report = {
     round11Status: program.round11Cycle.status,
     tenYearHorizonCount: program.tenYearHorizon.length,
     automationRoles: program.automationRoles.map((role) => role.id),
+    roleExecution: program.executionModel.roleExecution,
   },
   approvedLocalPhases: phases.map((phase) => phase.label),
+  roleLanes: buildRoleLanes(program.automationRoles, phases),
   githubDelivery: {
     status: "approval-and-environment-gated",
     automaticPush: false,
@@ -109,7 +111,7 @@ function readProgram() {
 function validateProgram(value) {
   assert(value?.id === "seis-public-plugin-supervised-autopilot", "program identity is invalid");
   assert(value?.goalId === "SEIS-GOAL-0025" && value?.parentGoalId === "SEIS-GOAL-0024", "program goal linkage is invalid");
-  assert(value?.executionModel?.planAndBuildInOneInvocation === true, "plan-and-build contract is missing");
+  assert(value?.executionModel?.planAndBuildInOneInvocation === true && value.executionModel?.roleExecution === "foreground-sequential-reviewed-allowlist", "plan-and-build contract is missing");
   assert(value?.executionModel?.persistentProcess === false && value?.executionModel?.backgroundExecution === false, "foreground-only contract is invalid");
   assert(value?.executionModel?.externalWrites === false && value?.executionModel?.intentionalNetworkActions === false && value?.executionModel?.intentionalSecretAccess === false, "external boundary is invalid");
   assert(value?.executionModel?.isolationLevel === "reviewed-allowlist-no-os-sandbox" && value?.executionModel?.ambientNetworkIsolationEnforced === false && value?.executionModel?.ambientFilesystemIsolationEnforced === false && value?.executionModel?.descendantTerminationGuaranteed === false, "isolation disclosure is invalid");
@@ -122,12 +124,18 @@ function validateProgram(value) {
   assert(value?.fiveWaveSeries?.nextSeries?.waves === 5 && value?.fiveWaveSeries?.nextSeries?.stepsPerWave === 200 && value?.fiveWaveSeries?.nextSeries?.status === "active-round-11-plan-and-local-build", "next-series cadence is invalid");
   assert(value?.round11Cycle?.round === 11 && value?.round11Cycle?.totalSteps === 200 && value?.round11Cycle?.status === "in-progress-plan-and-local-build" && value?.round11Cycle?.rounds?.length === 10 && value.round11Cycle.rounds.every((round) => round.steps?.length === 20), "Round 11 cycle is invalid");
   assert(value?.tenYearHorizon?.length === 10 && value.tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background"), "ten-year horizon is invalid");
-  assert(Array.isArray(value?.automationRoles) && value.automationRoles.length === 6, "automation roles are invalid");
+  validateAutomationRoles(value);
   assert(Array.isArray(value?.commandAllowlist) && value.commandAllowlist.length === 48, "command allowlist is invalid");
 }
 
+function validateAutomationRoles(value) {
+  const expectedRoleIds = ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"];
+  assert(Array.isArray(value?.automationRoles) && value.automationRoles.length === expectedRoleIds.length && value.automationRoles.every((role, index) => role?.id === expectedRoleIds[index]), "automation roles are invalid");
+  assert(Array.isArray(value?.commandAllowlist) && value.commandAllowlist.every((entry) => expectedRoleIds.includes(entry?.automationRoleId)) && expectedRoleIds.every((roleId) => value.commandAllowlist.some((entry) => entry.automationRoleId === roleId)), "automation role assignments are invalid");
+}
+
 function buildPhases() {
-  return [
+  const phases = [
     localNode("regenerate curated marketplace projection", ["scripts/create-seis-public-plugin-family.mjs"]),
     localNode("regenerate bounded bundle packages", ["scripts/create-seis-public-plugin-bundles.mjs"]),
     localNode("regenerate SEIS Core application catalog", ["scripts/create-seis-core-plugin-catalog.mjs"]),
@@ -177,6 +185,20 @@ function buildPhases() {
     localNode("run project manifest audit tests", ["--test", "plugins/seis-core/test/project-manifest-audit.test.mjs"]),
     localGit("check diff whitespace", ["diff", "--check"]),
   ];
+  return phases.map((phase, index) => ({ ...phase, automationRoleId: automationRoleForPhaseIndex(index) }));
+}
+
+function automationRoleForPhaseIndex(index) {
+  if (index >= 0 && index <= 3) return "bundle-builder";
+  if (index >= 4 && index <= 8) return "safety-reviewer";
+  if (index >= 9 && index <= 22) return "evidence-reporter";
+  if (index >= 23 && index <= 35) return "qa-validator";
+  if (index === 36) return "architect-planner";
+  if (index === 37) return "qa-validator";
+  if (index >= 38 && index <= 41) return "safety-reviewer";
+  if (index >= 42 && index <= 46) return "qa-validator";
+  if (index === 47) return "delivery-coordinator";
+  throw new Error("automation role assignment index is invalid");
 }
 
 function localNode(label, args) {
@@ -194,8 +216,22 @@ function validateAllowlist(entries, phases) {
     const entry = entries[index];
     assert(entry.command === phase.programCommand, `allowlist command mismatch at phase ${index + 1}`);
     assert(Array.isArray(entry.args) && entry.args.length === phase.args.length && entry.args.every((arg, argIndex) => arg === phase.args[argIndex]), `allowlist argument mismatch at phase ${index + 1}`);
+    assert(entry.automationRoleId === phase.automationRoleId, `allowlist automation role mismatch at phase ${index + 1}`);
     assert(entry.externalWrite === false && entry.network === false && entry.secrets === false, `allowlist boundary mismatch at phase ${index + 1}`);
   }
+}
+
+function buildRoleLanes(roles, phases) {
+  return roles.map((role) => {
+    const assigned = phases.filter((phase) => phase.automationRoleId === role.id);
+    return {
+      id: role.id,
+      responsibility: role.responsibility,
+      execution: "foreground-sequential-reviewed-allowlist",
+      phaseCount: assigned.length,
+      phases: assigned.map((phase) => phase.label),
+    };
+  });
 }
 
 function runPhase(phase) {
@@ -213,6 +249,7 @@ function runPhase(phase) {
   });
   return {
     label: phase.label,
+    automationRoleId: phase.automationRoleId,
     command: phase.programCommand,
     args: phase.args,
     ok: child.status === 0 && !child.error,
