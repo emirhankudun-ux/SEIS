@@ -58,10 +58,12 @@ scope:
     - content/development/seis-public-runtime-status.json
     - plugins/seis-bundles
     - plugins/seis-ai-agent/.codex-plugin/plugin.json
+    - plugins/seis-ai-agent/assets/agent-profile.json
     - plugins/seis-ai-agent/assets/public-bundle-selection-guide.json
     - plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs
     - plugins/seis-ai-agent/README.md
     - plugins/seis-ai-agent/skills/seis-ai-agent/SKILL.md
+    - scripts/install-seis-ai-agent.mjs
     - plugins/seis-core/runtime/plugin-catalog.mjs
     - plugins/seis-core/runtime/plugin-surface.mjs
     - scripts/create-seis-public-plugin-family.mjs
@@ -108,6 +110,7 @@ requirements:
   - generate marketplace and bundle artifacts from reviewed source data
   - generate a public selection guide with a canonical default, six fast starter paths, and all curated journeys without adding marketplace cards
   - recommend only one initial optional bundle for a known journey and fail closed on tampered guide data or unknown journey input
+  - let the terminal installer turn one known journey into a plan-only canonical-plus-one-bundle selection while keeping the default canonical-only and requiring explicit --apply for external installation
   - keep marketplace card counts separate from retained source capability counts in every current contract
   - preserve historical wave snapshots while labeling them as historical rather than current distribution proof
 
@@ -131,6 +134,7 @@ acceptance_criteria:
   - current project, catalog, install-state, permission, Apple/Swift, and continuity evidence consistently reports 34 cards and 380 retained source capabilities
   - the selection guide covers all 33 optional bundles exactly once across 19 journeys and keeps six distinct starter paths
   - the canonical SEIS-Agent MCP reports the curated 34-card marketplace as ready and recommends at most one initial optional bundle without installation or external access
+  - the terminal installer keeps its default plan to SEIS-Agent alone, accepts only one validated known journey for one initial optional bundle, and rejects bulk, arbitrary-bundle, duplicate-journey, and implicit-apply paths
 
 definition_of_ready:
   - the canonical plugin-root repository and branch are known

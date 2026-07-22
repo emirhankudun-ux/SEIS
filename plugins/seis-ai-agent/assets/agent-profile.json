@@ -83,6 +83,20 @@
     "entrypoint": "node scripts/install-seis-ai-agent.mjs",
     "packageScript": "npm run install:seis-ai-agent",
     "defaultTarget": "seis-ai-agent@seis-repo",
+    "optionalJourneySelection": {
+      "guide": "assets/public-bundle-selection-guide.json",
+      "argument": "--journey <known-journey-id>",
+      "defaultTargetCount": 1,
+      "maximumOptionalBundleSelectionsPerTask": 1,
+      "planOnlyByDefault": true,
+      "applyRequiresExplicitFlag": true,
+      "rejections": [
+        "arbitrary-bundle-id",
+        "multiple-journeys",
+        "bulk-selection",
+        "continuation-bundles"
+      ]
+    },
     "platforms": [
       "macos",
       "windows",

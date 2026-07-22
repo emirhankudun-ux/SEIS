@@ -34,6 +34,7 @@ const marketplace = readJson(".agents/plugins/marketplace.json", "repo marketpla
 const bundleCatalog = readJson("content/development/seis-public-plugin-bundle-catalog.json", "public bundle catalog");
 const integration = pluginIntegrationStatus(root);
 const installer = runInstallerCheck();
+const securityJourneyInstaller = runInstallerCheck(["--journey", "security"]);
 const retiredCompatibilityInstaller = runInstallerCheck(["--with-standalone-lanes"]);
 
 const entries = Array.isArray(publicFamily?.marketplace?.entries) ? publicFamily.marketplace.entries : [];
@@ -188,6 +189,9 @@ ensure(installer.payload?.primaryInstallId === "seis-ai-agent@seis-repo", "insta
 ensure(installer.payload?.defaultInstallMode === "single-public-plugin", "installer must default to one public plugin");
 ensure(installer.payload?.targets?.length === 1, "default installer plan must contain only SEIS-Agent");
 ensure(installer.payload?.targets?.[0] === "seis-ai-agent@seis-repo", "default installer target must be SEIS-Agent");
+ensure(securityJourneyInstaller.ok, "known journey installer check-only command must succeed");
+ensure(securityJourneyInstaller.payload?.targets?.length === 2 && securityJourneyInstaller.payload?.targets?.[0] === "seis-ai-agent@seis-repo" && securityJourneyInstaller.payload?.targets?.[1] === "seis-application-bundle-03@seis-repo", "known journey installer plan must add only the Security bundle");
+ensure(securityJourneyInstaller.payload?.bundleSelection?.selectionMode === "one-explicit-optional-bundle" && securityJourneyInstaller.payload?.bundleSelection?.selectedJourney?.id === "security" && securityJourneyInstaller.payload?.bundleSelection?.maximumOptionalBundleSelectionsPerTask === 1 && securityJourneyInstaller.payload?.bundleSelection?.bulkInstallAllowed === false, "known journey installer plan must preserve the one-bundle boundary");
 ensure(!retiredCompatibilityInstaller.ok, "retired standalone lane installer option must be rejected");
 
 const smokeTargetNames = [...canonicalNames, ...(selectedBundle ? [selectedBundle.id] : [])];

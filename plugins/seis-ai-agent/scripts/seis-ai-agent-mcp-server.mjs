@@ -571,6 +571,12 @@ function publicBundleRecommendation(input) {
     },
     recommendedOptionalBundle: journey.initialBundle,
     continuationBundleIds: journey.continuationBundleIds,
+    terminalInstall: {
+      planCommand: `npm run install:seis-ai-agent -- --journey ${journey.id}`,
+      applyCommand: `npm run install:seis-ai-agent -- --apply --journey ${journey.id}`,
+      planOnlyByDefault: true,
+      applyRequiresExplicitFlag: true,
+    },
     selectionBoundary: {
       maximumOptionalBundleSelectionsPerTask: guide.selectionBoundary.maximumOptionalBundleSelectionsPerTask,
       bulkInstallAllowed: guide.selectionBoundary.bulkInstallAllowed,
@@ -579,7 +585,8 @@ function publicBundleRecommendation(input) {
     },
     nextSteps: [
       "Start with SEIS-Agent as the canonical public entry point.",
-      `Use ${journey.initialBundle.installId} only if this journey directly matches the current task.`,
+      `Review the one-bundle plan with npm run install:seis-ai-agent -- --journey ${journey.id}.`,
+      `Use ${journey.initialBundle.installId} only if this journey directly matches the current task, and run --apply only after review.`,
       "Do not bulk-install bundles or members; scope a later continuation bundle as a separate task.",
       "Require explicit human approval for writes, deployment, credentials, destructive actions, or publication.",
     ],

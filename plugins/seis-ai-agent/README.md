@@ -33,9 +33,31 @@ an installer, provider connection, deployment, or write action.
 
 ## Install
 
+The default plan remains one canonical public plugin:
+
 ```bash
 npm run install:seis-ai-agent
 ```
+
+To turn one known selection journey into a reviewable two-target plan, pass the
+journey ID from the public guide. This remains plan-only and does not install
+anything:
+
+```bash
+npm run install:seis-ai-agent -- --journey security
+```
+
+Only after reviewing the plan and receiving explicit human approval, an operator
+may add `--apply` for that same one journey:
+
+```bash
+npm run install:seis-ai-agent -- --apply --journey security
+```
+
+The installer rejects arbitrary bundle IDs, multiple journeys, bulk selection,
+and the retired standalone-lane option. A journey can add only its validated
+first optional bundle alongside `seis-ai-agent@seis-repo`; it never auto-installs
+bundle members or later continuation bundles.
 
 The repo preserves `seis`, `seis-cloud`, `seis-code`, `seis-design`,
 `seis-data`, `seis-security`, `seis-research`, `seis-automation`, and

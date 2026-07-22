@@ -60,6 +60,18 @@ first optional bundle for a known journey. These tools are guidance only: they
 never install a package, automatically select a continuation bundle, or perform
 an external action.
 
+The terminal installer can carry that known journey into a plan without adding
+new marketplace cards or searching for a bundle manually:
+
+```bash
+npm run install:seis-ai-agent -- --journey security
+```
+
+This plan contains `seis-ai-agent@seis-repo` and only the journey's validated
+first optional bundle. It does not install anything. Use `--apply` only after
+review and explicit human approval; the installer rejects arbitrary bundle IDs,
+multiple journeys, bulk selection, and continuation bundles.
+
 ## Embedded Specialist Lanes
 
 | Lane | Responsibility |

@@ -129,6 +129,8 @@ ensure(profile?.applicationSourceBoundary?.sourceCapabilityCount === 380, "profi
 ensure(profile?.applicationSourceBoundary?.publicReleaseAllowed === false, "app-owned plugins must remain public-release gated");
 ensure(profile?.applicationSourceBoundary?.coreSourceOwner === false, "profile must keep packages/seis-ai out of app source ownership");
 ensure(profile?.terminalInstall?.defaultTarget === "seis-ai-agent@seis-repo", "profile must keep SEIS-Agent as terminal default target");
+ensure(profile?.terminalInstall?.optionalJourneySelection?.guide === "assets/public-bundle-selection-guide.json" && profile?.terminalInstall?.optionalJourneySelection?.argument === "--journey <known-journey-id>" && profile?.terminalInstall?.optionalJourneySelection?.defaultTargetCount === 1 && profile?.terminalInstall?.optionalJourneySelection?.maximumOptionalBundleSelectionsPerTask === 1 && profile?.terminalInstall?.optionalJourneySelection?.planOnlyByDefault === true && profile?.terminalInstall?.optionalJourneySelection?.applyRequiresExplicitFlag === true, "profile must declare the bounded optional journey installer contract");
+ensure(["arbitrary-bundle-id", "multiple-journeys", "bulk-selection", "continuation-bundles"].every((rejection) => profile?.terminalInstall?.optionalJourneySelection?.rejections?.includes(rejection)), "profile must reject unsafe optional journey install paths");
 for (const name of ["seis", "seis-governance", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-security", "seis-research", "seis-automation", "seis-product"]) ensure(profile?.composedLanes?.includes(name), `profile missing lane ${name}`);
 for (const name of ["seis-ai-agent", "seis-governance", "seis-hub", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-security", "seis-research", "seis-automation", "seis-product"]) ensure(profile?.consolidationPolicy?.embeddedSkills?.includes(name), `profile missing embedded skill ${name}`);
 for (const platform of ["macos", "windows", "linux"]) ensure(profile?.terminalInstall?.platforms?.includes(platform), `profile missing ${platform}`);
@@ -189,9 +191,12 @@ contains("scripts/install-seis-ai-agent.mjs", "plan-only", "installer must defau
 contains("scripts/install-seis-ai-agent.mjs", "curated public bundles", "installer must document curated public bundle policy");
 contains("scripts/install-seis-ai-agent.mjs", "single-public-plugin", "installer must default to one public plugin");
 contains("scripts/install-seis-ai-agent.mjs", "standalone lane installation is retired", "installer must reject standalone lane installation");
+contains("scripts/install-seis-ai-agent.mjs", "--journey", "installer must support one explicit selection journey");
+contains("scripts/install-seis-ai-agent.mjs", "one-explicit-optional-bundle", "installer must label the one-bundle selection mode");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "publicPluginCount", "install smoke checker must report public plugin count");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "--require-installed", "install smoke checker must support local installed-cache enforcement");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "--mcp-smoke", "install smoke checker must support installed MCP server smoke checks");
+contains("scripts/check-seis-public-plugin-install-smoke.mjs", "securityJourneyInstaller", "install smoke checker must validate one known journey plan");
 contains("scripts/create-seis-topic-plugin-family.mjs", "TOPIC_PLUGIN_TARGET", "topic package generator must enforce the objective target");
 contains("plugins/seis-topics/runtime/topic-plugin-runtime.mjs", "local-read-only", "topic runtime must preserve read-only mode");
 contains("scripts/create-seis-public-plugin-lifecycle.mjs", "fresh task reload proof", "lifecycle generator must keep fresh task reload proof as a public preview gate");
@@ -224,16 +229,29 @@ contains("docs/platform/seis-ai-agent.md", "server-upload-runbook.md", "platform
 contains("docs/platform/seis-ai-agent.md", "server-target-selection.md", "platform doc must reference server target selection playbook");
 contains("docs/platform/seis-ai-agent.md", "Public selection guide", "platform doc must explain the public selection guide");
 contains("docs/platform/seis-ai-agent.md", "seis_public_bundle_recommend", "platform doc must name the bounded recommendation tool");
+contains("docs/platform/seis-ai-agent.md", "--journey security", "platform doc must explain the bounded terminal journey plan");
+contains("docs/roadmap/SEIS_PUBLIC_PLUGIN_SELECTION_GUIDE.md", "Optional terminal plan", "selection guide must explain the bounded terminal journey plan");
+contains("plugins/seis-ai-agent/README.md", "--journey security", "SEIS-Agent README must explain the bounded terminal journey plan");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_ai_agent_status", "MCP server must expose status tool");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "SEIS-Data: memory, context systems", "MCP server must route memory/context through SEIS-Data");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_agent_lanes", "MCP server must expose embedded lane inventory");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_public_bundle_guide", "MCP server must expose the public bundle guide");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_public_bundle_recommend", "MCP server must expose bounded public bundle recommendation");
+contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "terminalInstall", "MCP server must expose the bounded terminal plan metadata");
 for (const tool of ["seis_hub_status", "seis_hub_plan", "seis_governance_status", "seis_governance_plan", "seis_cloud_status", "seis_cloud_plan", "seis_code_status", "seis_code_plan", "seis_design_status", "seis_design_plan", "seis_data_status", "seis_data_plan", "seis_security_status", "seis_security_plan", "seis_research_status", "seis_research_plan", "seis_automation_status", "seis_automation_plan", "seis_product_status", "seis_product_plan"]) {
   contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", tool, `MCP server must expose ${tool}`);
 }
-validateInstallerPlan([]);
+validateInstallerPlan();
+validateInstallerPlan(["--journey", "security"], {
+  journeyId: "security",
+  optionalInstallId: "seis-application-bundle-03@seis-repo",
+});
 validateRetiredInstallerOption();
+validateInstallerJourneyRejection(["--journey", "../unsafe"], "--journey must be a known public selection journey");
+validateInstallerJourneyRejection(["--journey", "not-a-real-journey"], "--journey must resolve to one validated initial optional bundle");
+validateInstallerJourneyRejection(["--journey", "security", "--journey", "ai-data"], "only one --journey may be supplied");
+validateInstallerJourneyRejection(["--bundle", "seis-application-bundle-03"], "unsupported option: --bundle");
+validateInstallerJourneyRejection(["--apply", "--check-only"], "--apply cannot be combined with --check-only");
 validateMcpSmoke();
 if (failures.length) { console.error("SEIS-AI Agent check failed:"); for (const failure of failures) console.error(`- ${failure}`); process.exit(1); }
 console.log("SEIS-AI Agent check passed.");
@@ -268,7 +286,7 @@ function validateSelectionGuide(guide, agentGuide, catalog) {
     ensure(Boolean(journey) && starter?.journeyLabel === journey?.label && starter?.initialBundle?.id === journey?.initialBundle?.id, `selection guide starter path is invalid: ${starter?.journeyId || "unknown"}`);
   }
 }
-function validateInstallerPlan(extraArgs) {
+function validateInstallerPlan(extraArgs = [], expected = {}) {
   const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", ...extraArgs], { cwd: root, encoding: "utf8", timeout: 5000 });
   if (result.error) {
     failures.push(`installer plan failed: ${result.error.message}`);
@@ -286,6 +304,9 @@ function validateInstallerPlan(extraArgs) {
     return;
   }
   const targets = payload?.readiness?.targets || [];
+  const selection = payload?.readiness?.bundleSelection || {};
+  const optionalInstallId = expected.optionalInstallId || null;
+  const journeyId = expected.journeyId || null;
   ensure(payload?.mode === "plan-only", "installer must default to plan-only");
   ensure(targets[0] === "seis-ai-agent@seis-repo", "installer first target must be seis-ai-agent@seis-repo");
   ensure(payload?.readiness?.primaryInstallId === "seis-ai-agent@seis-repo", "installer readiness must expose primary install id");
@@ -305,13 +326,34 @@ function validateInstallerPlan(extraArgs) {
   ensure(payload?.readiness?.canonicalization?.effectivePluginCount === 1, "installer must expose one canonical public plugin");
   ensure(payload?.readiness?.canonicalization?.legacyAliasCount === 5, "installer must preserve five legacy aliases");
   ensure(payload?.readiness?.canonicalization?.personalMarketplaceMutation === false, "installer must not mutate the personal marketplace");
-  ensure(targets.length === 1, "installer plan must install only SEIS-Agent");
+  ensure(selection?.guidePath === "content/development/seis-public-plugin-selection-guide.json", "installer must point at the public selection guide");
+  ensure(selection?.maximumOptionalBundleSelectionsPerTask === 1 && selection?.bulkInstallAllowed === false && selection?.bundleMembersAutoInstalled === false, "installer must preserve the one-bundle safety boundary");
+  ensure(selection?.applyRequiresExplicitFlag === true, "installer must require an explicit apply flag");
+  ensure(selection?.requestedJourneyId === journeyId, "installer journey selection must match the requested plan");
+  if (optionalInstallId) {
+    ensure(selection?.selectionMode === "one-explicit-optional-bundle", "installer journey plan must declare one explicit optional bundle");
+    ensure(selection?.selectedJourney?.id === journeyId, "installer journey plan must expose the selected journey");
+    ensure(selection?.selectedJourney?.initialBundle?.installId === optionalInstallId, "installer journey plan must expose the validated initial bundle");
+    ensure(targets.length === 2 && targets[1] === optionalInstallId, "installer journey plan must add only the selected initial bundle");
+    ensure(payload?.planCommand === `npm run install:seis-ai-agent -- --journey ${journeyId}`, "installer journey plan command is invalid");
+    ensure(payload?.applyCommand === `npm run install:seis-ai-agent -- --apply --journey ${journeyId}`, "installer journey apply command is invalid");
+  } else {
+    ensure(selection?.selectionMode === "canonical-only" && selection?.selectedJourney === null, "default installer plan must not select an optional bundle");
+    ensure(targets.length === 1, "default installer plan must install only SEIS-Agent");
+    ensure(payload?.planCommand === "npm run install:seis-ai-agent", "default installer plan command is invalid");
+    ensure(payload?.applyCommand === "npm run install:seis-ai-agent -- --apply", "default installer apply command is invalid");
+  }
   ensure(targets.every((target) => target.endsWith("@seis-repo")), "installer targets must remain canonical repo identities");
 }
 function validateRetiredInstallerOption() {
   const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", "--with-standalone-lanes"], { cwd: root, encoding: "utf8", timeout: 5000 });
   ensure(result.status !== 0, "installer must reject the retired standalone-lane option");
   ensure(String(result.stderr || result.stdout).includes("standalone lane installation is retired"), "retired standalone-lane option must explain the single-plugin migration");
+}
+function validateInstallerJourneyRejection(args, expectedMessage) {
+  const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", ...args], { cwd: root, encoding: "utf8", timeout: 5000 });
+  ensure(result.status !== 0, `installer must reject unsafe journey arguments: ${args.join(" ")}`);
+  ensure(String(result.stderr || result.stdout).includes(expectedMessage), `installer rejection must explain unsafe journey arguments: ${args.join(" ")}`);
 }
 function frame(message) {
   const body = JSON.stringify(message);
@@ -383,5 +425,6 @@ function validateMcpSmoke() {
   ensure(guide?.status === "ready" && guide?.canonicalInstall === "seis-ai-agent@seis-repo" && guide?.starterPaths?.length === 6 && guide?.journeys?.length === 19, "MCP public bundle guide must expose the bounded selection surface");
   const recommendation = responses.find((response) => response.id === 12)?.result;
   ensure(recommendation?.status === "ready" && recommendation?.recommendedOptionalBundle?.id === "seis-application-bundle-04" && recommendation?.selectionBoundary?.maximumOptionalBundleSelectionsPerTask === 1 && recommendation?.selectionBoundary?.bulkInstallAllowed === false, "MCP bundle recommendation must return one bounded initial bundle");
+  ensure(recommendation?.terminalInstall?.planCommand === "npm run install:seis-ai-agent -- --journey developer-engineering" && recommendation?.terminalInstall?.applyCommand === "npm run install:seis-ai-agent -- --apply --journey developer-engineering" && recommendation?.terminalInstall?.planOnlyByDefault === true && recommendation?.terminalInstall?.applyRequiresExplicitFlag === true, "MCP bundle recommendation must expose a bounded plan and explicit apply command");
   ensure(responses.find((response) => response.id === 13)?.error?.code === -32602, "MCP bundle recommendation must reject invalid journey input");
 }
