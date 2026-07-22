@@ -26,10 +26,14 @@ scoped task, select at most one optional bundle; each has no more than 15 source
 capabilities, never bulk-installs members, and leaves its source packages in the
 repository.
 
-Use the local read-only MCP tools `seis_public_bundle_guide` and
-`seis_public_bundle_recommend` to see six starter paths, all 19 journeys, and
-the first optional bundle for a chosen journey. The guide is a decision aid, not
-an installer, provider connection, deployment, or write action.
+Use the local read-only MCP tool `seis_public_bundle_find` when the user has a
+short need statement rather than a known journey ID. It returns at most three
+deterministic candidates from generated public metadata, never installs a
+package, and never contacts an external service. Then use
+`seis_public_bundle_guide` to inspect the six starter paths or all 19 journeys,
+and `seis_public_bundle_recommend` to return only the first optional bundle for
+one chosen journey. These tools are decision aids, not installer, provider
+connection, deployment, or write actions.
 
 ## Install
 
@@ -72,6 +76,7 @@ are curated task selections, not replacements for those retained source modules.
 - `seis_ai_agent_plan`
 - `seis_agent_lanes`
 - `seis_public_bundle_guide`
+- `seis_public_bundle_find`
 - `seis_public_bundle_recommend`
 - `seis_hub_status`
 - `seis_hub_plan`

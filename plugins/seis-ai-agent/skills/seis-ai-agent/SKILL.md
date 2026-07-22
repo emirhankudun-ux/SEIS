@@ -21,6 +21,7 @@ source mirrors behind the unified agent.
 - Default install mode: `seis-ai-agent@seis-repo`, then at most one optional bounded bundle for a scoped task
 - Public marketplace: 34 cards (one canonical SEIS-Agent card plus 33 optional bundles), never hundreds of direct source cards
 - Public bundle guide: `assets/public-bundle-selection-guide.json`
+- Local public bundle finder: `seis_public_bundle_find` accepts one short need statement and returns at most three candidates without installation or external access
 - Optional terminal plan: `npm run install:seis-ai-agent -- --journey <known-journey-id>`; it remains plan-only until a separately confirmed `--apply`
 - Unified suite: `assets/unified-suite.json`
 - Composed lanes: `seis`, `seis-governance`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`, `seis-security`, `seis-research`, `seis-automation`, `seis-product`
@@ -35,7 +36,7 @@ source mirrors behind the unified agent.
 ## Unified Workflow
 
 1. Inspect repo safety first: `git status --short`, `git branch --show-current`, and `git remote -v`.
-2. If the task needs an optional public bundle, call `seis_public_bundle_guide` or `seis_public_bundle_recommend`; select no more than one matching initial bundle and never bulk-install its members. Use `npm run install:seis-ai-agent -- --journey <known-journey-id>` only to review the bounded plan; require explicit human approval before adding `--apply`.
+2. If the task needs an optional public bundle but no journey ID is known, call `seis_public_bundle_find` with one short need statement; it returns at most three local deterministic candidates and does not install anything. Then call `seis_public_bundle_guide` or `seis_public_bundle_recommend` for one chosen journey; select no more than one matching initial bundle and never bulk-install its members. Use `npm run install:seis-ai-agent -- --journey <known-journey-id>` only to review the bounded plan; require explicit human approval before adding `--apply`.
 3. Classify the request into the smallest useful lane:
    - SEIS for governance, repository consolidation, architecture, docs, migration safety, and GitHub readiness.
    - SEIS-Cloud for cloud deployment readiness, public cloud, team/workplace VPN cloud, server targets, preflight, secrets hygiene, and rollback.
@@ -53,7 +54,7 @@ source mirrors behind the unified agent.
 - Use `seis-ai-agent@seis-repo` as the canonical install and user-facing plugin.
 - Treat focused lane packages as embedded source modules, never as direct standalone public installs.
 - Keep the public marketplace to one canonical card plus reviewed optional bundles of no more than 15 capabilities; use one optional bundle per scoped task.
-- Use `seis_public_bundle_guide` or `seis_public_bundle_recommend` before expanding the selection surface; no guide response may install a package, use a network service, or change a repository.
+- Use `seis_public_bundle_find`, `seis_public_bundle_guide`, or `seis_public_bundle_recommend` before expanding the selection surface; finder and guide responses are local read-only decision aids and may not install a package, use a network service, or change a repository.
 - Never pass an arbitrary bundle ID to the terminal installer. It accepts exactly one known `--journey`, derives only its first validated optional bundle, and keeps the default target as SEIS-Agent alone.
 - Do not remove, disable, replace, or rewrite the old `personal` SEIS plugin family without explicit human approval.
 - Keep specialist source mirrors in `plugins/` so their skills, MCP servers, lane profiles, and validation contracts stay testable inside the repo.

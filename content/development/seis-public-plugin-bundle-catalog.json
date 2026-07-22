@@ -35,6 +35,16 @@
     "documentationPath": "docs/roadmap/SEIS_PUBLIC_PLUGIN_SELECTION_GUIDE.md",
     "starterPathCount": 6,
     "journeyCount": 19,
+    "finder": {
+      "id": "seis-public-bundle-finder",
+      "mode": "local-deterministic-token-match",
+      "maximumResults": 3,
+      "maximumQueryLength": 96,
+      "maximumSearchTermsPerJourney": 96,
+      "externalAccess": false,
+      "installation": false,
+      "sourceTermsReturned": false
+    },
     "maximumOptionalBundleSelectionsPerTask": 1
   },
   "bundles": [

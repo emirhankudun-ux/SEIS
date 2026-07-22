@@ -24,6 +24,12 @@ const GENERATED_AT = "2026-07-22";
 const BUNDLE_VERSION = "0.1.0";
 const MAX_GENERATOR_INPUT_BYTES = 16 * 1024 * 1024;
 const MAX_GENERATED_FILE_BYTES = 2 * 1024 * 1024;
+const FINDER_MAX_RESULTS = 3;
+const FINDER_MAX_QUERY_LENGTH = 96;
+const FINDER_MAX_TERMS_PER_JOURNEY = 96;
+const FINDER_STOP_WORDS = new Set([
+  "a", "an", "and", "application", "applications", "at", "bundle", "bundles", "by", "for", "from", "in", "into", "is", "on", "only", "or", "plugin", "plugins", "public", "repo", "repository", "seis", "source", "sources", "task", "tasks", "the", "to", "topic", "topics", "with",
+]);
 const STARTER_PATHS = Object.freeze([
   Object.freeze({
     journeyId: "ai-data",
@@ -95,6 +101,7 @@ const catalog = {
     documentationPath: SELECTION_GUIDE_DOCUMENT_PATH,
     starterPathCount: selectionGuide.starterPaths.length,
     journeyCount: selectionGuide.journeys.length,
+    finder: selectionGuide.finder,
     maximumOptionalBundleSelectionsPerTask: selectionGuide.selectionBoundary.maximumOptionalBundleSelectionsPerTask,
   },
   bundles: bundles.map((bundle) => ({
@@ -207,6 +214,7 @@ function validateBundleFamily(publicFamily, candidateBundles) {
 
 function buildSelectionGuide(publicFamily, candidateBundles) {
   const journeysById = new Map();
+  const starterByJourneyId = new Map(STARTER_PATHS.map((starter) => [starter.journeyId, starter]));
   for (const bundle of candidateBundles) {
     const current = journeysById.get(bundle.journeyId) || [];
     current.push(bundle);
@@ -224,6 +232,7 @@ function buildSelectionGuide(publicFamily, candidateBundles) {
       initialBundle: selectionBundleReference(first),
       continuationBundleIds: ordered.slice(1).map((bundle) => bundle.id),
       bundleIds: ordered.map((bundle) => bundle.id),
+      searchTerms: searchTermsForJourney(first, ordered, starterByJourneyId.get(first.journeyId)),
       selectionInstruction: "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task.",
     };
   });
@@ -262,9 +271,19 @@ function buildSelectionGuide(publicFamily, candidateBundles) {
       sourcePackagesRetained: true,
       continuationPolicy: "Continue with a later bundle only after the current task is separately scoped and reviewed.",
     },
+    finder: {
+      id: "seis-public-bundle-finder",
+      mode: "local-deterministic-token-match",
+      maximumResults: FINDER_MAX_RESULTS,
+      maximumQueryLength: FINDER_MAX_QUERY_LENGTH,
+      maximumSearchTermsPerJourney: FINDER_MAX_TERMS_PER_JOURNEY,
+      externalAccess: false,
+      installation: false,
+      sourceTermsReturned: false,
+    },
     defaultWorkflow: [
       "Install or open SEIS-Agent as the canonical public starting point.",
-      "Choose one starter path or one matching journey.",
+      "Use the local journey finder for a short need statement, or choose one starter path or matching journey.",
       "Use only its initial optional bundle for the current scoped task.",
       "Keep source packages retained in the repository and require explicit approval for writes, deployment, credentials, or publication.",
     ],
@@ -302,6 +321,35 @@ function selectionBundleReference(bundle) {
   };
 }
 
+function searchTermsForJourney(firstBundle, orderedBundles, starter) {
+  return normalizedSearchTerms([
+    firstBundle.journeyId,
+    firstBundle.journeyLabel,
+    firstBundle.family,
+    ...orderedBundles.flatMap((bundle) => [
+      bundle.category,
+      ...(Array.isArray(bundle.categoryLabels) ? bundle.categoryLabels : []),
+      ...bundle.members.map((member) => member?.name),
+    ]),
+    starter?.intent || "",
+  ]).slice(0, FINDER_MAX_TERMS_PER_JOURNEY);
+}
+
+function normalizedSearchTerms(values) {
+  const terms = [];
+  const seen = new Set();
+  for (const value of values.flat()) {
+    if (typeof value !== "string") continue;
+    const normalized = value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    for (const token of normalized.match(/[a-z0-9]+/g) || []) {
+      if (token.length < 2 || token.length > 64 || FINDER_STOP_WORDS.has(token) || seen.has(token)) continue;
+      seen.add(token);
+      terms.push(token);
+    }
+  }
+  return terms;
+}
+
 function validateSelectionGuide(guide, publicFamily, candidateBundles) {
   assert(guide?.id === "seis-public-plugin-selection-guide", "selection guide identifier is invalid");
   assert(guide?.canonicalInstall === "seis-ai-agent@seis-repo", "selection guide must keep SEIS-Agent canonical");
@@ -313,6 +361,10 @@ function validateSelectionGuide(guide, publicFamily, candidateBundles) {
   assert(guide?.selectionBoundary?.bulkInstallAllowed === false, "selection guide must reject bulk install");
   assert(guide?.selectionBoundary?.bundleMembersAutoInstalled === false, "selection guide must not auto-install bundle members");
   assert(guide?.selectionBoundary?.sourcePackagesRetained === true, "selection guide must retain source packages");
+  assert(guide?.finder?.id === "seis-public-bundle-finder", "selection guide finder identifier is invalid");
+  assert(guide?.finder?.mode === "local-deterministic-token-match", "selection guide finder mode is invalid");
+  assert(guide?.finder?.maximumResults === FINDER_MAX_RESULTS && guide?.finder?.maximumQueryLength === FINDER_MAX_QUERY_LENGTH && guide?.finder?.maximumSearchTermsPerJourney === FINDER_MAX_TERMS_PER_JOURNEY, "selection guide finder bounds are invalid");
+  assert(guide?.finder?.externalAccess === false && guide?.finder?.installation === false && guide?.finder?.sourceTermsReturned === false, "selection guide finder permission boundary is invalid");
   assert(Array.isArray(guide?.journeys) && guide.journeys.length === 19, "selection guide must expose the nineteen curated journeys");
   assert(Array.isArray(guide?.starterPaths) && guide.starterPaths.length === STARTER_PATHS.length, "selection guide starter paths are inconsistent");
   const knownBundleIds = new Set(candidateBundles.map((bundle) => bundle.id));
@@ -330,6 +382,8 @@ function validateSelectionGuide(guide, publicFamily, candidateBundles) {
     assert(journey.initialBundle?.memberCount === expected[0].memberCount && journey.initialBundle?.journeyPart === 1 && journey.initialBundle?.journeyPartCount === expected[0].journeyPartCount, `selection guide initial bundle boundary is inconsistent: ${journey.id}`);
     assert(Array.isArray(journey.continuationBundleIds) && journey.continuationBundleIds.length === expected.length - 1, `selection guide continuation count is inconsistent: ${journey.id}`);
     assert(journey.bundleIds.every((id, index) => id === expected[index].id), `selection guide bundle order is inconsistent: ${journey.id}`);
+    const expectedSearchTerms = searchTermsForJourney(expected[0], expected, STARTER_PATHS.find((starter) => starter.journeyId === journey.id));
+    assert(expectedSearchTerms.length > 0 && JSON.stringify(journey.searchTerms) === JSON.stringify(expectedSearchTerms), `selection guide finder terms are inconsistent: ${journey.id}`);
   }
   for (const starter of guide.starterPaths) {
     const journey = guide.journeys.find((candidate) => candidate.id === starter?.journeyId);
@@ -354,6 +408,10 @@ function selectionGuideMarkdown(guide) {
     `2. Pick one of the ${guide.starterPaths.length} starter paths below, or the closest of ${guide.journeys.length} journeys.`,
     `3. Select at most one optional bundle for the current task; every bundle contains no more than ${guide.marketplace.maximumBundleSize} retained source capabilities.`,
     "4. Treat a continuation bundle as a later, separately scoped task rather than a bulk installation.",
+    "",
+    "## Local journey finder",
+    "",
+    `Use the read-only \`seis_public_bundle_find\` MCP tool when you have a short need statement instead of a known journey ID. It performs a local deterministic match against generated public metadata, returns at most ${guide.finder.maximumResults} journey candidates, never exposes source terms in the response, and never installs or contacts an external service. For example, a query such as \`SBOM supply chain\` can lead to a bounded Security journey candidate; then call \`seis_public_bundle_recommend\` with that returned journey ID before reviewing any plan.`,
     "",
     "## Optional terminal plan",
     "",

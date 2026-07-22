@@ -161,6 +161,14 @@ test("generates a bounded public selection guide without adding marketplace card
   assert.equal(guide.selectionBoundary.bulkInstallAllowed, false);
   assert.equal(guide.selectionBoundary.bundleMembersAutoInstalled, false);
   assert.equal(guide.selectionBoundary.sourcePackagesRetained, true);
+  assert.equal(guide.finder.id, "seis-public-bundle-finder");
+  assert.equal(guide.finder.mode, "local-deterministic-token-match");
+  assert.equal(guide.finder.maximumResults, 3);
+  assert.equal(guide.finder.maximumQueryLength, 96);
+  assert.equal(guide.finder.maximumSearchTermsPerJourney, 96);
+  assert.equal(guide.finder.externalAccess, false);
+  assert.equal(guide.finder.installation, false);
+  assert.equal(guide.finder.sourceTermsReturned, false);
   assert.equal(guide.starterPaths.length, 6);
   assert.equal(guide.journeys.length, 19);
   assert.equal(new Set(guide.journeys.map((journey) => journey.id)).size, 19);
@@ -176,6 +184,9 @@ test("generates a bounded public selection guide without adding marketplace card
     assert.equal(journey.initialBundle.journeyPart, 1, `${journey.id}: initial part`);
     assert.ok(journey.initialBundle.memberCount > 0 && journey.initialBundle.memberCount <= SEIS_PUBLIC_BUNDLE_SIZE, `${journey.id}: bundle size`);
     assert.equal(journey.continuationBundleIds.length, journey.bundleIds.length - 1, `${journey.id}: continuation count`);
+    assert.ok(Array.isArray(journey.searchTerms) && journey.searchTerms.length > 0 && journey.searchTerms.length <= 96, `${journey.id}: finder terms`);
+    assert.equal(new Set(journey.searchTerms).size, journey.searchTerms.length, `${journey.id}: finder terms unique`);
+    assert.ok(journey.searchTerms.every((term) => /^[a-z0-9]{2,64}$/.test(term)), `${journey.id}: finder terms safe`);
   }
   for (const starter of guide.starterPaths) {
     const journey = guide.journeys.find((candidate) => candidate.id === starter.journeyId);
@@ -204,6 +215,64 @@ test("SEIS-Agent rejects a tampered public bundle selection guide", (context) =>
   assert.equal(responses.length, 1);
   assert.equal(responses[0].error.code, -32603);
   assert.match(responses[0].error.message, /unavailable or unsafe/i);
+});
+
+test("SEIS-Agent rejects a tampered public bundle finder index", (context) => {
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), "seis-agent-finder-"));
+  context.after(() => fs.rmSync(temporaryRoot, { recursive: true, force: true }));
+  fs.cpSync(agentRoot, temporaryRoot, { recursive: true });
+  const guidePath = path.join(temporaryRoot, "assets/public-bundle-selection-guide.json");
+  const guide = readJson(guidePath);
+  guide.journeys[0].searchTerms = [];
+  fs.writeFileSync(guidePath, `${JSON.stringify(guide, null, 2)}\n`, "utf8");
+
+  const result = runAgentRuntime(frame({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "tools/call",
+    params: { name: "seis_public_bundle_find", arguments: { query: "AI data" } },
+  }), temporaryRoot);
+  assert.equal(result.status, 0, result.stderr);
+  const responses = parseFrames(result.stdout);
+  assert.equal(responses.length, 1);
+  assert.equal(responses[0].error.code, -32603);
+  assert.match(responses[0].error.message, /unavailable or unsafe/i);
+});
+
+test("SEIS-Agent finds at most three local public bundle candidates", () => {
+  const result = runAgentRuntime([
+    frame({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "tools/call",
+      params: { name: "seis_public_bundle_find", arguments: { query: "SBOM supply chain" } },
+    }),
+    frame({
+      jsonrpc: "2.0",
+      id: 2,
+      method: "tools/call",
+      params: { name: "seis_public_bundle_find", arguments: { query: "qzxyunmatched" } },
+    }),
+    frame({
+      jsonrpc: "2.0",
+      id: 3,
+      method: "tools/call",
+      params: { name: "seis_public_bundle_find", arguments: { query: "seis plugin" } },
+    }),
+  ].join(""));
+  assert.equal(result.status, 0, result.stderr);
+  const responses = parseFrames(result.stdout);
+  const matches = responses.find((response) => response.id === 1)?.result;
+  assert.equal(matches.status, "ready");
+  assert.equal(matches.finder.maximumResults, 3);
+  assert.equal(matches.finder.externalAccess, false);
+  assert.equal(matches.finder.installation, false);
+  assert.ok(matches.candidates.length > 0 && matches.candidates.length <= 3);
+  assert.ok(matches.candidates.some((candidate) => candidate.journey.id === "security"));
+  assert.ok(matches.candidates.every((candidate) => !Object.prototype.hasOwnProperty.call(candidate, "searchTerms")));
+  assert.equal(responses.find((response) => response.id === 2)?.result?.status, "no-match");
+  assert.equal(responses.find((response) => response.id === 2)?.result?.candidates?.length, 0);
+  assert.equal(responses.find((response) => response.id === 3)?.error?.code, -32602);
 });
 
 test("generated MCP runtime serves bounded read-only tools", () => {

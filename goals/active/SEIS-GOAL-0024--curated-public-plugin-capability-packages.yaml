@@ -51,6 +51,7 @@ scope:
     - content/development/seis-public-plugin-bundle-catalog.json
     - content/development/seis-public-plugin-selection-guide.json
     - content/development/seis-public-plugin-consolidation.json
+    - content/development/seis-public-plugin-wave-4-closeout.json
     - content/development/seis-project-manifest-audit.json
     - content/development/seis-mcp-permission-risk-matrix.json
     - content/development/seis-public-install-state.json
@@ -109,6 +110,7 @@ requirements:
   - validate runtime profiles against immutable generated bundle metadata
   - generate marketplace and bundle artifacts from reviewed source data
   - generate a public selection guide with a canonical default, six fast starter paths, and all curated journeys without adding marketplace cards
+  - provide a local deterministic journey finder that returns at most three candidates from generated public metadata without installation or external access
   - recommend only one initial optional bundle for a known journey and fail closed on tampered guide data or unknown journey input
   - let the terminal installer turn one known journey into a plan-only canonical-plus-one-bundle selection while keeping the default canonical-only and requiring explicit --apply for external installation
   - keep marketplace card counts separate from retained source capability counts in every current contract
@@ -133,6 +135,7 @@ acceptance_criteria:
   - focused generation, freshness, marketplace, integration, and test checks pass
   - current project, catalog, install-state, permission, Apple/Swift, and continuity evidence consistently reports 34 cards and 380 retained source capabilities
   - the selection guide covers all 33 optional bundles exactly once across 19 journeys and keeps six distinct starter paths
+  - the canonical SEIS-Agent MCP exposes a bounded local journey finder with at most three results, a 96-character query cap, no source-term return payload, no installation, and no external access
   - the canonical SEIS-Agent MCP reports the curated 34-card marketplace as ready and recommends at most one initial optional bundle without installation or external access
   - the terminal installer keeps its default plan to SEIS-Agent alone, accepts only one validated known journey for one initial optional bundle, and rejects bulk, arbitrary-bundle, duplicate-journey, and implicit-apply paths
 
@@ -236,7 +239,7 @@ risks:
     likelihood: medium
     impact: medium
     owner: documentation
-    mitigation: Keep SEIS-Agent as the canonical default, present six starter paths and 19 generated journeys, recommend one initial bundle only, and reject unknown or tampered guide data.
+    mitigation: Keep SEIS-Agent as the canonical default, present six starter paths and 19 generated journeys, offer a local deterministic finder capped at three candidates, recommend one initial bundle only, and reject unknown or tampered guide data.
     trigger: A user-facing guide, MCP response, or manifest permits multiple automatic bundle selections or exposes a raw source-card catalog.
     contingency: Revert the guide projection, preserve the 34-card marketplace, and restore the last validated one-bundle-at-a-time workflow.
     status: active
@@ -272,9 +275,11 @@ outputs:
   - exact-once coverage validation
   - security-hardened local MCP runtime template
   - canonical SEIS-Agent public bundle selection guide and bounded recommendation tools
+  - refreshed lifecycle closeout evidence for the generated bundle catalog
   - implementation and rollback documentation
 
 notes:
   - Local implementation and validation are complete enough for review; public release and independent external-runner proof remain separate gates.
   - GitHub issue, pull request, publication, and release actions require current human approval.
   - The 2026-07-22 usability increment adds six starter paths, 19 generated journeys, and a one-bundle-at-a-time SEIS-Agent recommendation boundary without expanding the 34-card marketplace.
+  - The current usability increment adds a local deterministic finder that returns at most three candidates before the existing exact journey recommendation step; it does not add marketplace cards, install packages, expose source terms, or access external services.

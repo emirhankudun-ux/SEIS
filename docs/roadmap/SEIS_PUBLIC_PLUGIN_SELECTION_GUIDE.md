@@ -13,6 +13,10 @@ Use this guide to choose a public SEIS Repo capability without browsing hundreds
 3. Select at most one optional bundle for the current task; every bundle contains no more than 15 retained source capabilities.
 4. Treat a continuation bundle as a later, separately scoped task rather than a bulk installation.
 
+## Local journey finder
+
+Use the read-only `seis_public_bundle_find` MCP tool when you have a short need statement instead of a known journey ID. It performs a local deterministic match against generated public metadata, returns at most 3 journey candidates, never exposes source terms in the response, and never installs or contacts an external service. For example, a query such as `SBOM supply chain` can lead to a bounded Security journey candidate; then call `seis_public_bundle_recommend` with that returned journey ID before reviewing any plan.
+
 ## Optional terminal plan
 
 The normal terminal plan remains only `seis-ai-agent@seis-repo`. To review the first optional bundle for one known journey without installing anything, use:

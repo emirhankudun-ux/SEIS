@@ -103,6 +103,16 @@
       "linux"
     ]
   },
+  "publicBundleFinder": {
+    "tool": "seis_public_bundle_find",
+    "guide": "assets/public-bundle-selection-guide.json",
+    "mode": "local-deterministic-token-match",
+    "maximumResults": 3,
+    "maximumQueryLength": 96,
+    "externalAccess": false,
+    "installation": false,
+    "nextAction": "Use one returned journey id with seis_public_bundle_recommend before reviewing any plan."
+  },
   "websiteRoadmap": {
     "releasePolicy": "Build the website only when SEIS-AI Agent is ready for a deliberate public release decision.",
     "direction": "Cinematic, premium, design-driven, accessible, responsive, and grounded in real SEIS product surfaces."

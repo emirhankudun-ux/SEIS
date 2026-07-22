@@ -55,10 +55,13 @@ The generated guide at
 [`docs/roadmap/SEIS_PUBLIC_PLUGIN_SELECTION_GUIDE.md`](../roadmap/SEIS_PUBLIC_PLUGIN_SELECTION_GUIDE.md)
 provides six fast starting paths and all 19 curated journeys. The same bounded,
 local read-only data is available inside SEIS-Agent through
-`seis_public_bundle_guide`; `seis_public_bundle_recommend` returns only the
-first optional bundle for a known journey. These tools are guidance only: they
-never install a package, automatically select a continuation bundle, or perform
-an external action.
+`seis_public_bundle_guide`. When the user does not already know a journey ID,
+`seis_public_bundle_find` accepts one short need statement and returns at most
+three deterministic local candidates from generated public metadata.
+`seis_public_bundle_recommend` then returns only the first optional bundle for
+one chosen journey. These tools are guidance only: they never install a package,
+automatically select a continuation bundle, expose the source-term index, or
+perform an external action.
 
 The terminal installer can carry that known journey into a plan without adding
 new marketplace cards or searching for a bundle manually:

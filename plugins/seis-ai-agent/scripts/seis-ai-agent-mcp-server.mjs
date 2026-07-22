@@ -217,6 +217,20 @@ const CURATED_MARKETPLACE = Object.freeze({
   maximumBundleSize: 15,
 });
 const JOURNEY_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,64}$/;
+const FINDER_TERM_PATTERN = /^[a-z0-9]{2,64}$/;
+const LOCAL_BUNDLE_FINDER = Object.freeze({
+  id: "seis-public-bundle-finder",
+  mode: "local-deterministic-token-match",
+  maximumResults: 3,
+  maximumQueryLength: 96,
+  maximumSearchTermsPerJourney: 96,
+  externalAccess: false,
+  installation: false,
+  sourceTermsReturned: false,
+});
+const FINDER_STOP_WORDS = new Set([
+  "a", "an", "and", "application", "applications", "at", "bundle", "bundles", "by", "for", "from", "in", "into", "is", "on", "only", "or", "plugin", "plugins", "public", "repo", "repository", "seis", "source", "sources", "task", "tasks", "the", "to", "topic", "topics", "with",
+]);
 const EMBEDDED_SOURCE_MODULES = [
   "seis-ai-agent",
   "seis",
@@ -259,6 +273,18 @@ const tools = [
     name: "seis_public_bundle_guide",
     description: "Show the bounded public SEIS starter paths and journey map without installing packages or accessing external services.",
     inputSchema: { type: "object", additionalProperties: false, properties: {} },
+  },
+  {
+    name: "seis_public_bundle_find",
+    description: "Find at most three public SEIS journey candidates from a short local need statement; it never installs packages or accesses external services.",
+    inputSchema: {
+      type: "object",
+      additionalProperties: false,
+      required: ["query"],
+      properties: {
+        query: { type: "string", minLength: 1, maxLength: LOCAL_BUNDLE_FINDER.maximumQueryLength, description: "A short local need statement such as SBOM supply chain." },
+      },
+    },
   },
   {
     name: "seis_public_bundle_recommend",
@@ -310,6 +336,24 @@ function plainObject(value) {
     && (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null);
 }
 
+function finderTerms(value) {
+  if (typeof value !== "string") return [];
+  const terms = [];
+  const seen = new Set();
+  const normalized = value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  for (const token of normalized.match(/[a-z0-9]+/g) || []) {
+    if (token.length < 2 || token.length > 64 || FINDER_STOP_WORDS.has(token) || seen.has(token)) continue;
+    seen.add(token);
+    terms.push(token);
+  }
+  return terms;
+}
+
+function publicJourney(journey) {
+  const { searchTerms: _searchTerms, ...visibleJourney } = journey;
+  return visibleJourney;
+}
+
 function validBundleReference(value) {
   return plainObject(value)
     && typeof value.id === "string"
@@ -341,6 +385,15 @@ function validSelectionGuide(value) {
     || value.selectionBoundary.bulkInstallAllowed !== false
     || value.selectionBoundary.bundleMembersAutoInstalled !== false
     || value.selectionBoundary.sourcePackagesRetained !== true
+    || !plainObject(value.finder)
+    || value.finder.id !== LOCAL_BUNDLE_FINDER.id
+    || value.finder.mode !== LOCAL_BUNDLE_FINDER.mode
+    || value.finder.maximumResults !== LOCAL_BUNDLE_FINDER.maximumResults
+    || value.finder.maximumQueryLength !== LOCAL_BUNDLE_FINDER.maximumQueryLength
+    || value.finder.maximumSearchTermsPerJourney !== LOCAL_BUNDLE_FINDER.maximumSearchTermsPerJourney
+    || value.finder.externalAccess !== LOCAL_BUNDLE_FINDER.externalAccess
+    || value.finder.installation !== LOCAL_BUNDLE_FINDER.installation
+    || value.finder.sourceTermsReturned !== LOCAL_BUNDLE_FINDER.sourceTermsReturned
     || !Array.isArray(value.defaultWorkflow)
     || value.defaultWorkflow.length !== 4
     || !Array.isArray(value.starterPaths)
@@ -362,6 +415,11 @@ function validSelectionGuide(value) {
       || !Number.isInteger(journey.sourceCapabilityCount)
       || journey.sourceCapabilityCount <= 0
       || !validBundleReference(journey.initialBundle)
+      || !Array.isArray(journey.searchTerms)
+      || journey.searchTerms.length === 0
+      || journey.searchTerms.length > LOCAL_BUNDLE_FINDER.maximumSearchTermsPerJourney
+      || new Set(journey.searchTerms).size !== journey.searchTerms.length
+      || !journey.searchTerms.every((term) => typeof term === "string" && FINDER_TERM_PATTERN.test(term))
       || !Array.isArray(journey.continuationBundleIds)
       || !Array.isArray(journey.bundleIds)
       || journey.bundleIds.length !== journey.bundleCount
@@ -373,6 +431,7 @@ function validSelectionGuide(value) {
       || journey.continuationBundleIds.length !== journey.bundleCount - 1
       || !journey.bundleIds.every((id) => typeof id === "string" && /^seis-(application|topic)-bundle-\d{2}$/.test(id))
       || !journey.continuationBundleIds.every((id, index) => id === journey.bundleIds[index + 1])) return false;
+    if (!finderTerms(`${journey.id} ${journey.label}`).every((term) => journey.searchTerms.includes(term))) return false;
     journeysById.set(journey.id, journey);
     for (const id of journey.bundleIds) {
       if (bundleIds.has(id)) return false;
@@ -541,10 +600,95 @@ function publicBundleGuide() {
     canonicalInstall: guide.canonicalInstall,
     marketplace: guide.marketplace,
     selectionBoundary: guide.selectionBoundary,
+    finder: guide.finder,
     defaultWorkflow: guide.defaultWorkflow,
     starterPaths: guide.starterPaths,
-    journeys: guide.journeys,
+    journeys: guide.journeys.map(publicJourney),
     permissions: guide.permissions,
+  };
+}
+
+function scoreFinderJourney(journey, queryTerms) {
+  const primaryTerms = new Set(finderTerms(`${journey.id} ${journey.label}`));
+  const searchTerms = new Set(journey.searchTerms);
+  let score = 0;
+  let primaryMatchCount = 0;
+  let metadataMatchCount = 0;
+  let prefixMatchCount = 0;
+  for (const queryTerm of queryTerms) {
+    if (primaryTerms.has(queryTerm)) {
+      score += 8;
+      primaryMatchCount += 1;
+    } else if (searchTerms.has(queryTerm)) {
+      score += 3;
+      metadataMatchCount += 1;
+    } else if (queryTerm.length >= 3 && [...searchTerms].some((term) => term.startsWith(queryTerm))) {
+      score += 1;
+      prefixMatchCount += 1;
+    }
+  }
+  return {
+    score,
+    primaryMatchCount,
+    matchedTermCount: primaryMatchCount + metadataMatchCount + prefixMatchCount,
+  };
+}
+
+function publicBundleFinder(input) {
+  if (!plainObject(input) || Object.keys(input).length !== 1 || typeof input.query !== "string") {
+    return { error: { code: -32602, message: "Invalid params: query must be one short local need statement." } };
+  }
+  const query = input.query.trim();
+  if (!query || Array.from(query).length > LOCAL_BUNDLE_FINDER.maximumQueryLength) {
+    return { error: { code: -32602, message: "Invalid params: query must be a non-empty short local need statement." } };
+  }
+  const queryTerms = finderTerms(query);
+  if (queryTerms.length === 0) {
+    return { error: { code: -32602, message: "Invalid params: query must contain a specific local journey term." } };
+  }
+  const guide = publicBundleSelectionGuide();
+  if (!guide) return { error: { code: -32603, message: "Public bundle selection guide is unavailable or unsafe." } };
+  const candidates = guide.journeys
+    .map((journey) => ({ journey, ...scoreFinderJourney(journey, queryTerms) }))
+    .filter((candidate) => candidate.score > 0)
+    .sort((left, right) => right.score - left.score
+      || right.primaryMatchCount - left.primaryMatchCount
+      || right.matchedTermCount - left.matchedTermCount
+      || left.journey.id.localeCompare(right.journey.id))
+    .slice(0, guide.finder.maximumResults)
+    .map((candidate) => ({
+      journey: {
+        id: candidate.journey.id,
+        label: candidate.journey.label,
+        family: candidate.journey.family,
+        sourceCapabilityCount: candidate.journey.sourceCapabilityCount,
+      },
+      recommendedOptionalBundle: candidate.journey.initialBundle,
+      recommendationToolInput: { journeyId: candidate.journey.id },
+      match: {
+        kind: candidate.primaryMatchCount > 0 ? "journey-label-or-id" : "generated-public-metadata",
+        matchedTermCount: candidate.matchedTermCount,
+      },
+    }));
+  return {
+    status: candidates.length > 0 ? "ready" : "no-match",
+    agent: AGENT.id,
+    canonicalInstall: guide.canonicalInstall,
+    finder: guide.finder,
+    query,
+    queryTermCount: queryTerms.length,
+    candidates,
+    nextSteps: candidates.length > 0
+      ? [
+          "Review at most one returned journey candidate for the current scoped task.",
+          "Call seis_public_bundle_recommend with one returned journeyId before planning any optional bundle.",
+          "Do not bulk-install bundles or members; any terminal installation remains plan-only until an explicit --apply approval.",
+        ]
+      : [
+          "Try a more specific product, security, design, data, cloud, or engineering term.",
+          "Use seis_public_bundle_guide to review the six starter paths and nineteen journey labels.",
+          "The finder did not install, select, or contact anything externally.",
+        ],
   };
 }
 
@@ -670,6 +814,8 @@ function handle(message) {
           ? lanesStatus()
           : name === "seis_public_bundle_guide"
             ? publicBundleGuide()
+            : name === "seis_public_bundle_find"
+              ? publicBundleFinder(args)
             : name === "seis_public_bundle_recommend"
               ? publicBundleRecommendation(args)
           : lane?.statusTool === name
