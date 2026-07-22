@@ -63,6 +63,15 @@ one chosen journey. These tools are guidance only: they never install a package,
 automatically select a continuation bundle, expose the source-term index, or
 perform an external action.
 
+Terminal-only users can run the equivalent bounded local discovery command:
+
+```bash
+npm run install:seis-ai-agent -- --find "SBOM supply chain"
+```
+
+It returns at most three candidates, performs no installation, and emits a
+reviewable `--journey` plan for each candidate.
+
 The terminal installer can carry that known journey into a plan without adding
 new marketplace cards or searching for a bundle manually:
 

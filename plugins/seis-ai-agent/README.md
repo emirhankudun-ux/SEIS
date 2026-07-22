@@ -35,6 +35,16 @@ and `seis_public_bundle_recommend` to return only the first optional bundle for
 one chosen journey. These tools are decision aids, not installer, provider
 connection, deployment, or write actions.
 
+If the terminal is the only available surface, use the same bounded local
+finder without opening MCP. It returns at most three candidates and performs
+no installation:
+
+```bash
+npm run install:seis-ai-agent -- --find "SBOM supply chain"
+```
+
+Choose one returned journey only, then review its emitted `--journey` plan.
+
 ## Install
 
 The default plan remains one canonical public plugin:

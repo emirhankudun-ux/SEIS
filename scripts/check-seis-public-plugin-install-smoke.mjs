@@ -35,6 +35,7 @@ const bundleCatalog = readJson("content/development/seis-public-plugin-bundle-ca
 const integration = pluginIntegrationStatus(root);
 const installer = runInstallerCheck();
 const securityJourneyInstaller = runInstallerCheck(["--journey", "security"]);
+const securityFinderInstaller = runInstallerFinder(["--find", "SBOM supply chain"]);
 const retiredCompatibilityInstaller = runInstallerCheck(["--with-standalone-lanes"]);
 
 const entries = Array.isArray(publicFamily?.marketplace?.entries) ? publicFamily.marketplace.entries : [];
@@ -192,6 +193,12 @@ ensure(installer.payload?.targets?.[0] === "seis-ai-agent@seis-repo", "default i
 ensure(securityJourneyInstaller.ok, "known journey installer check-only command must succeed");
 ensure(securityJourneyInstaller.payload?.targets?.length === 2 && securityJourneyInstaller.payload?.targets?.[0] === "seis-ai-agent@seis-repo" && securityJourneyInstaller.payload?.targets?.[1] === "seis-application-bundle-03@seis-repo", "known journey installer plan must add only the Security bundle");
 ensure(securityJourneyInstaller.payload?.bundleSelection?.selectionMode === "one-explicit-optional-bundle" && securityJourneyInstaller.payload?.bundleSelection?.selectedJourney?.id === "security" && securityJourneyInstaller.payload?.bundleSelection?.maximumOptionalBundleSelectionsPerTask === 1 && securityJourneyInstaller.payload?.bundleSelection?.bulkInstallAllowed === false, "known journey installer plan must preserve the one-bundle boundary");
+const finderCandidates = Array.isArray(securityFinderInstaller.payload?.candidates) ? securityFinderInstaller.payload.candidates : [];
+ensure(securityFinderInstaller.ok, "terminal finder command must succeed");
+ensure(securityFinderInstaller.payload?.mode === "find-only" && securityFinderInstaller.payload?.planOnly === true && securityFinderInstaller.payload?.installationPerformed === false && securityFinderInstaller.payload?.externalAccess === false, "terminal finder must not install or access external services");
+ensure(securityFinderInstaller.payload?.finder?.maximumResults === 3 && securityFinderInstaller.payload?.finder?.maximumQueryLength === 96 && securityFinderInstaller.payload?.finder?.sourceTermsReturned === false, "terminal finder must preserve its bounded public contract");
+ensure(finderCandidates.length > 0 && finderCandidates.length <= 3 && finderCandidates.some((candidate) => candidate?.journey?.id === "security"), "terminal finder must return Security among at most three candidates");
+ensure(finderCandidates.every((candidate) => candidate?.planCommand === `npm run install:seis-ai-agent -- --journey ${candidate?.journey?.id}` && !Object.prototype.hasOwnProperty.call(candidate, "searchTerms")), "terminal finder must return reviewable plans without source terms");
 ensure(!retiredCompatibilityInstaller.ok, "retired standalone lane installer option must be rejected");
 
 const smokeTargetNames = [...canonicalNames, ...(selectedBundle ? [selectedBundle.id] : [])];
@@ -279,6 +286,11 @@ const report = {
     ok: installer.ok,
     targetCount: installer.payload?.targets?.length ?? 0,
     targets: installer.payload?.targets || [],
+    finder: {
+      ok: securityFinderInstaller.ok,
+      candidateCount: finderCandidates.length,
+      securityCandidateFound: finderCandidates.some((candidate) => candidate?.journey?.id === "security"),
+    },
     retiredStandaloneLaneOptionRejected: !retiredCompatibilityInstaller.ok,
     retiredStandaloneLaneOptionError: retiredCompatibilityInstaller.error || null,
   },
@@ -539,6 +551,25 @@ function listDirectories(dir) {
 
 function runInstallerCheck(extraArgs = []) {
   const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", "--check-only", ...extraArgs], {
+    cwd: root,
+    encoding: "utf8",
+    timeout: 5000,
+  });
+  if (result.error) {
+    return { ok: false, error: result.error.message };
+  }
+  if (result.status !== 0) {
+    return { ok: false, error: String(result.stderr || result.stdout).trim() };
+  }
+  try {
+    return { ok: true, payload: JSON.parse(result.stdout) };
+  } catch (error) {
+    return { ok: false, error: error.message };
+  }
+}
+
+function runInstallerFinder(extraArgs = []) {
+  const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", ...extraArgs], {
     cwd: root,
     encoding: "utf8",
     timeout: 5000,

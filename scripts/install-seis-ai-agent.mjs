@@ -11,6 +11,10 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const marketplace = "seis-repo";
 const JOURNEY_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const BUNDLE_ID_PATTERN = /^seis-(?:application|topic)-bundle-\d{2}$/;
+const FINDER_TERM_PATTERN = /^[a-z0-9]{2,64}$/;
+const FINDER_STOP_WORDS = new Set([
+  "a", "an", "and", "application", "applications", "at", "bundle", "bundles", "by", "for", "from", "in", "into", "is", "on", "only", "or", "plugin", "plugins", "public", "repo", "repository", "seis", "source", "sources", "task", "tasks", "the", "to", "topic", "topics", "with",
+]);
 const parsedArgs = parseArguments(process.argv.slice(2));
 const canonicalizationPath = path.join(repoRoot, "content", "development", "seis-plugin-canonicalization.json");
 const unifiedSuitePath = path.join(repoRoot, "plugins", "seis-ai-agent", "assets", "unified-suite.json");
@@ -41,11 +45,40 @@ if (parsedArgs.help) {
   console.log([
     "Usage: node scripts/install-seis-ai-agent.mjs [--check-only] [--journey <known-journey-id>]",
     "       node scripts/install-seis-ai-agent.mjs --apply [--journey <known-journey-id>]",
+    "       node scripts/install-seis-ai-agent.mjs --find <short-local-need>",
     "",
     "Without --journey, the plan contains only seis-ai-agent@seis-repo.",
     "A known --journey adds only that journey's first optional bundle to the plan.",
+    "--find returns at most three local journey candidates and never installs anything.",
     "No installation occurs without --apply; bulk bundle and member installation are not supported.",
   ].join("\n"));
+  process.exit(0);
+}
+
+if (parsedArgs.findQuery !== null) {
+  if (!fs.existsSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json"))) fail("repo marketplace is missing");
+  const finder = findJourneys(parsedArgs.findQuery, selectionGuide, bundleCatalog);
+  console.log(JSON.stringify({
+    mode: "find-only",
+    planOnly: true,
+    installationPerformed: false,
+    externalAccess: false,
+    canonicalInstall: primaryInstallId,
+    query: finder.query,
+    finder: finder.contract,
+    candidates: finder.candidates,
+    nextSteps: finder.candidates.length > 0
+      ? [
+          "Review at most one returned journey candidate for the current scoped task.",
+          "Use the returned planCommand only after choosing one matching journey.",
+          "Do not add --apply until after reviewing that one-bundle plan and receiving explicit human approval.",
+        ]
+      : [
+          "Try a more specific product, security, design, data, cloud, or engineering term.",
+          "Use the public selection guide to review six starter paths and nineteen journey labels.",
+          "No package was selected, installed, or contacted externally.",
+        ],
+  }, null, 2));
   process.exit(0);
 }
 
@@ -116,8 +149,16 @@ const readiness = {
     applyRequiresExplicitFlag: true,
     planCommand,
     applyCommand,
+    finder: {
+      argument: "--find <short-local-need>",
+      maximumResults: selectionGuide?.finder?.maximumResults ?? null,
+      maximumQueryLength: selectionGuide?.finder?.maximumQueryLength ?? null,
+      planOnly: true,
+      installationPerformed: false,
+      externalAccess: false,
+    },
   },
-  consolidationPolicy: `SEIS-Agent is the canonical public install target; specialist source modules run through the embedded suite, and ${APP_PLUGIN_EXPANSION_TARGET} MIT-licensed app-owned source packages remain available in the SEIS repository through curated public bundles (${applicationDistribution.marketplaceEntryCount ?? 0} application bundle cards within ${applicationDistribution.marketplaceCardCount ?? 0} total public cards). The default never adds an optional bundle. A known --journey may add only its validated first optional bundle, and bundle members are never bulk-installed. Live external capabilities remain approval-gated.`,
+  consolidationPolicy: `SEIS-Agent is the canonical public install target; specialist source modules run through the embedded suite, and ${APP_PLUGIN_EXPANSION_TARGET} MIT-licensed app-owned source packages remain available in the SEIS repository through curated public bundles (${applicationDistribution.marketplaceEntryCount ?? 0} application bundle cards within ${applicationDistribution.marketplaceCardCount ?? 0} total public cards). The default never adds an optional bundle. --find may return at most three local journey candidates without selecting or installing anything. A known --journey may add only its validated first optional bundle, and bundle members are never bulk-installed. Live external capabilities remain approval-gated.`,
   embeddedModuleCount: embeddedModules.length,
   embeddedModuleIds: embeddedModules.map((module) => module.moduleId || module.id).filter(Boolean),
   targets,
@@ -151,7 +192,7 @@ console.log(`Installed targets: ${targets.join(", ")}`);
 console.log("Start a new Codex thread to pick up refreshed skills and MCP tools.");
 
 function parseArguments(argv) {
-  const parsed = { apply: false, checkOnly: false, help: false, journeyId: null };
+  const parsed = { apply: false, checkOnly: false, help: false, journeyId: null, findQuery: null };
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
     if (argument === "--apply") {
@@ -171,6 +212,14 @@ function parseArguments(argv) {
     if (argument === "--with-standalone-lanes") {
       fail("standalone lane installation is retired; install the single SEIS-Agent plugin instead");
     }
+    const inlineFind = argument.startsWith("--find=") ? argument.slice("--find=".length) : null;
+    if (argument === "--find" || inlineFind !== null) {
+      if (parsed.findQuery !== null) fail("only one --find may be supplied for a scoped task");
+      const findQuery = inlineFind ?? argv[index += 1];
+      if (typeof findQuery !== "string" || !findQuery.trim() || findQuery.startsWith("--")) fail("--find requires one short local need statement");
+      parsed.findQuery = findQuery;
+      continue;
+    }
     const inlineJourney = argument.startsWith("--journey=") ? argument.slice("--journey=".length) : null;
     if (argument === "--journey" || inlineJourney !== null) {
       if (parsed.journeyId !== null) fail("only one --journey may be supplied for a scoped task");
@@ -182,7 +231,122 @@ function parseArguments(argv) {
     fail(`unsupported option: ${argument}`);
   }
   if (parsed.apply && parsed.checkOnly) fail("--apply cannot be combined with --check-only");
+  if (parsed.findQuery !== null && parsed.apply) fail("--find cannot be combined with --apply");
+  if (parsed.findQuery !== null && parsed.checkOnly) fail("--find cannot be combined with --check-only");
+  if (parsed.findQuery !== null && parsed.journeyId !== null) fail("--find cannot be combined with --journey");
   return parsed;
+}
+
+function finderTerms(value) {
+  if (typeof value !== "string") return [];
+  const terms = [];
+  const seen = new Set();
+  const normalized = value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  for (const token of normalized.match(/[a-z0-9]+/g) || []) {
+    if (token.length < 2 || token.length > 64 || FINDER_STOP_WORDS.has(token) || seen.has(token)) continue;
+    seen.add(token);
+    terms.push(token);
+  }
+  return terms;
+}
+
+function findJourneys(rawQuery, guide, catalog) {
+  const contract = guide?.finder;
+  if (
+    guide?.id !== "seis-public-plugin-selection-guide" ||
+    guide?.canonicalInstall !== primaryInstallId ||
+    guide?.marketplace?.name !== marketplace ||
+    !contract ||
+    contract.id !== "seis-public-bundle-finder" ||
+    contract.mode !== "local-deterministic-token-match" ||
+    contract.maximumResults !== 3 ||
+    contract.maximumQueryLength !== 96 ||
+    contract.maximumSearchTermsPerJourney !== 96 ||
+    contract.externalAccess !== false ||
+    contract.installation !== false ||
+    contract.sourceTermsReturned !== false
+  ) {
+    fail("public bundle finder is unavailable or fails the local no-install safety boundary");
+  }
+  const query = rawQuery.trim();
+  if (!query || Array.from(query).length > contract.maximumQueryLength) {
+    fail("--find requires a non-empty local need statement within 96 characters");
+  }
+  const queryTerms = finderTerms(query);
+  if (queryTerms.length === 0) fail("--find requires a specific local journey term");
+  const journeys = Array.isArray(guide.journeys) ? guide.journeys : [];
+  if (journeys.length !== 19) fail("public bundle finder is unavailable or unsafe");
+  const candidates = journeys
+    .map((journey) => ({ journey, ...scoreJourneyForFinder(journey, queryTerms, contract) }))
+    .filter((candidate) => candidate.score > 0)
+    .sort((left, right) => right.score - left.score
+      || right.primaryMatchCount - left.primaryMatchCount
+      || right.matchedTermCount - left.matchedTermCount
+      || left.journey.id.localeCompare(right.journey.id))
+    .slice(0, contract.maximumResults)
+    .map((candidate) => {
+      const selectedJourney = selectJourney(candidate.journey.id, guide, catalog);
+      return {
+        journey: selectedJourney,
+        recommendedOptionalBundle: selectedJourney.initialBundle,
+        planCommand: installCommandFor(selectedJourney.id, false),
+        match: {
+          kind: candidate.primaryMatchCount > 0 ? "journey-label-or-id" : "generated-public-metadata",
+          matchedTermCount: candidate.matchedTermCount,
+        },
+      };
+    });
+  return {
+    query,
+    contract: {
+      id: contract.id,
+      mode: contract.mode,
+      maximumResults: contract.maximumResults,
+      maximumQueryLength: contract.maximumQueryLength,
+      externalAccess: contract.externalAccess,
+      installation: contract.installation,
+      sourceTermsReturned: contract.sourceTermsReturned,
+    },
+    candidates,
+  };
+}
+
+function scoreJourneyForFinder(journey, queryTerms, contract) {
+  const searchTerms = Array.isArray(journey?.searchTerms) ? journey.searchTerms : [];
+  if (
+    !JOURNEY_ID_PATTERN.test(journey?.id || "") ||
+    typeof journey?.label !== "string" ||
+    searchTerms.length === 0 ||
+    searchTerms.length > contract.maximumSearchTermsPerJourney ||
+    new Set(searchTerms).size !== searchTerms.length ||
+    !searchTerms.every((term) => typeof term === "string" && FINDER_TERM_PATTERN.test(term)) ||
+    !finderTerms(`${journey.id} ${journey.label}`).every((term) => searchTerms.includes(term))
+  ) {
+    fail("public bundle finder is unavailable or unsafe");
+  }
+  const primaryTerms = new Set(finderTerms(`${journey.id} ${journey.label}`));
+  const searchableTerms = new Set(searchTerms);
+  let score = 0;
+  let primaryMatchCount = 0;
+  let metadataMatchCount = 0;
+  let prefixMatchCount = 0;
+  for (const queryTerm of queryTerms) {
+    if (primaryTerms.has(queryTerm)) {
+      score += 8;
+      primaryMatchCount += 1;
+    } else if (searchableTerms.has(queryTerm)) {
+      score += 3;
+      metadataMatchCount += 1;
+    } else if (queryTerm.length >= 3 && [...searchableTerms].some((term) => term.startsWith(queryTerm))) {
+      score += 1;
+      prefixMatchCount += 1;
+    }
+  }
+  return {
+    score,
+    primaryMatchCount,
+    matchedTermCount: primaryMatchCount + metadataMatchCount + prefixMatchCount,
+  };
 }
 
 function selectJourney(journeyId, guide, catalog) {

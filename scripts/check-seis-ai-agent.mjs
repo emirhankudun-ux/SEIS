@@ -131,6 +131,7 @@ ensure(profile?.applicationSourceBoundary?.publicReleaseAllowed === false, "app-
 ensure(profile?.applicationSourceBoundary?.coreSourceOwner === false, "profile must keep packages/seis-ai out of app source ownership");
 ensure(profile?.terminalInstall?.defaultTarget === "seis-ai-agent@seis-repo", "profile must keep SEIS-Agent as terminal default target");
 ensure(profile?.terminalInstall?.optionalJourneySelection?.guide === "assets/public-bundle-selection-guide.json" && profile?.terminalInstall?.optionalJourneySelection?.argument === "--journey <known-journey-id>" && profile?.terminalInstall?.optionalJourneySelection?.defaultTargetCount === 1 && profile?.terminalInstall?.optionalJourneySelection?.maximumOptionalBundleSelectionsPerTask === 1 && profile?.terminalInstall?.optionalJourneySelection?.planOnlyByDefault === true && profile?.terminalInstall?.optionalJourneySelection?.applyRequiresExplicitFlag === true, "profile must declare the bounded optional journey installer contract");
+ensure(profile?.terminalInstall?.optionalJourneySelection?.finder?.argument === "--find <short-local-need>" && profile?.terminalInstall?.optionalJourneySelection?.finder?.maximumResults === 3 && profile?.terminalInstall?.optionalJourneySelection?.finder?.maximumQueryLength === 96 && profile?.terminalInstall?.optionalJourneySelection?.finder?.planOnly === true && profile?.terminalInstall?.optionalJourneySelection?.finder?.installation === false && profile?.terminalInstall?.optionalJourneySelection?.finder?.externalAccess === false, "profile must declare the bounded terminal finder contract");
 ensure(["arbitrary-bundle-id", "multiple-journeys", "bulk-selection", "continuation-bundles"].every((rejection) => profile?.terminalInstall?.optionalJourneySelection?.rejections?.includes(rejection)), "profile must reject unsafe optional journey install paths");
 ensure(profile?.publicBundleFinder?.tool === "seis_public_bundle_find" && profile?.publicBundleFinder?.guide === "assets/public-bundle-selection-guide.json" && profile?.publicBundleFinder?.mode === "local-deterministic-token-match" && profile?.publicBundleFinder?.maximumResults === 3 && profile?.publicBundleFinder?.maximumQueryLength === 96 && profile?.publicBundleFinder?.externalAccess === false && profile?.publicBundleFinder?.installation === false, "profile must declare the bounded local bundle finder contract");
 for (const name of ["seis", "seis-governance", "seis-cloud", "seis-code", "seis-design", "seis-data", "seis-security", "seis-research", "seis-automation", "seis-product"]) ensure(profile?.composedLanes?.includes(name), `profile missing lane ${name}`);
@@ -194,6 +195,7 @@ contains("scripts/install-seis-ai-agent.mjs", "curated public bundles", "install
 contains("scripts/install-seis-ai-agent.mjs", "single-public-plugin", "installer must default to one public plugin");
 contains("scripts/install-seis-ai-agent.mjs", "standalone lane installation is retired", "installer must reject standalone lane installation");
 contains("scripts/install-seis-ai-agent.mjs", "--journey", "installer must support one explicit selection journey");
+contains("scripts/install-seis-ai-agent.mjs", "--find", "installer must support bounded local journey finding");
 contains("scripts/install-seis-ai-agent.mjs", "one-explicit-optional-bundle", "installer must label the one-bundle selection mode");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "publicPluginCount", "install smoke checker must report public plugin count");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "--require-installed", "install smoke checker must support local installed-cache enforcement");
@@ -252,12 +254,17 @@ validateInstallerPlan(["--journey", "security"], {
   journeyId: "security",
   optionalInstallId: "seis-application-bundle-03@seis-repo",
 });
+validateInstallerFinder();
 validateRetiredInstallerOption();
 validateInstallerJourneyRejection(["--journey", "../unsafe"], "--journey must be a known public selection journey");
 validateInstallerJourneyRejection(["--journey", "not-a-real-journey"], "--journey must resolve to one validated initial optional bundle");
 validateInstallerJourneyRejection(["--journey", "security", "--journey", "ai-data"], "only one --journey may be supplied");
 validateInstallerJourneyRejection(["--bundle", "seis-application-bundle-03"], "unsupported option: --bundle");
 validateInstallerJourneyRejection(["--apply", "--check-only"], "--apply cannot be combined with --check-only");
+validateInstallerFinderRejection(["--find", "seis plugin"], "--find requires a specific local journey term");
+validateInstallerFinderRejection(["--find", "SBOM supply chain", "--journey", "security"], "--find cannot be combined with --journey");
+validateInstallerFinderRejection(["--find", "SBOM supply chain", "--check-only"], "--find cannot be combined with --check-only");
+validateInstallerFinderRejection(["--find", "SBOM supply chain", "--apply"], "--find cannot be combined with --apply");
 validateMcpSmoke();
 if (failures.length) { console.error("SEIS-AI Agent check failed:"); for (const failure of failures) console.error(`- ${failure}`); process.exit(1); }
 console.log("SEIS-AI Agent check passed.");
@@ -337,6 +344,7 @@ function validateInstallerPlan(extraArgs = [], expected = {}) {
   ensure(selection?.guidePath === "content/development/seis-public-plugin-selection-guide.json", "installer must point at the public selection guide");
   ensure(selection?.maximumOptionalBundleSelectionsPerTask === 1 && selection?.bulkInstallAllowed === false && selection?.bundleMembersAutoInstalled === false, "installer must preserve the one-bundle safety boundary");
   ensure(selection?.applyRequiresExplicitFlag === true, "installer must require an explicit apply flag");
+  ensure(selection?.finder?.argument === "--find <short-local-need>" && selection?.finder?.maximumResults === 3 && selection?.finder?.maximumQueryLength === 96 && selection?.finder?.planOnly === true && selection?.finder?.installationPerformed === false && selection?.finder?.externalAccess === false, "installer must expose the bounded local finder contract");
   ensure(selection?.requestedJourneyId === journeyId, "installer journey selection must match the requested plan");
   if (optionalInstallId) {
     ensure(selection?.selectionMode === "one-explicit-optional-bundle", "installer journey plan must declare one explicit optional bundle");
@@ -353,10 +361,34 @@ function validateInstallerPlan(extraArgs = [], expected = {}) {
   }
   ensure(targets.every((target) => target.endsWith("@seis-repo")), "installer targets must remain canonical repo identities");
 }
+function validateInstallerFinder() {
+  const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", "--find", "SBOM supply chain"], { cwd: root, encoding: "utf8", timeout: 5000 });
+  if (result.error || result.status !== 0) {
+    failures.push(`terminal finder must succeed: ${result.error?.message || String(result.stderr || result.stdout).trim()}`);
+    return;
+  }
+  let payload = null;
+  try {
+    payload = JSON.parse(result.stdout);
+  } catch {
+    failures.push("terminal finder must return JSON");
+    return;
+  }
+  const candidates = Array.isArray(payload?.candidates) ? payload.candidates : [];
+  ensure(payload?.mode === "find-only" && payload?.planOnly === true && payload?.installationPerformed === false && payload?.externalAccess === false, "terminal finder must remain plan-only and local");
+  ensure(payload?.finder?.maximumResults === 3 && payload?.finder?.maximumQueryLength === 96 && payload?.finder?.installation === false && payload?.finder?.externalAccess === false && payload?.finder?.sourceTermsReturned === false, "terminal finder must expose bounded finder metadata");
+  ensure(candidates.length > 0 && candidates.length <= 3 && candidates.some((candidate) => candidate?.journey?.id === "security"), "terminal finder must return Security among bounded SBOM candidates");
+  ensure(candidates.every((candidate) => candidate?.planCommand === `npm run install:seis-ai-agent -- --journey ${candidate?.journey?.id}` && !Object.prototype.hasOwnProperty.call(candidate, "searchTerms")), "terminal finder must emit only reviewable journey plans without source terms");
+}
 function validateRetiredInstallerOption() {
   const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", "--with-standalone-lanes"], { cwd: root, encoding: "utf8", timeout: 5000 });
   ensure(result.status !== 0, "installer must reject the retired standalone-lane option");
   ensure(String(result.stderr || result.stdout).includes("standalone lane installation is retired"), "retired standalone-lane option must explain the single-plugin migration");
+}
+function validateInstallerFinderRejection(args, expectedMessage) {
+  const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", ...args], { cwd: root, encoding: "utf8", timeout: 5000 });
+  ensure(result.status !== 0, `installer must reject unsafe finder arguments: ${args.join(" ")}`);
+  ensure(String(result.stderr || result.stdout).includes(expectedMessage), `installer rejection must explain unsafe finder arguments: ${args.join(" ")}`);
 }
 function validateInstallerJourneyRejection(args, expectedMessage) {
   const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", ...args], { cwd: root, encoding: "utf8", timeout: 5000 });

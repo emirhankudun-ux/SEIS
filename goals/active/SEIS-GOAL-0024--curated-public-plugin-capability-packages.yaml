@@ -65,6 +65,7 @@ scope:
     - plugins/seis-ai-agent/README.md
     - plugins/seis-ai-agent/skills/seis-ai-agent/SKILL.md
     - scripts/install-seis-ai-agent.mjs
+    - scripts/check-seis-public-plugin-install-smoke.mjs
     - plugins/seis-core/runtime/plugin-catalog.mjs
     - plugins/seis-core/runtime/plugin-surface.mjs
     - scripts/create-seis-public-plugin-family.mjs
@@ -112,7 +113,7 @@ requirements:
   - generate a public selection guide with a canonical default, six fast starter paths, and all curated journeys without adding marketplace cards
   - provide a local deterministic journey finder that returns at most three candidates from generated public metadata without installation or external access
   - recommend only one initial optional bundle for a known journey and fail closed on tampered guide data or unknown journey input
-  - let the terminal installer turn one known journey into a plan-only canonical-plus-one-bundle selection while keeping the default canonical-only and requiring explicit --apply for external installation
+  - let the terminal installer find at most three local journey candidates from a short need statement, then turn one known journey into a plan-only canonical-plus-one-bundle selection while keeping the default canonical-only and requiring explicit --apply for external installation
   - keep marketplace card counts separate from retained source capability counts in every current contract
   - preserve historical wave snapshots while labeling them as historical rather than current distribution proof
 
@@ -137,6 +138,7 @@ acceptance_criteria:
   - the selection guide covers all 33 optional bundles exactly once across 19 journeys and keeps six distinct starter paths
   - the canonical SEIS-Agent MCP exposes a bounded local journey finder with at most three results, a 96-character query cap, no source-term return payload, no installation, and no external access
   - the canonical SEIS-Agent MCP reports the curated 34-card marketplace as ready and recommends at most one initial optional bundle without installation or external access
+  - the terminal installer accepts one bounded local --find query, returns at most three candidates without selecting or installing any bundle, and rejects --find combined with journey, check-only, or apply paths
   - the terminal installer keeps its default plan to SEIS-Agent alone, accepts only one validated known journey for one initial optional bundle, and rejects bulk, arbitrary-bundle, duplicate-journey, and implicit-apply paths
 
 definition_of_ready:

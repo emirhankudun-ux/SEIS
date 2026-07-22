@@ -411,7 +411,7 @@ function selectionGuideMarkdown(guide) {
     "",
     "## Local journey finder",
     "",
-    `Use the read-only \`seis_public_bundle_find\` MCP tool when you have a short need statement instead of a known journey ID. It performs a local deterministic match against generated public metadata, returns at most ${guide.finder.maximumResults} journey candidates, never exposes source terms in the response, and never installs or contacts an external service. For example, a query such as \`SBOM supply chain\` can lead to a bounded Security journey candidate; then call \`seis_public_bundle_recommend\` with that returned journey ID before reviewing any plan.`,
+    `Use the read-only \`seis_public_bundle_find\` MCP tool when you have a short need statement instead of a known journey ID. It performs a local deterministic match against generated public metadata, returns at most ${guide.finder.maximumResults} journey candidates, never exposes source terms in the response, and never installs or contacts an external service. Terminal-only users can run \`npm run install:seis-ai-agent -- --find "SBOM supply chain"\` for the same bounded local discovery result. Then call \`seis_public_bundle_recommend\` with one returned journey ID, or review its emitted \`--journey\` plan, before any optional install decision.`,
     "",
     "## Optional terminal plan",
     "",

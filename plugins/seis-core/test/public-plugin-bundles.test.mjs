@@ -275,6 +275,49 @@ test("SEIS-Agent finds at most three local public bundle candidates", () => {
   assert.equal(responses.find((response) => response.id === 3)?.error?.code, -32602);
 });
 
+test("terminal installer finds at most three local public bundle candidates without installation", () => {
+  const installerPath = path.join(repositoryRoot, "scripts", "install-seis-ai-agent.mjs");
+  const result = spawnSync(process.execPath, [installerPath, "--find", "SBOM supply chain"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+    timeout: 5000,
+  });
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.mode, "find-only");
+  assert.equal(payload.planOnly, true);
+  assert.equal(payload.installationPerformed, false);
+  assert.equal(payload.externalAccess, false);
+  assert.equal(payload.finder.maximumResults, 3);
+  assert.equal(payload.finder.maximumQueryLength, 96);
+  assert.equal(payload.finder.sourceTermsReturned, false);
+  assert.ok(payload.candidates.length > 0 && payload.candidates.length <= 3);
+  assert.ok(payload.candidates.some((candidate) => candidate.journey.id === "security"));
+  assert.ok(payload.candidates.every((candidate) => candidate.planCommand === `npm run install:seis-ai-agent -- --journey ${candidate.journey.id}`));
+
+  const mcpResult = runAgentRuntime(frame({
+    jsonrpc: "2.0",
+    id: 4,
+    method: "tools/call",
+    params: { name: "seis_public_bundle_find", arguments: { query: "SBOM supply chain" } },
+  }));
+  assert.equal(mcpResult.status, 0, mcpResult.stderr);
+  const mcpPayload = parseFrames(mcpResult.stdout)[0].result;
+  assert.deepEqual(
+    payload.candidates.map((candidate) => candidate.journey.id),
+    mcpPayload.candidates.map((candidate) => candidate.journey.id),
+    "terminal finder must keep the same bounded candidate order as SEIS-Agent MCP",
+  );
+
+  const invalid = spawnSync(process.execPath, [installerPath, "--find", "seis plugin"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+    timeout: 5000,
+  });
+  assert.notEqual(invalid.status, 0);
+  assert.match(String(invalid.stderr || invalid.stdout), /specific local journey term/i);
+});
+
 test("generated MCP runtime serves bounded read-only tools", () => {
   const runtimeSource = fs.readFileSync(runtimePath, "utf8");
   for (const required of [

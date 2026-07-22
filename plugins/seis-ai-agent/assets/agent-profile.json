@@ -90,6 +90,14 @@
       "maximumOptionalBundleSelectionsPerTask": 1,
       "planOnlyByDefault": true,
       "applyRequiresExplicitFlag": true,
+      "finder": {
+        "argument": "--find <short-local-need>",
+        "maximumResults": 3,
+        "maximumQueryLength": 96,
+        "planOnly": true,
+        "installation": false,
+        "externalAccess": false
+      },
       "rejections": [
         "arbitrary-bundle-id",
         "multiple-journeys",
