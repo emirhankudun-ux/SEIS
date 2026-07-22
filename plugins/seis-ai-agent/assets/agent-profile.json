@@ -6,7 +6,7 @@
     "seis-ai-agent"
   ],
   "version": 3,
-  "releaseVersion": "0.4.0+codex.20260722",
+  "releaseVersion": "0.5.0+codex.20260722",
   "status": "development",
   "intent": "Unify SEIS specialist lanes and retained public source packages into ten concise general plugins with thirty bounded internal packages while keeping live external capabilities approval-gated.",
   "canonicalRepo": "emirhankudun-ux/SEIS",

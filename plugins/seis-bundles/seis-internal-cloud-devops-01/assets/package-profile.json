@@ -3,7 +3,7 @@
   "id": "seis-internal-cloud-devops-01",
   "kind": "seis-internal-capability-package",
   "generatedAt": "2026-07-22",
-  "version": "0.4.0+codex.20260722",
+  "version": "0.5.0+codex.20260722",
   "visibility": "internal-not-marketplace-card",
   "memberCount": 13,
   "maximumMemberCount": 15,

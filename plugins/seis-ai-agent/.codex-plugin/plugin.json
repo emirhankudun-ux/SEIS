@@ -1,6 +1,6 @@
 {
   "name": "seis-ai-agent",
-  "version": "0.4.0+codex.20260722",
+  "version": "0.5.0+codex.20260722",
   "description": "Canonical SEIS-Agent general plugin. One of ten concise public SEIS plugins backed by bounded internal capability packages.",
   "author": {
     "name": "emirhankudun-ux",

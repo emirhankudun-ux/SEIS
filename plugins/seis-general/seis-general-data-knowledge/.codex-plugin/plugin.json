@@ -1,6 +1,6 @@
 {
   "name": "seis-general-data-knowledge",
-  "version": "0.4.0+codex.20260722",
+  "version": "0.5.0+codex.20260722",
   "description": "Data architecture, analytics, search, memory, knowledge, and research workflows. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
   "author": {
     "name": "emirhankudun-ux",

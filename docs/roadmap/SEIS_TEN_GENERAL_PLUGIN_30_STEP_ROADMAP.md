@@ -11,6 +11,10 @@ This is the active distribution roadmap. It turns the previous visually repetiti
 - Default: SEIS-Agent
 - Selection: one general plugin per scoped task
 
+## Evidence rule
+
+This roadmap never marks a step complete by itself. Only [content/development/seis-general-plugin-autopilot-execution.json](../../content/development/seis-general-plugin-autopilot-execution.json) written by the Goal 0029 foreground runner can record completed local checkpoints. It records bounded command metadata, not secrets, provider output, publication, or background work.
+
 ## Five 30-step rounds
 
 ### Round 1 — Truth and topology
@@ -39,12 +43,12 @@ This is the active distribution roadmap. It turns the previous visually repetiti
 22. Validate: Confirm every internal package contains no more than fifteen capabilities.
 23. Validate: Remove active references to numbered duplicate topic and application cards.
 24. Validate: Record version, risk, rollback, and public-release approval boundaries.
-25. Record evidence for: Confirm the ten public marketplace names are unique and user-readable.
-26. Record evidence for: Confirm SEIS-Agent remains the canonical default entry point.
-27. Record evidence for: Confirm the thirty internal packages cover app and topic sources exactly once.
-28. Record evidence for: Confirm every internal package contains no more than fifteen capabilities.
-29. Record evidence for: Remove active references to numbered duplicate topic and application cards.
-30. Record evidence for: Record version, risk, rollback, and public-release approval boundaries.
+25. Record command evidence for: Confirm the ten public marketplace names are unique and user-readable.
+26. Record command evidence for: Confirm SEIS-Agent remains the canonical default entry point.
+27. Record command evidence for: Confirm the thirty internal packages cover app and topic sources exactly once.
+28. Record command evidence for: Confirm every internal package contains no more than fifteen capabilities.
+29. Record command evidence for: Remove active references to numbered duplicate topic and application cards.
+30. Record command evidence for: Record version, risk, rollback, and public-release approval boundaries.
 
 ### Round 2 — User selection
 
@@ -72,12 +76,12 @@ This is the active distribution roadmap. It turns the previous visually repetiti
 22. Validate: Validate deterministic local finder results stay at three or fewer candidates.
 23. Validate: Validate a scoped general-plugin plan never targets an internal package directly.
 24. Validate: Document the one-general-plugin-per-task rule in README, skill, and platform docs.
-25. Record evidence for: Generate the ten-card marketplace projection from the canonical family plan.
-26. Record evidence for: Generate each general-plugin profile with exactly three internal packages.
-27. Record evidence for: Validate the default SEIS-Agent plan without installing anything.
-28. Record evidence for: Validate deterministic local finder results stay at three or fewer candidates.
-29. Record evidence for: Validate a scoped general-plugin plan never targets an internal package directly.
-30. Record evidence for: Document the one-general-plugin-per-task rule in README, skill, and platform docs.
+25. Record command evidence for: Generate the ten-card marketplace projection from the canonical family plan.
+26. Record command evidence for: Generate each general-plugin profile with exactly three internal packages.
+27. Record command evidence for: Validate the default SEIS-Agent plan without installing anything.
+28. Record command evidence for: Validate deterministic local finder results stay at three or fewer candidates.
+29. Record command evidence for: Validate a scoped general-plugin plan never targets an internal package directly.
+30. Record command evidence for: Document the one-general-plugin-per-task rule in README, skill, and platform docs.
 
 ### Round 3 — Supervised automation
 
@@ -105,45 +109,45 @@ This is the active distribution roadmap. It turns the previous visually repetiti
 22. Validate: Assign QA-validator responsibility for freshness, package, and install checks.
 23. Validate: Assign evidence-reporter responsibility for generated reports and skipped checks.
 24. Validate: Assign delivery-coordinator responsibility for reviewable commit and approval-gated GitHub delivery.
-25. Record evidence for: Assign architect-planner responsibility for scope and ownership review.
-26. Record evidence for: Assign package-builder responsibility for deterministic artifact generation.
-27. Record evidence for: Assign safety-reviewer responsibility for permissions and public/private boundaries.
-28. Record evidence for: Assign QA-validator responsibility for freshness, package, and install checks.
-29. Record evidence for: Assign evidence-reporter responsibility for generated reports and skipped checks.
-30. Record evidence for: Assign delivery-coordinator responsibility for reviewable commit and approval-gated GitHub delivery.
+25. Record command evidence for: Assign architect-planner responsibility for scope and ownership review.
+26. Record command evidence for: Assign package-builder responsibility for deterministic artifact generation.
+27. Record command evidence for: Assign safety-reviewer responsibility for permissions and public/private boundaries.
+28. Record command evidence for: Assign QA-validator responsibility for freshness, package, and install checks.
+29. Record command evidence for: Assign evidence-reporter responsibility for generated reports and skipped checks.
+30. Record command evidence for: Assign delivery-coordinator responsibility for reviewable commit and approval-gated GitHub delivery.
 
 ### Round 4 — Runtime and release
 
 1. Inspect: Validate the MCP server exposes local read-only general-plugin guidance.
 2. Inspect: Keep legacy public-bundle MCP names as compatibility aliases only.
 3. Inspect: Regenerate the unified suite with the ten/30 topology.
-4. Inspect: Verify the structural distribution version increased from 0.3.0 to 0.4.0.
+4. Inspect: Verify the structural distribution version increased for this major update.
 5. Inspect: Require a future version increase for card-count or package-topology changes.
 6. Inspect: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.
 7. Plan: Validate the MCP server exposes local read-only general-plugin guidance.
 8. Plan: Keep legacy public-bundle MCP names as compatibility aliases only.
 9. Plan: Regenerate the unified suite with the ten/30 topology.
-10. Plan: Verify the structural distribution version increased from 0.3.0 to 0.4.0.
+10. Plan: Verify the structural distribution version increased for this major update.
 11. Plan: Require a future version increase for card-count or package-topology changes.
 12. Plan: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.
 13. Build: Validate the MCP server exposes local read-only general-plugin guidance.
 14. Build: Keep legacy public-bundle MCP names as compatibility aliases only.
 15. Build: Regenerate the unified suite with the ten/30 topology.
-16. Build: Verify the structural distribution version increased from 0.3.0 to 0.4.0.
+16. Build: Verify the structural distribution version increased for this major update.
 17. Build: Require a future version increase for card-count or package-topology changes.
 18. Build: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.
 19. Validate: Validate the MCP server exposes local read-only general-plugin guidance.
 20. Validate: Keep legacy public-bundle MCP names as compatibility aliases only.
 21. Validate: Regenerate the unified suite with the ten/30 topology.
-22. Validate: Verify the structural distribution version increased from 0.3.0 to 0.4.0.
+22. Validate: Verify the structural distribution version increased for this major update.
 23. Validate: Require a future version increase for card-count or package-topology changes.
 24. Validate: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.
-25. Record evidence for: Validate the MCP server exposes local read-only general-plugin guidance.
-26. Record evidence for: Keep legacy public-bundle MCP names as compatibility aliases only.
-27. Record evidence for: Regenerate the unified suite with the ten/30 topology.
-28. Record evidence for: Verify the structural distribution version increased from 0.3.0 to 0.4.0.
-29. Record evidence for: Require a future version increase for card-count or package-topology changes.
-30. Record evidence for: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.
+25. Record command evidence for: Validate the MCP server exposes local read-only general-plugin guidance.
+26. Record command evidence for: Keep legacy public-bundle MCP names as compatibility aliases only.
+27. Record command evidence for: Regenerate the unified suite with the ten/30 topology.
+28. Record command evidence for: Verify the structural distribution version increased for this major update.
+29. Record command evidence for: Require a future version increase for card-count or package-topology changes.
+30. Record command evidence for: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.
 
 ### Round 5 — Evidence and continuation
 
@@ -152,40 +156,40 @@ This is the active distribution roadmap. It turns the previous visually repetiti
 3. Inspect: Run the optional read-only local configuration review only when requested.
 4. Inspect: Require manual Codex refresh to verify the rendered ten-card UI.
 5. Inspect: Prepare a focused branch commit that excludes unrelated user-staged evidence.
-6. Inspect: Push only the focused commit; keep public release separate and approval-gated.
+6. Inspect: Push only a focused commit; keep public release separate and approval-gated.
 7. Plan: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.
 8. Plan: Run user-readiness checks without reading local Codex configuration by default.
 9. Plan: Run the optional read-only local configuration review only when requested.
 10. Plan: Require manual Codex refresh to verify the rendered ten-card UI.
 11. Plan: Prepare a focused branch commit that excludes unrelated user-staged evidence.
-12. Plan: Push only the focused commit; keep public release separate and approval-gated.
+12. Plan: Push only a focused commit; keep public release separate and approval-gated.
 13. Build: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.
 14. Build: Run user-readiness checks without reading local Codex configuration by default.
 15. Build: Run the optional read-only local configuration review only when requested.
 16. Build: Require manual Codex refresh to verify the rendered ten-card UI.
 17. Build: Prepare a focused branch commit that excludes unrelated user-staged evidence.
-18. Build: Push only the focused commit; keep public release separate and approval-gated.
+18. Build: Push only a focused commit; keep public release separate and approval-gated.
 19. Validate: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.
 20. Validate: Run user-readiness checks without reading local Codex configuration by default.
 21. Validate: Run the optional read-only local configuration review only when requested.
 22. Validate: Require manual Codex refresh to verify the rendered ten-card UI.
 23. Validate: Prepare a focused branch commit that excludes unrelated user-staged evidence.
-24. Validate: Push only the focused commit; keep public release separate and approval-gated.
-25. Record evidence for: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.
-26. Record evidence for: Run user-readiness checks without reading local Codex configuration by default.
-27. Record evidence for: Run the optional read-only local configuration review only when requested.
-28. Record evidence for: Require manual Codex refresh to verify the rendered ten-card UI.
-29. Record evidence for: Prepare a focused branch commit that excludes unrelated user-staged evidence.
-30. Record evidence for: Push only the focused commit; keep public release separate and approval-gated.
+24. Validate: Push only a focused commit; keep public release separate and approval-gated.
+25. Record command evidence for: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.
+26. Record command evidence for: Run user-readiness checks without reading local Codex configuration by default.
+27. Record command evidence for: Run the optional read-only local configuration review only when requested.
+28. Record command evidence for: Require manual Codex refresh to verify the rendered ten-card UI.
+29. Record command evidence for: Prepare a focused branch commit that excludes unrelated user-staged evidence.
+30. Record command evidence for: Push only a focused commit; keep public release separate and approval-gated.
 
 ## Current transition
 
-All five 30-step round ledgers are closed. Wave 1 of the five 100-step series is now in progress with step 1 next; this status authorizes no background execution or automatic external delivery.
+The five 30-step rounds are planned but are not completed by this document. The five 100-step waves remain blocked until all initial rounds have reproducible foreground evidence. This status authorizes no background execution or automatic external delivery.
 
 ## Long-horizon cadence
 
-The roadmap begins with five 30-step rounds (150 recorded checkpoints), then moves to five 100-step waves. Each later five-wave series adds 100 steps per wave: 200, 300, 400, 500, then 600. These are strategic planning tiers across a ten-year horizon; they never create background agents or expand the 10-card user surface by themselves.
+After the five 30-step rounds (150 checkpoints) have evidence, the roadmap moves to five 100-step waves. The first 200-step wave cannot activate until all five 100-step waves have reproducible completion evidence. Each later five-wave series adds 100 steps per wave: 200, 300, 400, 500, then 600. These are strategic planning tiers across a ten-year horizon; they never create background agents or expand the 10-card user surface by themselves.
 
 ## Automation boundary
 
-This Goal 0029 roadmap defines no competing executable allowlist. Plan-and-build execution delegates to the repository-anchored, revalidated Goal 0025 runner. Commit, push, publication, release, deployment, credential use, and external write access remain separate human-approved actions.
+The Goal 0029 runner owns a reviewed, hard-coded local command allowlist and can plan plus build only during one foreground invocation. Commit, push, publication, release, deployment, credential use, and external write access remain separate human-approved actions.

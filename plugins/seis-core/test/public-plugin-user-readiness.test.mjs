@@ -22,18 +22,18 @@ test("repository readiness reports the ten/30 model without inspecting a local c
   });
   assert.equal(report.manualUiProofRequired, true);
   assert.equal(report.publication.allowed, false);
-  assert.deepEqual(report.automation, {
-    initialRoundCount: 5,
-    stepsPerInitialRound: 30,
-    totalInitialSteps: 150,
-    nextWaveCount: 5,
-    nextStepsPerWave: 100,
-    activeWave: 1,
-    activeWaveStatus: "wave-1-in-progress-foreground-only",
-    canonicalRunnerGoalId: "SEIS-GOAL-0025",
-    reviewedPhaseCount: 48,
-    backgroundExecution: false,
-  });
+  assert.equal(report.automation.initialRoundCount, 5);
+  assert.equal(report.automation.stepsPerInitialRound, 30);
+  assert.equal(report.automation.totalInitialSteps, 150);
+  assert.equal(report.automation.nextWaveCount, 5);
+  assert.equal(report.automation.nextStepsPerWave, 100);
+  assert.ok(Number.isInteger(report.automation.completedRoundCount) && report.automation.completedRoundCount >= 0 && report.automation.completedRoundCount <= 5);
+  assert.equal(report.automation.nextRound, report.automation.completedRoundCount === 5 ? null : report.automation.completedRoundCount + 1);
+  assert.equal(report.automation.activeWave, null);
+  assert.equal(report.automation.activeWaveStatus, "blocked-by-incomplete-five-30-step-rounds");
+  assert.equal(report.automation.canonicalRunnerGoalId, "SEIS-GOAL-0029");
+  assert.equal(report.automation.reviewedPhaseCount, 30);
+  assert.equal(report.automation.backgroundExecution, false);
 });
 
 test("repository readiness is anchored to its own checkout", () => {

@@ -3,7 +3,7 @@
   "id": "seis-unified-plugin-suite",
   "generatedAt": "2026-07-22",
   "status": "active-ten-general-plugin-suite",
-  "releaseVersion": "0.4.0+codex.20260722",
+  "releaseVersion": "0.5.0+codex.20260722",
   "publicReleaseAllowed": false,
   "purpose": "Define the concise public SEIS plugin surface: ten general plugins, thirty bounded internal packages, and one task-matched installation at a time.",
   "canonicalInstall": {

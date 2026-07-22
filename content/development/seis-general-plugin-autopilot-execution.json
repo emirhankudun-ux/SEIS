@@ -1,0 +1,601 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-general-plugin-autopilot-execution",
+  "goalId": "SEIS-GOAL-0029",
+  "planDigest": "99e48ffa1946a8be5847b6e03cd763ceef62393c6fbc3020772dba1ca0cc29bf",
+  "rounds": [
+    {
+      "round": 1,
+      "status": "completed-local-checkpoint-run",
+      "completedAt": "2026-07-22T17:11:29.265Z",
+      "steps": [
+        {
+          "number": 1,
+          "globalNumber": 1,
+          "checkpoint": "inspect",
+          "label": "Inspect: Confirm the ten public marketplace names are unique and user-readable.",
+          "automationRoleId": "architect-planner",
+          "kind": "command",
+          "action": "check marketplace topology",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-general-plugin-distribution.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 54,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 2,
+          "globalNumber": 2,
+          "checkpoint": "inspect",
+          "label": "Inspect: Confirm SEIS-Agent remains the canonical default entry point.",
+          "automationRoleId": "package-builder",
+          "kind": "command",
+          "action": "check canonical SEIS-Agent",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-ai-agent-v2.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 28,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 3,
+          "globalNumber": 3,
+          "checkpoint": "inspect",
+          "label": "Inspect: Confirm the thirty internal packages cover app and topic sources exactly once.",
+          "automationRoleId": "safety-reviewer",
+          "kind": "command",
+          "action": "check unified ten/30 suite",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-unified-suite.mjs",
+            "--check"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 52,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 4,
+          "globalNumber": 4,
+          "checkpoint": "inspect",
+          "label": "Inspect: Confirm every internal package contains no more than fifteen capabilities.",
+          "automationRoleId": "qa-validator",
+          "kind": "command",
+          "action": "check release policy",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-public-plugin-release-policy.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 48,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 5,
+          "globalNumber": 5,
+          "checkpoint": "inspect",
+          "label": "Inspect: Remove active references to numbered duplicate topic and application cards.",
+          "automationRoleId": "evidence-reporter",
+          "kind": "command",
+          "action": "check bounded MCP install smoke",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-general-plugin-install-smoke.mjs",
+            "--mcp-smoke"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 637,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 6,
+          "globalNumber": 6,
+          "checkpoint": "inspect",
+          "label": "Inspect: Record version, risk, rollback, and public-release approval boundaries.",
+          "automationRoleId": "delivery-coordinator",
+          "kind": "command",
+          "action": "check repository user readiness",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-general-plugin-user-readiness.mjs",
+            "--json"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 1589,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 7,
+          "globalNumber": 7,
+          "checkpoint": "plan",
+          "label": "Plan: Confirm the ten public marketplace names are unique and user-readable.",
+          "automationRoleId": "architect-planner",
+          "kind": "command",
+          "action": "check distribution generator freshness",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-plugin-distribution.mjs",
+            "--check"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 107,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 8,
+          "globalNumber": 8,
+          "checkpoint": "plan",
+          "label": "Plan: Confirm SEIS-Agent remains the canonical default entry point.",
+          "automationRoleId": "package-builder",
+          "kind": "command",
+          "action": "check unified-suite generator freshness",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-unified-suite.mjs",
+            "--check"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 52,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 9,
+          "globalNumber": 9,
+          "checkpoint": "plan",
+          "label": "Plan: Confirm the thirty internal packages cover app and topic sources exactly once.",
+          "automationRoleId": "safety-reviewer",
+          "kind": "command",
+          "action": "check Goal 0029 cadence freshness",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-plugin-autopilot.mjs",
+            "--check"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 48,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 10,
+          "globalNumber": 10,
+          "checkpoint": "plan",
+          "label": "Plan: Confirm every internal package contains no more than fifteen capabilities.",
+          "automationRoleId": "qa-validator",
+          "kind": "command",
+          "action": "check supervised automation freshness",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-public-plugin-supervised-autopilot.mjs",
+            "--check"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 54,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 11,
+          "globalNumber": 11,
+          "checkpoint": "plan",
+          "label": "Plan: Remove active references to numbered duplicate topic and application cards.",
+          "automationRoleId": "evidence-reporter",
+          "kind": "command",
+          "action": "check release-policy evidence",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-public-plugin-release-policy.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 48,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 12,
+          "globalNumber": 12,
+          "checkpoint": "plan",
+          "label": "Plan: Record version, risk, rollback, and public-release approval boundaries.",
+          "automationRoleId": "delivery-coordinator",
+          "kind": "command",
+          "action": "check canonical agent integration",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-ai-agent-v2.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 28,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 13,
+          "globalNumber": 13,
+          "checkpoint": "build",
+          "label": "Build: Confirm the ten public marketplace names are unique and user-readable.",
+          "automationRoleId": "architect-planner",
+          "kind": "command",
+          "action": "regenerate general-plugin distribution",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-plugin-distribution.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 84,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 14,
+          "globalNumber": 14,
+          "checkpoint": "build",
+          "label": "Build: Confirm SEIS-Agent remains the canonical default entry point.",
+          "automationRoleId": "package-builder",
+          "kind": "command",
+          "action": "regenerate general-plugin unified suite",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-unified-suite.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 54,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 15,
+          "globalNumber": 15,
+          "checkpoint": "build",
+          "label": "Build: Confirm the thirty internal packages cover app and topic sources exactly once.",
+          "automationRoleId": "safety-reviewer",
+          "kind": "command",
+          "action": "regenerate public-plugin consolidation",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-public-plugin-consolidation.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 125,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 16,
+          "globalNumber": 16,
+          "checkpoint": "build",
+          "label": "Build: Confirm every internal package contains no more than fifteen capabilities.",
+          "automationRoleId": "qa-validator",
+          "kind": "command",
+          "action": "regenerate Goal 0029 cadence plan",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-plugin-autopilot.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 69,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 17,
+          "globalNumber": 17,
+          "checkpoint": "build",
+          "label": "Build: Remove active references to numbered duplicate topic and application cards.",
+          "automationRoleId": "evidence-reporter",
+          "kind": "command",
+          "action": "regenerate supervised automation",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-public-plugin-supervised-autopilot.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 62,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 18,
+          "globalNumber": 18,
+          "checkpoint": "build",
+          "label": "Build: Record version, risk, rollback, and public-release approval boundaries.",
+          "automationRoleId": "delivery-coordinator",
+          "kind": "command",
+          "action": "regenerate public-plugin continuity record",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-public-plugin-continuity-cadence.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 159,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 19,
+          "globalNumber": 19,
+          "checkpoint": "validate",
+          "label": "Validate: Confirm the ten public marketplace names are unique and user-readable.",
+          "automationRoleId": "architect-planner",
+          "kind": "command",
+          "action": "validate marketplace topology",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-general-plugin-distribution.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 54,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 20,
+          "globalNumber": 20,
+          "checkpoint": "validate",
+          "label": "Validate: Confirm SEIS-Agent remains the canonical default entry point.",
+          "automationRoleId": "package-builder",
+          "kind": "command",
+          "action": "validate unified suite",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-unified-suite.mjs",
+            "--check"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 52,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 21,
+          "globalNumber": 21,
+          "checkpoint": "validate",
+          "label": "Validate: Confirm the thirty internal packages cover app and topic sources exactly once.",
+          "automationRoleId": "safety-reviewer",
+          "kind": "command",
+          "action": "validate canonical agent",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-ai-agent-v2.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 28,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 22,
+          "globalNumber": 22,
+          "checkpoint": "validate",
+          "label": "Validate: Confirm every internal package contains no more than fifteen capabilities.",
+          "automationRoleId": "qa-validator",
+          "kind": "command",
+          "action": "validate release boundary",
+          "command": "node",
+          "args": [
+            "scripts/check-seis-public-plugin-release-policy.mjs"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 48,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 23,
+          "globalNumber": 23,
+          "checkpoint": "validate",
+          "label": "Validate: Remove active references to numbered duplicate topic and application cards.",
+          "automationRoleId": "evidence-reporter",
+          "kind": "command",
+          "action": "validate Goal 0029 plan",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-general-plugin-autopilot.mjs",
+            "--check"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 48,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 24,
+          "globalNumber": 24,
+          "checkpoint": "validate",
+          "label": "Validate: Record version, risk, rollback, and public-release approval boundaries.",
+          "automationRoleId": "delivery-coordinator",
+          "kind": "command",
+          "action": "validate supervised automation",
+          "command": "node",
+          "args": [
+            "scripts/create-seis-public-plugin-supervised-autopilot.mjs",
+            "--check"
+          ],
+          "status": "passed-local-command",
+          "ok": true,
+          "exitCode": 0,
+          "timedOut": false,
+          "stdoutBytes": 54,
+          "stderrBytes": 0,
+          "errorCode": null
+        },
+        {
+          "number": 25,
+          "globalNumber": 25,
+          "checkpoint": "record-command-evidence-for",
+          "label": "Record command evidence for: Confirm the ten public marketplace names are unique and user-readable.",
+          "automationRoleId": "architect-planner",
+          "kind": "evidence",
+          "sourceStepNumbers": [
+            1,
+            7,
+            13,
+            19
+          ],
+          "status": "recorded-command-evidence",
+          "ok": true
+        },
+        {
+          "number": 26,
+          "globalNumber": 26,
+          "checkpoint": "record-command-evidence-for",
+          "label": "Record command evidence for: Confirm SEIS-Agent remains the canonical default entry point.",
+          "automationRoleId": "package-builder",
+          "kind": "evidence",
+          "sourceStepNumbers": [
+            2,
+            8,
+            14,
+            20
+          ],
+          "status": "recorded-command-evidence",
+          "ok": true
+        },
+        {
+          "number": 27,
+          "globalNumber": 27,
+          "checkpoint": "record-command-evidence-for",
+          "label": "Record command evidence for: Confirm the thirty internal packages cover app and topic sources exactly once.",
+          "automationRoleId": "safety-reviewer",
+          "kind": "evidence",
+          "sourceStepNumbers": [
+            3,
+            9,
+            15,
+            21
+          ],
+          "status": "recorded-command-evidence",
+          "ok": true
+        },
+        {
+          "number": 28,
+          "globalNumber": 28,
+          "checkpoint": "record-command-evidence-for",
+          "label": "Record command evidence for: Confirm every internal package contains no more than fifteen capabilities.",
+          "automationRoleId": "qa-validator",
+          "kind": "evidence",
+          "sourceStepNumbers": [
+            4,
+            10,
+            16,
+            22
+          ],
+          "status": "recorded-command-evidence",
+          "ok": true
+        },
+        {
+          "number": 29,
+          "globalNumber": 29,
+          "checkpoint": "record-command-evidence-for",
+          "label": "Record command evidence for: Remove active references to numbered duplicate topic and application cards.",
+          "automationRoleId": "evidence-reporter",
+          "kind": "evidence",
+          "sourceStepNumbers": [
+            5,
+            11,
+            17,
+            23
+          ],
+          "status": "recorded-command-evidence",
+          "ok": true
+        },
+        {
+          "number": 30,
+          "globalNumber": 30,
+          "checkpoint": "record-command-evidence-for",
+          "label": "Record command evidence for: Record version, risk, rollback, and public-release approval boundaries.",
+          "automationRoleId": "delivery-coordinator",
+          "kind": "evidence",
+          "sourceStepNumbers": [
+            6,
+            12,
+            18,
+            24
+          ],
+          "status": "recorded-command-evidence",
+          "ok": true
+        }
+      ]
+    }
+  ]
+}

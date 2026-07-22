@@ -6,10 +6,10 @@
  * cannot silently keep the previous release version.
  */
 
-export const PREVIOUS_SEIS_PUBLIC_RELEASE_VERSION = "0.3.0+codex.20260712";
-export const CURRENT_SEIS_PUBLIC_RELEASE_VERSION = "0.4.0+codex.20260722";
-export const SEIS_PUBLIC_RELEASE_CHANGE_KIND = "major-structural-distribution";
-export const SEIS_PUBLIC_RELEASE_CHANGE_ID = "single-card-family-to-ten-general-plugins";
+export const PREVIOUS_SEIS_PUBLIC_RELEASE_VERSION = "0.4.0+codex.20260722";
+export const CURRENT_SEIS_PUBLIC_RELEASE_VERSION = "0.5.0+codex.20260722";
+export const SEIS_PUBLIC_RELEASE_CHANGE_KIND = "major-autopilot-evidence-governance";
+export const SEIS_PUBLIC_RELEASE_CHANGE_ID = "truthful-foreground-autopilot-evidence-for-ten-general-plugins";
 
 export function parseSemver(value) {
   const match = String(value || "").match(/^(\d+)\.(\d+)\.(\d+)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/);

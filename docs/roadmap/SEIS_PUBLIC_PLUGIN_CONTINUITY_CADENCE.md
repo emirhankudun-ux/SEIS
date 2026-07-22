@@ -114,22 +114,25 @@ native-runtime, provider, deployment, signing, or public-release proof.
 
 ## Continuation After Wave 5
 
-Round 11 is now the first active 200-step plan-and-local-build cycle under the
-current user direction. The retained Wave 5 evidence remains at 80 completed
-steps with step 81 in progress, so this activation does not fabricate Wave 5
-closeout. It does not imply background execution or authorize external
-delivery.
+This file is retained legacy continuity evidence, not current schedule
+authority. The retained Wave 5 evidence remains at 80 completed steps with
+step 81 in progress. The first 200-step series is therefore gated until Wave 5
+has reproducible 100/100 completion evidence and a current activation review
+grants authority. The canonical current cadence lives in
+`content/development/seis-general-plugin-autopilot.json`.
 
 ## Ten-Year Escalating Five-Wave Series
 
-After the historical five 100-step waves, the strategic cadence grows by 100
+After all five current 100-step waves close, the strategic cadence grows by 100
 steps per wave for each later five-wave series. These are workflow planning
-steps, not plugin cards: they do not expand the 34-card public marketplace or
-the 15-capability maximum bundle size.
+steps, not plugin cards: they do not expand the active 10-card public
+marketplace or the 15-capability maximum package size. The 34-card values
+elsewhere in this document are immutable legacy snapshots, not the current v2
+surface.
 
 | Tier | Five-wave shape | Years | Current state |
 | --- | --- | --- | --- |
-| `five-wave-200` | 5 × 200 steps / 10 rounds per wave | 1–2 | Active only for the first Round 11 cycle; step 1 is in progress. |
+| `five-wave-200` | 5 × 200 steps / 10 rounds per wave | 1–2 | Gated until all five 100-step waves complete; no active cycle. |
 | `five-wave-300` | 5 × 300 steps / 15 rounds per wave | 3–4 | Strategic, gated, and not background work. |
 | `five-wave-400` | 5 × 400 steps / 20 rounds per wave | 5–6 | Strategic, gated, and not background work. |
 | `five-wave-500` | 5 × 500 steps / 25 rounds per wave | 7–8 | Strategic, gated, and not background work. |

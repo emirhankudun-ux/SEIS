@@ -15,6 +15,7 @@ const PATHS = Object.freeze({
   parentGoal: "goals/active/SEIS-GOAL-0024--curated-public-plugin-capability-packages.yaml",
   consolidation: "content/development/seis-public-plugin-consolidation.json",
   continuity: "content/development/seis-public-plugin-continuity-cadence.json",
+  generalAutopilot: "content/development/seis-general-plugin-autopilot.json",
   family: "content/development/seis-public-plugin-family.json",
   bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
 });
@@ -46,11 +47,13 @@ function buildProgram() {
   const parentGoalText = readRequiredText(PATHS.parentGoal);
   const consolidation = readJson(PATHS.consolidation);
   const continuity = readJson(PATHS.continuity);
+  const generalAutopilot = readJson(PATHS.generalAutopilot);
   const family = readJson(PATHS.family);
   const bundleCatalog = readJson(PATHS.bundleCatalog);
-  const immediateCycle = buildImmediateCycle();
+  const immediateCycle = buildCurrentImmediateCycle(generalAutopilot);
+  const fiveWaveSeries = buildFiveWaveSeries(generalAutopilot);
+  const escalationSeries = buildEscalationSeries(generalAutopilot);
   const round11Cycle = buildRound11Cycle();
-  const escalationSeries = buildEscalationSeries(continuity);
   const tenYearHorizon = buildTenYearHorizon(escalationSeries);
   const automationRoles = buildAutomationRoles();
   const commandAllowlist = assignAutomationRoles(buildCommandAllowlist(), automationRoles);
@@ -71,7 +74,20 @@ function buildProgram() {
       && consolidation?.inventory?.retainedSourceCapabilityCount === 380
       && consolidation?.packagePlan?.maximumPackageSize === 15
       && consolidation?.packagePlan?.exactOnceCoverage === true,
-    continuityCadence: continuity?.id === "seis-public-plugin-continuity-cadence"
+    currentCadence: generalAutopilot?.id === "seis-ten-general-plugin-autopilot"
+      && generalAutopilot?.goalId === "SEIS-GOAL-0029"
+      && generalAutopilot?.immediateCycle?.status === "execution-state-in-external-ledger"
+      && generalAutopilot?.immediateCycle?.totalSteps === 150
+      && generalAutopilot?.immediateCycle?.roundCount === 5
+      && generalAutopilot?.immediateCycle?.stepsPerRound === 30
+      && generalAutopilot?.executionLedger?.path === "content/development/seis-general-plugin-autopilot-execution.json"
+      && generalAutopilot?.fiveWaveSeries?.status === "blocked-by-incomplete-five-30-step-rounds"
+      && generalAutopilot?.fiveWaveSeries?.activeWave === null
+      && generalAutopilot?.fiveWaveSeries?.waves === 5
+      && generalAutopilot?.fiveWaveSeries?.stepsPerWave === 100
+      && generalAutopilot?.fiveWaveSeries?.nextSeries?.stepsPerWave === 200
+      && generalAutopilot?.fiveWaveSeries?.nextSeries?.status === "gated-until-five-100-step-waves-complete",
+    historicalContinuity: continuity?.id === "seis-public-plugin-continuity-cadence"
       && continuity?.cadence?.bootstrap?.totalSteps === 30
       && continuity?.cadence?.bootstrap?.roundCount === 5
       && continuity?.cadence?.bootstrap?.stepsPerRound === 6
@@ -80,19 +96,14 @@ function buildProgram() {
       && continuity?.cadence?.waveSeries?.roundsPerWave === 5
       && continuity?.cadence?.afterFiveWaves?.nextWaveCount === 5
       && continuity?.cadence?.afterFiveWaves?.nextWaveSteps === 200
-      && continuity?.cadence?.afterFiveWaves?.activationState === "active-round-11-plan-and-local-build"
+      && continuity?.cadence?.afterFiveWaves?.activationState === "gated-until-wave-5-completes"
       && continuity?.cadence?.afterFiveWaves?.historicalEvidenceState === "wave-5-first-80-steps-completed-step-81-in-progress"
       && continuity?.executionBoundary?.backgroundExecutionClaimed === false,
-    escalationCadence: continuity?.cadence?.escalationSeries?.id === "seis-public-plugin-five-wave-step-escalation"
-      && continuity?.cadence?.escalationSeries?.tierCount === 5
-      && continuity?.cadence?.escalationSeries?.waveCountPerTier === 5
-      && continuity?.cadence?.escalationSeries?.stepIncreasePerTier === 100
-      && continuity?.cadence?.escalationSeries?.maximumBundleSize === 15
-      && continuity?.cadence?.escalationSeries?.workflowStepsAreMarketplaceCards === false
-      && list(continuity?.cadence?.escalationSeries?.tiers).map((tier) => tier?.stepsPerWave).join(",") === "200,300,400,500,600"
-      && list(continuity?.cadence?.escalationSeries?.tiers).every((tier) => tier?.waveCount === 5 && tier?.backgroundExecution === false && tier?.marketplaceCardExpansion === false)
-      && continuity?.cadence?.escalationSeries?.tiers?.[0]?.status === "active-round-11-plan-and-local-build"
-      && list(continuity?.cadence?.escalationSeries?.tiers).slice(1).every((tier) => tier?.status === "strategic-gated-not-background" && tier?.activationAuthority === "not-yet-granted"),
+    escalationCadence: generalAutopilot?.escalationSeries?.tierCount === 5
+      && generalAutopilot?.escalationSeries?.waveCountPerTier === 5
+      && list(generalAutopilot?.escalationSeries?.tiers).map((tier) => tier?.stepsPerWave).join(",") === "200,300,400,500,600"
+      && generalAutopilot?.escalationSeries?.tiers?.[0]?.status === "gated-until-five-100-step-waves-complete"
+      && list(generalAutopilot?.escalationSeries?.tiers).every((tier) => tier?.waveCount === 5 && tier?.activationAuthority === "not-yet-granted" && tier?.activeCycle === null && tier?.backgroundExecution === false && tier?.marketplaceCardExpansion === false),
     bundleProjection: family?.id === "seis-public-plugin-family"
       && family?.marketplace?.publicPluginCount === consolidation?.inventory?.publicCardCount
       && family?.marketplace?.generalPluginCount === consolidation?.inventory?.generalPluginCardCount
@@ -101,18 +112,19 @@ function buildProgram() {
       && bundleCatalog?.id === "seis-public-plugin-package-catalog"
       && bundleCatalog?.marketplace?.publicCardCount === family?.marketplace?.publicPluginCount
       && bundleCatalog?.marketplace?.internalPackageCount === 30,
-    immediateCycle: immediateCycle.steps.length === 30
+    immediateCycle: immediateCycle.totalSteps === 150
       && immediateCycle.rounds.length === 5
-      && immediateCycle.rounds.every((round) => round.steps.length === 6),
-    round11Cycle: round11Cycle.totalSteps === 200
-      && round11Cycle.rounds.length === 10
-      && round11Cycle.rounds.every((round) => round.steps.length === 20)
-      && round11Cycle.status === "in-progress-plan-and-local-build",
+      && immediateCycle.rounds.every((round) => round.steps.length === 30),
+    fiveWaveSeries: fiveWaveSeries.status === "blocked-by-incomplete-five-30-step-rounds"
+      && fiveWaveSeries.activeWave === null
+      && fiveWaveSeries.waves === 5
+      && fiveWaveSeries.stepsPerWave === 100
+      && fiveWaveSeries.nextSeries?.status === "gated-until-five-100-step-waves-complete",
     tenYearHorizon: tenYearHorizon.length === 10
       && tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background"),
     commandAllowlist: commandAllowlist.every((command) => command.command === "node" || command.command === "git")
       && commandAllowlist.every((command) => command.externalWrite === false && command.network === false && command.secrets === false),
-    automationRoleAssignments: commandAllowlist.length === 48
+    automationRoleAssignments: commandAllowlist.length === 27
       && commandAllowlist.every((command) => automationRoles.some((role) => role.id === command.automationRoleId))
       && automationRoles.every((role) => commandAllowlist.some((command) => command.automationRoleId === role.id)),
   };
@@ -125,7 +137,7 @@ function buildProgram() {
     status: "active-supervised-foreground-automation",
     maturity: "prototype",
     generatedAt: "2026-07-22",
-    purpose: "Run an explicit local plan, generation, and validation sequence in one foreground invocation while preserving the curated public plugin marketplace and refusing hidden background work or external delivery actions.",
+    purpose: "Run an explicit local plan, generation, and validation sequence in one foreground invocation while preserving the curated public plugin marketplace, the ordered five-by-30 then five-by-100 cadence, and the gate against premature escalation.",
     currentMarketplace: {
       canonicalInstall: "seis-ai-agent@seis-repo",
       publicCardCount: consolidation.inventory.publicCardCount,
@@ -159,24 +171,16 @@ function buildProgram() {
     },
     automationRoles,
     immediateCycle,
-    fiveWaveSeries: {
+    fiveWaveSeries,
+    historicalContinuity: {
       source: PATHS.continuity,
-      bootstrap: {
-        totalSteps: 30,
-        rounds: 5,
-        stepsPerRound: 6,
-      },
-      waves: 5,
-      stepsPerWave: 100,
-      roundsPerWave: 5,
-      stepsPerRound: 20,
-      nextSeries: {
-        waves: 5,
-        stepsPerWave: 200,
-        status: "active-round-11-plan-and-local-build",
-      },
-      continuationRule: "Round 11 is the first active 200-step plan-and-local-build cycle under the current user direction. The retained Wave 5 tracker remains at 80 completed with step 81 in progress, so this transition does not fabricate Wave 5 closeout evidence.",
-      backgroundExecution: false,
+      status: "legacy-wave-5-incomplete-retained-evidence",
+      activeWave: continuity?.cadence?.waveSeries?.activeWave,
+      completedSteps: continuity?.waves?.[4]?.completedSteps,
+      inProgressSteps: list(continuity?.waves?.[4]?.inProgressSteps),
+      closeoutClaimed: continuity?.cadence?.afterFiveWaves?.historicalWave5CloseoutClaimed,
+      escalationActivationState: continuity?.cadence?.afterFiveWaves?.activationState,
+      note: "This is retained legacy evidence only. It cannot activate the current 200-step series or override the Goal 0029 cadence.",
     },
     escalationSeries,
     round11Cycle,
@@ -234,7 +238,22 @@ function buildProgram() {
   return result;
 }
 
-function buildImmediateCycle() {
+function buildCurrentImmediateCycle(generalAutopilot) {
+  return {
+    ...generalAutopilot.immediateCycle,
+    source: PATHS.generalAutopilot,
+  };
+}
+
+function buildFiveWaveSeries(generalAutopilot) {
+  return {
+    ...generalAutopilot.fiveWaveSeries,
+    source: PATHS.generalAutopilot,
+    backgroundExecution: false,
+  };
+}
+
+function buildLegacyImmediateCycleTemplate() {
   const rounds = [
     [
       "Inspect the active goal, branch, worktree, and source-of-truth boundaries.",
@@ -274,7 +293,7 @@ function buildImmediateCycle() {
       "Check worktree state and keep unrelated changes untouched.",
       "Prepare a focused local commit recommendation without creating a commit automatically.",
       "Prepare a separate GitHub feature-branch delivery decision without pushing automatically.",
-      "Continue the currently authorized Round 11 200-step cycle only under current user direction; preserve Wave 5 as incomplete and never activate later tiers automatically.",
+      "Keep the legacy 30-step bootstrap as historical evidence only; preserve Wave 5 as incomplete and never activate a 200-step tier before the current five-wave series closes.",
     ],
   ];
   let number = 1;
@@ -302,7 +321,7 @@ function buildRound11Cycle() {
     ["Bundle runtime safety", "Harden input, output, filesystem, profile, and permission boundaries with adversarial tests."],
     ["Manifest and registry reconciliation", "Align the project manifest, marketplace, family, bundle catalog, and audit evidence."],
     ["Supervised autopilot integrity", "Keep plan-and-build execution anchored, allowlisted, bounded, foreground-only, and honestly scoped."],
-    ["Continuity and historical evidence", "Preserve prior-wave facts while activating the current 200-step plan without fake completion."],
+    ["Continuity and historical evidence", "Preserve prior-wave facts while keeping the 200-step template gated until the current five-wave series closes."],
     ["Cross-project identity boundaries", "Keep SEIS, Eleni-Neferi, and Pantechnoesis distinct while documenting explicit interoperability."],
     ["Validation and delivery readiness", "Run local quality gates, disclose unavailable checks, and prepare reversible feature-branch delivery."],
     ["Human usability and handoff", "Review discovery clarity, installation choices, documentation, risks, rollback, and the next decision."],
@@ -335,11 +354,14 @@ function buildRound11Cycle() {
     name,
     objective,
     stepRange: [index * 20 + 1, index * 20 + 20],
-    steps: actions.map((action) => ({
-      number: stepNumber,
-      title: `${action} for ${name.toLowerCase()}.`,
-      status: stepNumber++ === 1 ? "in-progress" : "planned",
-    })),
+    steps: actions.map((action) => {
+      const number = stepNumber++;
+      return {
+        number,
+        title: `${action} for ${name.toLowerCase()}.`,
+        status: "planned-gated",
+      };
+    }),
   }));
   return {
     round: 11,
@@ -347,46 +369,47 @@ function buildRound11Cycle() {
     totalSteps: 200,
     roundCount: 10,
     stepsPerRound: 20,
-    status: "in-progress-plan-and-local-build",
-    activationAuthority: "current-user-direction-2026-07-22",
+    status: "gated-template-not-active",
+    activationAuthority: "not-yet-granted",
     historicalWave5EvidenceState: "wave-5-first-80-steps-completed-step-81-in-progress",
     historicalWave5CloseoutClaimed: false,
     backgroundExecution: false,
     progress: {
       completedStepCount: 0,
-      inProgressStepNumbers: [1],
-      plannedStepCount: 199,
+      inProgressStepNumbers: [],
+      plannedStepCount: 200,
     },
     rounds,
   };
 }
 
-function buildEscalationSeries(continuity) {
-  const source = continuity?.cadence?.escalationSeries;
+function buildEscalationSeries(generalAutopilot) {
+  const source = generalAutopilot?.escalationSeries;
+  const entryGate = "All five current 100-step waves need reproducible completion evidence, followed by a current goal, scope, risk, validation, rollback, ownership, and human-authority review.";
   return {
-    source: PATHS.continuity,
-    id: source?.id,
+    source: PATHS.generalAutopilot,
+    id: "seis-public-plugin-five-wave-step-escalation",
     direction: source?.direction,
     tierCount: source?.tierCount,
     waveCountPerTier: source?.waveCountPerTier,
-    stepIncreasePerTier: source?.stepIncreasePerTier,
+    stepIncreasePerTier: 100,
     currentMarketplaceCardCount: 10,
     maximumBundleSize: 15,
-    workflowStepsAreMarketplaceCards: source?.workflowStepsAreMarketplaceCards,
-    activationRule: source?.activationRule,
-    tiers: list(source?.tiers).map((tier) => ({
+    workflowStepsAreMarketplaceCards: false,
+    activationRule: "No 200-step or later tier is active while the current five-by-100 series is incomplete.",
+    tiers: list(source?.tiers).map((tier, index) => ({
       id: tier?.id,
       order: tier?.order,
       waveCount: tier?.waveCount,
       stepsPerWave: tier?.stepsPerWave,
-      roundsPerWave: tier?.roundsPerWave,
-      stepsPerRound: tier?.stepsPerRound,
+      roundsPerWave: tier?.stepsPerWave / 20,
+      stepsPerRound: 20,
       totalPlannedSteps: tier?.totalPlannedSteps,
-      years: list(tier?.years),
+      years: [index * 2 + 1, index * 2 + 2],
       status: tier?.status,
-      activationAuthority: tier?.activationAuthority,
-      activeCycle: tier?.activeCycle || null,
-      entryGate: tier?.entryGate,
+      activationAuthority: "not-yet-granted",
+      activeCycle: null,
+      entryGate,
       backgroundExecution: tier?.backgroundExecution,
       marketplaceCardExpansion: tier?.marketplaceCardExpansion,
     })),
@@ -466,74 +489,50 @@ function assignAutomationRoles(commands, roles) {
     ...command,
     automationRoleId: automationRoleForPhaseIndex(index),
   }));
-  assert(assigned.length === 48, "automation role assignment length is invalid");
+  assert(assigned.length === 27, "automation role assignment length is invalid");
   assert(assigned.every((command) => roleIds.has(command.automationRoleId)), "automation role assignment is invalid");
   assert(roles.every((role) => assigned.some((command) => command.automationRoleId === role.id)), "automation role coverage is invalid");
   return assigned;
 }
 
 function automationRoleForPhaseIndex(index) {
-  if (index >= 0 && index <= 3) return "bundle-builder";
-  if (index >= 4 && index <= 8) return "safety-reviewer";
-  if (index >= 9 && index <= 22) return "evidence-reporter";
-  if (index >= 23 && index <= 35) return "qa-validator";
-  if (index === 36) return "architect-planner";
-  if (index === 37) return "qa-validator";
-  if (index >= 38 && index <= 41) return "safety-reviewer";
-  if (index >= 42 && index <= 46) return "qa-validator";
-  if (index === 47) return "delivery-coordinator";
+  if (index >= 0 && index <= 2) return "bundle-builder";
+  if (index >= 3 && index <= 5) return "architect-planner";
+  if ((index >= 6 && index <= 10) || index === 24) return "safety-reviewer";
+  if ((index >= 11 && index <= 15) || (index >= 17 && index <= 23) || index === 25) return "qa-validator";
+  if (index === 16) return "evidence-reporter";
+  if (index === 26) return "delivery-coordinator";
   throw new Error("automation role assignment index is invalid");
 }
 
 function buildCommandAllowlist() {
   return [
-    command("node", ["scripts/create-seis-public-plugin-family.mjs"], "regenerate curated marketplace projection"),
-    command("node", ["scripts/create-seis-public-plugin-bundles.mjs"], "regenerate bounded bundle packages"),
-    command("node", ["scripts/create-seis-core-plugin-catalog.mjs"], "regenerate SEIS Core application catalog"),
-    command("node", ["scripts/create-seis-unified-plugin-suite.mjs"], "regenerate unified plugin suite"),
-    command("node", ["scripts/create-seis-mcp-permission.mjs"], "regenerate MCP permission evidence"),
-    command("node", ["scripts/create-seis-public-install-state.mjs"], "regenerate public install state"),
-    command("node", ["scripts/create-seis-public-install-evidence.mjs"], "regenerate public install evidence"),
-    command("node", ["scripts/create-seis-public-runtime-status.mjs"], "regenerate public runtime status"),
-    command("node", ["scripts/create-seis-ui-state-contract-audit.mjs"], "regenerate UI state audit evidence"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-integration-checkpoint.mjs"], "regenerate Wave 4 integration checkpoint"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-public-boundary-decision.mjs"], "regenerate Wave 4 public-boundary decision"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-handoff-preparation.mjs"], "regenerate Wave 4 handoff preparation"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-closeout-sequence-decision.mjs"], "regenerate Wave 4 closeout-sequence decision"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-repository-local-handoff.mjs"], "regenerate Wave 4 repository-local handoff"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-following-wave-review.mjs"], "regenerate Wave 4 following-wave review"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-evidence-retention.mjs"], "regenerate Wave 4 evidence retention"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-closeout.mjs"], "regenerate Wave 4 closeout"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-program.mjs"], "regenerate Wave 4 program"),
-    command("node", ["scripts/create-seis-public-plugin-consolidation.mjs"], "regenerate consolidation evidence"),
-    command("node", ["scripts/create-seis-public-plugin-wave-5-program.mjs"], "regenerate Wave 5 program"),
-    command("node", ["scripts/create-seis-public-plugin-continuity-cadence.mjs"], "regenerate continuity cadence"),
-    command("node", ["scripts/create-seis-public-plugin-supervised-autopilot.mjs"], "regenerate this program and roadmap"),
-    command("node", ["scripts/create-seis-project-manifest-audit.mjs"], "regenerate project manifest audit evidence"),
-    command("node", ["scripts/create-seis-public-plugin-family.mjs", "--check"], "check marketplace freshness"),
-    command("node", ["scripts/create-seis-public-plugin-bundles.mjs", "--check"], "check bundle freshness"),
-    command("node", ["scripts/create-seis-core-plugin-catalog.mjs", "--check"], "check SEIS Core application catalog freshness"),
-    command("node", ["scripts/create-seis-unified-plugin-suite.mjs", "--check"], "check unified plugin suite freshness"),
-    command("node", ["scripts/create-seis-mcp-permission.mjs", "--check"], "check MCP permission freshness"),
-    command("node", ["scripts/create-seis-public-install-state.mjs", "--check"], "check public install state freshness"),
-    command("node", ["scripts/create-seis-ui-state-contract-audit.mjs", "--check"], "check UI state audit freshness"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-integration-checkpoint.mjs", "--check"], "check Wave 4 integration checkpoint freshness"),
-    command("node", ["scripts/create-seis-public-plugin-wave-4-public-boundary-decision.mjs", "--check"], "check Wave 4 public-boundary decision freshness"),
+    command("node", ["scripts/create-seis-general-plugin-distribution.mjs"], "regenerate the ten-card, thirty-package distribution"),
+    command("node", ["scripts/create-seis-general-unified-suite.mjs"], "regenerate the ten-general-plugin unified suite"),
+    command("node", ["scripts/create-seis-public-plugin-consolidation.mjs"], "regenerate current consolidation evidence"),
+    command("node", ["scripts/create-seis-general-plugin-autopilot.mjs"], "regenerate the canonical cadence roadmap"),
+    command("node", ["scripts/create-seis-public-plugin-supervised-autopilot.mjs"], "regenerate this supervised contract"),
+    command("node", ["scripts/create-seis-general-plugin-autopilot.mjs"], "reconcile cadence delegation after the supervised contract"),
+    command("node", ["scripts/create-seis-general-plugin-distribution.mjs", "--check"], "check distribution freshness"),
+    command("node", ["scripts/check-seis-general-plugin-distribution.mjs"], "check the ten-card distribution contract"),
+    command("node", ["scripts/create-seis-general-unified-suite.mjs", "--check"], "check unified-suite freshness"),
     command("node", ["scripts/create-seis-public-plugin-consolidation.mjs", "--check"], "check consolidation freshness"),
-    command("node", ["scripts/create-seis-public-plugin-wave-5-program.mjs", "--check"], "check Wave 5 program freshness"),
-    command("node", ["scripts/create-seis-public-plugin-supervised-autopilot.mjs", "--check"], "check autopilot freshness"),
-    command("node", ["scripts/create-seis-public-plugin-continuity-cadence.mjs", "--check"], "check continuity cadence freshness"),
-    command("node", ["scripts/check-seis-public-plugin-expansion-program.mjs"], "check expansion program"),
-    command("node", ["scripts/check-seis-plugin-bundle.mjs", "--no-local"], "check canonical plugin bundle"),
-    command("node", ["scripts/check-seis-specialist-plugins.mjs"], "check curated specialist packages"),
-    command("node", ["scripts/check-seis-public-marketplace-terminology.mjs"], "check public marketplace terminology"),
-    command("node", ["scripts/check-seis-agent-plugin-integration.mjs"], "check SEIS-Agent integration"),
+    command("node", ["scripts/check-seis-public-plugin-release-policy.mjs"], "check the structural release policy"),
+    command("node", ["scripts/check-seis-ai-agent-v2.mjs"], "check the current SEIS-Agent contract"),
+    command("node", ["scripts/check-seis-agent-plugin-integration-v2.mjs"], "check current agent and plugin integration"),
+    command("node", ["scripts/check-seis-general-plugin-install-smoke.mjs", "--mcp-smoke"], "run current install and MCP smoke checks"),
+    command("node", ["scripts/create-seis-general-plugin-autopilot.mjs", "--check"], "check canonical cadence freshness"),
+    command("node", ["scripts/create-seis-public-plugin-supervised-autopilot.mjs", "--check"], "check supervised contract freshness"),
+    command("node", ["scripts/check-seis-general-plugin-user-readiness.mjs", "--json"], "report repository-only user readiness"),
+    command("node", ["--test", "plugins/seis-core/test/ten-general-plugin-distribution.test.mjs"], "run ten-general distribution tests"),
     command("node", ["--test", "plugins/seis-core/test/public-plugin-bundles.test.mjs"], "run bundle tests"),
     command("node", ["--test", "plugins/seis-core/test/public-plugin-consolidation.test.mjs"], "run consolidation tests"),
+    command("node", ["--test", "plugins/seis-core/test/general-plugin-runtime.test.mjs"], "run general-plugin runtime tests"),
     command("node", ["--test", "plugins/seis-core/test/public-plugin-supervised-autopilot.test.mjs"], "run supervised autopilot tests"),
+    command("node", ["--test", "plugins/seis-core/test/ten-general-plugin-autopilot.test.mjs"], "run canonical cadence tests"),
+    command("node", ["--test", "plugins/seis-core/test/public-plugin-user-readiness.test.mjs"], "run user-readiness tests"),
+    command("node", ["--test", "plugins/seis-core/test/public-marketplace-local-cleanup.test.mjs"], "run bounded local-config fixture tests"),
     command("node", ["--test", "plugins/seis-core/test/marketplace-integrity.test.mjs"], "run marketplace integrity tests"),
-    command("node", ["scripts/create-seis-project-manifest-audit.mjs", "--check"], "check project manifest audit freshness"),
-    command("node", ["--test", "plugins/seis-core/test/project-manifest-audit.test.mjs"], "run project manifest audit tests"),
     command("git", ["diff", "--check"], "check diff whitespace"),
   ];
 }
@@ -561,7 +560,8 @@ function buildDocument(value) {
     `- Canonical install: \`${value.currentMarketplace.canonicalInstall}\``,
     "- Execution: supervised foreground plan-and-build only; no background execution.",
     `- Role execution: ${value.executionModel.roleExecution}; each reviewed local phase is assigned exactly once.`,
-    `- Round 11: ${value.round11Cycle.totalSteps} steps, ${value.round11Cycle.status}; historical Wave 5 closeout is not claimed.`,
+    `- Current cadence: five 30-step rounds are defined; actual completion is recorded only in ${value.immediateCycle.source.replace(".json", "-execution.json")}. The 100-step series is ${value.fiveWaveSeries.status}.`,
+    `- First 200-step template: ${value.round11Cycle.status}; activation authority is ${value.round11Cycle.activationAuthority}.`,
     `- Escalation ladder: ${value.escalationSeries.tiers.map((tier) => tier.stepsPerWave).join(", ")}-step five-wave tiers; workflow steps never expand the ${value.currentMarketplace.publicCardCount}-card marketplace.`,
     `- Isolation: ${value.executionModel.isolationLevel}; ambient network/filesystem isolation and descendant termination are not OS-enforced.`,
     "",
@@ -574,27 +574,29 @@ function buildDocument(value) {
     "",
     "`--plan` reads local evidence and reports the next safe phases. `--apply-safe` runs only the reviewed local generator and validation allowlist during the current command invocation. The named roles below are deterministic, sequential automation lanes inside that one process; they are not persistent or parallel sub-agent processes. Neither mode intentionally commits, pushes, merges, installs, releases, deploys, accesses a provider, reads a secret, or opens the network. This is source-reviewed command containment, not a kernel sandbox; child code retains ambient process permissions, and descendant termination is not guaranteed after a hostile child. The reviewed phases are foreground local scripts and are not designed to spawn persistent descendants.",
     "",
-    "## 30-Step Immediate Cycle",
+    "## Five 30-Step Rounds",
     "",
     ...value.immediateCycle.rounds.flatMap((round) => [
-      `### Round ${round.round}: ${round.name}`,
+      `### ${round.title}`,
       "",
-      ...round.steps.map((step) => `${step.number}. ${step.title}`),
+      ...round.steps.map((step) => `${step.number}. ${step.label}`),
       "",
     ]),
     "## Five-Wave Cadence",
     "",
-    `The retained cadence records one 30-step bootstrap and ${value.fiveWaveSeries.waves} evidence-led waves of ${value.fiveWaveSeries.stepsPerWave} steps. Round 11 is now the first active ${value.fiveWaveSeries.nextSeries.stepsPerWave}-step plan-and-local-build cycle under current user direction. The historical Wave 5 evidence remains at 80 completed with step 81 in progress; this activation does not claim those remaining steps completed.`,
+    `The canonical cadence defines five 30-step rounds (${value.immediateCycle.totalSteps} checkpoints), followed by ${value.fiveWaveSeries.waves} waves of ${value.fiveWaveSeries.stepsPerWave} steps. Completion is not inferred from this plan: only the Goal 0029 execution ledger can advance the cadence. The first ${value.fiveWaveSeries.nextSeries.stepsPerWave}-step series remains ${value.fiveWaveSeries.nextSeries.status}.`,
+    "",
+    `The legacy continuity artifact is retained at Wave ${value.historicalContinuity.activeWave}, ${value.historicalContinuity.completedSteps}/100 complete, with step ${value.historicalContinuity.inProgressSteps.join(", ")} in progress. It is historical evidence, not current schedule authority.`,
     "",
     "## Escalating Five-Wave Series",
     "",
-    "After the historical 100-step waves, each later tier retains five waves and adds 100 steps per wave. These are workflow planning steps, never extra marketplace cards or installations. Only the active Round 11 cycle has current authorization; every later tier remains strategic, gated, and non-background.",
+    "After all five current 100-step waves close with evidence, each later tier retains five waves and adds 100 steps per wave. These are workflow planning steps, never extra marketplace cards or installations. Every 200-step-or-later tier is currently gated and non-background.",
     "",
     "| Tier | Years | Waves | Steps per wave | Total planned steps | State |",
     "| --- | --- | ---: | ---: | ---: | --- |",
     ...value.escalationSeries.tiers.map((tier) => `| ${tier.id} | ${tier.years.join("–")} | ${tier.waveCount} | ${tier.stepsPerWave} | ${tier.totalPlannedSteps} | ${tier.status} |`),
     "",
-    "## Round 11 — First 200-Step Cycle",
+    "## Gated 200-Step Compatibility Template",
     "",
     ...value.round11Cycle.rounds.flatMap((round) => [
       `### ${round.round}. ${round.name} (steps ${round.stepRange[0]}–${round.stepRange[1]})`,
@@ -637,17 +639,19 @@ function validateProgram(value) {
   assert(value.executionModel?.isolationLevel === "reviewed-allowlist-no-os-sandbox" && value.executionModel?.ambientNetworkIsolationEnforced === false && value.executionModel?.ambientFilesystemIsolationEnforced === false && value.executionModel?.descendantTerminationGuaranteed === false, "isolation disclosure is invalid");
   const roleIds = ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"];
   assert(value.automationRoles?.length === roleIds.length && value.automationRoles.every((role, index) => role?.id === roleIds[index]), "automation roles are invalid");
-  assert(value.immediateCycle?.totalSteps === 30 && value.immediateCycle?.rounds?.length === 5 && value.immediateCycle?.rounds?.every((round) => round.steps?.length === 6), "immediate cycle is invalid");
-  assert(value.fiveWaveSeries?.waves === 5 && value.fiveWaveSeries?.stepsPerWave === 100 && value.fiveWaveSeries?.roundsPerWave === 5 && value.fiveWaveSeries?.nextSeries?.waves === 5 && value.fiveWaveSeries?.nextSeries?.stepsPerWave === 200 && value.fiveWaveSeries?.nextSeries?.status === "active-round-11-plan-and-local-build" && value.fiveWaveSeries?.backgroundExecution === false, "five-wave series is invalid");
+  assert(value.immediateCycle?.source === PATHS.generalAutopilot && value.immediateCycle?.status === "execution-state-in-external-ledger" && value.immediateCycle?.totalSteps === 150 && value.immediateCycle?.roundCount === 5 && value.immediateCycle?.stepsPerRound === 30 && value.immediateCycle?.rounds?.length === 5 && value.immediateCycle?.rounds?.every((round) => round.status === "planned-not-executed" && round.steps?.length === 30), "immediate cycle is invalid");
+  assert(value.fiveWaveSeries?.source === PATHS.generalAutopilot && value.fiveWaveSeries?.status === "blocked-by-incomplete-five-30-step-rounds" && value.fiveWaveSeries?.activeWave === null && value.fiveWaveSeries?.nextWave === 1 && value.fiveWaveSeries?.waves === 5 && value.fiveWaveSeries?.stepsPerWave === 100 && value.fiveWaveSeries?.roundsPerWave === 5 && value.fiveWaveSeries?.waveStatuses?.length === 5 && value.fiveWaveSeries.waveStatuses.every((wave) => wave.status === "planned-not-background" && wave.completedSteps === 0 && wave.nextStep === null) && value.fiveWaveSeries?.nextSeries?.waves === 5 && value.fiveWaveSeries?.nextSeries?.stepsPerWave === 200 && value.fiveWaveSeries?.nextSeries?.status === "gated-until-five-100-step-waves-complete" && value.fiveWaveSeries?.backgroundExecution === false, "five-wave series is invalid");
   const escalationTiers = list(value.escalationSeries?.tiers);
   const expectedEscalationSteps = [200, 300, 400, 500, 600];
-  assert(value.escalationSeries?.source === PATHS.continuity && value.escalationSeries?.id === "seis-public-plugin-five-wave-step-escalation" && value.escalationSeries?.direction === "increase-100-steps-per-wave-after-each-five-wave-series" && value.escalationSeries?.tierCount === 5 && value.escalationSeries?.waveCountPerTier === 5 && value.escalationSeries?.stepIncreasePerTier === 100 && value.escalationSeries?.currentMarketplaceCardCount === 10 && value.escalationSeries?.maximumBundleSize === 15 && value.escalationSeries?.workflowStepsAreMarketplaceCards === false, "escalation series identity is invalid");
+  assert(value.escalationSeries?.source === PATHS.generalAutopilot && value.escalationSeries?.id === "seis-public-plugin-five-wave-step-escalation" && value.escalationSeries?.direction === "increase-100-steps-per-wave-after-each-five-wave-series" && value.escalationSeries?.tierCount === 5 && value.escalationSeries?.waveCountPerTier === 5 && value.escalationSeries?.stepIncreasePerTier === 100 && value.escalationSeries?.currentMarketplaceCardCount === 10 && value.escalationSeries?.maximumBundleSize === 15 && value.escalationSeries?.workflowStepsAreMarketplaceCards === false, "escalation series identity is invalid");
   assert(escalationTiers.length === expectedEscalationSteps.length && escalationTiers.every((tier, index) => tier?.id === `five-wave-${expectedEscalationSteps[index]}` && tier?.order === index + 1 && tier?.waveCount === 5 && tier?.stepsPerWave === expectedEscalationSteps[index] && tier?.roundsPerWave === expectedEscalationSteps[index] / 20 && tier?.stepsPerRound === 20 && tier?.totalPlannedSteps === expectedEscalationSteps[index] * 5 && list(tier?.years).join(",") === `${index * 2 + 1},${index * 2 + 2}` && tier?.backgroundExecution === false && tier?.marketplaceCardExpansion === false), "escalation series tiers are invalid");
-  assert(escalationTiers[0]?.status === "active-round-11-plan-and-local-build" && escalationTiers[0]?.activationAuthority === "current-user-direction-2026-07-22" && escalationTiers[0]?.activeCycle?.round === 11 && escalationTiers[0]?.activeCycle?.totalSteps === 200 && list(escalationTiers[0]?.activeCycle?.inProgressStepNumbers).join(",") === "1", "active escalation tier is invalid");
-  assert(escalationTiers.slice(1).every((tier) => tier?.status === "strategic-gated-not-background" && tier?.activationAuthority === "not-yet-granted" && tier?.activeCycle === null), "future escalation tiers must remain gated");
-  assert(value.round11Cycle?.round === 11 && value.round11Cycle?.totalSteps === 200 && value.round11Cycle?.roundCount === 10 && value.round11Cycle?.stepsPerRound === 20 && value.round11Cycle?.status === "in-progress-plan-and-local-build" && value.round11Cycle?.historicalWave5CloseoutClaimed === false && value.round11Cycle?.rounds?.every((round) => round.steps?.length === 20), "Round 11 cycle is invalid");
+  assert(escalationTiers[0]?.status === "gated-until-five-100-step-waves-complete", "first escalation tier must remain gated");
+  assert(escalationTiers.slice(1).every((tier) => tier?.status === "strategic-gated-not-background"), "later escalation tiers must remain strategic and gated");
+  assert(escalationTiers.every((tier) => tier?.activationAuthority === "not-yet-granted" && tier?.activeCycle === null), "all escalation tiers must remain gated");
+  assert(value.round11Cycle?.round === 11 && value.round11Cycle?.totalSteps === 200 && value.round11Cycle?.roundCount === 10 && value.round11Cycle?.stepsPerRound === 20 && value.round11Cycle?.status === "gated-template-not-active" && value.round11Cycle?.activationAuthority === "not-yet-granted" && value.round11Cycle?.historicalWave5CloseoutClaimed === false && value.round11Cycle?.progress?.completedStepCount === 0 && list(value.round11Cycle?.progress?.inProgressStepNumbers).length === 0 && value.round11Cycle?.progress?.plannedStepCount === 200 && value.round11Cycle?.rounds?.every((round) => round.steps?.length === 20 && round.steps.every((step) => step.status === "planned-gated")), "Round 11 compatibility template is invalid");
+  assert(value.historicalContinuity?.status === "legacy-wave-5-incomplete-retained-evidence" && value.historicalContinuity?.activeWave === 5 && value.historicalContinuity?.completedSteps === 80 && list(value.historicalContinuity?.inProgressSteps).join(",") === "81" && value.historicalContinuity?.closeoutClaimed === false && value.historicalContinuity?.escalationActivationState === "gated-until-wave-5-completes", "historical continuity boundary is invalid");
   assert(value.tenYearHorizon?.length === 10 && value.tenYearHorizon?.every((year, index) => year?.year === index + 1 && year?.execution === "strategic-gated-not-background" && year?.escalationTierId === `five-wave-${expectedEscalationSteps[Math.floor(index / 2)]}` && year?.seriesWaveCount === 5 && year?.stepsPerWave === expectedEscalationSteps[Math.floor(index / 2)]), "ten-year horizon is invalid");
-  assert(value.commandAllowlist?.length === 48 && value.commandAllowlist?.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false && roleIds.includes(entry.automationRoleId)) && roleIds.every((roleId) => value.commandAllowlist.some((entry) => entry.automationRoleId === roleId)), "command allowlist is invalid");
+  assert(value.commandAllowlist?.length === 27 && value.commandAllowlist?.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false && roleIds.includes(entry.automationRoleId)) && roleIds.every((roleId) => value.commandAllowlist.some((entry) => entry.automationRoleId === roleId)), "command allowlist is invalid");
   assert(Object.values(value.checks || {}).every(Boolean), "one or more source checks are invalid");
   assert(value.publicBoundary?.personalMarketplaceRead === false && value.publicBoundary?.personalMarketplaceMutation === false && value.publicBoundary?.network === false && value.publicBoundary?.externalWrites === false && value.publicBoundary?.secrets === false && value.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(value)), "program must not contain a machine-specific path");

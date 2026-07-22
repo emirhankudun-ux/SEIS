@@ -15730,10 +15730,10 @@
     "exactOnceInternalPackageCoverage": true
   },
   "release": {
-    "currentVersion": "0.4.0+codex.20260722",
-    "previousVersion": "0.3.0+codex.20260712",
-    "changeKind": "major-structural-distribution",
-    "changeId": "single-card-family-to-ten-general-plugins",
+    "currentVersion": "0.5.0+codex.20260722",
+    "previousVersion": "0.4.0+codex.20260722",
+    "changeKind": "major-autopilot-evidence-governance",
+    "changeId": "truthful-foreground-autopilot-evidence-for-ten-general-plugins",
     "publicReleaseAllowed": false
   },
   "seisAiConnection": {

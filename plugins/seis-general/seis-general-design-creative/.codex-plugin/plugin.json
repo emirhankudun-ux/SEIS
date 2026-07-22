@@ -1,6 +1,6 @@
 {
   "name": "seis-general-design-creative",
-  "version": "0.4.0+codex.20260722",
+  "version": "0.5.0+codex.20260722",
   "description": "Design systems, UX, accessibility, creative production, and visual experience work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
   "author": {
     "name": "emirhankudun-ux",

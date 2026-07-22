@@ -30,15 +30,21 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.currentMarketplace.internalPackageCardCount, 0);
   assert.equal(program.currentMarketplace.retainedSourceCapabilityCount, 380);
   assert.equal(program.currentMarketplace.maximumPackageSize, 15);
-  assert.equal(program.immediateCycle.totalSteps, 30);
+  assert.equal(program.immediateCycle.status, "execution-state-in-external-ledger");
+  assert.equal(program.immediateCycle.totalSteps, 150);
+  assert.equal(program.immediateCycle.stepsPerRound, 30);
   assert.equal(program.immediateCycle.rounds.length, 5);
-  assert.ok(program.immediateCycle.rounds.every((round) => round.steps.length === 6));
+  assert.ok(program.immediateCycle.rounds.every((round) => round.status === "planned-not-executed" && round.steps.length === 30));
+  assert.equal(program.fiveWaveSeries.status, "blocked-by-incomplete-five-30-step-rounds");
+  assert.equal(program.fiveWaveSeries.activeWave, null);
+  assert.equal(program.fiveWaveSeries.nextWave, 1);
   assert.equal(program.fiveWaveSeries.waves, 5);
   assert.equal(program.fiveWaveSeries.stepsPerWave, 100);
   assert.equal(program.fiveWaveSeries.roundsPerWave, 5);
   assert.equal(program.fiveWaveSeries.nextSeries.waves, 5);
   assert.equal(program.fiveWaveSeries.nextSeries.stepsPerWave, 200);
-  assert.equal(program.fiveWaveSeries.nextSeries.status, "active-round-11-plan-and-local-build");
+  assert.equal(program.fiveWaveSeries.nextSeries.status, "gated-until-five-100-step-waves-complete");
+  assert.ok(program.fiveWaveSeries.waveStatuses.every((wave) => wave.status === "planned-not-background" && wave.completedSteps === 0 && wave.nextStep === null));
   assert.equal(program.escalationSeries.id, "seis-public-plugin-five-wave-step-escalation");
   assert.equal(program.escalationSeries.tierCount, 5);
   assert.equal(program.escalationSeries.waveCountPerTier, 5);
@@ -49,16 +55,21 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.deepEqual(program.escalationSeries.tiers.map((tier) => tier.stepsPerWave), [200, 300, 400, 500, 600]);
   assert.deepEqual(program.escalationSeries.tiers.map((tier) => tier.years), [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]]);
   assert.ok(program.escalationSeries.tiers.every((tier) => tier.waveCount === 5 && tier.stepsPerRound === 20 && tier.roundsPerWave === tier.stepsPerWave / 20 && tier.totalPlannedSteps === tier.stepsPerWave * 5 && tier.backgroundExecution === false && tier.marketplaceCardExpansion === false));
-  assert.equal(program.escalationSeries.tiers[0].status, "active-round-11-plan-and-local-build");
-  assert.equal(program.escalationSeries.tiers[0].activationAuthority, "current-user-direction-2026-07-22");
-  assert.deepEqual(program.escalationSeries.tiers[0].activeCycle.inProgressStepNumbers, [1]);
-  assert.ok(program.escalationSeries.tiers.slice(1).every((tier) => tier.status === "strategic-gated-not-background" && tier.activationAuthority === "not-yet-granted" && tier.activeCycle === null));
+  assert.equal(program.escalationSeries.tiers[0].status, "gated-until-five-100-step-waves-complete");
+  assert.ok(program.escalationSeries.tiers.every((tier) => tier.activationAuthority === "not-yet-granted" && tier.activeCycle === null));
   assert.equal(program.round11Cycle.round, 11);
   assert.equal(program.round11Cycle.totalSteps, 200);
   assert.equal(program.round11Cycle.rounds.length, 10);
   assert.ok(program.round11Cycle.rounds.every((round) => round.steps.length === 20));
-  assert.equal(program.round11Cycle.status, "in-progress-plan-and-local-build");
+  assert.equal(program.round11Cycle.status, "gated-template-not-active");
+  assert.equal(program.round11Cycle.activationAuthority, "not-yet-granted");
+  assert.deepEqual(program.round11Cycle.progress.inProgressStepNumbers, []);
+  assert.equal(program.round11Cycle.progress.plannedStepCount, 200);
   assert.equal(program.round11Cycle.historicalWave5CloseoutClaimed, false);
+  assert.equal(program.historicalContinuity.status, "legacy-wave-5-incomplete-retained-evidence");
+  assert.equal(program.historicalContinuity.completedSteps, 80);
+  assert.deepEqual(program.historicalContinuity.inProgressSteps, [81]);
+  assert.equal(program.historicalContinuity.escalationActivationState, "gated-until-wave-5-completes");
   assert.equal(program.tenYearHorizon.length, 10);
   assert.ok(program.tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background" && year.escalationTierId === `five-wave-${[200, 300, 400, 500, 600][Math.floor(index / 2)]}` && year.seriesWaveCount === 5 && year.stepsPerWave === [200, 300, 400, 500, 600][Math.floor(index / 2)]));
   assert.deepEqual(program.automationRoles.map((role) => role.id), ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"]);
@@ -76,7 +87,7 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.executionModel.merge, false);
   assert.equal(program.executionModel.release, false);
   assert.equal(program.executionModel.deployment, false);
-  assert.equal(program.commandAllowlist.length, 48);
+  assert.equal(program.commandAllowlist.length, 27);
   assert.ok(program.commandAllowlist.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false && typeof entry.automationRoleId === "string"));
   assert.ok(program.automationRoles.every((role) => program.commandAllowlist.some((entry) => entry.automationRoleId === role.id)));
 });
@@ -102,19 +113,24 @@ test("plan mode is read-only and reports a foreground-only plan", () => {
   assert.equal(report.descendantTerminationGuaranteed, false);
   assert.equal(report.commandExecuted, false);
   assert.equal(report.results.length, 0);
-  assert.equal(report.approvedLocalPhases.length, 48);
+  assert.equal(report.approvedLocalPhases.length, 27);
+  assert.equal(report.plan.immediateStepCount, 150);
+  assert.equal(report.plan.activeWave, null);
+  assert.equal(report.plan.activeWaveStatus, "blocked-by-incomplete-five-30-step-rounds");
+  assert.equal(report.plan.activeWaveNextStep, null);
   assert.equal(report.plan.nextSeriesWaveCount, 5);
   assert.equal(report.plan.nextSeriesStepsPerWave, 200);
+  assert.equal(report.plan.nextSeriesStatus, "gated-until-five-100-step-waves-complete");
   assert.equal(report.plan.round11StepCount, 200);
-  assert.equal(report.plan.round11Status, "in-progress-plan-and-local-build");
+  assert.equal(report.plan.round11Status, "gated-template-not-active");
   assert.equal(report.plan.escalationTierCount, 5);
-  assert.equal(report.plan.activeEscalationTierId, "five-wave-200");
-  assert.equal(report.plan.activeEscalationStepsPerWave, 200);
-  assert.equal(report.plan.nextStrategicEscalationTierId, "five-wave-300");
-  assert.equal(report.plan.nextStrategicEscalationStepsPerWave, 300);
+  assert.equal(report.plan.activeEscalationTierId, null);
+  assert.equal(report.plan.activeEscalationStepsPerWave, null);
+  assert.equal(report.plan.nextGatedEscalationTierId, "five-wave-200");
+  assert.equal(report.plan.nextGatedEscalationStepsPerWave, 200);
   assert.equal(report.plan.roleExecution, "foreground-sequential-reviewed-allowlist");
   assert.deepEqual(report.roleLanes.map((lane) => lane.id), ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"]);
-  assert.equal(report.roleLanes.reduce((count, lane) => count + lane.phaseCount, 0), 48);
+  assert.equal(report.roleLanes.reduce((count, lane) => count + lane.phaseCount, 0), 27);
   assert.ok(report.roleLanes.every((lane) => lane.execution === "foreground-sequential-reviewed-allowlist" && lane.phaseCount === lane.phases.length && lane.phaseCount > 0));
   assert.equal(report.githubDelivery.automaticPush, false);
   assert.deepEqual([digest(programPath), digest(roadmapPath)], before);
@@ -131,7 +147,7 @@ test("plan mode is anchored to the runner repository from a foreign working dire
     assert.equal(result.status, 0, result.stderr || result.stdout);
     const report = JSON.parse(result.stdout);
     assert.equal(report.mode, "plan");
-    assert.equal(report.approvedLocalPhases.length, 48);
+    assert.equal(report.approvedLocalPhases.length, 27);
     assert.deepEqual([digest(programPath), digest(roadmapPath)], before);
   } finally {
     fs.rmSync(foreign, { recursive: true, force: true });
@@ -156,19 +172,39 @@ test("runner rejects a card count that is not the exact current ten-card project
   }
 });
 
-test("runner rejects a future escalation tier that claims automatic activation", () => {
+test("runner rejects premature activation of the first 200-step tier", () => {
   const fixture = makeRunnerFixture();
   const fixtureProgramPath = path.join(fixture.root, "content/development/seis-public-plugin-supervised-autopilot.json");
   try {
     const fixtureProgram = JSON.parse(fs.readFileSync(fixtureProgramPath, "utf8"));
-    fixtureProgram.escalationSeries.tiers[1].status = "active-round-12-without-current-authorization";
+    fixtureProgram.escalationSeries.tiers[0].status = "active-before-five-100-step-waves-complete";
+    fixtureProgram.escalationSeries.tiers[0].activationAuthority = "self-granted";
+    fixtureProgram.escalationSeries.tiers[0].activeCycle = { totalSteps: 200, inProgressStepNumbers: [1] };
     fs.writeFileSync(fixtureProgramPath, `${JSON.stringify(fixtureProgram, null, 2)}\n`);
     const result = spawnSync(process.execPath, [path.join(fixture.root, "scripts/run-seis-public-plugin-supervised-autopilot.mjs"), "--plan"], {
       cwd: fixture.root,
       encoding: "utf8",
     });
     assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /future escalation tiers must remain gated/);
+    assert.match(result.stderr, /first escalation tier must remain gated/);
+  } finally {
+    fs.rmSync(fixture.parent, { recursive: true, force: true });
+  }
+});
+
+test("runner rejects a next-series contract that skips unfinished 100-step waves", () => {
+  const fixture = makeRunnerFixture();
+  const fixtureProgramPath = path.join(fixture.root, "content/development/seis-public-plugin-supervised-autopilot.json");
+  try {
+    const fixtureProgram = JSON.parse(fs.readFileSync(fixtureProgramPath, "utf8"));
+    fixtureProgram.fiveWaveSeries.nextSeries.status = "active-without-five-wave-evidence";
+    fs.writeFileSync(fixtureProgramPath, `${JSON.stringify(fixtureProgram, null, 2)}\n`);
+    const result = spawnSync(process.execPath, [path.join(fixture.root, "scripts/run-seis-public-plugin-supervised-autopilot.mjs"), "--plan"], {
+      cwd: fixture.root,
+      encoding: "utf8",
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /next-series cadence is invalid/);
   } finally {
     fs.rmSync(fixture.parent, { recursive: true, force: true });
   }
@@ -195,7 +231,7 @@ test("runner rejects a tampered reviewed phase-to-role assignment", () => {
 test("runner rejects a symlinked allowlisted phase target in an anchored fixture", () => {
   const fixture = makeRunnerFixture();
   const outside = path.join(fixture.parent, "outside-phase.mjs");
-  const target = path.join(fixture.root, "scripts/create-seis-public-plugin-family.mjs");
+  const target = path.join(fixture.root, "scripts/create-seis-general-plugin-distribution.mjs");
   try {
     fs.writeFileSync(outside, "// outside\n");
     fs.rmSync(target);
@@ -226,16 +262,15 @@ test("runner has a fixed local allowlist and no shell or external-delivery path"
   assert.doesNotMatch(source, /execSync|execFileSync|shell:\s*true|https?:\/\/|fetch\s*\(|\bgh\s+|git\s+push/);
   assert.doesNotMatch(source, /HOME:\s*process\.env\.HOME/);
   assert.doesNotMatch(source, /process\.argv\.slice\(2\).*command/);
-  assert.match(source, /scripts\/create-seis-public-plugin-family\.mjs/);
-  assert.match(source, /scripts\/create-seis-public-plugin-bundles\.mjs/);
-  assert.match(source, /scripts\/create-seis-core-plugin-catalog\.mjs/);
-  assert.match(source, /scripts\/create-seis-unified-plugin-suite\.mjs/);
-  assert.match(source, /scripts\/create-seis-mcp-permission\.mjs/);
+  assert.match(source, /scripts\/create-seis-general-plugin-distribution\.mjs/);
+  assert.match(source, /scripts\/create-seis-general-unified-suite\.mjs/);
+  assert.match(source, /scripts\/create-seis-general-plugin-autopilot\.mjs/);
   assert.match(source, /scripts\/create-seis-public-plugin-consolidation\.mjs/);
   assert.match(source, /scripts\/create-seis-public-plugin-supervised-autopilot\.mjs/);
-  assert.match(source, /scripts\/check-seis-agent-plugin-integration\.mjs/);
+  assert.match(source, /scripts\/check-seis-agent-plugin-integration-v2\.mjs/);
+  assert.match(source, /scripts\/check-seis-general-plugin-user-readiness\.mjs/);
   assert.match(source, /plugins\/seis-core\/test\/marketplace-integrity\.test\.mjs/);
-  assert.match(source, /plugins\/seis-core\/test\/project-manifest-audit\.test\.mjs/);
+  assert.doesNotMatch(source, /scripts\/create-seis-public-plugin-wave-[45]|scripts\/create-seis-public-plugin-continuity-cadence|scripts\/check-seis-agent-plugin-integration\.mjs/);
   assert.match(source, /\["diff", "--check"\]/);
 });
 

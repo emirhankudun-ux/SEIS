@@ -4,7 +4,7 @@
   "name": "seis-general-automation-delivery",
   "displayName": "SEIS Automation & Delivery",
   "generatedAt": "2026-07-22",
-  "version": "0.4.0+codex.20260722",
+  "version": "0.5.0+codex.20260722",
   "status": "release-ready-not-published",
   "visibility": "public-general-plugin",
   "canonical": false,

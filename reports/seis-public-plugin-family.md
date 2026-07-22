@@ -1,6 +1,6 @@
 # SEIS Public Plugin Family
 
-- Release version: 0.4.0+codex.20260722
+- Release version: 0.5.0+codex.20260722
 - Marketplace cards: 10
 - General plugins: 10
 - Internal packages: 30

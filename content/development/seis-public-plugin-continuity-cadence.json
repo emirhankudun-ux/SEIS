@@ -5,8 +5,13 @@
   "status": "active-evidence-led-cadence",
   "maturity": "specification",
   "generatedAt": "2026-07-21",
-  "purpose": "Make the requested 30-step bootstrap, five 100-step public SEIS Repo waves, and future series handoff explicit without claiming background execution or pre-approving future capability changes.",
+  "purpose": "Retain the earlier 30-step bootstrap and unfinished fifth 100-step wave as historical evidence without overriding the current five-by-30 then five-by-100 schedule or pre-approving future work.",
   "parentProgramPath": "content/development/seis-public-plugin-expansion-program.json",
+  "scheduleAuthority": {
+    "current": false,
+    "canonicalPath": "content/development/seis-general-plugin-autopilot.json",
+    "classification": "legacy-continuity-evidence-only"
+  },
   "historicalWave4DirectCardSnapshot": {
     "observedAt": "2026-07-21",
     "projectionModel": "direct-source-cards",
@@ -41,6 +46,7 @@
     },
     "directSourceCapabilityCardCount": 0
   },
+  "marketplaceProjectionClassification": "legacy-34-card-continuity-snapshot-not-current-v2-surface",
   "executionBoundary": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
@@ -82,11 +88,11 @@
       "completedSeriesStepSize": 100,
       "nextWaveCount": 5,
       "nextWaveSteps": 200,
-      "activationState": "active-round-11-plan-and-local-build",
-      "activationAuthority": "current-user-direction-2026-07-22",
+      "activationState": "gated-until-wave-5-completes",
+      "activationAuthority": "not-yet-granted",
       "historicalEvidenceState": "wave-5-first-80-steps-completed-step-81-in-progress",
       "historicalWave5CloseoutClaimed": false,
-      "continuationRule": "Round 11 is the first active 200-step plan-and-local-build cycle under current user direction. Preserve the retained Wave 5 evidence at 80 completed with step 81 in progress; do not fabricate closeout, automatic background execution, or external delivery.",
+      "continuationRule": "The first 200-step series remains gated until Wave 5 has 100 reproducibly completed steps and a current activation review grants authority. Preserve the retained Wave 5 evidence at 80 completed with step 81 in progress; do not fabricate closeout, automatic background execution, or external delivery.",
       "backgroundExecutionClaimed": false
     },
     "escalationSeries": {
@@ -95,10 +101,11 @@
       "tierCount": 5,
       "waveCountPerTier": 5,
       "stepIncreasePerTier": 100,
-      "currentMarketplaceCardCount": 34,
+      "currentMarketplaceCardCount": 10,
+      "marketplaceProjectionScope": "active-v2-ten-general-plugin-marketplace",
       "maximumBundleSize": 15,
       "workflowStepsAreMarketplaceCards": false,
-      "activationRule": "Only the active 200-step Round 11 cycle has current authorization. Every later tier is strategic, gated, and non-background until its own current evidence and human authorization exist.",
+      "activationRule": "No escalation tier is active while the retained 100-step Wave 5 remains incomplete. Every tier is gated and non-background until its predecessor evidence and current human authorization exist.",
       "tiers": [
         {
           "id": "five-wave-200",
@@ -112,17 +119,9 @@
             1,
             2
           ],
-          "status": "active-round-11-plan-and-local-build",
-          "activationAuthority": "current-user-direction-2026-07-22",
-          "activeCycle": {
-            "round": 11,
-            "totalSteps": 200,
-            "status": "in-progress-plan-and-local-build",
-            "completedStepCount": 0,
-            "inProgressStepNumbers": [
-              1
-            ]
-          },
+          "status": "gated-until-five-100-step-waves-complete",
+          "activationAuthority": "not-yet-granted",
+          "activeCycle": null,
           "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
           "backgroundExecution": false,
           "marketplaceCardExpansion": false

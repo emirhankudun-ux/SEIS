@@ -30,6 +30,7 @@ ensure(policy?.currentRelease?.changeKind === SEIS_PUBLIC_RELEASE_CHANGE_KIND, "
 ensure(policy?.policy?.structuralDistributionChangeRequiresVersionIncrease === true, "structural version-bump policy is missing");
 ensure(policy?.policy?.directMarketplaceCardCountChangeRequiresVersionIncrease === true, "marketplace card version-bump policy is missing");
 ensure(policy?.policy?.internalPackageTopologyChangeRequiresVersionIncrease === true, "internal topology version-bump policy is missing");
+ensure(policy?.policy?.majorAutopilotEvidenceContractChangeRequiresVersionIncrease === true, "major Auto Mode evidence version-bump policy is missing");
 ensure(policy?.policy?.publicReleaseRequiresHumanApproval === true, "public release approval gate is missing");
 ensure(policy?.validation?.semverIncreased === true, "release policy must record a semver increase");
 ensure(manifest?.version === CURRENT_SEIS_PUBLIC_RELEASE_VERSION, "SEIS-Agent manifest version does not match release policy");

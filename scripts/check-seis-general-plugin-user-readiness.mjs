@@ -20,19 +20,39 @@ run("release-policy", ["scripts/check-seis-public-plugin-release-policy.mjs"]);
 run("unified-suite", ["scripts/create-seis-general-unified-suite.mjs", "--check"]);
 run("agent", ["scripts/check-seis-ai-agent-v2.mjs"]);
 run("autopilot", ["scripts/create-seis-general-plugin-autopilot.mjs", "--check"]);
+run("execution-ledger", ["scripts/run-seis-general-plugin-autopilot.mjs", "--check"]);
 const roadmap = readRepositoryJson("content/development/seis-general-plugin-autopilot.json");
+const supervised = readRepositoryJson("content/development/seis-public-plugin-supervised-autopilot.json");
+const executionLedger = readOptionalRepositoryJson("content/development/seis-general-plugin-autopilot-execution.json");
+const completedRoundCount = Array.isArray(executionLedger?.rounds) ? executionLedger.rounds.length : 0;
 ensure(
   roadmap?.immediateCycle?.roundCount === 5
     && roadmap?.immediateCycle?.stepsPerRound === 30
     && roadmap?.immediateCycle?.totalSteps === 150
-    && roadmap?.immediateCycle?.completedRoundCount === 5
-    && roadmap?.fiveWaveSeries?.activeWave === 1
-    && roadmap?.fiveWaveSeries?.status === "wave-1-in-progress-foreground-only"
-    && roadmap?.canonicalAutomation?.goalId === "SEIS-GOAL-0025"
-    && roadmap?.canonicalAutomation?.reviewedPhaseCount === 48
+    && roadmap?.immediateCycle?.status === "execution-state-in-external-ledger"
+    && roadmap?.fiveWaveSeries?.activeWave === null
+    && roadmap?.fiveWaveSeries?.status === "blocked-by-incomplete-five-30-step-rounds"
+    && roadmap?.canonicalAutomation?.goalId === "SEIS-GOAL-0029"
+    && roadmap?.canonicalAutomation?.runner === "scripts/run-seis-general-plugin-autopilot.mjs"
+    && roadmap?.canonicalAutomation?.reviewedPhaseCount === 30
     && roadmap?.canonicalAutomation?.repositoryAnchored === true
+    && roadmap?.canonicalAutomation?.evidenceLedger === "content/development/seis-general-plugin-autopilot-execution.json"
     && roadmap?.commandAllowlist === undefined,
-  "five-round roadmap or hardened automation delegation is invalid",
+  "five-round roadmap or bounded execution-ledger contract is invalid",
+);
+ensure(
+  supervised?.immediateCycle?.totalSteps === roadmap?.immediateCycle?.totalSteps
+    && supervised?.immediateCycle?.roundCount === roadmap?.immediateCycle?.roundCount
+    && supervised?.immediateCycle?.stepsPerRound === roadmap?.immediateCycle?.stepsPerRound
+    && supervised?.fiveWaveSeries?.status === roadmap?.fiveWaveSeries?.status
+    && supervised?.fiveWaveSeries?.activeWave === roadmap?.fiveWaveSeries?.activeWave
+    && supervised?.fiveWaveSeries?.stepsPerWave === roadmap?.fiveWaveSeries?.stepsPerWave
+    && supervised?.fiveWaveSeries?.nextSeries?.status === "gated-until-five-100-step-waves-complete"
+    && supervised?.escalationSeries?.tiers?.[0]?.status === "gated-until-five-100-step-waves-complete"
+    && supervised?.escalationSeries?.tiers?.every((tier) => tier?.activationAuthority === "not-yet-granted" && tier?.activeCycle === null)
+    && supervised?.round11Cycle?.status === "gated-template-not-active"
+    && supervised?.round11Cycle?.progress?.inProgressStepNumbers?.length === 0,
+  "canonical and supervised cadence contracts disagree or activate the 200-step series prematurely",
 );
 
 let localConfig = { requested: false, status: "not-checked" };
@@ -55,6 +75,8 @@ const report = {
     totalInitialSteps: roadmap?.immediateCycle?.totalSteps ?? null,
     nextWaveCount: roadmap?.fiveWaveSeries?.waves ?? null,
     nextStepsPerWave: roadmap?.fiveWaveSeries?.stepsPerWave ?? null,
+    completedRoundCount,
+    nextRound: completedRoundCount < (roadmap?.immediateCycle?.roundCount ?? 0) ? completedRoundCount + 1 : null,
     activeWave: roadmap?.fiveWaveSeries?.activeWave ?? null,
     activeWaveStatus: roadmap?.fiveWaveSeries?.status ?? null,
     canonicalRunnerGoalId: roadmap?.canonicalAutomation?.goalId ?? null,
@@ -148,6 +170,18 @@ function readRepositoryJson(relativePath) {
     return JSON.parse(fs.readFileSync(absolutePath, "utf8"));
   } catch (error) {
     failures.push(`roadmap: ${error instanceof Error ? error.message : String(error)}`);
+    return null;
+  }
+}
+
+function readOptionalRepositoryJson(relativePath) {
+  try {
+    const absolutePath = path.resolve(root, relativePath);
+    if (!absolutePath.startsWith(`${root}${path.sep}`) || !fs.existsSync(absolutePath)) return null;
+    const state = fs.lstatSync(absolutePath);
+    if (!state.isFile() || state.isSymbolicLink() || state.size > maximumRepositoryContractBytes) return null;
+    return JSON.parse(fs.readFileSync(absolutePath, "utf8"));
+  } catch {
     return null;
   }
 }

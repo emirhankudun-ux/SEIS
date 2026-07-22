@@ -10,12 +10,12 @@ title: Add a supervised plan-and-build autopilot for public SEIS plugin packages
 summary: >-
   Provide a deterministic local command that plans, regenerates, and validates
   the curated public plugin marketplace during one foreground invocation,
-  retaining the 30-step bootstrap and five 100-step historical cadence while
-  activating Round 11 as the first 200-step plan-and-local-build cycle under
-  current user direction. Define a ten-year, five-wave escalation ladder from
-  200 through 600 steps per wave without treating workflow steps as marketplace
-  cards or claiming future work is automatic. It must not claim the unfinished
-  Wave 5 steps completed, background execution, or self-authorize GitHub,
+  mirroring the canonical five planned 30-step rounds whose real completion is
+  recorded only by the Goal 0029 execution ledger. Define a ten-year, five-wave
+  escalation ladder from 200 through 600 steps per wave without activating the
+  first 100-step or 200-step series before prerequisite reproducible completion
+  evidence exists. It must not claim legacy Wave 5 steps completed, background
+  execution, or self-authorize GitHub,
   release, provider, credential, network, destructive, or write actions.
 
 category:
@@ -55,6 +55,7 @@ scope:
     - scripts/create-seis-public-plugin-supervised-autopilot.mjs
     - scripts/run-seis-public-plugin-supervised-autopilot.mjs
     - scripts/create-seis-public-plugin-continuity-cadence.mjs
+    - scripts/check-seis-public-plugin-expansion-program.mjs
     - content/development/seis-public-plugin-continuity-cadence.json
     - content/development/seis-public-plugin-wave-4-closeout.json
     - content/development/seis-public-plugin-wave-4-evidence-retention.json
@@ -79,14 +80,14 @@ security_classification: public-safe
 privacy_impact: none
 
 requirements:
-  - define exactly 30 immediate steps in five six-step rounds
-  - define five evidence-led 100-step waves and a ten-year strategic horizon
+  - mirror exactly five planned 30-step rounds with 150 total checkpoints and an explicit external evidence authority
+  - define five evidence-led 100-step waves that remain gated until the five initial rounds have reproducible completion evidence and retain a ten-year strategic horizon
   - increase the next five-wave series to 200 steps per wave after the current series closes
   - define a machine-validated five-wave escalation ladder from 200 through 600 steps per wave across the ten-year horizon
   - keep escalation-step counts separate from the 10-card public marketplace projection, 30 internal packages, and 15-capability limit
-  - activate Round 11 as one explicit 200-step cycle in ten 20-step rounds without claiming historical Wave 5 closeout
+  - retain Round 11 only as a gated 200-step compatibility template with no active or completed steps
   - execute plan, generation, and validation only during a foreground local invocation
-  - allowlist exactly 48 local generator, validation, test, and diff-check phases explicitly
+  - allowlist exactly 27 current-v2 local generator, validation, test, and diff-check phases explicitly
   - map every reviewed phase exactly once to one named automation role and report that role lane without parallel or background execution
   - anchor repository identity and phase targets independently of the caller working directory
   - refuse linked or replaced phase targets and revalidate device, inode, size, and digest immediately before execution
@@ -108,10 +109,10 @@ acceptance_criteria:
   - a plan mode reports the next safe phases without writing generated artifacts
   - an apply-safe mode runs only allowlisted local generators and validators
   - the automation has no GitHub push or external command path
-  - the 30-step bootstrap, five 100-step historical waves, and active 200-step Round 11 are machine-validated
-  - the 200, 300, 400, 500, and 600-step five-wave tiers are machine-validated, with only the active 200-step Round 11 cycle authorized to start
-  - Round 11 contains exactly 200 steps in ten 20-step rounds with only step 1 in progress initially
-  - all 48 phase targets are repository-anchored; executable targets are regular, link-free, bounded, hashed, and checked again before spawn
+  - the five planned 30-step rounds, external execution-ledger boundary, gated first 100-step wave, and gated 200-step transition are machine-validated
+  - the 200, 300, 400, 500, and 600-step five-wave tiers are machine-validated with no active cycle or self-granted authority
+  - Round 11 remains a 200-step compatibility template in ten 20-step rounds with all steps gated
+  - all 27 phase targets are repository-anchored; executable targets are regular, link-free, bounded, hashed, and checked again before spawn
   - plan and apply-safe reports expose validated foreground-sequential role lanes for all six named automation roles
   - plan mode succeeds from a foreign working directory and a linked phase-target fixture is rejected
   - failures are reported without a success claim
@@ -232,13 +233,14 @@ observability:
 
 outputs:
   - supervised foreground plan-and-build runner
-  - 30-step immediate execution map
+  - five-round 150-checkpoint immediate execution map
   - five-wave and ten-year strategic program
   - gated five-wave escalation ladder that does not expand marketplace-card count
   - permission-boundary documentation
   - tests and validation commands
 
 notes:
-  - The foreground plan and apply-safe paths passed locally with the fixed 48-phase allowlist; Round 11 remains an active roadmap cycle, not a completion claim.
+  - The earlier 48-phase allowlist contained legacy 34-card and Wave 4/5 generators; it was replaced with 27 current-v2 phases. It validates current v2 artifacts but does not itself close Goal 0029 cadence rounds.
+  - Round 11 is a compatibility template only and cannot activate before all five current 100-step waves close with evidence.
   - The ten-year horizon is strategic planning only; it never implies hidden or continuous execution.
   - GitHub delivery remains a separate current-approval and environment-availability decision.

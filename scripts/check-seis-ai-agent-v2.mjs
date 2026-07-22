@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { CURRENT_SEIS_PUBLIC_RELEASE_VERSION } from "./lib/seis-public-release-version.mjs";
 
 const root = process.cwd();
 const failures = [];
@@ -14,7 +15,7 @@ run("MCP smoke", ["plugins/seis-ai-agent/scripts/seis-general-plugin-mcp-server.
 const manifest = readJson("plugins/seis-ai-agent/.codex-plugin/plugin.json");
 const mcp = readJson("plugins/seis-ai-agent/.mcp.json");
 const profile = readJson("plugins/seis-ai-agent/assets/agent-profile.json");
-ensure(manifest?.name === "seis-ai-agent" && manifest?.version === "0.4.0+codex.20260722", "SEIS-Agent manifest identity/version is invalid");
+ensure(manifest?.name === "seis-ai-agent" && manifest?.version === CURRENT_SEIS_PUBLIC_RELEASE_VERSION, "SEIS-Agent manifest identity/version is invalid");
 ensure(mcp?.mcpServers?.["seis-ai-agent"]?.args?.includes("./scripts/seis-general-plugin-mcp-server.mjs"), "SEIS-Agent must use the v2 general-plugin MCP server");
 ensure(profile?.publicGeneralPluginFinder?.tool === "seis_general_plugin_find", "SEIS-Agent must expose the general-plugin finder");
 ensure(profile?.terminalInstall?.generalPluginSelection?.maximumGeneralPluginSelectionsPerTask === 1, "SEIS-Agent terminal selection boundary is invalid");

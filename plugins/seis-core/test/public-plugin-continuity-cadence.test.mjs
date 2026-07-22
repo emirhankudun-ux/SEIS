@@ -10,7 +10,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const recordPath = path.join(repositoryRoot, "content/development/seis-public-plugin-continuity-cadence.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-continuity-cadence.mjs");
 
-test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led and public-only", () => {
+test("keeps legacy continuity evidence honest and gates escalation behind unfinished Wave 5", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -20,6 +20,12 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   const cadence = JSON.parse(fs.readFileSync(recordPath, "utf8"));
   assert.equal(cadence.schemaVersion, 2);
   assert.equal(cadence.status, "active-evidence-led-cadence");
+  assert.deepEqual(cadence.scheduleAuthority, {
+    current: false,
+    canonicalPath: "content/development/seis-general-plugin-autopilot.json",
+    classification: "legacy-continuity-evidence-only",
+  });
+  assert.equal(cadence.marketplaceProjectionClassification, "legacy-34-card-continuity-snapshot-not-current-v2-surface");
   assertCurrentAndHistoricalMarketplaceSemantics(cadence);
   assert.equal(cadence.cadence.bootstrap.totalSteps, 30);
   assert.equal(cadence.cadence.bootstrap.roundCount, 5);
@@ -32,8 +38,8 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.cadence.afterFiveWaves.completedSeriesStepSize, 100);
   assert.equal(cadence.cadence.afterFiveWaves.nextWaveCount, 5);
   assert.equal(cadence.cadence.afterFiveWaves.nextWaveSteps, 200);
-  assert.equal(cadence.cadence.afterFiveWaves.activationState, "active-round-11-plan-and-local-build");
-  assert.equal(cadence.cadence.afterFiveWaves.activationAuthority, "current-user-direction-2026-07-22");
+  assert.equal(cadence.cadence.afterFiveWaves.activationState, "gated-until-wave-5-completes");
+  assert.equal(cadence.cadence.afterFiveWaves.activationAuthority, "not-yet-granted");
   assert.equal(cadence.cadence.afterFiveWaves.historicalEvidenceState, "wave-5-first-80-steps-completed-step-81-in-progress");
   assert.equal(cadence.cadence.afterFiveWaves.historicalWave5CloseoutClaimed, false);
   const escalation = cadence.cadence.escalationSeries;
@@ -42,16 +48,15 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(escalation.tierCount, 5);
   assert.equal(escalation.waveCountPerTier, 5);
   assert.equal(escalation.stepIncreasePerTier, 100);
-  assert.equal(escalation.currentMarketplaceCardCount, 34);
+  assert.equal(escalation.currentMarketplaceCardCount, 10);
+  assert.equal(escalation.marketplaceProjectionScope, "active-v2-ten-general-plugin-marketplace");
   assert.equal(escalation.maximumBundleSize, 15);
   assert.equal(escalation.workflowStepsAreMarketplaceCards, false);
   assert.deepEqual(escalation.tiers.map((tier) => tier.stepsPerWave), [200, 300, 400, 500, 600]);
   assert.deepEqual(escalation.tiers.map((tier) => tier.years), [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]]);
   assert.ok(escalation.tiers.every((tier) => tier.waveCount === 5 && tier.stepsPerRound === 20 && tier.roundsPerWave === tier.stepsPerWave / 20 && tier.totalPlannedSteps === tier.stepsPerWave * 5 && tier.backgroundExecution === false && tier.marketplaceCardExpansion === false));
-  assert.equal(escalation.tiers[0].status, "active-round-11-plan-and-local-build");
-  assert.equal(escalation.tiers[0].activationAuthority, "current-user-direction-2026-07-22");
-  assert.deepEqual(escalation.tiers[0].activeCycle.inProgressStepNumbers, [1]);
-  assert.ok(escalation.tiers.slice(1).every((tier) => tier.status === "strategic-gated-not-background" && tier.activationAuthority === "not-yet-granted" && tier.activeCycle === null));
+  assert.equal(escalation.tiers[0].status, "gated-until-five-100-step-waves-complete");
+  assert.ok(escalation.tiers.every((tier) => tier.activationAuthority === "not-yet-granted" && tier.activeCycle === null));
   assert.equal(cadence.waves.length, 5);
   assert.equal(cadence.waves[0].status, "completed");
   assert.equal(cadence.waves[1].status, "completed");

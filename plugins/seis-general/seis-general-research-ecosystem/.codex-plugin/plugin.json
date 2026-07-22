@@ -1,6 +1,6 @@
 {
   "name": "seis-general-research-ecosystem",
-  "version": "0.4.0+codex.20260722",
+  "version": "0.5.0+codex.20260722",
   "description": "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
   "author": {
     "name": "emirhankudun-ux",

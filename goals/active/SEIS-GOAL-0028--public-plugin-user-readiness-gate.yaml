@@ -48,7 +48,10 @@ scope:
     - SEIS-plugin-root-20260715
   paths:
     - goals/active/SEIS-GOAL-0028--public-plugin-user-readiness-gate.yaml
+    - scripts/check-seis-general-plugin-user-readiness.mjs
     - scripts/check-seis-public-plugin-user-readiness.mjs
+    - content/development/seis-general-plugin-autopilot.json
+    - content/development/seis-public-plugin-supervised-autopilot.json
     - plugins/seis-core/test/public-plugin-user-readiness.test.mjs
     - docs/roadmap/SEIS_PUBLIC_PLUGIN_USER_READINESS.md
     - package.json
@@ -124,7 +127,7 @@ related_goals:
 
 validation:
   commands:
-    - node --check scripts/check-seis-public-plugin-user-readiness.mjs
+    - node --check scripts/check-seis-general-plugin-user-readiness.mjs
     - npm run check:seis-general-plugin-distribution
     - npm run check:seis-general-unified-suite
     - npm run check:seis-public-plugin-user-readiness

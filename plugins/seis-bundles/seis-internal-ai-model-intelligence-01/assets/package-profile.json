@@ -3,7 +3,7 @@
   "id": "seis-internal-ai-model-intelligence-01",
   "kind": "seis-internal-capability-package",
   "generatedAt": "2026-07-22",
-  "version": "0.4.0+codex.20260722",
+  "version": "0.5.0+codex.20260722",
   "visibility": "internal-not-marketplace-card",
   "memberCount": 14,
   "maximumMemberCount": 15,

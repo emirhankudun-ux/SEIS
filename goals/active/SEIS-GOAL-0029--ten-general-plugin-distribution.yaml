@@ -45,11 +45,13 @@ scope:
   repositories:
     - SEIS-plugin-root-20260715
   paths:
+    - goals/active/SEIS-GOAL-0029--ten-general-plugin-distribution.yaml
     - .agents/plugins/marketplace.json
     - content/development/seis-public-plugin-family.json
     - content/development/seis-public-plugin-bundle-catalog.json
     - content/development/seis-public-plugin-release-policy.json
     - content/development/seis-general-plugin-autopilot.json
+    - content/development/seis-general-plugin-autopilot-execution.json
     - plugins/seis-ai-agent
     - plugins/seis-bundles
     - plugins/seis-general
@@ -62,6 +64,7 @@ scope:
     - scripts/check-seis-ai-agent-v2.mjs
     - scripts/check-seis-agent-plugin-integration-v2.mjs
     - scripts/install-seis-general-plugin.mjs
+    - plugins/seis-core/test/ten-general-plugin-autopilot.test.mjs
     - docs/roadmap/SEIS_TEN_GENERAL_PLUGIN_30_STEP_ROADMAP.md
     - docs/roadmap/SEIS_PUBLIC_PLUGIN_USER_READINESS.md
 
@@ -90,6 +93,7 @@ requirements:
   - the canonical SEIS-Agent suite release version increases for this structural distribution change
   - future structural distribution changes require a recorded semver increase
   - Auto Mode remains foreground-only, plan-and-build, reviewable, and never claims background execution
+  - completed Auto Mode rounds are recorded only in a bounded, reproducible foreground execution ledger
   - public release, tag, and marketplace publication remain human-approved
 
 non_goals:
@@ -106,6 +110,7 @@ acceptance_criteria:
   - installer and MCP selection tools select at most one general plugin while exposing internal-package IDs as metadata only
   - generated documents explain the ten-card user experience and the 30 hidden internal packages
   - release-policy validation proves the current suite version is higher than the recorded predecessor
+  - execution-ledger validation proves any recorded 30-step round ran locally without an external-delivery claim
   - focused tests and freshness checks pass or skipped checks are recorded honestly
 
 definition_of_ready:
@@ -131,6 +136,7 @@ validation:
     - npm run check:seis-general-plugin-distribution
     - npm run check:seis-general-unified-suite
     - npm run check:seis-general-plugin-autopilot
+    - node scripts/run-seis-general-plugin-autopilot.mjs --check
     - npm run check:seis-public-plugin-family
     - npm run check:seis-public-plugin-bundles
     - npm run check:seis-public-plugin-consolidation
@@ -207,8 +213,10 @@ outputs:
   - 10 release-ready general profiles
   - version policy and version history
   - one-general-plugin installer and MCP selection behavior
-  - 30-step user-oriented distribution roadmap
+  - 30-step user-oriented distribution roadmap and foreground execution ledger
 
 notes:
   - The 10 general profiles are the 10 usable marketplace plugins; their 30 internal packages are not extra cards.
   - SEIS-Agent remains the canonical default, but users choose only the one general plugin relevant to their scoped task.
+  - Version 0.5.0+codex.20260722 supersedes 0.4.0+codex.20260722 for the major truthful Auto Mode evidence update; public release remains approval-gated.
+  - Round 1 (30 local checkpoints) completed on 2026-07-22 in content/development/seis-general-plugin-autopilot-execution.json. Rounds 2–5 and every 100-step wave remain uncompleted and foreground-gated.

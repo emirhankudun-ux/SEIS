@@ -371,7 +371,7 @@ function buildReleasePolicy() {
       version: CURRENT_SEIS_PUBLIC_RELEASE_VERSION,
       changeKind: SEIS_PUBLIC_RELEASE_CHANGE_KIND,
       changeId: SEIS_PUBLIC_RELEASE_CHANGE_ID,
-      reason: "Consolidate 34 repetitive marketplace cards into ten general plugins backed by thirty bounded internal packages.",
+      reason: "Replace self-reported automation completion with reproducible foreground evidence while retaining the ten general plugins and thirty bounded internal packages.",
       publicRelease: false,
     },
     predecessor: { version: PREVIOUS_SEIS_PUBLIC_RELEASE_VERSION, status: "superseded-by-current-structural-distribution-change" },
@@ -379,6 +379,7 @@ function buildReleasePolicy() {
       structuralDistributionChangeRequiresVersionIncrease: true,
       directMarketplaceCardCountChangeRequiresVersionIncrease: true,
       internalPackageTopologyChangeRequiresVersionIncrease: true,
+      majorAutopilotEvidenceContractChangeRequiresVersionIncrease: true,
       publicReleaseRequiresHumanApproval: true,
       releaseNotesRequired: true,
       rollbackStrategy: "revert-focused-distribution-commit",
@@ -661,7 +662,7 @@ function releasePolicyMarkdown() {
     "- Current version: " + CURRENT_SEIS_PUBLIC_RELEASE_VERSION,
     "- Change kind: " + SEIS_PUBLIC_RELEASE_CHANGE_KIND,
     "",
-    "Every structural public distribution change, including marketplace-card count or internal-package topology, must record a semver increase and release notes before publication.",
+    "Every structural public distribution change, including marketplace-card count, internal-package topology, or the major Auto Mode evidence contract, must record a semver increase and release notes before publication.",
     "",
   ].join("\n");
 }

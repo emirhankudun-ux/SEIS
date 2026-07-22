@@ -6,7 +6,7 @@
   "status": "active-supervised-foreground-automation",
   "maturity": "prototype",
   "generatedAt": "2026-07-22",
-  "purpose": "Run an explicit local plan, generation, and validation sequence in one foreground invocation while preserving the curated public plugin marketplace and refusing hidden background work or external delivery actions.",
+  "purpose": "Run an explicit local plan, generation, and validation sequence in one foreground invocation while preserving the curated public plugin marketplace, the ordered five-by-30 then five-by-100 cadence, and the gate against premature escalation.",
   "currentMarketplace": {
     "canonicalInstall": "seis-ai-agent@seis-repo",
     "publicCardCount": 10,
@@ -84,393 +84,1171 @@
     }
   ],
   "immediateCycle": {
-    "totalSteps": 30,
+    "status": "execution-state-in-external-ledger",
+    "totalSteps": 150,
+    "roundCount": 5,
+    "stepsPerRound": 30,
     "rounds": [
       {
-        "round": 1,
-        "name": "Inspect and plan",
+        "id": "round-1",
+        "title": "Round 1 — Truth and topology",
+        "status": "planned-not-executed",
         "steps": [
           {
             "number": 1,
-            "title": "Inspect the active goal, branch, worktree, and source-of-truth boundaries.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 1,
+            "checkpoint": "inspect",
+            "label": "Inspect: Confirm the ten public marketplace names are unique and user-readable.",
+            "status": "planned-not-executed"
           },
           {
             "number": 2,
-            "title": "Snapshot the canonical install, public-card count, bundle count, and retained-source count.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 2,
+            "checkpoint": "inspect",
+            "label": "Inspect: Confirm SEIS-Agent remains the canonical default entry point.",
+            "status": "planned-not-executed"
           },
           {
             "number": 3,
-            "title": "Confirm public-only, no-personal, no-network, no-secret, and no-external-write boundaries.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 3,
+            "checkpoint": "inspect",
+            "label": "Inspect: Confirm the thirty internal packages cover app and topic sources exactly once.",
+            "status": "planned-not-executed"
           },
           {
             "number": 4,
-            "title": "Inspect maximum bundle size, exact-once coverage, and protected product-category boundaries.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 4,
+            "checkpoint": "inspect",
+            "label": "Inspect: Confirm every internal package contains no more than fifteen capabilities.",
+            "status": "planned-not-executed"
           },
           {
             "number": 5,
-            "title": "Record risks, rollback, and any concurrent-generator change before overlapping writes.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 5,
+            "checkpoint": "inspect",
+            "label": "Inspect: Remove active references to numbered duplicate topic and application cards.",
+            "status": "planned-not-executed"
           },
           {
             "number": 6,
-            "title": "Emit the plan-only foreground report and choose the smallest safe next phase.",
-            "status": "ready-for-supervised-foreground-run"
-          }
-        ]
-      },
-      {
-        "round": 2,
-        "name": "Build deterministically",
-        "steps": [
+            "globalNumber": 6,
+            "checkpoint": "inspect",
+            "label": "Inspect: Record version, risk, rollback, and public-release approval boundaries.",
+            "status": "planned-not-executed"
+          },
           {
             "number": 7,
-            "title": "Regenerate the public plugin family from reviewed source data.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 7,
+            "checkpoint": "plan",
+            "label": "Plan: Confirm the ten public marketplace names are unique and user-readable.",
+            "status": "planned-not-executed"
           },
           {
             "number": 8,
-            "title": "Regenerate the bounded public bundle packages from the family projection.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 8,
+            "checkpoint": "plan",
+            "label": "Plan: Confirm SEIS-Agent remains the canonical default entry point.",
+            "status": "planned-not-executed"
           },
           {
             "number": 9,
-            "title": "Regenerate the consolidation record and retained-source evidence.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 9,
+            "checkpoint": "plan",
+            "label": "Plan: Confirm the thirty internal packages cover app and topic sources exactly once.",
+            "status": "planned-not-executed"
           },
           {
             "number": 10,
-            "title": "Regenerate this supervised automation program and documentation.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 10,
+            "checkpoint": "plan",
+            "label": "Plan: Confirm every internal package contains no more than fifteen capabilities.",
+            "status": "planned-not-executed"
           },
           {
             "number": 11,
-            "title": "Run freshness checks for every generated artifact.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 11,
+            "checkpoint": "plan",
+            "label": "Plan: Remove active references to numbered duplicate topic and application cards.",
+            "status": "planned-not-executed"
           },
           {
             "number": 12,
-            "title": "Inspect the local diff for unexpected changes without committing or pushing.",
-            "status": "ready-for-supervised-foreground-run"
-          }
-        ]
-      },
-      {
-        "round": 3,
-        "name": "Validate locally",
-        "steps": [
+            "globalNumber": 12,
+            "checkpoint": "plan",
+            "label": "Plan: Record version, risk, rollback, and public-release approval boundaries.",
+            "status": "planned-not-executed"
+          },
           {
             "number": 13,
-            "title": "Run deterministic bundle coverage and local MCP boundary tests.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 13,
+            "checkpoint": "build",
+            "label": "Build: Confirm the ten public marketplace names are unique and user-readable.",
+            "status": "planned-not-executed"
           },
           {
             "number": 14,
-            "title": "Run consolidation projection and exact-once source-coverage tests.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 14,
+            "checkpoint": "build",
+            "label": "Build: Confirm SEIS-Agent remains the canonical default entry point.",
+            "status": "planned-not-executed"
           },
           {
             "number": 15,
-            "title": "Run the supervised-autopilot plan/report tests.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 15,
+            "checkpoint": "build",
+            "label": "Build: Confirm the thirty internal packages cover app and topic sources exactly once.",
+            "status": "planned-not-executed"
           },
           {
             "number": 16,
-            "title": "Validate that no allowlisted phase calls network, credentials, or external delivery tools.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 16,
+            "checkpoint": "build",
+            "label": "Build: Confirm every internal package contains no more than fifteen capabilities.",
+            "status": "planned-not-executed"
           },
           {
             "number": 17,
-            "title": "Validate that the canonical SEIS-Agent install remains the only default install.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 17,
+            "checkpoint": "build",
+            "label": "Build: Remove active references to numbered duplicate topic and application cards.",
+            "status": "planned-not-executed"
           },
           {
             "number": 18,
-            "title": "Stop and report any failing phase before planning additional work.",
-            "status": "ready-for-supervised-foreground-run"
-          }
-        ]
-      },
-      {
-        "round": 4,
-        "name": "Review boundaries",
-        "steps": [
+            "globalNumber": 18,
+            "checkpoint": "build",
+            "label": "Build: Record version, risk, rollback, and public-release approval boundaries.",
+            "status": "planned-not-executed"
+          },
           {
             "number": 19,
-            "title": "Review category and product-identity boundaries for bundle clarity.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 19,
+            "checkpoint": "validate",
+            "label": "Validate: Confirm the ten public marketplace names are unique and user-readable.",
+            "status": "planned-not-executed"
           },
           {
             "number": 20,
-            "title": "Review source-retention and rollback evidence before any scope expansion.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 20,
+            "checkpoint": "validate",
+            "label": "Validate: Confirm SEIS-Agent remains the canonical default entry point.",
+            "status": "planned-not-executed"
           },
           {
             "number": 21,
-            "title": "Review command output bounds, link safety, and symbolic-link rejection behavior.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 21,
+            "checkpoint": "validate",
+            "label": "Validate: Confirm the thirty internal packages cover app and topic sources exactly once.",
+            "status": "planned-not-executed"
           },
           {
             "number": 22,
-            "title": "Review documentation freshness and user-facing installation language.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 22,
+            "checkpoint": "validate",
+            "label": "Validate: Confirm every internal package contains no more than fifteen capabilities.",
+            "status": "planned-not-executed"
           },
           {
             "number": 23,
-            "title": "Review feature-branch delivery readiness without executing GitHub delivery.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 23,
+            "checkpoint": "validate",
+            "label": "Validate: Remove active references to numbered duplicate topic and application cards.",
+            "status": "planned-not-executed"
           },
           {
             "number": 24,
-            "title": "Create explicit follow-up work only when it has a goal, risk, validation, and rollback boundary.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 24,
+            "checkpoint": "validate",
+            "label": "Validate: Record version, risk, rollback, and public-release approval boundaries.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 25,
+            "globalNumber": 25,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Confirm the ten public marketplace names are unique and user-readable.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 26,
+            "globalNumber": 26,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Confirm SEIS-Agent remains the canonical default entry point.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 27,
+            "globalNumber": 27,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Confirm the thirty internal packages cover app and topic sources exactly once.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 28,
+            "globalNumber": 28,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Confirm every internal package contains no more than fifteen capabilities.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 29,
+            "globalNumber": 29,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Remove active references to numbered duplicate topic and application cards.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 30,
+            "globalNumber": 30,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Record version, risk, rollback, and public-release approval boundaries.",
+            "status": "planned-not-executed"
           }
         ]
       },
       {
-        "round": 5,
-        "name": "Handoff deliberately",
+        "id": "round-2",
+        "title": "Round 2 — User selection",
+        "status": "planned-not-executed",
         "steps": [
           {
+            "number": 1,
+            "globalNumber": 31,
+            "checkpoint": "inspect",
+            "label": "Inspect: Generate the ten-card marketplace projection from the canonical family plan.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 2,
+            "globalNumber": 32,
+            "checkpoint": "inspect",
+            "label": "Inspect: Generate each general-plugin profile with exactly three internal packages.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 3,
+            "globalNumber": 33,
+            "checkpoint": "inspect",
+            "label": "Inspect: Validate the default SEIS-Agent plan without installing anything.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 4,
+            "globalNumber": 34,
+            "checkpoint": "inspect",
+            "label": "Inspect: Validate deterministic local finder results stay at three or fewer candidates.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 5,
+            "globalNumber": 35,
+            "checkpoint": "inspect",
+            "label": "Inspect: Validate a scoped general-plugin plan never targets an internal package directly.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 6,
+            "globalNumber": 36,
+            "checkpoint": "inspect",
+            "label": "Inspect: Document the one-general-plugin-per-task rule in README, skill, and platform docs.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 7,
+            "globalNumber": 37,
+            "checkpoint": "plan",
+            "label": "Plan: Generate the ten-card marketplace projection from the canonical family plan.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 8,
+            "globalNumber": 38,
+            "checkpoint": "plan",
+            "label": "Plan: Generate each general-plugin profile with exactly three internal packages.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 9,
+            "globalNumber": 39,
+            "checkpoint": "plan",
+            "label": "Plan: Validate the default SEIS-Agent plan without installing anything.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 10,
+            "globalNumber": 40,
+            "checkpoint": "plan",
+            "label": "Plan: Validate deterministic local finder results stay at three or fewer candidates.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 11,
+            "globalNumber": 41,
+            "checkpoint": "plan",
+            "label": "Plan: Validate a scoped general-plugin plan never targets an internal package directly.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 12,
+            "globalNumber": 42,
+            "checkpoint": "plan",
+            "label": "Plan: Document the one-general-plugin-per-task rule in README, skill, and platform docs.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 13,
+            "globalNumber": 43,
+            "checkpoint": "build",
+            "label": "Build: Generate the ten-card marketplace projection from the canonical family plan.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 14,
+            "globalNumber": 44,
+            "checkpoint": "build",
+            "label": "Build: Generate each general-plugin profile with exactly three internal packages.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 15,
+            "globalNumber": 45,
+            "checkpoint": "build",
+            "label": "Build: Validate the default SEIS-Agent plan without installing anything.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 16,
+            "globalNumber": 46,
+            "checkpoint": "build",
+            "label": "Build: Validate deterministic local finder results stay at three or fewer candidates.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 17,
+            "globalNumber": 47,
+            "checkpoint": "build",
+            "label": "Build: Validate a scoped general-plugin plan never targets an internal package directly.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 18,
+            "globalNumber": 48,
+            "checkpoint": "build",
+            "label": "Build: Document the one-general-plugin-per-task rule in README, skill, and platform docs.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 19,
+            "globalNumber": 49,
+            "checkpoint": "validate",
+            "label": "Validate: Generate the ten-card marketplace projection from the canonical family plan.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 20,
+            "globalNumber": 50,
+            "checkpoint": "validate",
+            "label": "Validate: Generate each general-plugin profile with exactly three internal packages.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 21,
+            "globalNumber": 51,
+            "checkpoint": "validate",
+            "label": "Validate: Validate the default SEIS-Agent plan without installing anything.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 22,
+            "globalNumber": 52,
+            "checkpoint": "validate",
+            "label": "Validate: Validate deterministic local finder results stay at three or fewer candidates.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 23,
+            "globalNumber": 53,
+            "checkpoint": "validate",
+            "label": "Validate: Validate a scoped general-plugin plan never targets an internal package directly.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 24,
+            "globalNumber": 54,
+            "checkpoint": "validate",
+            "label": "Validate: Document the one-general-plugin-per-task rule in README, skill, and platform docs.",
+            "status": "planned-not-executed"
+          },
+          {
             "number": 25,
-            "title": "Summarize foreground build and validation evidence.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 55,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Generate the ten-card marketplace projection from the canonical family plan.",
+            "status": "planned-not-executed"
           },
           {
             "number": 26,
-            "title": "Record failed, skipped, blocked, and approval-gated actions honestly.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 56,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Generate each general-plugin profile with exactly three internal packages.",
+            "status": "planned-not-executed"
           },
           {
             "number": 27,
-            "title": "Check worktree state and keep unrelated changes untouched.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 57,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Validate the default SEIS-Agent plan without installing anything.",
+            "status": "planned-not-executed"
           },
           {
             "number": 28,
-            "title": "Prepare a focused local commit recommendation without creating a commit automatically.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 58,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Validate deterministic local finder results stay at three or fewer candidates.",
+            "status": "planned-not-executed"
           },
           {
             "number": 29,
-            "title": "Prepare a separate GitHub feature-branch delivery decision without pushing automatically.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 59,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Validate a scoped general-plugin plan never targets an internal package directly.",
+            "status": "planned-not-executed"
           },
           {
             "number": 30,
-            "title": "Continue the currently authorized Round 11 200-step cycle only under current user direction; preserve Wave 5 as incomplete and never activate later tiers automatically.",
-            "status": "ready-for-supervised-foreground-run"
+            "globalNumber": 60,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Document the one-general-plugin-per-task rule in README, skill, and platform docs.",
+            "status": "planned-not-executed"
+          }
+        ]
+      },
+      {
+        "id": "round-3",
+        "title": "Round 3 — Supervised automation",
+        "status": "planned-not-executed",
+        "steps": [
+          {
+            "number": 1,
+            "globalNumber": 61,
+            "checkpoint": "inspect",
+            "label": "Inspect: Assign architect-planner responsibility for scope and ownership review.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 2,
+            "globalNumber": 62,
+            "checkpoint": "inspect",
+            "label": "Inspect: Assign package-builder responsibility for deterministic artifact generation.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 3,
+            "globalNumber": 63,
+            "checkpoint": "inspect",
+            "label": "Inspect: Assign safety-reviewer responsibility for permissions and public/private boundaries.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 4,
+            "globalNumber": 64,
+            "checkpoint": "inspect",
+            "label": "Inspect: Assign QA-validator responsibility for freshness, package, and install checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 5,
+            "globalNumber": 65,
+            "checkpoint": "inspect",
+            "label": "Inspect: Assign evidence-reporter responsibility for generated reports and skipped checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 6,
+            "globalNumber": 66,
+            "checkpoint": "inspect",
+            "label": "Inspect: Assign delivery-coordinator responsibility for reviewable commit and approval-gated GitHub delivery.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 7,
+            "globalNumber": 67,
+            "checkpoint": "plan",
+            "label": "Plan: Assign architect-planner responsibility for scope and ownership review.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 8,
+            "globalNumber": 68,
+            "checkpoint": "plan",
+            "label": "Plan: Assign package-builder responsibility for deterministic artifact generation.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 9,
+            "globalNumber": 69,
+            "checkpoint": "plan",
+            "label": "Plan: Assign safety-reviewer responsibility for permissions and public/private boundaries.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 10,
+            "globalNumber": 70,
+            "checkpoint": "plan",
+            "label": "Plan: Assign QA-validator responsibility for freshness, package, and install checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 11,
+            "globalNumber": 71,
+            "checkpoint": "plan",
+            "label": "Plan: Assign evidence-reporter responsibility for generated reports and skipped checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 12,
+            "globalNumber": 72,
+            "checkpoint": "plan",
+            "label": "Plan: Assign delivery-coordinator responsibility for reviewable commit and approval-gated GitHub delivery.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 13,
+            "globalNumber": 73,
+            "checkpoint": "build",
+            "label": "Build: Assign architect-planner responsibility for scope and ownership review.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 14,
+            "globalNumber": 74,
+            "checkpoint": "build",
+            "label": "Build: Assign package-builder responsibility for deterministic artifact generation.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 15,
+            "globalNumber": 75,
+            "checkpoint": "build",
+            "label": "Build: Assign safety-reviewer responsibility for permissions and public/private boundaries.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 16,
+            "globalNumber": 76,
+            "checkpoint": "build",
+            "label": "Build: Assign QA-validator responsibility for freshness, package, and install checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 17,
+            "globalNumber": 77,
+            "checkpoint": "build",
+            "label": "Build: Assign evidence-reporter responsibility for generated reports and skipped checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 18,
+            "globalNumber": 78,
+            "checkpoint": "build",
+            "label": "Build: Assign delivery-coordinator responsibility for reviewable commit and approval-gated GitHub delivery.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 19,
+            "globalNumber": 79,
+            "checkpoint": "validate",
+            "label": "Validate: Assign architect-planner responsibility for scope and ownership review.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 20,
+            "globalNumber": 80,
+            "checkpoint": "validate",
+            "label": "Validate: Assign package-builder responsibility for deterministic artifact generation.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 21,
+            "globalNumber": 81,
+            "checkpoint": "validate",
+            "label": "Validate: Assign safety-reviewer responsibility for permissions and public/private boundaries.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 22,
+            "globalNumber": 82,
+            "checkpoint": "validate",
+            "label": "Validate: Assign QA-validator responsibility for freshness, package, and install checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 23,
+            "globalNumber": 83,
+            "checkpoint": "validate",
+            "label": "Validate: Assign evidence-reporter responsibility for generated reports and skipped checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 24,
+            "globalNumber": 84,
+            "checkpoint": "validate",
+            "label": "Validate: Assign delivery-coordinator responsibility for reviewable commit and approval-gated GitHub delivery.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 25,
+            "globalNumber": 85,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Assign architect-planner responsibility for scope and ownership review.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 26,
+            "globalNumber": 86,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Assign package-builder responsibility for deterministic artifact generation.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 27,
+            "globalNumber": 87,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Assign safety-reviewer responsibility for permissions and public/private boundaries.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 28,
+            "globalNumber": 88,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Assign QA-validator responsibility for freshness, package, and install checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 29,
+            "globalNumber": 89,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Assign evidence-reporter responsibility for generated reports and skipped checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 30,
+            "globalNumber": 90,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Assign delivery-coordinator responsibility for reviewable commit and approval-gated GitHub delivery.",
+            "status": "planned-not-executed"
+          }
+        ]
+      },
+      {
+        "id": "round-4",
+        "title": "Round 4 — Runtime and release",
+        "status": "planned-not-executed",
+        "steps": [
+          {
+            "number": 1,
+            "globalNumber": 91,
+            "checkpoint": "inspect",
+            "label": "Inspect: Validate the MCP server exposes local read-only general-plugin guidance.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 2,
+            "globalNumber": 92,
+            "checkpoint": "inspect",
+            "label": "Inspect: Keep legacy public-bundle MCP names as compatibility aliases only.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 3,
+            "globalNumber": 93,
+            "checkpoint": "inspect",
+            "label": "Inspect: Regenerate the unified suite with the ten/30 topology.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 4,
+            "globalNumber": 94,
+            "checkpoint": "inspect",
+            "label": "Inspect: Verify the structural distribution version increased for this major update.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 5,
+            "globalNumber": 95,
+            "checkpoint": "inspect",
+            "label": "Inspect: Require a future version increase for card-count or package-topology changes.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 6,
+            "globalNumber": 96,
+            "checkpoint": "inspect",
+            "label": "Inspect: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 7,
+            "globalNumber": 97,
+            "checkpoint": "plan",
+            "label": "Plan: Validate the MCP server exposes local read-only general-plugin guidance.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 8,
+            "globalNumber": 98,
+            "checkpoint": "plan",
+            "label": "Plan: Keep legacy public-bundle MCP names as compatibility aliases only.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 9,
+            "globalNumber": 99,
+            "checkpoint": "plan",
+            "label": "Plan: Regenerate the unified suite with the ten/30 topology.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 10,
+            "globalNumber": 100,
+            "checkpoint": "plan",
+            "label": "Plan: Verify the structural distribution version increased for this major update.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 11,
+            "globalNumber": 101,
+            "checkpoint": "plan",
+            "label": "Plan: Require a future version increase for card-count or package-topology changes.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 12,
+            "globalNumber": 102,
+            "checkpoint": "plan",
+            "label": "Plan: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 13,
+            "globalNumber": 103,
+            "checkpoint": "build",
+            "label": "Build: Validate the MCP server exposes local read-only general-plugin guidance.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 14,
+            "globalNumber": 104,
+            "checkpoint": "build",
+            "label": "Build: Keep legacy public-bundle MCP names as compatibility aliases only.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 15,
+            "globalNumber": 105,
+            "checkpoint": "build",
+            "label": "Build: Regenerate the unified suite with the ten/30 topology.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 16,
+            "globalNumber": 106,
+            "checkpoint": "build",
+            "label": "Build: Verify the structural distribution version increased for this major update.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 17,
+            "globalNumber": 107,
+            "checkpoint": "build",
+            "label": "Build: Require a future version increase for card-count or package-topology changes.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 18,
+            "globalNumber": 108,
+            "checkpoint": "build",
+            "label": "Build: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 19,
+            "globalNumber": 109,
+            "checkpoint": "validate",
+            "label": "Validate: Validate the MCP server exposes local read-only general-plugin guidance.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 20,
+            "globalNumber": 110,
+            "checkpoint": "validate",
+            "label": "Validate: Keep legacy public-bundle MCP names as compatibility aliases only.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 21,
+            "globalNumber": 111,
+            "checkpoint": "validate",
+            "label": "Validate: Regenerate the unified suite with the ten/30 topology.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 22,
+            "globalNumber": 112,
+            "checkpoint": "validate",
+            "label": "Validate: Verify the structural distribution version increased for this major update.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 23,
+            "globalNumber": 113,
+            "checkpoint": "validate",
+            "label": "Validate: Require a future version increase for card-count or package-topology changes.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 24,
+            "globalNumber": 114,
+            "checkpoint": "validate",
+            "label": "Validate: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 25,
+            "globalNumber": 115,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Validate the MCP server exposes local read-only general-plugin guidance.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 26,
+            "globalNumber": 116,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Keep legacy public-bundle MCP names as compatibility aliases only.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 27,
+            "globalNumber": 117,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Regenerate the unified suite with the ten/30 topology.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 28,
+            "globalNumber": 118,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Verify the structural distribution version increased for this major update.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 29,
+            "globalNumber": 119,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Require a future version increase for card-count or package-topology changes.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 30,
+            "globalNumber": 120,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Keep marketplace publication, tags, deploys, credentials, and external writes human-approved.",
+            "status": "planned-not-executed"
+          }
+        ]
+      },
+      {
+        "id": "round-5",
+        "title": "Round 5 — Evidence and continuation",
+        "status": "planned-not-executed",
+        "steps": [
+          {
+            "number": 1,
+            "globalNumber": 121,
+            "checkpoint": "inspect",
+            "label": "Inspect: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 2,
+            "globalNumber": 122,
+            "checkpoint": "inspect",
+            "label": "Inspect: Run user-readiness checks without reading local Codex configuration by default.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 3,
+            "globalNumber": 123,
+            "checkpoint": "inspect",
+            "label": "Inspect: Run the optional read-only local configuration review only when requested.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 4,
+            "globalNumber": 124,
+            "checkpoint": "inspect",
+            "label": "Inspect: Require manual Codex refresh to verify the rendered ten-card UI.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 5,
+            "globalNumber": 125,
+            "checkpoint": "inspect",
+            "label": "Inspect: Prepare a focused branch commit that excludes unrelated user-staged evidence.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 6,
+            "globalNumber": 126,
+            "checkpoint": "inspect",
+            "label": "Inspect: Push only a focused commit; keep public release separate and approval-gated.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 7,
+            "globalNumber": 127,
+            "checkpoint": "plan",
+            "label": "Plan: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 8,
+            "globalNumber": 128,
+            "checkpoint": "plan",
+            "label": "Plan: Run user-readiness checks without reading local Codex configuration by default.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 9,
+            "globalNumber": 129,
+            "checkpoint": "plan",
+            "label": "Plan: Run the optional read-only local configuration review only when requested.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 10,
+            "globalNumber": 130,
+            "checkpoint": "plan",
+            "label": "Plan: Require manual Codex refresh to verify the rendered ten-card UI.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 11,
+            "globalNumber": 131,
+            "checkpoint": "plan",
+            "label": "Plan: Prepare a focused branch commit that excludes unrelated user-staged evidence.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 12,
+            "globalNumber": 132,
+            "checkpoint": "plan",
+            "label": "Plan: Push only a focused commit; keep public release separate and approval-gated.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 13,
+            "globalNumber": 133,
+            "checkpoint": "build",
+            "label": "Build: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 14,
+            "globalNumber": 134,
+            "checkpoint": "build",
+            "label": "Build: Run user-readiness checks without reading local Codex configuration by default.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 15,
+            "globalNumber": 135,
+            "checkpoint": "build",
+            "label": "Build: Run the optional read-only local configuration review only when requested.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 16,
+            "globalNumber": 136,
+            "checkpoint": "build",
+            "label": "Build: Require manual Codex refresh to verify the rendered ten-card UI.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 17,
+            "globalNumber": 137,
+            "checkpoint": "build",
+            "label": "Build: Prepare a focused branch commit that excludes unrelated user-staged evidence.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 18,
+            "globalNumber": 138,
+            "checkpoint": "build",
+            "label": "Build: Push only a focused commit; keep public release separate and approval-gated.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 19,
+            "globalNumber": 139,
+            "checkpoint": "validate",
+            "label": "Validate: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 20,
+            "globalNumber": 140,
+            "checkpoint": "validate",
+            "label": "Validate: Run user-readiness checks without reading local Codex configuration by default.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 21,
+            "globalNumber": 141,
+            "checkpoint": "validate",
+            "label": "Validate: Run the optional read-only local configuration review only when requested.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 22,
+            "globalNumber": 142,
+            "checkpoint": "validate",
+            "label": "Validate: Require manual Codex refresh to verify the rendered ten-card UI.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 23,
+            "globalNumber": 143,
+            "checkpoint": "validate",
+            "label": "Validate: Prepare a focused branch commit that excludes unrelated user-staged evidence.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 24,
+            "globalNumber": 144,
+            "checkpoint": "validate",
+            "label": "Validate: Push only a focused commit; keep public release separate and approval-gated.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 25,
+            "globalNumber": 145,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Run focused distribution, version-policy, unified-suite, agent, and MCP smoke checks.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 26,
+            "globalNumber": 146,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Run user-readiness checks without reading local Codex configuration by default.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 27,
+            "globalNumber": 147,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Run the optional read-only local configuration review only when requested.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 28,
+            "globalNumber": 148,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Require manual Codex refresh to verify the rendered ten-card UI.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 29,
+            "globalNumber": 149,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Prepare a focused branch commit that excludes unrelated user-staged evidence.",
+            "status": "planned-not-executed"
+          },
+          {
+            "number": 30,
+            "globalNumber": 150,
+            "checkpoint": "record-command-evidence-for",
+            "label": "Record command evidence for: Push only a focused commit; keep public release separate and approval-gated.",
+            "status": "planned-not-executed"
           }
         ]
       }
     ],
-    "steps": [
-      {
-        "number": 1,
-        "round": 1,
-        "title": "Inspect the active goal, branch, worktree, and source-of-truth boundaries.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 2,
-        "round": 1,
-        "title": "Snapshot the canonical install, public-card count, bundle count, and retained-source count.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 3,
-        "round": 1,
-        "title": "Confirm public-only, no-personal, no-network, no-secret, and no-external-write boundaries.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 4,
-        "round": 1,
-        "title": "Inspect maximum bundle size, exact-once coverage, and protected product-category boundaries.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 5,
-        "round": 1,
-        "title": "Record risks, rollback, and any concurrent-generator change before overlapping writes.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 6,
-        "round": 1,
-        "title": "Emit the plan-only foreground report and choose the smallest safe next phase.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 7,
-        "round": 2,
-        "title": "Regenerate the public plugin family from reviewed source data.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 8,
-        "round": 2,
-        "title": "Regenerate the bounded public bundle packages from the family projection.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 9,
-        "round": 2,
-        "title": "Regenerate the consolidation record and retained-source evidence.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 10,
-        "round": 2,
-        "title": "Regenerate this supervised automation program and documentation.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 11,
-        "round": 2,
-        "title": "Run freshness checks for every generated artifact.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 12,
-        "round": 2,
-        "title": "Inspect the local diff for unexpected changes without committing or pushing.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 13,
-        "round": 3,
-        "title": "Run deterministic bundle coverage and local MCP boundary tests.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 14,
-        "round": 3,
-        "title": "Run consolidation projection and exact-once source-coverage tests.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 15,
-        "round": 3,
-        "title": "Run the supervised-autopilot plan/report tests.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 16,
-        "round": 3,
-        "title": "Validate that no allowlisted phase calls network, credentials, or external delivery tools.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 17,
-        "round": 3,
-        "title": "Validate that the canonical SEIS-Agent install remains the only default install.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 18,
-        "round": 3,
-        "title": "Stop and report any failing phase before planning additional work.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 19,
-        "round": 4,
-        "title": "Review category and product-identity boundaries for bundle clarity.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 20,
-        "round": 4,
-        "title": "Review source-retention and rollback evidence before any scope expansion.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 21,
-        "round": 4,
-        "title": "Review command output bounds, link safety, and symbolic-link rejection behavior.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 22,
-        "round": 4,
-        "title": "Review documentation freshness and user-facing installation language.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 23,
-        "round": 4,
-        "title": "Review feature-branch delivery readiness without executing GitHub delivery.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 24,
-        "round": 4,
-        "title": "Create explicit follow-up work only when it has a goal, risk, validation, and rollback boundary.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 25,
-        "round": 5,
-        "title": "Summarize foreground build and validation evidence.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 26,
-        "round": 5,
-        "title": "Record failed, skipped, blocked, and approval-gated actions honestly.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 27,
-        "round": 5,
-        "title": "Check worktree state and keep unrelated changes untouched.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 28,
-        "round": 5,
-        "title": "Prepare a focused local commit recommendation without creating a commit automatically.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 29,
-        "round": 5,
-        "title": "Prepare a separate GitHub feature-branch delivery decision without pushing automatically.",
-        "status": "ready-for-supervised-foreground-run"
-      },
-      {
-        "number": 30,
-        "round": 5,
-        "title": "Continue the currently authorized Round 11 200-step cycle only under current user direction; preserve Wave 5 as incomplete and never activate later tiers automatically.",
-        "status": "ready-for-supervised-foreground-run"
-      }
-    ]
+    "note": "This generated document is a plan. It does not claim that any round has run; inspect the execution ledger for real foreground evidence.",
+    "source": "content/development/seis-general-plugin-autopilot.json"
   },
   "fiveWaveSeries": {
-    "source": "content/development/seis-public-plugin-continuity-cadence.json",
-    "bootstrap": {
-      "totalSteps": 30,
-      "rounds": 5,
-      "stepsPerRound": 6
-    },
+    "status": "blocked-by-incomplete-five-30-step-rounds",
+    "activeWave": null,
+    "nextWave": 1,
     "waves": 5,
     "stepsPerWave": 100,
     "roundsPerWave": 5,
-    "stepsPerRound": 20,
+    "waveStatuses": [
+      {
+        "wave": 1,
+        "status": "planned-not-background",
+        "completedSteps": 0,
+        "nextStep": null,
+        "blocker": "five-30-step-rounds-require-reproducible-foreground-evidence",
+        "backgroundExecution": false
+      },
+      {
+        "wave": 2,
+        "status": "planned-not-background",
+        "completedSteps": 0,
+        "nextStep": null,
+        "blocker": "five-30-step-rounds-require-reproducible-foreground-evidence",
+        "backgroundExecution": false
+      },
+      {
+        "wave": 3,
+        "status": "planned-not-background",
+        "completedSteps": 0,
+        "nextStep": null,
+        "blocker": "five-30-step-rounds-require-reproducible-foreground-evidence",
+        "backgroundExecution": false
+      },
+      {
+        "wave": 4,
+        "status": "planned-not-background",
+        "completedSteps": 0,
+        "nextStep": null,
+        "blocker": "five-30-step-rounds-require-reproducible-foreground-evidence",
+        "backgroundExecution": false
+      },
+      {
+        "wave": 5,
+        "status": "planned-not-background",
+        "completedSteps": 0,
+        "nextStep": null,
+        "blocker": "five-30-step-rounds-require-reproducible-foreground-evidence",
+        "backgroundExecution": false
+      }
+    ],
     "nextSeries": {
       "waves": 5,
       "stepsPerWave": 200,
-      "status": "active-round-11-plan-and-local-build"
+      "status": "gated-until-five-100-step-waves-complete"
     },
-    "continuationRule": "Round 11 is the first active 200-step plan-and-local-build cycle under the current user direction. The retained Wave 5 tracker remains at 80 completed with step 81 in progress, so this transition does not fabricate Wave 5 closeout evidence.",
+    "source": "content/development/seis-general-plugin-autopilot.json",
     "backgroundExecution": false
   },
-  "escalationSeries": {
+  "historicalContinuity": {
     "source": "content/development/seis-public-plugin-continuity-cadence.json",
+    "status": "legacy-wave-5-incomplete-retained-evidence",
+    "activeWave": 5,
+    "completedSteps": 80,
+    "inProgressSteps": [
+      81
+    ],
+    "closeoutClaimed": false,
+    "escalationActivationState": "gated-until-wave-5-completes",
+    "note": "This is retained legacy evidence only. It cannot activate the current 200-step series or override the Goal 0029 cadence."
+  },
+  "escalationSeries": {
+    "source": "content/development/seis-general-plugin-autopilot.json",
     "id": "seis-public-plugin-five-wave-step-escalation",
     "direction": "increase-100-steps-per-wave-after-each-five-wave-series",
     "tierCount": 5,
@@ -479,7 +1257,7 @@
     "currentMarketplaceCardCount": 10,
     "maximumBundleSize": 15,
     "workflowStepsAreMarketplaceCards": false,
-    "activationRule": "Only the active 200-step Round 11 cycle has current authorization. Every later tier is strategic, gated, and non-background until its own current evidence and human authorization exist.",
+    "activationRule": "No 200-step or later tier is active while the current five-by-100 series is incomplete.",
     "tiers": [
       {
         "id": "five-wave-200",
@@ -493,18 +1271,10 @@
           1,
           2
         ],
-        "status": "active-round-11-plan-and-local-build",
-        "activationAuthority": "current-user-direction-2026-07-22",
-        "activeCycle": {
-          "round": 11,
-          "totalSteps": 200,
-          "status": "in-progress-plan-and-local-build",
-          "completedStepCount": 0,
-          "inProgressStepNumbers": [
-            1
-          ]
-        },
-        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "status": "gated-until-five-100-step-waves-complete",
+        "activationAuthority": "not-yet-granted",
+        "activeCycle": null,
+        "entryGate": "All five current 100-step waves need reproducible completion evidence, followed by a current goal, scope, risk, validation, rollback, ownership, and human-authority review.",
         "backgroundExecution": false,
         "marketplaceCardExpansion": false
       },
@@ -523,7 +1293,7 @@
         "status": "strategic-gated-not-background",
         "activationAuthority": "not-yet-granted",
         "activeCycle": null,
-        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "entryGate": "All five current 100-step waves need reproducible completion evidence, followed by a current goal, scope, risk, validation, rollback, ownership, and human-authority review.",
         "backgroundExecution": false,
         "marketplaceCardExpansion": false
       },
@@ -542,7 +1312,7 @@
         "status": "strategic-gated-not-background",
         "activationAuthority": "not-yet-granted",
         "activeCycle": null,
-        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "entryGate": "All five current 100-step waves need reproducible completion evidence, followed by a current goal, scope, risk, validation, rollback, ownership, and human-authority review.",
         "backgroundExecution": false,
         "marketplaceCardExpansion": false
       },
@@ -561,7 +1331,7 @@
         "status": "strategic-gated-not-background",
         "activationAuthority": "not-yet-granted",
         "activeCycle": null,
-        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "entryGate": "All five current 100-step waves need reproducible completion evidence, followed by a current goal, scope, risk, validation, rollback, ownership, and human-authority review.",
         "backgroundExecution": false,
         "marketplaceCardExpansion": false
       },
@@ -580,7 +1350,7 @@
         "status": "strategic-gated-not-background",
         "activationAuthority": "not-yet-granted",
         "activeCycle": null,
-        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "entryGate": "All five current 100-step waves need reproducible completion evidence, followed by a current goal, scope, risk, validation, rollback, ownership, and human-authority review.",
         "backgroundExecution": false,
         "marketplaceCardExpansion": false
       }
@@ -592,17 +1362,15 @@
     "totalSteps": 200,
     "roundCount": 10,
     "stepsPerRound": 20,
-    "status": "in-progress-plan-and-local-build",
-    "activationAuthority": "current-user-direction-2026-07-22",
+    "status": "gated-template-not-active",
+    "activationAuthority": "not-yet-granted",
     "historicalWave5EvidenceState": "wave-5-first-80-steps-completed-step-81-in-progress",
     "historicalWave5CloseoutClaimed": false,
     "backgroundExecution": false,
     "progress": {
       "completedStepCount": 0,
-      "inProgressStepNumbers": [
-        1
-      ],
-      "plannedStepCount": 199
+      "inProgressStepNumbers": [],
+      "plannedStepCount": 200
     },
     "rounds": [
       {
@@ -617,102 +1385,102 @@
           {
             "number": 1,
             "title": "Inspect the authoritative goal and non-goals for authority and repository truth.",
-            "status": "in-progress"
+            "status": "planned-gated"
           },
           {
             "number": 2,
             "title": "Verify canonical repository ownership and affected paths for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 3,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 4,
             "title": "Confirm public/private, network, secret, and external-write boundaries for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 5,
             "title": "Inventory current inputs and generated outputs for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 6,
             "title": "Identify the smallest reversible implementation slice for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 7,
             "title": "Check dependencies, blockers, and concurrent-writer risk for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 8,
             "title": "Define measurable acceptance evidence for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 9,
             "title": "Implement the bounded local change for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 10,
             "title": "Regenerate only declared deterministic artifacts for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 11,
             "title": "Run syntax and freshness checks for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 12,
             "title": "Run focused unit and integration tests for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 13,
             "title": "Run adversarial boundary tests for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 14,
             "title": "Inspect the diff for scope drift and machine-specific data for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 15,
             "title": "Review security, architecture, documentation, and usability impact for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 16,
             "title": "Record failed, skipped, and environment-blocked checks for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 17,
             "title": "Update goal, risk, rollback, and evidence records for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 18,
             "title": "Prepare a focused commit and feature-branch delivery decision for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 19,
             "title": "Recheck repository state and retained-source invariants for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 20,
             "title": "Hand off the verified result and next bounded action for authority and repository truth.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
@@ -728,102 +1496,102 @@
           {
             "number": 21,
             "title": "Inspect the authoritative goal and non-goals for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 22,
             "title": "Verify canonical repository ownership and affected paths for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 23,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 24,
             "title": "Confirm public/private, network, secret, and external-write boundaries for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 25,
             "title": "Inventory current inputs and generated outputs for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 26,
             "title": "Identify the smallest reversible implementation slice for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 27,
             "title": "Check dependencies, blockers, and concurrent-writer risk for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 28,
             "title": "Define measurable acceptance evidence for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 29,
             "title": "Implement the bounded local change for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 30,
             "title": "Regenerate only declared deterministic artifacts for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 31,
             "title": "Run syntax and freshness checks for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 32,
             "title": "Run focused unit and integration tests for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 33,
             "title": "Run adversarial boundary tests for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 34,
             "title": "Inspect the diff for scope drift and machine-specific data for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 35,
             "title": "Review security, architecture, documentation, and usability impact for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 36,
             "title": "Record failed, skipped, and environment-blocked checks for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 37,
             "title": "Update goal, risk, rollback, and evidence records for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 38,
             "title": "Prepare a focused commit and feature-branch delivery decision for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 39,
             "title": "Recheck repository state and retained-source invariants for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 40,
             "title": "Hand off the verified result and next bounded action for curated marketplace architecture.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
@@ -839,102 +1607,102 @@
           {
             "number": 41,
             "title": "Inspect the authoritative goal and non-goals for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 42,
             "title": "Verify canonical repository ownership and affected paths for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 43,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 44,
             "title": "Confirm public/private, network, secret, and external-write boundaries for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 45,
             "title": "Inventory current inputs and generated outputs for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 46,
             "title": "Identify the smallest reversible implementation slice for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 47,
             "title": "Check dependencies, blockers, and concurrent-writer risk for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 48,
             "title": "Define measurable acceptance evidence for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 49,
             "title": "Implement the bounded local change for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 50,
             "title": "Regenerate only declared deterministic artifacts for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 51,
             "title": "Run syntax and freshness checks for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 52,
             "title": "Run focused unit and integration tests for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 53,
             "title": "Run adversarial boundary tests for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 54,
             "title": "Inspect the diff for scope drift and machine-specific data for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 55,
             "title": "Review security, architecture, documentation, and usability impact for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 56,
             "title": "Record failed, skipped, and environment-blocked checks for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 57,
             "title": "Update goal, risk, rollback, and evidence records for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 58,
             "title": "Prepare a focused commit and feature-branch delivery decision for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 59,
             "title": "Recheck repository state and retained-source invariants for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 60,
             "title": "Hand off the verified result and next bounded action for exact capability preservation.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
@@ -950,102 +1718,102 @@
           {
             "number": 61,
             "title": "Inspect the authoritative goal and non-goals for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 62,
             "title": "Verify canonical repository ownership and affected paths for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 63,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 64,
             "title": "Confirm public/private, network, secret, and external-write boundaries for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 65,
             "title": "Inventory current inputs and generated outputs for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 66,
             "title": "Identify the smallest reversible implementation slice for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 67,
             "title": "Check dependencies, blockers, and concurrent-writer risk for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 68,
             "title": "Define measurable acceptance evidence for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 69,
             "title": "Implement the bounded local change for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 70,
             "title": "Regenerate only declared deterministic artifacts for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 71,
             "title": "Run syntax and freshness checks for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 72,
             "title": "Run focused unit and integration tests for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 73,
             "title": "Run adversarial boundary tests for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 74,
             "title": "Inspect the diff for scope drift and machine-specific data for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 75,
             "title": "Review security, architecture, documentation, and usability impact for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 76,
             "title": "Record failed, skipped, and environment-blocked checks for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 77,
             "title": "Update goal, risk, rollback, and evidence records for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 78,
             "title": "Prepare a focused commit and feature-branch delivery decision for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 79,
             "title": "Recheck repository state and retained-source invariants for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 80,
             "title": "Hand off the verified result and next bounded action for bundle runtime safety.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
@@ -1061,102 +1829,102 @@
           {
             "number": 81,
             "title": "Inspect the authoritative goal and non-goals for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 82,
             "title": "Verify canonical repository ownership and affected paths for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 83,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 84,
             "title": "Confirm public/private, network, secret, and external-write boundaries for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 85,
             "title": "Inventory current inputs and generated outputs for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 86,
             "title": "Identify the smallest reversible implementation slice for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 87,
             "title": "Check dependencies, blockers, and concurrent-writer risk for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 88,
             "title": "Define measurable acceptance evidence for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 89,
             "title": "Implement the bounded local change for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 90,
             "title": "Regenerate only declared deterministic artifacts for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 91,
             "title": "Run syntax and freshness checks for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 92,
             "title": "Run focused unit and integration tests for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 93,
             "title": "Run adversarial boundary tests for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 94,
             "title": "Inspect the diff for scope drift and machine-specific data for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 95,
             "title": "Review security, architecture, documentation, and usability impact for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 96,
             "title": "Record failed, skipped, and environment-blocked checks for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 97,
             "title": "Update goal, risk, rollback, and evidence records for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 98,
             "title": "Prepare a focused commit and feature-branch delivery decision for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 99,
             "title": "Recheck repository state and retained-source invariants for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 100,
             "title": "Hand off the verified result and next bounded action for manifest and registry reconciliation.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
@@ -1172,109 +1940,109 @@
           {
             "number": 101,
             "title": "Inspect the authoritative goal and non-goals for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 102,
             "title": "Verify canonical repository ownership and affected paths for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 103,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 104,
             "title": "Confirm public/private, network, secret, and external-write boundaries for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 105,
             "title": "Inventory current inputs and generated outputs for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 106,
             "title": "Identify the smallest reversible implementation slice for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 107,
             "title": "Check dependencies, blockers, and concurrent-writer risk for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 108,
             "title": "Define measurable acceptance evidence for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 109,
             "title": "Implement the bounded local change for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 110,
             "title": "Regenerate only declared deterministic artifacts for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 111,
             "title": "Run syntax and freshness checks for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 112,
             "title": "Run focused unit and integration tests for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 113,
             "title": "Run adversarial boundary tests for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 114,
             "title": "Inspect the diff for scope drift and machine-specific data for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 115,
             "title": "Review security, architecture, documentation, and usability impact for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 116,
             "title": "Record failed, skipped, and environment-blocked checks for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 117,
             "title": "Update goal, risk, rollback, and evidence records for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 118,
             "title": "Prepare a focused commit and feature-branch delivery decision for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 119,
             "title": "Recheck repository state and retained-source invariants for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 120,
             "title": "Hand off the verified result and next bounded action for supervised autopilot integrity.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
       {
         "round": 7,
         "name": "Continuity and historical evidence",
-        "objective": "Preserve prior-wave facts while activating the current 200-step plan without fake completion.",
+        "objective": "Preserve prior-wave facts while keeping the 200-step template gated until the current five-wave series closes.",
         "stepRange": [
           121,
           140
@@ -1283,102 +2051,102 @@
           {
             "number": 121,
             "title": "Inspect the authoritative goal and non-goals for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 122,
             "title": "Verify canonical repository ownership and affected paths for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 123,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 124,
             "title": "Confirm public/private, network, secret, and external-write boundaries for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 125,
             "title": "Inventory current inputs and generated outputs for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 126,
             "title": "Identify the smallest reversible implementation slice for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 127,
             "title": "Check dependencies, blockers, and concurrent-writer risk for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 128,
             "title": "Define measurable acceptance evidence for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 129,
             "title": "Implement the bounded local change for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 130,
             "title": "Regenerate only declared deterministic artifacts for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 131,
             "title": "Run syntax and freshness checks for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 132,
             "title": "Run focused unit and integration tests for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 133,
             "title": "Run adversarial boundary tests for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 134,
             "title": "Inspect the diff for scope drift and machine-specific data for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 135,
             "title": "Review security, architecture, documentation, and usability impact for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 136,
             "title": "Record failed, skipped, and environment-blocked checks for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 137,
             "title": "Update goal, risk, rollback, and evidence records for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 138,
             "title": "Prepare a focused commit and feature-branch delivery decision for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 139,
             "title": "Recheck repository state and retained-source invariants for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 140,
             "title": "Hand off the verified result and next bounded action for continuity and historical evidence.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
@@ -1394,102 +2162,102 @@
           {
             "number": 141,
             "title": "Inspect the authoritative goal and non-goals for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 142,
             "title": "Verify canonical repository ownership and affected paths for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 143,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 144,
             "title": "Confirm public/private, network, secret, and external-write boundaries for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 145,
             "title": "Inventory current inputs and generated outputs for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 146,
             "title": "Identify the smallest reversible implementation slice for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 147,
             "title": "Check dependencies, blockers, and concurrent-writer risk for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 148,
             "title": "Define measurable acceptance evidence for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 149,
             "title": "Implement the bounded local change for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 150,
             "title": "Regenerate only declared deterministic artifacts for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 151,
             "title": "Run syntax and freshness checks for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 152,
             "title": "Run focused unit and integration tests for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 153,
             "title": "Run adversarial boundary tests for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 154,
             "title": "Inspect the diff for scope drift and machine-specific data for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 155,
             "title": "Review security, architecture, documentation, and usability impact for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 156,
             "title": "Record failed, skipped, and environment-blocked checks for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 157,
             "title": "Update goal, risk, rollback, and evidence records for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 158,
             "title": "Prepare a focused commit and feature-branch delivery decision for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 159,
             "title": "Recheck repository state and retained-source invariants for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 160,
             "title": "Hand off the verified result and next bounded action for cross-project identity boundaries.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
@@ -1505,102 +2273,102 @@
           {
             "number": 161,
             "title": "Inspect the authoritative goal and non-goals for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 162,
             "title": "Verify canonical repository ownership and affected paths for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 163,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 164,
             "title": "Confirm public/private, network, secret, and external-write boundaries for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 165,
             "title": "Inventory current inputs and generated outputs for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 166,
             "title": "Identify the smallest reversible implementation slice for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 167,
             "title": "Check dependencies, blockers, and concurrent-writer risk for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 168,
             "title": "Define measurable acceptance evidence for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 169,
             "title": "Implement the bounded local change for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 170,
             "title": "Regenerate only declared deterministic artifacts for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 171,
             "title": "Run syntax and freshness checks for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 172,
             "title": "Run focused unit and integration tests for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 173,
             "title": "Run adversarial boundary tests for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 174,
             "title": "Inspect the diff for scope drift and machine-specific data for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 175,
             "title": "Review security, architecture, documentation, and usability impact for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 176,
             "title": "Record failed, skipped, and environment-blocked checks for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 177,
             "title": "Update goal, risk, rollback, and evidence records for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 178,
             "title": "Prepare a focused commit and feature-branch delivery decision for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 179,
             "title": "Recheck repository state and retained-source invariants for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 180,
             "title": "Hand off the verified result and next bounded action for validation and delivery readiness.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       },
@@ -1616,102 +2384,102 @@
           {
             "number": 181,
             "title": "Inspect the authoritative goal and non-goals for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 182,
             "title": "Verify canonical repository ownership and affected paths for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 183,
             "title": "Snapshot the current branch and worktree without rewriting unrelated changes for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 184,
             "title": "Confirm public/private, network, secret, and external-write boundaries for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 185,
             "title": "Inventory current inputs and generated outputs for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 186,
             "title": "Identify the smallest reversible implementation slice for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 187,
             "title": "Check dependencies, blockers, and concurrent-writer risk for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 188,
             "title": "Define measurable acceptance evidence for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 189,
             "title": "Implement the bounded local change for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 190,
             "title": "Regenerate only declared deterministic artifacts for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 191,
             "title": "Run syntax and freshness checks for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 192,
             "title": "Run focused unit and integration tests for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 193,
             "title": "Run adversarial boundary tests for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 194,
             "title": "Inspect the diff for scope drift and machine-specific data for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 195,
             "title": "Review security, architecture, documentation, and usability impact for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 196,
             "title": "Record failed, skipped, and environment-blocked checks for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 197,
             "title": "Update goal, risk, rollback, and evidence records for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 198,
             "title": "Prepare a focused commit and feature-branch delivery decision for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 199,
             "title": "Recheck repository state and retained-source invariants for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           },
           {
             "number": 200,
             "title": "Hand off the verified result and next bounded action for human usability and handoff.",
-            "status": "planned"
+            "status": "planned-gated"
           }
         ]
       }
@@ -1725,7 +2493,7 @@
       "escalationTierId": "five-wave-200",
       "seriesWaveCount": 5,
       "stepsPerWave": 200,
-      "tierStatus": "active-round-11-plan-and-local-build",
+      "tierStatus": "gated-until-five-100-step-waves-complete",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1737,7 +2505,7 @@
       "escalationTierId": "five-wave-200",
       "seriesWaveCount": 5,
       "stepsPerWave": 200,
-      "tierStatus": "active-round-11-plan-and-local-build",
+      "tierStatus": "gated-until-five-100-step-waves-complete",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1843,9 +2611,9 @@
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-family.mjs"
+        "scripts/create-seis-general-plugin-distribution.mjs"
       ],
-      "purpose": "regenerate curated marketplace projection",
+      "purpose": "regenerate the ten-card, thirty-package distribution",
       "externalWrite": false,
       "network": false,
       "secrets": false,
@@ -1855,383 +2623,100 @@
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-bundles.mjs"
+        "scripts/create-seis-general-unified-suite.mjs"
       ],
-      "purpose": "regenerate bounded bundle packages",
+      "purpose": "regenerate the ten-general-plugin unified suite",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
       "automationRoleId": "bundle-builder"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-core-plugin-catalog.mjs"
-      ],
-      "purpose": "regenerate SEIS Core application catalog",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "bundle-builder"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-unified-plugin-suite.mjs"
-      ],
-      "purpose": "regenerate unified plugin suite",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "bundle-builder"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-mcp-permission.mjs"
-      ],
-      "purpose": "regenerate MCP permission evidence",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-install-state.mjs"
-      ],
-      "purpose": "regenerate public install state",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-install-evidence.mjs"
-      ],
-      "purpose": "regenerate public install evidence",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-runtime-status.mjs"
-      ],
-      "purpose": "regenerate public runtime status",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-ui-state-contract-audit.mjs"
-      ],
-      "purpose": "regenerate UI state audit evidence",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-integration-checkpoint.mjs"
-      ],
-      "purpose": "regenerate Wave 4 integration checkpoint",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-public-boundary-decision.mjs"
-      ],
-      "purpose": "regenerate Wave 4 public-boundary decision",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-handoff-preparation.mjs"
-      ],
-      "purpose": "regenerate Wave 4 handoff preparation",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-closeout-sequence-decision.mjs"
-      ],
-      "purpose": "regenerate Wave 4 closeout-sequence decision",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-repository-local-handoff.mjs"
-      ],
-      "purpose": "regenerate Wave 4 repository-local handoff",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-following-wave-review.mjs"
-      ],
-      "purpose": "regenerate Wave 4 following-wave review",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-evidence-retention.mjs"
-      ],
-      "purpose": "regenerate Wave 4 evidence retention",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-closeout.mjs"
-      ],
-      "purpose": "regenerate Wave 4 closeout",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-program.mjs"
-      ],
-      "purpose": "regenerate Wave 4 program",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
     },
     {
       "command": "node",
       "args": [
         "scripts/create-seis-public-plugin-consolidation.mjs"
       ],
-      "purpose": "regenerate consolidation evidence",
+      "purpose": "regenerate current consolidation evidence",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
+      "automationRoleId": "bundle-builder"
     },
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-wave-5-program.mjs"
+        "scripts/create-seis-general-plugin-autopilot.mjs"
       ],
-      "purpose": "regenerate Wave 5 program",
+      "purpose": "regenerate the canonical cadence roadmap",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-continuity-cadence.mjs"
-      ],
-      "purpose": "regenerate continuity cadence",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
+      "automationRoleId": "architect-planner"
     },
     {
       "command": "node",
       "args": [
         "scripts/create-seis-public-plugin-supervised-autopilot.mjs"
       ],
-      "purpose": "regenerate this program and roadmap",
+      "purpose": "regenerate this supervised contract",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
+      "automationRoleId": "architect-planner"
     },
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-project-manifest-audit.mjs"
+        "scripts/create-seis-general-plugin-autopilot.mjs"
       ],
-      "purpose": "regenerate project manifest audit evidence",
+      "purpose": "reconcile cadence delegation after the supervised contract",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
-      "automationRoleId": "evidence-reporter"
+      "automationRoleId": "architect-planner"
     },
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-family.mjs",
+        "scripts/create-seis-general-plugin-distribution.mjs",
         "--check"
       ],
-      "purpose": "check marketplace freshness",
+      "purpose": "check distribution freshness",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
-      "automationRoleId": "qa-validator"
+      "automationRoleId": "safety-reviewer"
     },
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-bundles.mjs",
-        "--check"
+        "scripts/check-seis-general-plugin-distribution.mjs"
       ],
-      "purpose": "check bundle freshness",
+      "purpose": "check the ten-card distribution contract",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
-      "automationRoleId": "qa-validator"
+      "automationRoleId": "safety-reviewer"
     },
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-core-plugin-catalog.mjs",
+        "scripts/create-seis-general-unified-suite.mjs",
         "--check"
       ],
-      "purpose": "check SEIS Core application catalog freshness",
+      "purpose": "check unified-suite freshness",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
-      "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-unified-plugin-suite.mjs",
-        "--check"
-      ],
-      "purpose": "check unified plugin suite freshness",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-mcp-permission.mjs",
-        "--check"
-      ],
-      "purpose": "check MCP permission freshness",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-install-state.mjs",
-        "--check"
-      ],
-      "purpose": "check public install state freshness",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-ui-state-contract-audit.mjs",
-        "--check"
-      ],
-      "purpose": "check UI state audit freshness",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-integration-checkpoint.mjs",
-        "--check"
-      ],
-      "purpose": "check Wave 4 integration checkpoint freshness",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-public-plugin-wave-4-public-boundary-decision.mjs",
-        "--check"
-      ],
-      "purpose": "check Wave 4 public-boundary decision freshness",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "qa-validator"
+      "automationRoleId": "safety-reviewer"
     },
     {
       "command": "node",
@@ -2244,15 +2729,64 @@
       "network": false,
       "secrets": false,
       "approvalRequired": false,
+      "automationRoleId": "safety-reviewer"
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/check-seis-public-plugin-release-policy.mjs"
+      ],
+      "purpose": "check the structural release policy",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false,
+      "automationRoleId": "safety-reviewer"
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/check-seis-ai-agent-v2.mjs"
+      ],
+      "purpose": "check the current SEIS-Agent contract",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false,
       "automationRoleId": "qa-validator"
     },
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-wave-5-program.mjs",
+        "scripts/check-seis-agent-plugin-integration-v2.mjs"
+      ],
+      "purpose": "check current agent and plugin integration",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false,
+      "automationRoleId": "qa-validator"
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/check-seis-general-plugin-install-smoke.mjs",
+        "--mcp-smoke"
+      ],
+      "purpose": "run current install and MCP smoke checks",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false,
+      "automationRoleId": "qa-validator"
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-general-plugin-autopilot.mjs",
         "--check"
       ],
-      "purpose": "check Wave 5 program freshness",
+      "purpose": "check canonical cadence freshness",
       "externalWrite": false,
       "network": false,
       "secrets": false,
@@ -2265,7 +2799,7 @@
         "scripts/create-seis-public-plugin-supervised-autopilot.mjs",
         "--check"
       ],
-      "purpose": "check autopilot freshness",
+      "purpose": "check supervised contract freshness",
       "externalWrite": false,
       "network": false,
       "secrets": false,
@@ -2275,76 +2809,28 @@
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-continuity-cadence.mjs",
-        "--check"
+        "scripts/check-seis-general-plugin-user-readiness.mjs",
+        "--json"
       ],
-      "purpose": "check continuity cadence freshness",
+      "purpose": "report repository-only user readiness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false,
+      "automationRoleId": "evidence-reporter"
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/ten-general-plugin-distribution.test.mjs"
+      ],
+      "purpose": "run ten-general distribution tests",
       "externalWrite": false,
       "network": false,
       "secrets": false,
       "approvalRequired": false,
       "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/check-seis-public-plugin-expansion-program.mjs"
-      ],
-      "purpose": "check expansion program",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "architect-planner"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/check-seis-plugin-bundle.mjs",
-        "--no-local"
-      ],
-      "purpose": "check canonical plugin bundle",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/check-seis-specialist-plugins.mjs"
-      ],
-      "purpose": "check curated specialist packages",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/check-seis-public-marketplace-terminology.mjs"
-      ],
-      "purpose": "check public marketplace terminology",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/check-seis-agent-plugin-integration.mjs"
-      ],
-      "purpose": "check SEIS-Agent integration",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
     },
     {
       "command": "node",
@@ -2357,7 +2843,7 @@
       "network": false,
       "secrets": false,
       "approvalRequired": false,
-      "automationRoleId": "safety-reviewer"
+      "automationRoleId": "qa-validator"
     },
     {
       "command": "node",
@@ -2366,6 +2852,19 @@
         "plugins/seis-core/test/public-plugin-consolidation.test.mjs"
       ],
       "purpose": "run consolidation tests",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false,
+      "automationRoleId": "qa-validator"
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/general-plugin-runtime.test.mjs"
+      ],
+      "purpose": "run general-plugin runtime tests",
       "externalWrite": false,
       "network": false,
       "secrets": false,
@@ -2389,22 +2888,9 @@
       "command": "node",
       "args": [
         "--test",
-        "plugins/seis-core/test/marketplace-integrity.test.mjs"
+        "plugins/seis-core/test/ten-general-plugin-autopilot.test.mjs"
       ],
-      "purpose": "run marketplace integrity tests",
-      "externalWrite": false,
-      "network": false,
-      "secrets": false,
-      "approvalRequired": false,
-      "automationRoleId": "qa-validator"
-    },
-    {
-      "command": "node",
-      "args": [
-        "scripts/create-seis-project-manifest-audit.mjs",
-        "--check"
-      ],
-      "purpose": "check project manifest audit freshness",
+      "purpose": "run canonical cadence tests",
       "externalWrite": false,
       "network": false,
       "secrets": false,
@@ -2415,9 +2901,35 @@
       "command": "node",
       "args": [
         "--test",
-        "plugins/seis-core/test/project-manifest-audit.test.mjs"
+        "plugins/seis-core/test/public-plugin-user-readiness.test.mjs"
       ],
-      "purpose": "run project manifest audit tests",
+      "purpose": "run user-readiness tests",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false,
+      "automationRoleId": "qa-validator"
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/public-marketplace-local-cleanup.test.mjs"
+      ],
+      "purpose": "run bounded local-config fixture tests",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false,
+      "automationRoleId": "safety-reviewer"
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/marketplace-integrity.test.mjs"
+      ],
+      "purpose": "run marketplace integrity tests",
       "externalWrite": false,
       "network": false,
       "secrets": false,
@@ -2472,11 +2984,12 @@
     "activeGoal": true,
     "parentGoal": true,
     "curatedMarketplace": true,
-    "continuityCadence": true,
+    "currentCadence": true,
+    "historicalContinuity": true,
     "escalationCadence": true,
     "bundleProjection": true,
     "immediateCycle": true,
-    "round11Cycle": true,
+    "fiveWaveSeries": true,
     "tenYearHorizon": true,
     "commandAllowlist": true,
     "automationRoleAssignments": true

@@ -84,7 +84,7 @@
     "check:seis-public-marketplace-canonical-default": "node --test plugins/seis-core/test/public-marketplace-local-cleanup.test.mjs",
     "check:seis-general-plugin-distribution": "node scripts/create-seis-general-plugin-distribution.mjs --check && node scripts/check-seis-general-plugin-distribution.mjs",
     "check:seis-general-unified-suite": "node scripts/create-seis-general-unified-suite.mjs --check",
-    "check:seis-general-plugin-autopilot": "node scripts/create-seis-general-plugin-autopilot.mjs --check",
+    "check:seis-general-plugin-autopilot": "node scripts/create-seis-general-plugin-autopilot.mjs --check && node scripts/run-seis-general-plugin-autopilot.mjs --check",
     "check:seis-public-plugin-release-policy": "node scripts/check-seis-public-plugin-release-policy.mjs",
     "check:seis-public-plugin-user-readiness": "node scripts/check-seis-general-plugin-user-readiness.mjs --json",
     "check:seis-public-plugin-user-readiness:local": "node scripts/check-seis-general-plugin-user-readiness.mjs --json --local-config",
