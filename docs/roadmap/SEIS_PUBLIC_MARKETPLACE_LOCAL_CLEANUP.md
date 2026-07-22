@@ -75,3 +75,8 @@ npm run check:seis-public-marketplace-local-cleanup
 
 After an approved apply, restart or refresh Codex and inspect the Plugins view.
 Only direct UI evidence can establish that the old `personal` labels are gone.
+
+For the next compact-surface step after personal cleanup, see
+`docs/roadmap/SEIS_CANONICAL_PUBLIC_DEFAULT_PROFILE.md`. It converges duplicate
+direct public source records on the one canonical SEIS-Agent default while
+preserving any optional bundle the user already selected.

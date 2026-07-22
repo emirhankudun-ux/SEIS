@@ -1,0 +1,229 @@
+schema_version: 2
+
+id: SEIS-GOAL-0027
+project: seis
+program: public-plugin-governance
+initiative: canonical-public-default-profile
+parent_goal: SEIS-GOAL-0024
+
+title: Converge active SEIS Repo source records on the canonical SEIS-Agent default
+summary: >-
+  Make the real Codex configuration match the bounded public package model:
+  retain the one enabled seis-ai-agent@seis-repo default, preserve any explicitly
+  selected curated optional bundle, and remove only direct seis-repo source
+  records that the checked-in unified suite already declares embedded in
+  SEIS-Agent. This reduces repeated public cards without deleting retained source
+  packages, caches, or user-selected bundle records.
+
+category:
+  - plugins
+  - migration
+  - automation
+  - architecture
+  - security
+  - testing
+  - documentation
+
+priority: high
+status: review
+maturity: prototype
+confidence: medium
+
+owner_agent: lead-architect
+accountable_human: project-owner
+supporting_agents:
+  - repository-hygiene
+  - security
+  - testing-and-qa
+  - documentation
+
+horizon: now
+start_after: null
+target_window:
+  start: 2026-07-22
+  end: null
+
+scope:
+  repositories:
+    - SEIS-plugin-root-20260715
+  paths:
+    - goals/active/SEIS-GOAL-0027--canonical-public-default-profile.yaml
+    - scripts/manage-seis-public-marketplace-switch.mjs
+    - plugins/seis-ai-agent/assets/unified-suite.json
+    - plugins/seis-core/test/public-marketplace-local-cleanup.test.mjs
+    - docs/roadmap/SEIS_CANONICAL_PUBLIC_DEFAULT_PROFILE.md
+    - docs/roadmap/SEIS_PUBLIC_MARKETPLACE_LOCAL_CLEANUP.md
+    - package.json
+  external_paths:
+    - ~/.codex/config.toml
+
+canonical_owner_repo: SEIS-plugin-root-20260715
+
+platforms:
+  - repository
+  - cli
+  - codex-plugin
+
+architecture_layers:
+  - governance
+  - integration
+  - security
+
+security_classification: local-config-sensitive
+privacy_impact: local-configuration-metadata-only
+
+requirements:
+  - derive the removable direct public source records from the checked-in unified-suite embedded module list rather than a raw local config name list
+  - require the exact canonical seis-ai-agent@seis-repo record to be unique and enabled before any change
+  - provide a read-only canonical-default plan with aggregate counts only
+  - remove only direct public source records already embedded in the canonical SEIS-Agent
+  - preserve every curated optional bundle record, unmanaged public record, non-SEIS record, source directory, and cache directory
+  - require explicit --apply --canonicalize-public before any local configuration write
+  - verify a same-directory backup, immutable config identity, unchanged canonical profile, and postcondition before success
+  - fail closed and restore the original config if verification fails
+  - keep 34 marketplace cards, 33 optional bundles, 380 retained source capabilities, and the 15-capability bundle limit unchanged
+  - prohibit network, provider, secret, GitHub, release, deployment, installation, and background-agent actions
+
+non_goals:
+  - deleting retained public source packages or cache directories
+  - removing an optional bundle explicitly selected by a user
+  - changing the 34-card marketplace projection or its bundle membership
+  - installing a bundle automatically
+  - rewriting unrelated Codex configuration
+  - restarting Codex or claiming UI verification without direct evidence
+  - self-authorizing a local config apply from supervised Auto Mode
+
+acceptance_criteria:
+  - the plan distinguishes embedded direct public records, optional bundle records, and unmanaged public records without leaking names or paths
+  - canonicalize mode removes only source records backed by the unified-suite embedded module map
+  - optional bundle records survive fixture canonicalization unchanged
+  - a stale or changed unified-suite profile aborts apply before configuration replacement
+  - fixture tests cover plan, canonicalization, optional-bundle preservation, backup, restore, idempotence, and malformed canonical safeguards
+  - the active local configuration has no personal SEIS records and no direct embedded source record after a separately approved apply
+  - repository marketplace and focused validation pass before GitHub delivery
+
+definition_of_ready:
+  - SEIS-GOAL-0024 has established the canonical public default and bounded optional bundles
+  - SEIS-GOAL-0026 has removed personal SEIS config records through a verified backup-backed flow
+  - the checked-in unified suite declares all direct SEIS source modules as embedded in SEIS-Agent
+  - local configuration mutation remains explicitly approval-gated
+
+definition_of_done:
+  - the canonical-default plan, tests, docs, and goal record are committed on a focused feature branch
+  - focused and marketplace validation pass
+  - an approved local apply proves no direct embedded source record remains and preserves canonical plus any optional bundle record
+  - a manual Codex UI refresh confirms the intended compact public surface
+  - GitHub delivery is visible and does not hide failed or skipped gates
+
+dependencies:
+  - SEIS-GOAL-0024
+  - SEIS-GOAL-0025
+  - SEIS-GOAL-0026
+blocked_by: []
+related_goals:
+  - SEIS-GOAL-021
+  - SEIS-GOAL-0024
+  - SEIS-GOAL-0026
+
+validation:
+  commands:
+    - node --check scripts/manage-seis-public-marketplace-switch.mjs
+    - npm run check:seis-public-marketplace-canonical-default
+    - npm run plan:seis-public-marketplace-canonical-default
+    - npm run check:seis-repo-marketplace
+    - git diff --check
+  manual:
+    - local configuration permission-boundary review
+    - Codex UI compact-surface confirmation after approved apply
+  evidence:
+    - canonical-default plan output
+    - fixture canonicalization output
+    - explicit local apply output with aggregate counts and backup filename only
+
+quality_gates:
+  architecture: required
+  design: required
+  security: required
+  accessibility: not-applicable
+  performance: not-applicable
+  documentation: required
+  testing: required
+
+risks:
+  - id: RISK-0027-001
+    description: A direct public source record might be mistaken for an optional user-selected bundle.
+    likelihood: low
+    impact: high
+    owner: security
+    mitigation: Derive target IDs only from embedded module names and explicitly preserve optional bundle ID patterns.
+    trigger: A fixture or plan reports an optional bundle as a migration target.
+    contingency: Abort and revert the tool change; do not mutate the local config.
+    status: active
+  - id: RISK-0027-002
+    description: The checked-in canonical profile could drift after plan generation and before apply.
+    likelihood: low
+    impact: high
+    owner: repository-hygiene
+    mitigation: Hash and re-read the bounded unified-suite profile immediately before the atomic config replacement.
+    trigger: The profile digest changes during an apply.
+    contingency: Abort before the config replacement and require a fresh plan.
+    status: active
+  - id: RISK-0027-003
+    description: Codex may retain old cards visually until refresh even after config convergence.
+    likelihood: medium
+    impact: medium
+    owner: documentation
+    mitigation: Keep cache directories untouched and require manual UI evidence rather than inferring a visual result.
+    trigger: A removed direct record remains visible after the first refresh.
+    contingency: Open a separate cache-behavior investigation without widening this migration action.
+    status: active
+  - id: RISK-0027-004
+    description: A compact default could be misread as removing public capability coverage.
+    likelihood: medium
+    impact: medium
+    owner: lead-architect
+    mitigation: Keep the 34-card marketplace and 380 retained source capability checks unchanged; change only local active configuration records.
+    trigger: Any validator reports a card, bundle, or source coverage regression.
+    contingency: Restore the config backup and revert the focused repository commit.
+    status: active
+
+rollback:
+  strategy: restore-approved-backup
+  steps:
+    - use the backup filename emitted by the approved canonical-default apply
+    - run the constrained --apply --restore command against the same local config
+    - refresh Codex and verify the prior public-record state manually
+    - retain source directories, caches, marketplace cards, and bundle metadata throughout rollback
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: plugins/seis-canonical-public-default
+  suggested_commit: "feat(plugins): converge on canonical public default"
+
+observability:
+  metrics:
+    - canonical_public_direct_source_record_count
+    - canonical_public_optional_bundle_record_count
+    - canonical_public_unmanaged_record_count
+    - canonical_public_plan_success
+    - canonical_public_apply_success
+    - canonical_public_restore_success
+  logs: []
+
+outputs:
+  - canonical-default plan and explicit apply action
+  - unified-suite-derived target boundary
+  - optional-bundle preservation validation
+  - backup-backed rollback path
+  - public-safe user documentation
+
+notes:
+  - This goal makes active local configuration match the existing one-canonical-default distribution model; it does not reduce retained source capabilities or marketplace discoverability.
+  - The ten-year strategic cadence and foreground supervised Auto Mode remain separate from this explicit local configuration change.
+  - A current approved local apply removed only the direct public source records that the verified unified suite already embeds in SEIS-Agent; the canonical record remained enabled and no optional bundle record was present to change.
+  - Codex UI refresh evidence remains a manual review gate and is not claimed by this repository record.

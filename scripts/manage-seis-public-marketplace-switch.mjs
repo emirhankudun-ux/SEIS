@@ -5,13 +5,18 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 const TOOL_ID = "seis-public-marketplace-switch";
 const CANONICAL_PUBLIC_PLUGIN_ID = "seis-ai-agent@seis-repo";
 const DEFAULT_CONFIG_PATH = path.join(os.homedir(), ".codex", "config.toml");
 const PERSONAL_SEIS_PLUGIN_PATTERN = /^seis(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?@personal$/;
 const PUBLIC_SEIS_PLUGIN_PATTERN = /^seis(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?@seis-repo$/;
+const OPTIONAL_BUNDLE_INSTALL_PATTERN = /^seis-(?:application|topic)-bundle-\d{2}@seis-repo$/;
+const EMBEDDED_MODULE_NAME_PATTERN = /^seis(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?$/;
 const MAX_CONFIG_BYTES = 4 * 1024 * 1024;
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const unifiedSuitePath = path.join(repoRoot, "plugins", "seis-ai-agent", "assets", "unified-suite.json");
 
 const args = parseArguments(process.argv.slice(2));
 
@@ -35,13 +40,16 @@ function runSwitch({ args, configPath }) {
   assertCanonicalPublicPlugin(inspection);
 
   const action = args.action || "remove-personal";
-  const before = summarizeInspection(inspection);
-  const plannedChangeCount = changeCountFor(action, inspection);
+  const canonicalDefaultProfile = action === "canonicalize-public" ? readCanonicalDefaultProfile() : null;
+  const targetRecords = targetRecordsFor(action, inspection, canonicalDefaultProfile);
+  const before = summarizeInspection(inspection, canonicalDefaultProfile);
+  const plannedChangeCount = changeCountFor(action, targetRecords);
   const baseReport = createReport({
     mode: args.apply ? "apply" : "plan",
     action,
     configPath,
     before,
+    canonicalDefaultProfile: describeCanonicalDefaultProfile(inspection, canonicalDefaultProfile),
     plannedChangeCount,
     canonicalEnabled: true,
   });
@@ -53,7 +61,7 @@ function runSwitch({ args, configPath }) {
       writesPerformed: false,
       backupCreated: false,
       nextAction: plannedChangeCount === 0
-        ? "No personal SEIS plugin record needs a change. Refresh Codex only if its UI is stale."
+        ? noChangeMessage(action)
         : `Review the plan, then run: node scripts/manage-seis-public-marketplace-switch.mjs --apply --${action}`,
     });
     return;
@@ -65,12 +73,12 @@ function runSwitch({ args, configPath }) {
       status: "already-public-only",
       writesPerformed: false,
       backupCreated: false,
-      nextAction: "No configuration was changed. The canonical public SEIS-Agent remains enabled.",
+      nextAction: noChangeMessage(action),
     });
     return;
   }
 
-  const transformedText = transformConfig({ action, inspection });
+  const transformedText = transformConfig({ action, inspection, targetRecords });
   if (transformedText === original.text) {
     fail("a requested migration reported changes but produced no configuration diff");
   }
@@ -78,11 +86,12 @@ function runSwitch({ args, configPath }) {
   const backupPath = createBackup(configPath, original);
   try {
     assertUnchangedSinceRead(configPath, original);
+    assertCanonicalDefaultProfileUnchanged(canonicalDefaultProfile);
     writeAtomicFile(configPath, transformedText, original.mode);
     const after = readRegularText(configPath);
     const afterInspection = inspectPluginConfig(after.text);
     assertCanonicalPublicPlugin(afterInspection);
-    assertActionPostcondition(action, afterInspection);
+    assertActionPostcondition(action, afterInspection, canonicalDefaultProfile);
 
     printJson({
       ...baseReport,
@@ -90,8 +99,11 @@ function runSwitch({ args, configPath }) {
       writesPerformed: true,
       backupCreated: true,
       backupFileName: path.basename(backupPath),
-      after: summarizeInspection(afterInspection),
-      nextAction: "Restart or refresh Codex and verify that the SEIS cards are labeled seis-repo. Source folders and caches were not removed.",
+      after: summarizeInspection(afterInspection, canonicalDefaultProfile),
+      canonicalDefaultProfile: describeCanonicalDefaultProfile(afterInspection, canonicalDefaultProfile),
+      nextAction: action === "canonicalize-public"
+        ? "Restart or refresh Codex and verify the one canonical SEIS-Agent default. Optional bundle records, source folders, and caches were not removed."
+        : "Restart or refresh Codex and verify that the SEIS cards are labeled seis-repo. Source folders and caches were not removed.",
     });
   } catch (error) {
     let rollbackError = null;
@@ -171,6 +183,9 @@ function parseArguments(argv) {
       case "--disable-personal":
         setAction(result, "disable-personal");
         break;
+      case "--canonicalize-public":
+        setAction(result, "canonicalize-public");
+        break;
       case "--config":
         result.configPath = requireValue(argv, index, argument);
         index += 1;
@@ -187,9 +202,9 @@ function parseArguments(argv) {
   if (result.help) return result;
   if (result.apply && result.plan) fail("--plan and --apply cannot be combined");
   if (result.restorePath && !result.apply) fail("--restore requires --apply");
-  if (result.restorePath && result.action) fail("--restore cannot be combined with a personal-plugin action");
+  if (result.restorePath && result.action) fail("--restore cannot be combined with a migration action");
   if (result.apply && !result.restorePath && !result.action) {
-    fail("--apply requires exactly one of --remove-personal or --disable-personal");
+    fail("--apply requires exactly one of --remove-personal, --disable-personal, or --canonicalize-public");
   }
   return result;
 }
@@ -338,10 +353,10 @@ function assertCanonicalPublicPlugin(inspection) {
   }
 }
 
-function summarizeInspection(inspection) {
+function summarizeInspection(inspection, canonicalDefaultProfile = null) {
   const personalEnabled = inspection.personalSeisPluginRecords.filter((record) => record.enabledLines[0].value).length;
   const publicEnabled = inspection.publicSeisPluginRecords.filter((record) => record.enabledLines[0].value).length;
-  return {
+  const summary = {
     canonicalPublicPluginId: CANONICAL_PUBLIC_PLUGIN_ID,
     canonicalPublicPluginEnabled: inspection.canonicalRecord.enabledLines[0].value,
     personalSeisPluginEnabledCount: personalEnabled,
@@ -349,25 +364,38 @@ function summarizeInspection(inspection) {
     seisRepoPluginEnabledCount: publicEnabled,
     seisRepoPluginRecordCount: inspection.publicSeisPluginRecords.length,
   };
+  if (canonicalDefaultProfile) {
+    summary.embeddedPublicSourceRecordCount = targetRecordsFor("canonicalize-public", inspection, canonicalDefaultProfile).length;
+  }
+  return summary;
 }
 
-function changeCountFor(action, inspection) {
-  if (action === "remove-personal") return inspection.personalSeisPluginRecords.length;
-  if (action === "disable-personal") {
-    return inspection.personalSeisPluginRecords.filter((record) => record.enabledLines[0].value).length;
+function targetRecordsFor(action, inspection, canonicalDefaultProfile = null) {
+  if (action === "remove-personal" || action === "disable-personal") return inspection.personalSeisPluginRecords;
+  if (action === "canonicalize-public") {
+    if (!canonicalDefaultProfile) fail("canonical public profile is unavailable");
+    return inspection.publicSeisPluginRecords.filter((record) => canonicalDefaultProfile.embeddedPublicInstallIds.has(record.id));
   }
   fail(`unsupported migration action: ${action}`);
 }
 
-function transformConfig({ action, inspection }) {
-  if (action === "remove-personal") return removePersonalSections(inspection);
+function changeCountFor(action, targetRecords) {
+  if (action === "remove-personal" || action === "canonicalize-public") return targetRecords.length;
+  if (action === "disable-personal") {
+    return targetRecords.filter((record) => record.enabledLines[0].value).length;
+  }
+  fail(`unsupported migration action: ${action}`);
+}
+
+function transformConfig({ action, inspection, targetRecords }) {
+  if (action === "remove-personal" || action === "canonicalize-public") return removeSections(inspection, targetRecords);
   if (action === "disable-personal") return disablePersonalSections(inspection);
   fail(`unsupported migration action: ${action}`);
 }
 
-function removePersonalSections(inspection) {
+function removeSections(inspection, records) {
   const removeLines = new Set();
-  for (const record of inspection.personalSeisPluginRecords) {
+  for (const record of records) {
     for (let index = record.start; index < record.end; index += 1) removeLines.add(index);
   }
   return joinTomlDocument(inspection, inspection.lines.filter((_line, index) => !removeLines.has(index)));
@@ -391,13 +419,109 @@ function joinTomlDocument(document, lines) {
   return document.hasTerminalNewline ? `${body}${document.newline}` : body;
 }
 
-function assertActionPostcondition(action, inspection) {
+function assertActionPostcondition(action, inspection, canonicalDefaultProfile = null) {
   if (action === "remove-personal" && inspection.personalSeisPluginRecords.length !== 0) {
     fail("personal SEIS plugin tables remain after removal");
   }
   if (action === "disable-personal" && inspection.personalSeisPluginRecords.some((record) => record.enabledLines[0].value)) {
     fail("an enabled personal SEIS plugin remains after disable mode");
   }
+  if (action === "canonicalize-public" && targetRecordsFor(action, inspection, canonicalDefaultProfile).length !== 0) {
+    fail("embedded direct public SEIS source tables remain after canonicalization");
+  }
+}
+
+function readCanonicalDefaultProfile() {
+  const source = readRepositoryText(unifiedSuitePath);
+  let suite;
+  try {
+    suite = JSON.parse(source.text);
+  } catch (error) {
+    fail(`canonical public profile is not valid JSON: ${error instanceof Error ? error.message : String(error)}`);
+  }
+
+  if (suite?.canonicalInstall?.installId !== CANONICAL_PUBLIC_PLUGIN_ID) {
+    fail("canonical public profile does not declare the expected SEIS-Agent install id");
+  }
+  const modules = suite?.sourceDiscovery?.embeddedModuleNames;
+  if (!Array.isArray(modules) || modules.length < 2) {
+    fail("canonical public profile must declare at least one embedded source module");
+  }
+  const moduleNames = new Set();
+  for (const moduleName of modules) {
+    if (typeof moduleName !== "string" || !EMBEDDED_MODULE_NAME_PATTERN.test(moduleName)) {
+      fail("canonical public profile contains an invalid embedded module name");
+    }
+    if (moduleNames.has(moduleName)) fail("canonical public profile contains a duplicate embedded module name");
+    moduleNames.add(moduleName);
+  }
+  if (!moduleNames.has("seis-ai-agent")) {
+    fail("canonical public profile must embed the SEIS-Agent orchestrator");
+  }
+
+  const embeddedPublicInstallIds = new Set(
+    [...moduleNames]
+      .filter((moduleName) => moduleName !== "seis-ai-agent")
+      .map((moduleName) => `${moduleName}@seis-repo`),
+  );
+  if (embeddedPublicInstallIds.size === 0) {
+    fail("canonical public profile contains no removable embedded public source records");
+  }
+
+  return {
+    embeddedModuleCount: moduleNames.size,
+    embeddedPublicInstallIds,
+    sourceDigest: source.digest,
+  };
+}
+
+function readRepositoryText(filePath) {
+  try {
+    const relative = path.relative(repoRoot, filePath);
+    if (relative.startsWith(`..${path.sep}`) || relative === ".." || path.isAbsolute(relative)) {
+      fail("canonical public profile must remain inside the repository root");
+    }
+    const status = fs.lstatSync(filePath);
+    if (!status.isFile() || status.isSymbolicLink() || status.size > MAX_CONFIG_BYTES) {
+      fail("canonical public profile must be a bounded regular repository file");
+    }
+    const text = fs.readFileSync(filePath, "utf8");
+    return { digest: digest(text), text };
+  } catch (error) {
+    if (error instanceof Error && error.message.startsWith("SEIS public marketplace switch:")) throw error;
+    fail(`could not safely read canonical public profile: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+function assertCanonicalDefaultProfileUnchanged(profile) {
+  if (!profile) return;
+  const current = readRepositoryText(unifiedSuitePath);
+  if (current.digest !== profile.sourceDigest) {
+    fail("canonical public profile changed after inspection; refusing to apply a stale migration plan");
+  }
+}
+
+function describeCanonicalDefaultProfile(inspection, profile) {
+  if (!profile) return null;
+  const embeddedSourceRecords = targetRecordsFor("canonicalize-public", inspection, profile);
+  const otherPublicRecords = inspection.publicSeisPluginRecords.filter((record) => (
+    record.id !== CANONICAL_PUBLIC_PLUGIN_ID && !profile.embeddedPublicInstallIds.has(record.id)
+  ));
+  return {
+    canonicalDefaultInstallId: CANONICAL_PUBLIC_PLUGIN_ID,
+    embeddedModuleCount: profile.embeddedModuleCount,
+    embeddedDirectPublicRecordCount: embeddedSourceRecords.length,
+    preservedOptionalBundleRecordCount: otherPublicRecords.filter((record) => OPTIONAL_BUNDLE_INSTALL_PATTERN.test(record.id)).length,
+    unmanagedPublicRecordCount: otherPublicRecords.filter((record) => !OPTIONAL_BUNDLE_INSTALL_PATTERN.test(record.id)).length,
+    optionalBundlesPreserved: true,
+  };
+}
+
+function noChangeMessage(action) {
+  if (action === "canonicalize-public") {
+    return "No embedded direct public SEIS source record needs a change. The canonical SEIS-Agent default remains enabled and optional bundles remain untouched.";
+  }
+  return "No personal SEIS plugin record needs a change. Refresh Codex only if its UI is stale.";
 }
 
 function createBackup(configPath, original) {
@@ -459,7 +583,7 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function createReport({ mode, action, configPath, before, plannedChangeCount, canonicalEnabled }) {
+function createReport({ mode, action, configPath, before, canonicalDefaultProfile, plannedChangeCount, canonicalEnabled }) {
   return {
     schemaVersion: 1,
     id: TOOL_ID,
@@ -467,6 +591,7 @@ function createReport({ mode, action, configPath, before, plannedChangeCount, ca
     action,
     config: describeConfigTarget(configPath),
     before,
+    canonicalDefaultProfile,
     plannedChangeCount,
     publicBoundary: {
       canonicalPublicPluginId: CANONICAL_PUBLIC_PLUGIN_ID,
@@ -475,6 +600,7 @@ function createReport({ mode, action, configPath, before, plannedChangeCount, ca
       sourceDirectoriesRemoved: false,
       cacheDirectoriesRemoved: false,
       otherPluginRecordsModified: false,
+      optionalBundleRecordsModified: false,
     },
   };
 }
@@ -494,14 +620,16 @@ function digest(text) {
 function printHelp() {
   console.log([
     "Usage:",
-    "  node scripts/manage-seis-public-marketplace-switch.mjs --plan [--remove-personal|--disable-personal]",
+    "  node scripts/manage-seis-public-marketplace-switch.mjs --plan [--remove-personal|--disable-personal|--canonicalize-public]",
     "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --remove-personal",
     "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --disable-personal",
+    "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --canonicalize-public",
     "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --restore <approved-backup>",
     "",
     "Plan is read-only. Apply only accepts the default Codex config or a temporary test fixture.",
     "Remove deletes only seis...@personal configuration tables after a verified backup; it does not delete plugin source or cache directories.",
     "Disable retains those tables but changes their enabled flag to false.",
+    "Canonicalize removes only direct seis-repo source records already embedded in SEIS-Agent; curated optional bundle records are preserved.",
   ].join("\n"));
 }
 

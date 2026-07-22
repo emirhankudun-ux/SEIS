@@ -91,6 +91,45 @@ test("disable mode preserves personal tables but turns off only their enabled fl
   }
 });
 
+test("canonical public mode retains SEIS-Agent and optional bundles while removing embedded direct source records", () => {
+  const fixture = makeFixture({ includeOptionalBundle: true, includeSecondLegacyPublicSource: true });
+  const original = fs.readFileSync(fixture.configPath, "utf8");
+  try {
+    const plan = run(["--plan", "--canonicalize-public", "--config", fixture.configPath]);
+    assert.equal(plan.status, 0, plan.stderr || plan.stdout);
+    const planReport = parseReport(plan);
+    assert.equal(planReport.mode, "plan");
+    assert.equal(planReport.action, "canonicalize-public");
+    assert.equal(planReport.plannedChangeCount, 2);
+    assert.equal(planReport.before.seisRepoPluginRecordCount, 4);
+    assert.equal(planReport.before.embeddedPublicSourceRecordCount, 2);
+    assert.equal(planReport.canonicalDefaultProfile.canonicalDefaultInstallId, "seis-ai-agent@seis-repo");
+    assert.equal(planReport.canonicalDefaultProfile.embeddedDirectPublicRecordCount, 2);
+    assert.equal(planReport.canonicalDefaultProfile.preservedOptionalBundleRecordCount, 1);
+    assert.equal(planReport.canonicalDefaultProfile.unmanagedPublicRecordCount, 0);
+    assert.equal(planReport.canonicalDefaultProfile.optionalBundlesPreserved, true);
+    assert.equal(fs.readFileSync(fixture.configPath, "utf8"), original);
+
+    const apply = run(["--apply", "--canonicalize-public", "--config", fixture.configPath]);
+    assert.equal(apply.status, 0, apply.stderr || apply.stdout);
+    const report = parseReport(apply);
+    assert.equal(report.status, "applied");
+    assert.equal(report.after.seisRepoPluginRecordCount, 2);
+    assert.equal(report.after.embeddedPublicSourceRecordCount, 0);
+    assert.equal(report.canonicalDefaultProfile.preservedOptionalBundleRecordCount, 1);
+
+    const changed = fs.readFileSync(fixture.configPath, "utf8");
+    assert.doesNotMatch(changed, /\[plugins\."seis-cloud@seis-repo"\]/);
+    assert.doesNotMatch(changed, /\[plugins\."seis-design@seis-repo"\]/);
+    assert.match(changed, /\[plugins\."seis-ai-agent@seis-repo"\]/);
+    assert.match(changed, /\[plugins\."seis-application-bundle-01@seis-repo"\]/);
+    assert.match(changed, /\[plugins\."seis@personal"\]/);
+    assert.equal(fs.readFileSync(path.join(path.dirname(fixture.configPath), report.backupFileName), "utf8"), original);
+  } finally {
+    cleanup(fixture.root);
+  }
+});
+
 test("restore accepts only a verified tool backup in the same config directory", () => {
   const fixture = makeFixture();
   const original = fs.readFileSync(fixture.configPath, "utf8");
@@ -137,14 +176,22 @@ test("the tool fails closed when the public canonical record is unavailable, dis
 test("source contains no network, shell, automatic install, or broad filesystem deletion path", () => {
   const source = fs.readFileSync(runner, "utf8");
   assert.match(source, /--apply requires exactly one/);
+  assert.match(source, /--canonicalize-public/);
   assert.match(source, /canonical public SEIS-Agent must be enabled/);
   assert.match(source, /Automatic rollback restored the original configuration/);
   assert.match(source, /sourceDirectoriesRemoved: false/);
   assert.match(source, /cacheDirectoriesRemoved: false/);
+  assert.match(source, /optionalBundleRecordsModified: false/);
   assert.doesNotMatch(source, /https?:\/\/|fetch\s*\(|spawnSync|execSync|execFileSync|git\s+push|rm\s+-rf|child_process/);
 });
 
-function makeFixture({ includeCanonical = true, canonicalEnabled = true, duplicateCanonicalEnabledField = false } = {}) {
+function makeFixture({
+  includeCanonical = true,
+  canonicalEnabled = true,
+  duplicateCanonicalEnabledField = false,
+  includeOptionalBundle = false,
+  includeSecondLegacyPublicSource = false,
+} = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "seis-public-marketplace-cleanup-"));
   const configPath = path.join(root, "config.toml");
   const lines = [
@@ -163,6 +210,22 @@ function makeFixture({ includeCanonical = true, canonicalEnabled = true, duplica
     '[plugins."seis-cloud@seis-repo"]',
     "enabled = true",
     "",
+  );
+  if (includeSecondLegacyPublicSource) {
+    lines.push(
+      '[plugins."seis-design@seis-repo"]',
+      "enabled = true",
+      "",
+    );
+  }
+  if (includeOptionalBundle) {
+    lines.push(
+      '[plugins."seis-application-bundle-01@seis-repo"]',
+      "enabled = true",
+      "",
+    );
+  }
+  lines.push(
     '[plugins."seis@personal"]',
     "enabled = true",
     "",
