@@ -17,6 +17,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const familyPath = path.join(repositoryRoot, "content/development/seis-public-plugin-family.json");
 const catalogPath = path.join(repositoryRoot, "content/development/seis-public-plugin-bundle-catalog.json");
 const marketplacePath = path.join(repositoryRoot, ".agents/plugins/marketplace.json");
+const unifiedSuitePath = path.join(repositoryRoot, "plugins/seis-ai-agent/assets/unified-suite.json");
 const bundleRoot = path.join(repositoryRoot, "plugins/seis-bundles/seis-application-bundle-01");
 const runtimePath = path.join(bundleRoot, "scripts/seis-bundle-mcp-server.mjs");
 
@@ -66,6 +67,48 @@ test("rejects a source capability duplicated across application and topic famili
     () => buildSeisPublicBundlePlan({ applicationPlugins, topicPlugins }),
     /combined application and topic source coverage is not exact-once/i,
   );
+});
+
+test("retained sources resolve through real cards and reject self-named install ids", () => {
+  const family = readJson(familyPath);
+  const unifiedSuite = readJson(unifiedSuitePath);
+  const plan = buildSeisPublicBundlePlan({
+    applicationPlugins: family.applicationPlugins,
+    topicPlugins: family.topicPlugins,
+  });
+  const bundleIdByMember = new Map(
+    plan.bundles.flatMap((bundle) => bundle.members.map((member) => [member.name, bundle.id])),
+  );
+
+  assert.equal(family.migratedRootPlugins.length, 5);
+  assert.equal(family.applicationPlugins.length, 75);
+  assert.equal(family.topicPlugins.length, 300);
+  for (const source of family.migratedRootPlugins) {
+    assert.equal(source.installId, "seis-ai-agent@seis-repo", `${source.name}: canonical root resolution`);
+    assert.notEqual(source.installId, `${source.name}@seis-repo`, `${source.name}: no self-named install`);
+    assert.equal(source.marketplaceDiscoverable, true);
+    assert.equal(source.marketplaceCard, false);
+    assert.equal(source.marketplaceBundleId, null);
+  }
+
+  for (const source of [...family.applicationPlugins, ...family.topicPlugins]) {
+    const expectedBundleId = bundleIdByMember.get(source.name);
+    assert.ok(expectedBundleId, `${source.name}: exact bundle membership`);
+    assert.equal(source.marketplaceBundleId, expectedBundleId, `${source.name}: exact bundle id`);
+    assert.equal(source.installId, `${expectedBundleId}@seis-repo`, `${source.name}: exact bundle install`);
+    assert.notEqual(source.installId, `${source.name}@seis-repo`, `${source.name}: no self-named install`);
+    assert.equal(source.marketplaceDiscoverable, true);
+    assert.equal(source.marketplaceCard, false);
+  }
+
+  for (const source of unifiedSuite.applicationDistribution.plugins) {
+    const expectedBundleId = bundleIdByMember.get(source.moduleId);
+    assert.equal(source.marketplaceBundleId, expectedBundleId, `${source.moduleId}: suite bundle id`);
+    assert.equal(source.canonicalInstallId, `${expectedBundleId}@seis-repo`, `${source.moduleId}: suite bundle install`);
+    assert.notEqual(source.canonicalInstallId, `${source.moduleId}@seis-repo`, `${source.moduleId}: suite no self-named install`);
+    assert.equal(source.marketplaceDiscoverable, true);
+    assert.equal(source.marketplaceCard, false);
+  }
 });
 
 test("closed-world bundle tree validation rejects undeclared files", (context) => {

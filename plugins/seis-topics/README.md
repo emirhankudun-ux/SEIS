@@ -2,7 +2,7 @@
 
 The SEIS repository retains 300 objective-derived topic source packages and exposes them through 27 bounded optional cards in the `seis-repo` marketplace.
 
-These packages are public, MIT-licensed, available to everyone, and implemented as local read-only demo lanes. The canonical SEIS-Agent remains the default orchestration install; each topic source maps to exactly one optional bundle and is not a separate card.
+These packages are public, MIT-licensed, available to everyone, and implemented as local read-only demo lanes. The canonical SEIS-Agent remains the default orchestration install; each topic source uses its exact optional bundle install identity and is not a separate card.
 
 ## Source of truth
 

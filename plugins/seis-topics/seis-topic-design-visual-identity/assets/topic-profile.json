@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-design-visual-identity",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-design-visual-identity@seis-repo",
+  "installId": "seis-topic-bundle-15@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

@@ -70,6 +70,7 @@ const independentRunnerEvidenceContractPath = path.join(root, "content", "develo
 const independentRunnerEvidenceContractReportPath = path.join(root, "reports", "seis-public-plugin-independent-runner-evidence-contract.md");
 const unifiedSuiteScriptPath = path.join(root, "scripts", "create-seis-unified-plugin-suite.mjs");
 const unifiedSuitePath = path.join(root, "plugins", "seis-ai-agent", "assets", "unified-suite.json");
+const publicBundleCatalogPath = path.join(root, "content", "development", "seis-public-plugin-bundle-catalog.json");
 const webIndexPath = path.join(root, "apps", "seis-demo-web", "index.html");
 const webScriptPath = path.join(root, "apps", "seis-demo-web", "script.js");
 const desktopScriptPath = path.join(root, "apps", "web", "desktop.js");
@@ -174,6 +175,7 @@ for (const [filePath, label] of [
   [independentRunnerEvidenceContractReportPath, "SEIS independent runner evidence contract report"],
   [unifiedSuiteScriptPath, "SEIS unified plugin suite generator"],
   [unifiedSuitePath, "SEIS unified plugin suite"],
+  [publicBundleCatalogPath, "SEIS public plugin bundle catalog"],
   [lifecyclePath, "SEIS public plugin lifecycle contract"],
   [lifecycleReportPath, "SEIS public plugin lifecycle report"],
   [freshTaskProofPath, "SEIS public plugin fresh-task proof contract"],
@@ -207,6 +209,12 @@ const appPluginCatalog = readJson(appPluginCatalogPath, "SEIS Command Center app
 const appPluginReadiness = readJson(appPluginReadinessPath, "SEIS Command Center app plugin release readiness");
 const releaseTrain = readJson(releaseTrainPath, "SEIS Command Center app plugin release train");
 const unifiedSuite = readJson(unifiedSuitePath, "SEIS unified plugin suite");
+const publicBundleCatalog = readJson(publicBundleCatalogPath, "SEIS public plugin bundle catalog");
+const applicationBundleByMember = new Map(
+  (publicBundleCatalog?.bundles || [])
+    .filter((bundle) => bundle?.family === "application")
+    .flatMap((bundle) => (bundle?.memberNames || []).map((memberName) => [memberName, bundle.id])),
+);
 const appRelease = releaseTrain?.currentRelease || {};
 const appReleaseLabel = appRelease.label || null;
 const appReleaseSemver = appRelease.semver || null;
@@ -620,7 +628,17 @@ if (manifest) {
   ensure(unifiedSuite?.sourceDiscovery?.applicationPattern === "plugins/seis-core/*/.codex-plugin/plugin.json", "unified suite must define app-owned source discovery");
   ensure(unifiedSuite?.sourceDiscovery?.discoveredApplicationPluginNames?.length === APP_PLUGIN_EXPANSION_TARGET, "unified suite app discovery count is stale");
   ensure(unifiedSuite?.sourceDiscovery?.uncoveredApplicationSourcePlugins?.length === 0, "unified suite must not leave app-owned sources uncovered");
-  ensure(suiteAppPlugins.every((plugin) => plugin.publicMarketplace === false && typeof plugin.marketplaceBundleId === "string" && plugin.marketplaceBundleId.startsWith("seis-application-bundle-") && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === `${plugin.moduleId}@seis-repo` && plugin.sourcePath.startsWith("plugins/seis-core/")), "unified suite app modules must remain retained app-owned sources mapped to curated bundles");
+  ensure(suiteAppPlugins.every((plugin) => {
+    const expectedBundleId = applicationBundleByMember.get(plugin.moduleId);
+    return plugin.publicMarketplace === false
+      && plugin.marketplaceDiscoverable === true
+      && plugin.marketplaceCard === false
+      && plugin.marketplaceBundleId === expectedBundleId
+      && plugin.canonicalApplicationId === "seis-core"
+      && plugin.canonicalInstallId === `${expectedBundleId}@seis-repo`
+      && plugin.canonicalInstallId !== `${plugin.moduleId}@seis-repo`
+      && plugin.sourcePath.startsWith("plugins/seis-core/");
+  }), "unified suite app modules must resolve through exact curated bundle install ids without self-named marketplace installs");
   ensure(packageJson.scripts?.["check:seis-core-plugin-catalog"] === "node scripts/create-seis-core-plugin-catalog.mjs --check", "package scripts must expose the app plugin catalog check");
   ensure(packageJson.scripts?.["check:seis-core-requested-plugin-coverage"] === "node scripts/check-seis-core-requested-plugin-coverage.mjs", "package scripts must expose requested plugin coverage");
   ensure(packageJson.scripts?.["seis:core:plugins"] === "node plugins/seis-core/bin/seis-core-plugins.mjs", "package scripts must expose the app plugin CLI");

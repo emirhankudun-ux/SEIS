@@ -9,6 +9,8 @@
   "generatedAt": "2026-07-21",
   "purpose": "Authorize only a bounded, public SEIS Repo implementation of the static Swift Package topology capability after Wave 3 closed. This decision creates no package source or marketplace card by itself and does not authorize any external, personal, release, SwiftPM, compiler, runtime, provider, deployment, or secret-bearing action.",
   "stateAtDecision": {
+    "current": false,
+    "immutableHistoricalEvidence": true,
     "wave3Completed": true,
     "wave4PreviouslyActivated": false,
     "candidatePackageExisted": false,
@@ -16,6 +18,43 @@
     "applicationPluginCountBeforeActivation": 73,
     "publicCardCountBeforeActivation": 379
   },
+  "currentMarketplaceProjection": {
+    "current": true,
+    "projectionModel": "curated-bundle-cards",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCapabilityCardCount": 0
+  },
+  "historicalDirectCardSnapshots": [
+    {
+      "wave": 3,
+      "current": false,
+      "applicationPluginCount": 73,
+      "publicCardCount": 379,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    },
+    {
+      "wave": 4,
+      "current": false,
+      "applicationPluginCount": 74,
+      "publicCardCount": 380,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    },
+    {
+      "wave": 5,
+      "current": false,
+      "applicationPluginCount": 75,
+      "publicCardCount": 381,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    }
+  ],
   "decision": {
     "selectedCapability": "seis-swift-package-topology",
     "activationApproved": true,
@@ -109,7 +148,7 @@
     "dataMigrationRequired": false
   },
   "inputSafetyScan": {
-    "inputCount": 6,
+    "inputCount": 7,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

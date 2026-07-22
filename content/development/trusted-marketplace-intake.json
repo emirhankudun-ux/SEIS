@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "id": "seis-trusted-marketplace-intake",
   "mode": "curated-marketplace-readiness",
   "branch": "UIXAppTTR",
@@ -10,11 +10,30 @@
     "name": "seis-trusted-marketplace",
     "marketplaceName": "seis-repo",
     "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
+    "publicRepositoryAvailable": true,
+    "marketplaceDiscoverable": true,
+    "marketplaceCard": false,
+    "marketplacePresentation": "retained-source-through-bundle-card",
+    "distributionBundleId": "seis-application-bundle-06",
+    "distributionBundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+    "distributionInstallId": "seis-application-bundle-06@seis-repo",
+    "directInstallAvailable": false,
     "activationPolicy": "approval-gated",
     "contract": "content/development/seis-trusted-marketplace-plugin.json"
   },
+  "currentMarketplaceProjection": {
+    "classification": "current-curated-bundle-projection",
+    "current": true,
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCardCount": 0
+  },
   "nonCoderWorkflow": [
-    "Choose the marketplace card or source family that feels useful for SEIS.",
+    "Choose the retained source capability or curated bundle that feels useful for SEIS.",
     "Check the trust posture, visual fit, and user-facing value before technical activation.",
     "Ask engineering automation to run the listed quality command.",
     "Only publish or install live when target, auth, rollback owner, and user approval are explicit."
@@ -199,7 +218,7 @@
   "publishingPath": [
     {
       "phase": "local-marketplace-view",
-      "ownerAction": "Curate cards, categories, descriptions, trust posture, and visual priority.",
+      "ownerAction": "Curate bundle cards, retained sources, categories, descriptions, trust posture, and visual priority.",
       "engineeringGate": "npm run check:trusted-marketplace-intake"
     },
     {

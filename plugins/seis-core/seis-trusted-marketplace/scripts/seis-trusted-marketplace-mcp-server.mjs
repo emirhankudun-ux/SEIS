@@ -55,6 +55,8 @@ function validateTrustedMarketplace() {
   ensure(marketplace.name === "seis-repo", findings, "marketplace-name-invalid");
   ensure(marketplace.interface?.displayName === "SEIS Repo", findings, "marketplace-display-name-invalid");
   ensure(bundleMemberships.length === 1, findings, "trusted-marketplace-bundle-membership-invalid");
+  ensure(distributionBundle?.id === "seis-application-bundle-06", findings, "trusted-marketplace-distribution-bundle-invalid");
+  ensure(distributionBundle?.family === "application", findings, "trusted-marketplace-distribution-family-invalid");
   ensure(!directCard, findings, "trusted-marketplace-direct-source-card-present");
   ensure(Boolean(card), findings, "trusted-marketplace-bundle-card-missing");
   if (card) {
@@ -64,6 +66,13 @@ function validateTrustedMarketplace() {
     ensure(card.policy?.authentication === "ON_INSTALL", findings, "trusted-marketplace-bundle-card-authentication-invalid");
     ensure(card.category === "Developer", findings, "trusted-marketplace-bundle-card-category-invalid");
   }
+  ensure(loaded.contracts.bundleCatalog?.marketplace?.publicCardCount === 34, findings, "marketplace-current-card-count-invalid");
+  ensure(loaded.contracts.bundleCatalog?.marketplace?.canonicalCardCount === 1, findings, "marketplace-canonical-card-count-invalid");
+  ensure(loaded.contracts.bundleCatalog?.marketplace?.bundleCardCount === 33, findings, "marketplace-bundle-card-count-invalid");
+  ensure(loaded.contracts.bundleCatalog?.marketplace?.applicationBundleCardCount === 6, findings, "marketplace-application-bundle-count-invalid");
+  ensure(loaded.contracts.bundleCatalog?.marketplace?.topicBundleCardCount === 27, findings, "marketplace-topic-bundle-count-invalid");
+  ensure(loaded.contracts.bundleCatalog?.sourceCapabilityInventory?.retainedSourcePackageCount === 380, findings, "marketplace-retained-source-count-invalid");
+  ensure(safeArray(marketplace.plugins).length === 34, findings, "marketplace-live-card-count-invalid");
 
   ensure(intake.id === "seis-trusted-marketplace-intake", findings, "intake-id-invalid");
   ensure(intake.mode === "curated-marketplace-readiness", findings, "intake-mode-invalid");
@@ -75,6 +84,11 @@ function validateTrustedMarketplace() {
   ensure(publicPlugin.name === "seis-trusted-marketplace", findings, "intake-public-plugin-name-invalid");
   ensure(publicPlugin.marketplaceName === "seis-repo", findings, "intake-public-plugin-marketplace-invalid");
   ensure(publicPlugin.sourcePath === "plugins/seis-core/seis-trusted-marketplace", findings, "intake-public-plugin-source-invalid");
+  ensure(publicPlugin.marketplaceCard === false, findings, "intake-public-plugin-direct-card-invalid");
+  ensure(publicPlugin.marketplacePresentation === "retained-source-through-bundle-card", findings, "intake-public-plugin-presentation-invalid");
+  ensure(publicPlugin.distributionBundleId === "seis-application-bundle-06", findings, "intake-public-plugin-bundle-invalid");
+  ensure(publicPlugin.distributionInstallId === "seis-application-bundle-06@seis-repo", findings, "intake-public-plugin-install-invalid");
+  ensure(publicPlugin.directInstallAvailable === false, findings, "intake-public-plugin-direct-install-invalid");
   ensure(publicPlugin.activationPolicy === "approval-gated", findings, "intake-public-plugin-activation-policy-invalid");
   ensure(catalog.marketplaceIntake === "content/development/trusted-marketplace-intake.json", findings, "catalog-intake-link-invalid");
 
@@ -85,6 +99,10 @@ function validateTrustedMarketplace() {
   ensure(bridge.plugin?.sourcePath === "plugins/seis-core/seis-trusted-marketplace", findings, "bridge-source-path-invalid");
   ensure(bridge.plugin?.publicAudience === "everyone", findings, "bridge-audience-invalid");
   ensure(bridge.plugin?.publicMarketplace === true, findings, "bridge-public-marketplace-invalid");
+  ensure(bridge.plugin?.marketplaceCard === false, findings, "bridge-direct-card-invalid");
+  ensure(bridge.plugin?.marketplacePresentation === "retained-source-through-bundle-card", findings, "bridge-presentation-invalid");
+  ensure(bridge.plugin?.distributionBundleId === "seis-application-bundle-06", findings, "bridge-bundle-invalid");
+  ensure(bridge.plugin?.directInstallAvailable === false, findings, "bridge-direct-install-invalid");
   ensure(bridge.pluginRepository?.mode === "public-repository-app-owned", findings, "bridge-repository-mode-invalid");
   ensure(bridge.pluginRepository?.canonicalRepository === "SEIS", findings, "bridge-canonical-repository-invalid");
   ensure(bridge.activationBoundary?.externalActivation === "approval-required", findings, "bridge-external-activation-boundary-invalid");
@@ -98,7 +116,8 @@ function validateTrustedMarketplace() {
     mode: "public-seis-repo-trusted-marketplace-read-only",
     marketplaceName: marketplace.name === "seis-repo" ? "seis-repo" : null,
     marketplaceDisplayName: marketplace.interface?.displayName === "SEIS Repo" ? "SEIS Repo" : null,
-    cardPresent: Boolean(card),
+    marketplaceCard: Boolean(directCard),
+    distributionBundleCardPresent: Boolean(card),
     directCardPresent: Boolean(directCard),
     distributionBundleId: distributionBundle?.id || null,
     distributionBundleMembershipCount: bundleMemberships.length,
@@ -196,7 +215,9 @@ function compactReport(report) {
     available: report.ok,
     marketplaceName: report.marketplaceName || null,
     marketplaceDisplayName: report.marketplaceDisplayName || null,
-    cardPresent: report.cardPresent ?? false,
+    marketplaceCard: report.marketplaceCard ?? false,
+    distributionBundleCardPresent: report.distributionBundleCardPresent ?? false,
+    distributionBundleId: report.distributionBundleId || null,
     channelCount: report.channelCount ?? null,
     trustedSourceCount: report.trustedSourceCount ?? null,
     errorCount: report.errorCount ?? null
@@ -222,7 +243,7 @@ function permissionBoundary() {
   return {
     read: [
       "bounded public SEIS marketplace intake contracts",
-      "declared public marketplace card metadata"
+      "declared public marketplace bundle metadata"
     ],
     write: [],
     network: [],

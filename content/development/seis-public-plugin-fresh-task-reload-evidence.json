@@ -1,17 +1,37 @@
 {
   "id": "seis-public-plugin-fresh-task-reload-evidence",
   "version": 1,
-  "generatedAt": "2026-07-12",
-  "status": "incomplete-local-fresh-task-evidence",
+  "generatedAt": "2026-07-22",
+  "status": "recorded-local-fresh-task-evidence",
   "decision": "not-ready-for-public-preview",
   "sourcePath": "content/development/seis-public-plugin-fresh-task-reload-evidence.json",
   "reportPath": "reports/seis-public-plugin-fresh-task-reload-evidence.md",
   "publicReleaseAllowed": false,
   "releaseBoundary": "Fresh-task reload evidence is local proof only; public preview still requires security/provenance review and human approval.",
+  "currentMarketplaceProjection": {
+    "current": true,
+    "projectionModel": "curated-bundle-cards",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCapabilityCardCount": 0
+  },
+  "historicalPreConsolidationMarketplaceProjection": {
+    "current": false,
+    "immutableHistoricalEvidence": true,
+    "projectionModel": "direct-source-cards",
+    "applicationSourceCapabilityCount": 75,
+    "publicCardCount": 381,
+    "retainedSourceCapabilityCount": 380,
+    "status": "historical-direct-card-projection-not-current"
+  },
   "task": {
-    "threadId": "019f6247-ab7c-7920-824a-f259ff9001ff",
+    "threadId": "019f875e-9334-7072-bffa-e43dea0281f8",
     "idSource": "CODEX_THREAD_ID",
-    "observedDate": "2026-07-12",
+    "observedDate": "2026-07-22",
     "freshTaskContinuation": true,
     "note": "Captured from the current Codex task environment."
   },
@@ -139,10 +159,10 @@
             "applicationPluginSourceAvailableInRepository": true,
             "applicationPluginPublicRepositoryAvailable": true,
             "applicationPluginPublicAudience": "everyone",
-            "applicationPluginDistribution": "direct-repository-source",
-            "applicationPluginMarketplaceEntryCount": 75,
+            "applicationPluginDistribution": "curated-bounded-public-bundles",
+            "applicationPluginMarketplaceEntryCount": 6,
             "futurePluginDefaultRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets.",
-            "futureApplicationPluginRule": "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and become available directly from this repository as individual seis-repo marketplace entries without entering packages/seis-ai."
+            "futureApplicationPluginRule": "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and are added to a reviewed bounded public bundle when a marketplace card is justified without entering packages/seis-ai."
           }
         },
         "plugins": [
@@ -176,11 +196,11 @@
     "agentIntegration": {
       "id": "agent-plugin-integration",
       "command": "npm run check:seis-agent-plugin-integration",
-      "ok": false,
-      "exitCode": 1,
+      "ok": true,
+      "exitCode": 0,
       "signal": null,
       "summary": {
-        "passed": false,
+        "passed": true,
         "check": "npm run check:seis-agent-plugin-integration"
       }
     },

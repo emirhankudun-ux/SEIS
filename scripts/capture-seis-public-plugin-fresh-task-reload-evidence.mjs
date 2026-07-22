@@ -8,11 +8,31 @@ import { pluginIntegrationStatus, publicPluginFamilyStatus } from "../packages/s
 
 const root = process.cwd();
 const checkMode = process.argv.includes("--check");
-const generatedAt = "2026-07-12";
+const generatedAt = "2026-07-22";
 const sourcePath = "content/development/seis-public-plugin-fresh-task-reload-evidence.json";
 const reportPath = "reports/seis-public-plugin-fresh-task-reload-evidence.md";
 const securityReviewPath = "content/development/seis-public-plugin-security-provenance-review.json";
 const npmBin = process.platform === "win32" ? "npm.cmd" : "npm";
+const CURRENT_MARKETPLACE = Object.freeze({
+  current: true,
+  projectionModel: "curated-bundle-cards",
+  publicCardCount: 34,
+  canonicalCardCount: 1,
+  bundleCardCount: 33,
+  applicationBundleCardCount: 6,
+  topicBundleCardCount: 27,
+  retainedSourceCapabilityCount: 380,
+  directSourceCapabilityCardCount: 0,
+});
+const HISTORICAL_PRE_CONSOLIDATION = Object.freeze({
+  current: false,
+  immutableHistoricalEvidence: true,
+  projectionModel: "direct-source-cards",
+  applicationSourceCapabilityCount: 75,
+  publicCardCount: 381,
+  retainedSourceCapabilityCount: 380,
+  status: "historical-direct-card-projection-not-current",
+});
 
 if (checkMode) {
   const evidence = readJson(sourcePath);
@@ -96,6 +116,8 @@ function captureEvidence() {
     publicReleaseAllowed: false,
     releaseBoundary:
       "Fresh-task reload evidence is local proof only; public preview still requires security/provenance review and human approval.",
+    currentMarketplaceProjection: { ...CURRENT_MARKETPLACE },
+    historicalPreConsolidationMarketplaceProjection: { ...HISTORICAL_PRE_CONSOLIDATION },
     task: {
       threadId: taskThreadId,
       idSource: taskIdSource,
@@ -273,6 +295,18 @@ function validateEvidence(evidence, report) {
   if (!evidence.noSecretPolicy || evidence.noSecretPolicy.rawCommandOutputStored !== false) {
     failures.push("evidence must not store raw command output");
   }
+  const currentMarketplace = evidence.currentMarketplaceProjection;
+  if (currentMarketplace?.current !== true || currentMarketplace?.projectionModel !== "curated-bundle-cards" || currentMarketplace?.publicCardCount !== 34 || currentMarketplace?.canonicalCardCount !== 1 || currentMarketplace?.bundleCardCount !== 33 || currentMarketplace?.applicationBundleCardCount !== 6 || currentMarketplace?.topicBundleCardCount !== 27 || currentMarketplace?.retainedSourceCapabilityCount !== 380 || currentMarketplace?.directSourceCapabilityCardCount !== 0) {
+    failures.push("current marketplace projection must be the exact 34-card curated contract");
+  }
+  const historicalMarketplace = evidence.historicalPreConsolidationMarketplaceProjection;
+  if (historicalMarketplace?.current !== false || historicalMarketplace?.immutableHistoricalEvidence !== true || historicalMarketplace?.projectionModel !== "direct-source-cards" || historicalMarketplace?.applicationSourceCapabilityCount !== 75 || historicalMarketplace?.publicCardCount !== 381 || historicalMarketplace?.retainedSourceCapabilityCount !== 380) {
+    failures.push("pre-consolidation marketplace evidence must remain explicitly historical");
+  }
+  const unifiedSuite = evidence.commands?.installSmoke?.summary?.runtime?.unifiedSuite;
+  if (unifiedSuite && (unifiedSuite.applicationPluginDistribution !== "curated-bounded-public-bundles" || unifiedSuite.applicationPluginMarketplaceEntryCount !== 6)) {
+    failures.push("install smoke summary must report six current application bundles, not direct source cards");
+  }
   if (Object.values(evidence.commands || {}).some((command) => "stdout" in command || "stderr" in command)) {
     failures.push("evidence commands must contain summaries only");
   }
@@ -290,6 +324,8 @@ function validateEvidence(evidence, report) {
   }
   if (!report.includes("NO-GO for public preview")) failures.push("report must keep public preview as NO-GO");
   if (!report.includes("Fresh Task Reload Evidence")) failures.push("report must describe fresh task reload evidence");
+  if (!report.includes("34 cards (1 canonical, 6 application bundles, 27 topic bundles)")) failures.push("report must state the current marketplace contract");
+  if (!report.includes("381-card direct-source projection is historical only (`current: false`)")) failures.push("report must label pre-consolidation evidence as historical");
   if (failures.length) {
     console.error("SEIS public plugin fresh-task reload evidence validation failed:");
     for (const failure of failures) console.error(`- ${failure}`);
@@ -315,6 +351,13 @@ function renderReport(evidence) {
 - Public release allowed: ${evidence.publicReleaseAllowed ? "yes" : "no"}
 - Task/thread id source: ${evidence.task.idSource}
 - Task/thread id recorded: ${evidence.task.threadId ? "yes" : "no"}
+
+## Marketplace Contract
+
+- Current: 34 cards (1 canonical, 6 application bundles, 27 topic bundles)
+- Retained source capabilities: 380
+- Direct source capability cards: 0
+- The 381-card direct-source projection is historical only (\`current: false\`)
 
 ## Command Evidence
 

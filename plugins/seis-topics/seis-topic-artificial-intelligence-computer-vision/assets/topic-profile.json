@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-computer-vision",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-artificial-intelligence-computer-vision@seis-repo",
+  "installId": "seis-topic-bundle-01@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

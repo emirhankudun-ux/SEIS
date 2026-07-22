@@ -11,6 +11,15 @@ const COMPLETED_STEP_COUNT = 80;
 const NEXT_STEP_NUMBER = 81;
 const PLANNED_STEP_COUNT = 19;
 const COMPLETED_ROUND_COUNT = 4;
+const CURRENT_MARKETPLACE = Object.freeze({
+  publicCardCount: 34,
+  canonicalCardCount: 1,
+  bundleCardCount: 33,
+  applicationBundleCardCount: 6,
+  topicBundleCardCount: 27,
+  retainedSourceCapabilityCount: 380,
+  directSourceCapabilityCardCount: 0,
+});
 const PATHS = Object.freeze({
   activationDecision: "content/development/seis-public-plugin-wave-5-activation-decision.json",
   capabilityEvidence: "content/development/seis-plugin-capability-coverage.json",
@@ -192,6 +201,11 @@ function buildRecord() {
   const applicationBundleMembers = list(bundleCatalog.bundles)
     .filter((bundle) => bundle?.family === "application")
     .flatMap((bundle) => list(bundle?.memberNames));
+  const applicationBundles = list(bundleCatalog.bundles).filter((bundle) => bundle?.family === "application");
+  const topicBundles = list(bundleCatalog.bundles).filter((bundle) => bundle?.family === "topic");
+  const canonicalCards = marketplaceEntries.filter((entry) => entry?.name === "seis-ai-agent" && entry?.source?.path === "./plugins/seis-ai-agent");
+  const bundleCards = marketplaceEntries.filter((entry) => entry?.source?.path?.startsWith("./plugins/seis-bundles/"));
+  const directSourceCapabilityCards = marketplaceEntries.filter((entry) => entry?.source?.path !== "./plugins/seis-ai-agent" && !entry?.source?.path?.startsWith("./plugins/seis-bundles/"));
   const candidateBundles = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(CANDIDATE));
   const candidateBundleId = candidateBundles.length === 1 ? candidateBundles[0].id : null;
   const steps = ROUND_DEFINITIONS.flatMap((round, roundIndex) => round.tasks.map((title, taskIndex) => {
@@ -262,6 +276,13 @@ function buildRecord() {
       && consolidation?.bundlePlan?.exactOnceCoverage === true
       && Object.values(consolidation?.checks || {}).every(Boolean)
       && Object.values(consolidation?.externalClaims || {}).every((value) => value === false),
+    currentMarketplaceProjection: marketplaceEntries.length === CURRENT_MARKETPLACE.publicCardCount
+      && canonicalCards.length === CURRENT_MARKETPLACE.canonicalCardCount
+      && bundleCards.length === CURRENT_MARKETPLACE.bundleCardCount
+      && applicationBundles.length === CURRENT_MARKETPLACE.applicationBundleCardCount
+      && topicBundles.length === CURRENT_MARKETPLACE.topicBundleCardCount
+      && directSourceCapabilityCards.length === CURRENT_MARKETPLACE.directSourceCapabilityCardCount
+      && consolidation?.inventory?.retainedSourceCapabilityCount === CURRENT_MARKETPLACE.retainedSourceCapabilityCount,
     permissions: list(capabilityEvidence?.safety?.write).length === 0
       && list(capabilityEvidence?.safety?.network).length === 0
       && list(capabilityEvidence?.safety?.secrets).length === 0,
@@ -296,8 +317,27 @@ function buildRecord() {
     scope: {
       repositories: ["SEIS"],
       selectedCapability: CANDIDATE,
-      outcome: "One public repository package now reports bounded, derived coverage across five fixed public SEIS Repo registry projections. The first 80 Wave 5 steps are implemented and validated locally; 381 discovery cards are projected as one canonical SEIS-Agent card plus 33 optional bounded bundle cards without deleting source packages. No personal marketplace, external write, network, secret, installation, provider, deployment, signing, publication, or release claim is authorized.",
+      outcome: "One public repository package now reports bounded, derived coverage across five fixed public SEIS Repo registry projections. The first 80 Wave 5 steps are implemented and validated locally; the current marketplace projects 34 cards as one canonical SEIS-Agent card plus 33 optional bounded bundle cards (6 application and 27 topic), backed by 380 retained source capabilities without deleting source packages. No personal marketplace, external write, network, secret, installation, provider, deployment, signing, publication, or release claim is authorized.",
       entryRule: "Wave 4 closed with a historical candidate review, the separate Wave 5 activation decision records current user authority and bounded scope, and the active package has current source, catalog, matrix, bundle membership, marketplace, evidence, and deny-by-default permission projections.",
+    },
+    currentMarketplaceProjection: {
+      current: true,
+      projectionModel: "curated-bundle-cards",
+      publicCardCount: CURRENT_MARKETPLACE.publicCardCount,
+      canonicalCardCount: CURRENT_MARKETPLACE.canonicalCardCount,
+      bundleCardCount: CURRENT_MARKETPLACE.bundleCardCount,
+      applicationBundleCardCount: CURRENT_MARKETPLACE.applicationBundleCardCount,
+      topicBundleCardCount: CURRENT_MARKETPLACE.topicBundleCardCount,
+      retainedSourceCapabilityCount: CURRENT_MARKETPLACE.retainedSourceCapabilityCount,
+      directSourceCapabilityCardCount: CURRENT_MARKETPLACE.directSourceCapabilityCardCount,
+    },
+    historicalPreConsolidationMarketplaceProjection: {
+      current: false,
+      immutableHistoricalEvidence: true,
+      projectionModel: "direct-source-cards",
+      publicCardCount: 381,
+      retainedSourceCapabilityCount: 380,
+      status: "historical-direct-card-projection-not-current",
     },
     nonGoals: [
       "Adding a second Wave 5 package or card without a separate capability decision.",
@@ -430,6 +470,8 @@ function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-5-program" && record.goalId === "SEIS-GOAL-021" && record.status === "in-progress" && record.maturity === "prototype", "record identity is invalid");
   assert(record.wave?.number === 5 && record.wave?.totalSteps === 100 && record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20, "wave shape is invalid");
   assert(record.scope?.selectedCapability === CANDIDATE && record.activationGate?.status === "implemented-repository-local" && record.activationGate?.implementationStarted === true && record.activationGate?.candidatePackageExists === true && record.activationGate?.candidateDirectPublicCardExists === false && typeof record.activationGate?.candidateBundleId === "string" && record.activationGate?.candidateBundleCardExists === true && record.activationGate?.publicReleaseApproved === false, "activation gate is invalid");
+  assert(record.currentMarketplaceProjection?.current === true && record.currentMarketplaceProjection?.projectionModel === "curated-bundle-cards" && record.currentMarketplaceProjection?.publicCardCount === 34 && record.currentMarketplaceProjection?.canonicalCardCount === 1 && record.currentMarketplaceProjection?.bundleCardCount === 33 && record.currentMarketplaceProjection?.applicationBundleCardCount === 6 && record.currentMarketplaceProjection?.topicBundleCardCount === 27 && record.currentMarketplaceProjection?.retainedSourceCapabilityCount === 380 && record.currentMarketplaceProjection?.directSourceCapabilityCardCount === 0, "current marketplace projection is invalid");
+  assert(record.historicalPreConsolidationMarketplaceProjection?.current === false && record.historicalPreConsolidationMarketplaceProjection?.immutableHistoricalEvidence === true && record.historicalPreConsolidationMarketplaceProjection?.projectionModel === "direct-source-cards" && record.historicalPreConsolidationMarketplaceProjection?.publicCardCount === 381 && record.historicalPreConsolidationMarketplaceProjection?.retainedSourceCapabilityCount === 380, "historical marketplace projection is invalid");
   assert(list(record.rounds).length === 5 && list(record.steps).length === 100 && record.steps.every((step, index) => step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && typeof step?.title === "string" && step.title.length > 0), "step plan is invalid");
   assert(record.steps.filter((step) => step.status === "completed").length === COMPLETED_STEP_COUNT && list(record.steps.filter((step) => step.status === "in-progress")).map((step) => step.number).join(",") === String(NEXT_STEP_NUMBER) && record.steps.filter((step) => step.status === "planned").length === PLANNED_STEP_COUNT, "step status plan is invalid");
   assert(list(record.rounds).slice(0, COMPLETED_ROUND_COUNT).every((round) => round?.status === "completed") && record.rounds?.[COMPLETED_ROUND_COUNT]?.status === "in-progress", "round status plan is invalid");

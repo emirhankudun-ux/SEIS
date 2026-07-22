@@ -10,13 +10,12 @@ const CANDIDATE_CAPABILITY = "seis-swift-package-topology";
 const CANDIDATE_SOURCE_PATH = `plugins/seis-core/${CANDIDATE_CAPABILITY}`;
 const PACKAGE_MANIFEST_PATH = "packages/seis_platform_swift/Package.swift";
 const MAX_MANIFEST_BYTES = 128 * 1024;
-const HISTORICAL_APPLICATION_PLUGIN_COUNT = 73;
-const HISTORICAL_PUBLIC_CARD_COUNT = 379;
-const INTEGRATED_APPLICATION_PLUGIN_COUNT = 74;
-const INTEGRATED_PUBLIC_CARD_COUNT = 380;
-const ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT = 75;
-const ACTIVE_WAVE_5_PUBLIC_CARD_COUNT = 381;
-const CURATED_PUBLIC_PACKAGE_CARD_COUNT = 34;
+const CURRENT_MARKETPLACE = Object.freeze({ applicationPluginCount: 75, publicCardCount: 34, canonicalCardCount: 1, bundleCardCount: 33, applicationBundleCardCount: 6, topicBundleCardCount: 27, retainedSourceCapabilityCount: 380, directSourceCapabilityCardCount: 0 });
+const HISTORICAL_DIRECT_CARD_SNAPSHOTS = Object.freeze([
+  Object.freeze({ wave: 3, current: false, applicationPluginCount: 73, publicCardCount: 379 }),
+  Object.freeze({ wave: 4, current: false, applicationPluginCount: 74, publicCardCount: 380 }),
+  Object.freeze({ wave: 5, current: false, applicationPluginCount: 75, publicCardCount: 381 }),
+]);
 const ACTIVE_WAVE_5_CAPABILITY = "seis-plugin-capability-coverage";
 const PATHS = Object.freeze({
   repositoryLocalHandoff: "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
@@ -27,6 +26,7 @@ const PATHS = Object.freeze({
   catalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
   matrix: "content/development/seis-core-plugin-matrix.json",
   marketplace: ".agents/plugins/marketplace.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
 });
 const REQUIRED_MANIFEST_MARKERS = Object.freeze([
   'name: "SeisPlatformKit"',
@@ -69,6 +69,7 @@ function buildRecord() {
   const catalog = readJson(PATHS.catalog);
   const matrix = readJson(PATHS.matrix);
   const marketplace = readJson(PATHS.marketplace);
+  const bundleCatalog = readJson(PATHS.bundleCatalog);
   const manifestText = readBoundedRegularText(PACKAGE_MANIFEST_PATH);
   const sourceEntries = list(sourceManifest.plugins);
   const catalogEntries = list(catalog.plugins);
@@ -77,7 +78,7 @@ function buildRecord() {
   const appleCatalogEntry = catalogEntries.find((entry) => entry?.name === "seis-apple-native-readiness") || null;
   const concurrencyCatalogEntry = catalogEntries.find((entry) => entry?.name === "seis-swift-concurrency-audit") || null;
   const adoptionCatalogEntry = catalogEntries.find((entry) => entry?.name === "seis-package-adoption") || null;
-  assertSupportedCurrentInventory({ sourceEntries, catalog, catalogEntries, matrix, matrixEntries, marketplace, marketplaceEntries });
+  assertSupportedCurrentInventory({ sourceEntries, catalog, catalogEntries, matrix, matrixEntries, marketplace, marketplaceEntries, bundleCatalog });
   const inputSafetyScan = scanPublicSafeInputs([...Object.values(PATHS), PACKAGE_MANIFEST_PATH]);
   const record = {
     schemaVersion: 1,
@@ -89,12 +90,30 @@ function buildRecord() {
     generatedAt: "2026-07-21",
     purpose: "Decide whether a following public SEIS Repo wave is justified by current repository evidence rather than cadence alone, without creating a package or card, activating Wave 4, claiming Swift execution, or changing the public release boundary.",
     stateAtCheckpoint: {
+      current: false,
+      immutableHistoricalEvidence: true,
       completedStepCountBeforeTrackerUpdate: 97,
       activeStepBeforeTrackerUpdate: 98,
       nextPlannedDecisionStep: 99,
       wave3Completed: false,
       wave4Activated: false,
     },
+    currentMarketplaceProjection: {
+      current: true,
+      projectionModel: "curated-bundle-cards",
+      publicCardCount: CURRENT_MARKETPLACE.publicCardCount,
+      canonicalCardCount: CURRENT_MARKETPLACE.canonicalCardCount,
+      bundleCardCount: CURRENT_MARKETPLACE.bundleCardCount,
+      applicationBundleCardCount: CURRENT_MARKETPLACE.applicationBundleCardCount,
+      topicBundleCardCount: CURRENT_MARKETPLACE.topicBundleCardCount,
+      retainedSourceCapabilityCount: CURRENT_MARKETPLACE.retainedSourceCapabilityCount,
+      directSourceCapabilityCardCount: CURRENT_MARKETPLACE.directSourceCapabilityCardCount,
+    },
+    historicalDirectCardSnapshots: HISTORICAL_DIRECT_CARD_SNAPSHOTS.map((snapshot) => ({
+      ...snapshot,
+      immutableHistoricalEvidence: true,
+      projectionModel: "direct-source-cards",
+    })),
     checks: {
       predecessorHandoff: handoff.id === "seis-public-plugin-wave-3-repository-local-handoff"
         && handoff.status === "completed-repository-local-handoff"
@@ -252,30 +271,15 @@ function buildRecord() {
   return record;
 }
 
-function assertSupportedCurrentInventory({ sourceEntries, catalog, catalogEntries, matrix, matrixEntries, marketplace, marketplaceEntries }) {
-  const historicalInventory = sourceEntries.length === HISTORICAL_APPLICATION_PLUGIN_COUNT
-    && catalog.counts?.discovered === HISTORICAL_APPLICATION_PLUGIN_COUNT
-    && matrix.pluginCount === HISTORICAL_APPLICATION_PLUGIN_COUNT
+function assertSupportedCurrentInventory({ sourceEntries, catalog, catalogEntries, matrix, matrixEntries, marketplace, marketplaceEntries, bundleCatalog }) {
+  const applicationBundles = list(bundleCatalog?.bundles).filter((bundle) => bundle?.family === "application");
+  const topicBundles = list(bundleCatalog?.bundles).filter((bundle) => bundle?.family === "topic");
+  const currentInventory = sourceEntries.length === CURRENT_MARKETPLACE.applicationPluginCount
+    && catalog.counts?.discovered === CURRENT_MARKETPLACE.applicationPluginCount
+    && matrix.pluginCount === CURRENT_MARKETPLACE.applicationPluginCount
     && matrix.failureCount === 0
     && marketplace.name === "seis-repo"
-    && marketplaceEntries.length === HISTORICAL_PUBLIC_CARD_COUNT;
-  const integratedWave4Inventory = sourceEntries.length === INTEGRATED_APPLICATION_PLUGIN_COUNT
-    && catalog.counts?.discovered === INTEGRATED_APPLICATION_PLUGIN_COUNT
-    && matrix.pluginCount === INTEGRATED_APPLICATION_PLUGIN_COUNT
-    && matrix.failureCount === 0
-    && marketplace.name === "seis-repo"
-    && marketplaceEntries.length === INTEGRATED_PUBLIC_CARD_COUNT
-    && fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH))
-    && sourceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
-    && catalogEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
-    && matrixEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
-    && marketplaceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${CANDIDATE_CAPABILITY}`);
-  const activeWave5Inventory = sourceEntries.length === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
-    && catalog.counts?.discovered === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
-    && matrix.pluginCount === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
-    && matrix.failureCount === 0
-    && marketplace.name === "seis-repo"
-    && marketplaceEntries.length === ACTIVE_WAVE_5_PUBLIC_CARD_COUNT
+    && marketplaceEntries.length === CURRENT_MARKETPLACE.publicCardCount
     && fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH))
     && fs.existsSync(path.join(ROOT, "plugins", "seis-core", ACTIVE_WAVE_5_CAPABILITY))
     && sourceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
@@ -284,29 +288,20 @@ function assertSupportedCurrentInventory({ sourceEntries, catalog, catalogEntrie
     && catalogEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
     && matrixEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
     && matrixEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
-    && marketplaceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${CANDIDATE_CAPABILITY}`)
-    && marketplaceEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${ACTIVE_WAVE_5_CAPABILITY}`);
-  const curatedPublicPackageInventory = sourceEntries.length === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
-    && catalog.counts?.discovered === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
-    && matrix.pluginCount === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
-    && matrix.failureCount === 0
-    && marketplace.name === "seis-repo"
-    && marketplaceEntries.length === CURATED_PUBLIC_PACKAGE_CARD_COUNT
-    && fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH))
-    && fs.existsSync(path.join(ROOT, "plugins", "seis-core", ACTIVE_WAVE_5_CAPABILITY))
-    && sourceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
-    && sourceEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
-    && catalogEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
-    && catalogEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
-    && matrixEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
-    && matrixEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
-    && marketplaceEntries.some((entry) => entry?.name === "seis-ai-agent" && entry?.source?.path === "./plugins/seis-ai-agent");
-  assert(historicalInventory || integratedWave4Inventory || activeWave5Inventory || curatedPublicPackageInventory, "current inventory is neither the Wave 3 snapshot, the one-package Wave 4 integration, the active Wave 5 coverage state, nor the curated public package state");
+    && marketplaceEntries.filter((entry) => entry?.name === "seis-ai-agent" && entry?.source?.path === "./plugins/seis-ai-agent").length === CURRENT_MARKETPLACE.canonicalCardCount
+    && marketplaceEntries.filter((entry) => entry?.source?.path?.startsWith("./plugins/seis-bundles/")).length === CURRENT_MARKETPLACE.bundleCardCount
+    && marketplaceEntries.filter((entry) => entry?.source?.path !== "./plugins/seis-ai-agent" && !entry?.source?.path?.startsWith("./plugins/seis-bundles/")).length === CURRENT_MARKETPLACE.directSourceCapabilityCardCount
+    && applicationBundles.length === CURRENT_MARKETPLACE.applicationBundleCardCount
+    && topicBundles.length === CURRENT_MARKETPLACE.topicBundleCardCount
+    && bundleCatalog?.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_MARKETPLACE.retainedSourceCapabilityCount;
+  assert(currentInventory, "current inventory must match the exact 34-card curated marketplace projection");
 }
 
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-3-following-wave-review" && record.goalId === "SEIS-GOAL-021" && record.wave === 3 && record.step === 98 && record.status === "completed-following-wave-scope-review", "following-wave review identity is invalid");
-  assert(record.stateAtCheckpoint?.completedStepCountBeforeTrackerUpdate === 97 && record.stateAtCheckpoint?.activeStepBeforeTrackerUpdate === 98 && record.stateAtCheckpoint?.nextPlannedDecisionStep === 99 && record.stateAtCheckpoint?.wave3Completed === false && record.stateAtCheckpoint?.wave4Activated === false, "following-wave review state snapshot is invalid");
+  assert(record.stateAtCheckpoint?.current === false && record.stateAtCheckpoint?.immutableHistoricalEvidence === true && record.stateAtCheckpoint?.completedStepCountBeforeTrackerUpdate === 97 && record.stateAtCheckpoint?.activeStepBeforeTrackerUpdate === 98 && record.stateAtCheckpoint?.nextPlannedDecisionStep === 99 && record.stateAtCheckpoint?.wave3Completed === false && record.stateAtCheckpoint?.wave4Activated === false, "following-wave review state snapshot is invalid");
+  assert(record.currentMarketplaceProjection?.current === true && record.currentMarketplaceProjection?.publicCardCount === 34 && record.currentMarketplaceProjection?.canonicalCardCount === 1 && record.currentMarketplaceProjection?.bundleCardCount === 33 && record.currentMarketplaceProjection?.applicationBundleCardCount === 6 && record.currentMarketplaceProjection?.topicBundleCardCount === 27 && record.currentMarketplaceProjection?.retainedSourceCapabilityCount === 380 && record.currentMarketplaceProjection?.directSourceCapabilityCardCount === 0, "current marketplace projection is invalid");
+  assert(list(record.historicalDirectCardSnapshots).length === 3 && record.historicalDirectCardSnapshots.every((snapshot) => snapshot?.current === false && snapshot?.immutableHistoricalEvidence === true && snapshot?.projectionModel === "direct-source-cards") && record.historicalDirectCardSnapshots[2]?.publicCardCount === 381, "historical direct-card snapshots are invalid");
   assert(Object.values(record.checks).every(Boolean), "a required following-wave review contract is not current");
   assert(record.followingWaveDecision?.wave === 4 && record.followingWaveDecision?.status === "candidate-identified-plan-required" && record.followingWaveDecision?.activationApproved === false && record.followingWaveDecision?.implementationApproved === false && record.followingWaveDecision?.selectedCapability === CANDIDATE_CAPABILITY && record.followingWaveDecision?.candidatePackageExists === false && record.followingWaveDecision?.candidatePublicCardExists === false, "following-wave activation boundary is invalid");
   assert(record.candidateContract?.packageName === CANDIDATE_CAPABILITY && record.candidateContract?.input?.fixedManifestPath === PACKAGE_MANIFEST_PATH && list(record.candidateContract?.input?.allowedRead).join(",") === "one fixed checked-in Swift Package manifest" && record.candidateContract?.input?.maximumTextBytes === MAX_MANIFEST_BYTES && record.candidateContract?.input?.regularFileRequired === true && record.candidateContract?.input?.symlinkRefusal === true, "candidate input boundary is invalid");

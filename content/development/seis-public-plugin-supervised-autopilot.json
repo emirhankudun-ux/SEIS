@@ -1881,9 +1881,9 @@
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-continuity-cadence.mjs"
+        "scripts/create-seis-public-plugin-consolidation.mjs"
       ],
-      "purpose": "regenerate continuity cadence",
+      "purpose": "regenerate consolidation evidence",
       "externalWrite": false,
       "network": false,
       "secrets": false,
@@ -1892,9 +1892,20 @@
     {
       "command": "node",
       "args": [
-        "scripts/create-seis-public-plugin-consolidation.mjs"
+        "scripts/create-seis-public-plugin-wave-5-program.mjs"
       ],
-      "purpose": "regenerate consolidation evidence",
+      "purpose": "regenerate Wave 5 program",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-continuity-cadence.mjs"
+      ],
+      "purpose": "regenerate continuity cadence",
       "externalWrite": false,
       "network": false,
       "secrets": false,
@@ -2037,6 +2048,18 @@
         "--check"
       ],
       "purpose": "check consolidation freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-5-program.mjs",
+        "--check"
+      ],
+      "purpose": "check Wave 5 program freshness",
       "externalWrite": false,
       "network": false,
       "secrets": false,

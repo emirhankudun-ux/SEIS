@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-design-illustration",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-design-illustration@seis-repo",
+  "installId": "seis-topic-bundle-14@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

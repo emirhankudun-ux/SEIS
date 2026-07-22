@@ -102,12 +102,17 @@ its first 60 evidence steps. Its third-round checkpoint is
 records bounded aggregate output, malformed fixed-projection resilience,
 public-contract terminology, and no external-runtime claim. Step 61 begins
 the one-install public-consolidation inventory at
-`content/development/seis-public-plugin-consolidation.json`. It plans five
-15-capability app bundles and twenty 15-topic bundles before any marketplace
-migration, source deletion, or package merge is allowed. Wave 5 adds the public, read-only
-`seis-plugin-capability-coverage` package and card.
+`content/development/seis-public-plugin-consolidation.json`. The implemented
+current projection contains 34 public cards: one canonical SEIS-Agent card and
+33 optional bounded bundles, split into 6 application bundles and 27 topic
+bundles. Those cards retain access to all 380 source capabilities without
+source deletion or package merge. Wave 5 adds the public, read-only
+`seis-plugin-capability-coverage` capability through exactly one application
+bundle rather than a direct marketplace card.
 
-The current contract is 75 packages / 381 `SEIS Repo` cards. It remains
+The pre-consolidation 381-card direct-source projection is immutable historical
+evidence only (`current: false`); it is not the current marketplace contract.
+The current 34-card contract remains
 repository-local evidence only: no independent installation, native-runtime,
 provider, deployment, or public-release claim is made. The active Wave 5
 program is recorded in

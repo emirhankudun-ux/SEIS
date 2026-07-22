@@ -33,6 +33,25 @@ test("prepares Wave 3 handoff without completing the wave or activating Wave 4",
   assert.equal(readiness.futureWaveDecision.activationApproved, false);
   assert.equal(readiness.futureWaveDecision.selectedCapability, null);
   assert.equal(readiness.externalGaps.compiledSwiftClaim, false);
+  assert.equal(readiness.externalGaps.freshTaskReloadStatus, "recorded-local-fresh-task-evidence");
+  assert.equal(readiness.externalGaps.freshTaskReloadEvidence.current, true);
+  assert.equal(readiness.externalGaps.freshTaskReloadEvidence.taskThreadIdRecorded, true);
+  assert.equal(readiness.externalGaps.freshTaskReloadEvidence.commandEvidencePassed, true);
+  assert.deepEqual(readiness.externalGaps.freshTaskReloadEvidence.currentMarketplaceProjection, {
+    current: true,
+    publicCardCount: 34,
+    canonicalCardCount: 1,
+    bundleCardCount: 33,
+    applicationBundleCardCount: 6,
+    topicBundleCardCount: 27,
+    retainedSourceCapabilityCount: 380,
+    directSourceCapabilityCardCount: 0,
+  });
+  assert.deepEqual(readiness.externalGaps.freshTaskReloadEvidence.historicalPreConsolidationMarketplaceProjection, {
+    current: false,
+    immutableHistoricalEvidence: true,
+    publicCardCount: 381,
+  });
   assert.equal(readiness.externalGaps.nativeRuntimeClaim, false);
   assert.equal(readiness.externalGaps.publicReleaseAllowed, false);
   assert.equal(JSON.stringify(readiness).includes(repositoryRoot), false);

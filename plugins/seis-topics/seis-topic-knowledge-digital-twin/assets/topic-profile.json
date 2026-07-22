@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-digital-twin",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-knowledge-digital-twin@seis-repo",
+  "installId": "seis-topic-bundle-19@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

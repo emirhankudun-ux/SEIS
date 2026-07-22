@@ -39,4 +39,14 @@ test("reconciles Wave 3 steps 82 through 91 without declaring final delivery or 
   assert.equal(preflight.inputSafetyScan.machineSpecificPathFindingCount, 0);
   assert.equal(preflight.inputSafetyScan.secretLikeFindingCount, 0);
   assert.equal(JSON.stringify(preflight).includes(repositoryRoot), false);
+
+  const freshTaskEvidence = JSON.parse(fs.readFileSync(path.join(repositoryRoot, "content/development/seis-public-plugin-fresh-task-reload-evidence.json"), "utf8"));
+  assert.equal(freshTaskEvidence.status, "recorded-local-fresh-task-evidence");
+  assert.equal(freshTaskEvidence.currentMarketplaceProjection.current, true);
+  assert.equal(freshTaskEvidence.currentMarketplaceProjection.publicCardCount, 34);
+  assert.equal(freshTaskEvidence.currentMarketplaceProjection.bundleCardCount, 33);
+  assert.equal(freshTaskEvidence.currentMarketplaceProjection.retainedSourceCapabilityCount, 380);
+  assert.equal(freshTaskEvidence.currentMarketplaceProjection.directSourceCapabilityCardCount, 0);
+  assert.equal(freshTaskEvidence.historicalPreConsolidationMarketplaceProjection.current, false);
+  assert.equal(freshTaskEvidence.historicalPreConsolidationMarketplaceProjection.publicCardCount, 381);
 });

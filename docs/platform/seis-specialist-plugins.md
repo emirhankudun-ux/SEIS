@@ -1,10 +1,12 @@
 # SEIS Specialist Plugins
 
-Date: 2026-07-12
+Date: 2026-07-22
 
-SEIS now exposes `seis-ai-agent` as the canonical default public repo marketplace
-plugin, while all Command Center app packages are public MIT-licensed sources
-directly in the SEIS repository.
+SEIS exposes 34 curated public repo marketplace cards: `seis-ai-agent` as the
+canonical default install plus 33 optional bundle cards. The 5 root modules, 75
+Command Center app packages, and 300 objective-derived topic packages remain
+380 public MIT-licensed repository sources rather than 380 direct marketplace
+cards.
 The core governance lane and specialist package folders remain preserved source
 modules embedded into that agent: `seis`, `seis-cloud`, `seis-code`,
 `seis-design`, `seis-data`, `seis-security`, `seis-research`,
@@ -12,8 +14,10 @@ modules embedded into that agent: `seis`, `seis-cloud`, `seis-code`,
 
 The canonical repo marketplace is contained at `.agents/plugins/marketplace.json`
 with marketplace name `seis-repo`. It contains the canonical `seis-ai-agent`
-orchestrator, public `plugins/seis-core` application packages, and the
-objective-derived `plugins/seis-topics` topic packages. No personal
+orchestrator, 6 application bundle cards, and 27 topic bundle cards. The public
+`plugins/seis-core` application packages and objective-derived
+`plugins/seis-topics` packages remain retained repository sources assigned to
+exactly one bundle. No personal
 marketplace is a source of truth; legacy personal aliases are compatibility
 evidence only.
 
@@ -27,10 +31,11 @@ evidence only.
 - Legacy duplicate source: historical `personal` marketplace, compatibility evidence only.
 - Standalone specialist lane cards: not published. Source modules are routed through the
   installed SEIS-Agent package.
-- App-owned package cards: published individually under `seis-repo` from
-  `plugins/seis-core` with MIT metadata and an everyone audience.
-- Objective-derived topic cards: published individually under `seis-repo` from
-  `plugins/seis-topics` with MIT metadata and an everyone audience.
+- App-owned packages: 75 retained sources under `plugins/seis-core`, discoverable
+  through 6 bounded application bundle cards with no direct source cards.
+- Objective-derived topic packages: 300 retained sources under
+  `plugins/seis-topics`, discoverable through 27 bounded topic bundle cards with
+  no direct source cards.
 - Source mirrors stay in `plugins/` so each lane keeps its skill, MCP server,
   profile, and validation contract under repo control while SEIS-Agent embeds
   the active skills and lane profiles.
@@ -92,17 +97,21 @@ approved peer access.
 ## Marketplace
 
 The repo marketplace file is `.agents/plugins/marketplace.json`. It contains
-370 public entries:
+34 public entries:
 
-- `seis-ai-agent@seis-repo`
-- `seis@seis-repo`, `seis-cloud@seis-repo`, `seis-code@seis-repo`, `seis-design@seis-repo`, and `seis-data@seis-repo` sourced from the repository root
-- `seis-*-<app-capability>@seis-repo` entries sourced from `plugins/seis-core`
-- 300 objective-derived entries sourced from `plugins/seis-topics`
+- 1 canonical card: `seis-ai-agent@seis-repo`
+- 6 optional application bundle cards covering 75 retained `plugins/seis-core`
+  source packages
+- 27 optional topic bundle cards covering 300 retained `plugins/seis-topics`
+  source packages
 
-Availability means these public repo cards are installable from the `seis-repo`
-marketplace. The five historical root modules also remain connected through
-SEIS-Agent lane tools; other embedded specialist source modules remain
-SEIS-Agent-only unless an explicit distribution decision changes that boundary.
+The 5 root source modules remain embedded in the canonical SEIS-Agent surface;
+together with the 75 application and 300 topic sources they form the current
+380-source inventory. Availability means the canonical or optional bundle card
+is selectable from `seis-repo`; it does not turn bundle members into direct
+cards or automatically install every retained source. Embedded specialist
+source modules remain SEIS-Agent-only unless an explicit distribution decision
+changes that boundary.
 It does not mean live OAuth/account access, cloud credentials, SSH access,
 deployment authority, private dataset access, or destructive action permission.
 
@@ -110,7 +119,9 @@ deployment authority, private dataset access, or destructive action permission.
 
 ```bash
 npm run check:seis-public-plugin-family
+npm run check:seis-public-plugin-bundles
 npm run check:seis-public-plugin-lifecycle
+npm run check:seis-repo-marketplace
 npm run check:seis-public-plugin-install-smoke
 npm run check:seis-public-plugin-install-smoke:mcp
 npm run check:seis-public-plugin-install-smoke:local

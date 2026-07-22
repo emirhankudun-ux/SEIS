@@ -23,8 +23,27 @@
       "SEIS"
     ],
     "selectedCapability": "seis-plugin-capability-coverage",
-    "outcome": "One public repository package now reports bounded, derived coverage across five fixed public SEIS Repo registry projections. The first 80 Wave 5 steps are implemented and validated locally; 381 discovery cards are projected as one canonical SEIS-Agent card plus 33 optional bounded bundle cards without deleting source packages. No personal marketplace, external write, network, secret, installation, provider, deployment, signing, publication, or release claim is authorized.",
+    "outcome": "One public repository package now reports bounded, derived coverage across five fixed public SEIS Repo registry projections. The first 80 Wave 5 steps are implemented and validated locally; the current marketplace projects 34 cards as one canonical SEIS-Agent card plus 33 optional bounded bundle cards (6 application and 27 topic), backed by 380 retained source capabilities without deleting source packages. No personal marketplace, external write, network, secret, installation, provider, deployment, signing, publication, or release claim is authorized.",
     "entryRule": "Wave 4 closed with a historical candidate review, the separate Wave 5 activation decision records current user authority and bounded scope, and the active package has current source, catalog, matrix, bundle membership, marketplace, evidence, and deny-by-default permission projections."
+  },
+  "currentMarketplaceProjection": {
+    "current": true,
+    "projectionModel": "curated-bundle-cards",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCapabilityCardCount": 0
+  },
+  "historicalPreConsolidationMarketplaceProjection": {
+    "current": false,
+    "immutableHistoricalEvidence": true,
+    "projectionModel": "direct-source-cards",
+    "publicCardCount": 381,
+    "retainedSourceCapabilityCount": 380,
+    "status": "historical-direct-card-projection-not-current"
   },
   "nonGoals": [
     "Adding a second Wave 5 package or card without a separate capability decision.",
@@ -966,6 +985,7 @@
     "outputBounds": true,
     "round3Checkpoint": true,
     "consolidationInventory": true,
+    "currentMarketplaceProjection": true,
     "permissions": true,
     "publicBoundary": true
   },

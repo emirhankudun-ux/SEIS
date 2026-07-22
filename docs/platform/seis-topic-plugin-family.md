@@ -30,7 +30,10 @@ The current curated public repository marketplace is:
 
 The canonical default install remains `seis-ai-agent@seis-repo`. Each topic
 source maps to exactly one topic bundle and remains independently identifiable
-inside that bundle. It is not a personal plugin or a direct marketplace card.
+inside that bundle. Its `topic-profile.json` `installId` is the exact
+`<topic-bundle-id>@seis-repo` identity; a self-named topic install ID is not a
+current marketplace card. It is not a personal plugin or a direct marketplace
+card.
 
 ## Package contract
 

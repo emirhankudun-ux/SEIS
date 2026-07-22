@@ -126,20 +126,24 @@ source packages for the Command Center application:
 | `seis-ai-agent@seis-repo` | SEIS AI orchestrator, cross-lane router, and canonical default install. |
 
 The five historical root packages remain public repository source capabilities
-embedded in SEIS-Agent rather than direct cards: `seis@seis-repo`,
-`seis-cloud@seis-repo`, `seis-code@seis-repo`, `seis-design@seis-repo`, and
-`seis-data@seis-repo`. They preserve former personal capability coverage without
-creating another default install target or another card.
+embedded in SEIS-Agent rather than direct cards. Their source identities are
+`seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data`, but their
+current install identity resolves only through `seis-ai-agent@seis-repo`.
+Self-named `@seis-repo` install IDs are not current cards; explicitly labeled
+legacy aliases remain historical compatibility evidence only.
 
 Each app-owned package remains a distinct retained source capability under
 `plugins/seis-core/<plugin-name>`. All 75 sources are discoverable through six
-bounded application bundle cards; no app source is a separate card.
+bounded application bundle cards; each source resolves through its exact
+`<application-bundle-id>@seis-repo` install identity, and no app source is a
+separate card.
 
 The objective-derived topic family retains 300 MIT source packages under
 `plugins/seis-topics/<topic-id>`, sourced from
 `content/development/seis-topic-plugin-objective.json`. They are discoverable
 through 27 bounded topic bundle cards with local read-only demo runtimes; the
-sources are not direct cards and do not imply live external access.
+sources resolve through their exact `<topic-bundle-id>@seis-repo` identities,
+are not direct cards, and do not imply live external access.
 
 Its embedded source modules are preserved in the repository and exposed through
 the installed agent:

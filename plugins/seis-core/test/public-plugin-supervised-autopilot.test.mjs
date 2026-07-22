@@ -59,7 +59,7 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.executionModel.merge, false);
   assert.equal(program.executionModel.release, false);
   assert.equal(program.executionModel.deployment, false);
-  assert.equal(program.commandAllowlist.length, 46);
+  assert.equal(program.commandAllowlist.length, 48);
   assert.ok(program.commandAllowlist.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false));
 });
 
@@ -84,7 +84,7 @@ test("plan mode is read-only and reports a foreground-only plan", () => {
   assert.equal(report.descendantTerminationGuaranteed, false);
   assert.equal(report.commandExecuted, false);
   assert.equal(report.results.length, 0);
-  assert.equal(report.approvedLocalPhases.length, 46);
+  assert.equal(report.approvedLocalPhases.length, 48);
   assert.equal(report.plan.nextSeriesWaveCount, 5);
   assert.equal(report.plan.nextSeriesStepsPerWave, 200);
   assert.equal(report.plan.round11StepCount, 200);
@@ -104,10 +104,28 @@ test("plan mode is anchored to the runner repository from a foreign working dire
     assert.equal(result.status, 0, result.stderr || result.stdout);
     const report = JSON.parse(result.stdout);
     assert.equal(report.mode, "plan");
-    assert.equal(report.approvedLocalPhases.length, 46);
+    assert.equal(report.approvedLocalPhases.length, 48);
     assert.deepEqual([digest(programPath), digest(roadmapPath)], before);
   } finally {
     fs.rmSync(foreign, { recursive: true, force: true });
+  }
+});
+
+test("runner rejects a policy-range card count that is not the exact current 34-card projection", () => {
+  const fixture = makeRunnerFixture();
+  const fixtureProgramPath = path.join(fixture.root, "content/development/seis-public-plugin-supervised-autopilot.json");
+  try {
+    const fixtureProgram = JSON.parse(fs.readFileSync(fixtureProgramPath, "utf8"));
+    fixtureProgram.currentMarketplace.publicCardCount = 35;
+    fs.writeFileSync(fixtureProgramPath, `${JSON.stringify(fixtureProgram, null, 2)}\n`);
+    const result = spawnSync(process.execPath, [path.join(fixture.root, "scripts/run-seis-public-plugin-supervised-autopilot.mjs"), "--plan"], {
+      cwd: fixture.root,
+      encoding: "utf8",
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /current public-card count is invalid/);
+  } finally {
+    fs.rmSync(fixture.parent, { recursive: true, force: true });
   }
 });
 

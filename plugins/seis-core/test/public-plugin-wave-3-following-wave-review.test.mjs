@@ -25,6 +25,22 @@ test("preserves the Wave 3 candidate snapshot through a bounded later public-wav
   assert.equal(review.stateAtCheckpoint.nextPlannedDecisionStep, 99);
   assert.equal(review.stateAtCheckpoint.wave3Completed, false);
   assert.equal(review.stateAtCheckpoint.wave4Activated, false);
+  assert.equal(review.stateAtCheckpoint.current, false);
+  assert.equal(review.stateAtCheckpoint.immutableHistoricalEvidence, true);
+  assert.deepEqual(review.currentMarketplaceProjection, {
+    current: true,
+    projectionModel: "curated-bundle-cards",
+    publicCardCount: 34,
+    canonicalCardCount: 1,
+    bundleCardCount: 33,
+    applicationBundleCardCount: 6,
+    topicBundleCardCount: 27,
+    retainedSourceCapabilityCount: 380,
+    directSourceCapabilityCardCount: 0,
+  });
+  assert.equal(review.historicalDirectCardSnapshots.length, 3);
+  assert.ok(review.historicalDirectCardSnapshots.every((snapshot) => snapshot.current === false && snapshot.immutableHistoricalEvidence === true));
+  assert.equal(review.historicalDirectCardSnapshots[2].publicCardCount, 381);
   assert.ok(Object.values(review.checks).every(Boolean));
   assert.equal(review.followingWaveDecision.wave, 4);
   assert.equal(review.followingWaveDecision.status, "candidate-identified-plan-required");
@@ -47,18 +63,11 @@ test("preserves the Wave 3 candidate snapshot through a bounded later public-wav
 
   const sourceManifest = JSON.parse(fs.readFileSync(path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json"), "utf8"));
   const marketplace = JSON.parse(fs.readFileSync(path.join(repositoryRoot, ".agents/plugins/marketplace.json"), "utf8"));
-  assert.ok([74, 75].includes(sourceManifest.pluginCount));
-  assert.ok([sourceManifest.pluginCount + 306, 34].includes(marketplace.plugins.length));
+  assert.equal(sourceManifest.pluginCount, 75);
+  assert.equal(marketplace.plugins.length, 34);
   assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-swift-package-topology"));
-  if (marketplace.plugins.length === 34) {
-    assert.ok(marketplace.plugins.some((entry) => entry.name === "seis-ai-agent" && entry.source?.path === "./plugins/seis-ai-agent"));
-  } else {
-    assert.ok(marketplace.plugins.some((entry) => entry.name === "seis-swift-package-topology" && entry.source?.path === "./plugins/seis-core/seis-swift-package-topology"));
-  }
-  if (sourceManifest.pluginCount === 75) {
-    assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage"));
-    if (marketplace.plugins.length !== 34) {
-      assert.ok(marketplace.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage" && entry.source?.path === "./plugins/seis-core/seis-plugin-capability-coverage"));
-    }
-  }
+  assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage"));
+  assert.ok(marketplace.plugins.some((entry) => entry.name === "seis-ai-agent" && entry.source?.path === "./plugins/seis-ai-agent"));
+  assert.equal(marketplace.plugins.filter((entry) => entry.source?.path?.startsWith("./plugins/seis-bundles/")).length, 33);
+  assert.equal(marketplace.plugins.some((entry) => entry.source?.path?.startsWith("./plugins/seis-core/")), false);
 });

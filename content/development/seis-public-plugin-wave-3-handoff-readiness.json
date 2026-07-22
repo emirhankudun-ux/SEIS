@@ -80,7 +80,27 @@
     ]
   },
   "externalGaps": {
-    "freshTaskReloadStatus": "incomplete-local-fresh-task-evidence",
+    "freshTaskReloadStatus": "recorded-local-fresh-task-evidence",
+    "freshTaskReloadEvidence": {
+      "current": true,
+      "taskThreadIdRecorded": true,
+      "commandEvidencePassed": true,
+      "currentMarketplaceProjection": {
+        "current": true,
+        "publicCardCount": 34,
+        "canonicalCardCount": 1,
+        "bundleCardCount": 33,
+        "applicationBundleCardCount": 6,
+        "topicBundleCardCount": 27,
+        "retainedSourceCapabilityCount": 380,
+        "directSourceCapabilityCardCount": 0
+      },
+      "historicalPreConsolidationMarketplaceProjection": {
+        "current": false,
+        "immutableHistoricalEvidence": true,
+        "publicCardCount": 381
+      }
+    },
     "independentInstallState": "public-seis-repo-source-available-independent-install-pending",
     "independentInstallEvidence": "public-seis-repo-independent-install-evidence-gate",
     "externalProofStatus": "repo-local-clean-artifact-staged-external-proof-pending",

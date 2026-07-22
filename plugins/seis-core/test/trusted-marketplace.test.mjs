@@ -17,7 +17,8 @@ test("SEIS Trusted Marketplace validates the public SEIS Repo intake without act
   assert.equal(report.mode, "public-seis-repo-trusted-marketplace-read-only");
   assert.equal(report.marketplaceName, "seis-repo");
   assert.equal(report.marketplaceDisplayName, "SEIS Repo");
-  assert.equal(report.cardPresent, true);
+  assert.equal(report.marketplaceCard, false);
+  assert.equal(report.distributionBundleCardPresent, true);
   assert.equal(report.directCardPresent, false);
   assert.equal(report.distributionBundleId, "seis-application-bundle-06");
   assert.equal(report.distributionBundleMembershipCount, 1);
@@ -52,10 +53,15 @@ test("SEIS Trusted Marketplace exposes bounded MCP tools without writes", () => 
   const status = responses.find((response) => response.id === 3)?.result;
   assert.equal(status?.status, "ready");
   assert.equal(status?.marketplace?.marketplaceName, "seis-repo");
-  assert.equal(status?.marketplace?.cardPresent, true);
+  assert.equal(status?.marketplace?.marketplaceCard, false);
+  assert.equal(status?.marketplace?.distributionBundleCardPresent, true);
+  assert.equal(status?.marketplace?.distributionBundleId, "seis-application-bundle-06");
 
   const validation = responses.find((response) => response.id === 4)?.result;
   assert.equal(validation?.ok, true);
+  assert.equal(validation?.marketplaceCard, false);
+  assert.equal(validation?.distributionBundleCardPresent, true);
+  assert.equal(validation?.distributionBundleId, "seis-application-bundle-06");
   assert.equal(validation?.channelCount, intake.marketplaceChannels.length);
   assert.equal(validation?.trustedSourceCount, intake.trustedSourceShortlist.length);
   assert.deepEqual(validation?.permissions?.write, []);

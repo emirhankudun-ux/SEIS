@@ -14,9 +14,9 @@ SEIS can benefit from trusted weekly or monthly ecosystem updates without
 turning the workspace into a noisy extension drawer. The marketplace intake
 keeps discovery separate from activation:
 
-1. Curate the source as a marketplace card.
+1. Curate the source as a retained capability candidate.
 2. Check trust, publisher, purpose, and visual/product fit.
-3. Match it to an existing SEIS capability family.
+3. Match it to an existing SEIS capability family and bounded bundle.
 4. Run the local quality command.
 5. Activate live only after target, auth, approval, and rollback are clear.
 
@@ -38,7 +38,7 @@ keeps discovery separate from activation:
 
 You do not need to code to curate this layer.
 
-- Pick the card or source family that looks valuable.
+- Pick the retained source capability or bundle family that looks valuable.
 - Decide whether it fits the SEIS visual/product direction.
 - Mark the intended family: design, hosting, repository quality, docs, AI, or
   commerce.
@@ -50,16 +50,24 @@ You do not need to code to curate this layer.
 
 - Data: `content/development/trusted-marketplace-intake.json`
 - Validator: `npm run check:trusted-marketplace-intake`
-- Public SEIS Repo plugin: `seis-trusted-marketplace@seis-repo`
-- Public source: `plugins/seis-core/seis-trusted-marketplace`
+- Public source capability: `seis-trusted-marketplace`
+- Public source path: `plugins/seis-core/seis-trusted-marketplace`
+- Direct marketplace card: `false`
+- Distribution bundle: `seis-application-bundle-06@seis-repo`
 - Related catalog: `content/development/plugin-capability-catalog.json`
 - Related activation doc: `docs/development/aggressive-capability-activation.md`
+
+The current `seis-repo` projection is 34 cards: 1 canonical card plus 33
+optional bundle cards (6 application and 27 topic), covering 380 retained
+sources. The trusted-marketplace source is one of the 75 application sources
+and resolves through application bundle 06; it is not a direct card or
+standalone install contract.
 
 ## Publication Path
 
 The safe path is staged:
 
-1. Local marketplace view.
+1. Local retained-source and bundle view.
 2. Plugin-ready SEIS package.
 3. MCP-ready integration.
 4. Public GitHub Marketplace Action or App only when there is a separate public

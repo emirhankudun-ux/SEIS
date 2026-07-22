@@ -11,7 +11,7 @@ clear.
 - Map: `content/development/aggressive-capability-map.json`
 - Plugin catalog: `content/development/plugin-capability-catalog.json`
 - Trusted marketplace intake: `content/development/trusted-marketplace-intake.json`
-- Local Codex plugin bridge: `content/development/seis-trusted-marketplace-plugin.json`
+- Public retained-source bridge: `content/development/seis-trusted-marketplace-plugin.json`
 - Validator: `npm run check:aggressive-capability-map`
 - Workspace automation: `seis-agresif-kod-gelistirme-ve-yayin`
 
@@ -59,9 +59,15 @@ feature has a separate public action repository or a real GitHub App surface.
 
 The public SEIS Repo trusted-marketplace contract lives in
 `content/development/seis-trusted-marketplace-plugin.json`. It binds the
-`seis-trusted-marketplace@seis-repo` card to the public app-owned source under
-`plugins/seis-core`, while keeping every external integration behind explicit
-target, authorization, approval, and rollback gates.
+public app-owned `seis-trusted-marketplace` source under `plugins/seis-core` to
+the optional `seis-application-bundle-06@seis-repo` discovery card. The source
+has `marketplaceCard: false`; it is not a standalone install. Every external
+integration remains behind explicit target, authorization, approval, and
+rollback gates.
+
+This binding uses the current 34-card projection: 1 canonical SEIS-Agent card
+and 33 optional bundles (6 application and 27 topic) covering 380 retained
+repository sources. Direct source-card count remains zero.
 
 Designer-facing review lives in
 `docs/development/trusted-marketplace-intake.md`; the lightweight quality gate

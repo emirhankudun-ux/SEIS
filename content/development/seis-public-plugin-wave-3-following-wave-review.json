@@ -8,12 +8,51 @@
   "generatedAt": "2026-07-21",
   "purpose": "Decide whether a following public SEIS Repo wave is justified by current repository evidence rather than cadence alone, without creating a package or card, activating Wave 4, claiming Swift execution, or changing the public release boundary.",
   "stateAtCheckpoint": {
+    "current": false,
+    "immutableHistoricalEvidence": true,
     "completedStepCountBeforeTrackerUpdate": 97,
     "activeStepBeforeTrackerUpdate": 98,
     "nextPlannedDecisionStep": 99,
     "wave3Completed": false,
     "wave4Activated": false
   },
+  "currentMarketplaceProjection": {
+    "current": true,
+    "projectionModel": "curated-bundle-cards",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCapabilityCardCount": 0
+  },
+  "historicalDirectCardSnapshots": [
+    {
+      "wave": 3,
+      "current": false,
+      "applicationPluginCount": 73,
+      "publicCardCount": 379,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    },
+    {
+      "wave": 4,
+      "current": false,
+      "applicationPluginCount": 74,
+      "publicCardCount": 380,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    },
+    {
+      "wave": 5,
+      "current": false,
+      "applicationPluginCount": 75,
+      "publicCardCount": 381,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    }
+  ],
   "checks": {
     "predecessorHandoff": true,
     "priorFollowUpRequirement": true,
@@ -146,7 +185,7 @@
     "dataMigrationRequired": false
   },
   "inputSafetyScan": {
-    "inputCount": 9,
+    "inputCount": 10,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

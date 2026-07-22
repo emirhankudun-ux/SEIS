@@ -73,6 +73,7 @@ SEIS-Agent remains the one canonical default install. Bundle cards are optional 
 - Audience: everyone
 - License: MIT
 - Runtime: local demo or auth-gated; live external capabilities remain approval-gated.
+- Install identity: every retained app source resolves through its exact optional application bundle; no app source exposes a self-named direct marketplace install.
 
 ## Embedded Modules
 
@@ -108,6 +109,7 @@ SEIS-Agent remains the one canonical default install. Bundle cards are optional 
 - Audience: everyone
 - License: MIT
 - Runtime: local read-only demo; no provider, network, secret, or write access.
+- Install identity: every retained topic source resolves through its exact optional topic bundle; no topic source exposes a self-named direct marketplace install.
 - Package family check: npm run check:seis-topic-plugin-family
 
 ## Security Model

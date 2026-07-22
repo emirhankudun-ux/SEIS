@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-pantechnoepistemonoesis-knowledge-civilization",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-pantechnoepistemonoesis-knowledge-civilization@seis-repo",
+  "installId": "seis-topic-bundle-21@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

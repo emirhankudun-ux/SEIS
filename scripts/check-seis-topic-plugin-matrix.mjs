@@ -55,6 +55,9 @@ for (const topic of topics) {
   const manifest = readJson(manifestPath, topic.id);
   const mcp = readJson(mcpPath, topic.id);
   const profile = readJson(profilePath, topic.id);
+  const readme = fs.readFileSync(readmePath, "utf8");
+  const marketplaceBundleId = topicBundleByMember.get(topic.id);
+  const marketplaceInstallId = `${marketplaceBundleId}@seis-repo`;
   ensure(manifest?.name === topic.id, `${topic.id}: manifest name must match`);
   ensure(manifest?.license === "MIT", `${topic.id}: manifest license must be MIT`);
   ensure(manifest?.version === "0.1.0", `${topic.id}: manifest version must be 0.1.0`);
@@ -70,7 +73,10 @@ for (const topic of topics) {
   ensure(profile?.schemaVersion === 2, `${topic.id}: profile schema version must be 2`);
   ensure(profile?.marketplaceDiscoverable === true, `${topic.id}: source must be discoverable through the curated marketplace`);
   ensure(profile?.marketplaceCard === false, `${topic.id}: retained source must not be a direct marketplace card`);
-  ensure(profile?.marketplaceBundleId === topicBundleByMember.get(topic.id), `${topic.id}: source must name its exact topic bundle`);
+  ensure(profile?.marketplaceBundleId === marketplaceBundleId, `${topic.id}: source must name its exact topic bundle`);
+  ensure(profile?.installId === marketplaceInstallId, `${topic.id}: install id must resolve through its exact topic bundle`);
+  ensure(profile?.installId !== `${topic.id}@seis-repo`, `${topic.id}: retained source must not expose a self-named marketplace install id`);
+  ensure(readme.includes(`\`${marketplaceInstallId}\``), `${topic.id}: README must name the exact topic bundle install id`);
   ensure(profile?.liveRuntimeStatus === "local-demo-only", `${topic.id}: runtime state must remain local-demo-only`);
   for (const permission of ["write", "network", "secrets"]) {
     ensure(Array.isArray(profile?.permissions?.[permission]) && profile.permissions[permission].length === 0, `${topic.id}: ${permission} permissions must be empty`);

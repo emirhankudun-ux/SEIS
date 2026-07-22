@@ -178,9 +178,7 @@ function buildRecord() {
       freshTaskAndInstallBoundaries: freshTaskProof.id === "seis-public-plugin-fresh-task-proof"
         && freshTaskProof.status === "pending-fresh-task-reload-proof"
         && freshTaskProof.publicReleaseAllowed === false
-        && freshTaskReloadEvidence.id === "seis-public-plugin-fresh-task-reload-evidence"
-        && freshTaskReloadEvidence.status === "incomplete-local-fresh-task-evidence"
-        && freshTaskReloadEvidence.publicReleaseAllowed === false
+        && isRecordedFreshTaskReloadEvidence(freshTaskReloadEvidence)
         && externalInstallProof.id === "seis-public-plugin-external-install-proof"
         && externalInstallProof.status === "repo-local-clean-artifact-staged-external-proof-pending"
         && externalInstallProof.publicReleaseAllowed === false
@@ -317,6 +315,29 @@ function isCurrentMarketplaceProjection(projection) {
     && projection?.selectedApplicationCapability?.bundleCardCount === 1
     && projection?.selectedApplicationCapability?.bundleId === "seis-application-bundle-06"
     && projection?.selectedApplicationCapability?.bundleFamily === "application";
+}
+
+function isRecordedFreshTaskReloadEvidence(evidence) {
+  const current = evidence?.currentMarketplaceProjection;
+  const historical = evidence?.historicalPreConsolidationMarketplaceProjection;
+  return evidence?.id === "seis-public-plugin-fresh-task-reload-evidence"
+    && evidence?.status === "recorded-local-fresh-task-evidence"
+    && evidence?.publicReleaseAllowed === false
+    && Boolean(evidence?.task?.threadId)
+    && Object.values(evidence?.commands || {}).every((command) => command?.ok === true)
+    && current?.current === true
+    && current?.projectionModel === "curated-bundle-cards"
+    && current?.publicCardCount === 34
+    && current?.canonicalCardCount === 1
+    && current?.bundleCardCount === 33
+    && current?.applicationBundleCardCount === 6
+    && current?.topicBundleCardCount === 27
+    && current?.retainedSourceCapabilityCount === 380
+    && current?.directSourceCapabilityCardCount === 0
+    && historical?.current === false
+    && historical?.immutableHistoricalEvidence === true
+    && historical?.projectionModel === "direct-source-cards"
+    && historical?.publicCardCount === 381;
 }
 
 function validateRecord(record) {

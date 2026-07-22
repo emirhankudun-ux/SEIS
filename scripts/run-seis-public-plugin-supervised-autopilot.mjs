@@ -115,15 +115,15 @@ function validateProgram(value) {
   assert(value?.executionModel?.isolationLevel === "reviewed-allowlist-no-os-sandbox" && value?.executionModel?.ambientNetworkIsolationEnforced === false && value?.executionModel?.ambientFilesystemIsolationEnforced === false && value?.executionModel?.descendantTerminationGuaranteed === false, "isolation disclosure is invalid");
   assert(value?.executionModel?.githubPush === false && value?.executionModel?.commit === false && value?.executionModel?.merge === false && value?.executionModel?.release === false && value?.executionModel?.deployment === false, "delivery boundary is invalid");
   assert(value?.currentMarketplace?.canonicalInstall === "seis-ai-agent@seis-repo", "canonical installation is invalid");
-  assert(value?.currentMarketplace?.publicCardCount >= 30 && value?.currentMarketplace?.publicCardCount <= 50, "public-card range is invalid");
-  assert(value?.currentMarketplace?.retainedSourceCapabilityCount === 380 && value?.currentMarketplace?.maximumBundleSize === 15, "bundle boundary is invalid");
+  assert(value?.currentMarketplace?.publicCardCount === 34, "current public-card count is invalid");
+  assert(value?.currentMarketplace?.optionalBundleCardCount === 33 && value?.currentMarketplace?.retainedSourceCapabilityCount === 380 && value?.currentMarketplace?.maximumBundleSize === 15, "bundle boundary is invalid");
   assert(value?.immediateCycle?.totalSteps === 30 && value?.immediateCycle?.rounds?.length === 5 && value.immediateCycle.rounds.every((round) => round.steps?.length === 6), "30-step cycle is invalid");
   assert(value?.fiveWaveSeries?.waves === 5 && value?.fiveWaveSeries?.stepsPerWave === 100 && value?.fiveWaveSeries?.roundsPerWave === 5, "five-wave cadence is invalid");
   assert(value?.fiveWaveSeries?.nextSeries?.waves === 5 && value?.fiveWaveSeries?.nextSeries?.stepsPerWave === 200 && value?.fiveWaveSeries?.nextSeries?.status === "active-round-11-plan-and-local-build", "next-series cadence is invalid");
   assert(value?.round11Cycle?.round === 11 && value?.round11Cycle?.totalSteps === 200 && value?.round11Cycle?.status === "in-progress-plan-and-local-build" && value?.round11Cycle?.rounds?.length === 10 && value.round11Cycle.rounds.every((round) => round.steps?.length === 20), "Round 11 cycle is invalid");
   assert(value?.tenYearHorizon?.length === 10 && value.tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background"), "ten-year horizon is invalid");
   assert(Array.isArray(value?.automationRoles) && value.automationRoles.length === 6, "automation roles are invalid");
-  assert(Array.isArray(value?.commandAllowlist) && value.commandAllowlist.length === 46, "command allowlist is invalid");
+  assert(Array.isArray(value?.commandAllowlist) && value.commandAllowlist.length === 48, "command allowlist is invalid");
 }
 
 function buildPhases() {
@@ -146,8 +146,9 @@ function buildPhases() {
     localNode("regenerate Wave 4 evidence retention", ["scripts/create-seis-public-plugin-wave-4-evidence-retention.mjs"]),
     localNode("regenerate Wave 4 closeout", ["scripts/create-seis-public-plugin-wave-4-closeout.mjs"]),
     localNode("regenerate Wave 4 program", ["scripts/create-seis-public-plugin-wave-4-program.mjs"]),
-    localNode("regenerate continuity cadence", ["scripts/create-seis-public-plugin-continuity-cadence.mjs"]),
     localNode("regenerate consolidation evidence", ["scripts/create-seis-public-plugin-consolidation.mjs"]),
+    localNode("regenerate Wave 5 program", ["scripts/create-seis-public-plugin-wave-5-program.mjs"]),
+    localNode("regenerate continuity cadence", ["scripts/create-seis-public-plugin-continuity-cadence.mjs"]),
     localNode("regenerate supervised autopilot program", ["scripts/create-seis-public-plugin-supervised-autopilot.mjs"]),
     localNode("regenerate project manifest audit evidence", ["scripts/create-seis-project-manifest-audit.mjs"]),
     localNode("check marketplace freshness", ["scripts/create-seis-public-plugin-family.mjs", "--check"]),
@@ -160,6 +161,7 @@ function buildPhases() {
     localNode("check Wave 4 integration checkpoint freshness", ["scripts/create-seis-public-plugin-wave-4-integration-checkpoint.mjs", "--check"]),
     localNode("check Wave 4 public-boundary decision freshness", ["scripts/create-seis-public-plugin-wave-4-public-boundary-decision.mjs", "--check"]),
     localNode("check consolidation freshness", ["scripts/create-seis-public-plugin-consolidation.mjs", "--check"]),
+    localNode("check Wave 5 program freshness", ["scripts/create-seis-public-plugin-wave-5-program.mjs", "--check"]),
     localNode("check autopilot freshness", ["scripts/create-seis-public-plugin-supervised-autopilot.mjs", "--check"]),
     localNode("check continuity cadence freshness", ["scripts/create-seis-public-plugin-continuity-cadence.mjs", "--check"]),
     localNode("check expansion program", ["scripts/check-seis-public-plugin-expansion-program.mjs"]),

@@ -9,7 +9,7 @@
   "directiveNormalized": true,
   "sourcePath": "./plugins/seis-topics/seis-topic-eleni-neferi-cinematic-experience",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-eleni-neferi-cinematic-experience@seis-repo",
+  "installId": "seis-topic-bundle-17@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

@@ -7,10 +7,12 @@ const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-4-activation-decision.json";
 const CANDIDATE_CAPABILITY = "seis-swift-package-topology";
-const BASELINE = Object.freeze({ applicationPluginCount: 73, publicCardCount: 379 });
-const ACTIVATED_INVENTORY = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
-const ACTIVE_WAVE_5_INVENTORY = Object.freeze({ applicationPluginCount: 75, publicCardCount: 381 });
-const CURATED_PUBLIC_PACKAGE_INVENTORY = Object.freeze({ applicationPluginCount: 75, publicCardCount: 34 });
+const CURRENT_MARKETPLACE = Object.freeze({ applicationPluginCount: 75, publicCardCount: 34, canonicalCardCount: 1, bundleCardCount: 33, applicationBundleCardCount: 6, topicBundleCardCount: 27, retainedSourceCapabilityCount: 380, directSourceCapabilityCardCount: 0 });
+const HISTORICAL_DIRECT_CARD_SNAPSHOTS = Object.freeze([
+  Object.freeze({ wave: 3, current: false, applicationPluginCount: 73, publicCardCount: 379 }),
+  Object.freeze({ wave: 4, current: false, applicationPluginCount: 74, publicCardCount: 380 }),
+  Object.freeze({ wave: 5, current: false, applicationPluginCount: 75, publicCardCount: 381 }),
+]);
 const ACTIVE_WAVE_5_CAPABILITY = "seis-plugin-capability-coverage";
 const PATHS = Object.freeze({
   wave3Closeout: "content/development/seis-public-plugin-wave-3-closeout.json",
@@ -19,6 +21,7 @@ const PATHS = Object.freeze({
   catalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
   matrix: "content/development/seis-core-plugin-matrix.json",
   marketplace: ".agents/plugins/marketplace.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
 });
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 const SECRET_PATTERNS = [
@@ -49,6 +52,7 @@ function buildRecord() {
   const catalog = readJson(PATHS.catalog);
   const matrix = readJson(PATHS.matrix);
   const marketplace = readJson(PATHS.marketplace);
+  const bundleCatalog = readJson(PATHS.bundleCatalog);
   const sourceEntries = list(sourceManifest.plugins);
   const catalogEntries = list(catalog.plugins);
   const matrixEntries = list(matrix.plugins);
@@ -59,36 +63,26 @@ function buildRecord() {
     matrix: countNamed(matrixEntries, CANDIDATE_CAPABILITY),
     marketplace: countNamed(marketplaceEntries, CANDIDATE_CAPABILITY),
   };
-  const baselineInventory = sourceEntries.length === BASELINE.applicationPluginCount
-    && catalog.counts?.discovered === BASELINE.applicationPluginCount
-    && matrix.pluginCount === BASELINE.applicationPluginCount
-    && marketplaceEntries.length === BASELINE.publicCardCount
-    && Object.values(candidateCounts).every((count) => count === 0);
-  const postActivationInventory = sourceEntries.length === ACTIVATED_INVENTORY.applicationPluginCount
-    && catalog.counts?.discovered === ACTIVATED_INVENTORY.applicationPluginCount
-    && matrix.pluginCount === ACTIVATED_INVENTORY.applicationPluginCount
-    && marketplaceEntries.length === ACTIVATED_INVENTORY.publicCardCount
-    && Object.values(candidateCounts).every((count) => count === 1);
-  const activeWave5Inventory = sourceEntries.length === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
-    && catalog.counts?.discovered === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
-    && matrix.pluginCount === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
-    && marketplaceEntries.length === ACTIVE_WAVE_5_INVENTORY.publicCardCount
-    && Object.values(candidateCounts).every((count) => count === 1)
-    && countNamed(sourceEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
-    && countNamed(catalogEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
-    && countNamed(matrixEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
-    && countNamed(marketplaceEntries, ACTIVE_WAVE_5_CAPABILITY) === 1;
-  const curatedPublicPackageInventory = sourceEntries.length === CURATED_PUBLIC_PACKAGE_INVENTORY.applicationPluginCount
-    && catalog.counts?.discovered === CURATED_PUBLIC_PACKAGE_INVENTORY.applicationPluginCount
-    && matrix.pluginCount === CURATED_PUBLIC_PACKAGE_INVENTORY.applicationPluginCount
-    && marketplaceEntries.length === CURATED_PUBLIC_PACKAGE_INVENTORY.publicCardCount
+  const applicationBundles = list(bundleCatalog?.bundles).filter((bundle) => bundle?.family === "application");
+  const topicBundles = list(bundleCatalog?.bundles).filter((bundle) => bundle?.family === "topic");
+  const currentMarketplaceInventory = sourceEntries.length === CURRENT_MARKETPLACE.applicationPluginCount
+    && catalog.counts?.discovered === CURRENT_MARKETPLACE.applicationPluginCount
+    && matrix.pluginCount === CURRENT_MARKETPLACE.applicationPluginCount
+    && marketplaceEntries.length === CURRENT_MARKETPLACE.publicCardCount
     && candidateCounts.sourceManifest === 1
     && candidateCounts.catalog === 1
     && candidateCounts.matrix === 1
+    && candidateCounts.marketplace === 0
     && countNamed(sourceEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
     && countNamed(catalogEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
     && countNamed(matrixEntries, ACTIVE_WAVE_5_CAPABILITY) === 1
-    && marketplaceEntries.some((entry) => entry?.name === "seis-ai-agent" && entry?.source?.path === "./plugins/seis-ai-agent");
+    && countNamed(marketplaceEntries, ACTIVE_WAVE_5_CAPABILITY) === 0
+    && marketplaceEntries.filter((entry) => entry?.name === "seis-ai-agent" && entry?.source?.path === "./plugins/seis-ai-agent").length === CURRENT_MARKETPLACE.canonicalCardCount
+    && marketplaceEntries.filter((entry) => entry?.source?.path?.startsWith("./plugins/seis-bundles/")).length === CURRENT_MARKETPLACE.bundleCardCount
+    && marketplaceEntries.filter((entry) => entry?.source?.path !== "./plugins/seis-ai-agent" && !entry?.source?.path?.startsWith("./plugins/seis-bundles/")).length === CURRENT_MARKETPLACE.directSourceCapabilityCardCount
+    && applicationBundles.length === CURRENT_MARKETPLACE.applicationBundleCardCount
+    && topicBundles.length === CURRENT_MARKETPLACE.topicBundleCardCount
+    && bundleCatalog?.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_MARKETPLACE.retainedSourceCapabilityCount;
   const record = {
     schemaVersion: 1,
     id: "seis-public-plugin-wave-4-activation-decision",
@@ -100,13 +94,31 @@ function buildRecord() {
     generatedAt: "2026-07-21",
     purpose: "Authorize only a bounded, public SEIS Repo implementation of the static Swift Package topology capability after Wave 3 closed. This decision creates no package source or marketplace card by itself and does not authorize any external, personal, release, SwiftPM, compiler, runtime, provider, deployment, or secret-bearing action.",
     stateAtDecision: {
+      current: false,
+      immutableHistoricalEvidence: true,
       wave3Completed: true,
       wave4PreviouslyActivated: false,
       candidatePackageExisted: false,
       candidatePublicCardExisted: false,
-      applicationPluginCountBeforeActivation: BASELINE.applicationPluginCount,
-      publicCardCountBeforeActivation: BASELINE.publicCardCount,
+      applicationPluginCountBeforeActivation: HISTORICAL_DIRECT_CARD_SNAPSHOTS[0].applicationPluginCount,
+      publicCardCountBeforeActivation: HISTORICAL_DIRECT_CARD_SNAPSHOTS[0].publicCardCount,
     },
+    currentMarketplaceProjection: {
+      current: true,
+      projectionModel: "curated-bundle-cards",
+      publicCardCount: CURRENT_MARKETPLACE.publicCardCount,
+      canonicalCardCount: CURRENT_MARKETPLACE.canonicalCardCount,
+      bundleCardCount: CURRENT_MARKETPLACE.bundleCardCount,
+      applicationBundleCardCount: CURRENT_MARKETPLACE.applicationBundleCardCount,
+      topicBundleCardCount: CURRENT_MARKETPLACE.topicBundleCardCount,
+      retainedSourceCapabilityCount: CURRENT_MARKETPLACE.retainedSourceCapabilityCount,
+      directSourceCapabilityCardCount: CURRENT_MARKETPLACE.directSourceCapabilityCardCount,
+    },
+    historicalDirectCardSnapshots: HISTORICAL_DIRECT_CARD_SNAPSHOTS.map((snapshot) => ({
+      ...snapshot,
+      immutableHistoricalEvidence: true,
+      projectionModel: "direct-source-cards",
+    })),
     decision: {
       selectedCapability: CANDIDATE_CAPABILITY,
       activationApproved: true,
@@ -179,7 +191,7 @@ function buildRecord() {
         && followingWaveReview.followingWaveDecision?.activationApproved === false
         && followingWaveReview.followingWaveDecision?.candidatePackageExists === false
         && followingWaveReview.followingWaveDecision?.candidatePublicCardExists === false,
-      currentInventoryCompatibility: (baselineInventory || postActivationInventory || activeWave5Inventory || curatedPublicPackageInventory)
+      currentInventoryCompatibility: currentMarketplaceInventory
         && matrix.failureCount === 0
         && marketplace.name === "seis-repo",
       fixedStaticBoundary: followingWaveReview.candidateContract?.input?.fixedManifestPath === "packages/seis_platform_swift/Package.swift"
@@ -221,7 +233,9 @@ function buildRecord() {
 
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-4-activation-decision" && record.goalId === "SEIS-GOAL-021" && record.wave === 4 && record.step === 0 && record.status === "approved-public-local-wave-4-activation" && record.maturity === "implementation-authorized", "activation decision identity is invalid");
-  assert(record.stateAtDecision?.wave3Completed === true && record.stateAtDecision?.wave4PreviouslyActivated === false && record.stateAtDecision?.candidatePackageExisted === false && record.stateAtDecision?.candidatePublicCardExisted === false && record.stateAtDecision?.applicationPluginCountBeforeActivation === BASELINE.applicationPluginCount && record.stateAtDecision?.publicCardCountBeforeActivation === BASELINE.publicCardCount, "activation snapshot is invalid");
+  assert(record.stateAtDecision?.current === false && record.stateAtDecision?.immutableHistoricalEvidence === true && record.stateAtDecision?.wave3Completed === true && record.stateAtDecision?.wave4PreviouslyActivated === false && record.stateAtDecision?.candidatePackageExisted === false && record.stateAtDecision?.candidatePublicCardExisted === false && record.stateAtDecision?.applicationPluginCountBeforeActivation === 73 && record.stateAtDecision?.publicCardCountBeforeActivation === 379, "activation snapshot is invalid");
+  assert(record.currentMarketplaceProjection?.current === true && record.currentMarketplaceProjection?.publicCardCount === 34 && record.currentMarketplaceProjection?.canonicalCardCount === 1 && record.currentMarketplaceProjection?.bundleCardCount === 33 && record.currentMarketplaceProjection?.applicationBundleCardCount === 6 && record.currentMarketplaceProjection?.topicBundleCardCount === 27 && record.currentMarketplaceProjection?.retainedSourceCapabilityCount === 380 && record.currentMarketplaceProjection?.directSourceCapabilityCardCount === 0, "current marketplace projection is invalid");
+  assert(list(record.historicalDirectCardSnapshots).length === 3 && record.historicalDirectCardSnapshots.every((snapshot) => snapshot?.current === false && snapshot?.immutableHistoricalEvidence === true && snapshot?.projectionModel === "direct-source-cards") && record.historicalDirectCardSnapshots[2]?.publicCardCount === 381, "historical direct-card snapshots are invalid");
   assert(record.decision?.selectedCapability === CANDIDATE_CAPABILITY && record.decision?.activationApproved === true && record.decision?.implementationApproved === true && record.decision?.implementationStarted === false && record.decision?.candidatePackageAuthorized === true && record.decision?.candidatePublicCardAuthorized === true && record.decision?.publicReleaseApproved === false && record.decision?.currentUserContinuationObserved === true, "activation decision boundary is invalid");
   assert(record.scope?.canonicalRepository === "SEIS" && record.scope?.fixedManifestPath === "packages/seis_platform_swift/Package.swift" && record.scope?.maximumManifestBytes === 131072 && list(record.scope?.allowedRead).length === 1 && list(record.scope?.allowedOutputs).length === 5 && list(record.scope?.nonGoals).length === 4, "activation scope is invalid");
   assert(Object.values(record.checks).every(Boolean), "a required activation precondition is not current");

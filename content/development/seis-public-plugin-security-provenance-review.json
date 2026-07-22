@@ -34,7 +34,7 @@
     "bundleMembershipExactOnce": true,
     "maximumBundleSize": 15,
     "lifecycleStatus": "active-local-proof-public-release-gated",
-    "freshTaskReloadEvidenceStatus": "incomplete-local-fresh-task-evidence",
+    "freshTaskReloadEvidenceStatus": "recorded-local-fresh-task-evidence",
     "freshTaskProofReloadEvidenceStatus": "incomplete-local-fresh-task-evidence",
     "unifiedSuiteReleaseVersion": "0.3.0+codex.20260712",
     "unifiedSuiteComponentCount": 10,

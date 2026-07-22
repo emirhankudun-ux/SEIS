@@ -26,6 +26,22 @@ test("authorizes a bounded public Wave 4 topology implementation without a relea
   assert.equal(decision.stateAtDecision.wave4PreviouslyActivated, false);
   assert.equal(decision.stateAtDecision.candidatePackageExisted, false);
   assert.equal(decision.stateAtDecision.candidatePublicCardExisted, false);
+  assert.equal(decision.stateAtDecision.current, false);
+  assert.equal(decision.stateAtDecision.immutableHistoricalEvidence, true);
+  assert.deepEqual(decision.currentMarketplaceProjection, {
+    current: true,
+    projectionModel: "curated-bundle-cards",
+    publicCardCount: 34,
+    canonicalCardCount: 1,
+    bundleCardCount: 33,
+    applicationBundleCardCount: 6,
+    topicBundleCardCount: 27,
+    retainedSourceCapabilityCount: 380,
+    directSourceCapabilityCardCount: 0,
+  });
+  assert.equal(decision.historicalDirectCardSnapshots.length, 3);
+  assert.ok(decision.historicalDirectCardSnapshots.every((snapshot) => snapshot.current === false && snapshot.immutableHistoricalEvidence === true));
+  assert.equal(decision.historicalDirectCardSnapshots[2].publicCardCount, 381);
   assert.equal(decision.decision.selectedCapability, "seis-swift-package-topology");
   assert.equal(decision.decision.activationApproved, true);
   assert.equal(decision.decision.implementationApproved, true);

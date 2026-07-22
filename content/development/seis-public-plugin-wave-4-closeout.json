@@ -174,7 +174,7 @@
         "path": "content/development/seis-public-plugin-wave-4-activation-decision.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 5142
+        "bytes": 6220
       },
       {
         "key": "topologyEvidence",
@@ -223,7 +223,7 @@
         "path": "content/development/seis-public-plugin-wave-5-program.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 36345
+        "bytes": 37113
       },
       {
         "key": "sourceManifest",
@@ -258,7 +258,7 @@
         "path": "content/development/seis-public-plugin-family.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 376394
+        "bytes": 371475
       },
       {
         "key": "bundleCatalog",

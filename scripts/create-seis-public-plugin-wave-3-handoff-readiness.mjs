@@ -161,6 +161,26 @@ function buildRecord() {
     },
     externalGaps: {
       freshTaskReloadStatus: freshTaskReload.status || null,
+      freshTaskReloadEvidence: {
+        current: true,
+        taskThreadIdRecorded: Boolean(freshTaskReload.task?.threadId),
+        commandEvidencePassed: Object.values(freshTaskReload.commands || {}).every((command) => command?.ok === true),
+        currentMarketplaceProjection: {
+          current: freshTaskReload.currentMarketplaceProjection?.current === true,
+          publicCardCount: freshTaskReload.currentMarketplaceProjection?.publicCardCount ?? null,
+          canonicalCardCount: freshTaskReload.currentMarketplaceProjection?.canonicalCardCount ?? null,
+          bundleCardCount: freshTaskReload.currentMarketplaceProjection?.bundleCardCount ?? null,
+          applicationBundleCardCount: freshTaskReload.currentMarketplaceProjection?.applicationBundleCardCount ?? null,
+          topicBundleCardCount: freshTaskReload.currentMarketplaceProjection?.topicBundleCardCount ?? null,
+          retainedSourceCapabilityCount: freshTaskReload.currentMarketplaceProjection?.retainedSourceCapabilityCount ?? null,
+          directSourceCapabilityCardCount: freshTaskReload.currentMarketplaceProjection?.directSourceCapabilityCardCount ?? null,
+        },
+        historicalPreConsolidationMarketplaceProjection: {
+          current: freshTaskReload.historicalPreConsolidationMarketplaceProjection?.current === true,
+          immutableHistoricalEvidence: freshTaskReload.historicalPreConsolidationMarketplaceProjection?.immutableHistoricalEvidence === true,
+          publicCardCount: freshTaskReload.historicalPreConsolidationMarketplaceProjection?.publicCardCount ?? null,
+        },
+      },
       independentInstallState: installState.status || null,
       independentInstallEvidence: installEvidence.status || null,
       externalProofStatus: externalProof.status || null,
@@ -221,7 +241,7 @@ function validateRecord(record) {
   assert(Object.values(record.completedEvidence).every(Boolean), "a required readiness evidence contract is not current");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.publicAudience === "everyone" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(record.futureWaveDecision?.wave === 4 && record.futureWaveDecision?.status === "planned-gated" && record.futureWaveDecision?.activationApproved === false && record.futureWaveDecision?.selectedCapability === null && list(record.futureWaveDecision?.requiredBeforeActivation).length === 4, "Wave 4 gate is invalid");
-  assert(record.externalGaps?.freshTaskReloadStatus === "incomplete-local-fresh-task-evidence" && record.externalGaps?.independentInstallState === "public-seis-repo-source-available-independent-install-pending" && record.externalGaps?.independentInstallEvidence === "public-seis-repo-independent-install-evidence-gate" && record.externalGaps?.compiledSwiftClaim === false && record.externalGaps?.nativeRuntimeClaim === false && record.externalGaps?.publicReleaseAllowed === false, "external validation boundary is invalid");
+  assert(record.externalGaps?.freshTaskReloadStatus === "recorded-local-fresh-task-evidence" && record.externalGaps?.freshTaskReloadEvidence?.current === true && record.externalGaps?.freshTaskReloadEvidence?.taskThreadIdRecorded === true && record.externalGaps?.freshTaskReloadEvidence?.commandEvidencePassed === true && record.externalGaps?.freshTaskReloadEvidence?.currentMarketplaceProjection?.current === true && record.externalGaps?.freshTaskReloadEvidence?.currentMarketplaceProjection?.publicCardCount === 34 && record.externalGaps?.freshTaskReloadEvidence?.currentMarketplaceProjection?.canonicalCardCount === 1 && record.externalGaps?.freshTaskReloadEvidence?.currentMarketplaceProjection?.bundleCardCount === 33 && record.externalGaps?.freshTaskReloadEvidence?.currentMarketplaceProjection?.applicationBundleCardCount === 6 && record.externalGaps?.freshTaskReloadEvidence?.currentMarketplaceProjection?.topicBundleCardCount === 27 && record.externalGaps?.freshTaskReloadEvidence?.currentMarketplaceProjection?.retainedSourceCapabilityCount === 380 && record.externalGaps?.freshTaskReloadEvidence?.currentMarketplaceProjection?.directSourceCapabilityCardCount === 0 && record.externalGaps?.freshTaskReloadEvidence?.historicalPreConsolidationMarketplaceProjection?.current === false && record.externalGaps?.freshTaskReloadEvidence?.historicalPreConsolidationMarketplaceProjection?.immutableHistoricalEvidence === true && record.externalGaps?.freshTaskReloadEvidence?.historicalPreConsolidationMarketplaceProjection?.publicCardCount === 381 && record.externalGaps?.independentInstallState === "public-seis-repo-source-available-independent-install-pending" && record.externalGaps?.independentInstallEvidence === "public-seis-repo-independent-install-evidence-gate" && record.externalGaps?.compiledSwiftClaim === false && record.externalGaps?.nativeRuntimeClaim === false && record.externalGaps?.publicReleaseAllowed === false, "external validation boundary is invalid");
   assert(record.delivery?.featureBranch === FEATURE_BRANCH && record.delivery?.priorValidatedCheckpointCommit === PRIOR_VALIDATED_CHECKPOINT && record.delivery?.priorRemoteReferenceVerified === true && record.delivery?.protectedDefaultBranchWritten === false, "delivery boundary is invalid");
   assert(list(record.risks).length === 3 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "risk or rollback record is invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0 && record.inputSafetyScan?.rawValuesStored === false, "readiness inputs contain unsafe values");

@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-authorization",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-cybersecurity-authorization@seis-repo",
+  "installId": "seis-topic-bundle-10@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

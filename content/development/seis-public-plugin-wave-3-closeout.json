@@ -8,12 +8,51 @@
   "generatedAt": "2026-07-21",
   "purpose": "Close the 100-step Wave 3 public repository-local evidence chain without activating Wave 4, adding the planned topology package or card, or claiming independent installation, Swift execution, provider activity, deployment, or public release.",
   "stateAtCheckpoint": {
+    "current": false,
+    "immutableHistoricalEvidence": true,
     "completedStepCountBeforeTrackerUpdate": 99,
     "activeStepBeforeTrackerUpdate": 100,
     "completedStepCountAfterTrackerUpdate": 100,
     "wave3Completed": true,
     "wave4Activated": false
   },
+  "currentMarketplaceProjection": {
+    "current": true,
+    "projectionModel": "curated-bundle-cards",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCapabilityCardCount": 0
+  },
+  "historicalDirectCardSnapshots": [
+    {
+      "wave": 3,
+      "current": false,
+      "applicationPluginCount": 73,
+      "publicCardCount": 379,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    },
+    {
+      "wave": 4,
+      "current": false,
+      "applicationPluginCount": 74,
+      "publicCardCount": 380,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    },
+    {
+      "wave": 5,
+      "current": false,
+      "applicationPluginCount": 75,
+      "publicCardCount": 381,
+      "immutableHistoricalEvidence": true,
+      "projectionModel": "direct-source-cards"
+    }
+  ],
   "checks": {
     "finalValidation": true,
     "finalPreflight": true,
@@ -109,7 +148,7 @@
     "dataMigrationRequired": false
   },
   "inputSafetyScan": {
-    "inputCount": 11,
+    "inputCount": 12,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

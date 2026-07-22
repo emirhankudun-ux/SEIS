@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-xr",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-knowledge-xr@seis-repo",
+  "installId": "seis-topic-bundle-20@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

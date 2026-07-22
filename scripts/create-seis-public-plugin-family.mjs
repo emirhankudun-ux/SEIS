@@ -17,6 +17,7 @@ const ROOT = process.cwd();
 const checkMode = process.argv.includes("--check");
 const GENERATED_AT = "2026-07-12";
 const UNIFIED_RELEASE_VERSION = "0.3.0+codex.20260712";
+const CANONICAL_INSTALL_ID = "seis-ai-agent@seis-repo";
 const topicObjective = readTopicObjective(ROOT);
 const topicDefinitions = flattenTopicObjective(topicObjective);
 assertTopicObjective(topicObjective, topicDefinitions);
@@ -264,7 +265,7 @@ const contract = {
   summary:
     `SEIS exposes SEIS-Agent as the canonical public orchestrator and projects ${bundlePlan.targetMarketplaceCardCount} public SEIS Repo cards: one canonical install, ${bundlePlan.applicationBundleCount} optional application bundles, and ${bundlePlan.topicBundleCount} optional topic bundles with no more than ${bundlePlan.maximumBundleSize} capabilities each. The ${migratedRootSourcePlugins.length} root modules, ${APP_PLUGIN_EXPANSION_TARGET} app-owned packages, and ${TOPIC_PLUGIN_TARGET} topic packages remain retained public repository sources rather than hundreds of separate marketplace cards.`,
   defaultInstall: {
-    installId: "seis-ai-agent@seis-repo",
+    installId: CANONICAL_INSTALL_ID,
     mode: "single-public-plugin",
     unifiedSuite: "plugins/seis-ai-agent/assets/unified-suite.json",
     standaloneLaneInstallMode: "source-module-only",
@@ -296,7 +297,7 @@ const contract = {
     name: plugin.name,
     sourcePath: plugin.sourcePath,
     category: plugin.category,
-    installId: `${plugin.name}@seis-repo`,
+    installId: requiredBundleInstallId(plugin.name),
     license: "MIT",
     publicStatus: "retained-source-module-in-optional-bundle",
     marketplaceDiscoverable: true,
@@ -310,7 +311,7 @@ const contract = {
     role: plugin.role,
     sourcePath: plugin.sourcePath,
     category: plugin.category,
-    installId: `${plugin.name}@seis-repo`,
+    installId: CANONICAL_INSTALL_ID,
     license: "MIT",
     publicStatus: "embedded-retained-source-module",
     marketplaceDiscoverable: true,
@@ -326,7 +327,7 @@ const contract = {
     displayName: plugin.displayName,
     sourcePath: plugin.sourcePath,
     category: plugin.category,
-    installId: `${plugin.name}@seis-repo`,
+    installId: requiredBundleInstallId(plugin.name),
     license: "MIT",
     publicStatus: "retained-source-module-in-optional-bundle",
     marketplaceDiscoverable: true,
@@ -365,7 +366,7 @@ const contract = {
     maximumSourceCapabilitiesPerBundle: bundlePlan.maximumBundleSize,
   },
   seisAiConnection: {
-    orchestrator: "seis-ai-agent@seis-repo",
+    orchestrator: CANONICAL_INSTALL_ID,
     mcpServer: "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
     connectedLanes: publicPlugins.map((plugin) => plugin.name),
     embeddedSkillSource: "plugins/seis-ai-agent/skills",
@@ -398,7 +399,7 @@ const contract = {
     role: plugin.role,
     category: plugin.category,
     sourcePath: plugin.sourcePath,
-    installId: `${plugin.name}@seis-repo`,
+    installId: CANONICAL_INSTALL_ID,
     license: "MIT",
     publicStatus: "repo_marketplace_available",
     liveRuntimeStatus: "local_demo_or_auth_gated",
@@ -411,7 +412,7 @@ const contract = {
     category: plugin.category,
     sourcePath: plugin.sourcePath,
     validation: plugin.validation,
-    canonicalInstallId: "seis-ai-agent@seis-repo",
+    canonicalInstallId: CANONICAL_INSTALL_ID,
     license: "MIT",
     publicStatus: plugin.name === "seis-ai-agent" ? "public-plugin" : "embedded-retained-source-module",
     liveRuntimeStatus: "local_demo_or_auth_gated",
@@ -428,6 +429,8 @@ const contract = {
     ...publicPlugins.map((plugin) => plugin.validation),
   ],
 };
+
+validateInstallIdentityContract(contract, marketplace);
 
 const markdown = [
   "# SEIS Public Plugin Family",
@@ -479,6 +482,7 @@ const markdown = [
   "- Audience: everyone",
   "- License: MIT",
   "- Runtime: local demo or auth-gated; live external capabilities remain approval-gated.",
+  "- Install identity: every retained app source resolves through its exact optional application bundle; no app source exposes a self-named direct marketplace install.",
   "",
   "## Embedded Modules",
   "",
@@ -508,6 +512,7 @@ const markdown = [
   "- Audience: everyone",
   "- License: MIT",
   "- Runtime: local read-only demo; no provider, network, secret, or write access.",
+  "- Install identity: every retained topic source resolves through its exact optional topic bundle; no topic source exposes a self-named direct marketplace install.",
   "- Package family check: npm run check:seis-topic-plugin-family",
   "",
   "## Security Model",
@@ -902,6 +907,37 @@ process.stdin.on("end", () => process.exit(0));
 
 function toolName(plugin, action) {
   return `${plugin.name.replaceAll("-", "_")}_${action}`;
+}
+
+function requiredBundleInstallId(sourceName) {
+  const bundleId = distributionBundleByMember.get(sourceName);
+  if (!bundleId) throw new Error(`Missing curated bundle install identity for retained source: ${sourceName}`);
+  return `${bundleId}@seis-repo`;
+}
+
+function validateInstallIdentityContract(record, marketplaceRecord) {
+  requireCondition(record.marketplace.publicPluginCount === 34, "marketplace must retain exactly 34 cards");
+  requireCondition(record.marketplace.bundlePluginCount === 33, "marketplace must retain exactly 33 bundle cards");
+  requireCondition(record.sourceInventory.retainedSourcePackageCount === 380, "source inventory must retain exactly 380 capabilities");
+  requireCondition(marketplaceRecord.plugins.length === 34, "marketplace file must retain exactly 34 cards");
+
+  for (const plugin of record.migratedRootPlugins) {
+    requireCondition(plugin.installId === CANONICAL_INSTALL_ID, `${plugin.name}: root source must resolve through ${CANONICAL_INSTALL_ID}`);
+    requireCondition(plugin.installId !== `${plugin.name}@seis-repo`, `${plugin.name}: root source must not expose a self-named install id`);
+    requireCondition(plugin.marketplaceDiscoverable === true && plugin.marketplaceCard === false && plugin.marketplaceBundleId === null, `${plugin.name}: root source discovery/card boundary is invalid`);
+  }
+
+  for (const plugin of [...record.applicationPlugins, ...record.topicPlugins]) {
+    const expectedInstallId = requiredBundleInstallId(plugin.name);
+    requireCondition(plugin.installId === expectedInstallId, `${plugin.name}: retained source must resolve through ${expectedInstallId}`);
+    requireCondition(plugin.installId !== `${plugin.name}@seis-repo`, `${plugin.name}: retained source must not expose a self-named install id`);
+    requireCondition(plugin.marketplaceDiscoverable === true && plugin.marketplaceCard === false, `${plugin.name}: retained source discovery/card boundary is invalid`);
+    requireCondition(plugin.marketplaceBundleId === expectedInstallId.replace(/@seis-repo$/u, ""), `${plugin.name}: retained source bundle id is inconsistent with its install identity`);
+  }
+}
+
+function requireCondition(condition, message) {
+  if (!condition) throw new Error(`SEIS public plugin family install identity validation failed: ${message}`);
 }
 
 function readText(file) {

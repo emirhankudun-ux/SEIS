@@ -61,9 +61,11 @@ function buildProgram() {
       && parentGoalText.includes("30-to-50-card total marketplace surface"),
     curatedMarketplace: consolidation?.id === "seis-public-plugin-consolidation"
       && consolidation?.status === "implemented-repository-local-not-published"
-      && consolidation?.inventory?.publicCardCount >= 30
-      && consolidation?.inventory?.publicCardCount <= 50
+      && consolidation?.inventory?.publicCardCount === 34
       && consolidation?.inventory?.canonicalCardCount === 1
+      && consolidation?.inventory?.bundleCardCount === 33
+      && consolidation?.inventory?.applicationBundleCardCount === 6
+      && consolidation?.inventory?.topicBundleCardCount === 27
       && consolidation?.inventory?.retainedSourceCapabilityCount === 380
       && consolidation?.bundlePlan?.maximumBundleSize === 15
       && consolidation?.bundlePlan?.exactOnceCoverage === true,
@@ -411,8 +413,9 @@ function buildCommandAllowlist() {
     command("node", ["scripts/create-seis-public-plugin-wave-4-evidence-retention.mjs"], "regenerate Wave 4 evidence retention"),
     command("node", ["scripts/create-seis-public-plugin-wave-4-closeout.mjs"], "regenerate Wave 4 closeout"),
     command("node", ["scripts/create-seis-public-plugin-wave-4-program.mjs"], "regenerate Wave 4 program"),
-    command("node", ["scripts/create-seis-public-plugin-continuity-cadence.mjs"], "regenerate continuity cadence"),
     command("node", ["scripts/create-seis-public-plugin-consolidation.mjs"], "regenerate consolidation evidence"),
+    command("node", ["scripts/create-seis-public-plugin-wave-5-program.mjs"], "regenerate Wave 5 program"),
+    command("node", ["scripts/create-seis-public-plugin-continuity-cadence.mjs"], "regenerate continuity cadence"),
     command("node", ["scripts/create-seis-public-plugin-supervised-autopilot.mjs"], "regenerate this program and roadmap"),
     command("node", ["scripts/create-seis-project-manifest-audit.mjs"], "regenerate project manifest audit evidence"),
     command("node", ["scripts/create-seis-public-plugin-family.mjs", "--check"], "check marketplace freshness"),
@@ -425,6 +428,7 @@ function buildCommandAllowlist() {
     command("node", ["scripts/create-seis-public-plugin-wave-4-integration-checkpoint.mjs", "--check"], "check Wave 4 integration checkpoint freshness"),
     command("node", ["scripts/create-seis-public-plugin-wave-4-public-boundary-decision.mjs", "--check"], "check Wave 4 public-boundary decision freshness"),
     command("node", ["scripts/create-seis-public-plugin-consolidation.mjs", "--check"], "check consolidation freshness"),
+    command("node", ["scripts/create-seis-public-plugin-wave-5-program.mjs", "--check"], "check Wave 5 program freshness"),
     command("node", ["scripts/create-seis-public-plugin-supervised-autopilot.mjs", "--check"], "check autopilot freshness"),
     command("node", ["scripts/create-seis-public-plugin-continuity-cadence.mjs", "--check"], "check continuity cadence freshness"),
     command("node", ["scripts/check-seis-public-plugin-expansion-program.mjs"], "check expansion program"),
@@ -522,14 +526,14 @@ function buildDocument(value) {
 function validateProgram(value) {
   assert(value.id === "seis-public-plugin-supervised-autopilot" && value.goalId === "SEIS-GOAL-0025" && value.parentGoalId === "SEIS-GOAL-0024", "program identity is invalid");
   assert(value.status === "active-supervised-foreground-automation" && value.maturity === "prototype", "program status is invalid");
-  assert(value.currentMarketplace?.canonicalInstall === "seis-ai-agent@seis-repo" && value.currentMarketplace?.publicCardCount >= 30 && value.currentMarketplace?.publicCardCount <= 50 && value.currentMarketplace?.retainedSourceCapabilityCount === 380 && value.currentMarketplace?.maximumBundleSize === 15, "marketplace state is invalid");
+  assert(value.currentMarketplace?.canonicalInstall === "seis-ai-agent@seis-repo" && value.currentMarketplace?.publicCardCount === 34 && value.currentMarketplace?.optionalBundleCardCount === 33 && value.currentMarketplace?.retainedSourceCapabilityCount === 380 && value.currentMarketplace?.maximumBundleSize === 15, "marketplace state is invalid");
   assert(value.executionModel?.planAndBuildInOneInvocation === true && value.executionModel?.persistentProcess === false && value.executionModel?.backgroundExecution === false && value.executionModel?.githubPush === false && value.executionModel?.externalWrites === false && value.executionModel?.intentionalNetworkActions === false && value.executionModel?.intentionalSecretAccess === false && value.executionModel?.destructiveActions === false, "execution boundary is invalid");
   assert(value.executionModel?.isolationLevel === "reviewed-allowlist-no-os-sandbox" && value.executionModel?.ambientNetworkIsolationEnforced === false && value.executionModel?.ambientFilesystemIsolationEnforced === false && value.executionModel?.descendantTerminationGuaranteed === false, "isolation disclosure is invalid");
   assert(value.automationRoles?.length === 6 && value.immediateCycle?.totalSteps === 30 && value.immediateCycle?.rounds?.length === 5 && value.immediateCycle?.rounds?.every((round) => round.steps?.length === 6), "immediate cycle is invalid");
   assert(value.fiveWaveSeries?.waves === 5 && value.fiveWaveSeries?.stepsPerWave === 100 && value.fiveWaveSeries?.roundsPerWave === 5 && value.fiveWaveSeries?.nextSeries?.waves === 5 && value.fiveWaveSeries?.nextSeries?.stepsPerWave === 200 && value.fiveWaveSeries?.nextSeries?.status === "active-round-11-plan-and-local-build" && value.fiveWaveSeries?.backgroundExecution === false, "five-wave series is invalid");
   assert(value.round11Cycle?.round === 11 && value.round11Cycle?.totalSteps === 200 && value.round11Cycle?.roundCount === 10 && value.round11Cycle?.stepsPerRound === 20 && value.round11Cycle?.status === "in-progress-plan-and-local-build" && value.round11Cycle?.historicalWave5CloseoutClaimed === false && value.round11Cycle?.rounds?.every((round) => round.steps?.length === 20), "Round 11 cycle is invalid");
   assert(value.tenYearHorizon?.length === 10 && value.tenYearHorizon?.every((year, index) => year?.year === index + 1 && year?.execution === "strategic-gated-not-background"), "ten-year horizon is invalid");
-  assert(value.commandAllowlist?.length === 46 && value.commandAllowlist?.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false), "command allowlist is invalid");
+  assert(value.commandAllowlist?.length === 48 && value.commandAllowlist?.every((entry) => (entry.command === "node" || entry.command === "git") && entry.externalWrite === false && entry.network === false && entry.secrets === false), "command allowlist is invalid");
   assert(Object.values(value.checks || {}).every(Boolean), "one or more source checks are invalid");
   assert(value.publicBoundary?.personalMarketplaceRead === false && value.publicBoundary?.personalMarketplaceMutation === false && value.publicBoundary?.network === false && value.publicBoundary?.externalWrites === false && value.publicBoundary?.secrets === false && value.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(value)), "program must not contain a machine-specific path");

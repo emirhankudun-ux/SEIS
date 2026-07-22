@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-automation-templates",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-automation-templates@seis-repo",
+  "installId": "seis-topic-bundle-05@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

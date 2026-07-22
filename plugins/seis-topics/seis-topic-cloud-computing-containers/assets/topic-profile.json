@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-containers",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-cloud-computing-containers@seis-repo",
+  "installId": "seis-topic-bundle-06@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

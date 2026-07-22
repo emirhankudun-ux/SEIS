@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-software-architecture",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-software-engineering-software-architecture@seis-repo",
+  "installId": "seis-topic-bundle-27@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

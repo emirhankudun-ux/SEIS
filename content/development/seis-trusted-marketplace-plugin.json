@@ -2,7 +2,7 @@
   "version": 2,
   "id": "seis-trusted-marketplace-plugin",
   "status": "public-repository-successor",
-  "summary": "Bind the public SEIS Trusted Marketplace plugin to the SEIS Repo marketplace so curated source review remains visible without preserving a legacy installation surface.",
+  "summary": "Keep the public SEIS Trusted Marketplace source available through one curated SEIS Repo bundle card so trusted-source review remains visible without restoring a direct card or legacy installation surface.",
   "plugin": {
     "name": "seis-trusted-marketplace",
     "displayName": "SEIS Trusted Marketplace",
@@ -11,7 +11,26 @@
     "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
     "publicAudience": "everyone",
     "publicMarketplace": true,
+    "publicRepositoryAvailable": true,
+    "marketplaceDiscoverable": true,
+    "marketplaceCard": false,
+    "marketplacePresentation": "retained-source-through-bundle-card",
+    "distributionBundleId": "seis-application-bundle-06",
+    "distributionBundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+    "distributionInstallId": "seis-application-bundle-06@seis-repo",
+    "directInstallAvailable": false,
     "activationPolicy": "approval-gated"
+  },
+  "currentMarketplaceProjection": {
+    "classification": "current-curated-bundle-projection",
+    "current": true,
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCardCount": 0
   },
   "pluginRepository": {
     "name": "SEIS",
@@ -28,6 +47,7 @@
   },
   "repoContracts": [
     ".agents/plugins/marketplace.json",
+    "content/development/seis-public-plugin-bundle-catalog.json",
     "content/development/trusted-marketplace-intake.json",
     "content/development/plugin-capability-catalog.json",
     "docs/development/trusted-marketplace-intake.md",
@@ -56,13 +76,14 @@
   ],
   "bridgeHealthChecks": [
     "public-manifest-parity",
-    "seis-repo-marketplace-binding",
+    "seis-repo-application-bundle-06-binding",
+    "zero-direct-source-card",
     "read-only-permission-boundary",
     "machine-path-exclusion",
     "approval-gated-activation"
   ],
   "designerWorkflow": [
-    "Open the SEIS Trusted Marketplace card from SEIS Repo.",
+    "Open the SEIS Application Bundle 06 card from SEIS Repo and select the retained SEIS Trusted Marketplace capability.",
     "Choose one capability lane before proposing any external source or connector.",
     "Review trust posture, scope, and user-facing value before activation.",
     "Keep installs, credentials, external writes, and publication blocked until target, authorization, approval, and rollback are explicit.",
@@ -82,7 +103,8 @@
     "replacement": "plugins/seis-core/seis-trusted-marketplace"
   },
   "safetyRules": [
-    "Keep the public marketplace source path relative to the SEIS repository.",
+    "Keep the retained source and its bundle-card path relative to the SEIS repository.",
+    "Do not restore a direct seis-trusted-marketplace card or claim a standalone install.",
     "Do not store user machine paths, credentials, tokens, or external service configuration in this contract.",
     "Do not activate external marketplace sources from this plugin.",
     "Preserve legacy source history without presenting it as an active installation surface."

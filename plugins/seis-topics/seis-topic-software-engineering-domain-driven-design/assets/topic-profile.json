@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-domain-driven-design",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-software-engineering-domain-driven-design@seis-repo",
+  "installId": "seis-topic-bundle-25@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

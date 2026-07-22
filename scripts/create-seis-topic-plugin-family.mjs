@@ -122,6 +122,7 @@ function topicMcpManifest(topic) {
 
 function topicProfile(topic) {
   const marketplaceBundleId = requiredTopicBundleId(topic.id);
+  const installId = `${marketplaceBundleId}@seis-repo`;
   return {
     schemaVersion: 2,
     id: topic.id,
@@ -133,7 +134,7 @@ function topicProfile(topic) {
     directiveNormalized: topic.directive,
     sourcePath: topic.sourcePath,
     marketplace: topic.marketplace,
-    installId: topic.installId,
+    installId,
     version: RELEASE_VERSION,
     status: topic.status,
     maturity: topic.maturity,
@@ -250,7 +251,7 @@ function rootReadme(allTopics) {
     "",
     `The SEIS repository retains ${allTopics.length} objective-derived topic source packages and exposes them through ${topicBundles.length} bounded optional cards in the \`seis-repo\` marketplace.`,
     "",
-    "These packages are public, MIT-licensed, available to everyone, and implemented as local read-only demo lanes. The canonical SEIS-Agent remains the default orchestration install; each topic source maps to exactly one optional bundle and is not a separate card.",
+    "These packages are public, MIT-licensed, available to everyone, and implemented as local read-only demo lanes. The canonical SEIS-Agent remains the default orchestration install; each topic source uses its exact optional bundle install identity and is not a separate card.",
     "",
     "## Source of truth",
     "",

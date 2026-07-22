@@ -6,6 +6,10 @@ const mapPath = path.join(ROOT, "content", "development", "aggressive-capability
 const docsPath = path.join(ROOT, "docs", "development", "aggressive-capability-activation.md");
 const registryPath = path.join(ROOT, "content", "development", "connector-capability-registry.json");
 const pluginCatalogPath = path.join(ROOT, "content", "development", "plugin-capability-catalog.json");
+const trustedMarketplacePath = path.join(ROOT, "content", "development", "seis-trusted-marketplace-plugin.json");
+const trustedMarketplaceIntakePath = path.join(ROOT, "content", "development", "trusted-marketplace-intake.json");
+const marketplacePath = path.join(ROOT, ".agents", "plugins", "marketplace.json");
+const bundleCatalogPath = path.join(ROOT, "content", "development", "seis-public-plugin-bundle-catalog.json");
 const packagePath = path.join(ROOT, "package.json");
 const failures = [];
 
@@ -29,6 +33,10 @@ function ensure(condition, message) {
 const map = readJson(mapPath);
 const registry = readJson(registryPath);
 const pluginCatalog = readJson(pluginCatalogPath);
+const trustedMarketplace = readJson(trustedMarketplacePath);
+const trustedMarketplaceIntake = readJson(trustedMarketplaceIntakePath);
+const marketplace = readJson(marketplacePath);
+const bundleCatalog = readJson(bundleCatalogPath);
 const packageJson = readJson(packagePath);
 const docs = fs.existsSync(docsPath) ? fs.readFileSync(docsPath, "utf8") : "";
 const packageScripts = new Set(Object.keys(packageJson?.scripts || {}));
@@ -49,8 +57,12 @@ function ensureQualityCommandsExist(commands, owner) {
 ensure(docs.includes("SEIS Aggressive Capability Activation"), "aggressive capability docs must keep the title");
 ensure(docs.includes("npm run check:aggressive-capability-map"), "docs must include the validator command");
 ensure(docs.includes("content/development/plugin-capability-catalog.json"), "docs must link the plugin capability catalog");
+ensure(docs.includes("seis-application-bundle-06@seis-repo"), "docs must name the trusted-marketplace distribution bundle");
+ensure(docs.includes("marketplaceCard: false"), "docs must state the trusted-marketplace direct-card boundary");
+ensure(!docs.includes("seis-trusted-marketplace@seis-repo"), "docs must not present a stale trusted-marketplace standalone install id");
 
 if (map) {
+  ensure(map.version === 2, "map schema version must be 2");
   ensure(map.id === "seis-aggressive-capability-map", "map id must stay stable");
   ensure(map.mode === "aggressive-safe-activation", "map mode must be aggressive-safe-activation");
   ensure(map.branch === "UIXAppTTR", "map must target UIXAppTTR");
@@ -61,6 +73,23 @@ if (map) {
   ensure(String(map.automationContract?.pushPolicy || "").includes("never force push"), "push policy must forbid force push");
   ensure(map.serverUploadGate?.status === "blocked-until-target-selected", "server upload must remain blocked until target selection");
   ensure(Array.isArray(map.liveReadinessMatrix) && map.liveReadinessMatrix.length >= 8, "live readiness matrix must include at least eight entries");
+  ensure(map.trustedMarketplaceDistribution?.classification === "current-curated-bundle-projection", "trusted marketplace distribution classification is invalid");
+  ensure(map.trustedMarketplaceDistribution?.current === true, "trusted marketplace distribution must be marked current");
+  ensure(map.trustedMarketplaceDistribution?.marketplaceName === "seis-repo", "trusted marketplace distribution marketplace is invalid");
+  ensure(map.trustedMarketplaceDistribution?.publicCardCount === 34, "trusted marketplace distribution public-card count is invalid");
+  ensure(map.trustedMarketplaceDistribution?.canonicalCardCount === 1, "trusted marketplace distribution canonical-card count is invalid");
+  ensure(map.trustedMarketplaceDistribution?.bundleCardCount === 33, "trusted marketplace distribution bundle-card count is invalid");
+  ensure(map.trustedMarketplaceDistribution?.applicationBundleCardCount === 6, "trusted marketplace distribution application-bundle count is invalid");
+  ensure(map.trustedMarketplaceDistribution?.topicBundleCardCount === 27, "trusted marketplace distribution topic-bundle count is invalid");
+  ensure(map.trustedMarketplaceDistribution?.retainedSourceCapabilityCount === 380, "trusted marketplace distribution retained-source count is invalid");
+  ensure(map.trustedMarketplaceDistribution?.sourceCapability === "seis-trusted-marketplace", "trusted marketplace source capability is invalid");
+  ensure(map.trustedMarketplaceDistribution?.sourcePath === "plugins/seis-core/seis-trusted-marketplace", "trusted marketplace source path is invalid");
+  ensure(map.trustedMarketplaceDistribution?.marketplaceCard === false, "trusted marketplace source must not expose a direct card");
+  ensure(map.trustedMarketplaceDistribution?.marketplacePresentation === "retained-source-through-bundle-card", "trusted marketplace presentation is invalid");
+  ensure(map.trustedMarketplaceDistribution?.distributionBundleId === "seis-application-bundle-06", "trusted marketplace distribution bundle is invalid");
+  ensure(map.trustedMarketplaceDistribution?.distributionInstallId === "seis-application-bundle-06@seis-repo", "trusted marketplace distribution install id is invalid");
+  ensure(map.trustedMarketplaceDistribution?.directInstallAvailable === false, "trusted marketplace source must not claim a standalone install");
+  ensure(map.trustedMarketplaceDistribution?.directSourceCardCount === 0, "trusted marketplace current direct-source card count must be zero");
 
   const readinessIds = new Set((map.liveReadinessMatrix || []).map((entry) => entry.id));
   for (const id of ["github-cli", "browser", "figma", "playwright", "output-ai", "cloud-hosting-connectors"]) {
@@ -87,6 +116,27 @@ if (map) {
     ensure(Array.isArray(lane.blockedActions) && lane.blockedActions.length > 0, `lane ${lane.id || "unknown"} must define blocked actions`);
     ensureQualityCommandsExist(lane.qualityCommands, `lane ${lane.id || "unknown"}`);
   }
+}
+
+if (trustedMarketplace && trustedMarketplaceIntake) {
+  const distribution = map?.trustedMarketplaceDistribution;
+  ensure(trustedMarketplace.plugin?.marketplaceCard === false, "trusted marketplace bridge must reject a direct source card");
+  ensure(trustedMarketplace.plugin?.distributionBundleId === distribution?.distributionBundleId, "trusted marketplace bridge and aggressive map bundle ids must match");
+  ensure(trustedMarketplaceIntake.publicCodexPlugin?.marketplaceCard === false, "trusted marketplace intake must reject a direct source card");
+  ensure(trustedMarketplaceIntake.publicCodexPlugin?.distributionBundleId === distribution?.distributionBundleId, "trusted marketplace intake and aggressive map bundle ids must match");
+}
+
+if (marketplace && bundleCatalog) {
+  const entries = Array.isArray(marketplace.plugins) ? marketplace.plugins : [];
+  const directCard = entries.find((entry) => entry?.name === "seis-trusted-marketplace");
+  const bundleCard = entries.find((entry) => entry?.name === "seis-application-bundle-06");
+  const memberships = (bundleCatalog.bundles || []).filter((bundle) => (bundle?.memberNames || []).includes("seis-trusted-marketplace"));
+  ensure(entries.length === 34, "aggressive capability map must validate the current 34-card marketplace");
+  ensure(!directCard, "aggressive capability map must reject a direct trusted-marketplace source card");
+  ensure(Boolean(bundleCard), "aggressive capability map trusted-marketplace bundle card is missing");
+  ensure(memberships.length === 1 && memberships[0]?.id === "seis-application-bundle-06", "aggressive capability map trusted-marketplace source must resolve through exactly application bundle 06");
+  ensure(bundleCatalog.marketplace?.bundleCardCount === 33, "aggressive capability map current bundle-card count is invalid");
+  ensure(bundleCatalog.sourceCapabilityInventory?.retainedSourcePackageCount === 380, "aggressive capability map retained-source count is invalid");
 }
 
 if (registry) {

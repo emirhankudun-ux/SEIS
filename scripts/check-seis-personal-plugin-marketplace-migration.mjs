@@ -69,6 +69,7 @@ ensure(publicNameForLegacyId.get("seis-personal-plugin-discovery") === "seis-plu
 
 const canonicalEntry = marketplaceEntries.find((entry) => entry?.name === "seis-ai-agent");
 ensure(Boolean(canonicalEntry), "canonical SEIS-Agent marketplace card must remain available");
+ensure(canonicalPlugins[0]?.installId === "seis-ai-agent@seis-repo", "canonical SEIS-Agent install id must remain stable");
 const embeddedModuleNames = new Set(unifiedSuite?.sourceDiscovery?.embeddedModuleNames || []);
 
 for (const bundle of bundles) {
@@ -121,7 +122,30 @@ for (const rename of legacyPublicRenames) {
 for (const plugin of migratedRootPlugins) {
   ensure(migratedRootNames.has(plugin.name), `${plugin.name} must stay in the migrated root package list`);
   ensure(plugin.sourcePath === `./plugins/${plugin.name}`, `${plugin.name} root source path must be repo-owned`);
-  ensure(plugin.installId === `${plugin.name}@seis-repo`, `${plugin.name} root install id must use seis-repo`);
+  ensure(plugin.installId === "seis-ai-agent@seis-repo", `${plugin.name} root source must resolve through the canonical SEIS-Agent install`);
+  ensure(plugin.installId !== `${plugin.name}@seis-repo`, `${plugin.name} root source must not expose a self-named marketplace install id`);
+  ensure(plugin.marketplaceDiscoverable === true && plugin.marketplaceCard === false && plugin.marketplaceBundleId === null, `${plugin.name} root source discovery/card boundary is invalid`);
+}
+
+for (const plugin of [...applicationPlugins, ...topicPlugins]) {
+  const memberships = bundlesByMemberName.get(plugin.name) || [];
+  const expectedBundleId = memberships.length === 1 ? memberships[0].id : null;
+  const expectedInstallId = expectedBundleId ? `${expectedBundleId}@seis-repo` : null;
+  ensure(memberships.length === 1, `${plugin.name} retained source must have exactly one bundle install identity`);
+  ensure(plugin.marketplaceBundleId === expectedBundleId, `${plugin.name} retained source must name its exact bundle`);
+  ensure(plugin.installId === expectedInstallId, `${plugin.name} retained source must resolve through its exact bundle install id`);
+  ensure(plugin.installId !== `${plugin.name}@seis-repo`, `${plugin.name} retained source must not expose a self-named marketplace install id`);
+  ensure(plugin.marketplaceDiscoverable === true && plugin.marketplaceCard === false, `${plugin.name} retained source discovery/card boundary is invalid`);
+}
+
+for (const plugin of unifiedSuite?.applicationDistribution?.plugins || []) {
+  const memberships = bundlesByMemberName.get(plugin.moduleId) || [];
+  const expectedBundleId = memberships.length === 1 ? memberships[0].id : null;
+  ensure(memberships.length === 1, `${plugin.moduleId} unified-suite source must have exactly one bundle install identity`);
+  ensure(plugin.marketplaceBundleId === expectedBundleId, `${plugin.moduleId} unified-suite bundle id is stale`);
+  ensure(plugin.canonicalInstallId === `${expectedBundleId}@seis-repo`, `${plugin.moduleId} unified-suite install id must resolve through its exact bundle`);
+  ensure(plugin.canonicalInstallId !== `${plugin.moduleId}@seis-repo`, `${plugin.moduleId} unified-suite source must not expose a self-named marketplace install id`);
+  ensure(plugin.marketplaceDiscoverable === true && plugin.marketplaceCard === false, `${plugin.moduleId} unified-suite discovery/card boundary is invalid`);
 }
 
 const report = {

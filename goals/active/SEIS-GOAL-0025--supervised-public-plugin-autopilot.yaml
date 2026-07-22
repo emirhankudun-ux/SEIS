@@ -79,7 +79,7 @@ requirements:
   - increase the next five-wave series to 200 steps per wave after the current series closes
   - activate Round 11 as one explicit 200-step cycle in ten 20-step rounds without claiming historical Wave 5 closeout
   - execute plan, generation, and validation only during a foreground local invocation
-  - allowlist exactly 46 local generator, validation, test, and diff-check phases explicitly
+  - allowlist exactly 48 local generator, validation, test, and diff-check phases explicitly
   - anchor repository identity and phase targets independently of the caller working directory
   - refuse linked or replaced phase targets and revalidate device, inode, size, and digest immediately before execution
   - disclose that the reviewed allowlist is source containment rather than an operating-system sandbox
@@ -101,7 +101,7 @@ acceptance_criteria:
   - the automation has no GitHub push or external command path
   - the 30-step bootstrap, five 100-step historical waves, and active 200-step Round 11 are machine-validated
   - Round 11 contains exactly 200 steps in ten 20-step rounds with only step 1 in progress initially
-  - all 46 phase targets are repository-anchored; executable targets are regular, link-free, bounded, hashed, and checked again before spawn
+  - all 48 phase targets are repository-anchored; executable targets are regular, link-free, bounded, hashed, and checked again before spawn
   - plan mode succeeds from a foreign working directory and a linked phase-target fixture is rejected
   - failures are reported without a success claim
   - documentation states that the command is supervised foreground automation, not persistent autonomous execution

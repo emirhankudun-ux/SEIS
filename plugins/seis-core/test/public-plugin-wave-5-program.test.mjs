@@ -34,6 +34,22 @@ test("tracks Wave 5 after the completed fourth public-only delivery tranche", ()
   assert.equal(typeof program.activationGate.candidateBundleId, "string");
   assert.equal(program.activationGate.candidateBundleCardExists, true);
   assert.equal(program.activationGate.publicReleaseApproved, false);
+  assert.deepEqual(program.currentMarketplaceProjection, {
+    current: true,
+    projectionModel: "curated-bundle-cards",
+    publicCardCount: 34,
+    canonicalCardCount: 1,
+    bundleCardCount: 33,
+    applicationBundleCardCount: 6,
+    topicBundleCardCount: 27,
+    retainedSourceCapabilityCount: 380,
+    directSourceCapabilityCardCount: 0,
+  });
+  assert.equal(program.historicalPreConsolidationMarketplaceProjection.current, false);
+  assert.equal(program.historicalPreConsolidationMarketplaceProjection.immutableHistoricalEvidence, true);
+  assert.equal(program.historicalPreConsolidationMarketplaceProjection.projectionModel, "direct-source-cards");
+  assert.equal(program.historicalPreConsolidationMarketplaceProjection.publicCardCount, 381);
+  assert.equal(program.historicalPreConsolidationMarketplaceProjection.retainedSourceCapabilityCount, 380);
   assert.equal(program.steps.filter((step) => step.status === "completed").length, 80);
   assert.deepEqual(program.steps.filter((step) => step.status === "in-progress").map((step) => step.number), [81]);
   assert.equal(program.steps.filter((step) => step.status === "planned").length, 19);
@@ -59,6 +75,7 @@ test("tracks Wave 5 after the completed fourth public-only delivery tranche", ()
   assert.equal(program.checks.outputBounds, true);
   assert.equal(program.checks.round3Checkpoint, true);
   assert.equal(program.checks.consolidationInventory, true);
+  assert.equal(program.checks.currentMarketplaceProjection, true);
   assert.equal(program.evidence.consolidation, "content/development/seis-public-plugin-consolidation.json");
   assert.ok(Object.values(program.checks).every(Boolean));
   assert.equal(program.publicBoundary.marketplaceName, "seis-repo");

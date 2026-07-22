@@ -240,7 +240,18 @@ function validateSuite(record) {
   if (!Array.isArray(record.sourceDiscovery?.discoveredApplicationPluginNames) || record.sourceDiscovery.discoveredApplicationPluginNames.length !== applicationPluginSources.pluginCount) failures.push("suite discovery must cover every app-owned plugin manifest");
   if (record.sourceDiscovery.uncoveredApplicationSourcePlugins.length !== 0) failures.push(`unified suite is missing app-owned source plugins: ${record.sourceDiscovery.uncoveredApplicationSourcePlugins.join(", ")}`);
   if (new Set(record.applicationDistribution.plugins.map((plugin) => plugin.moduleId)).size !== record.applicationDistribution.plugins.length) failures.push("app-owned module ids must be unique");
-  if (!record.applicationDistribution.plugins.every((plugin) => plugin.sourcePath.startsWith("plugins/seis-core/") && plugin.publicMarketplace === false && typeof plugin.marketplaceBundleId === "string" && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === `${plugin.moduleId}@seis-repo`)) failures.push("app-owned modules must stay as retained sources with a bounded marketplace bundle");
+  if (!record.applicationDistribution.plugins.every((plugin) => {
+    const expectedBundleId = bundleMembership.get(plugin.moduleId);
+    const expectedInstallId = `${expectedBundleId}@seis-repo`;
+    return plugin.sourcePath.startsWith("plugins/seis-core/")
+      && plugin.publicMarketplace === false
+      && plugin.marketplaceDiscoverable === true
+      && plugin.marketplaceCard === false
+      && plugin.marketplaceBundleId === expectedBundleId
+      && plugin.canonicalApplicationId === "seis-core"
+      && plugin.canonicalInstallId === expectedInstallId
+      && plugin.canonicalInstallId !== `${plugin.moduleId}@seis-repo`;
+  })) failures.push("app-owned modules must resolve through their exact bounded marketplace bundle without self-named install ids");
   if (!record.futurePluginIntake?.applicationDefaultInstallRule?.includes("plugins/seis-core") || !record.futurePluginIntake?.applicationDefaultInstallRule?.includes("bounded public bundle")) failures.push("suite must define the curated app-owned intake rule");
   if (!record.futurePluginIntake?.defaultInstallRule?.includes("must not become separate public plugin")) failures.push("suite must keep future plugins under the single public install surface");
   if (failures.length) {
@@ -282,6 +293,8 @@ function buildApplicationPlugins(sourceManifest, membership) {
     const profilePath = `${sourcePath}/assets/plugin-profile.json`;
     const manifest = readJson(manifestPath);
     const profile = readJson(profilePath);
+    const marketplaceBundleId = membership.get(sourcePlugin.name);
+    if (!marketplaceBundleId) throw new Error(`Missing curated application bundle install identity for ${sourcePlugin.name}`);
     return {
       moduleId: sourcePlugin.name,
       displayName: manifest.interface?.displayName || sourcePlugin.name,
@@ -296,10 +309,12 @@ function buildApplicationPlugins(sourceManifest, membership) {
       releaseSemver: manifest.version || sourcePlugin.version || null,
       canonicalApplicationId: "seis-core",
       applicationPath: "apps/seis-core",
-      canonicalInstallId: `${sourcePlugin.name}@seis-repo`,
+      canonicalInstallId: `${marketplaceBundleId}@seis-repo`,
       installSurface: "repo-source-app",
       publicMarketplace: false,
-      marketplaceBundleId: membership.get(sourcePlugin.name) || null,
+      marketplaceDiscoverable: true,
+      marketplaceCard: false,
+      marketplaceBundleId,
       publicRepositoryAvailable: true,
       publicAudience: "everyone",
       publicStatus: "retained-public-repository-source",

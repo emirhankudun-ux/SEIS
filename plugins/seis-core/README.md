@@ -86,7 +86,9 @@ capabilities and are not copied into `packages/seis-ai`. They are discoverable
 through six bounded application bundle cards in the public `seis-repo`
 marketplace rather than 75 individual cards. Each source remains available to
 everyone directly from this repository through the generated bundle map,
-source inventory, and catalog:
+source inventory, and catalog. Its marketplace install identity is the exact
+`<application-bundle-id>@seis-repo` value; a self-named source ID is not a
+direct marketplace install:
 
 ```bash
 npm run automation:seis-core-plugin-sources

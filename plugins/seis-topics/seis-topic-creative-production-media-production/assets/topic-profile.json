@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-media-production",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-creative-production-media-production@seis-repo",
+  "installId": "seis-topic-bundle-08@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",

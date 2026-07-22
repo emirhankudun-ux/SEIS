@@ -75,7 +75,6 @@ function createTopic(group, item, categoryId, groupHeading) {
     license: "MIT",
     audience: "everyone",
     marketplace: "seis-repo",
-    installId: `${topicId}@seis-repo`,
   };
 }
 

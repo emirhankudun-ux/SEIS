@@ -9,7 +9,7 @@
   "directiveNormalized": false,
   "sourcePath": "./plugins/seis-topics/seis-topic-desktop-android",
   "marketplace": "seis-repo",
-  "installId": "seis-topic-desktop-android@seis-repo",
+  "installId": "seis-topic-bundle-16@seis-repo",
   "version": "0.1.0",
   "status": "public-repository-preview",
   "maturity": "prototype",
