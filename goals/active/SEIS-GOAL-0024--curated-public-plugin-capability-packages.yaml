@@ -21,7 +21,7 @@ category:
   - documentation
 
 priority: high
-status: in-progress
+status: review
 maturity: prototype
 confidence: medium
 
@@ -247,4 +247,5 @@ outputs:
   - implementation and rollback documentation
 
 notes:
+  - Local implementation and validation are complete enough for review; public release and independent external-runner proof remain separate gates.
   - GitHub issue, pull request, publication, and release actions require current human approval.
