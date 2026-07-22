@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-product-governance-delivery-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 11,
+  "maximumMemberCount": 15,
+  "category": "Productivity",
+  "categoryLabels": [
+    "Observability",
+    "Productivity",
+    "Governance",
+    "Project Management"
+  ],
+  "generalPlugin": {
+    "id": "automation-delivery",
+    "name": "seis-general-automation-delivery",
+    "displayName": "SEIS Automation & Delivery",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-general/seis-general-automation-delivery",
+    "installId": "seis-general-automation-delivery@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Automation, workflows, product planning, and delivery coordination without bulk installation.",
+    "longDescription": "Automation, workflows, product planning, and delivery coordination without bulk installation. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "automation",
+      "workflows",
+      "delivery",
+      "product",
+      "planning"
+    ],
+    "internalPackageIds": [
+      "seis-internal-automation-workflows-01",
+      "seis-internal-automation-workflows-02",
+      "seis-internal-product-governance-delivery-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-dora-metrics",
+      "displayName": "Seis Dora Metrics",
+      "sourcePath": "./plugins/seis-core/seis-dora-metrics",
+      "category": "Observability",
+      "origin": "application"
+    },
+    {
+      "name": "seis-goal-integrity",
+      "displayName": "SEIS Goal Integrity",
+      "sourcePath": "./plugins/seis-core/seis-goal-integrity",
+      "category": "Productivity",
+      "origin": "application"
+    },
+    {
+      "name": "seis-maintainer-risk",
+      "displayName": "Seis Maintainer Risk",
+      "sourcePath": "./plugins/seis-core/seis-maintainer-risk",
+      "category": "Governance",
+      "origin": "application"
+    },
+    {
+      "name": "seis-project-manifest-audit",
+      "displayName": "SEIS Project Manifest Audit",
+      "sourcePath": "./plugins/seis-core/seis-project-manifest-audit",
+      "category": "Productivity",
+      "origin": "application"
+    },
+    {
+      "name": "seis-source-provenance",
+      "displayName": "SEIS Source Provenance",
+      "sourcePath": "./plugins/seis-core/seis-source-provenance",
+      "category": "Productivity",
+      "origin": "application"
+    },
+    {
+      "name": "seis-topic-project-management",
+      "displayName": "SEIS Project Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-architecture-governance",
+      "displayName": "SEIS Architecture Governance",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-architecture-governance",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-audit",
+      "displayName": "SEIS Audit",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-audit",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-evidence",
+      "displayName": "SEIS Evidence",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-evidence",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-goal-tracking",
+      "displayName": "SEIS Goal Tracking",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-goal-tracking",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-milestones",
+      "displayName": "SEIS Milestones",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-milestones",
+      "category": "Project Management",
+      "origin": "topic"
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-ai-model-intelligence-03",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 14,
+  "maximumMemberCount": 15,
+  "category": "Artificial Intelligence",
+  "categoryLabels": [
+    "Artificial Intelligence"
+  ],
+  "generalPlugin": {
+    "id": "ai-intelligence",
+    "name": "seis-ai-agent",
+    "displayName": "SEIS-Agent",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-ai-agent",
+    "installId": "seis-ai-agent@seis-repo",
+    "canonical": true,
+    "status": "release-ready-not-published",
+    "shortDescription": "The default SEIS AI, agent, model, context, retrieval, and routing experience.",
+    "longDescription": "The default SEIS AI, agent, model, context, retrieval, and routing experience. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "ai",
+      "agents",
+      "models",
+      "routing",
+      "context",
+      "retrieval"
+    ],
+    "internalPackageIds": [
+      "seis-internal-ai-model-intelligence-01",
+      "seis-internal-ai-model-intelligence-02",
+      "seis-internal-ai-model-intelligence-03"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-artificial-intelligence-multimodal-ai",
+      "displayName": "SEIS Multimodal AI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-multimodal-ai",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-natural-language-processing",
+      "displayName": "SEIS Natural Language Processing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-natural-language-processing",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-neural-networks",
+      "displayName": "SEIS Neural Networks",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-neural-networks",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-prompt-engineering",
+      "displayName": "SEIS Prompt Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-prompt-engineering",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-provider-routing",
+      "displayName": "SEIS Provider Routing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-provider-routing",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-rag",
+      "displayName": "SEIS RAG",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-rag",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-reasoning-models",
+      "displayName": "SEIS Reasoning Models",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-reasoning-models",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-responsible-ai",
+      "displayName": "SEIS Responsible AI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-responsible-ai",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-retrieval",
+      "displayName": "SEIS Retrieval",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-retrieval",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-semantic-search",
+      "displayName": "SEIS Semantic Search",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-semantic-search",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-small-language-models",
+      "displayName": "SEIS Small Language Models",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-small-language-models",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-speech-ai",
+      "displayName": "SEIS Speech AI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-speech-ai",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-vector-search",
+      "displayName": "SEIS Vector Search",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-vector-search",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-world-models",
+      "displayName": "SEIS World Models",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-world-models",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    }
+  ]
+}

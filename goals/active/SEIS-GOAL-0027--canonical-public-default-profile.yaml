@@ -1,7 +1,7 @@
 schema_version: 2
 
 id: SEIS-GOAL-0027
-project: seis
+project: seis-plugin-root
 program: public-plugin-governance
 initiative: canonical-public-default-profile
 parent_goal: SEIS-GOAL-0024
@@ -10,10 +10,10 @@ title: Converge active SEIS Repo source records on the canonical SEIS-Agent defa
 summary: >-
   Make the real Codex configuration match the bounded public package model:
   retain the one enabled seis-ai-agent@seis-repo default, preserve any explicitly
-  selected curated optional bundle, and remove only direct seis-repo source
+  selected general-plugin or legacy compatibility record, and remove only direct seis-repo source
   records that the checked-in unified suite already declares embedded in
   SEIS-Agent. This reduces repeated public cards without deleting retained source
-  packages, caches, or user-selected bundle records.
+  packages, caches, or user-selected general-plugin records.
 
 category:
   - plugins
@@ -77,33 +77,33 @@ requirements:
   - require the exact canonical seis-ai-agent@seis-repo record to be unique and enabled before any change
   - provide a read-only canonical-default plan with aggregate counts only
   - remove only direct public source records already embedded in the canonical SEIS-Agent
-  - preserve every curated optional bundle record, unmanaged public record, non-SEIS record, source directory, and cache directory
+  - preserve every reviewed general-plugin or legacy compatibility record, unmanaged public record, non-SEIS record, source directory, and cache directory
   - require explicit --apply --canonicalize-public before any local configuration write
   - verify a same-directory backup, immutable config identity, unchanged canonical profile, and postcondition before success
   - fail closed and restore the original config if verification fails
-  - keep 34 marketplace cards, 33 optional bundles, 380 retained source capabilities, and the 15-capability bundle limit unchanged
+  - keep 10 marketplace cards, 30 internal packages, 380 retained source capabilities, and the 15-capability package limit unchanged
   - prohibit network, provider, secret, GitHub, release, deployment, installation, and background-agent actions
 
 non_goals:
   - deleting retained public source packages or cache directories
-  - removing an optional bundle explicitly selected by a user
-  - changing the 34-card marketplace projection or its bundle membership
-  - installing a bundle automatically
+  - removing a general plugin or legacy compatibility record explicitly selected by a user
+  - changing the 10-card marketplace projection or its internal-package membership
+  - installing a general plugin or internal package automatically
   - rewriting unrelated Codex configuration
   - restarting Codex or claiming UI verification without direct evidence
   - self-authorizing a local config apply from supervised Auto Mode
 
 acceptance_criteria:
-  - the plan distinguishes embedded direct public records, optional bundle records, and unmanaged public records without leaking names or paths
+  - the plan distinguishes embedded direct public records, selected general-plugin or legacy compatibility records, and unmanaged public records without leaking names or paths
   - canonicalize mode removes only source records backed by the unified-suite embedded module map
-  - optional bundle records survive fixture canonicalization unchanged
+  - selected general-plugin and legacy compatibility records survive fixture canonicalization unchanged
   - a stale or changed unified-suite profile aborts apply before configuration replacement
   - fixture tests cover plan, canonicalization, optional-bundle preservation, backup, restore, idempotence, and malformed canonical safeguards
   - the active local configuration has no personal SEIS records and no direct embedded source record after a separately approved apply
   - repository marketplace and focused validation pass before GitHub delivery
 
 definition_of_ready:
-  - SEIS-GOAL-0024 has established the canonical public default and bounded optional bundles
+  - SEIS-GOAL-0024 has established the canonical public default and bounded general-plugin/internal-package topology
   - SEIS-GOAL-0026 has removed personal SEIS config records through a verified backup-backed flow
   - the checked-in unified suite declares all direct SEIS source modules as embedded in SEIS-Agent
   - local configuration mutation remains explicitly approval-gated
@@ -121,7 +121,6 @@ dependencies:
   - SEIS-GOAL-0026
 blocked_by: []
 related_goals:
-  - SEIS-GOAL-021
   - SEIS-GOAL-0024
   - SEIS-GOAL-0026
 
@@ -151,12 +150,12 @@ quality_gates:
 
 risks:
   - id: RISK-0027-001
-    description: A direct public source record might be mistaken for an optional user-selected bundle.
+    description: A direct public source record might be mistaken for a selected general-plugin or legacy compatibility record.
     likelihood: low
     impact: high
     owner: security
-    mitigation: Derive target IDs only from embedded module names and explicitly preserve optional bundle ID patterns.
-    trigger: A fixture or plan reports an optional bundle as a migration target.
+    mitigation: Derive target IDs only from embedded module names and explicitly preserve selected general-plugin and legacy compatibility patterns.
+    trigger: A fixture or plan reports a selected general-plugin or legacy compatibility record as a migration target.
     contingency: Abort and revert the tool change; do not mutate the local config.
     status: active
   - id: RISK-0027-002
@@ -182,7 +181,7 @@ risks:
     likelihood: medium
     impact: medium
     owner: lead-architect
-    mitigation: Keep the 34-card marketplace and 380 retained source capability checks unchanged; change only local active configuration records.
+    mitigation: Keep the 10-card marketplace, 30 internal-package, and 380 retained source-capability checks unchanged; change only local active configuration records.
     trigger: Any validator reports a card, bundle, or source coverage regression.
     contingency: Restore the config backup and revert the focused repository commit.
     status: active

@@ -10,7 +10,7 @@ import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const marketplace = "seis-repo";
 const JOURNEY_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const BUNDLE_ID_PATTERN = /^seis-(?:application|topic)-bundle-\d{2}$/;
+const INTERNAL_PACKAGE_ID_PATTERN = /^seis-internal-[a-z0-9]+(?:-[a-z0-9]+)*-\d{2}$/;
 const FINDER_TERM_PATTERN = /^[a-z0-9]{2,64}$/;
 const FINDER_STOP_WORDS = new Set([
   "a", "an", "and", "application", "applications", "at", "bundle", "bundles", "by", "for", "from", "in", "into", "is", "on", "only", "or", "plugin", "plugins", "public", "repo", "repository", "seis", "source", "sources", "task", "tasks", "the", "to", "topic", "topics", "with",
@@ -25,9 +25,8 @@ const unifiedSuite = readJsonIfExists(unifiedSuitePath);
 const selectionGuide = readJsonIfExists(selectionGuidePath);
 const bundleCatalog = readJsonIfExists(bundleCatalogPath);
 const primaryInstallId = canonicalization?.canonicalOrchestrator || "seis-ai-agent@seis-repo";
-const embeddedModules = Array.isArray(unifiedSuite?.components) ? unifiedSuite.components : [];
-const embeddedLanes = embeddedModules.map((module) => module.moduleId || module.id).filter((id) => id && id !== "seis-ai-agent");
-const applicationDistribution = unifiedSuite?.applicationDistribution || {};
+const generalPlugins = Array.isArray(unifiedSuite?.generalPlugins) ? unifiedSuite.generalPlugins : [];
+const embeddedLanes = generalPlugins.map((plugin) => plugin.name).filter((name) => name && name !== "seis-ai-agent");
 const canonicalFamilyTargets = Array.isArray(canonicalization?.canonicalPluginIds) && canonicalization.canonicalPluginIds.length
   ? canonicalization.canonicalPluginIds
   : [primaryInstallId];
@@ -48,9 +47,9 @@ if (parsedArgs.help) {
     "       node scripts/install-seis-ai-agent.mjs --find <short-local-need>",
     "",
     "Without --journey, the plan contains only seis-ai-agent@seis-repo.",
-    "A known --journey adds only that journey's first optional bundle to the plan.",
-    "--find returns at most three local journey candidates and never installs anything.",
-    "No installation occurs without --apply; bulk bundle and member installation are not supported.",
+    "A known --journey selects exactly one reviewed general plugin for the plan.",
+    "--find returns at most three local general-plugin candidates and never installs anything.",
+    "No installation occurs without --apply; internal packages are metadata and never install targets.",
   ].join("\n"));
   process.exit(0);
 }
@@ -69,13 +68,13 @@ if (parsedArgs.findQuery !== null) {
     candidates: finder.candidates,
     nextSteps: finder.candidates.length > 0
       ? [
-          "Review at most one returned journey candidate for the current scoped task.",
+          "Review at most one returned general-plugin candidate for the current scoped task.",
           "Use the returned planCommand only after choosing one matching journey.",
-          "Do not add --apply until after reviewing that one-bundle plan and receiving explicit human approval.",
+          "Do not add --apply until after reviewing that one-general-plugin plan and receiving explicit human approval.",
         ]
       : [
           "Try a more specific product, security, design, data, cloud, or engineering term.",
-          "Use the public selection guide to review six starter paths and nineteen journey labels.",
+          "Use the public selection guide to review ten general-plugin choices.",
           "No package was selected, installed, or contacted externally.",
         ],
   }, null, 2));
@@ -83,7 +82,7 @@ if (parsedArgs.findQuery !== null) {
 }
 
 const selectedJourney = selectJourney(parsedArgs.journeyId, selectionGuide, bundleCatalog);
-const targets = [primaryInstallId, ...(selectedJourney ? [selectedJourney.initialBundle.installId] : [])];
+const targets = [selectedJourney?.generalPlugin?.installId || primaryInstallId];
 const planCommand = installCommandFor(parsedArgs.journeyId, false);
 const applyCommand = installCommandFor(parsedArgs.journeyId, true);
 
@@ -99,30 +98,25 @@ const readiness = {
     path: "plugins/seis-ai-agent/assets/unified-suite.json",
     status: unifiedSuite?.status || "missing",
     releaseVersion: unifiedSuite?.releaseVersion || null,
-    componentCount: unifiedSuite?.componentCount || 0,
-    publicPluginCount: unifiedSuite?.publicDistribution?.publicPluginCount || 0,
+    generalPluginCount: unifiedSuite?.publicDistribution?.generalPluginCardCount || 0,
+    internalPackageCount: unifiedSuite?.publicDistribution?.internalPackageCount || 0,
+    publicPluginCount: unifiedSuite?.publicDistribution?.marketplaceCardCount || 0,
   },
   applicationSource: {
-    application: applicationDistribution.applicationId || "seis-core",
-    applicationPath: applicationDistribution.applicationPath || "apps/seis-core",
-    ownership: applicationDistribution.ownership || null,
-    sourceRoot: applicationDistribution.sourceRoot || null,
-    sourceManifest: applicationDistribution.sourceManifest || null,
-    releaseTrain: applicationDistribution.releaseTrain || null,
-    releaseLabel: applicationDistribution.releaseLabel || null,
-    releaseSemver: applicationDistribution.releaseSemver || null,
-    pluginCount: applicationDistribution.pluginCount || 0,
-    sourceAvailableInRepository: applicationDistribution.sourceAvailableInRepository === true,
-    publicRepositoryAvailable: applicationDistribution.publicRepositoryAvailable === true,
-    publicAudience: applicationDistribution.publicAudience || null,
-    publicDistribution: applicationDistribution.publicDistribution || null,
-    marketplaceName: applicationDistribution.marketplaceName || null,
-    publicMarketplace: applicationDistribution.publicMarketplace === true,
-    installSurface: applicationDistribution.installSurface || null,
-    marketplaceEntryCount: applicationDistribution.marketplaceEntryCount ?? null,
-    marketplaceCardCount: applicationDistribution.marketplaceCardCount ?? null,
-    sourceCapabilityCount: applicationDistribution.sourceCapabilityCount ?? null,
-    publicReleaseAllowed: applicationDistribution.publicReleaseAllowed === true,
+    application: "seis-core",
+    sourceRoot: "plugins/seis-core",
+    pluginCount: unifiedSuite?.sourceDiscovery?.applicationSourcePackageCount || 0,
+    sourceAvailableInRepository: true,
+    publicRepositoryAvailable: true,
+    publicAudience: "everyone",
+    publicDistribution: "ten-general-plugins-with-internal-packages",
+    marketplaceName: marketplace,
+    publicMarketplace: true,
+    marketplaceEntryCount: unifiedSuite?.publicDistribution?.generalPluginCardCount ?? null,
+    marketplaceCardCount: unifiedSuite?.publicDistribution?.marketplaceCardCount ?? null,
+    internalPackageCount: unifiedSuite?.publicDistribution?.internalPackageCount ?? null,
+    sourceCapabilityCount: unifiedSuite?.publicDistribution?.sourceCapabilityCount ?? null,
+    publicReleaseAllowed: unifiedSuite?.publicReleaseAllowed === true,
   },
   embeddedLanes,
   canonicalization: {
@@ -137,15 +131,16 @@ const readiness = {
       allowedWithoutHumanApproval: canonicalization?.globalMarketplaceMutation?.allowedWithoutHumanApproval === true,
     },
   },
-  bundleSelection: {
+  generalPluginSelection: {
     guidePath: "content/development/seis-public-plugin-selection-guide.json",
     requestedJourneyId: parsedArgs.journeyId,
-    selectionMode: selectedJourney ? "one-explicit-optional-bundle" : "canonical-only",
+    selectionMode: selectedJourney ? "one-explicit-general-plugin" : "canonical-only",
     selectedJourney,
-    maximumOptionalBundleSelectionsPerTask: 1,
+    maximumGeneralPluginSelectionsPerTask: 1,
     bulkInstallAllowed: false,
-    bundleMembersAutoInstalled: false,
-    defaultInstallIncludesOptionalBundle: false,
+    internalPackagesAutoInstalled: false,
+    sourceMembersAutoInstalled: false,
+    defaultInstallIncludesAdditionalPlugin: false,
     applyRequiresExplicitFlag: true,
     planCommand,
     applyCommand,
@@ -158,9 +153,9 @@ const readiness = {
       externalAccess: false,
     },
   },
-  consolidationPolicy: `SEIS-Agent is the canonical public install target; specialist source modules run through the embedded suite, and ${APP_PLUGIN_EXPANSION_TARGET} MIT-licensed app-owned source packages remain available in the SEIS repository through curated public bundles (${applicationDistribution.marketplaceEntryCount ?? 0} application bundle cards within ${applicationDistribution.marketplaceCardCount ?? 0} total public cards). The default never adds an optional bundle. --find may return at most three local journey candidates without selecting or installing anything. A known --journey may add only its validated first optional bundle, and bundle members are never bulk-installed. Live external capabilities remain approval-gated.`,
-  embeddedModuleCount: embeddedModules.length,
-  embeddedModuleIds: embeddedModules.map((module) => module.moduleId || module.id).filter(Boolean),
+  consolidationPolicy: `SEIS exposes ten general plugins and thirty hidden internal packages. ${APP_PLUGIN_EXPANSION_TARGET} app-owned sources and 300 topic sources remain in the repository; internal packages are routing metadata, never install targets. --find returns at most three local candidates, and --journey selects exactly one reviewed general plugin. Live external capabilities remain approval-gated.`,
+  generalPluginCount: generalPlugins.length,
+  generalPluginIds: generalPlugins.map((plugin) => plugin.name).filter(Boolean),
   targets,
 };
 
@@ -253,11 +248,11 @@ function finderTerms(value) {
 function findJourneys(rawQuery, guide, catalog) {
   const contract = guide?.finder;
   if (
-    guide?.id !== "seis-public-plugin-selection-guide" ||
+    guide?.id !== "seis-general-plugin-selection-guide" ||
     guide?.canonicalInstall !== primaryInstallId ||
     guide?.marketplace?.name !== marketplace ||
     !contract ||
-    contract.id !== "seis-public-bundle-finder" ||
+    contract.id !== "seis-general-plugin-finder" ||
     contract.mode !== "local-deterministic-token-match" ||
     contract.maximumResults !== 3 ||
     contract.maximumQueryLength !== 96 ||
@@ -266,7 +261,7 @@ function findJourneys(rawQuery, guide, catalog) {
     contract.installation !== false ||
     contract.sourceTermsReturned !== false
   ) {
-    fail("public bundle finder is unavailable or fails the local no-install safety boundary");
+    fail("public general-plugin finder is unavailable or fails the local no-install safety boundary");
   }
   const query = rawQuery.trim();
   if (!query || Array.from(query).length > contract.maximumQueryLength) {
@@ -275,7 +270,7 @@ function findJourneys(rawQuery, guide, catalog) {
   const queryTerms = finderTerms(query);
   if (queryTerms.length === 0) fail("--find requires a specific local journey term");
   const journeys = Array.isArray(guide.journeys) ? guide.journeys : [];
-  if (journeys.length !== 19) fail("public bundle finder is unavailable or unsafe");
+  if (journeys.length !== 10) fail("public general-plugin finder is unavailable or unsafe");
   const candidates = journeys
     .map((journey) => ({ journey, ...scoreJourneyForFinder(journey, queryTerms, contract) }))
     .filter((candidate) => candidate.score > 0)
@@ -288,7 +283,7 @@ function findJourneys(rawQuery, guide, catalog) {
       const selectedJourney = selectJourney(candidate.journey.id, guide, catalog);
       return {
         journey: selectedJourney,
-        recommendedOptionalBundle: selectedJourney.initialBundle,
+        recommendedGeneralPlugin: selectedJourney.generalPlugin,
         planCommand: installCommandFor(selectedJourney.id, false),
         match: {
           kind: candidate.primaryMatchCount > 0 ? "journey-label-or-id" : "generated-public-metadata",
@@ -312,17 +307,16 @@ function findJourneys(rawQuery, guide, catalog) {
 }
 
 function scoreJourneyForFinder(journey, queryTerms, contract) {
-  const searchTerms = Array.isArray(journey?.searchTerms) ? journey.searchTerms : [];
+  const searchTerms = finderTerms(Array.isArray(journey?.keywords) ? journey.keywords.join(" ") : "");
   if (
     !JOURNEY_ID_PATTERN.test(journey?.id || "") ||
     typeof journey?.label !== "string" ||
     searchTerms.length === 0 ||
     searchTerms.length > contract.maximumSearchTermsPerJourney ||
     new Set(searchTerms).size !== searchTerms.length ||
-    !searchTerms.every((term) => typeof term === "string" && FINDER_TERM_PATTERN.test(term)) ||
-    !finderTerms(`${journey.id} ${journey.label}`).every((term) => searchTerms.includes(term))
+    !searchTerms.every((term) => typeof term === "string" && FINDER_TERM_PATTERN.test(term))
   ) {
-    fail("public bundle finder is unavailable or unsafe");
+    fail("public general-plugin finder is unavailable or unsafe");
   }
   const primaryTerms = new Set(finderTerms(`${journey.id} ${journey.label}`));
   const searchableTerms = new Set(searchTerms);
@@ -352,53 +346,54 @@ function scoreJourneyForFinder(journey, queryTerms, contract) {
 function selectJourney(journeyId, guide, catalog) {
   if (journeyId === null) return null;
   if (
-    guide?.id !== "seis-public-plugin-selection-guide" ||
+    guide?.id !== "seis-general-plugin-selection-guide" ||
     guide?.canonicalInstall !== primaryInstallId ||
     guide?.marketplace?.name !== marketplace ||
-    guide?.selectionBoundary?.maximumOptionalBundleSelectionsPerTask !== 1 ||
+    guide?.selectionBoundary?.maximumGeneralPluginSelectionsPerTask !== 1 ||
+    guide?.selectionBoundary?.maximumInternalPackageSelectionsPerPlugin !== 3 ||
     guide?.selectionBoundary?.bulkInstallAllowed !== false ||
-    guide?.selectionBoundary?.bundleMembersAutoInstalled !== false
+    guide?.selectionBoundary?.internalPackagesAutoInstalled !== false ||
+    guide?.selectionBoundary?.sourceMembersAutoInstalled !== false
   ) {
-    fail("public selection guide is unavailable or fails the one-bundle safety boundary");
+    fail("public selection guide is unavailable or fails the one-general-plugin safety boundary");
   }
   const journey = Array.isArray(guide.journeys) ? guide.journeys.find((candidate) => candidate?.id === journeyId) : null;
-  const initialBundle = journey?.initialBundle;
+  const generalPlugin = journey?.generalPlugin;
   if (
     !journey ||
-    !initialBundle ||
-    !BUNDLE_ID_PATTERN.test(initialBundle.id || "") ||
-    initialBundle.installId !== `${initialBundle.id}@${marketplace}` ||
-    !Number.isInteger(initialBundle.memberCount) ||
-    initialBundle.memberCount < 1 ||
-    initialBundle.memberCount > 15 ||
-    initialBundle.journeyPart !== 1
+    !generalPlugin ||
+    !JOURNEY_ID_PATTERN.test(generalPlugin.id || "") ||
+    !JOURNEY_ID_PATTERN.test(generalPlugin.name || "") ||
+    generalPlugin.installId !== `${generalPlugin.name}@${marketplace}` ||
+    !Array.isArray(generalPlugin.internalPackageIds) ||
+    generalPlugin.internalPackageIds.length !== 3 ||
+    !generalPlugin.internalPackageIds.every((id) => INTERNAL_PACKAGE_ID_PATTERN.test(id))
   ) {
-    fail("--journey must resolve to one validated initial optional bundle");
+    fail("--journey must resolve to one validated general plugin");
   }
-  const catalogBundle = Array.isArray(catalog?.bundles) ? catalog.bundles.find((bundle) => bundle?.id === initialBundle.id) : null;
+  const catalogPlugin = Array.isArray(catalog?.generalPlugins) ? catalog.generalPlugins.find((plugin) => plugin?.id === generalPlugin.id) : null;
+  const catalogPackageIds = new Set((Array.isArray(catalog?.internalPackages) ? catalog.internalPackages : []).map((candidate) => candidate?.id));
   if (
-    !catalogBundle ||
-    catalogBundle.journeyId !== journeyId ||
-    catalogBundle.memberCount !== initialBundle.memberCount ||
-    catalogBundle.journeyPart !== 1 ||
-    catalogBundle.journeyPartCount !== initialBundle.journeyPartCount
+    !catalogPlugin ||
+    catalogPlugin.name !== generalPlugin.name ||
+    !Array.isArray(catalogPlugin.internalPackageIds) ||
+    catalogPlugin.internalPackageIds.join(",") !== generalPlugin.internalPackageIds.join(",") ||
+    !generalPlugin.internalPackageIds.every((id) => catalogPackageIds.has(id))
   ) {
-    fail("--journey does not match the reviewed public bundle catalog");
+    fail("--journey does not match the reviewed public package catalog");
   }
   return {
     id: journey.id,
     label: journey.label,
-    family: journey.family,
-    sourceCapabilityCount: journey.sourceCapabilityCount,
-    initialBundle: {
-      id: initialBundle.id,
-      displayName: initialBundle.displayName,
-      installId: initialBundle.installId,
-      memberCount: initialBundle.memberCount,
-      journeyPart: initialBundle.journeyPart,
-      journeyPartCount: initialBundle.journeyPartCount,
+    category: journey.category,
+    generalPlugin: {
+      id: generalPlugin.id,
+      name: generalPlugin.name,
+      displayName: generalPlugin.displayName,
+      installId: generalPlugin.installId,
+      internalPackageIds: [...generalPlugin.internalPackageIds],
     },
-    continuationBundleIds: Array.isArray(journey.continuationBundleIds) ? journey.continuationBundleIds : [],
+    internalPackageIds: [...generalPlugin.internalPackageIds],
   };
 }
 

@@ -130,6 +130,52 @@ test("canonical public mode retains SEIS-Agent and optional bundles while removi
   }
 });
 
+test("ten-general convergence removes retired public cards while retaining current general plugins", () => {
+  const fixture = makeFixture({
+    includeCurrentGeneralPlugin: true,
+    includeOptionalBundle: true,
+    includeSecondLegacyPublicSource: true,
+  });
+  const original = fs.readFileSync(fixture.configPath, "utf8");
+  try {
+    const plan = run(["--plan", "--converge-ten-general-plugins", "--config", fixture.configPath]);
+    assert.equal(plan.status, 0, plan.stderr || plan.stdout);
+    const planReport = parseReport(plan);
+    assert.equal(planReport.action, "converge-ten-general-plugins");
+    assert.equal(planReport.plannedChangeCount, 3);
+    assert.deepEqual(planReport.tenGeneralPluginProfile, {
+      allowedGeneralPluginRecordCount: 10,
+      retiredPublicRecordCount: 3,
+      retiredNumberedBundleRecordCount: 1,
+      retainedGeneralPluginRecordCount: 2,
+    });
+    assert.equal(planReport.publicBoundary.optionalBundleRecordsModified, true);
+    assert.equal(fs.readFileSync(fixture.configPath, "utf8"), original);
+
+    const apply = run(["--apply", "--converge-ten-general-plugins", "--config", fixture.configPath]);
+    assert.equal(apply.status, 0, apply.stderr || apply.stdout);
+    const report = parseReport(apply);
+    assert.equal(report.status, "applied");
+    assert.equal(report.after.seisRepoPluginRecordCount, 2);
+    assert.deepEqual(report.tenGeneralPluginProfile, {
+      allowedGeneralPluginRecordCount: 10,
+      retiredPublicRecordCount: 0,
+      retiredNumberedBundleRecordCount: 0,
+      retainedGeneralPluginRecordCount: 2,
+    });
+
+    const changed = fs.readFileSync(fixture.configPath, "utf8");
+    assert.match(changed, /\[plugins\."seis-ai-agent@seis-repo"\]/);
+    assert.match(changed, /\[plugins\."seis-general-design-creative@seis-repo"\]/);
+    assert.doesNotMatch(changed, /\[plugins\."seis-cloud@seis-repo"\]/);
+    assert.doesNotMatch(changed, /\[plugins\."seis-design@seis-repo"\]/);
+    assert.doesNotMatch(changed, /\[plugins\."seis-application-bundle-01@seis-repo"\]/);
+    assert.match(changed, /\[plugins\."seis@personal"\]/);
+  } finally {
+    cleanup(fixture.root);
+  }
+});
+
 test("restore accepts only a verified tool backup in the same config directory", () => {
   const fixture = makeFixture();
   const original = fs.readFileSync(fixture.configPath, "utf8");
@@ -181,7 +227,8 @@ test("source contains no network, shell, automatic install, or broad filesystem 
   assert.match(source, /Automatic rollback restored the original configuration/);
   assert.match(source, /sourceDirectoriesRemoved: false/);
   assert.match(source, /cacheDirectoriesRemoved: false/);
-  assert.match(source, /optionalBundleRecordsModified: false/);
+  assert.match(source, /--converge-ten-general-plugins/);
+  assert.match(source, /optionalBundleRecordsModified: action === "converge-ten-general-plugins"/);
   assert.doesNotMatch(source, /https?:\/\/|fetch\s*\(|spawnSync|execSync|execFileSync|git\s+push|rm\s+-rf|child_process/);
 });
 
@@ -189,6 +236,7 @@ function makeFixture({
   includeCanonical = true,
   canonicalEnabled = true,
   duplicateCanonicalEnabledField = false,
+  includeCurrentGeneralPlugin = false,
   includeOptionalBundle = false,
   includeSecondLegacyPublicSource = false,
 } = {}) {
@@ -221,6 +269,13 @@ function makeFixture({
   if (includeOptionalBundle) {
     lines.push(
       '[plugins."seis-application-bundle-01@seis-repo"]',
+      "enabled = true",
+      "",
+    );
+  }
+  if (includeCurrentGeneralPlugin) {
+    lines.push(
+      '[plugins."seis-general-design-creative@seis-repo"]',
       "enabled = true",
       "",
     );

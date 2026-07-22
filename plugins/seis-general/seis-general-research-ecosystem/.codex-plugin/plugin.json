@@ -1,0 +1,37 @@
+{
+  "name": "seis-general-research-ecosystem",
+  "version": "0.4.0+codex.20260722",
+  "description": "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "general-plugin",
+    "research",
+    "desktop",
+    "pantechnoesis",
+    "platform"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Research & Ecosystem",
+    "shortDescription": "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work. It exposes exactly three bounded",
+    "longDescription": "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "developerName": "emirhankudun-ux",
+    "category": "Research",
+    "capabilities": [
+      "Read-only source discovery",
+      "Scoped planning",
+      "Bounded package metadata"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Research & Ecosystem for this scoped SEIS task."
+    ]
+  }
+}

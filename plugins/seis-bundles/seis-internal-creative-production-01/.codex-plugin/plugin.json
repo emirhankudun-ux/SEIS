@@ -1,0 +1,33 @@
+{
+  "name": "seis-internal-creative-production-01",
+  "version": "0.4.0+codex.20260722",
+  "description": "Creative Production is an internal, read-only SEIS capability package with 9 retained source capabilities. It is selected through a general SEIS plugin and is never an extra marketplace card or automatic install target.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "internal-package"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Package: Creative Production 01 of 02",
+    "shortDescription": "Creative Production is an internal, read-only SEIS capability package with 9 retained source capabilities. It is selecte",
+    "longDescription": "Creative Production is an internal, read-only SEIS capability package with 9 retained source capabilities. It is selected through a general SEIS plugin and is never an extra marketplace card or automatic install target.",
+    "developerName": "emirhankudun-ux",
+    "category": "Design",
+    "capabilities": [
+      "Read-only source discovery",
+      "Scoped planning",
+      "Bounded package metadata"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Package: Creative Production 01 of 02 for this scoped SEIS task."
+    ]
+  }
+}

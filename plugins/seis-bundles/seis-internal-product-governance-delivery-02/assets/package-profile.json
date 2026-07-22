@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-product-governance-delivery-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 11,
+  "maximumMemberCount": 15,
+  "category": "Productivity",
+  "categoryLabels": [
+    "Project Management"
+  ],
+  "generalPlugin": {
+    "id": "security-governance",
+    "name": "seis-general-security-governance",
+    "displayName": "SEIS Security & Governance",
+    "category": "Security",
+    "sourcePath": "./plugins/seis-general/seis-general-security-governance",
+    "installId": "seis-general-security-governance@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Security, identity, compliance, governance, permissions, and risk review.",
+    "longDescription": "Security, identity, compliance, governance, permissions, and risk review. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "security",
+      "identity",
+      "compliance",
+      "governance",
+      "risk"
+    ],
+    "internalPackageIds": [
+      "seis-internal-security-assurance-02",
+      "seis-internal-security-assurance-03",
+      "seis-internal-product-governance-delivery-02"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-project-management-ontology",
+      "displayName": "SEIS Ontology",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-ontology",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-permissions",
+      "displayName": "SEIS Permissions",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-permissions",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-policies",
+      "displayName": "SEIS Policies",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-policies",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-product-management",
+      "displayName": "SEIS Product Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-product-management",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-registries",
+      "displayName": "SEIS Registries",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-registries",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-repository-intelligence",
+      "displayName": "SEIS Repository Intelligence",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-repository-intelligence",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-repository-management",
+      "displayName": "SEIS Repository Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-repository-management",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-risk",
+      "displayName": "SEIS Risk",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-risk",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-roadmaps",
+      "displayName": "SEIS Roadmaps",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-roadmaps",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-taxonomy",
+      "displayName": "SEIS Taxonomy",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-taxonomy",
+      "category": "Project Management",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-project-management-validation",
+      "displayName": "SEIS Validation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-validation",
+      "category": "Project Management",
+      "origin": "topic"
+    }
+  ]
+}

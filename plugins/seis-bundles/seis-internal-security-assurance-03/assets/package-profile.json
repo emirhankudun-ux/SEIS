@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-security-assurance-03",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 10,
+  "maximumMemberCount": 15,
+  "category": "Security",
+  "categoryLabels": [
+    "Cybersecurity"
+  ],
+  "generalPlugin": {
+    "id": "security-governance",
+    "name": "seis-general-security-governance",
+    "displayName": "SEIS Security & Governance",
+    "category": "Security",
+    "sourcePath": "./plugins/seis-general/seis-general-security-governance",
+    "installId": "seis-general-security-governance@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Security, identity, compliance, governance, permissions, and risk review.",
+    "longDescription": "Security, identity, compliance, governance, permissions, and risk review. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "security",
+      "identity",
+      "compliance",
+      "governance",
+      "risk"
+    ],
+    "internalPackageIds": [
+      "seis-internal-security-assurance-02",
+      "seis-internal-security-assurance-03",
+      "seis-internal-product-governance-delivery-02"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-cybersecurity-network-security",
+      "displayName": "SEIS Network Security",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-network-security",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-privacy",
+      "displayName": "SEIS Privacy",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-privacy",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-rbac",
+      "displayName": "SEIS RBAC",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-rbac",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-risk-management",
+      "displayName": "SEIS Risk Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-risk-management",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-secrets-management",
+      "displayName": "SEIS Secrets Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-secrets-management",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-security-auditing",
+      "displayName": "SEIS Security Auditing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-security-auditing",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-supply-chain-security",
+      "displayName": "SEIS Supply Chain Security",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-supply-chain-security",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-threat-intelligence",
+      "displayName": "SEIS Threat Intelligence",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-threat-intelligence",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-threat-modeling",
+      "displayName": "SEIS Threat Modeling",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-threat-modeling",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-zero-trust",
+      "displayName": "SEIS Zero Trust",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-zero-trust",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    }
+  ]
+}

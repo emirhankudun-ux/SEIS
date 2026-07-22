@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-cloud-devops-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 13,
+  "maximumMemberCount": 15,
+  "category": "Developer",
+  "categoryLabels": [
+    "Cloud Computing"
+  ],
+  "generalPlugin": {
+    "id": "cloud-devsecops",
+    "name": "seis-general-cloud-devsecops",
+    "displayName": "SEIS Cloud & DevOps",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-general/seis-general-cloud-devsecops",
+    "installId": "seis-general-cloud-devsecops@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning.",
+    "longDescription": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "cloud",
+      "infrastructure",
+      "devops",
+      "devsecops",
+      "reliability"
+    ],
+    "internalPackageIds": [
+      "seis-internal-cloud-devops-01",
+      "seis-internal-cloud-devops-02",
+      "seis-internal-security-assurance-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-cloud-computing",
+      "displayName": "SEIS Cloud Computing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-ci-cd",
+      "displayName": "SEIS CI/CD",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-ci-cd",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-cloud-native",
+      "displayName": "SEIS Cloud Native",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-cloud-native",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-containers",
+      "displayName": "SEIS Containers",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-containers",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-devops",
+      "displayName": "SEIS DevOps",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-devops",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-devsecops",
+      "displayName": "SEIS DevSecOps",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-devsecops",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-docker",
+      "displayName": "SEIS Docker",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-docker",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-edge-computing",
+      "displayName": "SEIS Edge Computing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-edge-computing",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-hybrid-cloud",
+      "displayName": "SEIS Hybrid Cloud",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-hybrid-cloud",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-infrastructure",
+      "displayName": "SEIS Infrastructure",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-infrastructure",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-infrastructure-as-code",
+      "displayName": "SEIS Infrastructure as Code",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-infrastructure-as-code",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-kubernetes",
+      "displayName": "SEIS Kubernetes",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-kubernetes",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-logging",
+      "displayName": "SEIS Logging",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-logging",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    }
+  ]
+}

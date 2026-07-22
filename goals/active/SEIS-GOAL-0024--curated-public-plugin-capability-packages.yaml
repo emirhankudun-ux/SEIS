@@ -1,17 +1,17 @@
 schema_version: 2
 
 id: SEIS-GOAL-0024
-project: seis
+project: seis-plugin-root
 program: public-plugin-governance
 initiative: capability-package-consolidation
-parent_goal: SEIS-GOAL-021
+parent_goal: null
 
 title: Curate the SEIS public marketplace into bounded capability packages
 summary: >-
-  Replace hundreds of individual discovery cards with one canonical SEIS-Agent
-  card inside a reviewed 30-to-50-card total marketplace surface, while retaining
-  every public source package and preserving distinct SEIS, Eleni-Neferi, and
-  Pantechnoesis capability boundaries.
+  Replace hundreds of individual discovery cards with ten concise general SEIS
+  cards, led by the canonical SEIS-Agent and backed by thirty bounded internal
+  packages, while retaining every public source package and preserving distinct
+  SEIS, Eleni-Neferi, and Pantechnoesis capability boundaries.
 
 category:
   - plugins
@@ -21,7 +21,7 @@ category:
   - documentation
 
 priority: high
-status: review
+status: in-progress
 maturity: prototype
 confidence: medium
 
@@ -61,11 +61,12 @@ scope:
     - plugins/seis-ai-agent/.codex-plugin/plugin.json
     - plugins/seis-ai-agent/assets/agent-profile.json
     - plugins/seis-ai-agent/assets/public-bundle-selection-guide.json
-    - plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs
+    - plugins/seis-ai-agent/scripts/seis-general-plugin-mcp-server.mjs
     - plugins/seis-ai-agent/README.md
     - plugins/seis-ai-agent/skills/seis-ai-agent/SKILL.md
-    - scripts/install-seis-ai-agent.mjs
-    - scripts/check-seis-public-plugin-install-smoke.mjs
+    - scripts/install-seis-general-plugin.mjs
+    - scripts/check-seis-general-plugin-install-smoke.mjs
+    - plugins/seis-general
     - plugins/seis-core/runtime/plugin-catalog.mjs
     - plugins/seis-core/runtime/plugin-surface.mjs
     - scripts/create-seis-public-plugin-family.mjs
@@ -100,46 +101,45 @@ security_classification: public-safe
 privacy_impact: none
 
 requirements:
-  - keep SEIS-Agent as the only canonical default-install card
-  - expose between 30 and 50 total public marketplace cards
+  - keep SEIS-Agent as the canonical default-install card among exactly ten general plugins
+  - expose exactly ten public marketplace cards and zero internal-package cards
   - retain every application and topic source package without deletion
-  - map every retained application and topic source package to exactly one bundle
-  - keep each bundle at no more than 15 source capabilities
+  - map every retained application and topic source package to exactly one of thirty internal packages
+  - keep each internal package and every public manifest at no more than 15 capabilities
   - preserve dedicated SEIS, Eleni-Neferi, and Pantechnoesis topic boundaries
-  - keep bundle runtimes local, read-only, bounded, and free of network or secret access
+  - keep general-plugin runtimes local, read-only, bounded, and free of network or secret access
   - reject undeclared files, directories, links, and cross-family duplicate members
-  - validate runtime profiles against immutable generated bundle metadata
-  - generate marketplace and bundle artifacts from reviewed source data
-  - generate a public selection guide with a canonical default, six fast starter paths, and all curated journeys without adding marketplace cards
-  - provide a local deterministic journey finder that returns at most three candidates from generated public metadata without installation or external access
-  - recommend only one initial optional bundle for a known journey and fail closed on tampered guide data or unknown journey input
-  - let the terminal installer find at most three local journey candidates from a short need statement, then turn one known journey into a plan-only canonical-plus-one-bundle selection while keeping the default canonical-only and requiring explicit --apply for external installation
+  - validate runtime profiles against immutable generated general-plugin and internal-package metadata
+  - generate marketplace, package, and general-plugin artifacts from reviewed source data
+  - generate ten task-oriented starter paths without adding internal-package marketplace cards
+  - provide a local deterministic general-plugin finder that returns at most three candidates without installation or external access
+  - recommend only one general plugin for a scoped task and fail closed on tampered metadata or unknown input
+  - keep the terminal installer plan-only by default and require explicit --apply for one reviewed general-plugin installation
   - keep marketplace card counts separate from retained source capability counts in every current contract
-  - preserve historical wave snapshots while labeling them as historical rather than current distribution proof
+  - preserve historical 34-card snapshots while excluding them from current v2 distribution proof
 
 non_goals:
   - deleting or physically merging retained source packages
-  - bulk-installing every bundle or member package
+  - directly or bulk-installing internal packages or retained source members
   - publishing, pushing, signing, or deploying without current human approval
   - granting network, secret, cloud, GitHub-write, or destructive permissions
   - combining SEIS, Eleni-Neferi, and Pantechnoesis into one product identity
 
 acceptance_criteria:
-  - the generated marketplace contains 30 to 50 total cards, including one canonical card and 29 to 49 optional bundle cards
+  - the generated marketplace contains exactly ten general cards, including one canonical SEIS-Agent card
   - all 75 application packages and all 300 topic packages are covered exactly once
-  - every bundle contains at least one and no more than 15 members
-  - category and project boundaries are explicit in bundle metadata
+  - exactly thirty internal packages each contain at least one and no more than 15 members
+  - every general plugin owns exactly three internal packages and each internal package has one owner
+  - category and project boundaries are explicit in package metadata
   - generated plugin manifests pass the repository validator
-  - bundle MCP input, output, metadata reads, and profile values are bounded and fail closed
-  - generated bundle trees contain exactly the allowlisted files and directories
+  - the general-plugin MCP input, output, metadata reads, and profile values are bounded and fail closed
+  - generated internal-package and general-plugin trees contain exactly the allowlisted files and directories
   - source packages remain present and no source directory is deleted
   - focused generation, freshness, marketplace, integration, and test checks pass
-  - current project, catalog, install-state, permission, Apple/Swift, and continuity evidence consistently reports 34 cards and 380 retained source capabilities
-  - the selection guide covers all 33 optional bundles exactly once across 19 journeys and keeps six distinct starter paths
-  - the canonical SEIS-Agent MCP exposes a bounded local journey finder with at most three results, a 96-character query cap, no source-term return payload, no installation, and no external access
-  - the canonical SEIS-Agent MCP reports the curated 34-card marketplace as ready and recommends at most one initial optional bundle without installation or external access
-  - the terminal installer accepts one bounded local --find query, returns at most three candidates without selecting or installing any bundle, and rejects --find combined with journey, check-only, or apply paths
-  - the terminal installer keeps its default plan to SEIS-Agent alone, accepts only one validated known journey for one initial optional bundle, and rejects bulk, arbitrary-bundle, duplicate-journey, and implicit-apply paths
+  - current v2 contracts report 10 cards, 30 internal packages, and 380 retained source capabilities
+  - the selection guide covers ten general plugins and keeps internal packages off the marketplace
+  - the canonical SEIS-Agent MCP exposes a bounded local finder with at most three results, a 96-character query cap, no installation, and no external access
+  - the terminal installer accepts one bounded local --find query, selects at most one general plugin, rejects direct internal-package targets, and never applies implicitly
 
 definition_of_ready:
   - the canonical plugin-root repository and branch are known
@@ -157,20 +157,22 @@ definition_of_done:
 dependencies: []
 blocked_by: []
 related_goals:
-  - SEIS-GOAL-021
+  - SEIS-GOAL-0025
+  - SEIS-GOAL-0026
+  - SEIS-GOAL-0027
+  - SEIS-GOAL-0028
+  - SEIS-GOAL-0029
 
 validation:
   commands:
-    - npm run check:seis-public-plugin-family
-    - npm run check:seis-public-plugin-bundles
+    - npm run check:seis-general-plugin-distribution
+    - npm run check:seis-general-unified-suite
     - npm run check:seis-public-plugin-consolidation
     - node --test plugins/seis-core/test/public-plugin-bundles.test.mjs
     - node --test plugins/seis-core/test/public-plugin-consolidation.test.mjs
-    - npm run check:seis-repo-marketplace
     - npm run check:seis-agent-plugin-integration
     - npm run check:seis-ai-agent
-    - npm run check:seis-core-plugin-catalog
-    - npm run check:seis-core-mcp-permission
+    - npm run check:seis-public-plugin-user-readiness
     - git diff --check
   manual:
     - plugin marketplace information-architecture review
@@ -232,18 +234,18 @@ risks:
     likelihood: medium
     impact: high
     owner: documentation
-    mitigation: Store historical counts in explicitly historical fields and require current contracts to prove 34 cards, 33 bundles, and 380 retained sources.
+    mitigation: Store historical counts in explicitly historical fields and require current v2 contracts to prove 10 cards, 30 internal packages, and 380 retained sources.
     trigger: A current validator derives marketplace readiness from a historical 377-to-381 card count.
     contingency: Reject the current projection, restore the last validated artifact, and migrate the consumer before regeneration.
     status: active
   - id: RISK-0024-006
-    description: A bounded marketplace can still overwhelm users if the initial journey selection is unclear or a recommendation permits multi-bundle installation.
+    description: A bounded marketplace can still overwhelm users if the task-oriented general-plugin choice is unclear or a recommendation permits multi-plugin installation.
     likelihood: medium
     impact: medium
     owner: documentation
-    mitigation: Keep SEIS-Agent as the canonical default, present six starter paths and 19 generated journeys, offer a local deterministic finder capped at three candidates, recommend one initial bundle only, and reject unknown or tampered guide data.
-    trigger: A user-facing guide, MCP response, or manifest permits multiple automatic bundle selections or exposes a raw source-card catalog.
-    contingency: Revert the guide projection, preserve the 34-card marketplace, and restore the last validated one-bundle-at-a-time workflow.
+    mitigation: Keep SEIS-Agent as the canonical default, present ten task-oriented starter paths, cap the local deterministic finder at three candidates, recommend one general plugin only, and reject unknown or tampered guide data.
+    trigger: A user-facing guide, MCP response, or manifest permits multiple automatic general-plugin selections or exposes internal packages as install cards.
+    contingency: Revert the finder change, preserve the last validated 10-card projection, and restore the one-general-plugin-at-a-time workflow.
     status: active
 
 rollback:
@@ -283,5 +285,5 @@ outputs:
 notes:
   - Local implementation and validation are complete enough for review; public release and independent external-runner proof remain separate gates.
   - GitHub issue, pull request, publication, and release actions require current human approval.
-  - The 2026-07-22 usability increment adds six starter paths, 19 generated journeys, and a one-bundle-at-a-time SEIS-Agent recommendation boundary without expanding the 34-card marketplace.
-  - The current usability increment adds a local deterministic finder that returns at most three candidates before the existing exact journey recommendation step; it does not add marketplace cards, install packages, expose source terms, or access external services.
+  - The earlier 2026-07-22 usability increment used six starter paths, 19 journeys, and a 34-card projection; those values are retained only as historical context.
+  - The current usability increment exposes ten general-plugin paths and a local deterministic finder that returns at most three candidates without adding internal-package cards, installing packages, exposing source terms, or accessing external services.

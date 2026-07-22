@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-cloud-devops-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 12,
+  "maximumMemberCount": 15,
+  "category": "Developer",
+  "categoryLabels": [
+    "Cloud Computing"
+  ],
+  "generalPlugin": {
+    "id": "cloud-devsecops",
+    "name": "seis-general-cloud-devsecops",
+    "displayName": "SEIS Cloud & DevOps",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-general/seis-general-cloud-devsecops",
+    "installId": "seis-general-cloud-devsecops@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning.",
+    "longDescription": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "cloud",
+      "infrastructure",
+      "devops",
+      "devsecops",
+      "reliability"
+    ],
+    "internalPackageIds": [
+      "seis-internal-cloud-devops-01",
+      "seis-internal-cloud-devops-02",
+      "seis-internal-security-assurance-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-cloud-computing-metrics",
+      "displayName": "SEIS Metrics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-metrics",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-monitoring",
+      "displayName": "SEIS Monitoring",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-monitoring",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-networking",
+      "displayName": "SEIS Networking",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-networking",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-observability",
+      "displayName": "SEIS Observability",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-observability",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-platform-engineering",
+      "displayName": "SEIS Platform Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-platform-engineering",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-private-cloud",
+      "displayName": "SEIS Private Cloud",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-private-cloud",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-public-cloud",
+      "displayName": "SEIS Public Cloud",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-public-cloud",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-serverless",
+      "displayName": "SEIS Serverless",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-serverless",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-site-reliability-engineering",
+      "displayName": "SEIS Site Reliability Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-site-reliability-engineering",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-telemetry",
+      "displayName": "SEIS Telemetry",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-telemetry",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-tracing",
+      "displayName": "SEIS Tracing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-tracing",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cloud-computing-virtualization",
+      "displayName": "SEIS Virtualization",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-virtualization",
+      "category": "Cloud Computing",
+      "origin": "topic"
+    }
+  ]
+}

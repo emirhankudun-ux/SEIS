@@ -1,29 +1,28 @@
 {
-  "schemaVersion": 1,
-  "id": "seis-public-plugin-selection-guide",
-  "goalId": "SEIS-GOAL-0024",
+  "version": 2,
+  "id": "seis-general-plugin-selection-guide",
   "generatedAt": "2026-07-22",
-  "status": "repository-local-public-selection-guide",
-  "maturity": "prototype",
-  "purpose": "Help a public SEIS user start with SEIS-Agent and select one bounded optional bundle only when it directly matches a task; this guide is not an installer and does not grant external access.",
+  "purpose": "Select one of ten concise general SEIS plugins. Thirty internal packages remain hidden selection units and never become extra marketplace cards.",
   "canonicalInstall": "seis-ai-agent@seis-repo",
   "marketplace": {
     "name": "seis-repo",
-    "publicCardCount": 34,
+    "publicCardCount": 10,
     "canonicalCardCount": 1,
-    "optionalBundleCardCount": 33,
-    "maximumBundleSize": 15
+    "generalPluginCardCount": 10,
+    "internalPackageCardCount": 0,
+    "internalPackageCount": 30,
+    "maximumPackageSize": 15
   },
   "selectionBoundary": {
     "defaultInstall": "seis-ai-agent@seis-repo",
-    "maximumOptionalBundleSelectionsPerTask": 1,
+    "maximumGeneralPluginSelectionsPerTask": 1,
+    "maximumInternalPackageSelectionsPerPlugin": 3,
     "bulkInstallAllowed": false,
-    "bundleMembersAutoInstalled": false,
-    "sourcePackagesRetained": true,
-    "continuationPolicy": "Continue with a later bundle only after the current task is separately scoped and reviewed."
+    "internalPackagesAutoInstalled": false,
+    "sourceMembersAutoInstalled": false
   },
   "finder": {
-    "id": "seis-public-bundle-finder",
+    "id": "seis-general-plugin-finder",
     "mode": "local-deterministic-token-match",
     "maximumResults": 3,
     "maximumQueryLength": 96,
@@ -32,1116 +31,612 @@
     "installation": false,
     "sourceTermsReturned": false
   },
-  "defaultWorkflow": [
-    "Install or open SEIS-Agent as the canonical public starting point.",
-    "Use the local journey finder for a short need statement, or choose one starter path or matching journey.",
-    "Use only its initial optional bundle for the current scoped task.",
-    "Keep source packages retained in the repository and require explicit approval for writes, deployment, credentials, or publication."
-  ],
   "starterPaths": [
     {
-      "journeyId": "ai-data",
-      "journeyLabel": "AI and Data",
-      "intent": "AI, models, data, knowledge, context, and route planning.",
-      "initialBundle": {
-        "id": "seis-application-bundle-01",
-        "displayName": "SEIS Application: AI and Data",
-        "installId": "seis-application-bundle-01@seis-repo",
-        "memberCount": 14,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      }
+      "id": "ai-intelligence",
+      "label": "SEIS-Agent",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "ai-intelligence",
+        "name": "seis-ai-agent",
+        "displayName": "SEIS-Agent",
+        "installId": "seis-ai-agent@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-ai-model-intelligence-01",
+          "seis-internal-ai-model-intelligence-02",
+          "seis-internal-ai-model-intelligence-03"
+        ],
+        "sourcePath": "./plugins/seis-ai-agent"
+      },
+      "internalPackageIds": [
+        "seis-internal-ai-model-intelligence-01",
+        "seis-internal-ai-model-intelligence-02",
+        "seis-internal-ai-model-intelligence-03"
+      ],
+      "keywords": [
+        "ai",
+        "agents",
+        "models",
+        "routing",
+        "context",
+        "retrieval"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "journeyId": "product-design-operations",
-      "journeyLabel": "Product Design and Operations",
-      "intent": "Product design, accessibility, governance, and delivery operations.",
-      "initialBundle": {
-        "id": "seis-application-bundle-02",
-        "displayName": "SEIS Application: Product Design and Operations",
-        "installId": "seis-application-bundle-02@seis-repo",
-        "memberCount": 9,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      }
+      "id": "automation-delivery",
+      "label": "SEIS Automation & Delivery",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "automation-delivery",
+        "name": "seis-general-automation-delivery",
+        "displayName": "SEIS Automation & Delivery",
+        "installId": "seis-general-automation-delivery@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-automation-workflows-01",
+          "seis-internal-automation-workflows-02",
+          "seis-internal-product-governance-delivery-01"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-automation-delivery"
+      },
+      "internalPackageIds": [
+        "seis-internal-automation-workflows-01",
+        "seis-internal-automation-workflows-02",
+        "seis-internal-product-governance-delivery-01"
+      ],
+      "keywords": [
+        "automation",
+        "workflows",
+        "delivery",
+        "product",
+        "planning"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "journeyId": "security",
-      "journeyLabel": "Security",
-      "intent": "Security posture, supply-chain checks, permissions, and public safety.",
-      "initialBundle": {
-        "id": "seis-application-bundle-03",
-        "displayName": "SEIS Application: Security",
-        "installId": "seis-application-bundle-03@seis-repo",
-        "memberCount": 11,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      }
+      "id": "cloud-devsecops",
+      "label": "SEIS Cloud & DevOps",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "cloud-devsecops",
+        "name": "seis-general-cloud-devsecops",
+        "displayName": "SEIS Cloud & DevOps",
+        "installId": "seis-general-cloud-devsecops@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-cloud-devops-01",
+          "seis-internal-cloud-devops-02",
+          "seis-internal-security-assurance-01"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-cloud-devsecops"
+      },
+      "internalPackageIds": [
+        "seis-internal-cloud-devops-01",
+        "seis-internal-cloud-devops-02",
+        "seis-internal-security-assurance-01"
+      ],
+      "keywords": [
+        "cloud",
+        "infrastructure",
+        "devops",
+        "devsecops",
+        "reliability"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "journeyId": "developer-engineering",
-      "journeyLabel": "Developer Engineering",
-      "intent": "Implementation, tests, release readiness, repository health, and developer workflow.",
-      "initialBundle": {
-        "id": "seis-application-bundle-04",
-        "displayName": "SEIS Application: Developer Engineering 01 of 03",
-        "installId": "seis-application-bundle-04@seis-repo",
-        "memberCount": 14,
-        "journeyPart": 1,
-        "journeyPartCount": 3
-      }
+      "id": "security-governance",
+      "label": "SEIS Security & Governance",
+      "category": "Security",
+      "generalPlugin": {
+        "id": "security-governance",
+        "name": "seis-general-security-governance",
+        "displayName": "SEIS Security & Governance",
+        "installId": "seis-general-security-governance@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-security-assurance-02",
+          "seis-internal-security-assurance-03",
+          "seis-internal-product-governance-delivery-02"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-security-governance"
+      },
+      "internalPackageIds": [
+        "seis-internal-security-assurance-02",
+        "seis-internal-security-assurance-03",
+        "seis-internal-product-governance-delivery-02"
+      ],
+      "keywords": [
+        "security",
+        "identity",
+        "compliance",
+        "governance",
+        "risk"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "journeyId": "creative-production",
-      "journeyLabel": "Creative Production",
-      "intent": "Creative production, media, and bounded design-related topic work.",
-      "initialBundle": {
-        "id": "seis-topic-bundle-08",
-        "displayName": "SEIS Topic: Creative Production 01 of 02",
-        "installId": "seis-topic-bundle-08@seis-repo",
-        "memberCount": 9,
-        "journeyPart": 1,
-        "journeyPartCount": 2
-      }
+      "id": "data-knowledge",
+      "label": "SEIS Data & Knowledge",
+      "category": "Data",
+      "generalPlugin": {
+        "id": "data-knowledge",
+        "name": "seis-general-data-knowledge",
+        "displayName": "SEIS Data & Knowledge",
+        "installId": "seis-general-data-knowledge@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-data-knowledge-01",
+          "seis-internal-data-knowledge-02",
+          "seis-internal-knowledge-research-01"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-data-knowledge"
+      },
+      "internalPackageIds": [
+        "seis-internal-data-knowledge-01",
+        "seis-internal-data-knowledge-02",
+        "seis-internal-knowledge-research-01"
+      ],
+      "keywords": [
+        "data",
+        "analytics",
+        "databases",
+        "knowledge",
+        "research"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "journeyId": "software-engineering",
-      "journeyLabel": "Software Engineering",
-      "intent": "Software-engineering topics when a focused technical learning or planning lane is needed.",
-      "initialBundle": {
-        "id": "seis-topic-bundle-25",
-        "displayName": "SEIS Topic: Software Engineering 01 of 03",
-        "installId": "seis-topic-bundle-25@seis-repo",
-        "memberCount": 15,
-        "journeyPart": 1,
-        "journeyPartCount": 3
-      }
+      "id": "design-creative",
+      "label": "SEIS Design & Creative",
+      "category": "Design",
+      "generalPlugin": {
+        "id": "design-creative",
+        "name": "seis-general-design-creative",
+        "displayName": "SEIS Design & Creative",
+        "installId": "seis-general-design-creative@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-design-experience-01",
+          "seis-internal-design-experience-02",
+          "seis-internal-creative-production-01"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-design-creative"
+      },
+      "internalPackageIds": [
+        "seis-internal-design-experience-01",
+        "seis-internal-design-experience-02",
+        "seis-internal-creative-production-01"
+      ],
+      "keywords": [
+        "design",
+        "ux",
+        "accessibility",
+        "creative",
+        "frontend"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
+    },
+    {
+      "id": "eleni-visual",
+      "label": "SEIS Eleni & Visual",
+      "category": "Design",
+      "generalPlugin": {
+        "id": "eleni-visual",
+        "name": "seis-general-eleni-visual",
+        "displayName": "SEIS Eleni & Visual",
+        "installId": "seis-general-eleni-visual@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-eleni-visual-01",
+          "seis-internal-graphics-rendering-01",
+          "seis-internal-creative-production-02"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-eleni-visual"
+      },
+      "internalPackageIds": [
+        "seis-internal-eleni-visual-01",
+        "seis-internal-graphics-rendering-01",
+        "seis-internal-creative-production-02"
+      ],
+      "keywords": [
+        "eleni-neferi",
+        "graphics",
+        "rendering",
+        "media",
+        "storytelling"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
+    },
+    {
+      "id": "research-ecosystem",
+      "label": "SEIS Research & Ecosystem",
+      "category": "Research",
+      "generalPlugin": {
+        "id": "research-ecosystem",
+        "name": "seis-general-research-ecosystem",
+        "displayName": "SEIS Research & Ecosystem",
+        "installId": "seis-general-research-ecosystem@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-knowledge-research-02",
+          "seis-internal-platform-ecosystem-01",
+          "seis-internal-platform-ecosystem-02"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-research-ecosystem"
+      },
+      "internalPackageIds": [
+        "seis-internal-knowledge-research-02",
+        "seis-internal-platform-ecosystem-01",
+        "seis-internal-platform-ecosystem-02"
+      ],
+      "keywords": [
+        "research",
+        "desktop",
+        "seis",
+        "pantechnoesis",
+        "platform"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
+    },
+    {
+      "id": "engineering-foundations",
+      "label": "SEIS Engineering Foundations",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "engineering-foundations",
+        "name": "seis-general-engineering-foundations",
+        "displayName": "SEIS Engineering Foundations",
+        "installId": "seis-general-engineering-foundations@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-engineering-development-01",
+          "seis-internal-engineering-development-02",
+          "seis-internal-engineering-development-03"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-engineering-foundations"
+      },
+      "internalPackageIds": [
+        "seis-internal-engineering-development-01",
+        "seis-internal-engineering-development-02",
+        "seis-internal-engineering-development-03"
+      ],
+      "keywords": [
+        "engineering",
+        "development",
+        "frontend",
+        "architecture",
+        "systems"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
+    },
+    {
+      "id": "engineering-delivery",
+      "label": "SEIS Engineering Delivery",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "engineering-delivery",
+        "name": "seis-general-engineering-delivery",
+        "displayName": "SEIS Engineering Delivery",
+        "installId": "seis-general-engineering-delivery@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-engineering-development-04",
+          "seis-internal-engineering-development-05",
+          "seis-internal-engineering-development-06"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-engineering-delivery"
+      },
+      "internalPackageIds": [
+        "seis-internal-engineering-development-04",
+        "seis-internal-engineering-development-05",
+        "seis-internal-engineering-development-06"
+      ],
+      "keywords": [
+        "engineering",
+        "development",
+        "backend",
+        "testing",
+        "release",
+        "devtools"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     }
   ],
   "journeys": [
     {
-      "id": "ai-data",
-      "label": "AI and Data",
-      "family": "application",
-      "bundleCount": 1,
-      "sourceCapabilityCount": 14,
-      "initialBundle": {
-        "id": "seis-application-bundle-01",
-        "displayName": "SEIS Application: AI and Data",
-        "installId": "seis-application-bundle-01@seis-repo",
-        "memberCount": 14,
-        "journeyPart": 1,
-        "journeyPartCount": 1
+      "id": "ai-intelligence",
+      "label": "SEIS-Agent",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "ai-intelligence",
+        "name": "seis-ai-agent",
+        "displayName": "SEIS-Agent",
+        "installId": "seis-ai-agent@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-ai-model-intelligence-01",
+          "seis-internal-ai-model-intelligence-02",
+          "seis-internal-ai-model-intelligence-03"
+        ],
+        "sourcePath": "./plugins/seis-ai-agent"
       },
-      "continuationBundleIds": [],
-      "bundleIds": [
-        "seis-application-bundle-01"
+      "internalPackageIds": [
+        "seis-internal-ai-model-intelligence-01",
+        "seis-internal-ai-model-intelligence-02",
+        "seis-internal-ai-model-intelligence-03"
       ],
-      "searchTerms": [
-        "ai",
-        "data",
-        "developer",
-        "agent",
-        "audit",
-        "contract",
-        "validator",
-        "context",
-        "efficiency",
-        "doc",
-        "indexer",
-        "docs",
-        "freshness",
-        "download",
-        "anomaly",
-        "localization",
-        "coverage",
-        "mcp",
-        "inventory",
-        "model",
-        "fallback",
-        "package",
-        "adoption",
-        "provider",
-        "health",
-        "rag",
-        "citation",
-        "route",
-        "explainer",
-        "technology",
-        "ontology",
-        "models",
-        "knowledge",
-        "planning"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "product-design-operations",
-      "label": "Product Design and Operations",
-      "family": "application",
-      "bundleCount": 1,
-      "sourceCapabilityCount": 9,
-      "initialBundle": {
-        "id": "seis-application-bundle-02",
-        "displayName": "SEIS Application: Product Design and Operations",
-        "installId": "seis-application-bundle-02@seis-repo",
-        "memberCount": 9,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      },
-      "continuationBundleIds": [],
-      "bundleIds": [
-        "seis-application-bundle-02"
-      ],
-      "searchTerms": [
-        "product",
-        "design",
-        "operations",
-        "developer",
-        "observability",
-        "productivity",
-        "governance",
-        "a11y",
-        "regression",
-        "token",
-        "audit",
-        "dora",
-        "metrics",
-        "focus",
-        "navigation",
-        "goal",
-        "integrity",
-        "maintainer",
-        "risk",
-        "project",
-        "manifest",
-        "provenance",
-        "ui",
-        "state",
-        "contract",
-        "accessibility",
-        "delivery"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "security",
-      "label": "Security",
-      "family": "application",
-      "bundleCount": 1,
-      "sourceCapabilityCount": 11,
-      "initialBundle": {
-        "id": "seis-application-bundle-03",
-        "displayName": "SEIS Application: Security",
-        "installId": "seis-application-bundle-03@seis-repo",
-        "memberCount": 11,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      },
-      "continuationBundleIds": [],
-      "bundleIds": [
-        "seis-application-bundle-03"
-      ],
-      "searchTerms": [
-        "security",
-        "action",
-        "pin",
-        "audit",
-        "artifact",
-        "attestation",
-        "branch",
-        "protection",
-        "dependency",
-        "freshness",
-        "license",
-        "compatibility",
-        "mcp",
-        "permission",
-        "safe",
-        "scan",
-        "sbom",
-        "generator",
-        "secret",
-        "boundary",
-        "vulnerability",
-        "triage",
-        "workflow",
-        "posture",
-        "supply",
-        "chain",
-        "checks",
-        "permissions",
-        "safety"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "developer-engineering",
-      "label": "Developer Engineering",
-      "family": "application",
-      "bundleCount": 3,
-      "sourceCapabilityCount": 41,
-      "initialBundle": {
-        "id": "seis-application-bundle-04",
-        "displayName": "SEIS Application: Developer Engineering 01 of 03",
-        "installId": "seis-application-bundle-04@seis-repo",
-        "memberCount": 14,
-        "journeyPart": 1,
-        "journeyPartCount": 3
-      },
-      "continuationBundleIds": [
-        "seis-application-bundle-05",
-        "seis-application-bundle-06"
-      ],
-      "bundleIds": [
-        "seis-application-bundle-04",
-        "seis-application-bundle-05",
-        "seis-application-bundle-06"
-      ],
-      "searchTerms": [
-        "developer",
-        "engineering",
-        "apple",
-        "native",
-        "readiness",
-        "approval",
-        "gate",
-        "review",
-        "architecture",
-        "drift",
-        "canonical",
-        "registry",
-        "validator",
-        "changelog",
-        "codeowners",
-        "audit",
-        "community",
-        "health",
-        "contract",
-        "compatibility",
-        "contributor",
-        "map",
-        "cost",
-        "latency",
-        "budget",
-        "data",
-        "retention",
-        "evidence",
-        "index",
-        "github",
-        "metrics",
-        "collector",
-        "goal",
-        "dependency",
-        "issue",
-        "triage",
-        "marketplace",
-        "integrity",
-        "migration",
-        "guide",
-        "check",
-        "offline",
-        "mode",
-        "performance",
-        "capability",
-        "coverage",
-        "discovery",
-        "pr",
-        "cycle",
-        "time",
-        "prompt",
-        "injection",
-        "distribution",
-        "install",
-        "state",
-        "runtime",
-        "status",
-        "release",
-        "cadence",
-        "scorecard",
-        "rollback",
-        "semver",
-        "swift",
-        "concurrency",
-        "package",
-        "topology",
-        "test",
-        "flakiness",
-        "tool",
-        "permission",
-        "trusted",
-        "workflow",
-        "linter",
-        "workspace",
-        "inspector",
-        "implementation",
-        "tests"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "artificial-intelligence",
-      "label": "Artificial Intelligence",
-      "family": "topic",
-      "bundleCount": 3,
-      "sourceCapabilityCount": 35,
-      "initialBundle": {
-        "id": "seis-topic-bundle-01",
-        "displayName": "SEIS Topic: Artificial Intelligence 01 of 03",
-        "installId": "seis-topic-bundle-01@seis-repo",
-        "memberCount": 12,
-        "journeyPart": 1,
-        "journeyPartCount": 3
-      },
-      "continuationBundleIds": [
-        "seis-topic-bundle-02",
-        "seis-topic-bundle-03"
-      ],
-      "bundleIds": [
-        "seis-topic-bundle-01",
-        "seis-topic-bundle-02",
-        "seis-topic-bundle-03"
-      ],
-      "searchTerms": [
-        "artificial",
-        "intelligence",
-        "agent",
-        "runtime",
-        "swarms",
+      "keywords": [
         "ai",
         "agents",
-        "alignment",
-        "core",
-        "evaluation",
-        "safety",
-        "audio",
-        "computer",
-        "vision",
-        "context",
-        "engineering",
-        "deep",
-        "learning",
-        "embeddings",
-        "generative",
-        "graphrag",
-        "knowledge",
-        "graph",
-        "systems",
-        "large",
-        "language",
         "models",
-        "machine",
-        "memory",
-        "model",
         "routing",
-        "multimodal",
-        "natural",
-        "processing",
-        "neural",
-        "networks",
-        "prompt",
-        "provider",
-        "rag",
-        "reasoning",
-        "responsible",
-        "retrieval",
-        "semantic",
-        "search",
-        "small",
-        "speech",
-        "vector",
-        "world"
+        "context",
+        "retrieval"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "id": "automation",
-      "label": "Automation",
-      "family": "topic",
-      "bundleCount": 2,
-      "sourceCapabilityCount": 17,
-      "initialBundle": {
-        "id": "seis-topic-bundle-04",
-        "displayName": "SEIS Topic: Automation 01 of 02",
-        "installId": "seis-topic-bundle-04@seis-repo",
-        "memberCount": 9,
-        "journeyPart": 1,
-        "journeyPartCount": 2
+      "id": "automation-delivery",
+      "label": "SEIS Automation & Delivery",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "automation-delivery",
+        "name": "seis-general-automation-delivery",
+        "displayName": "SEIS Automation & Delivery",
+        "installId": "seis-general-automation-delivery@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-automation-workflows-01",
+          "seis-internal-automation-workflows-02",
+          "seis-internal-product-governance-delivery-01"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-automation-delivery"
       },
-      "continuationBundleIds": [
-        "seis-topic-bundle-05"
+      "internalPackageIds": [
+        "seis-internal-automation-workflows-01",
+        "seis-internal-automation-workflows-02",
+        "seis-internal-product-governance-delivery-01"
       ],
-      "bundleIds": [
-        "seis-topic-bundle-04",
-        "seis-topic-bundle-05"
-      ],
-      "searchTerms": [
+      "keywords": [
         "automation",
-        "command",
-        "center",
-        "connectors",
-        "integrations",
-        "mcp",
-        "orchestration",
-        "pipelines",
-        "registry",
-        "providers",
-        "scheduling",
-        "skills",
-        "management",
-        "templates",
-        "tools",
-        "workflow",
-        "workspace"
+        "workflows",
+        "delivery",
+        "product",
+        "planning"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "id": "cloud-computing",
-      "label": "Cloud Computing",
-      "family": "topic",
-      "bundleCount": 2,
-      "sourceCapabilityCount": 25,
-      "initialBundle": {
-        "id": "seis-topic-bundle-06",
-        "displayName": "SEIS Topic: Cloud Computing 01 of 02",
-        "installId": "seis-topic-bundle-06@seis-repo",
-        "memberCount": 13,
-        "journeyPart": 1,
-        "journeyPartCount": 2
+      "id": "cloud-devsecops",
+      "label": "SEIS Cloud & DevOps",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "cloud-devsecops",
+        "name": "seis-general-cloud-devsecops",
+        "displayName": "SEIS Cloud & DevOps",
+        "installId": "seis-general-cloud-devsecops@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-cloud-devops-01",
+          "seis-internal-cloud-devops-02",
+          "seis-internal-security-assurance-01"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-cloud-devsecops"
       },
-      "continuationBundleIds": [
-        "seis-topic-bundle-07"
+      "internalPackageIds": [
+        "seis-internal-cloud-devops-01",
+        "seis-internal-cloud-devops-02",
+        "seis-internal-security-assurance-01"
       ],
-      "bundleIds": [
-        "seis-topic-bundle-06",
-        "seis-topic-bundle-07"
-      ],
-      "searchTerms": [
+      "keywords": [
         "cloud",
-        "computing",
-        "ci",
-        "cd",
-        "native",
-        "containers",
+        "infrastructure",
         "devops",
         "devsecops",
-        "docker",
-        "edge",
-        "hybrid",
-        "infrastructure",
-        "as",
-        "code",
-        "kubernetes",
-        "logging",
-        "metrics",
-        "monitoring",
-        "networking",
-        "observability",
-        "platform",
-        "engineering",
-        "private",
-        "serverless",
-        "site",
-        "reliability",
-        "telemetry",
-        "tracing",
-        "virtualization"
+        "reliability"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "id": "creative-production",
-      "label": "Creative Production",
-      "family": "topic",
-      "bundleCount": 2,
-      "sourceCapabilityCount": 17,
-      "initialBundle": {
-        "id": "seis-topic-bundle-08",
-        "displayName": "SEIS Topic: Creative Production 01 of 02",
-        "installId": "seis-topic-bundle-08@seis-repo",
-        "memberCount": 9,
-        "journeyPart": 1,
-        "journeyPartCount": 2
+      "id": "security-governance",
+      "label": "SEIS Security & Governance",
+      "category": "Security",
+      "generalPlugin": {
+        "id": "security-governance",
+        "name": "seis-general-security-governance",
+        "displayName": "SEIS Security & Governance",
+        "installId": "seis-general-security-governance@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-security-assurance-02",
+          "seis-internal-security-assurance-03",
+          "seis-internal-product-governance-delivery-02"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-security-governance"
       },
-      "continuationBundleIds": [
-        "seis-topic-bundle-09"
+      "internalPackageIds": [
+        "seis-internal-security-assurance-02",
+        "seis-internal-security-assurance-03",
+        "seis-internal-product-governance-delivery-02"
       ],
-      "bundleIds": [
-        "seis-topic-bundle-08",
-        "seis-topic-bundle-09"
-      ],
-      "searchTerms": [
-        "creative",
-        "production",
-        "animation",
-        "asset",
-        "management",
-        "audio",
-        "cgi",
-        "content",
-        "creation",
-        "engineering",
-        "digital",
-        "art",
-        "media",
-        "moodboards",
-        "music",
-        "publishing",
-        "story",
-        "world",
-        "storytelling",
-        "video",
-        "virtual",
-        "visual",
-        "effects",
-        "bounded",
-        "design",
-        "related",
-        "work"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "cybersecurity",
-      "label": "Cybersecurity",
-      "family": "topic",
-      "bundleCount": 2,
-      "sourceCapabilityCount": 21,
-      "initialBundle": {
-        "id": "seis-topic-bundle-10",
-        "displayName": "SEIS Topic: Cybersecurity 01 of 02",
-        "installId": "seis-topic-bundle-10@seis-repo",
-        "memberCount": 11,
-        "journeyPart": 1,
-        "journeyPartCount": 2
-      },
-      "continuationBundleIds": [
-        "seis-topic-bundle-11"
-      ],
-      "bundleIds": [
-        "seis-topic-bundle-10",
-        "seis-topic-bundle-11"
-      ],
-      "searchTerms": [
-        "cybersecurity",
-        "abac",
-        "ai",
+      "keywords": [
         "security",
-        "authentication",
-        "authorization",
-        "compliance",
-        "encryption",
         "identity",
-        "management",
-        "incident",
-        "response",
-        "information",
-        "network",
-        "privacy",
-        "rbac",
-        "risk",
-        "secrets",
-        "auditing",
-        "supply",
-        "chain",
-        "threat",
-        "intelligence",
-        "modeling",
-        "zero",
-        "trust"
+        "compliance",
+        "governance",
+        "risk"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "id": "data",
-      "label": "Data",
-      "family": "topic",
-      "bundleCount": 2,
-      "sourceCapabilityCount": 20,
-      "initialBundle": {
-        "id": "seis-topic-bundle-12",
-        "displayName": "SEIS Topic: Data 01 of 02",
-        "installId": "seis-topic-bundle-12@seis-repo",
-        "memberCount": 10,
-        "journeyPart": 1,
-        "journeyPartCount": 2
+      "id": "data-knowledge",
+      "label": "SEIS Data & Knowledge",
+      "category": "Data",
+      "generalPlugin": {
+        "id": "data-knowledge",
+        "name": "seis-general-data-knowledge",
+        "displayName": "SEIS Data & Knowledge",
+        "installId": "seis-general-data-knowledge@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-data-knowledge-01",
+          "seis-internal-data-knowledge-02",
+          "seis-internal-knowledge-research-01"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-data-knowledge"
       },
-      "continuationBundleIds": [
-        "seis-topic-bundle-13"
+      "internalPackageIds": [
+        "seis-internal-data-knowledge-01",
+        "seis-internal-data-knowledge-02",
+        "seis-internal-knowledge-research-01"
       ],
-      "bundleIds": [
-        "seis-topic-bundle-12",
-        "seis-topic-bundle-13"
-      ],
-      "searchTerms": [
+      "keywords": [
         "data",
         "analytics",
-        "business",
-        "intelligence",
-        "architecture",
-        "engineering",
-        "governance",
-        "lineage",
-        "pipelines",
-        "quality",
-        "science",
         "databases",
-        "elt",
-        "etl",
-        "graph",
-        "metadata",
-        "nosql",
-        "search",
-        "engine",
-        "sql",
-        "storage",
-        "vector"
+        "knowledge",
+        "research"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "id": "design",
-      "label": "Design",
-      "family": "topic",
-      "bundleCount": 2,
-      "sourceCapabilityCount": 21,
-      "initialBundle": {
-        "id": "seis-topic-bundle-14",
-        "displayName": "SEIS Topic: Design 01 of 02",
-        "installId": "seis-topic-bundle-14@seis-repo",
-        "memberCount": 11,
-        "journeyPart": 1,
-        "journeyPartCount": 2
+      "id": "design-creative",
+      "label": "SEIS Design & Creative",
+      "category": "Design",
+      "generalPlugin": {
+        "id": "design-creative",
+        "name": "seis-general-design-creative",
+        "displayName": "SEIS Design & Creative",
+        "installId": "seis-general-design-creative@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-design-experience-01",
+          "seis-internal-design-experience-02",
+          "seis-internal-creative-production-01"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-design-creative"
       },
-      "continuationBundleIds": [
-        "seis-topic-bundle-15"
+      "internalPackageIds": [
+        "seis-internal-design-experience-01",
+        "seis-internal-design-experience-02",
+        "seis-internal-creative-production-01"
       ],
-      "bundleIds": [
-        "seis-topic-bundle-14",
-        "seis-topic-bundle-15"
-      ],
-      "searchTerms": [
+      "keywords": [
         "design",
-        "3d",
-        "accessibility",
-        "branding",
-        "creative",
-        "coding",
-        "systems",
-        "tokens",
-        "editorial",
-        "graphic",
-        "illustration",
-        "interaction",
-        "localization",
-        "motion",
-        "photography",
-        "product",
-        "responsive",
-        "typography",
-        "ui",
         "ux",
-        "visual",
-        "identity"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "desktop",
-      "label": "Desktop",
-      "family": "topic",
-      "bundleCount": 1,
-      "sourceCapabilityCount": 11,
-      "initialBundle": {
-        "id": "seis-topic-bundle-16",
-        "displayName": "SEIS Topic: Desktop",
-        "installId": "seis-topic-bundle-16@seis-repo",
-        "memberCount": 11,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      },
-      "continuationBundleIds": [],
-      "bundleIds": [
-        "seis-topic-bundle-16"
-      ],
-      "searchTerms": [
-        "desktop",
-        "android",
-        "cross",
-        "platform",
-        "ios",
-        "ipados",
-        "linux",
-        "macos",
-        "visionos",
-        "watchos",
-        "web",
-        "windows"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "eleni-neferi",
-      "label": "ELENI-NEFERI",
-      "family": "topic",
-      "bundleCount": 1,
-      "sourceCapabilityCount": 15,
-      "initialBundle": {
-        "id": "seis-topic-bundle-17",
-        "displayName": "SEIS Topic: ELENI-NEFERI",
-        "installId": "seis-topic-bundle-17@seis-repo",
-        "memberCount": 15,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      },
-      "continuationBundleIds": [],
-      "bundleIds": [
-        "seis-topic-bundle-17"
-      ],
-      "searchTerms": [
-        "eleni",
-        "neferi",
-        "architecture",
-        "asset",
-        "universe",
-        "cinematic",
-        "experience",
+        "accessibility",
         "creative",
-        "studio",
-        "editorial",
-        "fashion",
-        "identity",
-        "bible",
-        "lifestyle",
-        "media",
-        "pipeline",
-        "moodboard",
-        "system",
-        "prompt",
-        "registry",
-        "story",
-        "travel",
-        "visual"
+        "frontend"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "id": "graphics",
-      "label": "Graphics",
-      "family": "topic",
-      "bundleCount": 1,
-      "sourceCapabilityCount": 13,
-      "initialBundle": {
-        "id": "seis-topic-bundle-18",
-        "displayName": "SEIS Topic: Graphics",
-        "installId": "seis-topic-bundle-18@seis-repo",
-        "memberCount": 13,
-        "journeyPart": 1,
-        "journeyPartCount": 1
+      "id": "eleni-visual",
+      "label": "SEIS Eleni & Visual",
+      "category": "Design",
+      "generalPlugin": {
+        "id": "eleni-visual",
+        "name": "seis-general-eleni-visual",
+        "displayName": "SEIS Eleni & Visual",
+        "installId": "seis-general-eleni-visual@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-eleni-visual-01",
+          "seis-internal-graphics-rendering-01",
+          "seis-internal-creative-production-02"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-eleni-visual"
       },
-      "continuationBundleIds": [],
-      "bundleIds": [
-        "seis-topic-bundle-18"
+      "internalPackageIds": [
+        "seis-internal-eleni-visual-01",
+        "seis-internal-graphics-rendering-01",
+        "seis-internal-creative-production-02"
       ],
-      "searchTerms": [
+      "keywords": [
+        "eleni-neferi",
         "graphics",
-        "color",
-        "theory",
-        "composition",
-        "game",
-        "engine",
-        "iconography",
-        "layout",
-        "lighting",
-        "materials",
-        "path",
-        "tracing",
-        "ray",
         "rendering",
-        "shaders"
+        "media",
+        "storytelling"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "id": "knowledge",
-      "label": "Knowledge",
-      "family": "topic",
-      "bundleCount": 2,
-      "sourceCapabilityCount": 25,
-      "initialBundle": {
-        "id": "seis-topic-bundle-19",
-        "displayName": "SEIS Topic: Knowledge 01 of 02",
-        "installId": "seis-topic-bundle-19@seis-repo",
-        "memberCount": 13,
-        "journeyPart": 1,
-        "journeyPartCount": 2
+      "id": "research-ecosystem",
+      "label": "SEIS Research & Ecosystem",
+      "category": "Research",
+      "generalPlugin": {
+        "id": "research-ecosystem",
+        "name": "seis-general-research-ecosystem",
+        "displayName": "SEIS Research & Ecosystem",
+        "installId": "seis-general-research-ecosystem@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-knowledge-research-02",
+          "seis-internal-platform-ecosystem-01",
+          "seis-internal-platform-ecosystem-02"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-research-ecosystem"
       },
-      "continuationBundleIds": [
-        "seis-topic-bundle-20"
+      "internalPackageIds": [
+        "seis-internal-knowledge-research-02",
+        "seis-internal-platform-ecosystem-01",
+        "seis-internal-platform-ecosystem-02"
       ],
-      "bundleIds": [
-        "seis-topic-bundle-19",
-        "seis-topic-bundle-20"
-      ],
-      "searchTerms": [
-        "knowledge",
-        "ar",
-        "automation",
-        "biology",
-        "blockchain",
-        "chemistry",
-        "digital",
-        "twin",
-        "documentation",
-        "future",
-        "technologies",
-        "genetics",
-        "human",
-        "ai",
-        "collaboration",
-        "innovation",
-        "iot",
-        "mathematics",
-        "neuroscience",
-        "physics",
-        "quantum",
-        "computing",
+      "keywords": [
         "research",
-        "robotics",
-        "science",
-        "simulation",
-        "spatial",
-        "sustainability",
-        "vr",
-        "xr"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "pantechnoepistemonoesis",
-      "label": "PANTECHNOEPISTEMONOESIS",
-      "family": "topic",
-      "bundleCount": 1,
-      "sourceCapabilityCount": 6,
-      "initialBundle": {
-        "id": "seis-topic-bundle-21",
-        "displayName": "SEIS Topic: PANTECHNOEPISTEMONOESIS",
-        "installId": "seis-topic-bundle-21@seis-repo",
-        "memberCount": 6,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      },
-      "continuationBundleIds": [],
-      "bundleIds": [
-        "seis-topic-bundle-21"
-      ],
-      "searchTerms": [
-        "pantechnoepistemonoesis",
-        "engineering",
-        "civilization",
-        "knowledge",
-        "research",
-        "lab",
-        "scientific",
-        "computing",
-        "technology",
-        "atlas"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "project-management",
-      "label": "Project Management",
-      "family": "topic",
-      "bundleCount": 2,
-      "sourceCapabilityCount": 17,
-      "initialBundle": {
-        "id": "seis-topic-bundle-22",
-        "displayName": "SEIS Topic: Project Management 01 of 02",
-        "installId": "seis-topic-bundle-22@seis-repo",
-        "memberCount": 9,
-        "journeyPart": 1,
-        "journeyPartCount": 2
-      },
-      "continuationBundleIds": [
-        "seis-topic-bundle-23"
-      ],
-      "bundleIds": [
-        "seis-topic-bundle-22",
-        "seis-topic-bundle-23"
-      ],
-      "searchTerms": [
-        "project",
-        "management",
-        "architecture",
-        "governance",
-        "audit",
-        "evidence",
-        "goal",
-        "tracking",
-        "milestones",
-        "ontology",
-        "permissions",
-        "policies",
-        "product",
-        "registries",
-        "intelligence",
-        "risk",
-        "roadmaps",
-        "taxonomy",
-        "validation"
-      ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
-    },
-    {
-      "id": "seis",
-      "label": "SEIS",
-      "family": "topic",
-      "bundleCount": 1,
-      "sourceCapabilityCount": 13,
-      "initialBundle": {
-        "id": "seis-topic-bundle-24",
-        "displayName": "SEIS Topic: SEIS",
-        "installId": "seis-topic-bundle-24@seis-repo",
-        "memberCount": 13,
-        "journeyPart": 1,
-        "journeyPartCount": 1
-      },
-      "continuationBundleIds": [],
-      "bundleIds": [
-        "seis-topic-bundle-24"
-      ],
-      "searchTerms": [
-        "9router",
-        "agent",
-        "runtime",
-        "ai",
-        "core",
         "desktop",
-        "brain",
-        "command",
-        "center",
-        "goal",
-        "tracking",
-        "intelligence",
-        "cube",
-        "knowledge",
-        "engine",
-        "technology",
-        "ontology",
-        "workflow"
+        "seis",
+        "pantechnoesis",
+        "platform"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     },
     {
-      "id": "software-engineering",
-      "label": "Software Engineering",
-      "family": "topic",
-      "bundleCount": 3,
-      "sourceCapabilityCount": 44,
-      "initialBundle": {
-        "id": "seis-topic-bundle-25",
-        "displayName": "SEIS Topic: Software Engineering 01 of 03",
-        "installId": "seis-topic-bundle-25@seis-repo",
-        "memberCount": 15,
-        "journeyPart": 1,
-        "journeyPartCount": 3
+      "id": "engineering-foundations",
+      "label": "SEIS Engineering Foundations",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "engineering-foundations",
+        "name": "seis-general-engineering-foundations",
+        "displayName": "SEIS Engineering Foundations",
+        "installId": "seis-general-engineering-foundations@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-engineering-development-01",
+          "seis-internal-engineering-development-02",
+          "seis-internal-engineering-development-03"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-engineering-foundations"
       },
-      "continuationBundleIds": [
-        "seis-topic-bundle-26",
-        "seis-topic-bundle-27"
+      "internalPackageIds": [
+        "seis-internal-engineering-development-01",
+        "seis-internal-engineering-development-02",
+        "seis-internal-engineering-development-03"
       ],
-      "bundleIds": [
-        "seis-topic-bundle-25",
-        "seis-topic-bundle-26",
-        "seis-topic-bundle-27"
-      ],
-      "searchTerms": [
-        "software",
+      "keywords": [
         "engineering",
-        "algorithms",
-        "api",
-        "backend",
-        "build",
-        "systems",
-        "clean",
-        "architecture",
-        "cli",
-        "compilers",
-        "data",
-        "structures",
-        "debugging",
-        "desktop",
         "development",
-        "distributed",
-        "domain",
-        "driven",
-        "design",
-        "embedded",
-        "frameworks",
         "frontend",
-        "full",
-        "stack",
-        "game",
-        "git",
-        "github",
-        "gui",
-        "hexagonal",
-        "interpreters",
-        "libraries",
-        "microservices",
-        "migration",
-        "mobile",
-        "modular",
-        "monolith",
-        "operating",
-        "optimization",
-        "package",
-        "managers",
-        "profiling",
-        "programming",
-        "languages",
-        "quality",
-        "assurance",
-        "release",
-        "rollback",
-        "sdk",
-        "testing",
-        "tui",
-        "version",
-        "control",
-        "web",
-        "when",
-        "focused",
-        "technical",
-        "learning",
-        "planning",
-        "lane",
-        "needed"
+        "architecture",
+        "systems"
       ],
-      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
+    },
+    {
+      "id": "engineering-delivery",
+      "label": "SEIS Engineering Delivery",
+      "category": "Developer",
+      "generalPlugin": {
+        "id": "engineering-delivery",
+        "name": "seis-general-engineering-delivery",
+        "displayName": "SEIS Engineering Delivery",
+        "installId": "seis-general-engineering-delivery@seis-repo",
+        "internalPackageIds": [
+          "seis-internal-engineering-development-04",
+          "seis-internal-engineering-development-05",
+          "seis-internal-engineering-development-06"
+        ],
+        "sourcePath": "./plugins/seis-general/seis-general-engineering-delivery"
+      },
+      "internalPackageIds": [
+        "seis-internal-engineering-development-04",
+        "seis-internal-engineering-development-05",
+        "seis-internal-engineering-development-06"
+      ],
+      "keywords": [
+        "engineering",
+        "development",
+        "backend",
+        "testing",
+        "release",
+        "devtools"
+      ],
+      "selectionInstruction": "Choose this one general plugin only when it matches the scoped task. Its internal packages are not extra install targets."
     }
-  ],
-  "permissions": {
-    "read": [
-      "selection guide",
-      "bounded bundle catalog"
-    ],
-    "write": [],
-    "network": [],
-    "secrets": []
-  },
-  "externalClaims": {
-    "providerConnectivity": false,
-    "deployment": false,
-    "publicRelease": false,
-    "automaticInstallation": false,
-    "automaticSourceDeletion": false
-  },
-  "rollback": {
-    "strategy": "revert",
-    "scope": "Revert the generated selection guide with its catalog and SEIS-Agent asset; optional bundle packages and retained sources remain intact.",
-    "dataMigrationRequired": false
-  }
+  ]
 }

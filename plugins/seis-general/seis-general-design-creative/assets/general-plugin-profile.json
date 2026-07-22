@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "design-creative",
+  "name": "seis-general-design-creative",
+  "displayName": "SEIS Design & Creative",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "status": "release-ready-not-published",
+  "visibility": "public-general-plugin",
+  "canonical": false,
+  "installId": "seis-general-design-creative@seis-repo",
+  "internalPackageIds": [
+    "seis-internal-design-experience-01",
+    "seis-internal-design-experience-02",
+    "seis-internal-creative-production-01"
+  ],
+  "internalPackageCount": 3,
+  "taskSelectionBoundary": "one-general-plugin-per-scoped-task",
+  "permissions": {
+    "read": [
+      "profile",
+      "internal package metadata"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  }
+}

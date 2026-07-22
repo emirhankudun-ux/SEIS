@@ -1,0 +1,214 @@
+schema_version: 2
+
+id: SEIS-GOAL-0029
+project: seis-plugin-root
+program: public-plugin-distribution
+initiative: ten-general-plugin-experience
+parent_goal: SEIS-GOAL-0024
+
+title: Consolidate duplicate public cards into 10 general plugins with 30 internal packages
+summary: >-
+  Replace the visually repetitive 34-card marketplace projection with ten
+  named general plugins, led by SEIS-Agent. Retain every public-safe source
+  capability in exactly 30 internal packages of at most 15 capabilities, with
+  each general plugin exposing three packages behind one concise card.
+
+category:
+  - plugins
+  - architecture
+  - automation
+  - repository-hygiene
+  - release
+  - user-experience
+
+priority: high
+status: in-progress
+maturity: prototype
+confidence: high
+
+owner_agent: lead-architect
+accountable_human: project-owner
+supporting_agents:
+  - plugin-creator
+  - repository-hygiene
+  - documentation
+  - testing
+  - security
+
+horizon: now
+start_after: 2026-07-22
+target_window:
+  start: 2026-07-22
+  end: null
+
+scope:
+  repositories:
+    - SEIS-plugin-root-20260715
+  paths:
+    - .agents/plugins/marketplace.json
+    - content/development/seis-public-plugin-family.json
+    - content/development/seis-public-plugin-bundle-catalog.json
+    - content/development/seis-public-plugin-release-policy.json
+    - content/development/seis-general-plugin-autopilot.json
+    - plugins/seis-ai-agent
+    - plugins/seis-bundles
+    - plugins/seis-general
+    - scripts/create-seis-general-plugin-distribution.mjs
+    - scripts/create-seis-general-unified-suite.mjs
+    - scripts/create-seis-general-plugin-autopilot.mjs
+    - scripts/run-seis-general-plugin-autopilot.mjs
+    - scripts/check-seis-general-plugin-distribution.mjs
+    - scripts/check-seis-general-plugin-install-smoke.mjs
+    - scripts/check-seis-ai-agent-v2.mjs
+    - scripts/check-seis-agent-plugin-integration-v2.mjs
+    - scripts/install-seis-general-plugin.mjs
+    - docs/roadmap/SEIS_TEN_GENERAL_PLUGIN_30_STEP_ROADMAP.md
+    - docs/roadmap/SEIS_PUBLIC_PLUGIN_USER_READINESS.md
+
+canonical_owner_repo: SEIS-plugin-root-20260715
+
+platforms:
+  - repository
+  - cli
+  - codex-plugin-marketplace
+
+architecture_layers:
+  - presentation
+  - integration
+  - automation
+  - governance
+
+security_classification: public-safe
+privacy_impact: none
+
+requirements:
+  - exactly 10 public marketplace cards, including seis-ai-agent as the default
+  - exactly 30 internal packages cover all retained app and topic source capabilities exactly once
+  - every internal package contains from one through 15 source capabilities
+  - exactly 10 general release-ready and usable plugins each reference three internal packages
+  - duplicate public titles are removed rather than rendered as numbered marketplace cards
+  - the canonical SEIS-Agent suite release version increases for this structural distribution change
+  - future structural distribution changes require a recorded semver increase
+  - Auto Mode remains foreground-only, plan-and-build, reviewable, and never claims background execution
+  - public release, tag, and marketplace publication remain human-approved
+
+non_goals:
+  - deleting retained app, topic, or embedded source modules
+  - publishing a marketplace release without human approval
+  - installing all internal packages on a user machine
+  - enabling background autonomous processes or external write access
+  - changing unrelated user-staged evidence files
+
+acceptance_criteria:
+  - marketplace JSON contains exactly ten general public entries with SEIS-Agent as the canonical default
+  - package-plan validation proves 30 exact-once internal packages and the 15-capability maximum
+  - release-profile validation proves ten unique, three-package general profiles
+  - installer and MCP selection tools select at most one general plugin while exposing internal-package IDs as metadata only
+  - generated documents explain the ten-card user experience and the 30 hidden internal packages
+  - release-policy validation proves the current suite version is higher than the recorded predecessor
+  - focused tests and freshness checks pass or skipped checks are recorded honestly
+
+definition_of_ready:
+  - source inventories and their category counts are known
+  - existing 34-card assumptions are inventoried
+  - no untracked or user-owned changes overlap generated package directories
+
+definition_of_done:
+  - generated artifacts, tests, and docs match the ten-general-plugin distribution model
+  - a focused feature-branch commit is created without including unrelated staged files
+  - the commit is pushed to the configured SEIS origin branch
+  - public release remains explicitly approval-gated
+
+dependencies:
+  - SEIS-GOAL-0024
+  - SEIS-GOAL-0025
+blocked_by: []
+related_goals:
+  - SEIS-GOAL-0024
+
+validation:
+  commands:
+    - npm run check:seis-general-plugin-distribution
+    - npm run check:seis-general-unified-suite
+    - npm run check:seis-general-plugin-autopilot
+    - npm run check:seis-public-plugin-family
+    - npm run check:seis-public-plugin-bundles
+    - npm run check:seis-public-plugin-consolidation
+    - npm run check:seis-unified-plugin-suite
+    - npm run check:seis-public-plugin-release-policy
+    - npm run check:seis-public-plugin-user-readiness
+    - node --test plugins/seis-core/test/public-plugin-bundles.test.mjs
+    - node --test plugins/seis-core/test/general-plugin-runtime.test.mjs
+    - node --test plugins/seis-core/test/public-plugin-user-readiness.test.mjs
+    - git diff --check
+  manual:
+    - refresh Codex and confirm ten concise SEIS Repo cards are visible without numbered duplicate topic cards
+    - review the ten release-ready profiles before any public publication
+  evidence:
+    - generated family, catalog, and release-policy records
+    - focused test output
+    - feature branch push output
+
+quality_gates:
+  architecture: required
+  design: required
+  security: required
+  accessibility: optional
+  performance: not-applicable
+  documentation: required
+  testing: required
+
+risks:
+  - id: RISK-0029-01
+    description: Legacy generated cards or local config entries may remain visible until refresh or approved cleanup.
+    likelihood: high
+    impact: medium
+    mitigation: Generate the ten-card marketplace metadata, add a read-only readiness gate, and require a manual UI refresh check.
+  - id: RISK-0029-02
+    description: Broad source grouping may obscure a user's task-specific choice.
+    likelihood: medium
+    impact: medium
+    mitigation: Keep the 30 internal packages bounded, named by domain, and selectable through deterministic finder and profile metadata.
+  - id: RISK-0029-03
+    description: A structural distribution change could ship without a visible version increase.
+    likelihood: medium
+    impact: high
+    mitigation: Record predecessor/current versions and validate a required semver increase in CI.
+
+rollback:
+  strategy: revert
+  steps:
+    - revert the focused ten-general-plugin distribution commit
+    - regenerate the previous repository artifacts from the reverted scripts
+    - use the approved local configuration backup only if a separately approved config cleanup was applied
+  data_migration_required: false
+
+github:
+  issue_required: false
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: true
+  suggested_branch: plugins/ten-general-plugin-distribution
+  suggested_commit: "feat(plugins): consolidate public distribution into ten general plugins"
+
+observability:
+  metrics:
+    - public_marketplace_card_count
+    - internal_package_count
+    - internal_package_max_member_count
+    - general_release_profile_count
+    - suite_release_version
+  logs: []
+
+outputs:
+  - ten-card general marketplace projection
+  - 30 internal package catalog
+  - 10 release-ready general profiles
+  - version policy and version history
+  - one-general-plugin installer and MCP selection behavior
+  - 30-step user-oriented distribution roadmap
+
+notes:
+  - The 10 general profiles are the 10 usable marketplace plugins; their 30 internal packages are not extra cards.
+  - SEIS-Agent remains the canonical default, but users choose only the one general plugin relevant to their scoped task.

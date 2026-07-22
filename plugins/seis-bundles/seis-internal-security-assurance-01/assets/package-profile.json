@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-security-assurance-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 11,
+  "maximumMemberCount": 15,
+  "category": "Security",
+  "categoryLabels": [
+    "Security"
+  ],
+  "generalPlugin": {
+    "id": "cloud-devsecops",
+    "name": "seis-general-cloud-devsecops",
+    "displayName": "SEIS Cloud & DevOps",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-general/seis-general-cloud-devsecops",
+    "installId": "seis-general-cloud-devsecops@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning.",
+    "longDescription": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "cloud",
+      "infrastructure",
+      "devops",
+      "devsecops",
+      "reliability"
+    ],
+    "internalPackageIds": [
+      "seis-internal-cloud-devops-01",
+      "seis-internal-cloud-devops-02",
+      "seis-internal-security-assurance-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-action-pin-audit",
+      "displayName": "SEIS Action Pin Audit",
+      "sourcePath": "./plugins/seis-core/seis-action-pin-audit",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-artifact-attestation",
+      "displayName": "Seis Artifact Attestation",
+      "sourcePath": "./plugins/seis-core/seis-artifact-attestation",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-branch-protection-audit",
+      "displayName": "Seis Branch Protection Audit",
+      "sourcePath": "./plugins/seis-core/seis-branch-protection-audit",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-dependency-freshness",
+      "displayName": "SEIS Dependency Freshness",
+      "sourcePath": "./plugins/seis-core/seis-dependency-freshness",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-license-compatibility",
+      "displayName": "SEIS License Compatibility",
+      "sourcePath": "./plugins/seis-core/seis-license-compatibility",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-mcp-permission",
+      "displayName": "SEIS MCP Permission Boundary",
+      "sourcePath": "./plugins/seis-core/seis-mcp-permission",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-public-safe-scan",
+      "displayName": "SEIS Public-Safe Scan",
+      "sourcePath": "./plugins/seis-core/seis-public-safe-scan",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-sbom-generator",
+      "displayName": "SEIS SBOM Generator",
+      "sourcePath": "./plugins/seis-core/seis-sbom-generator",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-secret-boundary-scan",
+      "displayName": "SEIS Secret Boundary Scan",
+      "sourcePath": "./plugins/seis-core/seis-secret-boundary-scan",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-vulnerability-triage",
+      "displayName": "SEIS Vulnerability Triage",
+      "sourcePath": "./plugins/seis-core/seis-vulnerability-triage",
+      "category": "Security",
+      "origin": "application"
+    },
+    {
+      "name": "seis-workflow-permission-audit",
+      "displayName": "SEIS Workflow Permission Audit",
+      "sourcePath": "./plugins/seis-core/seis-workflow-permission-audit",
+      "category": "Security",
+      "origin": "application"
+    }
+  ]
+}

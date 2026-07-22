@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-release-policy",
+  "goalId": "SEIS-GOAL-0029",
+  "generatedAt": "2026-07-22",
+  "status": "active-public-release-gated",
+  "currentRelease": {
+    "version": "0.4.0+codex.20260722",
+    "changeKind": "major-structural-distribution",
+    "changeId": "single-card-family-to-ten-general-plugins",
+    "reason": "Consolidate 34 repetitive marketplace cards into ten general plugins backed by thirty bounded internal packages.",
+    "publicRelease": false
+  },
+  "predecessor": {
+    "version": "0.3.0+codex.20260712",
+    "status": "superseded-by-current-structural-distribution-change"
+  },
+  "policy": {
+    "structuralDistributionChangeRequiresVersionIncrease": true,
+    "directMarketplaceCardCountChangeRequiresVersionIncrease": true,
+    "internalPackageTopologyChangeRequiresVersionIncrease": true,
+    "publicReleaseRequiresHumanApproval": true,
+    "releaseNotesRequired": true,
+    "rollbackStrategy": "revert-focused-distribution-commit"
+  },
+  "validation": {
+    "semverIncreased": true,
+    "publicMarketplaceCardCount": 10,
+    "internalPackageCount": 30,
+    "generalPluginCount": 10,
+    "maximumInternalPackageSize": 15
+  }
+}

@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 
 import {
   SEIS_APPLICATION_BUNDLE_PREFIX,
@@ -12,6 +13,12 @@ import {
   SEIS_TOPIC_BUNDLE_PREFIX,
 } from "./lib/seis-public-bundle-plan.mjs";
 import { validateExpectedBundleTree } from "./lib/seis-public-bundle-output-tree.mjs";
+
+const canonicalDistribution = spawnSync(process.execPath, [
+  path.join(process.cwd(), "scripts/create-seis-general-plugin-distribution.mjs"),
+  ...process.argv.slice(2),
+], { cwd: process.cwd(), stdio: "inherit" });
+process.exit(canonicalDistribution.status ?? 1);
 
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");

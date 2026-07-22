@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-design-experience-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 12,
+  "maximumMemberCount": 15,
+  "category": "Design",
+  "categoryLabels": [
+    "Design"
+  ],
+  "generalPlugin": {
+    "id": "design-creative",
+    "name": "seis-general-design-creative",
+    "displayName": "SEIS Design & Creative",
+    "category": "Design",
+    "sourcePath": "./plugins/seis-general/seis-general-design-creative",
+    "installId": "seis-general-design-creative@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Design systems, UX, accessibility, creative production, and visual experience work.",
+    "longDescription": "Design systems, UX, accessibility, creative production, and visual experience work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "design",
+      "ux",
+      "accessibility",
+      "creative",
+      "frontend"
+    ],
+    "internalPackageIds": [
+      "seis-internal-design-experience-01",
+      "seis-internal-design-experience-02",
+      "seis-internal-creative-production-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-design-illustration",
+      "displayName": "SEIS Illustration",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-illustration",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-interaction-design",
+      "displayName": "SEIS Interaction Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-interaction-design",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-localization",
+      "displayName": "SEIS Localization",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-localization",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-motion-design",
+      "displayName": "SEIS Motion Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-motion-design",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-photography",
+      "displayName": "SEIS Photography",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-photography",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-product-design",
+      "displayName": "SEIS Product Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-product-design",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-responsive-design",
+      "displayName": "SEIS Responsive Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-responsive-design",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-typography",
+      "displayName": "SEIS Typography",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-typography",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-ui-design",
+      "displayName": "SEIS UI Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-ui-design",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-ux-design",
+      "displayName": "SEIS UX Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-ux-design",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-visual-design",
+      "displayName": "SEIS Visual Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-visual-design",
+      "category": "Design",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-design-visual-identity",
+      "displayName": "SEIS Visual Identity",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-visual-identity",
+      "category": "Design",
+      "origin": "topic"
+    }
+  ]
+}

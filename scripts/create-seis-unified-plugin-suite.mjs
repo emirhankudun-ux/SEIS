@@ -2,6 +2,13 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
+
+const canonicalSuite = spawnSync(process.execPath, [
+  path.join(process.cwd(), "scripts/create-seis-general-unified-suite.mjs"),
+  ...process.argv.slice(2),
+], { cwd: process.cwd(), stdio: "inherit" });
+process.exit(canonicalSuite.status ?? 1);
 
 const root = process.cwd();
 const checkMode = process.argv.includes("--check");

@@ -2,13 +2,13 @@
 
 - Goal: SEIS-GOAL-0025
 - Parent goal: SEIS-GOAL-0024
-- Current marketplace: 34 cards (33 optional bundles, 380 retained source capabilities)
+- Current marketplace: 10 general cards (30 hidden internal packages, 380 retained source capabilities)
 - Reviewed local phases: 48
 - Canonical install: `seis-ai-agent@seis-repo`
 - Execution: supervised foreground plan-and-build only; no background execution.
 - Role execution: foreground-sequential-reviewed-allowlist; each reviewed local phase is assigned exactly once.
 - Round 11: 200 steps, in-progress-plan-and-local-build; historical Wave 5 closeout is not claimed.
-- Escalation ladder: 200, 300, 400, 500, 600-step five-wave tiers; workflow steps never expand the 34-card marketplace.
+- Escalation ladder: 200, 300, 400, 500, 600-step five-wave tiers; workflow steps never expand the 10-card marketplace.
 - Isolation: reviewed-allowlist-no-os-sandbox; ambient network/filesystem isolation and descendant termination are not OS-enforced.
 
 ## Commands
@@ -112,7 +112,7 @@ Reconcile active goals, ownership, branch state, aliases, and public/private bou
 
 ### 2. Curated marketplace architecture (steps 21–40)
 
-Keep one canonical installation inside a clear 30-to-50-card total marketplace surface.
+Keep ten concise general marketplace plugins backed by thirty hidden bounded internal packages.
 
 21. Inspect the authoritative goal and non-goals for curated marketplace architecture. — planned
 22. Verify canonical repository ownership and affected paths for curated marketplace architecture. — planned

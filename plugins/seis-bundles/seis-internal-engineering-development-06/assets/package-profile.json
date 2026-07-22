@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-engineering-development-06",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 14,
+  "maximumMemberCount": 15,
+  "category": "Developer",
+  "categoryLabels": [
+    "Software Engineering"
+  ],
+  "generalPlugin": {
+    "id": "engineering-delivery",
+    "name": "seis-general-engineering-delivery",
+    "displayName": "SEIS Engineering Delivery",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-general/seis-general-engineering-delivery",
+    "installId": "seis-general-engineering-delivery@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Backend, testing, build, release, developer tooling, and repository delivery work.",
+    "longDescription": "Backend, testing, build, release, developer tooling, and repository delivery work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "engineering",
+      "development",
+      "backend",
+      "testing",
+      "release",
+      "devtools"
+    ],
+    "internalPackageIds": [
+      "seis-internal-engineering-development-04",
+      "seis-internal-engineering-development-05",
+      "seis-internal-engineering-development-06"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-software-engineering-package-managers",
+      "displayName": "SEIS Package Managers",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-package-managers",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-profiling",
+      "displayName": "SEIS Profiling",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-profiling",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-programming",
+      "displayName": "SEIS Programming",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-programming",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-programming-languages",
+      "displayName": "SEIS Programming Languages",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-programming-languages",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-quality-assurance",
+      "displayName": "SEIS Quality Assurance",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-quality-assurance",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-release-engineering",
+      "displayName": "SEIS Release Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-release-engineering",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-repository",
+      "displayName": "SEIS Repository",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-repository",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-rollback",
+      "displayName": "SEIS Rollback",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-rollback",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-sdk",
+      "displayName": "SEIS SDK",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-sdk",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-software-architecture",
+      "displayName": "SEIS Software Architecture",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-software-architecture",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-testing",
+      "displayName": "SEIS Testing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-testing",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-tui",
+      "displayName": "SEIS TUI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-tui",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-version-control",
+      "displayName": "SEIS Version Control",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-version-control",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-web-development",
+      "displayName": "SEIS Web Development",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-web-development",
+      "category": "Software Engineering",
+      "origin": "topic"
+    }
+  ]
+}

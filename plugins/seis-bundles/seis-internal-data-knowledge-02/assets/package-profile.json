@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-data-knowledge-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 13,
+  "maximumMemberCount": 15,
+  "category": "Data",
+  "categoryLabels": [
+    "Data"
+  ],
+  "generalPlugin": {
+    "id": "data-knowledge",
+    "name": "seis-general-data-knowledge",
+    "displayName": "SEIS Data & Knowledge",
+    "category": "Data",
+    "sourcePath": "./plugins/seis-general/seis-general-data-knowledge",
+    "installId": "seis-general-data-knowledge@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Data architecture, analytics, search, memory, knowledge, and research workflows.",
+    "longDescription": "Data architecture, analytics, search, memory, knowledge, and research workflows. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "data",
+      "analytics",
+      "databases",
+      "knowledge",
+      "research"
+    ],
+    "internalPackageIds": [
+      "seis-internal-data-knowledge-01",
+      "seis-internal-data-knowledge-02",
+      "seis-internal-knowledge-research-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-data-data-pipelines",
+      "displayName": "SEIS Data Pipelines",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-data-pipelines",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-data-quality",
+      "displayName": "SEIS Data Quality",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-data-quality",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-data-science",
+      "displayName": "SEIS Data Science",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-data-science",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-databases",
+      "displayName": "SEIS Databases",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-databases",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-elt",
+      "displayName": "SEIS ELT",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-elt",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-etl",
+      "displayName": "SEIS ETL",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-etl",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-graph-databases",
+      "displayName": "SEIS Graph Databases",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-graph-databases",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-metadata",
+      "displayName": "SEIS Metadata",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-metadata",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-nosql",
+      "displayName": "SEIS NoSQL",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-nosql",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-search-engine",
+      "displayName": "SEIS Search Engine",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-search-engine",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-sql",
+      "displayName": "SEIS SQL",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-sql",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-storage",
+      "displayName": "SEIS Storage",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-storage",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-vector-databases",
+      "displayName": "SEIS Vector Databases",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-vector-databases",
+      "category": "Data",
+      "origin": "topic"
+    }
+  ]
+}

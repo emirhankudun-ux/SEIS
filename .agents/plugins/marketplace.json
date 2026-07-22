@@ -17,10 +17,10 @@
       "category": "Developer"
     },
     {
-      "name": "seis-application-bundle-01",
+      "name": "seis-general-automation-delivery",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-application-bundle-01"
+        "path": "./plugins/seis-general/seis-general-automation-delivery"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -29,10 +29,10 @@
       "category": "Developer"
     },
     {
-      "name": "seis-application-bundle-02",
+      "name": "seis-general-cloud-devsecops",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-application-bundle-02"
+        "path": "./plugins/seis-general/seis-general-cloud-devsecops"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -41,10 +41,10 @@
       "category": "Developer"
     },
     {
-      "name": "seis-application-bundle-03",
+      "name": "seis-general-security-governance",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-application-bundle-03"
+        "path": "./plugins/seis-general/seis-general-security-governance"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -53,178 +53,10 @@
       "category": "Security"
     },
     {
-      "name": "seis-application-bundle-04",
+      "name": "seis-general-data-knowledge",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-application-bundle-04"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Developer"
-    },
-    {
-      "name": "seis-application-bundle-05",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-application-bundle-05"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Developer"
-    },
-    {
-      "name": "seis-application-bundle-06",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-application-bundle-06"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Developer"
-    },
-    {
-      "name": "seis-topic-bundle-01",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-01"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Artificial Intelligence"
-    },
-    {
-      "name": "seis-topic-bundle-02",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-02"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Artificial Intelligence"
-    },
-    {
-      "name": "seis-topic-bundle-03",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-03"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Artificial Intelligence"
-    },
-    {
-      "name": "seis-topic-bundle-04",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-04"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Automation"
-    },
-    {
-      "name": "seis-topic-bundle-05",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-05"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Automation"
-    },
-    {
-      "name": "seis-topic-bundle-06",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-06"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Cloud Computing"
-    },
-    {
-      "name": "seis-topic-bundle-07",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-07"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Cloud Computing"
-    },
-    {
-      "name": "seis-topic-bundle-08",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-08"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Creative Production"
-    },
-    {
-      "name": "seis-topic-bundle-09",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-09"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Creative Production"
-    },
-    {
-      "name": "seis-topic-bundle-10",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-10"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Cybersecurity"
-    },
-    {
-      "name": "seis-topic-bundle-11",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-11"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Cybersecurity"
-    },
-    {
-      "name": "seis-topic-bundle-12",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-12"
+        "path": "./plugins/seis-general/seis-general-data-knowledge"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -233,22 +65,10 @@
       "category": "Data"
     },
     {
-      "name": "seis-topic-bundle-13",
+      "name": "seis-general-design-creative",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-13"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Data"
-    },
-    {
-      "name": "seis-topic-bundle-14",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-14"
+        "path": "./plugins/seis-general/seis-general-design-creative"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -257,10 +77,10 @@
       "category": "Design"
     },
     {
-      "name": "seis-topic-bundle-15",
+      "name": "seis-general-eleni-visual",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-15"
+        "path": "./plugins/seis-general/seis-general-eleni-visual"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -269,148 +89,40 @@
       "category": "Design"
     },
     {
-      "name": "seis-topic-bundle-16",
+      "name": "seis-general-research-ecosystem",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-16"
+        "path": "./plugins/seis-general/seis-general-research-ecosystem"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
-      "category": "Desktop"
+      "category": "Research"
     },
     {
-      "name": "seis-topic-bundle-17",
+      "name": "seis-general-engineering-foundations",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-17"
+        "path": "./plugins/seis-general/seis-general-engineering-foundations"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
-      "category": "ELENI-NEFERI"
+      "category": "Developer"
     },
     {
-      "name": "seis-topic-bundle-18",
+      "name": "seis-general-engineering-delivery",
       "source": {
         "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-18"
+        "path": "./plugins/seis-general/seis-general-engineering-delivery"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
-      "category": "Graphics"
-    },
-    {
-      "name": "seis-topic-bundle-19",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-19"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Knowledge"
-    },
-    {
-      "name": "seis-topic-bundle-20",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-20"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Knowledge"
-    },
-    {
-      "name": "seis-topic-bundle-21",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-21"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "PANTECHNOEPISTEMONOESIS"
-    },
-    {
-      "name": "seis-topic-bundle-22",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-22"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Project Management"
-    },
-    {
-      "name": "seis-topic-bundle-23",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-23"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Project Management"
-    },
-    {
-      "name": "seis-topic-bundle-24",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-24"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "SEIS"
-    },
-    {
-      "name": "seis-topic-bundle-25",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-25"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Software Engineering"
-    },
-    {
-      "name": "seis-topic-bundle-26",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-26"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Software Engineering"
-    },
-    {
-      "name": "seis-topic-bundle-27",
-      "source": {
-        "source": "local",
-        "path": "./plugins/seis-bundles/seis-topic-bundle-27"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Software Engineering"
+      "category": "Developer"
     }
   ]
 }

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-creative-production-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 9,
+  "maximumMemberCount": 15,
+  "category": "Design",
+  "categoryLabels": [
+    "Creative Production"
+  ],
+  "generalPlugin": {
+    "id": "design-creative",
+    "name": "seis-general-design-creative",
+    "displayName": "SEIS Design & Creative",
+    "category": "Design",
+    "sourcePath": "./plugins/seis-general/seis-general-design-creative",
+    "installId": "seis-general-design-creative@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Design systems, UX, accessibility, creative production, and visual experience work.",
+    "longDescription": "Design systems, UX, accessibility, creative production, and visual experience work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "design",
+      "ux",
+      "accessibility",
+      "creative",
+      "frontend"
+    ],
+    "internalPackageIds": [
+      "seis-internal-design-experience-01",
+      "seis-internal-design-experience-02",
+      "seis-internal-creative-production-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-creative-production",
+      "displayName": "SEIS Creative Production",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-animation",
+      "displayName": "SEIS Animation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-animation",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-asset-management",
+      "displayName": "SEIS Asset Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-asset-management",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-audio",
+      "displayName": "SEIS Audio",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-audio",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-cgi",
+      "displayName": "SEIS CGI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-cgi",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-content-creation",
+      "displayName": "SEIS Content Creation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-content-creation",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-creative-engineering",
+      "displayName": "SEIS Creative Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-creative-engineering",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-digital-art",
+      "displayName": "SEIS Digital Art",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-digital-art",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-media-production",
+      "displayName": "SEIS Media Production",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-media-production",
+      "category": "Creative Production",
+      "origin": "topic"
+    }
+  ]
+}

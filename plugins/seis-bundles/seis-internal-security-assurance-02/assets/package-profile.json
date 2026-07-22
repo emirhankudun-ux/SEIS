@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-security-assurance-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 11,
+  "maximumMemberCount": 15,
+  "category": "Security",
+  "categoryLabels": [
+    "Cybersecurity"
+  ],
+  "generalPlugin": {
+    "id": "security-governance",
+    "name": "seis-general-security-governance",
+    "displayName": "SEIS Security & Governance",
+    "category": "Security",
+    "sourcePath": "./plugins/seis-general/seis-general-security-governance",
+    "installId": "seis-general-security-governance@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Security, identity, compliance, governance, permissions, and risk review.",
+    "longDescription": "Security, identity, compliance, governance, permissions, and risk review. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "security",
+      "identity",
+      "compliance",
+      "governance",
+      "risk"
+    ],
+    "internalPackageIds": [
+      "seis-internal-security-assurance-02",
+      "seis-internal-security-assurance-03",
+      "seis-internal-product-governance-delivery-02"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-cybersecurity",
+      "displayName": "SEIS Cybersecurity",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-abac",
+      "displayName": "SEIS ABAC",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-abac",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-ai-security",
+      "displayName": "SEIS AI Security",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-ai-security",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-application-security",
+      "displayName": "SEIS Application Security",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-application-security",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-authentication",
+      "displayName": "SEIS Authentication",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-authentication",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-authorization",
+      "displayName": "SEIS Authorization",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-authorization",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-compliance",
+      "displayName": "SEIS Compliance",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-compliance",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-encryption",
+      "displayName": "SEIS Encryption",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-encryption",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-identity-management",
+      "displayName": "SEIS Identity Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-identity-management",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-incident-response",
+      "displayName": "SEIS Incident Response",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-incident-response",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-cybersecurity-information-security",
+      "displayName": "SEIS Information Security",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-information-security",
+      "category": "Cybersecurity",
+      "origin": "topic"
+    }
+  ]
+}

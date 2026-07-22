@@ -1,110 +1,81 @@
 # SEIS-Agent
 
-SEIS-Agent 0.3.0 is the unified orchestration plugin and the canonical default
-public entry point for the SEIS repository. It
-combines `seis-governance`, `seis`, `seis-cloud`, `seis-code`, `seis-design`,
-`seis-data`, `seis-security`, `seis-research`, `seis-automation`, and
-`seis-product` into one long-running agent direction across memory, context,
-cloud, code, design, data, security, research, product, MCP, skills, plugins,
-and automation.
+`SEIS-Agent` is the default public SEIS plugin. It replaces the former screen
+of numbered topic cards with ten general plugins that people can understand
+quickly.
 
-The package id remains `seis-ai-agent` for install stability. The operating
-identity is `SEIS-Agent`.
+Each general plugin selects exactly three internal capability packages. Those
+30 packages preserve 375 app/topic source capabilities (plus five embedded
+SEIS-Agent root modules) without becoming separate marketplace cards or direct
+installation targets. Every internal package contains at most 15 capabilities.
 
-The single suite record is `assets/unified-suite.json`. It records the ten
-embedded components, shared release version, canonical install id, and the five
-preserved `@personal` compatibility aliases. Website, app
-packaging, live authentication, and deployment surfaces happen only after an
-explicit release decision.
+## Visible marketplace surface
 
-## Choose a public bundle without overload
+| General plugin | Best for |
+| --- | --- |
+| SEIS-Agent | AI, agents, models, routing, context, and retrieval |
+| SEIS Automation & Delivery | workflows, planning, and delivery |
+| SEIS Cloud & DevOps | infrastructure, DevOps, reliability, and DevSecOps |
+| SEIS Security & Governance | security, compliance, permissions, and risk |
+| SEIS Data & Knowledge | data, analytics, search, memory, and knowledge |
+| SEIS Design & Creative | design systems, UX, accessibility, frontend, and creative work |
+| SEIS Eleni & Visual | Eleni-Neferi, identity, graphics, rendering, and media |
+| SEIS Research & Ecosystem | research, desktop, platform, and Pantechnoesis work |
+| SEIS Engineering Foundations | architecture, frontend, systems, and development foundations |
+| SEIS Engineering Delivery | backend, testing, tooling, release, and delivery work |
 
-Start with `seis-ai-agent@seis-repo`. The public `seis-repo` marketplace keeps
-one canonical SEIS-Agent card and 33 optional, bounded selection bundles rather
-than exposing 380 retained source capabilities as separate cards. For one
-scoped task, select at most one optional bundle; each has no more than 15 source
-capabilities, never bulk-installs members, and leaves its source packages in the
-repository.
+The marketplace keeps these ten names unique. It does not show `Topic … 01`,
+`Topic … 02`, or duplicate source cards.
 
-Use the local read-only MCP tool `seis_public_bundle_find` when the user has a
-short need statement rather than a known journey ID. It returns at most three
-deterministic candidates from generated public metadata, never installs a
-package, and never contacts an external service. Then use
-`seis_public_bundle_guide` to inspect the six starter paths or all 19 journeys,
-and `seis_public_bundle_recommend` to return only the first optional bundle for
-one chosen journey. These tools are decision aids, not installer, provider
-connection, deployment, or write actions.
+## Select one plugin for one scoped task
 
-If the terminal is the only available surface, use the same bounded local
-finder without opening MCP. It returns at most three candidates and performs
-no installation:
-
-```bash
-npm run install:seis-ai-agent -- --find "SBOM supply chain"
-```
-
-Choose one returned journey only, then review its emitted `--journey` plan.
-
-## Install
-
-The default plan remains one canonical public plugin:
+The default is a plan for SEIS-Agent and does not install anything:
 
 ```bash
 npm run install:seis-ai-agent
 ```
 
-To turn one known selection journey into a reviewable two-target plan, pass the
-journey ID from the public guide. This remains plan-only and does not install
-anything:
+Find up to three local task-matched options, without network access or
+installation:
 
 ```bash
-npm run install:seis-ai-agent -- --journey security
+npm run install:seis-ai-agent -- --find "frontend accessibility design"
 ```
 
-Only after reviewing the plan and receiving explicit human approval, an operator
-may add `--apply` for that same one journey:
+Review one chosen general plugin:
 
 ```bash
-npm run install:seis-ai-agent -- --apply --journey security
+npm run install:seis-ai-agent -- --general-plugin design-creative
 ```
 
-The installer rejects arbitrary bundle IDs, multiple journeys, bulk selection,
-and the retired standalone-lane option. A journey can add only its validated
-first optional bundle alongside `seis-ai-agent@seis-repo`; it never auto-installs
-bundle members or later continuation bundles.
+Only after human review may an operator use `--apply` for that one selected
+plugin. Internal package IDs are deliberately rejected as install targets.
 
-The repo preserves `seis`, `seis-cloud`, `seis-code`, `seis-design`,
-`seis-data`, `seis-security`, `seis-research`, `seis-automation`, and
-`seis-product` as source modules. Their skills, lane profiles, and validation
-contracts are embedded in this public package; they do not have direct
-standalone marketplace entries or install commands. Optional public bundle cards
-are curated task selections, not replacements for those retained source modules.
+The read-only MCP tools are:
 
-## MCP Tools
+- `seis_general_plugin_guide`
+- `seis_general_plugin_find`
+- `seis_general_plugin_recommend`
 
-- `seis_ai_agent_status`
-- `seis_ai_agent_plan`
-- `seis_agent_lanes`
-- `seis_public_bundle_guide`
-- `seis_public_bundle_find`
-- `seis_public_bundle_recommend`
-- `seis_hub_status`
-- `seis_hub_plan`
-- `seis_cloud_status`
-- `seis_cloud_plan`
-- `seis_governance_status`
-- `seis_governance_plan`
-- `seis_code_status`
-- `seis_code_plan`
-- `seis_design_status`
-- `seis_design_plan`
-- `seis_data_status`
-- `seis_data_plan`
-- `seis_security_status`
-- `seis_security_plan`
-- `seis_research_status`
-- `seis_research_plan`
-- `seis_automation_status`
-- `seis_automation_plan`
-- `seis_product_status`
-- `seis_product_plan`
+Legacy `seis_public_bundle_*` tool names remain compatibility aliases, but
+they return the general-plugin model and do not revive legacy bundle cards.
+
+## Automation and release boundary
+
+SEIS Auto Mode plans and builds only in the current foreground invocation. It
+uses supervised roles, recorded validation, and explicit handoff; it never
+claims a persistent background agent. Publication, tags, releases, deployment,
+credential use, and external writes remain human-approved.
+
+This structural distribution release is versioned `0.4.0+codex.20260722`.
+Future changes to the visible card count or the 30-package topology require a
+recorded version increase and release notes.
+
+## Validation
+
+```bash
+npm run check:seis-public-plugin-family
+npm run check:seis-unified-plugin-suite
+npm run check:seis-public-plugin-release-policy
+npm run check:seis-ai-agent
+```

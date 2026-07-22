@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-graphics-rendering-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 13,
+  "maximumMemberCount": 15,
+  "category": "Design",
+  "categoryLabels": [
+    "Graphics"
+  ],
+  "generalPlugin": {
+    "id": "eleni-visual",
+    "name": "seis-general-eleni-visual",
+    "displayName": "SEIS Eleni & Visual",
+    "category": "Design",
+    "sourcePath": "./plugins/seis-general/seis-general-eleni-visual",
+    "installId": "seis-general-eleni-visual@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Eleni-Neferi, visual identity, graphics, rendering, media, and storytelling work.",
+    "longDescription": "Eleni-Neferi, visual identity, graphics, rendering, media, and storytelling work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "eleni-neferi",
+      "graphics",
+      "rendering",
+      "media",
+      "storytelling"
+    ],
+    "internalPackageIds": [
+      "seis-internal-eleni-visual-01",
+      "seis-internal-graphics-rendering-01",
+      "seis-internal-creative-production-02"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-graphics",
+      "displayName": "SEIS Graphics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-color-theory",
+      "displayName": "SEIS Color Theory",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-color-theory",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-composition",
+      "displayName": "SEIS Composition",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-composition",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-game-engine",
+      "displayName": "SEIS Game Engine",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-game-engine",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-graphics-engine",
+      "displayName": "SEIS Graphics Engine",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-graphics-engine",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-iconography",
+      "displayName": "SEIS Iconography",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-iconography",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-layout",
+      "displayName": "SEIS Layout",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-layout",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-lighting",
+      "displayName": "SEIS Lighting",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-lighting",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-materials",
+      "displayName": "SEIS Materials",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-materials",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-path-tracing",
+      "displayName": "SEIS Path Tracing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-path-tracing",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-ray-tracing",
+      "displayName": "SEIS Ray Tracing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-ray-tracing",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-rendering",
+      "displayName": "SEIS Rendering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-rendering",
+      "category": "Graphics",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-graphics-shaders",
+      "displayName": "SEIS Shaders",
+      "sourcePath": "./plugins/seis-topics/seis-topic-graphics-shaders",
+      "category": "Graphics",
+      "origin": "topic"
+    }
+  ]
+}

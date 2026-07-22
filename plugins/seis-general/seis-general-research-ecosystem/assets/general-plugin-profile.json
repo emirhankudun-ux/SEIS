@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "research-ecosystem",
+  "name": "seis-general-research-ecosystem",
+  "displayName": "SEIS Research & Ecosystem",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "status": "release-ready-not-published",
+  "visibility": "public-general-plugin",
+  "canonical": false,
+  "installId": "seis-general-research-ecosystem@seis-repo",
+  "internalPackageIds": [
+    "seis-internal-knowledge-research-02",
+    "seis-internal-platform-ecosystem-01",
+    "seis-internal-platform-ecosystem-02"
+  ],
+  "internalPackageCount": 3,
+  "taskSelectionBoundary": "one-general-plugin-per-scoped-task",
+  "permissions": {
+    "read": [
+      "profile",
+      "internal package metadata"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  }
+}

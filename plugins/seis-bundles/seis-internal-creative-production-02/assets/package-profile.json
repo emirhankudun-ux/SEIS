@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-creative-production-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 8,
+  "maximumMemberCount": 15,
+  "category": "Design",
+  "categoryLabels": [
+    "Creative Production"
+  ],
+  "generalPlugin": {
+    "id": "eleni-visual",
+    "name": "seis-general-eleni-visual",
+    "displayName": "SEIS Eleni & Visual",
+    "category": "Design",
+    "sourcePath": "./plugins/seis-general/seis-general-eleni-visual",
+    "installId": "seis-general-eleni-visual@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Eleni-Neferi, visual identity, graphics, rendering, media, and storytelling work.",
+    "longDescription": "Eleni-Neferi, visual identity, graphics, rendering, media, and storytelling work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "eleni-neferi",
+      "graphics",
+      "rendering",
+      "media",
+      "storytelling"
+    ],
+    "internalPackageIds": [
+      "seis-internal-eleni-visual-01",
+      "seis-internal-graphics-rendering-01",
+      "seis-internal-creative-production-02"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-creative-production-moodboards",
+      "displayName": "SEIS Moodboards",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-moodboards",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-music",
+      "displayName": "SEIS Music",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-music",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-publishing",
+      "displayName": "SEIS Publishing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-publishing",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-story-world",
+      "displayName": "SEIS Story World",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-story-world",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-storytelling",
+      "displayName": "SEIS Storytelling",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-storytelling",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-video",
+      "displayName": "SEIS Video",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-video",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-virtual-production",
+      "displayName": "SEIS Virtual Production",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-virtual-production",
+      "category": "Creative Production",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-creative-production-visual-effects",
+      "displayName": "SEIS Visual Effects",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-visual-effects",
+      "category": "Creative Production",
+      "origin": "topic"
+    }
+  ]
+}

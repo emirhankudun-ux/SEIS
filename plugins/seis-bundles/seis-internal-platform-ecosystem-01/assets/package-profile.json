@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-platform-ecosystem-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 15,
+  "maximumMemberCount": 15,
+  "category": "Developer",
+  "categoryLabels": [
+    "Desktop",
+    "PANTECHNOEPISTEMONOESIS"
+  ],
+  "generalPlugin": {
+    "id": "research-ecosystem",
+    "name": "seis-general-research-ecosystem",
+    "displayName": "SEIS Research & Ecosystem",
+    "category": "Research",
+    "sourcePath": "./plugins/seis-general/seis-general-research-ecosystem",
+    "installId": "seis-general-research-ecosystem@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work.",
+    "longDescription": "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "research",
+      "desktop",
+      "seis",
+      "pantechnoesis",
+      "platform"
+    ],
+    "internalPackageIds": [
+      "seis-internal-knowledge-research-02",
+      "seis-internal-platform-ecosystem-01",
+      "seis-internal-platform-ecosystem-02"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-desktop",
+      "displayName": "SEIS Desktop",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-android",
+      "displayName": "SEIS Android",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-android",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-cross-platform",
+      "displayName": "SEIS Cross Platform",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-cross-platform",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-ios",
+      "displayName": "SEIS iOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-ios",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-ipados",
+      "displayName": "SEIS iPadOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-ipados",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-linux",
+      "displayName": "SEIS Linux",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-linux",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-macos",
+      "displayName": "SEIS macOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-macos",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-visionos",
+      "displayName": "SEIS visionOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-visionos",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-watchos",
+      "displayName": "SEIS watchOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-watchos",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-web",
+      "displayName": "SEIS Web",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-web",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-desktop-windows",
+      "displayName": "SEIS Windows",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-windows",
+      "category": "Desktop",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-pantechnoepistemonoesis",
+      "displayName": "SEIS PANTECHNOEPISTEMONOESIS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-pantechnoepistemonoesis",
+      "category": "PANTECHNOEPISTEMONOESIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-pantechnoepistemonoesis-engineering-civilization",
+      "displayName": "SEIS Engineering Civilization",
+      "sourcePath": "./plugins/seis-topics/seis-topic-pantechnoepistemonoesis-engineering-civilization",
+      "category": "PANTECHNOEPISTEMONOESIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-pantechnoepistemonoesis-knowledge-civilization",
+      "displayName": "SEIS Knowledge Civilization",
+      "sourcePath": "./plugins/seis-topics/seis-topic-pantechnoepistemonoesis-knowledge-civilization",
+      "category": "PANTECHNOEPISTEMONOESIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-pantechnoepistemonoesis-research-lab",
+      "displayName": "SEIS Research Lab",
+      "sourcePath": "./plugins/seis-topics/seis-topic-pantechnoepistemonoesis-research-lab",
+      "category": "PANTECHNOEPISTEMONOESIS",
+      "origin": "topic"
+    }
+  ]
+}

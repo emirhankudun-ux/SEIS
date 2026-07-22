@@ -24,10 +24,12 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.goalId, "SEIS-GOAL-0025");
   assert.equal(program.parentGoalId, "SEIS-GOAL-0024");
   assert.equal(program.currentMarketplace.canonicalInstall, "seis-ai-agent@seis-repo");
-  assert.equal(program.currentMarketplace.publicCardCount, 34);
-  assert.equal(program.currentMarketplace.optionalBundleCardCount, 33);
+  assert.equal(program.currentMarketplace.publicCardCount, 10);
+  assert.equal(program.currentMarketplace.generalPluginCardCount, 10);
+  assert.equal(program.currentMarketplace.internalPackageCount, 30);
+  assert.equal(program.currentMarketplace.internalPackageCardCount, 0);
   assert.equal(program.currentMarketplace.retainedSourceCapabilityCount, 380);
-  assert.equal(program.currentMarketplace.maximumBundleSize, 15);
+  assert.equal(program.currentMarketplace.maximumPackageSize, 15);
   assert.equal(program.immediateCycle.totalSteps, 30);
   assert.equal(program.immediateCycle.rounds.length, 5);
   assert.ok(program.immediateCycle.rounds.every((round) => round.steps.length === 6));
@@ -41,7 +43,7 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.escalationSeries.tierCount, 5);
   assert.equal(program.escalationSeries.waveCountPerTier, 5);
   assert.equal(program.escalationSeries.stepIncreasePerTier, 100);
-  assert.equal(program.escalationSeries.currentMarketplaceCardCount, 34);
+  assert.equal(program.escalationSeries.currentMarketplaceCardCount, 10);
   assert.equal(program.escalationSeries.maximumBundleSize, 15);
   assert.equal(program.escalationSeries.workflowStepsAreMarketplaceCards, false);
   assert.deepEqual(program.escalationSeries.tiers.map((tier) => tier.stepsPerWave), [200, 300, 400, 500, 600]);
@@ -136,12 +138,12 @@ test("plan mode is anchored to the runner repository from a foreign working dire
   }
 });
 
-test("runner rejects a policy-range card count that is not the exact current 34-card projection", () => {
+test("runner rejects a card count that is not the exact current ten-card projection", () => {
   const fixture = makeRunnerFixture();
   const fixtureProgramPath = path.join(fixture.root, "content/development/seis-public-plugin-supervised-autopilot.json");
   try {
     const fixtureProgram = JSON.parse(fs.readFileSync(fixtureProgramPath, "utf8"));
-    fixtureProgram.currentMarketplace.publicCardCount = 35;
+    fixtureProgram.currentMarketplace.publicCardCount = 11;
     fs.writeFileSync(fixtureProgramPath, `${JSON.stringify(fixtureProgram, null, 2)}\n`);
     const result = spawnSync(process.execPath, [path.join(fixture.root, "scripts/run-seis-public-plugin-supervised-autopilot.mjs"), "--plan"], {
       cwd: fixture.root,

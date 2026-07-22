@@ -1,0 +1,211 @@
+schema_version: 2
+
+id: SEIS-GOAL-0028
+project: seis-plugin-root
+program: public-plugin-governance
+initiative: public-plugin-user-readiness-gate
+parent_goal: SEIS-GOAL-0024
+
+title: Provide one evidence-led public plugin user-readiness gate
+summary: >-
+  Give a maintainer and a new user one bounded read-only report that proves the
+  ten-general-plugin marketplace, one-canonical-default profile, thirty hidden
+  internal-package boundary,
+  five 30-step rounds, five-wave supervised automation model, and local configuration
+  state agree. The report must distinguish repository readiness, local config
+  readiness, and manual Codex UI evidence instead of treating a green static
+  check as proof that people can already see the intended surface.
+
+category:
+  - plugins
+  - automation
+  - testing
+  - documentation
+  - repository-hygiene
+  - security
+
+priority: high
+status: in-progress
+maturity: prototype
+confidence: medium
+
+owner_agent: lead-architect
+accountable_human: project-owner
+supporting_agents:
+  - testing-and-qa
+  - documentation
+  - security
+  - automation
+
+horizon: now
+start_after: null
+target_window:
+  start: 2026-07-22
+  end: null
+
+scope:
+  repositories:
+    - SEIS-plugin-root-20260715
+  paths:
+    - goals/active/SEIS-GOAL-0028--public-plugin-user-readiness-gate.yaml
+    - scripts/check-seis-public-plugin-user-readiness.mjs
+    - plugins/seis-core/test/public-plugin-user-readiness.test.mjs
+    - docs/roadmap/SEIS_PUBLIC_PLUGIN_USER_READINESS.md
+    - package.json
+  external_paths:
+    - ~/.codex/config.toml
+
+canonical_owner_repo: SEIS-plugin-root-20260715
+
+platforms:
+  - repository
+  - cli
+  - codex-plugin
+
+architecture_layers:
+  - governance
+  - integration
+  - observability
+  - security
+
+security_classification: local-config-sensitive
+privacy_impact: aggregate-local-configuration-metadata-only
+
+requirements:
+  - produce one read-only report without network, provider, secret, GitHub, installation, deployment, or background-agent access
+  - validate the 10 general marketplace cards, 30 hidden internal packages, 380 retained source capabilities, and 15-capability maximum from committed source-of-truth files
+  - validate the ten starter paths, ten journeys, one canonical default, and one-general-plugin-at-a-time choice boundary
+  - prove every general plugin owns exactly three internal packages and no internal package is a marketplace install target
+  - validate five 30-step rounds, the five-wave series, ten-year horizon, six foreground supervised automation roles, and delegation to the hardened Goal 0025 runner
+  - optionally inspect the local config only by invoking fixed plan-only migration commands
+  - emit aggregate local counts only, never raw config, plugin paths, credentials, or arbitrary config values
+  - distinguish repo-ready/local-config-unverified, ready-for-manual-ui-review, and local-config-attention states
+  - leave the final Codex UI refresh as a manual evidence gate
+  - join the standard SEIS Repo marketplace validation path with fixture tests
+
+non_goals:
+  - applying any config migration or installing a plugin
+  - reading arbitrary files, arbitrary config paths without explicit local-config mode, or browser automation
+  - claiming the Codex UI refreshed or external installation completed
+  - changing the Goal 0029 distribution topology or deleting retained source packages
+  - creating persistent autonomous agents
+
+acceptance_criteria:
+  - repo-only report proves all public package and automation invariants from current committed artifacts
+  - local-config mode safely reports zero personal records, one canonical public record, and zero direct embedded source records when the profile is converged
+  - local-config mode flags personal or direct embedded source records as attention without writing to config
+  - fixture tests prove read-only behavior, compact-ready state, attention state, static invariants, and bounded source behavior
+  - static report and focused tests run automatically in the main marketplace validation path
+  - documentation explains the exact difference between repository proof, local config proof, and manual UI proof
+
+definition_of_ready:
+  - Goal 0029 ten-general/thirty-internal distribution, supervised autopilot, personal cleanup, and canonical-default profile goals are present
+  - committed source-of-truth artifacts expose the required counts and boundaries
+  - local migration commands expose plan-only aggregate output
+
+definition_of_done:
+  - report, tests, docs, and focused goal record are committed on the feature branch
+  - standard marketplace validation and local readiness report pass
+  - no personal SEIS record or embedded direct public source record remains in the active local config
+  - manual UI refresh evidence is either attached or explicitly remains the only review gate
+  - GitHub delivery is visible and honest about branch protections and skipped external checks
+
+dependencies:
+  - SEIS-GOAL-0024
+  - SEIS-GOAL-0025
+  - SEIS-GOAL-0026
+  - SEIS-GOAL-0027
+  - SEIS-GOAL-0029
+blocked_by: []
+related_goals:
+  - SEIS-GOAL-0024
+  - SEIS-GOAL-0027
+  - SEIS-GOAL-0029
+
+validation:
+  commands:
+    - node --check scripts/check-seis-public-plugin-user-readiness.mjs
+    - npm run check:seis-general-plugin-distribution
+    - npm run check:seis-general-unified-suite
+    - npm run check:seis-public-plugin-user-readiness
+    - npm run check:seis-public-plugin-user-readiness:local
+    - npm run check:seis-repo-marketplace
+    - git diff --check
+  manual:
+    - Codex UI refresh and visible SEIS Repo label review
+  evidence:
+    - repo-only readiness output
+    - local-config readiness output
+    - fixture test output
+
+quality_gates:
+  architecture: required
+  design: required
+  security: required
+  accessibility: not-applicable
+  performance: not-applicable
+  documentation: required
+  testing: required
+
+risks:
+  - id: RISK-0028-001
+    description: A static report could be mistaken for proof of local app UI state.
+    likelihood: medium
+    impact: medium
+    owner: documentation
+    mitigation: Use three explicit readiness statuses and retain manual UI review as a separate gate.
+    trigger: A report or doc calls repository proof user-visible UI proof.
+    contingency: Correct the status contract and block completion until manual evidence exists.
+    status: active
+  - id: RISK-0028-002
+    description: Local config review could leak unrelated user configuration.
+    likelihood: low
+    impact: high
+    owner: security
+    mitigation: Invoke only fixed plan-only commands and serialize aggregate counts and statuses.
+    trigger: Raw config text, paths, or settings appear in report output.
+    contingency: Remove unsafe output, restore no config because it was read-only, and add a redaction test.
+    status: active
+  - id: RISK-0028-003
+    description: Existing card or internal-package validators could drift from the user-facing readiness report.
+    likelihood: medium
+    impact: high
+    owner: testing-and-qa
+    mitigation: Read the same generated artifacts and attach the report to the main marketplace post-check.
+    trigger: The report and current generated artifact counts differ.
+    contingency: Fail the report and correct the source-of-truth mapping before delivery.
+    status: active
+
+rollback:
+  strategy: revert
+  steps:
+    - revert the focused readiness-gate commit
+    - retain public marketplace, local config, source packages, caches, and prior migration backups unchanged
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: plugins/seis-public-user-readiness
+  suggested_commit: "feat(plugins): add public user readiness gate"
+
+observability:
+  metrics:
+    - public_user_readiness_static_success
+    - public_user_readiness_local_config_success
+    - public_user_readiness_manual_ui_pending
+    - public_user_readiness_attention_count
+  logs: []
+
+outputs:
+  - read-only public plugin user-readiness report
+  - local aggregate config-readiness mode
+  - fixture tests and main marketplace post-check integration
+  - user-facing readiness documentation
+
+notes:
+  - This is an evidence and usability gate, not a new marketplace card or installation mechanism.
+  - The report may prove readiness for manual UI review but never replaces direct Codex UI evidence.

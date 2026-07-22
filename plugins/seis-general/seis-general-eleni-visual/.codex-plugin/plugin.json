@@ -1,0 +1,38 @@
+{
+  "name": "seis-general-eleni-visual",
+  "version": "0.4.0+codex.20260722",
+  "description": "Eleni-Neferi, visual identity, graphics, rendering, media, and storytelling work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "general-plugin",
+    "eleni-neferi",
+    "graphics",
+    "rendering",
+    "media",
+    "storytelling"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Eleni & Visual",
+    "shortDescription": "Eleni-Neferi, visual identity, graphics, rendering, media, and storytelling work. It exposes exactly three bounded inter",
+    "longDescription": "Eleni-Neferi, visual identity, graphics, rendering, media, and storytelling work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "developerName": "emirhankudun-ux",
+    "category": "Design",
+    "capabilities": [
+      "Read-only source discovery",
+      "Scoped planning",
+      "Bounded package metadata"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Eleni & Visual for this scoped SEIS task."
+    ]
+  }
+}

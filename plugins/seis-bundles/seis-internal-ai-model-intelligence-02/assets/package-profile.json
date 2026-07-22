@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-ai-model-intelligence-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 14,
+  "maximumMemberCount": 15,
+  "category": "Artificial Intelligence",
+  "categoryLabels": [
+    "Artificial Intelligence"
+  ],
+  "generalPlugin": {
+    "id": "ai-intelligence",
+    "name": "seis-ai-agent",
+    "displayName": "SEIS-Agent",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-ai-agent",
+    "installId": "seis-ai-agent@seis-repo",
+    "canonical": true,
+    "status": "release-ready-not-published",
+    "shortDescription": "The default SEIS AI, agent, model, context, retrieval, and routing experience.",
+    "longDescription": "The default SEIS AI, agent, model, context, retrieval, and routing experience. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "ai",
+      "agents",
+      "models",
+      "routing",
+      "context",
+      "retrieval"
+    ],
+    "internalPackageIds": [
+      "seis-internal-ai-model-intelligence-01",
+      "seis-internal-ai-model-intelligence-02",
+      "seis-internal-ai-model-intelligence-03"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-artificial-intelligence-ai-safety",
+      "displayName": "SEIS AI Safety",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-safety",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-audio-ai",
+      "displayName": "SEIS Audio AI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-audio-ai",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-computer-vision",
+      "displayName": "SEIS Computer Vision",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-computer-vision",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-context-engineering",
+      "displayName": "SEIS Context Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-context-engineering",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-deep-learning",
+      "displayName": "SEIS Deep Learning",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-deep-learning",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-embeddings",
+      "displayName": "SEIS Embeddings",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-embeddings",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-generative-ai",
+      "displayName": "SEIS Generative AI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-generative-ai",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-graphrag",
+      "displayName": "SEIS GraphRAG",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-graphrag",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-knowledge-graph",
+      "displayName": "SEIS Knowledge Graph",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-knowledge-graph",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-knowledge-systems",
+      "displayName": "SEIS Knowledge Systems",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-knowledge-systems",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-large-language-models",
+      "displayName": "SEIS Large Language Models",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-large-language-models",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-machine-learning",
+      "displayName": "SEIS Machine Learning",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-machine-learning",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-memory-systems",
+      "displayName": "SEIS Memory Systems",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-memory-systems",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-model-routing",
+      "displayName": "SEIS Model Routing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-model-routing",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    }
+  ]
+}

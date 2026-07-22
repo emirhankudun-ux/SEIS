@@ -1,0 +1,8 @@
+---
+name: seis-internal-ai-model-intelligence-03
+description: AI & Model Intelligence is an internal, read-only SEIS capability package with 14 retained source capabilities. It is selected through a general SEIS plugin and
+---
+
+# SEIS Package: AI & Model Intelligence 03 of 03
+
+Use this bounded SEIS surface for one scoped task. It does not grant network, write, secret, deployment, or publication access.

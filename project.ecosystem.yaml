@@ -38,11 +38,12 @@ plugin_boundary:
     catalog: apps/seis-core/data/seis-core-plugin-catalog.json
     unified_suite: plugins/seis-ai-agent/assets/unified-suite.json
     marketplace_projection:
-      card_count: 34
+      card_count: 10
       canonical_card_count: 1
-      bundle_card_count: 33
-      application_bundle_card_count: 6
-      topic_bundle_card_count: 27
+      general_plugin_card_count: 10
+      internal_package_count: 30
+      internal_package_card_count: 0
+      internal_package_max_member_count: 15
     source_capabilities:
       retained_count: 380
       migrated_root_count: 5

@@ -1,222 +1,291 @@
-const DEFAULT_BUNDLE_SIZE = 15;
+/**
+ * The public SEIS distribution has two deliberately different layers:
+ *
+ * - ten concise, usable marketplace plugins;
+ * - thirty internal source packages, each capped at fifteen capabilities.
+ *
+ * The internal packages are implementation and selection units. They are not
+ * extra marketplace cards, so a user never has to browse or install hundreds
+ * of source modules.
+ */
 
-const APPLICATION_JOURNEYS = Object.freeze([
-  Object.freeze({ id: "ai-data", label: "AI and Data", categories: Object.freeze(["AI", "Data"]) }),
-  Object.freeze({
-    id: "product-design-operations",
-    label: "Product Design and Operations",
-    categories: Object.freeze(["Design", "Productivity", "Governance", "Observability"]),
-  }),
-  Object.freeze({ id: "security", label: "Security", categories: Object.freeze(["Security"]) }),
-  Object.freeze({ id: "developer-engineering", label: "Developer Engineering", categories: Object.freeze(["Developer"]) }),
+const DEFAULT_PACKAGE_SIZE = 15;
+
+const INTERNAL_PACKAGE_FAMILIES = Object.freeze([
+  family("ai-model-intelligence", "AI & Model Intelligence", "Artificial Intelligence", 3, ["AI"], ["Artificial Intelligence"]),
+  family("automation-workflows", "Automation & Workflows", "Developer", 2, [], ["Automation"]),
+  family("cloud-devops", "Cloud & DevOps", "Developer", 2, [], ["Cloud Computing"]),
+  family("creative-production", "Creative Production", "Design", 2, [], ["Creative Production"]),
+  family("security-assurance", "Security & Assurance", "Security", 3, ["Security"], ["Cybersecurity"]),
+  family("data-knowledge", "Data & Knowledge", "Data", 2, ["Data"], ["Data"]),
+  family("design-experience", "Design & Experience", "Design", 2, ["Design"], ["Design"]),
+  family("eleni-visual", "Eleni-Neferi Visual Experience", "Design", 1, [], ["ELENI-NEFERI"]),
+  family("graphics-rendering", "Graphics & Rendering", "Design", 1, [], ["Graphics"]),
+  family("knowledge-research", "Knowledge & Research", "Research", 2, [], ["Knowledge"]),
+  family("product-governance-delivery", "Product, Governance & Delivery", "Productivity", 2, ["Governance", "Observability", "Productivity"], ["Project Management"]),
+  family("engineering-development", "Engineering & Development", "Developer", 6, ["Developer"], ["Software Engineering"]),
+  family("platform-ecosystem", "Platform & Ecosystem", "Developer", 2, [], ["Desktop", "PANTECHNOEPISTEMONOESIS", "SEIS"]),
 ]);
 
-const TOPIC_JOURNEYS = Object.freeze([
-  "Artificial Intelligence",
-  "Automation",
-  "Cloud Computing",
-  "Creative Production",
-  "Cybersecurity",
-  "Data",
-  "Design",
-  "Desktop",
-  "ELENI-NEFERI",
-  "Graphics",
-  "Knowledge",
-  "PANTECHNOEPISTEMONOESIS",
-  "Project Management",
-  "SEIS",
-  "Software Engineering",
-].map((category) => Object.freeze({
-  id: normalizeToken(category),
-  label: category,
-  categories: Object.freeze([category]),
-})));
+const GENERAL_PLUGIN_PROFILES = Object.freeze([
+  profile("ai-intelligence", "seis-ai-agent", "SEIS-Agent", "Developer", "The default SEIS AI, agent, model, context, retrieval, and routing experience.", [
+    ref("ai-model-intelligence", 1),
+    ref("ai-model-intelligence", 2),
+    ref("ai-model-intelligence", 3),
+  ], ["ai", "agents", "models", "routing", "context", "retrieval"]),
+  profile("automation-delivery", "seis-general-automation-delivery", "SEIS Automation & Delivery", "Developer", "Automation, workflows, product planning, and delivery coordination without bulk installation.", [
+    ref("automation-workflows", 1),
+    ref("automation-workflows", 2),
+    ref("product-governance-delivery", 1),
+  ], ["automation", "workflows", "delivery", "product", "planning"]),
+  profile("cloud-devsecops", "seis-general-cloud-devsecops", "SEIS Cloud & DevOps", "Developer", "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning.", [
+    ref("cloud-devops", 1),
+    ref("cloud-devops", 2),
+    ref("security-assurance", 1),
+  ], ["cloud", "infrastructure", "devops", "devsecops", "reliability"]),
+  profile("security-governance", "seis-general-security-governance", "SEIS Security & Governance", "Security", "Security, identity, compliance, governance, permissions, and risk review.", [
+    ref("security-assurance", 2),
+    ref("security-assurance", 3),
+    ref("product-governance-delivery", 2),
+  ], ["security", "identity", "compliance", "governance", "risk"]),
+  profile("data-knowledge", "seis-general-data-knowledge", "SEIS Data & Knowledge", "Data", "Data architecture, analytics, search, memory, knowledge, and research workflows.", [
+    ref("data-knowledge", 1),
+    ref("data-knowledge", 2),
+    ref("knowledge-research", 1),
+  ], ["data", "analytics", "databases", "knowledge", "research"]),
+  profile("design-creative", "seis-general-design-creative", "SEIS Design & Creative", "Design", "Design systems, UX, accessibility, creative production, and visual experience work.", [
+    ref("design-experience", 1),
+    ref("design-experience", 2),
+    ref("creative-production", 1),
+  ], ["design", "ux", "accessibility", "creative", "frontend"]),
+  profile("eleni-visual", "seis-general-eleni-visual", "SEIS Eleni & Visual", "Design", "Eleni-Neferi, visual identity, graphics, rendering, media, and storytelling work.", [
+    ref("eleni-visual", 1),
+    ref("graphics-rendering", 1),
+    ref("creative-production", 2),
+  ], ["eleni-neferi", "graphics", "rendering", "media", "storytelling"]),
+  profile("research-ecosystem", "seis-general-research-ecosystem", "SEIS Research & Ecosystem", "Research", "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work.", [
+    ref("knowledge-research", 2),
+    ref("platform-ecosystem", 1),
+    ref("platform-ecosystem", 2),
+  ], ["research", "desktop", "seis", "pantechnoesis", "platform"]),
+  profile("engineering-foundations", "seis-general-engineering-foundations", "SEIS Engineering Foundations", "Developer", "Frontend, client, architecture, systems, and core software engineering foundations.", [
+    ref("engineering-development", 1),
+    ref("engineering-development", 2),
+    ref("engineering-development", 3),
+  ], ["engineering", "development", "frontend", "architecture", "systems"]),
+  profile("engineering-delivery", "seis-general-engineering-delivery", "SEIS Engineering Delivery", "Developer", "Backend, testing, build, release, developer tooling, and repository delivery work.", [
+    ref("engineering-development", 4),
+    ref("engineering-development", 5),
+    ref("engineering-development", 6),
+  ], ["engineering", "development", "backend", "testing", "release", "devtools"]),
+]);
 
-export const SEIS_PUBLIC_BUNDLE_SIZE = DEFAULT_BUNDLE_SIZE;
-export const SEIS_PUBLIC_MARKETPLACE_MIN_CARD_COUNT = 30;
-export const SEIS_PUBLIC_MARKETPLACE_MAX_CARD_COUNT = 50;
-export const SEIS_APPLICATION_BUNDLE_PREFIX = "seis-application-bundle";
-export const SEIS_TOPIC_BUNDLE_PREFIX = "seis-topic-bundle";
+export const SEIS_PUBLIC_BUNDLE_SIZE = DEFAULT_PACKAGE_SIZE;
+export const SEIS_INTERNAL_PACKAGE_TARGET = 30;
+export const SEIS_GENERAL_PLUGIN_TARGET = 10;
+export const SEIS_PUBLIC_MARKETPLACE_CARD_COUNT = 10;
+export const SEIS_PUBLIC_MARKETPLACE_MIN_CARD_COUNT = SEIS_PUBLIC_MARKETPLACE_CARD_COUNT;
+export const SEIS_PUBLIC_MARKETPLACE_MAX_CARD_COUNT = SEIS_PUBLIC_MARKETPLACE_CARD_COUNT;
+export const SEIS_APPLICATION_BUNDLE_PREFIX = "seis-internal";
+export const SEIS_TOPIC_BUNDLE_PREFIX = "seis-internal";
 export const SEIS_PUBLIC_BUNDLE_ROOT = "plugins/seis-bundles";
+export const SEIS_GENERAL_PLUGIN_ROOT = "plugins/seis-general";
 
-export function buildSeisPublicBundlePlan({ applicationPlugins, topicPlugins, bundleSize = DEFAULT_BUNDLE_SIZE }) {
-  assertPositiveInteger(bundleSize, "bundle size");
+export function buildSeisPublicBundlePlan({ applicationPlugins, topicPlugins, bundleSize = DEFAULT_PACKAGE_SIZE }) {
+  assertPositiveInteger(bundleSize, "package size");
+  const applicationMembers = normalizeMembers(applicationPlugins, "application");
+  const topicMembers = normalizeMembers(topicPlugins, "topic");
+  const members = [...applicationMembers, ...topicMembers];
+  const packages = [];
+  const assignedNames = new Set();
+  const assignedPaths = new Set();
 
-  const applicationBundles = buildSeisPublicApplicationBundles({ applicationPlugins, bundleSize });
-  const topicBundles = buildSeisPublicTopicBundles({ topicPlugins, bundleSize });
-  const bundles = [...applicationBundles, ...topicBundles];
-  const allMembers = bundles.flatMap((bundle) => bundle.members);
-  const allNames = allMembers.map((member) => member.name);
-  const allPaths = allMembers.map((member) => member.sourcePath);
-  const sourceCount = applicationPlugins.length + topicPlugins.length;
-  if (allMembers.length !== sourceCount || new Set(allNames).size !== sourceCount || new Set(allPaths).size !== sourceCount) {
-    throw new Error("SEIS public bundle plan: combined application and topic source coverage is not exact-once");
+  for (const definition of INTERNAL_PACKAGE_FAMILIES) {
+    const familyMembers = members.filter((member) => matchesFamily(member, definition));
+    if (familyMembers.length === 0) {
+      throw new Error("SEIS public package plan: internal family " + definition.id + " has no source members");
+    }
+    if (familyMembers.length > definition.packageCount * bundleSize) {
+      throw new Error("SEIS public package plan: internal family " + definition.id + " exceeds its bounded package capacity");
+    }
+    const chunks = balancedChunks(familyMembers, definition.packageCount);
+    chunks.forEach((chunk, index) => {
+      const part = index + 1;
+      const id = "seis-internal-" + definition.id + "-" + String(part).padStart(2, "0");
+      for (const member of chunk) {
+        if (assignedNames.has(member.name) || assignedPaths.has(member.sourcePath)) {
+          throw new Error("SEIS public package plan: source member is assigned more than once: " + member.name);
+        }
+        assignedNames.add(member.name);
+        assignedPaths.add(member.sourcePath);
+      }
+      packages.push({
+        id,
+        name: id,
+        family: "internal",
+        familyId: definition.id,
+        familyLabel: definition.label,
+        journeyId: definition.id,
+        journeyLabel: definition.label,
+        journeyPart: part,
+        journeyPartCount: definition.packageCount,
+        displayName: "SEIS Package: " + definition.label + (definition.packageCount > 1 ? " " + String(part).padStart(2, "0") + " of " + String(definition.packageCount).padStart(2, "0") : ""),
+        shortDescription: String(chunk.length) + " retained " + definition.label + " source capabilities.",
+        longDescription: definition.label + " is an internal, read-only SEIS capability package with " + String(chunk.length) + " retained source capabilities. It is selected through a general SEIS plugin and is never an extra marketplace card or automatic install target.",
+        category: definition.category,
+        categoryLabels: [...new Set(chunk.map((member) => member.category))],
+        sourcePath: "./" + SEIS_PUBLIC_BUNDLE_ROOT + "/" + id,
+        memberCount: chunk.length,
+        members: chunk,
+      });
+    });
   }
-  const targetMarketplaceCardCount = 1 + bundles.length;
 
-  if (targetMarketplaceCardCount < SEIS_PUBLIC_MARKETPLACE_MIN_CARD_COUNT
-      || targetMarketplaceCardCount > SEIS_PUBLIC_MARKETPLACE_MAX_CARD_COUNT) {
-    throw new Error(
-      `SEIS public bundle plan: marketplace card count ${targetMarketplaceCardCount} is outside the reviewed ${SEIS_PUBLIC_MARKETPLACE_MIN_CARD_COUNT}-${SEIS_PUBLIC_MARKETPLACE_MAX_CARD_COUNT} range`,
-    );
+  if (packages.length !== SEIS_INTERNAL_PACKAGE_TARGET) {
+    throw new Error("SEIS public package plan: expected " + String(SEIS_INTERNAL_PACKAGE_TARGET) + " internal packages; received " + String(packages.length));
+  }
+  if (assignedNames.size !== members.length || assignedPaths.size !== members.length) {
+    throw new Error("SEIS public package plan: application and topic source coverage is not exact-once");
+  }
+  if (packages.some((candidate) => candidate.memberCount < 1 || candidate.memberCount > bundleSize)) {
+    throw new Error("SEIS public package plan: an internal package violates the configured member cap");
+  }
+
+  const packagesByReference = new Map(packages.map((candidate) => [candidate.familyId + ":" + String(candidate.journeyPart), candidate]));
+  const generalPlugins = GENERAL_PLUGIN_PROFILES.map((definition) => {
+    const internalPackages = definition.packageRefs.map((reference) => {
+      const candidate = packagesByReference.get(reference.familyId + ":" + String(reference.part));
+      if (!candidate) {
+        throw new Error("SEIS public package plan: general plugin " + definition.id + " refers to an unknown internal package");
+      }
+      return candidate;
+    });
+    return {
+      id: definition.id,
+      name: definition.pluginName,
+      displayName: definition.displayName,
+      category: definition.category,
+      sourcePath: definition.pluginName === "seis-ai-agent"
+        ? "./plugins/seis-ai-agent"
+        : "./" + SEIS_GENERAL_PLUGIN_ROOT + "/" + definition.pluginName,
+      canonical: definition.pluginName === "seis-ai-agent",
+      status: "release-ready-not-published",
+      shortDescription: definition.summary,
+      longDescription: definition.summary + " It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+      keywords: definition.keywords,
+      internalPackageIds: internalPackages.map((candidate) => candidate.id),
+      internalPackageCount: internalPackages.length,
+    };
+  });
+
+  const generalPackageIds = generalPlugins.flatMap((plugin) => plugin.internalPackageIds);
+  if (
+    generalPlugins.length !== SEIS_GENERAL_PLUGIN_TARGET
+    || generalPackageIds.length !== packages.length
+    || new Set(generalPackageIds).size !== packages.length
+    || packages.some((candidate) => !generalPackageIds.includes(candidate.id))
+    || generalPlugins.some((plugin) => plugin.internalPackageCount !== 3)
+  ) {
+    throw new Error("SEIS public package plan: ten general plugin profiles must partition the thirty internal packages three-at-a-time");
   }
 
   return {
     bundleSize,
     maximumBundleSize: bundleSize,
-    applicationBundles,
-    topicBundles,
-    bundles,
-    applicationBundleCount: applicationBundles.length,
-    topicBundleCount: topicBundles.length,
-    publicBundleCardCount: bundles.length,
-    targetMarketplaceCardCount,
+    internalPackages: packages,
+    bundles: packages,
+    generalPlugins,
+    applicationBundles: packages.filter((candidate) => candidate.members.some((member) => member.origin === "application")),
+    topicBundles: packages.filter((candidate) => candidate.members.some((member) => member.origin === "topic")),
+    applicationBundleCount: packages.filter((candidate) => candidate.members.some((member) => member.origin === "application")).length,
+    topicBundleCount: packages.filter((candidate) => candidate.members.some((member) => member.origin === "topic")).length,
+    publicBundleCardCount: 0,
+    internalPackageCount: packages.length,
+    generalPluginCount: generalPlugins.length,
+    targetMarketplaceCardCount: generalPlugins.length,
   };
 }
 
-export function buildSeisPublicApplicationBundles({ applicationPlugins, bundleSize = DEFAULT_BUNDLE_SIZE }) {
-  return buildBundleFamily({
-    family: "application",
-    plugins: applicationPlugins,
-    prefix: SEIS_APPLICATION_BUNDLE_PREFIX,
-    bundleSize,
-    fallbackCategory: "Developer",
-    journeys: APPLICATION_JOURNEYS,
+export function buildSeisPublicApplicationBundles({ applicationPlugins, bundleSize = DEFAULT_PACKAGE_SIZE }) {
+  return buildSeisPublicBundlePlan({ applicationPlugins, topicPlugins: [], bundleSize }).internalPackages;
+}
+
+export function buildSeisPublicTopicBundles({ applicationPlugins = [], topicPlugins, bundleSize = DEFAULT_PACKAGE_SIZE }) {
+  return buildSeisPublicBundlePlan({ applicationPlugins, topicPlugins, bundleSize }).internalPackages;
+}
+
+function family(id, label, category, packageCount, applicationCategories, topicCategories) {
+  return Object.freeze({
+    id,
+    label,
+    category,
+    packageCount,
+    applicationCategories: Object.freeze(applicationCategories),
+    topicCategories: Object.freeze(topicCategories),
   });
 }
 
-export function buildSeisPublicTopicBundles({ topicPlugins, bundleSize = DEFAULT_BUNDLE_SIZE }) {
-  return buildBundleFamily({
-    family: "topic",
-    plugins: topicPlugins,
-    prefix: SEIS_TOPIC_BUNDLE_PREFIX,
-    bundleSize,
-    fallbackCategory: "Knowledge",
-    journeys: TOPIC_JOURNEYS,
+function profile(id, pluginName, displayName, category, summary, packageRefs, keywords) {
+  return Object.freeze({
+    id,
+    pluginName,
+    displayName,
+    category,
+    summary,
+    packageRefs: Object.freeze(packageRefs),
+    keywords: Object.freeze(keywords),
   });
 }
 
-export function buildBundleFamily({ family, plugins, prefix, bundleSize = DEFAULT_BUNDLE_SIZE, fallbackCategory, journeys }) {
-  if (family !== "application" && family !== "topic") {
-    throw new Error(`SEIS public bundle plan: unsupported bundle family: ${family}`);
-  }
-  assertPositiveInteger(bundleSize, "bundle size");
-  const members = normalizeMembers(plugins, family, fallbackCategory);
-  if (members.length === 0) {
-    throw new Error(`SEIS public bundle plan: ${family} source inventory is empty`);
-  }
-
-  const normalizedJourneys = normalizeJourneys(journeys, family);
-  const knownCategories = new Set(normalizedJourneys.flatMap((journey) => journey.categories));
-  const uncoveredCategories = [...new Set(members.map((member) => member.category))]
-    .filter((category) => !knownCategories.has(category));
-  if (uncoveredCategories.length > 0) {
-    throw new Error(`SEIS public bundle plan: unassigned ${family} categories: ${uncoveredCategories.join(", ")}`);
-  }
-
-  const grouped = normalizedJourneys.flatMap((journey) => {
-    const journeyMembers = members.filter((member) => journey.categories.includes(member.category));
-    if (journeyMembers.length === 0) {
-      throw new Error(`SEIS public bundle plan: ${family} journey ${journey.id} has no members`);
-    }
-    const chunks = balancedChunks(journeyMembers, bundleSize);
-    return chunks.map((bundleMembers, index) => ({
-      journey,
-      bundleMembers,
-      part: index + 1,
-      partCount: chunks.length,
-    }));
-  });
-
-  const coveredNames = grouped.flatMap((group) => group.bundleMembers.map((member) => member.name));
-  if (coveredNames.length !== members.length || new Set(coveredNames).size !== members.length) {
-    throw new Error(`SEIS public bundle plan: ${family} source coverage is not exact-once`);
-  }
-
-  return grouped.map(({ journey, bundleMembers, part, partCount }, index) => {
-    const id = `${prefix}-${String(index + 1).padStart(2, "0")}`;
-    const categories = [...new Set(bundleMembers.map((member) => member.category))];
-    const partLabel = partCount > 1 ? ` ${String(part).padStart(2, "0")} of ${String(partCount).padStart(2, "0")}` : "";
-    const familyLabel = family === "application" ? "Application" : "Topic";
-    return {
-      id,
-      name: id,
-      family,
-      journeyId: journey.id,
-      journeyLabel: journey.label,
-      journeyPart: part,
-      journeyPartCount: partCount,
-      displayName: `SEIS ${familyLabel}: ${journey.label}${partLabel}`,
-      shortDescription: `${bundleMembers.length} ${journey.label} source capabilities.`,
-      longDescription: `${journey.label} ${family} selection bundle with ${bundleMembers.length} retained SEIS source capabilities. It provides local, read-only member discovery and planning; it does not bulk-install members or grant external access.`,
-      category: categories.length === 1 ? categories[0] : fallbackCategory,
-      categoryLabels: categories,
-      sourcePath: `./${SEIS_PUBLIC_BUNDLE_ROOT}/${id}`,
-      memberCount: bundleMembers.length,
-      members: bundleMembers,
-    };
-  });
+function ref(familyId, part) {
+  return Object.freeze({ familyId, part });
 }
 
-function normalizeMembers(plugins, family, fallbackCategory) {
+function matchesFamily(member, definition) {
+  return (member.origin === "application" && definition.applicationCategories.includes(member.category))
+    || (member.origin === "topic" && definition.topicCategories.includes(member.category));
+}
+
+function normalizeMembers(plugins, origin) {
   if (!Array.isArray(plugins)) {
-    throw new Error(`SEIS public bundle plan: ${family} plugins must be an array`);
+    throw new Error("SEIS public package plan: " + origin + " plugins must be an array");
   }
-
-  const seenNames = new Set();
-  const seenPaths = new Set();
+  const names = new Set();
+  const paths = new Set();
   return [...plugins]
     .map((plugin) => {
-      const name = String(plugin?.name || "").trim().toLowerCase();
-      const sourcePath = String(plugin?.sourcePath || "").trim();
+      const name = String(plugin && plugin.name || "").trim().toLowerCase();
+      const sourcePath = String(plugin && plugin.sourcePath || "").trim();
+      const category = cleanLabel(plugin && plugin.category);
       if (!/^[a-z0-9][a-z0-9-]{0,127}$/.test(name)) {
-        throw new Error(`SEIS public bundle plan: invalid ${family} plugin name`);
+        throw new Error("SEIS public package plan: invalid " + origin + " plugin name");
       }
       if (!sourcePath.startsWith("./plugins/") || sourcePath.includes("..")) {
-        throw new Error(`SEIS public bundle plan: invalid ${family} source path for ${name}`);
+        throw new Error("SEIS public package plan: invalid " + origin + " source path for " + name);
       }
-      if (seenNames.has(name)) {
-        throw new Error(`SEIS public bundle plan: duplicate ${family} plugin name: ${name}`);
+      if (!category) {
+        throw new Error("SEIS public package plan: missing " + origin + " category for " + name);
       }
-      if (seenPaths.has(sourcePath)) {
-        throw new Error(`SEIS public bundle plan: duplicate ${family} plugin source path: ${sourcePath}`);
+      if (names.has(name) || paths.has(sourcePath)) {
+        throw new Error("SEIS public package plan: duplicate " + origin + " source member: " + name);
       }
-      seenNames.add(name);
-      seenPaths.add(sourcePath);
-      const category = cleanLabel(plugin?.category) || fallbackCategory;
-      const displayName = cleanLabel(plugin?.displayName) || name;
-      return { name, displayName, sourcePath, category };
+      names.add(name);
+      paths.add(sourcePath);
+      return {
+        name,
+        displayName: cleanLabel(plugin && plugin.displayName) || name,
+        sourcePath,
+        category,
+        origin,
+      };
     })
     .sort((left, right) => left.name.localeCompare(right.name));
 }
 
-function normalizeJourneys(journeys, family) {
-  if (!Array.isArray(journeys) || journeys.length === 0) {
-    throw new Error(`SEIS public bundle plan: ${family} journeys must be a non-empty array`);
+function balancedChunks(members, chunkCount) {
+  if (!Number.isInteger(chunkCount) || chunkCount < 1 || members.length < chunkCount) {
+    throw new Error("SEIS public package plan: family cannot be split into the requested package count");
   }
-  const seenIds = new Set();
-  const seenCategories = new Set();
-  return journeys.map((journey) => {
-    const id = normalizeToken(journey?.id);
-    const label = cleanLabel(journey?.label);
-    const categories = Array.isArray(journey?.categories) ? journey.categories.map(cleanLabel).filter(Boolean) : [];
-    if (!id || !label || categories.length === 0 || seenIds.has(id)) {
-      throw new Error(`SEIS public bundle plan: invalid ${family} journey`);
-    }
-    for (const category of categories) {
-      if (seenCategories.has(category)) {
-        throw new Error(`SEIS public bundle plan: category ${category} belongs to multiple ${family} journeys`);
-      }
-      seenCategories.add(category);
-    }
-    seenIds.add(id);
-    return { id, label, categories };
-  });
-}
-
-function balancedChunks(members, maximumSize) {
-  const chunkCount = Math.ceil(members.length / maximumSize);
   const baseSize = Math.floor(members.length / chunkCount);
   const largerChunkCount = members.length % chunkCount;
   const chunks = [];
@@ -233,16 +302,8 @@ function cleanLabel(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
 
-function normalizeToken(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 function assertPositiveInteger(value, label) {
   if (!Number.isInteger(value) || value <= 0) {
-    throw new Error(`SEIS public bundle plan: ${label} must be a positive integer`);
+    throw new Error("SEIS public package plan: " + label + " must be a positive integer");
   }
 }

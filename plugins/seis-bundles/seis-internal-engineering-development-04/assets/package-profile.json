@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-engineering-development-04",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 14,
+  "maximumMemberCount": 15,
+  "category": "Developer",
+  "categoryLabels": [
+    "Software Engineering"
+  ],
+  "generalPlugin": {
+    "id": "engineering-delivery",
+    "name": "seis-general-engineering-delivery",
+    "displayName": "SEIS Engineering Delivery",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-general/seis-general-engineering-delivery",
+    "installId": "seis-general-engineering-delivery@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Backend, testing, build, release, developer tooling, and repository delivery work.",
+    "longDescription": "Backend, testing, build, release, developer tooling, and repository delivery work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "engineering",
+      "development",
+      "backend",
+      "testing",
+      "release",
+      "devtools"
+    ],
+    "internalPackageIds": [
+      "seis-internal-engineering-development-04",
+      "seis-internal-engineering-development-05",
+      "seis-internal-engineering-development-06"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-software-engineering-api",
+      "displayName": "SEIS API",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-api",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-backend",
+      "displayName": "SEIS Backend",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-backend",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-build-systems",
+      "displayName": "SEIS Build Systems",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-build-systems",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-clean-architecture",
+      "displayName": "SEIS Clean Architecture",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-clean-architecture",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-cli",
+      "displayName": "SEIS CLI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-cli",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-compilers",
+      "displayName": "SEIS Compilers",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-compilers",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-data-structures",
+      "displayName": "SEIS Data Structures",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-data-structures",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-debugging",
+      "displayName": "SEIS Debugging",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-debugging",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-desktop-development",
+      "displayName": "SEIS Desktop Development",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-desktop-development",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-distributed-systems",
+      "displayName": "SEIS Distributed Systems",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-distributed-systems",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-domain-driven-design",
+      "displayName": "SEIS Domain-Driven Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-domain-driven-design",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-embedded-systems",
+      "displayName": "SEIS Embedded Systems",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-embedded-systems",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-frameworks",
+      "displayName": "SEIS Frameworks",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-frameworks",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-frontend",
+      "displayName": "SEIS Frontend",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-frontend",
+      "category": "Software Engineering",
+      "origin": "topic"
+    }
+  ]
+}

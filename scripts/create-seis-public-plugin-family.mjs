@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 
 import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 import {
@@ -12,6 +13,12 @@ import {
   readTopicObjective,
 } from "../plugins/seis-topics/runtime/topic-definitions.mjs";
 import { buildSeisPublicBundlePlan } from "./lib/seis-public-bundle-plan.mjs";
+
+const canonicalDistribution = spawnSync(process.execPath, [
+  path.join(process.cwd(), "scripts/create-seis-general-plugin-distribution.mjs"),
+  ...process.argv.slice(2),
+], { cwd: process.cwd(), stdio: "inherit" });
+process.exit(canonicalDistribution.status ?? 1);
 
 const ROOT = process.cwd();
 const checkMode = process.argv.includes("--check");

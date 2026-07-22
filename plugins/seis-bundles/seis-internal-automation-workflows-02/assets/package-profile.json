@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-automation-workflows-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 8,
+  "maximumMemberCount": 15,
+  "category": "Developer",
+  "categoryLabels": [
+    "Automation"
+  ],
+  "generalPlugin": {
+    "id": "automation-delivery",
+    "name": "seis-general-automation-delivery",
+    "displayName": "SEIS Automation & Delivery",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-general/seis-general-automation-delivery",
+    "installId": "seis-general-automation-delivery@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Automation, workflows, product planning, and delivery coordination without bulk installation.",
+    "longDescription": "Automation, workflows, product planning, and delivery coordination without bulk installation. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "automation",
+      "workflows",
+      "delivery",
+      "product",
+      "planning"
+    ],
+    "internalPackageIds": [
+      "seis-internal-automation-workflows-01",
+      "seis-internal-automation-workflows-02",
+      "seis-internal-product-governance-delivery-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-automation-providers",
+      "displayName": "SEIS Providers",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-providers",
+      "category": "Automation",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-automation-scheduling",
+      "displayName": "SEIS Scheduling",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-scheduling",
+      "category": "Automation",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-automation-skills",
+      "displayName": "SEIS Skills",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-skills",
+      "category": "Automation",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-automation-task-management",
+      "displayName": "SEIS Task Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-task-management",
+      "category": "Automation",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-automation-templates",
+      "displayName": "SEIS Templates",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-templates",
+      "category": "Automation",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-automation-tools",
+      "displayName": "SEIS Tools",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-tools",
+      "category": "Automation",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-automation-workflow",
+      "displayName": "SEIS Workflow",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-workflow",
+      "category": "Automation",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-automation-workspace",
+      "displayName": "SEIS Workspace",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-workspace",
+      "category": "Automation",
+      "origin": "topic"
+    }
+  ]
+}

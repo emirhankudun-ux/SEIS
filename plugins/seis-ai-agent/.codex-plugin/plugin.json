@@ -1,7 +1,7 @@
 {
   "name": "seis-ai-agent",
-  "version": "0.3.0+codex.20260712",
-  "description": "Versioned unified SEIS-Agent: the default public SEIS entry point with bounded optional bundle guidance across governance, cloud, code, design, data, security, research, automation, and product lanes.",
+  "version": "0.4.0+codex.20260722",
+  "description": "Canonical SEIS-Agent general plugin. One of ten concise public SEIS plugins backed by bounded internal capability packages.",
   "author": {
     "name": "emirhankudun-ux",
     "url": "https://github.com/emirhankudun-ux"
@@ -28,8 +28,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "SEIS-Agent",
-    "shortDescription": "Default public SEIS entry point with one-bundle-at-a-time guidance.",
-    "longDescription": "SEIS-Agent is the canonical public SEIS starting point. It coordinates SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, Security, Research, Automation, and Product lanes, and it helps users choose at most one optional bounded SEIS Repo bundle for a scoped task without bulk installation or external access.",
+    "shortDescription": "Canonical SEIS AI, agent, routing, and orchestration plugin.",
+    "longDescription": "SEIS-Agent is the canonical default among ten public general SEIS plugins. It keeps source capabilities behind thirty bounded internal packages rather than exposing hundreds of duplicate marketplace cards.",
     "developerName": "emirhankudun-ux",
     "category": "Developer Tools",
     "capabilities": [
@@ -45,19 +45,15 @@
       "SEIS-DATA knowledge and analytics governance",
       "SEIS Security threat, secret, and release-risk review",
       "SEIS Research evidence and source evaluation",
-      "SEIS Automation repeatable workflow and runbook design",
-      "SEIS Product roadmap, scope, and acceptance criteria",
-      "Cross-platform terminal install planning",
-      "Website and launch readiness planning",
-      "Repository-contained plugin development",
-      "MCP status and plan routing",
-      "Long-horizon open-source product evolution"
+      "Ten general SEIS plugin selection",
+      "Thirty bounded internal packages",
+      "One general plugin per scoped task"
     ],
     "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
     "defaultPrompt": [
-      "Find up to three relevant public SEIS journeys for this task, then choose one optional bundle.",
+      "Choose one of the ten general SEIS plugins for this scoped task; never bulk-install internal packages.",
       "Route this SEIS work across cloud, code, design, data, security, research, automation, and product.",
-      "Plan the next SEIS-Agent milestone without publishing or bulk-installing packages."
+      "Plan the next SEIS-Agent milestone without publishing, deploying, or enabling external write access."
     ],
     "brandColor": "#111827"
   }

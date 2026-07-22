@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-ai-model-intelligence-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 14,
+  "maximumMemberCount": 15,
+  "category": "Artificial Intelligence",
+  "categoryLabels": [
+    "AI",
+    "Artificial Intelligence"
+  ],
+  "generalPlugin": {
+    "id": "ai-intelligence",
+    "name": "seis-ai-agent",
+    "displayName": "SEIS-Agent",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-ai-agent",
+    "installId": "seis-ai-agent@seis-repo",
+    "canonical": true,
+    "status": "release-ready-not-published",
+    "shortDescription": "The default SEIS AI, agent, model, context, retrieval, and routing experience.",
+    "longDescription": "The default SEIS AI, agent, model, context, retrieval, and routing experience. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "ai",
+      "agents",
+      "models",
+      "routing",
+      "context",
+      "retrieval"
+    ],
+    "internalPackageIds": [
+      "seis-internal-ai-model-intelligence-01",
+      "seis-internal-ai-model-intelligence-02",
+      "seis-internal-ai-model-intelligence-03"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-agent-audit",
+      "displayName": "SEIS Agent Audit",
+      "sourcePath": "./plugins/seis-core/seis-agent-audit",
+      "category": "AI",
+      "origin": "application"
+    },
+    {
+      "name": "seis-agent-contract-validator",
+      "displayName": "SEIS Agent Contract Validator",
+      "sourcePath": "./plugins/seis-core/seis-agent-contract-validator",
+      "category": "AI",
+      "origin": "application"
+    },
+    {
+      "name": "seis-context-efficiency",
+      "displayName": "Seis Context Efficiency",
+      "sourcePath": "./plugins/seis-core/seis-context-efficiency",
+      "category": "AI",
+      "origin": "application"
+    },
+    {
+      "name": "seis-mcp-inventory",
+      "displayName": "SEIS MCP Inventory",
+      "sourcePath": "./plugins/seis-core/seis-mcp-inventory",
+      "category": "AI",
+      "origin": "application"
+    },
+    {
+      "name": "seis-model-fallback",
+      "displayName": "SEIS Model Fallback",
+      "sourcePath": "./plugins/seis-core/seis-model-fallback",
+      "category": "AI",
+      "origin": "application"
+    },
+    {
+      "name": "seis-provider-health",
+      "displayName": "SEIS Provider Health",
+      "sourcePath": "./plugins/seis-core/seis-provider-health",
+      "category": "AI",
+      "origin": "application"
+    },
+    {
+      "name": "seis-route-explainer",
+      "displayName": "SEIS Route Explainer",
+      "sourcePath": "./plugins/seis-core/seis-route-explainer",
+      "category": "AI",
+      "origin": "application"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence",
+      "displayName": "SEIS Artificial Intelligence",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-agent-runtime",
+      "displayName": "SEIS Agent Runtime",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-agent-runtime",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-agent-swarms",
+      "displayName": "SEIS Agent Swarms",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-agent-swarms",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-agents",
+      "displayName": "SEIS AI Agents",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-agents",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-alignment",
+      "displayName": "SEIS AI Alignment",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-alignment",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-core",
+      "displayName": "SEIS AI Core",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-core",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-evaluation",
+      "displayName": "SEIS AI Evaluation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-evaluation",
+      "category": "Artificial Intelligence",
+      "origin": "topic"
+    }
+  ]
+}

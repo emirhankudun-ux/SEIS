@@ -1,0 +1,38 @@
+{
+  "name": "seis-general-cloud-devsecops",
+  "version": "0.4.0+codex.20260722",
+  "description": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "general-plugin",
+    "cloud",
+    "infrastructure",
+    "devops",
+    "devsecops",
+    "reliability"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Cloud & DevOps",
+    "shortDescription": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning. It exposes exactly three bounded internal packages,",
+    "longDescription": "Cloud, infrastructure, DevOps, reliability, and DevSecOps planning. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": [
+      "Read-only source discovery",
+      "Scoped planning",
+      "Bounded package metadata"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Cloud & DevOps for this scoped SEIS task."
+    ]
+  }
+}

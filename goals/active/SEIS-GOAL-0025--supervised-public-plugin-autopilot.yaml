@@ -1,7 +1,7 @@
 schema_version: 2
 
 id: SEIS-GOAL-0025
-project: seis
+project: seis-plugin-root
 program: public-plugin-governance
 initiative: supervised-long-horizon-automation
 parent_goal: SEIS-GOAL-0024
@@ -83,7 +83,7 @@ requirements:
   - define five evidence-led 100-step waves and a ten-year strategic horizon
   - increase the next five-wave series to 200 steps per wave after the current series closes
   - define a machine-validated five-wave escalation ladder from 200 through 600 steps per wave across the ten-year horizon
-  - keep escalation-step counts separate from the 34-card public marketplace projection and 15-capability bundle limit
+  - keep escalation-step counts separate from the 10-card public marketplace projection, 30 internal packages, and 15-capability limit
   - activate Round 11 as one explicit 200-step cycle in ten 20-step rounds without claiming historical Wave 5 closeout
   - execute plan, generation, and validation only during a foreground local invocation
   - allowlist exactly 48 local generator, validation, test, and diff-check phases explicitly
@@ -93,7 +93,7 @@ requirements:
   - disclose that the reviewed allowlist is source containment rather than an operating-system sandbox
   - keep all external writes, network access, secrets, provider calls, deployment, release, GitHub push, merge, and destructive work disabled
   - report a clear approval-gated GitHub delivery next action
-  - preserve the canonical SEIS-Agent default installation and curated bundle boundaries
+  - preserve the canonical SEIS-Agent default installation and curated general-plugin/internal-package boundaries
 
 non_goals:
   - background agents continuing after the command exits
@@ -133,7 +133,6 @@ dependencies:
   - SEIS-GOAL-0024
 blocked_by: []
 related_goals:
-  - SEIS-GOAL-021
   - SEIS-GOAL-0024
 
 validation:

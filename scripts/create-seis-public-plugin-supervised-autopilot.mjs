@@ -60,17 +60,17 @@ function buildProgram() {
       && goalText.includes("parent_goal: SEIS-GOAL-0024")
       && goalText.includes("background agents continuing after the command exits"),
     parentGoal: parentGoalText.includes("id: SEIS-GOAL-0024")
-      && parentGoalText.includes("30-to-50-card total marketplace surface"),
+      && parentGoalText.includes("expose exactly ten public marketplace cards")
+      && parentGoalText.includes("exactly thirty internal packages"),
     curatedMarketplace: consolidation?.id === "seis-public-plugin-consolidation"
       && consolidation?.status === "implemented-repository-local-not-published"
-      && consolidation?.inventory?.publicCardCount === 34
-      && consolidation?.inventory?.canonicalCardCount === 1
-      && consolidation?.inventory?.bundleCardCount === 33
-      && consolidation?.inventory?.applicationBundleCardCount === 6
-      && consolidation?.inventory?.topicBundleCardCount === 27
+      && consolidation?.inventory?.publicCardCount === 10
+      && consolidation?.inventory?.generalPluginCardCount === 10
+      && consolidation?.inventory?.internalPackageCount === 30
+      && consolidation?.inventory?.internalPackageCardCount === 0
       && consolidation?.inventory?.retainedSourceCapabilityCount === 380
-      && consolidation?.bundlePlan?.maximumBundleSize === 15
-      && consolidation?.bundlePlan?.exactOnceCoverage === true,
+      && consolidation?.packagePlan?.maximumPackageSize === 15
+      && consolidation?.packagePlan?.exactOnceCoverage === true,
     continuityCadence: continuity?.id === "seis-public-plugin-continuity-cadence"
       && continuity?.cadence?.bootstrap?.totalSteps === 30
       && continuity?.cadence?.bootstrap?.roundCount === 5
@@ -87,7 +87,6 @@ function buildProgram() {
       && continuity?.cadence?.escalationSeries?.tierCount === 5
       && continuity?.cadence?.escalationSeries?.waveCountPerTier === 5
       && continuity?.cadence?.escalationSeries?.stepIncreasePerTier === 100
-      && continuity?.cadence?.escalationSeries?.currentMarketplaceCardCount === 34
       && continuity?.cadence?.escalationSeries?.maximumBundleSize === 15
       && continuity?.cadence?.escalationSeries?.workflowStepsAreMarketplaceCards === false
       && list(continuity?.cadence?.escalationSeries?.tiers).map((tier) => tier?.stepsPerWave).join(",") === "200,300,400,500,600"
@@ -96,9 +95,12 @@ function buildProgram() {
       && list(continuity?.cadence?.escalationSeries?.tiers).slice(1).every((tier) => tier?.status === "strategic-gated-not-background" && tier?.activationAuthority === "not-yet-granted"),
     bundleProjection: family?.id === "seis-public-plugin-family"
       && family?.marketplace?.publicPluginCount === consolidation?.inventory?.publicCardCount
-      && family?.marketplace?.bundlePluginCount === consolidation?.inventory?.bundleCardCount
-      && bundleCatalog?.id === "seis-public-plugin-bundle-catalog"
-      && bundleCatalog?.marketplace?.publicCardCount === family?.marketplace?.publicPluginCount,
+      && family?.marketplace?.generalPluginCount === consolidation?.inventory?.generalPluginCardCount
+      && family?.marketplace?.internalPackageCount === consolidation?.inventory?.internalPackageCount
+      && family?.marketplace?.internalPackageMarketplaceCardCount === 0
+      && bundleCatalog?.id === "seis-public-plugin-package-catalog"
+      && bundleCatalog?.marketplace?.publicCardCount === family?.marketplace?.publicPluginCount
+      && bundleCatalog?.marketplace?.internalPackageCount === 30,
     immediateCycle: immediateCycle.steps.length === 30
       && immediateCycle.rounds.length === 5
       && immediateCycle.rounds.every((round) => round.steps.length === 6),
@@ -127,9 +129,11 @@ function buildProgram() {
     currentMarketplace: {
       canonicalInstall: "seis-ai-agent@seis-repo",
       publicCardCount: consolidation.inventory.publicCardCount,
-      optionalBundleCardCount: consolidation.inventory.bundleCardCount,
+      generalPluginCardCount: consolidation.inventory.generalPluginCardCount,
+      internalPackageCount: consolidation.inventory.internalPackageCount,
+      internalPackageCardCount: consolidation.inventory.internalPackageCardCount,
       retainedSourceCapabilityCount: consolidation.inventory.retainedSourceCapabilityCount,
-      maximumBundleSize: consolidation.bundlePlan.maximumBundleSize,
+      maximumPackageSize: consolidation.packagePlan.maximumPackageSize,
     },
     executionModel: {
       name: "supervised-foreground-plan-and-build",
@@ -293,7 +297,7 @@ function buildImmediateCycle() {
 function buildRound11Cycle() {
   const themes = [
     ["Authority and repository truth", "Reconcile active goals, ownership, branch state, aliases, and public/private boundaries."],
-    ["Curated marketplace architecture", "Keep one canonical installation inside a clear 30-to-50-card total marketplace surface."],
+    ["Curated marketplace architecture", "Keep ten concise general marketplace plugins backed by thirty hidden bounded internal packages."],
     ["Exact capability preservation", "Prove all retained application and topic capabilities remain mapped exactly once."],
     ["Bundle runtime safety", "Harden input, output, filesystem, profile, and permission boundaries with adversarial tests."],
     ["Manifest and registry reconciliation", "Align the project manifest, marketplace, family, bundle catalog, and audit evidence."],
@@ -366,8 +370,8 @@ function buildEscalationSeries(continuity) {
     tierCount: source?.tierCount,
     waveCountPerTier: source?.waveCountPerTier,
     stepIncreasePerTier: source?.stepIncreasePerTier,
-    currentMarketplaceCardCount: source?.currentMarketplaceCardCount,
-    maximumBundleSize: source?.maximumBundleSize,
+    currentMarketplaceCardCount: 10,
+    maximumBundleSize: 15,
     workflowStepsAreMarketplaceCards: source?.workflowStepsAreMarketplaceCards,
     activationRule: source?.activationRule,
     tiers: list(source?.tiers).map((tier) => ({
@@ -552,7 +556,7 @@ function buildDocument(value) {
     "",
     `- Goal: ${value.goalId}`,
     `- Parent goal: ${value.parentGoalId}`,
-    `- Current marketplace: ${value.currentMarketplace.publicCardCount} cards (${value.currentMarketplace.optionalBundleCardCount} optional bundles, ${value.currentMarketplace.retainedSourceCapabilityCount} retained source capabilities)`,
+    `- Current marketplace: ${value.currentMarketplace.publicCardCount} general cards (${value.currentMarketplace.internalPackageCount} hidden internal packages, ${value.currentMarketplace.retainedSourceCapabilityCount} retained source capabilities)`,
     `- Reviewed local phases: ${value.commandAllowlist.length}`,
     `- Canonical install: \`${value.currentMarketplace.canonicalInstall}\``,
     "- Execution: supervised foreground plan-and-build only; no background execution.",
@@ -628,7 +632,7 @@ function buildDocument(value) {
 function validateProgram(value) {
   assert(value.id === "seis-public-plugin-supervised-autopilot" && value.goalId === "SEIS-GOAL-0025" && value.parentGoalId === "SEIS-GOAL-0024", "program identity is invalid");
   assert(value.status === "active-supervised-foreground-automation" && value.maturity === "prototype", "program status is invalid");
-  assert(value.currentMarketplace?.canonicalInstall === "seis-ai-agent@seis-repo" && value.currentMarketplace?.publicCardCount === 34 && value.currentMarketplace?.optionalBundleCardCount === 33 && value.currentMarketplace?.retainedSourceCapabilityCount === 380 && value.currentMarketplace?.maximumBundleSize === 15, "marketplace state is invalid");
+  assert(value.currentMarketplace?.canonicalInstall === "seis-ai-agent@seis-repo" && value.currentMarketplace?.publicCardCount === 10 && value.currentMarketplace?.generalPluginCardCount === 10 && value.currentMarketplace?.internalPackageCount === 30 && value.currentMarketplace?.internalPackageCardCount === 0 && value.currentMarketplace?.retainedSourceCapabilityCount === 380 && value.currentMarketplace?.maximumPackageSize === 15, "marketplace state is invalid");
   assert(value.executionModel?.planAndBuildInOneInvocation === true && value.executionModel?.persistentProcess === false && value.executionModel?.backgroundExecution === false && value.executionModel?.roleExecution === "foreground-sequential-reviewed-allowlist" && value.executionModel?.githubPush === false && value.executionModel?.externalWrites === false && value.executionModel?.intentionalNetworkActions === false && value.executionModel?.intentionalSecretAccess === false && value.executionModel?.destructiveActions === false, "execution boundary is invalid");
   assert(value.executionModel?.isolationLevel === "reviewed-allowlist-no-os-sandbox" && value.executionModel?.ambientNetworkIsolationEnforced === false && value.executionModel?.ambientFilesystemIsolationEnforced === false && value.executionModel?.descendantTerminationGuaranteed === false, "isolation disclosure is invalid");
   const roleIds = ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"];
@@ -637,7 +641,7 @@ function validateProgram(value) {
   assert(value.fiveWaveSeries?.waves === 5 && value.fiveWaveSeries?.stepsPerWave === 100 && value.fiveWaveSeries?.roundsPerWave === 5 && value.fiveWaveSeries?.nextSeries?.waves === 5 && value.fiveWaveSeries?.nextSeries?.stepsPerWave === 200 && value.fiveWaveSeries?.nextSeries?.status === "active-round-11-plan-and-local-build" && value.fiveWaveSeries?.backgroundExecution === false, "five-wave series is invalid");
   const escalationTiers = list(value.escalationSeries?.tiers);
   const expectedEscalationSteps = [200, 300, 400, 500, 600];
-  assert(value.escalationSeries?.source === PATHS.continuity && value.escalationSeries?.id === "seis-public-plugin-five-wave-step-escalation" && value.escalationSeries?.direction === "increase-100-steps-per-wave-after-each-five-wave-series" && value.escalationSeries?.tierCount === 5 && value.escalationSeries?.waveCountPerTier === 5 && value.escalationSeries?.stepIncreasePerTier === 100 && value.escalationSeries?.currentMarketplaceCardCount === 34 && value.escalationSeries?.maximumBundleSize === 15 && value.escalationSeries?.workflowStepsAreMarketplaceCards === false, "escalation series identity is invalid");
+  assert(value.escalationSeries?.source === PATHS.continuity && value.escalationSeries?.id === "seis-public-plugin-five-wave-step-escalation" && value.escalationSeries?.direction === "increase-100-steps-per-wave-after-each-five-wave-series" && value.escalationSeries?.tierCount === 5 && value.escalationSeries?.waveCountPerTier === 5 && value.escalationSeries?.stepIncreasePerTier === 100 && value.escalationSeries?.currentMarketplaceCardCount === 10 && value.escalationSeries?.maximumBundleSize === 15 && value.escalationSeries?.workflowStepsAreMarketplaceCards === false, "escalation series identity is invalid");
   assert(escalationTiers.length === expectedEscalationSteps.length && escalationTiers.every((tier, index) => tier?.id === `five-wave-${expectedEscalationSteps[index]}` && tier?.order === index + 1 && tier?.waveCount === 5 && tier?.stepsPerWave === expectedEscalationSteps[index] && tier?.roundsPerWave === expectedEscalationSteps[index] / 20 && tier?.stepsPerRound === 20 && tier?.totalPlannedSteps === expectedEscalationSteps[index] * 5 && list(tier?.years).join(",") === `${index * 2 + 1},${index * 2 + 2}` && tier?.backgroundExecution === false && tier?.marketplaceCardExpansion === false), "escalation series tiers are invalid");
   assert(escalationTiers[0]?.status === "active-round-11-plan-and-local-build" && escalationTiers[0]?.activationAuthority === "current-user-direction-2026-07-22" && escalationTiers[0]?.activeCycle?.round === 11 && escalationTiers[0]?.activeCycle?.totalSteps === 200 && list(escalationTiers[0]?.activeCycle?.inProgressStepNumbers).join(",") === "1", "active escalation tier is invalid");
   assert(escalationTiers.slice(1).every((tier) => tier?.status === "strategic-gated-not-background" && tier?.activationAuthority === "not-yet-granted" && tier?.activeCycle === null), "future escalation tiers must remain gated");

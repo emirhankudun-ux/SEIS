@@ -3,7 +3,7 @@
     "seis-ai-agent": {
       "command": "node",
       "args": [
-        "./scripts/seis-ai-agent-mcp-server.mjs"
+        "./scripts/seis-general-plugin-mcp-server.mjs"
       ]
     }
   }

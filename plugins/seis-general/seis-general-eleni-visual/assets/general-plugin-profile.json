@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "eleni-visual",
+  "name": "seis-general-eleni-visual",
+  "displayName": "SEIS Eleni & Visual",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "status": "release-ready-not-published",
+  "visibility": "public-general-plugin",
+  "canonical": false,
+  "installId": "seis-general-eleni-visual@seis-repo",
+  "internalPackageIds": [
+    "seis-internal-eleni-visual-01",
+    "seis-internal-graphics-rendering-01",
+    "seis-internal-creative-production-02"
+  ],
+  "internalPackageCount": 3,
+  "taskSelectionBoundary": "one-general-plugin-per-scoped-task",
+  "permissions": {
+    "read": [
+      "profile",
+      "internal package metadata"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  }
+}

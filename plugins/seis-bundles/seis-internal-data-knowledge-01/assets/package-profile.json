@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-data-knowledge-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 14,
+  "maximumMemberCount": 15,
+  "category": "Data",
+  "categoryLabels": [
+    "Data"
+  ],
+  "generalPlugin": {
+    "id": "data-knowledge",
+    "name": "seis-general-data-knowledge",
+    "displayName": "SEIS Data & Knowledge",
+    "category": "Data",
+    "sourcePath": "./plugins/seis-general/seis-general-data-knowledge",
+    "installId": "seis-general-data-knowledge@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Data architecture, analytics, search, memory, knowledge, and research workflows.",
+    "longDescription": "Data architecture, analytics, search, memory, knowledge, and research workflows. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "data",
+      "analytics",
+      "databases",
+      "knowledge",
+      "research"
+    ],
+    "internalPackageIds": [
+      "seis-internal-data-knowledge-01",
+      "seis-internal-data-knowledge-02",
+      "seis-internal-knowledge-research-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-doc-indexer",
+      "displayName": "SEIS Doc Indexer",
+      "sourcePath": "./plugins/seis-core/seis-doc-indexer",
+      "category": "Data",
+      "origin": "application"
+    },
+    {
+      "name": "seis-docs-freshness",
+      "displayName": "SEIS Docs Freshness",
+      "sourcePath": "./plugins/seis-core/seis-docs-freshness",
+      "category": "Data",
+      "origin": "application"
+    },
+    {
+      "name": "seis-download-anomaly",
+      "displayName": "Seis Download Anomaly",
+      "sourcePath": "./plugins/seis-core/seis-download-anomaly",
+      "category": "Data",
+      "origin": "application"
+    },
+    {
+      "name": "seis-localization-coverage",
+      "displayName": "SEIS Localization Coverage",
+      "sourcePath": "./plugins/seis-core/seis-localization-coverage",
+      "category": "Data",
+      "origin": "application"
+    },
+    {
+      "name": "seis-package-adoption",
+      "displayName": "Seis Package Adoption",
+      "sourcePath": "./plugins/seis-core/seis-package-adoption",
+      "category": "Data",
+      "origin": "application"
+    },
+    {
+      "name": "seis-rag-citation-coverage",
+      "displayName": "SEIS RAG Citation Coverage",
+      "sourcePath": "./plugins/seis-core/seis-rag-citation-coverage",
+      "category": "Data",
+      "origin": "application"
+    },
+    {
+      "name": "seis-technology-ontology",
+      "displayName": "SEIS Technology Ontology",
+      "sourcePath": "./plugins/seis-core/seis-technology-ontology",
+      "category": "Data",
+      "origin": "application"
+    },
+    {
+      "name": "seis-topic-data",
+      "displayName": "SEIS Data",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-analytics",
+      "displayName": "SEIS Analytics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-analytics",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-business-intelligence",
+      "displayName": "SEIS Business Intelligence",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-business-intelligence",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-data-architecture",
+      "displayName": "SEIS Data Architecture",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-data-architecture",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-data-engineering",
+      "displayName": "SEIS Data Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-data-engineering",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-data-governance",
+      "displayName": "SEIS Data Governance",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-data-governance",
+      "category": "Data",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-data-data-lineage",
+      "displayName": "SEIS Data Lineage",
+      "sourcePath": "./plugins/seis-topics/seis-topic-data-data-lineage",
+      "category": "Data",
+      "origin": "topic"
+    }
+  ]
+}

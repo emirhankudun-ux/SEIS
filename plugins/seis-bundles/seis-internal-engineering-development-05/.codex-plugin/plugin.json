@@ -1,0 +1,33 @@
+{
+  "name": "seis-internal-engineering-development-05",
+  "version": "0.4.0+codex.20260722",
+  "description": "Engineering & Development is an internal, read-only SEIS capability package with 14 retained source capabilities. It is selected through a general SEIS plugin and is never an extra marketplace card or automatic install target.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "internal-package"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEIS Package: Engineering & Development 05 of 06",
+    "shortDescription": "Engineering & Development is an internal, read-only SEIS capability package with 14 retained source capabilities. It is",
+    "longDescription": "Engineering & Development is an internal, read-only SEIS capability package with 14 retained source capabilities. It is selected through a general SEIS plugin and is never an extra marketplace card or automatic install target.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer",
+    "capabilities": [
+      "Read-only source discovery",
+      "Scoped planning",
+      "Bounded package metadata"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS Package: Engineering & Development 05 of 06 for this scoped SEIS task."
+    ]
+  }
+}

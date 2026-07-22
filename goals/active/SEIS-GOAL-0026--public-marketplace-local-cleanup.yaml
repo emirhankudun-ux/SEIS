@@ -1,7 +1,7 @@
 schema_version: 2
 
 id: SEIS-GOAL-0026
-project: seis
+project: seis-plugin-root
 program: public-plugin-governance
 initiative: public-marketplace-local-cleanup
 parent_goal: SEIS-GOAL-0024
@@ -79,11 +79,11 @@ requirements:
   - support a constrained rollback from a tool-owned same-directory backup
   - keep all non-SEIS plugin records, source directories, and cache directories unchanged
   - avoid network, provider, secret, GitHub, release, deployment, installation, and background-agent behavior
-  - never bulk-enable the 33 optional public bundles
+  - never directly or bulk-enable the 30 internal packages
 
 non_goals:
   - deleting plugin source folders or cache directories
-  - bulk-installing or bulk-enabling public SEIS bundles
+  - directly or bulk-installing internal SEIS packages
   - changing non-SEIS personal plugins
   - publishing local configuration content to the repository
   - restarting Codex or claiming a GUI result without manual evidence
@@ -101,7 +101,7 @@ acceptance_criteria:
   - repository validation and focused tests pass before a local configuration apply is proposed
 
 definition_of_ready:
-  - the public capability-package goal has preserved one canonical public default and bounded optional bundles
+  - the public capability-package goal has preserved one canonical public default and the bounded 10/30 topology
   - a real local configuration is known to contain personal SEIS records and an enabled public canonical record
   - external configuration mutation has separate human approval and a rollback plan
 
@@ -115,9 +115,9 @@ definition_of_done:
 dependencies:
   - SEIS-GOAL-0024
   - SEIS-GOAL-0025
+  - SEIS-GOAL-0029
 blocked_by: []
 related_goals:
-  - SEIS-GOAL-021
   - SEIS-GOAL-0024
   - SEIS-GOAL-0025
 
@@ -220,7 +220,7 @@ outputs:
   - public-safe operational documentation
 
 notes:
-  - The public marketplace remains a bounded package experience: canonical SEIS-Agent first, then at most one optional bundle for a scoped task.
+  - The public marketplace remains a bounded experience: canonical SEIS-Agent first, then at most one task-matched general plugin; internal packages are not install targets.
   - This goal does not make future or external configuration work automatic; each real apply is visible, approval-gated, and reversible.
   - A current approved local apply removed matching personal SEIS configuration tables after creating and verifying a same-directory backup; source and cache directories were not touched.
   - Codex UI refresh evidence remains a manual review gate and is not claimed by this repository record.

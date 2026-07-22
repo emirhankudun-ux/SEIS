@@ -26,6 +26,139 @@ const PATHS = Object.freeze({
 });
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 
+const canonicalRecord = buildCanonicalRecord();
+const canonicalExpected = `${JSON.stringify(canonicalRecord, null, 2)}\n`;
+if (CHECK_MODE) {
+  if (readText(OUTPUT_PATH) !== canonicalExpected) {
+    console.error(`${OUTPUT_PATH} is stale. Run: npm run automation:seis-public-plugin-consolidation`);
+    process.exit(1);
+  }
+  console.log(`SEIS public plugin consolidation check passed (${canonicalRecord.inventory.publicCardCount} general cards / ${canonicalRecord.inventory.internalPackageCount} internal packages / ${canonicalRecord.inventory.retainedSourceCapabilityCount} retained capabilities).`);
+} else {
+  writeText(OUTPUT_PATH, canonicalExpected);
+  console.log(`Wrote ${OUTPUT_PATH} with the ten-general/thirty-internal distribution inventory.`);
+}
+process.exit(0);
+
+function buildCanonicalRecord() {
+  const publicFamily = readJson(PATHS.publicFamily);
+  const marketplace = readJson(PATHS.marketplace);
+  const packageCatalog = readJson(PATHS.bundleCatalog);
+  const generalPlugins = list(publicFamily?.generalPlugins);
+  const internalPackages = list(publicFamily?.internalPackages);
+  const marketplaceEntries = list(marketplace?.plugins);
+  const packageMembers = internalPackages.flatMap((candidate) => list(candidate?.members));
+  const packageIds = internalPackages.map((candidate) => candidate?.id);
+  const assignedPackageIds = generalPlugins.flatMap((plugin) => list(plugin?.internalPackageIds));
+  const memberNames = packageMembers.map((member) => member?.name);
+  const memberPaths = packageMembers.map((member) => member?.sourcePath);
+  const packageSizes = internalPackages.map((candidate) => candidate?.memberCount);
+  const checks = {
+    familyIdentity: publicFamily?.id === "seis-public-plugin-family"
+      && publicFamily?.version === 6
+      && publicFamily?.mode === "ten_general_seis_plugins_with_thirty_internal_packages",
+    marketplaceProjection: marketplace?.name === "seis-repo"
+      && marketplaceEntries.length === 10
+      && marketplaceEntries[0]?.name === "seis-ai-agent"
+      && sameSet(marketplaceEntries.map((entry) => entry?.name), generalPlugins.map((plugin) => plugin?.name)),
+    packageTopology: generalPlugins.length === 10
+      && internalPackages.length === 30
+      && generalPlugins.every((plugin) => list(plugin?.internalPackageIds).length === 3)
+      && assignedPackageIds.length === 30
+      && new Set(assignedPackageIds).size === 30
+      && sameSet(assignedPackageIds, packageIds),
+    exactSourceCoverage: packageMembers.length === 375
+      && new Set(memberNames).size === 375
+      && new Set(memberPaths).size === 375
+      && list(publicFamily?.applicationPlugins).length === 75
+      && list(publicFamily?.topicPlugins).length === 300,
+    boundedPackages: packageSizes.length === 30
+      && packageSizes.every((size) => Number.isInteger(size) && size > 0 && size <= SEIS_PUBLIC_BUNDLE_SIZE),
+    explicitOwnership: internalPackages.every((candidate) => {
+      const owner = generalPlugins.find((plugin) => list(plugin?.internalPackageIds).includes(candidate?.id));
+      return owner && candidate?.generalPlugin?.name === owner.name;
+    }),
+    catalogProjection: packageCatalog?.id === "seis-public-plugin-package-catalog"
+      && packageCatalog?.marketplace?.publicCardCount === 10
+      && packageCatalog?.marketplace?.generalPluginCardCount === 10
+      && packageCatalog?.marketplace?.internalPackageCount === 30
+      && packageCatalog?.marketplace?.internalPackageCardCount === 0,
+    permissionBoundary: list(packageCatalog?.permissions?.write).length === 0
+      && list(packageCatalog?.permissions?.network).length === 0
+      && list(packageCatalog?.permissions?.secrets).length === 0,
+  };
+  const record = {
+    schemaVersion: 4,
+    id: "seis-public-plugin-consolidation",
+    goalId: "SEIS-GOAL-0029",
+    parentGoalId: "SEIS-GOAL-0024",
+    status: "implemented-repository-local-not-published",
+    maturity: "prototype",
+    generatedAt: "2026-07-22",
+    purpose: "Expose ten concise general marketplace plugins backed by thirty bounded internal packages while retaining every SEIS source capability and every project identity boundary.",
+    installationPolicy: {
+      canonicalInstallId: "seis-ai-agent@seis-repo",
+      canonicalPluginName: "seis-ai-agent",
+      defaultInstallMode: "canonical-general-plugin",
+      maximumGeneralPluginSelectionsPerTask: 1,
+      internalPackagesAreInstallTargets: false,
+      sourceMembersAutoInstalled: false,
+    },
+    inventory: {
+      previousMarketplaceCardCount: 34,
+      publicCardCount: marketplaceEntries.length,
+      generalPluginCardCount: generalPlugins.length,
+      internalPackageCount: internalPackages.length,
+      internalPackageCardCount: 0,
+      applicationSourcePluginCount: list(publicFamily?.applicationPlugins).length,
+      topicSourcePluginCount: list(publicFamily?.topicPlugins).length,
+      packagedSourceCapabilityCount: packageMembers.length,
+      retainedSourceCapabilityCount: Number(publicFamily?.marketplace?.sourceCapabilityCount),
+    },
+    packagePlan: {
+      maximumPackageSize: SEIS_PUBLIC_BUNDLE_SIZE,
+      minimumPackageMemberCount: Math.min(...packageSizes),
+      maximumPackageMemberCount: Math.max(...packageSizes),
+      internalPackagesPerGeneralPlugin: 3,
+      exactOnceCoverage: checks.exactSourceCoverage && checks.packageTopology,
+      sourcePackagesDeleted: false,
+      internalPackagesMarketplaceVisible: false,
+    },
+    identityBoundaries: {
+      mergeProducts: false,
+      protectedProjectFamilies: ["SEIS", "ELENI-NEFERI", "PANTECHNOEPISTEMONOESIS"],
+      rule: "General-plugin routing changes discovery only; project repositories and identities remain separate.",
+    },
+    checks,
+    validation: [
+      "npm run check:seis-general-plugin-distribution",
+      "npm run check:seis-general-unified-suite",
+      "npm run check:seis-public-plugin-consolidation",
+      "node --test plugins/seis-core/test/public-plugin-consolidation.test.mjs",
+      "git diff --check",
+    ],
+    publicBoundary: {
+      personalMarketplaceRead: false,
+      personalMarketplaceMutation: false,
+      network: false,
+      externalWrites: false,
+      secrets: false,
+      protectedDefaultBranchWrites: false,
+      publicReleaseAllowed: false,
+    },
+    externalClaims: { providerConnectivity: false, deployment: false, signing: false, publicRelease: false, githubPush: false },
+    rollback: {
+      strategy: "revert",
+      scope: "Revert the focused ten-general/thirty-internal projection. All retained source packages remain versioned in Git.",
+      dataMigrationRequired: false,
+    },
+  };
+  assert(Object.values(checks).every(Boolean), "canonical ten-general/thirty-internal checks are not current");
+  assert(record.inventory.retainedSourceCapabilityCount === 380, "retained source capability count is invalid");
+  assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "record must not contain a machine-specific path");
+  return record;
+}
+
 const record = buildRecord();
 const expected = `${JSON.stringify(record, null, 2)}\n`;
 

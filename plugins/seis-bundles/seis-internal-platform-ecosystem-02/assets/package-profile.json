@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-platform-ecosystem-02",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 15,
+  "maximumMemberCount": 15,
+  "category": "Developer",
+  "categoryLabels": [
+    "PANTECHNOEPISTEMONOESIS",
+    "SEIS"
+  ],
+  "generalPlugin": {
+    "id": "research-ecosystem",
+    "name": "seis-general-research-ecosystem",
+    "displayName": "SEIS Research & Ecosystem",
+    "category": "Research",
+    "sourcePath": "./plugins/seis-general/seis-general-research-ecosystem",
+    "installId": "seis-general-research-ecosystem@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work.",
+    "longDescription": "Research, platform strategy, desktop surfaces, SEIS, and Pantechnoesis ecosystem work. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "research",
+      "desktop",
+      "seis",
+      "pantechnoesis",
+      "platform"
+    ],
+    "internalPackageIds": [
+      "seis-internal-knowledge-research-02",
+      "seis-internal-platform-ecosystem-01",
+      "seis-internal-platform-ecosystem-02"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-pantechnoepistemonoesis-scientific-computing",
+      "displayName": "SEIS Scientific Computing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-pantechnoepistemonoesis-scientific-computing",
+      "category": "PANTECHNOEPISTEMONOESIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-pantechnoepistemonoesis-technology-atlas",
+      "displayName": "SEIS Technology Atlas",
+      "sourcePath": "./plugins/seis-topics/seis-topic-pantechnoepistemonoesis-technology-atlas",
+      "category": "PANTECHNOEPISTEMONOESIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis",
+      "displayName": "SEIS SEIS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-9router",
+      "displayName": "SEIS SEIS 9Router",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-9router",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-agent-runtime",
+      "displayName": "SEIS SEIS Agent Runtime",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-agent-runtime",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-ai-core",
+      "displayName": "SEIS SEIS AI Core",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-ai-core",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-ai-desktop",
+      "displayName": "SEIS SEIS AI Desktop",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-ai-desktop",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-brain",
+      "displayName": "SEIS SEIS Brain",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-brain",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-command-center",
+      "displayName": "SEIS SEIS Command Center",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-command-center",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-goal-tracking",
+      "displayName": "SEIS SEIS Goal Tracking",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-goal-tracking",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-intelligence-cube",
+      "displayName": "SEIS SEIS Intelligence Cube",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-intelligence-cube",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-knowledge-engine",
+      "displayName": "SEIS SEIS Knowledge Engine",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-knowledge-engine",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-repository-intelligence",
+      "displayName": "SEIS SEIS Repository Intelligence",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-repository-intelligence",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-technology-ontology",
+      "displayName": "SEIS SEIS Technology Ontology",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-technology-ontology",
+      "category": "SEIS",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-seis-seis-workflow-engine",
+      "displayName": "SEIS SEIS Workflow Engine",
+      "sourcePath": "./plugins/seis-topics/seis-topic-seis-seis-workflow-engine",
+      "category": "SEIS",
+      "origin": "topic"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-knowledge-research-01",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 13,
+  "maximumMemberCount": 15,
+  "category": "Research",
+  "categoryLabels": [
+    "Knowledge"
+  ],
+  "generalPlugin": {
+    "id": "data-knowledge",
+    "name": "seis-general-data-knowledge",
+    "displayName": "SEIS Data & Knowledge",
+    "category": "Data",
+    "sourcePath": "./plugins/seis-general/seis-general-data-knowledge",
+    "installId": "seis-general-data-knowledge@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Data architecture, analytics, search, memory, knowledge, and research workflows.",
+    "longDescription": "Data architecture, analytics, search, memory, knowledge, and research workflows. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "data",
+      "analytics",
+      "databases",
+      "knowledge",
+      "research"
+    ],
+    "internalPackageIds": [
+      "seis-internal-data-knowledge-01",
+      "seis-internal-data-knowledge-02",
+      "seis-internal-knowledge-research-01"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-topic-knowledge",
+      "displayName": "SEIS Knowledge",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-ar",
+      "displayName": "SEIS AR",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-ar",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-automation",
+      "displayName": "SEIS Automation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-automation",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-biology",
+      "displayName": "SEIS Biology",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-biology",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-blockchain",
+      "displayName": "SEIS Blockchain",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-blockchain",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-chemistry",
+      "displayName": "SEIS Chemistry",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-chemistry",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-digital-twin",
+      "displayName": "SEIS Digital Twin",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-digital-twin",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-documentation",
+      "displayName": "SEIS Documentation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-documentation",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-future-technologies",
+      "displayName": "SEIS Future Technologies",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-future-technologies",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-genetics",
+      "displayName": "SEIS Genetics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-genetics",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-human-ai-collaboration",
+      "displayName": "SEIS Human-AI Collaboration",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-human-ai-collaboration",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-innovation",
+      "displayName": "SEIS Innovation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-innovation",
+      "category": "Knowledge",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-knowledge-iot",
+      "displayName": "SEIS IoT",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-iot",
+      "category": "Knowledge",
+      "origin": "topic"
+    }
+  ]
+}

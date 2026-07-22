@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-internal-engineering-development-03",
+  "kind": "seis-internal-capability-package",
+  "generatedAt": "2026-07-22",
+  "version": "0.4.0+codex.20260722",
+  "visibility": "internal-not-marketplace-card",
+  "memberCount": 14,
+  "maximumMemberCount": 15,
+  "category": "Developer",
+  "categoryLabels": [
+    "Developer",
+    "Software Engineering"
+  ],
+  "generalPlugin": {
+    "id": "engineering-foundations",
+    "name": "seis-general-engineering-foundations",
+    "displayName": "SEIS Engineering Foundations",
+    "category": "Developer",
+    "sourcePath": "./plugins/seis-general/seis-general-engineering-foundations",
+    "installId": "seis-general-engineering-foundations@seis-repo",
+    "canonical": false,
+    "status": "release-ready-not-published",
+    "shortDescription": "Frontend, client, architecture, systems, and core software engineering foundations.",
+    "longDescription": "Frontend, client, architecture, systems, and core software engineering foundations. It exposes exactly three bounded internal packages, never their member modules as separate marketplace cards.",
+    "keywords": [
+      "engineering",
+      "development",
+      "frontend",
+      "architecture",
+      "systems"
+    ],
+    "internalPackageIds": [
+      "seis-internal-engineering-development-01",
+      "seis-internal-engineering-development-02",
+      "seis-internal-engineering-development-03"
+    ],
+    "internalPackageCount": 3,
+    "license": "MIT"
+  },
+  "members": [
+    {
+      "name": "seis-release-readiness",
+      "displayName": "SEIS Release Readiness",
+      "sourcePath": "./plugins/seis-core/seis-release-readiness",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-repository-health",
+      "displayName": "SEIS Repository Health",
+      "sourcePath": "./plugins/seis-core/seis-repository-health",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-repository-scorecard",
+      "displayName": "SEIS Repository Scorecard",
+      "sourcePath": "./plugins/seis-core/seis-repository-scorecard",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-rollback-readiness",
+      "displayName": "SEIS Rollback Readiness",
+      "sourcePath": "./plugins/seis-core/seis-rollback-readiness",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-semver-audit",
+      "displayName": "SEIS Semver Audit",
+      "sourcePath": "./plugins/seis-core/seis-semver-audit",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-swift-concurrency-audit",
+      "displayName": "SEIS Swift Concurrency Audit",
+      "sourcePath": "./plugins/seis-core/seis-swift-concurrency-audit",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-swift-package-topology",
+      "displayName": "SEIS Swift Package Topology",
+      "sourcePath": "./plugins/seis-core/seis-swift-package-topology",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-test-flakiness",
+      "displayName": "SEIS Test Flakiness",
+      "sourcePath": "./plugins/seis-core/seis-test-flakiness",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-tool-permission-audit",
+      "displayName": "SEIS Tool Permission Audit",
+      "sourcePath": "./plugins/seis-core/seis-tool-permission-audit",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-trusted-marketplace",
+      "displayName": "SEIS Trusted Marketplace",
+      "sourcePath": "./plugins/seis-core/seis-trusted-marketplace",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-workflow-linter",
+      "displayName": "SEIS Workflow Linter",
+      "sourcePath": "./plugins/seis-core/seis-workflow-linter",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-workspace-inspector",
+      "displayName": "SEIS Workspace Inspector",
+      "sourcePath": "./plugins/seis-core/seis-workspace-inspector",
+      "category": "Developer",
+      "origin": "application"
+    },
+    {
+      "name": "seis-topic-software-engineering",
+      "displayName": "SEIS Software Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering",
+      "category": "Software Engineering",
+      "origin": "topic"
+    },
+    {
+      "name": "seis-topic-software-engineering-algorithms",
+      "displayName": "SEIS Algorithms",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-algorithms",
+      "category": "Software Engineering",
+      "origin": "topic"
+    }
+  ]
+}

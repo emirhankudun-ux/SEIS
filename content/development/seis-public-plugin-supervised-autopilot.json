@@ -9,10 +9,12 @@
   "purpose": "Run an explicit local plan, generation, and validation sequence in one foreground invocation while preserving the curated public plugin marketplace and refusing hidden background work or external delivery actions.",
   "currentMarketplace": {
     "canonicalInstall": "seis-ai-agent@seis-repo",
-    "publicCardCount": 34,
-    "optionalBundleCardCount": 33,
+    "publicCardCount": 10,
+    "generalPluginCardCount": 10,
+    "internalPackageCount": 30,
+    "internalPackageCardCount": 0,
     "retainedSourceCapabilityCount": 380,
-    "maximumBundleSize": 15
+    "maximumPackageSize": 15
   },
   "executionModel": {
     "name": "supervised-foreground-plan-and-build",
@@ -474,7 +476,7 @@
     "tierCount": 5,
     "waveCountPerTier": 5,
     "stepIncreasePerTier": 100,
-    "currentMarketplaceCardCount": 34,
+    "currentMarketplaceCardCount": 10,
     "maximumBundleSize": 15,
     "workflowStepsAreMarketplaceCards": false,
     "activationRule": "Only the active 200-step Round 11 cycle has current authorization. Every later tier is strategic, gated, and non-background until its own current evidence and human authorization exist.",
@@ -717,7 +719,7 @@
       {
         "round": 2,
         "name": "Curated marketplace architecture",
-        "objective": "Keep one canonical installation inside a clear 30-to-50-card total marketplace surface.",
+        "objective": "Keep ten concise general marketplace plugins backed by thirty hidden bounded internal packages.",
         "stepRange": [
           21,
           40

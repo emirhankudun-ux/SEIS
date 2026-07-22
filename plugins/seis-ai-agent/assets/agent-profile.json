@@ -5,23 +5,23 @@
     "SEIS-AI Agent",
     "seis-ai-agent"
   ],
-  "version": 2,
-  "releaseVersion": "0.3.0+codex.20260712",
+  "version": 3,
+  "releaseVersion": "0.4.0+codex.20260722",
   "status": "development",
-  "intent": "Unify SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, SEIS Product, and public SEIS Command Center source packages into one versioned, repo-contained AI-native agent surface while keeping live external capabilities approval-gated.",
+  "intent": "Unify SEIS specialist lanes and retained public source packages into ten concise general plugins with thirty bounded internal packages while keeping live external capabilities approval-gated.",
   "canonicalRepo": "emirhankudun-ux/SEIS",
   "canonicalBranch": "main",
   "repoMarketplace": "seis-repo",
   "installId": "seis-ai-agent@seis-repo",
   "consolidationPolicy": {
     "primaryInstallId": "seis-ai-agent@seis-repo",
-    "defaultInstallMode": "single-public-plugin",
+    "defaultInstallMode": "canonical-general-plugin",
     "legacyPersonalMarketplace": "compatibility-mirror-only",
     "legacyPersonalAliasesPreserved": true,
     "standaloneLaneInstallMode": "source-module-only",
-    "marketplacePolicy": "seis-agent-is-the-canonical-public-orchestrator-with-curated-bounded-public-bundles",
+    "marketplacePolicy": "ten-general-seis-plugins-with-thirty-hidden-bounded-internal-packages",
     "unifiedSuite": "assets/unified-suite.json",
-    "futurePluginIntake": "Every future cross-lane SEIS plugin must be registered in assets/unified-suite.json; future SEIS Core app packages remain public repository sources and are added to a reviewed bounded public bundle only when their scope warrants a marketplace card.",
+    "futurePluginIntake": "Every future SEIS source capability must enter the unified suite and exactly one reviewed internal package before one of ten general plugins can expose it.",
     "embeddedSkills": [
       "seis-ai-agent",
       "seis-governance",
@@ -47,26 +47,6 @@
       "assets/lanes/seis-product.json"
     ]
   },
-  "applicationSourceBoundary": {
-    "application": "apps/seis-core",
-    "displayName": "SEIS Command Center",
-    "sourceRoot": "plugins/seis-core",
-    "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
-    "releaseTrain": "content/development/seis-core-plugin-release-train.json",
-    "installSurface": "repo-source-app",
-    "sourceAvailableInRepository": true,
-    "publicRepositoryAvailable": true,
-    "publicAudience": "everyone",
-    "distributionScope": "curated-bounded-public-bundles",
-    "applicationOwnedPluginCount": 75,
-    "publicMarketplaceEntryCount": 6,
-    "publicMarketplaceCardCount": 34,
-    "publicMarketplaceBundleCount": 33,
-    "sourceCapabilityCount": 380,
-    "publicReleaseAllowed": false,
-    "coreSourceOwner": false,
-    "futureIntake": "New public plugins for the SEIS Command Center are created under plugins/seis-core/<plugin-name>, use MIT metadata, regenerate the app inventory/catalog, remain retained public repository sources, and enter a reviewed bounded seis-repo bundle only when a marketplace card is justified; they never become personal sources."
-  },
   "composedLanes": [
     "seis",
     "seis-governance",
@@ -79,48 +59,6 @@
     "seis-automation",
     "seis-product"
   ],
-  "terminalInstall": {
-    "entrypoint": "node scripts/install-seis-ai-agent.mjs",
-    "packageScript": "npm run install:seis-ai-agent",
-    "defaultTarget": "seis-ai-agent@seis-repo",
-    "optionalJourneySelection": {
-      "guide": "assets/public-bundle-selection-guide.json",
-      "argument": "--journey <known-journey-id>",
-      "defaultTargetCount": 1,
-      "maximumOptionalBundleSelectionsPerTask": 1,
-      "planOnlyByDefault": true,
-      "applyRequiresExplicitFlag": true,
-      "finder": {
-        "argument": "--find <short-local-need>",
-        "maximumResults": 3,
-        "maximumQueryLength": 96,
-        "planOnly": true,
-        "installation": false,
-        "externalAccess": false
-      },
-      "rejections": [
-        "arbitrary-bundle-id",
-        "multiple-journeys",
-        "bulk-selection",
-        "continuation-bundles"
-      ]
-    },
-    "platforms": [
-      "macos",
-      "windows",
-      "linux"
-    ]
-  },
-  "publicBundleFinder": {
-    "tool": "seis_public_bundle_find",
-    "guide": "assets/public-bundle-selection-guide.json",
-    "mode": "local-deterministic-token-match",
-    "maximumResults": 3,
-    "maximumQueryLength": 96,
-    "externalAccess": false,
-    "installation": false,
-    "nextAction": "Use one returned journey id with seis_public_bundle_recommend before reviewing any plan."
-  },
   "websiteRoadmap": {
     "releasePolicy": "Build the website only when SEIS-AI Agent is ready for a deliberate public release decision.",
     "direction": "Cinematic, premium, design-driven, accessible, responsive, and grounded in real SEIS product surfaces."
@@ -131,7 +69,9 @@
     "npm run check:seis-ai-agent",
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-repo-marketplace",
-    "npm run quality"
+    "npm run quality",
+    "npm run check:seis-public-plugin-release-policy",
+    "npm run check:seis-public-plugin-user-readiness"
   ],
   "guardrails": [
     "keep development inside the SEIS repo",
@@ -140,5 +80,58 @@
     "avoid dependency bloat",
     "do not expose secrets",
     "validate plugin, terminal install, docs, and generated reports before handoff"
-  ]
+  ],
+  "applicationSourceBoundary": {
+    "application": "apps/seis-core",
+    "displayName": "SEIS Command Center",
+    "sourceRoot": "plugins/seis-core",
+    "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "releaseTrain": "content/development/seis-core-plugin-release-train.json",
+    "installSurface": "repo-source-app",
+    "sourceAvailableInRepository": true,
+    "publicRepositoryAvailable": true,
+    "publicAudience": "everyone",
+    "distributionScope": "ten-general-plugins-with-internal-packages",
+    "applicationOwnedPluginCount": 75,
+    "publicMarketplaceEntryCount": 10,
+    "publicMarketplaceCardCount": 10,
+    "sourceCapabilityCount": 380,
+    "publicReleaseAllowed": false,
+    "coreSourceOwner": false,
+    "futureIntake": "New SEIS Command Center plugins remain public repository sources, enter exactly one internal package, and surface through one of ten general plugins.",
+    "publicMarketplaceGeneralPluginCount": 10,
+    "internalPackageCount": 30,
+    "publicMarketplaceInternalPackageCardCount": 0,
+    "publicMarketplaceInternalPackageCount": 30
+  },
+  "terminalInstall": {
+    "entrypoint": "node scripts/install-seis-ai-agent.mjs",
+    "packageScript": "npm run install:seis-ai-agent",
+    "defaultTarget": "seis-ai-agent@seis-repo",
+    "generalPluginSelection": {
+      "guide": "assets/public-bundle-selection-guide.json",
+      "argument": "--journey <general-plugin-id>",
+      "defaultTargetCount": 1,
+      "maximumGeneralPluginSelectionsPerTask": 1,
+      "planOnlyByDefault": true,
+      "applyRequiresExplicitFlag": true,
+      "finder": {
+        "argument": "--find <short-local-need>",
+        "maximumResults": 3,
+        "maximumQueryLength": 96,
+        "planOnly": true,
+        "installation": false,
+        "externalAccess": false
+      }
+    }
+  },
+  "publicGeneralPluginFinder": {
+    "tool": "seis_general_plugin_find",
+    "guide": "assets/public-bundle-selection-guide.json",
+    "mode": "local-deterministic-token-match",
+    "maximumResults": 3,
+    "maximumQueryLength": 96,
+    "externalAccess": false,
+    "installation": false
+  }
 }

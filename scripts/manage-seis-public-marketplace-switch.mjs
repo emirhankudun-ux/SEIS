@@ -17,6 +17,7 @@ const EMBEDDED_MODULE_NAME_PATTERN = /^seis(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?$/;
 const MAX_CONFIG_BYTES = 4 * 1024 * 1024;
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const unifiedSuitePath = path.join(repoRoot, "plugins", "seis-ai-agent", "assets", "unified-suite.json");
+const generalPluginFamilyPath = path.join(repoRoot, "content", "development", "seis-public-plugin-family.json");
 
 const args = parseArguments(process.argv.slice(2));
 
@@ -41,7 +42,8 @@ function runSwitch({ args, configPath }) {
 
   const action = args.action || "remove-personal";
   const canonicalDefaultProfile = action === "canonicalize-public" ? readCanonicalDefaultProfile() : null;
-  const targetRecords = targetRecordsFor(action, inspection, canonicalDefaultProfile);
+  const tenGeneralPluginProfile = action === "converge-ten-general-plugins" ? readTenGeneralPluginProfile() : null;
+  const targetRecords = targetRecordsFor(action, inspection, canonicalDefaultProfile, tenGeneralPluginProfile);
   const before = summarizeInspection(inspection, canonicalDefaultProfile);
   const plannedChangeCount = changeCountFor(action, targetRecords);
   const baseReport = createReport({
@@ -50,6 +52,7 @@ function runSwitch({ args, configPath }) {
     configPath,
     before,
     canonicalDefaultProfile: describeCanonicalDefaultProfile(inspection, canonicalDefaultProfile),
+    tenGeneralPluginProfile: describeTenGeneralPluginProfile(inspection, tenGeneralPluginProfile),
     plannedChangeCount,
     canonicalEnabled: true,
   });
@@ -87,11 +90,12 @@ function runSwitch({ args, configPath }) {
   try {
     assertUnchangedSinceRead(configPath, original);
     assertCanonicalDefaultProfileUnchanged(canonicalDefaultProfile);
+    assertTenGeneralPluginProfileUnchanged(tenGeneralPluginProfile);
     writeAtomicFile(configPath, transformedText, original.mode);
     const after = readRegularText(configPath);
     const afterInspection = inspectPluginConfig(after.text);
     assertCanonicalPublicPlugin(afterInspection);
-    assertActionPostcondition(action, afterInspection, canonicalDefaultProfile);
+    assertActionPostcondition(action, afterInspection, canonicalDefaultProfile, tenGeneralPluginProfile);
 
     printJson({
       ...baseReport,
@@ -101,7 +105,10 @@ function runSwitch({ args, configPath }) {
       backupFileName: path.basename(backupPath),
       after: summarizeInspection(afterInspection, canonicalDefaultProfile),
       canonicalDefaultProfile: describeCanonicalDefaultProfile(afterInspection, canonicalDefaultProfile),
-      nextAction: action === "canonicalize-public"
+      tenGeneralPluginProfile: describeTenGeneralPluginProfile(afterInspection, tenGeneralPluginProfile),
+      nextAction: action === "converge-ten-general-plugins"
+        ? "Restart or refresh Codex and verify the ten concise SEIS Repo general plugins. Retired numbered bundle and embedded direct-source records were removed; source folders and caches were not removed."
+        : action === "canonicalize-public"
         ? "Restart or refresh Codex and verify the one canonical SEIS-Agent default. Optional bundle records, source folders, and caches were not removed."
         : "Restart or refresh Codex and verify that the SEIS cards are labeled seis-repo. Source folders and caches were not removed.",
     });
@@ -186,6 +193,9 @@ function parseArguments(argv) {
       case "--canonicalize-public":
         setAction(result, "canonicalize-public");
         break;
+      case "--converge-ten-general-plugins":
+        setAction(result, "converge-ten-general-plugins");
+        break;
       case "--config":
         result.configPath = requireValue(argv, index, argument);
         index += 1;
@@ -204,7 +214,7 @@ function parseArguments(argv) {
   if (result.restorePath && !result.apply) fail("--restore requires --apply");
   if (result.restorePath && result.action) fail("--restore cannot be combined with a migration action");
   if (result.apply && !result.restorePath && !result.action) {
-    fail("--apply requires exactly one of --remove-personal, --disable-personal, or --canonicalize-public");
+    fail("--apply requires exactly one of --remove-personal, --disable-personal, --canonicalize-public, or --converge-ten-general-plugins");
   }
   return result;
 }
@@ -370,17 +380,21 @@ function summarizeInspection(inspection, canonicalDefaultProfile = null) {
   return summary;
 }
 
-function targetRecordsFor(action, inspection, canonicalDefaultProfile = null) {
+function targetRecordsFor(action, inspection, canonicalDefaultProfile = null, tenGeneralPluginProfile = null) {
   if (action === "remove-personal" || action === "disable-personal") return inspection.personalSeisPluginRecords;
   if (action === "canonicalize-public") {
     if (!canonicalDefaultProfile) fail("canonical public profile is unavailable");
     return inspection.publicSeisPluginRecords.filter((record) => canonicalDefaultProfile.embeddedPublicInstallIds.has(record.id));
   }
+  if (action === "converge-ten-general-plugins") {
+    if (!tenGeneralPluginProfile) fail("ten-general-plugin profile is unavailable");
+    return inspection.publicSeisPluginRecords.filter((record) => !tenGeneralPluginProfile.allowedInstallIds.has(record.id));
+  }
   fail(`unsupported migration action: ${action}`);
 }
 
 function changeCountFor(action, targetRecords) {
-  if (action === "remove-personal" || action === "canonicalize-public") return targetRecords.length;
+  if (action === "remove-personal" || action === "canonicalize-public" || action === "converge-ten-general-plugins") return targetRecords.length;
   if (action === "disable-personal") {
     return targetRecords.filter((record) => record.enabledLines[0].value).length;
   }
@@ -388,7 +402,7 @@ function changeCountFor(action, targetRecords) {
 }
 
 function transformConfig({ action, inspection, targetRecords }) {
-  if (action === "remove-personal" || action === "canonicalize-public") return removeSections(inspection, targetRecords);
+  if (action === "remove-personal" || action === "canonicalize-public" || action === "converge-ten-general-plugins") return removeSections(inspection, targetRecords);
   if (action === "disable-personal") return disablePersonalSections(inspection);
   fail(`unsupported migration action: ${action}`);
 }
@@ -419,7 +433,7 @@ function joinTomlDocument(document, lines) {
   return document.hasTerminalNewline ? `${body}${document.newline}` : body;
 }
 
-function assertActionPostcondition(action, inspection, canonicalDefaultProfile = null) {
+function assertActionPostcondition(action, inspection, canonicalDefaultProfile = null, tenGeneralPluginProfile = null) {
   if (action === "remove-personal" && inspection.personalSeisPluginRecords.length !== 0) {
     fail("personal SEIS plugin tables remain after removal");
   }
@@ -429,6 +443,43 @@ function assertActionPostcondition(action, inspection, canonicalDefaultProfile =
   if (action === "canonicalize-public" && targetRecordsFor(action, inspection, canonicalDefaultProfile).length !== 0) {
     fail("embedded direct public SEIS source tables remain after canonicalization");
   }
+  if (action === "converge-ten-general-plugins") {
+    if (targetRecordsFor(action, inspection, null, tenGeneralPluginProfile).length !== 0) {
+      fail("retired public SEIS records remain after ten-general-plugin convergence");
+    }
+    if (inspection.publicSeisPluginRecords.some((record) => !tenGeneralPluginProfile.allowedInstallIds.has(record.id))) {
+      fail("an unknown public SEIS record remains after ten-general-plugin convergence");
+    }
+  }
+}
+
+function readTenGeneralPluginProfile() {
+  const source = readRepositoryText(generalPluginFamilyPath);
+  let family;
+  try {
+    family = JSON.parse(source.text);
+  } catch (error) {
+    fail(`ten-general-plugin profile is not valid JSON: ${error instanceof Error ? error.message : String(error)}`);
+  }
+  const generalPlugins = family?.generalPlugins;
+  if (
+    family?.marketplace?.publicPluginCount !== 10
+    || family?.marketplace?.generalPluginCount !== 10
+    || family?.marketplace?.internalPackageCount !== 30
+    || family?.marketplace?.internalPackageMarketplaceCardCount !== 0
+    || !Array.isArray(generalPlugins)
+    || generalPlugins.length !== 10
+  ) fail("ten-general-plugin profile does not declare the exact active 10/30 distribution");
+  const allowedInstallIds = new Set();
+  for (const plugin of generalPlugins) {
+    if (typeof plugin?.name !== "string" || typeof plugin?.installId !== "string" || plugin.installId !== `${plugin.name}@seis-repo`) {
+      fail("ten-general-plugin profile contains an invalid general plugin install id");
+    }
+    if (allowedInstallIds.has(plugin.installId)) fail("ten-general-plugin profile contains duplicate install ids");
+    allowedInstallIds.add(plugin.installId);
+  }
+  if (!allowedInstallIds.has(CANONICAL_PUBLIC_PLUGIN_ID)) fail("ten-general-plugin profile must include canonical SEIS-Agent");
+  return { allowedInstallIds, generalPluginCount: generalPlugins.length, sourceDigest: source.digest };
 }
 
 function readCanonicalDefaultProfile() {
@@ -501,6 +552,14 @@ function assertCanonicalDefaultProfileUnchanged(profile) {
   }
 }
 
+function assertTenGeneralPluginProfileUnchanged(profile) {
+  if (!profile) return;
+  const current = readRepositoryText(generalPluginFamilyPath);
+  if (current.digest !== profile.sourceDigest) {
+    fail("ten-general-plugin profile changed after inspection; refusing to apply a stale migration plan");
+  }
+}
+
 function describeCanonicalDefaultProfile(inspection, profile) {
   if (!profile) return null;
   const embeddedSourceRecords = targetRecordsFor("canonicalize-public", inspection, profile);
@@ -517,7 +576,21 @@ function describeCanonicalDefaultProfile(inspection, profile) {
   };
 }
 
+function describeTenGeneralPluginProfile(inspection, profile) {
+  if (!profile) return null;
+  const retiredRecords = targetRecordsFor("converge-ten-general-plugins", inspection, null, profile);
+  return {
+    allowedGeneralPluginRecordCount: profile.generalPluginCount,
+    retiredPublicRecordCount: retiredRecords.length,
+    retiredNumberedBundleRecordCount: retiredRecords.filter((record) => OPTIONAL_BUNDLE_INSTALL_PATTERN.test(record.id)).length,
+    retainedGeneralPluginRecordCount: inspection.publicSeisPluginRecords.filter((record) => profile.allowedInstallIds.has(record.id)).length,
+  };
+}
+
 function noChangeMessage(action) {
+  if (action === "converge-ten-general-plugins") {
+    return "No retired public SEIS record needs a change. Only current ten-general-plugin records remain in the local config.";
+  }
   if (action === "canonicalize-public") {
     return "No embedded direct public SEIS source record needs a change. The canonical SEIS-Agent default remains enabled and optional bundles remain untouched.";
   }
@@ -583,7 +656,7 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function createReport({ mode, action, configPath, before, canonicalDefaultProfile, plannedChangeCount, canonicalEnabled }) {
+function createReport({ mode, action, configPath, before, canonicalDefaultProfile, tenGeneralPluginProfile, plannedChangeCount, canonicalEnabled }) {
   return {
     schemaVersion: 1,
     id: TOOL_ID,
@@ -592,6 +665,7 @@ function createReport({ mode, action, configPath, before, canonicalDefaultProfil
     config: describeConfigTarget(configPath),
     before,
     canonicalDefaultProfile,
+    tenGeneralPluginProfile,
     plannedChangeCount,
     publicBoundary: {
       canonicalPublicPluginId: CANONICAL_PUBLIC_PLUGIN_ID,
@@ -600,7 +674,7 @@ function createReport({ mode, action, configPath, before, canonicalDefaultProfil
       sourceDirectoriesRemoved: false,
       cacheDirectoriesRemoved: false,
       otherPluginRecordsModified: false,
-      optionalBundleRecordsModified: false,
+      optionalBundleRecordsModified: action === "converge-ten-general-plugins",
     },
   };
 }
@@ -620,16 +694,18 @@ function digest(text) {
 function printHelp() {
   console.log([
     "Usage:",
-    "  node scripts/manage-seis-public-marketplace-switch.mjs --plan [--remove-personal|--disable-personal|--canonicalize-public]",
+    "  node scripts/manage-seis-public-marketplace-switch.mjs --plan [--remove-personal|--disable-personal|--canonicalize-public|--converge-ten-general-plugins]",
     "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --remove-personal",
     "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --disable-personal",
     "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --canonicalize-public",
+    "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --converge-ten-general-plugins",
     "  node scripts/manage-seis-public-marketplace-switch.mjs --apply --restore <approved-backup>",
     "",
     "Plan is read-only. Apply only accepts the default Codex config or a temporary test fixture.",
     "Remove deletes only seis...@personal configuration tables after a verified backup; it does not delete plugin source or cache directories.",
     "Disable retains those tables but changes their enabled flag to false.",
     "Canonicalize removes only direct seis-repo source records already embedded in SEIS-Agent; curated optional bundle records are preserved.",
+    "Converge removes retired direct-source and numbered-bundle seis-repo records while retaining only the current ten general plugin install ids from the reviewed family profile.",
   ].join("\n"));
 }
 
