@@ -44,6 +44,11 @@ const report = {
     nextSeriesStepsPerWave: program.fiveWaveSeries.nextSeries.stepsPerWave,
     round11StepCount: program.round11Cycle.totalSteps,
     round11Status: program.round11Cycle.status,
+    escalationTierCount: program.escalationSeries.tierCount,
+    activeEscalationTierId: program.escalationSeries.tiers[0].id,
+    activeEscalationStepsPerWave: program.escalationSeries.tiers[0].stepsPerWave,
+    nextStrategicEscalationTierId: program.escalationSeries.tiers[1].id,
+    nextStrategicEscalationStepsPerWave: program.escalationSeries.tiers[1].stepsPerWave,
     tenYearHorizonCount: program.tenYearHorizon.length,
     automationRoles: program.automationRoles.map((role) => role.id),
     roleExecution: program.executionModel.roleExecution,
@@ -122,8 +127,14 @@ function validateProgram(value) {
   assert(value?.immediateCycle?.totalSteps === 30 && value?.immediateCycle?.rounds?.length === 5 && value.immediateCycle.rounds.every((round) => round.steps?.length === 6), "30-step cycle is invalid");
   assert(value?.fiveWaveSeries?.waves === 5 && value?.fiveWaveSeries?.stepsPerWave === 100 && value?.fiveWaveSeries?.roundsPerWave === 5, "five-wave cadence is invalid");
   assert(value?.fiveWaveSeries?.nextSeries?.waves === 5 && value?.fiveWaveSeries?.nextSeries?.stepsPerWave === 200 && value?.fiveWaveSeries?.nextSeries?.status === "active-round-11-plan-and-local-build", "next-series cadence is invalid");
+  const escalationTiers = Array.isArray(value?.escalationSeries?.tiers) ? value.escalationSeries.tiers : [];
+  const expectedEscalationSteps = [200, 300, 400, 500, 600];
+  assert(value?.escalationSeries?.source === "content/development/seis-public-plugin-continuity-cadence.json" && value?.escalationSeries?.id === "seis-public-plugin-five-wave-step-escalation" && value?.escalationSeries?.direction === "increase-100-steps-per-wave-after-each-five-wave-series" && value?.escalationSeries?.tierCount === 5 && value?.escalationSeries?.waveCountPerTier === 5 && value?.escalationSeries?.stepIncreasePerTier === 100 && value?.escalationSeries?.currentMarketplaceCardCount === 34 && value?.escalationSeries?.maximumBundleSize === 15 && value?.escalationSeries?.workflowStepsAreMarketplaceCards === false, "escalation-series contract is invalid");
+  assert(escalationTiers.length === expectedEscalationSteps.length && escalationTiers.every((tier, index) => tier?.id === `five-wave-${expectedEscalationSteps[index]}` && tier?.order === index + 1 && tier?.waveCount === 5 && tier?.stepsPerWave === expectedEscalationSteps[index] && tier?.roundsPerWave === expectedEscalationSteps[index] / 20 && tier?.stepsPerRound === 20 && tier?.totalPlannedSteps === expectedEscalationSteps[index] * 5 && Array.isArray(tier?.years) && tier.years.join(",") === `${index * 2 + 1},${index * 2 + 2}` && tier?.backgroundExecution === false && tier?.marketplaceCardExpansion === false), "escalation-series tiers are invalid");
+  assert(escalationTiers[0]?.status === "active-round-11-plan-and-local-build" && escalationTiers[0]?.activationAuthority === "current-user-direction-2026-07-22" && escalationTiers[0]?.activeCycle?.round === 11 && escalationTiers[0]?.activeCycle?.totalSteps === 200 && Array.isArray(escalationTiers[0]?.activeCycle?.inProgressStepNumbers) && escalationTiers[0].activeCycle.inProgressStepNumbers.join(",") === "1", "active escalation tier is invalid");
+  assert(escalationTiers.slice(1).every((tier) => tier?.status === "strategic-gated-not-background" && tier?.activationAuthority === "not-yet-granted" && tier?.activeCycle === null), "future escalation tiers must remain gated");
   assert(value?.round11Cycle?.round === 11 && value?.round11Cycle?.totalSteps === 200 && value?.round11Cycle?.status === "in-progress-plan-and-local-build" && value?.round11Cycle?.rounds?.length === 10 && value.round11Cycle.rounds.every((round) => round.steps?.length === 20), "Round 11 cycle is invalid");
-  assert(value?.tenYearHorizon?.length === 10 && value.tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background"), "ten-year horizon is invalid");
+  assert(value?.tenYearHorizon?.length === 10 && value.tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background" && year.escalationTierId === `five-wave-${expectedEscalationSteps[Math.floor(index / 2)]}` && year.seriesWaveCount === 5 && year.stepsPerWave === expectedEscalationSteps[Math.floor(index / 2)]), "ten-year horizon is invalid");
   validateAutomationRoles(value);
   assert(Array.isArray(value?.commandAllowlist) && value.commandAllowlist.length === 48, "command allowlist is invalid");
 }

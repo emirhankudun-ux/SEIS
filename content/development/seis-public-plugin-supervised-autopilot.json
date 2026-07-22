@@ -259,7 +259,7 @@
           },
           {
             "number": 30,
-            "title": "Hand off to the gated five-wave 200-step series only after the fifth 100-step wave closes and current evidence and authority are reviewed.",
+            "title": "Continue the currently authorized Round 11 200-step cycle only under current user direction; preserve Wave 5 as incomplete and never activate later tiers automatically.",
             "status": "ready-for-supervised-foreground-run"
           }
         ]
@@ -443,7 +443,7 @@
       {
         "number": 30,
         "round": 5,
-        "title": "Hand off to the gated five-wave 200-step series only after the fifth 100-step wave closes and current evidence and authority are reviewed.",
+        "title": "Continue the currently authorized Round 11 200-step cycle only under current user direction; preserve Wave 5 as incomplete and never activate later tiers automatically.",
         "status": "ready-for-supervised-foreground-run"
       }
     ]
@@ -466,6 +466,123 @@
     },
     "continuationRule": "Round 11 is the first active 200-step plan-and-local-build cycle under the current user direction. The retained Wave 5 tracker remains at 80 completed with step 81 in progress, so this transition does not fabricate Wave 5 closeout evidence.",
     "backgroundExecution": false
+  },
+  "escalationSeries": {
+    "source": "content/development/seis-public-plugin-continuity-cadence.json",
+    "id": "seis-public-plugin-five-wave-step-escalation",
+    "direction": "increase-100-steps-per-wave-after-each-five-wave-series",
+    "tierCount": 5,
+    "waveCountPerTier": 5,
+    "stepIncreasePerTier": 100,
+    "currentMarketplaceCardCount": 34,
+    "maximumBundleSize": 15,
+    "workflowStepsAreMarketplaceCards": false,
+    "activationRule": "Only the active 200-step Round 11 cycle has current authorization. Every later tier is strategic, gated, and non-background until its own current evidence and human authorization exist.",
+    "tiers": [
+      {
+        "id": "five-wave-200",
+        "order": 1,
+        "waveCount": 5,
+        "stepsPerWave": 200,
+        "roundsPerWave": 10,
+        "stepsPerRound": 20,
+        "totalPlannedSteps": 1000,
+        "years": [
+          1,
+          2
+        ],
+        "status": "active-round-11-plan-and-local-build",
+        "activationAuthority": "current-user-direction-2026-07-22",
+        "activeCycle": {
+          "round": 11,
+          "totalSteps": 200,
+          "status": "in-progress-plan-and-local-build",
+          "completedStepCount": 0,
+          "inProgressStepNumbers": [
+            1
+          ]
+        },
+        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "backgroundExecution": false,
+        "marketplaceCardExpansion": false
+      },
+      {
+        "id": "five-wave-300",
+        "order": 2,
+        "waveCount": 5,
+        "stepsPerWave": 300,
+        "roundsPerWave": 15,
+        "stepsPerRound": 20,
+        "totalPlannedSteps": 1500,
+        "years": [
+          3,
+          4
+        ],
+        "status": "strategic-gated-not-background",
+        "activationAuthority": "not-yet-granted",
+        "activeCycle": null,
+        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "backgroundExecution": false,
+        "marketplaceCardExpansion": false
+      },
+      {
+        "id": "five-wave-400",
+        "order": 3,
+        "waveCount": 5,
+        "stepsPerWave": 400,
+        "roundsPerWave": 20,
+        "stepsPerRound": 20,
+        "totalPlannedSteps": 2000,
+        "years": [
+          5,
+          6
+        ],
+        "status": "strategic-gated-not-background",
+        "activationAuthority": "not-yet-granted",
+        "activeCycle": null,
+        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "backgroundExecution": false,
+        "marketplaceCardExpansion": false
+      },
+      {
+        "id": "five-wave-500",
+        "order": 4,
+        "waveCount": 5,
+        "stepsPerWave": 500,
+        "roundsPerWave": 25,
+        "stepsPerRound": 20,
+        "totalPlannedSteps": 2500,
+        "years": [
+          7,
+          8
+        ],
+        "status": "strategic-gated-not-background",
+        "activationAuthority": "not-yet-granted",
+        "activeCycle": null,
+        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "backgroundExecution": false,
+        "marketplaceCardExpansion": false
+      },
+      {
+        "id": "five-wave-600",
+        "order": 5,
+        "waveCount": 5,
+        "stepsPerWave": 600,
+        "roundsPerWave": 30,
+        "stepsPerRound": 20,
+        "totalPlannedSteps": 3000,
+        "years": [
+          9,
+          10
+        ],
+        "status": "strategic-gated-not-background",
+        "activationAuthority": "not-yet-granted",
+        "activeCycle": null,
+        "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+        "backgroundExecution": false,
+        "marketplaceCardExpansion": false
+      }
+    ]
   },
   "round11Cycle": {
     "round": 11,
@@ -1603,6 +1720,10 @@
       "year": 1,
       "theme": "Public package clarity",
       "intendedOutcome": "Stabilize the curated marketplace, exact-once source maps, and bundle usability evidence.",
+      "escalationTierId": "five-wave-200",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 200,
+      "tierStatus": "active-round-11-plan-and-local-build",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1611,6 +1732,10 @@
       "year": 2,
       "theme": "Bundle experience maturity",
       "intendedOutcome": "Improve selection language, migration compatibility, and reversible package evolution.",
+      "escalationTierId": "five-wave-200",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 200,
+      "tierStatus": "active-round-11-plan-and-local-build",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1619,6 +1744,10 @@
       "year": 3,
       "theme": "Cross-platform contracts",
       "intendedOutcome": "Align public package contracts with macOS, iPadOS, iOS, web, and CLI evidence where justified.",
+      "escalationTierId": "five-wave-300",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 300,
+      "tierStatus": "strategic-gated-not-background",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1627,6 +1756,10 @@
       "year": 4,
       "theme": "Quality and resilience",
       "intendedOutcome": "Increase local validation, compatibility, security, performance, and documentation coverage.",
+      "escalationTierId": "five-wave-300",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 300,
+      "tierStatus": "strategic-gated-not-background",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1635,6 +1768,10 @@
       "year": 5,
       "theme": "Contributor readiness",
       "intendedOutcome": "Prepare public contribution, review, and package lifecycle guidance without weakening governance.",
+      "escalationTierId": "five-wave-400",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 400,
+      "tierStatus": "strategic-gated-not-background",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1643,6 +1780,10 @@
       "year": 6,
       "theme": "Extension governance",
       "intendedOutcome": "Evaluate plugin and MCP extension pathways under least privilege and reviewed permissions.",
+      "escalationTierId": "five-wave-400",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 400,
+      "tierStatus": "strategic-gated-not-background",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1651,6 +1792,10 @@
       "year": 7,
       "theme": "Ecosystem interoperability",
       "intendedOutcome": "Publish stable, explicit contracts between SEIS, Eleni-Neferi, and Pantechnoesis without identity collapse.",
+      "escalationTierId": "five-wave-500",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 500,
+      "tierStatus": "strategic-gated-not-background",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1659,6 +1804,10 @@
       "year": 8,
       "theme": "Sustainable operations",
       "intendedOutcome": "Strengthen rollback, deprecation, observability, and long-horizon maintenance evidence.",
+      "escalationTierId": "five-wave-500",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 500,
+      "tierStatus": "strategic-gated-not-background",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1667,6 +1816,10 @@
       "year": 9,
       "theme": "Public quality benchmark",
       "intendedOutcome": "Review public package discovery, accessibility, performance, and documentation against current user evidence.",
+      "escalationTierId": "five-wave-600",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 600,
+      "tierStatus": "strategic-gated-not-background",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -1675,6 +1828,10 @@
       "year": 10,
       "theme": "Ten-year renewal",
       "intendedOutcome": "Run a human-owned strategy review, retire stale assumptions, and define the next horizon only with current evidence.",
+      "escalationTierId": "five-wave-600",
+      "seriesWaveCount": 5,
+      "stepsPerWave": 600,
+      "tierStatus": "strategic-gated-not-background",
       "execution": "strategic-gated-not-background",
       "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
       "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
@@ -2314,6 +2471,7 @@
     "parentGoal": true,
     "curatedMarketplace": true,
     "continuityCadence": true,
+    "escalationCadence": true,
     "bundleProjection": true,
     "immediateCycle": true,
     "round11Cycle": true,

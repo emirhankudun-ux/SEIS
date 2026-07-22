@@ -120,6 +120,27 @@ steps with step 81 in progress, so this activation does not fabricate Wave 5
 closeout. It does not imply background execution or authorize external
 delivery.
 
+## Ten-Year Escalating Five-Wave Series
+
+After the historical five 100-step waves, the strategic cadence grows by 100
+steps per wave for each later five-wave series. These are workflow planning
+steps, not plugin cards: they do not expand the 34-card public marketplace or
+the 15-capability maximum bundle size.
+
+| Tier | Five-wave shape | Years | Current state |
+| --- | --- | --- | --- |
+| `five-wave-200` | 5 × 200 steps / 10 rounds per wave | 1–2 | Active only for the first Round 11 cycle; step 1 is in progress. |
+| `five-wave-300` | 5 × 300 steps / 15 rounds per wave | 3–4 | Strategic, gated, and not background work. |
+| `five-wave-400` | 5 × 400 steps / 20 rounds per wave | 5–6 | Strategic, gated, and not background work. |
+| `five-wave-500` | 5 × 500 steps / 25 rounds per wave | 7–8 | Strategic, gated, and not background work. |
+| `five-wave-600` | 5 × 600 steps / 30 rounds per wave | 9–10 | Strategic, gated, and not background work. |
+
+No future tier becomes active merely because time passes or a command exits.
+Each needs its own current goal, bounded scope, risk and rollback review,
+validation evidence, ownership check, and current human authorization. The
+auto mode may run only reviewed local work in its foreground invocation; it
+does not create a persistent or parallel background agent.
+
 ## Public Boundary
 
 - Marketplace: `seis-repo` / **SEIS Repo**

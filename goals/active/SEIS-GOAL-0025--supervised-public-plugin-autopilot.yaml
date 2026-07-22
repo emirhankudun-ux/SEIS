@@ -12,9 +12,11 @@ summary: >-
   the curated public plugin marketplace during one foreground invocation,
   retaining the 30-step bootstrap and five 100-step historical cadence while
   activating Round 11 as the first 200-step plan-and-local-build cycle under
-  current user direction and a ten-year strategic roadmap. It must not claim
-  the unfinished Wave 5 steps completed, background execution, or self-authorize
-  GitHub, release, provider, credential, network, destructive, or write actions.
+  current user direction. Define a ten-year, five-wave escalation ladder from
+  200 through 600 steps per wave without treating workflow steps as marketplace
+  cards or claiming future work is automatic. It must not claim the unfinished
+  Wave 5 steps completed, background execution, or self-authorize GitHub,
+  release, provider, credential, network, destructive, or write actions.
 
 category:
   - plugins
@@ -54,7 +56,10 @@ scope:
     - scripts/run-seis-public-plugin-supervised-autopilot.mjs
     - scripts/create-seis-public-plugin-continuity-cadence.mjs
     - content/development/seis-public-plugin-continuity-cadence.json
+    - content/development/seis-public-plugin-wave-4-closeout.json
+    - content/development/seis-public-plugin-wave-4-evidence-retention.json
     - docs/roadmap/SEIS_PUBLIC_PLUGIN_CONTINUITY_CADENCE.md
+    - plugins/seis-core/test/public-plugin-continuity-cadence.test.mjs
     - plugins/seis-core/test/public-plugin-supervised-autopilot.test.mjs
     - package.json
 
@@ -77,6 +82,8 @@ requirements:
   - define exactly 30 immediate steps in five six-step rounds
   - define five evidence-led 100-step waves and a ten-year strategic horizon
   - increase the next five-wave series to 200 steps per wave after the current series closes
+  - define a machine-validated five-wave escalation ladder from 200 through 600 steps per wave across the ten-year horizon
+  - keep escalation-step counts separate from the 34-card public marketplace projection and 15-capability bundle limit
   - activate Round 11 as one explicit 200-step cycle in ten 20-step rounds without claiming historical Wave 5 closeout
   - execute plan, generation, and validation only during a foreground local invocation
   - allowlist exactly 48 local generator, validation, test, and diff-check phases explicitly
@@ -97,10 +104,12 @@ non_goals:
 
 acceptance_criteria:
   - a generated ten-year autopilot program is current and validates its inputs
+  - downstream evidence snapshots are refreshed when the continuity record changes size
   - a plan mode reports the next safe phases without writing generated artifacts
   - an apply-safe mode runs only allowlisted local generators and validators
   - the automation has no GitHub push or external command path
   - the 30-step bootstrap, five 100-step historical waves, and active 200-step Round 11 are machine-validated
+  - the 200, 300, 400, 500, and 600-step five-wave tiers are machine-validated, with only the active 200-step Round 11 cycle authorized to start
   - Round 11 contains exactly 200 steps in ten 20-step rounds with only step 1 in progress initially
   - all 48 phase targets are repository-anchored; executable targets are regular, link-free, bounded, hashed, and checked again before spawn
   - plan and apply-safe reports expose validated foreground-sequential role lanes for all six named automation roles
@@ -226,6 +235,7 @@ outputs:
   - supervised foreground plan-and-build runner
   - 30-step immediate execution map
   - five-wave and ten-year strategic program
+  - gated five-wave escalation ladder that does not expand marketplace-card count
   - permission-boundary documentation
   - tests and validation commands
 

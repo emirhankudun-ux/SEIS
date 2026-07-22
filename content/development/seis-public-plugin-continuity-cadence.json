@@ -88,6 +88,122 @@
       "historicalWave5CloseoutClaimed": false,
       "continuationRule": "Round 11 is the first active 200-step plan-and-local-build cycle under current user direction. Preserve the retained Wave 5 evidence at 80 completed with step 81 in progress; do not fabricate closeout, automatic background execution, or external delivery.",
       "backgroundExecutionClaimed": false
+    },
+    "escalationSeries": {
+      "id": "seis-public-plugin-five-wave-step-escalation",
+      "direction": "increase-100-steps-per-wave-after-each-five-wave-series",
+      "tierCount": 5,
+      "waveCountPerTier": 5,
+      "stepIncreasePerTier": 100,
+      "currentMarketplaceCardCount": 34,
+      "maximumBundleSize": 15,
+      "workflowStepsAreMarketplaceCards": false,
+      "activationRule": "Only the active 200-step Round 11 cycle has current authorization. Every later tier is strategic, gated, and non-background until its own current evidence and human authorization exist.",
+      "tiers": [
+        {
+          "id": "five-wave-200",
+          "order": 1,
+          "waveCount": 5,
+          "stepsPerWave": 200,
+          "roundsPerWave": 10,
+          "stepsPerRound": 20,
+          "totalPlannedSteps": 1000,
+          "years": [
+            1,
+            2
+          ],
+          "status": "active-round-11-plan-and-local-build",
+          "activationAuthority": "current-user-direction-2026-07-22",
+          "activeCycle": {
+            "round": 11,
+            "totalSteps": 200,
+            "status": "in-progress-plan-and-local-build",
+            "completedStepCount": 0,
+            "inProgressStepNumbers": [
+              1
+            ]
+          },
+          "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+          "backgroundExecution": false,
+          "marketplaceCardExpansion": false
+        },
+        {
+          "id": "five-wave-300",
+          "order": 2,
+          "waveCount": 5,
+          "stepsPerWave": 300,
+          "roundsPerWave": 15,
+          "stepsPerRound": 20,
+          "totalPlannedSteps": 1500,
+          "years": [
+            3,
+            4
+          ],
+          "status": "strategic-gated-not-background",
+          "activationAuthority": "not-yet-granted",
+          "activeCycle": null,
+          "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+          "backgroundExecution": false,
+          "marketplaceCardExpansion": false
+        },
+        {
+          "id": "five-wave-400",
+          "order": 3,
+          "waveCount": 5,
+          "stepsPerWave": 400,
+          "roundsPerWave": 20,
+          "stepsPerRound": 20,
+          "totalPlannedSteps": 2000,
+          "years": [
+            5,
+            6
+          ],
+          "status": "strategic-gated-not-background",
+          "activationAuthority": "not-yet-granted",
+          "activeCycle": null,
+          "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+          "backgroundExecution": false,
+          "marketplaceCardExpansion": false
+        },
+        {
+          "id": "five-wave-500",
+          "order": 4,
+          "waveCount": 5,
+          "stepsPerWave": 500,
+          "roundsPerWave": 25,
+          "stepsPerRound": 20,
+          "totalPlannedSteps": 2500,
+          "years": [
+            7,
+            8
+          ],
+          "status": "strategic-gated-not-background",
+          "activationAuthority": "not-yet-granted",
+          "activeCycle": null,
+          "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+          "backgroundExecution": false,
+          "marketplaceCardExpansion": false
+        },
+        {
+          "id": "five-wave-600",
+          "order": 5,
+          "waveCount": 5,
+          "stepsPerWave": 600,
+          "roundsPerWave": 30,
+          "stepsPerRound": 20,
+          "totalPlannedSteps": 3000,
+          "years": [
+            9,
+            10
+          ],
+          "status": "strategic-gated-not-background",
+          "activationAuthority": "not-yet-granted",
+          "activeCycle": null,
+          "entryGate": "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.",
+          "backgroundExecution": false,
+          "marketplaceCardExpansion": false
+        }
+      ]
     }
   },
   "waves": [

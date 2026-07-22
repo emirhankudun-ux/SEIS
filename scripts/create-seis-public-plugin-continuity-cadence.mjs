@@ -50,7 +50,7 @@ if (CHECK_MODE) {
   console.log("SEIS public plugin continuity cadence check passed.");
 } else {
   writeText(OUTPUT_PATH, expected);
-  console.log("Wrote " + OUTPUT_PATH + " with one 30-step bootstrap and five 100-step waves.");
+  console.log("Wrote " + OUTPUT_PATH + " with one 30-step bootstrap, five 100-step waves, and a gated five-tier escalation ladder.");
 }
 
 function buildRecord() {
@@ -178,6 +178,7 @@ function buildRecord() {
         continuationRule: "Round 11 is the first active 200-step plan-and-local-build cycle under current user direction. Preserve the retained Wave 5 evidence at 80 completed with step 81 in progress; do not fabricate closeout, automatic background execution, or external delivery.",
         backgroundExecutionClaimed: false,
       },
+      escalationSeries: buildEscalationSeries(),
     },
     waves: [
       {
@@ -283,6 +284,50 @@ function buildRecord() {
   };
   validateRecord(record);
   return record;
+}
+
+function buildEscalationSeries() {
+  const entryGate = "A current goal, scope, risk, validation, rollback, ownership review, and current human authorization are required before a tier starts.";
+  const tiers = [200, 300, 400, 500, 600].map((stepsPerWave, index) => {
+    const active = index === 0;
+    return {
+      id: `five-wave-${stepsPerWave}`,
+      order: index + 1,
+      waveCount: 5,
+      stepsPerWave,
+      roundsPerWave: stepsPerWave / 20,
+      stepsPerRound: 20,
+      totalPlannedSteps: stepsPerWave * 5,
+      years: [index * 2 + 1, index * 2 + 2],
+      status: active ? "active-round-11-plan-and-local-build" : "strategic-gated-not-background",
+      activationAuthority: active ? "current-user-direction-2026-07-22" : "not-yet-granted",
+      activeCycle: active
+        ? {
+          round: 11,
+          totalSteps: 200,
+          status: "in-progress-plan-and-local-build",
+          completedStepCount: 0,
+          inProgressStepNumbers: [1],
+        }
+        : null,
+      entryGate,
+      backgroundExecution: false,
+      marketplaceCardExpansion: false,
+    };
+  });
+
+  return {
+    id: "seis-public-plugin-five-wave-step-escalation",
+    direction: "increase-100-steps-per-wave-after-each-five-wave-series",
+    tierCount: tiers.length,
+    waveCountPerTier: 5,
+    stepIncreasePerTier: 100,
+    currentMarketplaceCardCount: 34,
+    maximumBundleSize: 15,
+    workflowStepsAreMarketplaceCards: false,
+    activationRule: "Only the active 200-step Round 11 cycle has current authorization. Every later tier is strategic, gated, and non-background until its own current evidence and human authorization exist.",
+    tiers,
+  };
 }
 
 function buildFutureWaveTemplate(sourceSteps) {
@@ -510,6 +555,13 @@ function validateRecord(record) {
   assert(record.cadence?.waveSeries?.waveCount === 5 && record.cadence?.waveSeries?.stepsPerWave === 100 && record.cadence?.waveSeries?.roundsPerWave === 5 && record.cadence?.waveSeries?.stepsPerRound === 20 && record.cadence?.waveSeries?.totalPlannedWaveSteps === 500 && record.cadence?.waveSeries?.activeWave === 5 && record.cadence?.waveSeries?.activeWaveState === "wave-5-first-80-steps-completed-step-81-in-progress", "five-wave cadence is invalid");
   assert(record.cadence?.githubDelivery?.branch === FEATURE_BRANCH && record.cadence?.githubDelivery?.protectedDefaultBranchWrites === false && record.cadence?.githubDelivery?.remoteReferenceVerificationRequired === true, "GitHub delivery boundary is invalid");
   assert(record.cadence?.afterFiveWaves?.completedSeriesStepSize === 100 && record.cadence?.afterFiveWaves?.nextWaveCount === 5 && record.cadence?.afterFiveWaves?.nextWaveSteps === 200 && record.cadence?.afterFiveWaves?.activationState === "active-round-11-plan-and-local-build" && record.cadence?.afterFiveWaves?.activationAuthority === "current-user-direction-2026-07-22" && record.cadence?.afterFiveWaves?.historicalEvidenceState === "wave-5-first-80-steps-completed-step-81-in-progress" && record.cadence?.afterFiveWaves?.historicalWave5CloseoutClaimed === false && record.cadence?.afterFiveWaves?.backgroundExecutionClaimed === false, "post-series continuation is invalid");
+  const escalation = record.cadence?.escalationSeries;
+  const escalationTiers = list(escalation?.tiers);
+  const expectedEscalationSteps = [200, 300, 400, 500, 600];
+  assert(escalation?.id === "seis-public-plugin-five-wave-step-escalation" && escalation?.direction === "increase-100-steps-per-wave-after-each-five-wave-series" && escalation?.tierCount === 5 && escalation?.waveCountPerTier === 5 && escalation?.stepIncreasePerTier === 100 && escalation?.currentMarketplaceCardCount === 34 && escalation?.maximumBundleSize === 15 && escalation?.workflowStepsAreMarketplaceCards === false, "five-wave escalation identity is invalid");
+  assert(escalationTiers.length === expectedEscalationSteps.length && escalationTiers.every((tier, index) => tier?.id === `five-wave-${expectedEscalationSteps[index]}` && tier?.order === index + 1 && tier?.waveCount === 5 && tier?.stepsPerWave === expectedEscalationSteps[index] && tier?.roundsPerWave === expectedEscalationSteps[index] / 20 && tier?.stepsPerRound === 20 && tier?.totalPlannedSteps === expectedEscalationSteps[index] * 5 && list(tier?.years).join(",") === `${index * 2 + 1},${index * 2 + 2}` && tier?.backgroundExecution === false && tier?.marketplaceCardExpansion === false), "five-wave escalation tiers are invalid");
+  assert(escalationTiers[0]?.status === "active-round-11-plan-and-local-build" && escalationTiers[0]?.activationAuthority === "current-user-direction-2026-07-22" && escalationTiers[0]?.activeCycle?.round === 11 && escalationTiers[0]?.activeCycle?.totalSteps === 200 && escalationTiers[0]?.activeCycle?.status === "in-progress-plan-and-local-build" && escalationTiers[0]?.activeCycle?.completedStepCount === 0 && list(escalationTiers[0]?.activeCycle?.inProgressStepNumbers).join(",") === "1", "active 200-step escalation tier is invalid");
+  assert(escalationTiers.slice(1).every((tier) => tier?.status === "strategic-gated-not-background" && tier?.activationAuthority === "not-yet-granted" && tier?.activeCycle === null), "future escalation tiers must remain gated");
   const [wave1, wave2, wave3, wave4, wave5] = list(record.waves);
   assert(list(record.waves).length === 5 && wave1?.status === "completed" && wave1?.completedSteps === 100 && wave2?.status === "completed" && wave2?.completedSteps === 100, "completed predecessor waves are invalid");
   assert(wave3?.status === "completed" && wave3?.completedSteps === 100 && list(wave3?.inProgressSteps).length === 0 && wave3?.priorValidationPath === WAVE_3_FINAL_VALIDATION_PATH && wave3?.preflightPath === WAVE_3_FINAL_PREFLIGHT_PATH && wave3?.deliveryEvidencePath === WAVE_3_DELIVERY_EVIDENCE_PATH && wave3?.repositoryLocalHandoffPath === WAVE_3_REPOSITORY_LOCAL_HANDOFF_PATH && wave3?.followingWaveReviewPath === WAVE_3_FOLLOWING_WAVE_REVIEW_PATH && wave3?.closeoutPath === WAVE_3_CLOSEOUT_PATH && wave3?.currentEvidencePath === WAVE_3_CLOSEOUT_PATH, "Wave 3 cadence evidence is invalid");

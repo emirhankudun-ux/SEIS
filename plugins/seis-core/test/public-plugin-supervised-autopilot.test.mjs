@@ -37,6 +37,20 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.fiveWaveSeries.nextSeries.waves, 5);
   assert.equal(program.fiveWaveSeries.nextSeries.stepsPerWave, 200);
   assert.equal(program.fiveWaveSeries.nextSeries.status, "active-round-11-plan-and-local-build");
+  assert.equal(program.escalationSeries.id, "seis-public-plugin-five-wave-step-escalation");
+  assert.equal(program.escalationSeries.tierCount, 5);
+  assert.equal(program.escalationSeries.waveCountPerTier, 5);
+  assert.equal(program.escalationSeries.stepIncreasePerTier, 100);
+  assert.equal(program.escalationSeries.currentMarketplaceCardCount, 34);
+  assert.equal(program.escalationSeries.maximumBundleSize, 15);
+  assert.equal(program.escalationSeries.workflowStepsAreMarketplaceCards, false);
+  assert.deepEqual(program.escalationSeries.tiers.map((tier) => tier.stepsPerWave), [200, 300, 400, 500, 600]);
+  assert.deepEqual(program.escalationSeries.tiers.map((tier) => tier.years), [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]]);
+  assert.ok(program.escalationSeries.tiers.every((tier) => tier.waveCount === 5 && tier.stepsPerRound === 20 && tier.roundsPerWave === tier.stepsPerWave / 20 && tier.totalPlannedSteps === tier.stepsPerWave * 5 && tier.backgroundExecution === false && tier.marketplaceCardExpansion === false));
+  assert.equal(program.escalationSeries.tiers[0].status, "active-round-11-plan-and-local-build");
+  assert.equal(program.escalationSeries.tiers[0].activationAuthority, "current-user-direction-2026-07-22");
+  assert.deepEqual(program.escalationSeries.tiers[0].activeCycle.inProgressStepNumbers, [1]);
+  assert.ok(program.escalationSeries.tiers.slice(1).every((tier) => tier.status === "strategic-gated-not-background" && tier.activationAuthority === "not-yet-granted" && tier.activeCycle === null));
   assert.equal(program.round11Cycle.round, 11);
   assert.equal(program.round11Cycle.totalSteps, 200);
   assert.equal(program.round11Cycle.rounds.length, 10);
@@ -44,7 +58,7 @@ test("supervised autopilot program is fresh and preserves the curated public bou
   assert.equal(program.round11Cycle.status, "in-progress-plan-and-local-build");
   assert.equal(program.round11Cycle.historicalWave5CloseoutClaimed, false);
   assert.equal(program.tenYearHorizon.length, 10);
-  assert.ok(program.tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background"));
+  assert.ok(program.tenYearHorizon.every((year, index) => year.year === index + 1 && year.execution === "strategic-gated-not-background" && year.escalationTierId === `five-wave-${[200, 300, 400, 500, 600][Math.floor(index / 2)]}` && year.seriesWaveCount === 5 && year.stepsPerWave === [200, 300, 400, 500, 600][Math.floor(index / 2)]));
   assert.deepEqual(program.automationRoles.map((role) => role.id), ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"]);
   assert.equal(program.executionModel.persistentProcess, false);
   assert.equal(program.executionModel.backgroundExecution, false);
@@ -91,6 +105,11 @@ test("plan mode is read-only and reports a foreground-only plan", () => {
   assert.equal(report.plan.nextSeriesStepsPerWave, 200);
   assert.equal(report.plan.round11StepCount, 200);
   assert.equal(report.plan.round11Status, "in-progress-plan-and-local-build");
+  assert.equal(report.plan.escalationTierCount, 5);
+  assert.equal(report.plan.activeEscalationTierId, "five-wave-200");
+  assert.equal(report.plan.activeEscalationStepsPerWave, 200);
+  assert.equal(report.plan.nextStrategicEscalationTierId, "five-wave-300");
+  assert.equal(report.plan.nextStrategicEscalationStepsPerWave, 300);
   assert.equal(report.plan.roleExecution, "foreground-sequential-reviewed-allowlist");
   assert.deepEqual(report.roleLanes.map((lane) => lane.id), ["architect-planner", "bundle-builder", "safety-reviewer", "qa-validator", "evidence-reporter", "delivery-coordinator"]);
   assert.equal(report.roleLanes.reduce((count, lane) => count + lane.phaseCount, 0), 48);
@@ -130,6 +149,24 @@ test("runner rejects a policy-range card count that is not the exact current 34-
     });
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, /current public-card count is invalid/);
+  } finally {
+    fs.rmSync(fixture.parent, { recursive: true, force: true });
+  }
+});
+
+test("runner rejects a future escalation tier that claims automatic activation", () => {
+  const fixture = makeRunnerFixture();
+  const fixtureProgramPath = path.join(fixture.root, "content/development/seis-public-plugin-supervised-autopilot.json");
+  try {
+    const fixtureProgram = JSON.parse(fs.readFileSync(fixtureProgramPath, "utf8"));
+    fixtureProgram.escalationSeries.tiers[1].status = "active-round-12-without-current-authorization";
+    fs.writeFileSync(fixtureProgramPath, `${JSON.stringify(fixtureProgram, null, 2)}\n`);
+    const result = spawnSync(process.execPath, [path.join(fixture.root, "scripts/run-seis-public-plugin-supervised-autopilot.mjs"), "--plan"], {
+      cwd: fixture.root,
+      encoding: "utf8",
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /future escalation tiers must remain gated/);
   } finally {
     fs.rmSync(fixture.parent, { recursive: true, force: true });
   }

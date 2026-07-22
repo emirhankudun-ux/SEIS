@@ -8,6 +8,7 @@
 - Execution: supervised foreground plan-and-build only; no background execution.
 - Role execution: foreground-sequential-reviewed-allowlist; each reviewed local phase is assigned exactly once.
 - Round 11: 200 steps, in-progress-plan-and-local-build; historical Wave 5 closeout is not claimed.
+- Escalation ladder: 200, 300, 400, 500, 600-step five-wave tiers; workflow steps never expand the 34-card marketplace.
 - Isolation: reviewed-allowlist-no-os-sandbox; ambient network/filesystem isolation and descendant termination are not OS-enforced.
 
 ## Commands
@@ -64,11 +65,23 @@ npm run seis:public-plugin-autopilot -- --apply-safe
 27. Check worktree state and keep unrelated changes untouched.
 28. Prepare a focused local commit recommendation without creating a commit automatically.
 29. Prepare a separate GitHub feature-branch delivery decision without pushing automatically.
-30. Hand off to the gated five-wave 200-step series only after the fifth 100-step wave closes and current evidence and authority are reviewed.
+30. Continue the currently authorized Round 11 200-step cycle only under current user direction; preserve Wave 5 as incomplete and never activate later tiers automatically.
 
 ## Five-Wave Cadence
 
 The retained cadence records one 30-step bootstrap and 5 evidence-led waves of 100 steps. Round 11 is now the first active 200-step plan-and-local-build cycle under current user direction. The historical Wave 5 evidence remains at 80 completed with step 81 in progress; this activation does not claim those remaining steps completed.
+
+## Escalating Five-Wave Series
+
+After the historical 100-step waves, each later tier retains five waves and adds 100 steps per wave. These are workflow planning steps, never extra marketplace cards or installations. Only the active Round 11 cycle has current authorization; every later tier remains strategic, gated, and non-background.
+
+| Tier | Years | Waves | Steps per wave | Total planned steps | State |
+| --- | --- | ---: | ---: | ---: | --- |
+| five-wave-200 | 1–2 | 5 | 200 | 1000 | active-round-11-plan-and-local-build |
+| five-wave-300 | 3–4 | 5 | 300 | 1500 | strategic-gated-not-background |
+| five-wave-400 | 5–6 | 5 | 400 | 2000 | strategic-gated-not-background |
+| five-wave-500 | 7–8 | 5 | 500 | 2500 | strategic-gated-not-background |
+| five-wave-600 | 9–10 | 5 | 600 | 3000 | strategic-gated-not-background |
 
 ## Round 11 — First 200-Step Cycle
 
@@ -325,18 +338,18 @@ Review discovery clarity, installation choices, documentation, risks, rollback, 
 
 ## Ten-Year Strategic Horizon
 
-| Year | Theme | Intended outcome | Execution boundary |
-| --- | --- | --- | --- |
-| 1 | Public package clarity | Stabilize the curated marketplace, exact-once source maps, and bundle usability evidence. | strategic-gated-not-background |
-| 2 | Bundle experience maturity | Improve selection language, migration compatibility, and reversible package evolution. | strategic-gated-not-background |
-| 3 | Cross-platform contracts | Align public package contracts with macOS, iPadOS, iOS, web, and CLI evidence where justified. | strategic-gated-not-background |
-| 4 | Quality and resilience | Increase local validation, compatibility, security, performance, and documentation coverage. | strategic-gated-not-background |
-| 5 | Contributor readiness | Prepare public contribution, review, and package lifecycle guidance without weakening governance. | strategic-gated-not-background |
-| 6 | Extension governance | Evaluate plugin and MCP extension pathways under least privilege and reviewed permissions. | strategic-gated-not-background |
-| 7 | Ecosystem interoperability | Publish stable, explicit contracts between SEIS, Eleni-Neferi, and Pantechnoesis without identity collapse. | strategic-gated-not-background |
-| 8 | Sustainable operations | Strengthen rollback, deprecation, observability, and long-horizon maintenance evidence. | strategic-gated-not-background |
-| 9 | Public quality benchmark | Review public package discovery, accessibility, performance, and documentation against current user evidence. | strategic-gated-not-background |
-| 10 | Ten-year renewal | Run a human-owned strategy review, retire stale assumptions, and define the next horizon only with current evidence. | strategic-gated-not-background |
+| Year | Tier | Steps per wave | Theme | Intended outcome | Execution boundary |
+| --- | --- | ---: | --- | --- | --- |
+| 1 | five-wave-200 | 200 | Public package clarity | Stabilize the curated marketplace, exact-once source maps, and bundle usability evidence. | strategic-gated-not-background |
+| 2 | five-wave-200 | 200 | Bundle experience maturity | Improve selection language, migration compatibility, and reversible package evolution. | strategic-gated-not-background |
+| 3 | five-wave-300 | 300 | Cross-platform contracts | Align public package contracts with macOS, iPadOS, iOS, web, and CLI evidence where justified. | strategic-gated-not-background |
+| 4 | five-wave-300 | 300 | Quality and resilience | Increase local validation, compatibility, security, performance, and documentation coverage. | strategic-gated-not-background |
+| 5 | five-wave-400 | 400 | Contributor readiness | Prepare public contribution, review, and package lifecycle guidance without weakening governance. | strategic-gated-not-background |
+| 6 | five-wave-400 | 400 | Extension governance | Evaluate plugin and MCP extension pathways under least privilege and reviewed permissions. | strategic-gated-not-background |
+| 7 | five-wave-500 | 500 | Ecosystem interoperability | Publish stable, explicit contracts between SEIS, Eleni-Neferi, and Pantechnoesis without identity collapse. | strategic-gated-not-background |
+| 8 | five-wave-500 | 500 | Sustainable operations | Strengthen rollback, deprecation, observability, and long-horizon maintenance evidence. | strategic-gated-not-background |
+| 9 | five-wave-600 | 600 | Public quality benchmark | Review public package discovery, accessibility, performance, and documentation against current user evidence. | strategic-gated-not-background |
+| 10 | five-wave-600 | 600 | Ten-year renewal | Run a human-owned strategy review, retire stale assumptions, and define the next horizon only with current evidence. | strategic-gated-not-background |
 
 ## Automation Roles
 
