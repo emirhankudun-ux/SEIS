@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-14",
+  "family": "topic",
+  "journeyId": "design",
+  "journeyLabel": "Design",
+  "journeyPart": 1,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 11,
+  "category": "Design",
+  "categoryLabels": [
+    "Design"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-design",
+      "displayName": "SEIS Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-3d-design",
+      "displayName": "SEIS 3D Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-3d-design",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-accessibility",
+      "displayName": "SEIS Accessibility",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-accessibility",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-branding",
+      "displayName": "SEIS Branding",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-branding",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-creative-coding",
+      "displayName": "SEIS Creative Coding",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-creative-coding",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-design-systems",
+      "displayName": "SEIS Design Systems",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-design-systems",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-design-tokens",
+      "displayName": "SEIS Design Tokens",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-design-tokens",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-editorial-design",
+      "displayName": "SEIS Editorial Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-editorial-design",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-graphic-design",
+      "displayName": "SEIS Graphic Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-graphic-design",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-illustration",
+      "displayName": "SEIS Illustration",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-illustration",
+      "category": "Design"
+    },
+    {
+      "name": "seis-topic-design-interaction-design",
+      "displayName": "SEIS Interaction Design",
+      "sourcePath": "./plugins/seis-topics/seis-topic-design-interaction-design",
+      "category": "Design"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

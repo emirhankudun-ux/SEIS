@@ -32,12 +32,16 @@ test("application catalog is sourced from the complete SEIS Core plugin expansio
   assert.equal(catalog.distribution.sourceAvailableInRepository, true);
   assert.equal(catalog.distribution.publicRepositoryAvailable, true);
   assert.equal(catalog.distribution.publicAudience, "everyone");
-  assert.equal(catalog.distribution.distributionScope, "direct-repository-source");
+  assert.equal(catalog.distribution.distributionScope, "curated-bounded-public-bundles");
   assert.equal(catalog.distribution.sourceManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
   assert.equal(catalog.distribution.installSurface, "repo-source-app");
   assert.equal(catalog.distribution.marketplaceName, "seis-repo");
   assert.equal(catalog.distribution.publicMarketplace, true);
-  assert.equal(catalog.distribution.marketplaceEntryCount, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.distribution.marketplaceEntryCount, 6);
+  assert.equal(catalog.distribution.marketplaceCardCount, 34);
+  assert.equal(catalog.distribution.sourceCapabilityCount, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.distribution.separateMarketplaceCards, false);
+  assert.equal(catalog.distribution.sourcePackagesRetained, true);
   assert.equal(catalog.distribution.coreSourceOwner, false);
   assert.equal(catalog.counts.discovered, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.counts.returned, APP_PLUGIN_EXPANSION_TARGET);
@@ -46,6 +50,9 @@ test("application catalog is sourced from the complete SEIS Core plugin expansio
   assert.deepEqual(catalog.policy.allowedInspectionActions, ["inspect", "status"]);
   assert.deepEqual(catalog.policy.allowedReportActions, ["report"]);
   assert.ok(catalog.plugins.every((plugin) => plugin.sourcePath.startsWith("plugins/seis-core/")));
+  assert.ok(catalog.plugins.every((plugin) => plugin.marketplace.discoverable === true));
+  assert.ok(catalog.plugins.every((plugin) => plugin.marketplace.card === false));
+  assert.ok(catalog.plugins.every((plugin) => /^seis-application-bundle-\d{2}$/.test(plugin.marketplace.bundleId)));
 });
 
 test("catalog search and inspection expose app-owned plugin metadata", () => {
@@ -117,7 +124,7 @@ test("direct repository surface covers the app source, catalog, and unified suit
   assert.equal(surface.counts.source, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(surface.counts.catalog, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(surface.counts.unifiedSuite, APP_PLUGIN_EXPANSION_TARGET);
-  assert.equal(surface.counts.marketplaceEntries, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(surface.counts.marketplaceEntries, 6);
   assert.equal(surface.policy.marketplaceName, "seis-repo");
   assert.equal(surface.policy.publicMarketplace, true);
   assert.equal(surface.policy.coreSourceOwner, false);

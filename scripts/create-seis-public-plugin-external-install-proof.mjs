@@ -28,7 +28,7 @@ const unifiedSuite = readJson(unifiedSuitePath);
 
 const proof = {
   id: "seis-public-plugin-external-install-proof",
-  version: 1,
+  version: 2,
   generatedAt,
   status: proofStatus(artifactStaging, independentRunnerEvidence),
   decision: "not-ready-for-public-preview",
@@ -50,7 +50,7 @@ const proof = {
   },
   publicReleaseAllowed: false,
   purpose:
-    "Stage the canonical SEIS-Agent artifact, five migrated SEIS root repository packages, every public SEIS Core repository package, and every objective-derived SEIS topic package in a disposable clean directory, verify their marketplace and source contracts, and retain independent runner/public installation proof as an explicit release gate.",
+    "Stage the 34-card curated marketplace and all 380 retained source capabilities in a disposable clean directory, verify marketplace-card and source-coverage contracts separately, and retain independent runner/public installation proof as an explicit release gate.",
   repoLocalArtifactStaging: artifactStaging,
   externalCleanRunnerEvidence: {
     status: externalEvidenceStatus(independentRunnerEvidence),
@@ -62,7 +62,7 @@ const proof = {
     requiredEvidence: [
       "A clean runner or machine that cannot read the original working tree or existing Codex plugin cache.",
       "The public SEIS marketplace source or published package revision used for the install, including its immutable revision identifier.",
-      "Installation evidence for seis-ai-agent@seis-repo plus the public app-package and objective-derived topic entries selected from the seis-repo marketplace, including the embedded module inventory.",
+      "Installation evidence for seis-ai-agent@seis-repo plus any explicitly selected optional bundle cards from the seis-repo marketplace, including the embedded module inventory.",
       "MCP initialization, tools/list, and representative tool-call evidence from the independent runner.",
       "A newly opened Codex task after the independent installation, with the SEIS AI public-plugin-family bridge visible.",
       "Sanitized runner metadata: operating system, Node major version, Codex version, and command exit summaries only.",
@@ -110,23 +110,29 @@ if (checkMode) {
 }
 
 function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
-  const canonicalPlugins = (Array.isArray(publicFamily.publicPlugins) ? publicFamily.publicPlugins : [])
-    .map((plugin) => ({ ...plugin, sourceKind: "public-plugin" }));
-  const migratedRootPlugins = (Array.isArray(publicFamily.migratedRootPlugins) ? publicFamily.migratedRootPlugins : [])
-    .map((plugin) => ({ ...plugin, sourceKind: "public-root-package" }));
-  const applicationPlugins = (Array.isArray(publicFamily.applicationPlugins) ? publicFamily.applicationPlugins : [])
-    .map((plugin) => ({ ...plugin, sourceKind: "public-application-package" }));
-  const topicPlugins = (Array.isArray(publicFamily.topicPlugins) ? publicFamily.topicPlugins : [])
-    .map((plugin) => ({ ...plugin, sourceKind: "public-topic-package" }));
-  const plugins = [...canonicalPlugins, ...migratedRootPlugins, ...applicationPlugins, ...topicPlugins];
+  const canonicalCards = (Array.isArray(publicFamily.publicPlugins) ? publicFamily.publicPlugins : [])
+    .map((plugin) => ({ ...plugin, sourceKind: "canonical-marketplace-card", distributionKind: "marketplace-card" }));
+  const bundleCards = (Array.isArray(publicFamily.bundlePackages) ? publicFamily.bundlePackages : [])
+    .map((plugin) => ({ ...plugin, name: plugin.name || plugin.id, sourceKind: "optional-bundle-card", distributionKind: "marketplace-card" }));
+  const marketplaceCards = [...canonicalCards, ...bundleCards];
+  const migratedRootSources = (Array.isArray(publicFamily.migratedRootPlugins) ? publicFamily.migratedRootPlugins : [])
+    .map((plugin) => ({ ...plugin, sourceKind: "retained-root-source", distributionKind: "retained-source-capability" }));
+  const applicationSources = (Array.isArray(publicFamily.applicationPlugins) ? publicFamily.applicationPlugins : [])
+    .map((plugin) => ({ ...plugin, sourceKind: "retained-application-source", distributionKind: "retained-source-capability" }));
+  const topicSources = (Array.isArray(publicFamily.topicPlugins) ? publicFamily.topicPlugins : [])
+    .map((plugin) => ({ ...plugin, sourceKind: "retained-topic-source", distributionKind: "retained-source-capability" }));
+  const retainedSources = [...migratedRootSources, ...applicationSources, ...topicSources];
+  const stagedArtifacts = [...marketplaceCards, ...retainedSources];
   const embeddedModules = Array.isArray(publicFamily.embeddedModules) ? publicFamily.embeddedModules : (publicFamily.plugins || []);
-  const expectedNames = plugins.map((plugin) => plugin.name);
   const failures = [];
   const excludedSourceArtifacts = [];
   const disallowedSourceArtifacts = [];
-  const pluginResults = [];
+  const marketplaceCardResults = [];
+  const sourceCapabilityResults = [];
   const embeddedModuleFindings = validateEmbeddedSourceModules(embeddedModules);
+  const bundleMembership = validateBundleMembership(bundleCards, applicationSources, topicSources);
   failures.push(...embeddedModuleFindings);
+  failures.push(...bundleMembership.failures);
   let stagingRoot = null;
   let result;
 
@@ -138,40 +144,63 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
 
     const stagedMarketplace = readJsonAt(stagingMarketplacePath);
     const stagedMarketplacePlugins = Array.isArray(stagedMarketplace?.plugins) ? stagedMarketplace.plugins : [];
-    if (stagedMarketplacePlugins.length !== expectedNames.length) {
-      failures.push(`staged marketplace must contain ${expectedNames.length} public plugins`);
+    const expectedCardPairs = marketplaceCards
+      .map((plugin) => `${plugin.name}\u0000${plugin.sourcePath}`)
+      .sort();
+    const stagedCardPairs = stagedMarketplacePlugins
+      .map((plugin) => `${plugin.name}\u0000${plugin.source?.path || ""}`)
+      .sort();
+    if (JSON.stringify(stagedCardPairs) !== JSON.stringify(expectedCardPairs)) {
+      failures.push(`staged marketplace must contain the exact ${expectedCardPairs.length}-card curated projection`);
     }
 
-    for (const plugin of plugins) {
+    for (const plugin of stagedArtifacts) {
       const pluginFailures = [];
       const normalizedSourcePath = normalizeSourcePath(plugin.sourcePath);
-      const marketplaceEntry = repoMarketplace.plugins?.find((entry) => entry.name === plugin.name);
+      const marketplaceEntry = plugin.distributionKind === "marketplace-card"
+        ? repoMarketplace.plugins?.find((entry) => entry.name === plugin.name)
+        : null;
       const sourceRoot = normalizedSourcePath ? path.join(root, normalizedSourcePath) : null;
       const stagedRoot = normalizedSourcePath ? path.join(stagingRoot, normalizedSourcePath) : null;
 
       if (!normalizedSourcePath) pluginFailures.push("plugin source path must be a safe relative path");
-      if (!marketplaceEntry) pluginFailures.push("plugin is missing from the repo marketplace");
-      if (marketplaceEntry?.source?.path !== plugin.sourcePath) pluginFailures.push("plugin marketplace source path does not match the public family");
-      if (marketplaceEntry?.policy?.installation !== "AVAILABLE") pluginFailures.push("plugin marketplace installation policy must be AVAILABLE");
-      if (marketplaceEntry?.policy?.authentication !== "ON_INSTALL") pluginFailures.push("plugin marketplace authentication policy must be ON_INSTALL");
+      if (plugin.distributionKind === "marketplace-card") {
+        if (!marketplaceEntry) pluginFailures.push("marketplace card is missing from the repo marketplace");
+        if (marketplaceEntry?.source?.path !== plugin.sourcePath) pluginFailures.push("marketplace card source path does not match the public family");
+        if (marketplaceEntry?.policy?.installation !== "AVAILABLE") pluginFailures.push("marketplace card installation policy must be AVAILABLE");
+        if (marketplaceEntry?.policy?.authentication !== "ON_INSTALL") pluginFailures.push("marketplace card authentication policy must be ON_INSTALL");
+      } else if (plugin.sourceKind === "retained-application-source" || plugin.sourceKind === "retained-topic-source") {
+        const membership = bundleMembership.byName.get(plugin.name);
+        if (!membership) pluginFailures.push("retained source capability is missing from the curated bundle plan");
+        if (membership?.sourcePath !== plugin.sourcePath) pluginFailures.push("retained source capability path differs from its bundle member path");
+      }
       if (!sourceRoot || !fs.existsSync(sourceRoot)) {
         pluginFailures.push("plugin source directory is missing");
       } else if (stagedRoot) {
-        const copyResult = copyPluginTree(sourceRoot, stagedRoot);
+        const sourceRootFailures = validatePluginSourceRoot(sourceRoot);
+        pluginFailures.push(...sourceRootFailures);
+        const copyResult = sourceRootFailures.length === 0
+          ? copyPluginTree(sourceRoot, stagedRoot)
+          : { sourceFileCount: 0, stagedFileCount: 0, excluded: [], disallowed: [], failures: [] };
         excludedSourceArtifacts.push(...copyResult.excluded);
         disallowedSourceArtifacts.push(...copyResult.disallowed);
         pluginFailures.push(...copyResult.failures);
-        pluginFailures.push(...validateStagedPlugin(plugin, stagedRoot, { requireReadme: plugin.sourceKind !== "public-application-package" }));
-        if (plugin.sourceKind === "public-application-package") {
-          pluginFailures.push(...validateStagedApplicationPackage(plugin, stagedRoot));
-        } else if (plugin.sourceKind === "public-topic-package") {
-          pluginFailures.push(...validateStagedTopicPackage(plugin, stagedRoot));
+        pluginFailures.push(...validateStagedPlugin(plugin, stagedRoot, { requireReadme: plugin.sourceKind !== "retained-application-source" }));
+        if (plugin.sourceKind === "optional-bundle-card") {
+          pluginFailures.push(...validateStagedBundlePackage(plugin, stagedRoot));
+        } else if (plugin.sourceKind === "retained-application-source") {
+          pluginFailures.push(...validateStagedApplicationPackage(plugin, stagedRoot, bundleMembership.byName.get(plugin.name)?.bundleId || null));
+        } else if (plugin.sourceKind === "retained-topic-source") {
+          pluginFailures.push(...validateStagedTopicPackage(plugin, stagedRoot, bundleMembership.byName.get(plugin.name)?.bundleId || null));
         } else {
           pluginFailures.push(...validateStagedEmbeddedSuite(plugin, stagedRoot, embeddedModules));
         }
-        pluginResults.push({
+        const itemResult = {
           name: plugin.name,
           sourcePath: plugin.sourcePath,
+          distributionKind: plugin.distributionKind,
+          sourceKind: plugin.sourceKind,
+          bundleId: bundleMembership.byName.get(plugin.name)?.bundleId || null,
           sourceFileCount: copyResult.sourceFileCount,
           stagedFileCount: copyResult.stagedFileCount,
           excludedArtifactCount: copyResult.excluded.length,
@@ -179,13 +208,18 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
           mcpEntryScriptCount: countMcpEntryScripts(stagedRoot),
           stageReady: pluginFailures.length === 0,
           findings: pluginFailures,
-        });
+        };
+        (plugin.distributionKind === "marketplace-card" ? marketplaceCardResults : sourceCapabilityResults).push(itemResult);
       }
 
-      if (!pluginResults.some((entry) => entry.name === plugin.name)) {
-        pluginResults.push({
+      const targetResults = plugin.distributionKind === "marketplace-card" ? marketplaceCardResults : sourceCapabilityResults;
+      if (!targetResults.some((entry) => entry.name === plugin.name)) {
+        targetResults.push({
           name: plugin.name,
           sourcePath: plugin.sourcePath,
+          distributionKind: plugin.distributionKind,
+          sourceKind: plugin.sourceKind,
+          bundleId: bundleMembership.byName.get(plugin.name)?.bundleId || null,
           sourceFileCount: 0,
           stagedFileCount: 0,
           excludedArtifactCount: 0,
@@ -212,17 +246,27 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
       externalNetworkAccessUsed: false,
       existingCodexCacheUsed: false,
       publicMarketplacePublished: false,
-      canonicalOrchestratorCount: canonicalPlugins.length,
-      migratedRootPluginCount: migratedRootPlugins.length,
-      applicationPluginCount: applicationPlugins.length,
-      topicPluginCount: topicPlugins.length,
-      marketplaceEntryCount: expectedNames.length,
-      expectedPluginCount: expectedNames.length,
+      canonicalMarketplaceCardCount: canonicalCards.length,
+      bundleMarketplaceCardCount: bundleCards.length,
+      applicationBundleCardCount: bundleCards.filter((plugin) => plugin.family === "application").length,
+      topicBundleCardCount: bundleCards.filter((plugin) => plugin.family === "topic").length,
+      marketplaceEntryCount: stagedMarketplacePlugins.length,
+      expectedMarketplaceCardCount: marketplaceCards.length,
+      migratedRootSourceCapabilityCount: migratedRootSources.length,
+      applicationSourceCapabilityCount: applicationSources.length,
+      topicSourceCapabilityCount: topicSources.length,
+      retainedSourceCapabilityCount: retainedSources.length,
+      bundledSourceCapabilityCount: bundleMembership.byName.size,
+      bundleMembershipExactOnce: bundleMembership.exactOnce,
+      maximumBundleSize: bundleMembership.maximumBundleSize,
+      expectedStagedArtifactCount: stagedArtifacts.length,
       embeddedModuleCount: embeddedModules.length,
       embeddedModuleFindings,
-      stagedPluginCount: pluginResults.filter((plugin) => plugin.stageReady).length,
-      stagedManifestCount: pluginResults.filter((plugin) => manifestExists(stagingRoot, plugin.sourcePath)).length,
-      stagedMcpEntryScriptCount: pluginResults.reduce((sum, plugin) => sum + plugin.mcpEntryScriptCount, 0),
+      stagedMarketplaceCardCount: marketplaceCardResults.filter((plugin) => plugin.stageReady).length,
+      stagedSourceCapabilityCount: sourceCapabilityResults.filter((plugin) => plugin.stageReady).length,
+      stagedArtifactCount: [...marketplaceCardResults, ...sourceCapabilityResults].filter((plugin) => plugin.stageReady).length,
+      stagedManifestCount: stagedArtifacts.filter((plugin) => manifestExists(stagingRoot, plugin.sourcePath)).length,
+      stagedMcpEntryScriptCount: [...marketplaceCardResults, ...sourceCapabilityResults].reduce((sum, plugin) => sum + plugin.mcpEntryScriptCount, 0),
       stagedFileCount: stagedFiles.length,
       excludedSourceArtifactCount: excludedSourceArtifacts.length,
       excludedSourceArtifacts: excludedSourceArtifacts.sort((a, b) => a.path.localeCompare(b.path)),
@@ -231,7 +275,12 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
       stagedForbiddenArtifactCount: stagedForbiddenArtifacts.length,
       stagedForbiddenArtifacts: stagedForbiddenArtifacts.sort(),
       stageDeletedAfterValidation: false,
-      plugins: pluginResults,
+      historicalPreConsolidationSnapshot: {
+        marketplaceCardCount: 381,
+        status: "historical-direct-card-projection-not-current",
+      },
+      marketplaceCards: marketplaceCardResults,
+      sourceCapabilities: sourceCapabilityResults,
       failures,
     };
   } catch (error) {
@@ -241,15 +290,25 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
       externalNetworkAccessUsed: false,
       existingCodexCacheUsed: false,
       publicMarketplacePublished: false,
-      canonicalOrchestratorCount: canonicalPlugins.length,
-      migratedRootPluginCount: migratedRootPlugins.length,
-      applicationPluginCount: applicationPlugins.length,
-      topicPluginCount: topicPlugins.length,
-      marketplaceEntryCount: expectedNames.length,
-      expectedPluginCount: expectedNames.length,
+      canonicalMarketplaceCardCount: canonicalCards.length,
+      bundleMarketplaceCardCount: bundleCards.length,
+      applicationBundleCardCount: bundleCards.filter((plugin) => plugin.family === "application").length,
+      topicBundleCardCount: bundleCards.filter((plugin) => plugin.family === "topic").length,
+      marketplaceEntryCount: Array.isArray(repoMarketplace?.plugins) ? repoMarketplace.plugins.length : 0,
+      expectedMarketplaceCardCount: marketplaceCards.length,
+      migratedRootSourceCapabilityCount: migratedRootSources.length,
+      applicationSourceCapabilityCount: applicationSources.length,
+      topicSourceCapabilityCount: topicSources.length,
+      retainedSourceCapabilityCount: retainedSources.length,
+      bundledSourceCapabilityCount: bundleMembership.byName.size,
+      bundleMembershipExactOnce: bundleMembership.exactOnce,
+      maximumBundleSize: bundleMembership.maximumBundleSize,
+      expectedStagedArtifactCount: stagedArtifacts.length,
       embeddedModuleCount: embeddedModules.length,
       embeddedModuleFindings,
-      stagedPluginCount: 0,
+      stagedMarketplaceCardCount: 0,
+      stagedSourceCapabilityCount: 0,
+      stagedArtifactCount: 0,
       stagedManifestCount: 0,
       stagedMcpEntryScriptCount: 0,
       stagedFileCount: 0,
@@ -260,7 +319,12 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
       stagedForbiddenArtifactCount: 0,
       stagedForbiddenArtifacts: [],
       stageDeletedAfterValidation: false,
-      plugins: pluginResults,
+      historicalPreConsolidationSnapshot: {
+        marketplaceCardCount: 381,
+        status: "historical-direct-card-projection-not-current",
+      },
+      marketplaceCards: marketplaceCardResults,
+      sourceCapabilities: sourceCapabilityResults,
       failures: [...failures, `artifact staging failed: ${sanitizeError(error)}`],
     };
   } finally {
@@ -275,6 +339,47 @@ function stagePublicPluginArtifacts(publicFamily, repoMarketplace) {
     result.failures.push("temporary artifact staging directory was not removed");
   }
   return result;
+}
+
+function validateBundleMembership(bundleCards, applicationSources, topicSources) {
+  const failures = [];
+  const byName = new Map();
+  const seenPaths = new Set();
+  let maximumBundleSize = 0;
+  for (const bundle of bundleCards) {
+    const members = Array.isArray(bundle.members) ? bundle.members : [];
+    maximumBundleSize = Math.max(maximumBundleSize, members.length);
+    if (!bundle.name || !["application", "topic"].includes(bundle.family)) failures.push("bundle card identity or family is invalid");
+    if (members.length < 1 || members.length > 15 || bundle.memberCount !== members.length) failures.push(`${bundle.name || "bundle"}: bundle member count is invalid`);
+    for (const member of members) {
+      if (!member?.name || !member?.sourcePath) {
+        failures.push(`${bundle.name || "bundle"}: bundle member identity is invalid`);
+        continue;
+      }
+      if (byName.has(member.name) || seenPaths.has(member.sourcePath)) {
+        failures.push(`${member.name}: retained source capability appears in multiple bundles`);
+        continue;
+      }
+      byName.set(member.name, { bundleId: bundle.name, family: bundle.family, sourcePath: member.sourcePath });
+      seenPaths.add(member.sourcePath);
+    }
+  }
+
+  const expectedSources = [...applicationSources, ...topicSources];
+  const expectedNames = new Set(expectedSources.map((plugin) => plugin.name));
+  for (const source of expectedSources) {
+    const membership = byName.get(source.name);
+    const expectedFamily = source.sourceKind === "retained-application-source" ? "application" : "topic";
+    if (!membership) failures.push(`${source.name}: retained source capability is not bundled`);
+    if (membership?.family !== expectedFamily) failures.push(`${source.name}: retained source capability is in the wrong bundle family`);
+    if (membership?.sourcePath !== source.sourcePath) failures.push(`${source.name}: retained source capability bundle path is stale`);
+  }
+  for (const name of byName.keys()) {
+    if (!expectedNames.has(name)) failures.push(`${name}: bundle member is not present in the retained source inventory`);
+  }
+  const exactOnce = failures.length === 0 && byName.size === expectedSources.length;
+  if (!exactOnce) failures.push("application and topic source capability bundle coverage must be exact-once");
+  return { byName, exactOnce, maximumBundleSize, failures };
 }
 
 function copyPluginTree(sourceRoot, stagedRoot) {
@@ -326,6 +431,20 @@ function copyPluginTree(sourceRoot, stagedRoot) {
   return result;
 }
 
+function validatePluginSourceRoot(sourceRoot) {
+  const failures = [];
+  try {
+    const stat = fs.lstatSync(sourceRoot);
+    if (!stat.isDirectory() || stat.isSymbolicLink()) failures.push("plugin source root must be a regular directory and not a symbolic link");
+    const repositoryRealPath = fs.realpathSync(root);
+    const sourceRealPath = fs.realpathSync(sourceRoot);
+    if (!isInside(repositoryRealPath, sourceRealPath) || sourceRealPath === repositoryRealPath) failures.push("plugin source root resolves outside the repository boundary");
+  } catch (error) {
+    failures.push(`plugin source root validation failed: ${sanitizeError(error)}`);
+  }
+  return failures;
+}
+
 function validateStagedPlugin(plugin, stagedRoot, { requireReadme = true } = {}) {
   const failures = [];
   const manifestPath = path.join(stagedRoot, ".codex-plugin", "plugin.json");
@@ -361,7 +480,7 @@ function validateStagedPlugin(plugin, stagedRoot, { requireReadme = true } = {})
   return failures;
 }
 
-function validateStagedApplicationPackage(plugin, stagedRoot) {
+function validateStagedApplicationPackage(plugin, stagedRoot, expectedBundleId) {
   const failures = [];
   const profilePath = path.join(stagedRoot, "assets", "plugin-profile.json");
   const skillPath = path.join(stagedRoot, "skills", plugin.name, "SKILL.md");
@@ -373,6 +492,9 @@ function validateStagedApplicationPackage(plugin, stagedRoot) {
   if (profile?.publicRepositoryAvailable !== true) failures.push("staged app package must be public-repository available");
   if (profile?.publicAudience !== "everyone") failures.push("staged app package audience must be everyone");
   if (profile?.publicMarketplace !== true) failures.push("staged app package must be available in the public marketplace");
+  if (profile?.marketplaceDiscoverable !== true) failures.push("staged app source must be marketplace-discoverable through a bundle");
+  if (profile?.marketplaceCard !== false) failures.push("staged app source must not be a direct marketplace card");
+  if (profile?.marketplaceBundleId !== expectedBundleId) failures.push("staged app source bundle id must match exact bundle membership");
   for (const permission of ["write", "network", "secrets"]) {
     if (!Array.isArray(profile?.permissions?.[permission]) || profile.permissions[permission].length !== 0) {
       failures.push(`staged app package ${permission} permissions must be empty`);
@@ -381,7 +503,7 @@ function validateStagedApplicationPackage(plugin, stagedRoot) {
   return failures;
 }
 
-function validateStagedTopicPackage(plugin, stagedRoot) {
+function validateStagedTopicPackage(plugin, stagedRoot, expectedBundleId) {
   const failures = [];
   const profilePath = path.join(stagedRoot, "assets", "topic-profile.json");
   const skillPath = path.join(stagedRoot, "skills", plugin.name, "SKILL.md");
@@ -394,12 +516,34 @@ function validateStagedTopicPackage(plugin, stagedRoot) {
   if (profile?.license !== "MIT") failures.push("staged topic package profile license must be MIT");
   if (profile?.publicAudience !== "everyone") failures.push("staged topic package audience must be everyone");
   if (profile?.publicMarketplace !== true) failures.push("staged topic package must be available in the public marketplace");
+  if (profile?.marketplaceDiscoverable !== true) failures.push("staged topic source must be marketplace-discoverable through a bundle");
+  if (profile?.marketplaceCard !== false) failures.push("staged topic source must not be a direct marketplace card");
+  if (profile?.marketplaceBundleId !== expectedBundleId) failures.push("staged topic source bundle id must match exact bundle membership");
   if (profile?.marketplace !== "seis-repo") failures.push("staged topic package marketplace must be seis-repo");
   if (profile?.sourcePath !== plugin.sourcePath) failures.push("staged topic package source path must match the public family");
   for (const permission of ["write", "network", "secrets"]) {
     if (!Array.isArray(profile?.permissions?.[permission]) || profile.permissions[permission].length !== 0) {
       failures.push(`staged topic package ${permission} permissions must be empty`);
     }
+  }
+  return failures;
+}
+
+function validateStagedBundlePackage(plugin, stagedRoot) {
+  const failures = [];
+  const profilePath = path.join(stagedRoot, "assets", "bundle-profile.json");
+  if (!fs.existsSync(profilePath)) return ["staged bundle profile is missing"];
+  const profile = readJsonAt(profilePath);
+  const expectedMembers = (plugin.members || []).map(({ name, displayName, sourcePath, category }) => ({ name, displayName, sourcePath, category }));
+  if (profile?.id !== plugin.name || profile?.family !== plugin.family) failures.push("staged bundle identity or family differs from the public family");
+  if (profile?.memberCount !== plugin.memberCount || profile?.memberCount !== expectedMembers.length) failures.push("staged bundle member count differs from the public family");
+  if (JSON.stringify(profile?.members || []) !== JSON.stringify(expectedMembers)) failures.push("staged bundle members differ from the public family");
+  if (profile?.installationPolicy?.defaultInstall !== false || profile?.installationPolicy?.optionalSelectionBundle !== true || profile?.installationPolicy?.bundleMembersAutoInstalled !== false || profile?.installationPolicy?.sourcePackagesRetained !== true || profile?.installationPolicy?.sourcePackagesDeleted !== false) failures.push("staged bundle installation policy is invalid");
+  for (const permission of ["write", "network", "secrets"]) {
+    if (!Array.isArray(profile?.permissions?.[permission]) || profile.permissions[permission].length !== 0) failures.push(`staged bundle ${permission} permissions must be empty`);
+  }
+  for (const claim of ["providerConnectivity", "deployment", "publicRelease", "automaticMerge", "sourceDeletion"]) {
+    if (profile?.externalClaims?.[claim] !== false) failures.push(`staged bundle ${claim} claim must remain false`);
   }
   return failures;
 }
@@ -481,11 +625,12 @@ function forbiddenArtifactId(relativePath) {
   const parts = normalized.split("/");
   const base = parts.at(-1) || "";
   if (base === ".DS_Store") return "macos-metadata";
-  if (parts.some((part) => ["node_modules", "dist", "build", ".cache", ".next", ".turbo", ".venv", "__pycache__", ".secrets", "secrets"].includes(part))) {
+  if (parts.some((part) => [".git", "node_modules", "dist", "build", "coverage", "vendor", ".cache", ".next", ".turbo", ".venv", "__pycache__", ".secrets", "secrets", ".private", "local-data"].includes(part))) {
     return "generated-or-secret-directory";
   }
   if (base === ".env" || (base.startsWith(".env.") && !base.endsWith(".example"))) return "environment-file";
-  if (base === "credentials.local.json" || /^service-account.*\.json$/i.test(base)) return "credential-file";
+  if (["credentials.local.json", "credentials.json", "tokens.json", "id_rsa", "id_ed25519"].includes(base) || /^service-account.*\.json$/i.test(base)) return "credential-file";
+  if (/\.log$/i.test(base)) return "log-artifact";
   if (/\.(pem|key|p12|pfx|zip|rar|7z|tar|gz)$/i.test(base)) return "private-or-archive-artifact";
   return null;
 }
@@ -522,25 +667,35 @@ function buildBlockers(artifactStaging, independentRunnerEvidence) {
 function validateProof(record) {
   const failures = [];
   if (record.id !== "seis-public-plugin-external-install-proof") failures.push("external install proof id is invalid");
+  if (record.version !== 2) failures.push("external install proof schema version is invalid");
   if (record.publicReleaseAllowed !== false) failures.push("public release must remain blocked");
   if (record.unifiedSuite.status !== "active-single-public-plugin") failures.push("unified suite must be active");
   if (record.unifiedSuite.canonicalInstallId !== "seis-ai-agent@seis-repo" || record.unifiedSuite.defaultInstallMode !== "single-public-plugin") failures.push("unified suite must keep SEIS-Agent as the single public install");
   if (record.unifiedSuite.componentCount < 10) failures.push("unified suite must include all current SEIS components");
   if (record.unifiedSuite.publicPluginCount !== 1 || record.unifiedSuite.embeddedModuleCount < 10) failures.push("unified suite must expose one public plugin and every embedded source module");
-  if (record.repoLocalArtifactStaging.marketplaceEntryCount !== marketplace.plugins.length) failures.push("artifact staging marketplace count must match the repo marketplace");
-  if (record.repoLocalArtifactStaging.canonicalOrchestratorCount !== 1) failures.push("artifact staging must include one canonical SEIS-Agent orchestrator");
-  if (record.repoLocalArtifactStaging.migratedRootPluginCount !== family.migratedRootPlugins.length || record.repoLocalArtifactStaging.migratedRootPluginCount !== 5) failures.push("artifact staging must cover all five migrated root marketplace packages");
-  if (record.repoLocalArtifactStaging.applicationPluginCount !== family.applicationPlugins.length) failures.push("artifact staging must cover every public app package");
-  if (record.repoLocalArtifactStaging.topicPluginCount !== family.topicPlugins.length) failures.push("artifact staging must cover every objective-derived topic package");
-  if (record.repoLocalArtifactStaging.expectedPluginCount !== marketplace.plugins.length) failures.push("artifact staging must cover every public marketplace package");
+  if (record.repoLocalArtifactStaging.marketplaceEntryCount !== marketplace.plugins.length || record.repoLocalArtifactStaging.marketplaceEntryCount !== 34) failures.push("artifact staging marketplace count must match the current 34-card repo marketplace");
+  if (record.repoLocalArtifactStaging.expectedMarketplaceCardCount !== 34) failures.push("artifact staging must expect exactly 34 current marketplace cards");
+  if (record.repoLocalArtifactStaging.canonicalMarketplaceCardCount !== 1) failures.push("artifact staging must include one canonical SEIS-Agent card");
+  if (record.repoLocalArtifactStaging.bundleMarketplaceCardCount !== 33) failures.push("artifact staging must include 33 optional bundle cards");
+  if (record.repoLocalArtifactStaging.applicationBundleCardCount !== 6 || record.repoLocalArtifactStaging.topicBundleCardCount !== 27) failures.push("artifact staging bundle family counts are invalid");
+  if (record.repoLocalArtifactStaging.migratedRootSourceCapabilityCount !== family.migratedRootPlugins.length || record.repoLocalArtifactStaging.migratedRootSourceCapabilityCount !== 5) failures.push("artifact staging must retain all five root source capabilities");
+  if (record.repoLocalArtifactStaging.applicationSourceCapabilityCount !== family.applicationPlugins.length || record.repoLocalArtifactStaging.applicationSourceCapabilityCount !== 75) failures.push("artifact staging must retain every app source capability");
+  if (record.repoLocalArtifactStaging.topicSourceCapabilityCount !== family.topicPlugins.length || record.repoLocalArtifactStaging.topicSourceCapabilityCount !== 300) failures.push("artifact staging must retain every topic source capability");
+  if (record.repoLocalArtifactStaging.retainedSourceCapabilityCount !== 380) failures.push("artifact staging must retain 380 source capabilities");
+  if (record.repoLocalArtifactStaging.bundledSourceCapabilityCount !== 375 || record.repoLocalArtifactStaging.bundleMembershipExactOnce !== true) failures.push("artifact staging must cover all 375 application/topic sources exactly once through bundles");
+  if (record.repoLocalArtifactStaging.maximumBundleSize > 15) failures.push("artifact staging bundle size exceeds the reviewed cap");
+  if (record.repoLocalArtifactStaging.expectedStagedArtifactCount !== 414) failures.push("artifact staging must separate 34 cards from 380 retained sources");
+  if (record.repoLocalArtifactStaging.historicalPreConsolidationSnapshot?.marketplaceCardCount !== 381 || record.repoLocalArtifactStaging.historicalPreConsolidationSnapshot?.status !== "historical-direct-card-projection-not-current") failures.push("historical 381-card snapshot must remain explicitly non-current");
   if (record.repoLocalArtifactStaging.embeddedModuleCount < 10) failures.push("artifact staging must validate every embedded source module");
   if (record.repoLocalArtifactStaging.embeddedModuleFindings.length) failures.push("embedded source module validation must pass");
   if (!record.repoLocalArtifactStaging.stageDeletedAfterValidation) failures.push("temporary stage must be deleted after validation");
   if (record.repoLocalArtifactStaging.stagedForbiddenArtifactCount !== 0) failures.push("staged artifact must not contain forbidden files");
   if (record.repoLocalArtifactStaging.disallowedSourceArtifactCount !== 0) failures.push("source artifacts must not contain disallowed release files");
-  if (!record.repoLocalArtifactStaging.ok) failures.push("artifact staging must pass for every public marketplace package");
-  if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedPluginCount !== record.repoLocalArtifactStaging.expectedPluginCount) failures.push("successful artifact staging must include every current plugin");
-  if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedManifestCount !== record.repoLocalArtifactStaging.expectedPluginCount) failures.push("successful artifact staging must include every current manifest");
+  if (!record.repoLocalArtifactStaging.ok) failures.push("artifact staging must pass for every current card and retained source capability");
+  if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedMarketplaceCardCount !== 34) failures.push("successful artifact staging must include every current marketplace card");
+  if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedSourceCapabilityCount !== 380) failures.push("successful artifact staging must include every retained source capability");
+  if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedArtifactCount !== record.repoLocalArtifactStaging.expectedStagedArtifactCount) failures.push("successful artifact staging must include every card and source artifact");
+  if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedManifestCount !== record.repoLocalArtifactStaging.expectedStagedArtifactCount) failures.push("successful artifact staging must include every current card and retained-source manifest");
   if (record.repoLocalArtifactStaging.ok && record.repoLocalArtifactStaging.stagedMcpEntryScriptCount < 1) failures.push("successful artifact staging must include the public MCP entry script");
   if (![
     "pending-independent-clean-runner-or-public-install",
@@ -561,8 +716,8 @@ function validateProof(record) {
 }
 
 function renderReport(record) {
-  const pluginRows = record.repoLocalArtifactStaging.plugins
-    .map((plugin) => `| ${plugin.name} | ${plugin.sourceFileCount} | ${plugin.stagedFileCount} | ${plugin.excludedArtifactCount} | ${plugin.mcpEntryScriptCount} | ${plugin.stageReady ? "pass" : "fail"} |`)
+  const artifactRows = [...record.repoLocalArtifactStaging.marketplaceCards, ...record.repoLocalArtifactStaging.sourceCapabilities]
+    .map((plugin) => `| ${plugin.name} | ${plugin.distributionKind} | ${plugin.bundleId || "n/a"} | ${plugin.sourceFileCount} | ${plugin.stagedFileCount} | ${plugin.excludedArtifactCount} | ${plugin.mcpEntryScriptCount} | ${plugin.stageReady ? "pass" : "fail"} |`)
     .join("\n");
   const excludedRows = record.repoLocalArtifactStaging.excludedSourceArtifacts.length
     ? record.repoLocalArtifactStaging.excludedSourceArtifacts.map((item) => `| ${item.path} | ${item.reason} |`).join("\n")
@@ -580,12 +735,14 @@ function renderReport(record) {
 ## Repo-Local Clean Artifact Staging
 
 - Mode: ${record.repoLocalArtifactStaging.mode}
-  - Expected public marketplace packages: ${record.repoLocalArtifactStaging.expectedPluginCount}
-  - Canonical orchestrators: ${record.repoLocalArtifactStaging.canonicalOrchestratorCount}
-  - Migrated root packages: ${record.repoLocalArtifactStaging.migratedRootPluginCount}
-  - Application packages: ${record.repoLocalArtifactStaging.applicationPluginCount}
-  - Objective-derived topic packages: ${record.repoLocalArtifactStaging.topicPluginCount}
-- Staged public plugins: ${record.repoLocalArtifactStaging.stagedPluginCount}
+  - Expected public marketplace cards: ${record.repoLocalArtifactStaging.expectedMarketplaceCardCount}
+  - Canonical card: ${record.repoLocalArtifactStaging.canonicalMarketplaceCardCount}
+  - Optional bundle cards: ${record.repoLocalArtifactStaging.bundleMarketplaceCardCount} (${record.repoLocalArtifactStaging.applicationBundleCardCount} application + ${record.repoLocalArtifactStaging.topicBundleCardCount} topic)
+  - Retained source capabilities: ${record.repoLocalArtifactStaging.retainedSourceCapabilityCount} (${record.repoLocalArtifactStaging.migratedRootSourceCapabilityCount} root + ${record.repoLocalArtifactStaging.applicationSourceCapabilityCount} application + ${record.repoLocalArtifactStaging.topicSourceCapabilityCount} topic)
+  - Exact-once bundled source capabilities: ${record.repoLocalArtifactStaging.bundledSourceCapabilityCount}
+- Staged marketplace cards: ${record.repoLocalArtifactStaging.stagedMarketplaceCardCount}
+- Staged retained source capabilities: ${record.repoLocalArtifactStaging.stagedSourceCapabilityCount}
+- Staged artifacts total: ${record.repoLocalArtifactStaging.stagedArtifactCount}
 - Embedded source modules: ${record.repoLocalArtifactStaging.embeddedModuleCount}
 - Staged manifests: ${record.repoLocalArtifactStaging.stagedManifestCount}
 - Staged MCP entry scripts: ${record.repoLocalArtifactStaging.stagedMcpEntryScriptCount}
@@ -597,9 +754,13 @@ function renderReport(record) {
 - External network used: ${record.repoLocalArtifactStaging.externalNetworkAccessUsed ? "yes" : "no"}
 - Existing Codex cache used: ${record.repoLocalArtifactStaging.existingCodexCacheUsed ? "yes" : "no"}
 
-| plugin | source files | staged files | excluded metadata | MCP entry scripts | stage |
-| --- | --- | --- | --- | --- | --- |
-${pluginRows}
+The historical pre-consolidation 381-card projection is retained only as a
+non-current snapshot. The current install surface is 34 cards; retained source
+capabilities are validated separately and are not direct cards.
+
+| artifact | distribution | bundle | source files | staged files | excluded metadata | MCP entry scripts | stage |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+${artifactRows}
 
 ## Excluded Source Metadata
 

@@ -54,7 +54,7 @@ function evidence() {
       sourcePluginCount: audit.summary.sourcePluginCount,
       catalogPluginCount: audit.summary.catalogPluginCount,
       matrixPluginCount: audit.summary.matrixPluginCount,
-      marketplaceApplicationCardCount: audit.summary.marketplaceApplicationCardCount,
+      bundleApplicationMemberCount: audit.summary.bundleApplicationMemberCount,
       declaredCategoryCount: audit.summary.declaredCategoryCount,
       declaredCapabilityTokenKindCount: audit.summary.declaredCapabilityTokenKindCount,
       findingCodes: audit.findings.map((finding) => finding.code).filter(Boolean).sort(),
@@ -74,7 +74,7 @@ function invalidReportPath() {
     errorCount: 1,
     warningCount: 0,
     findings: [{ severity: "error", code: "invalid-report-path", count: 1 }],
-    permissions: { read: ["four fixed checked-in public SEIS Repo registry projections"], write: [], network: [], secrets: [] },
+    permissions: { read: ["five fixed checked-in public SEIS Repo registry projections"], write: [], network: [], secrets: [] },
     limitations: ["Only the current local SEIS repository root is an allowed report target."],
   };
 }
@@ -174,7 +174,7 @@ function tools() {
     },
     {
       name: "seis_plugin_capability_coverage_report",
-      description: "Read four fixed public SEIS Repo registry projections and return only derived coverage counts.",
+      description: "Read five fixed public SEIS Repo registry projections and return only derived coverage counts.",
       inputSchema: { type: "object", properties: { path: { type: "string" } }, additionalProperties: false },
     },
     {

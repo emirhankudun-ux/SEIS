@@ -42,8 +42,10 @@ function buildRecord() {
   const publicBoundaryDecision = readJson(PATHS.publicBoundaryDecision);
   const expansionProgram = readJson(PATHS.expansionProgram);
   const continuityCadence = readJson(PATHS.continuityCadence);
+  const historicalWave4DirectCardSnapshot = { ...handoffPreparation.historicalWave4DirectCardSnapshot };
+  const currentMarketplaceProjection = currentProjectionForRecord(handoffPreparation.currentMarketplaceProjection);
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-plugin-wave-4-closeout-sequence-decision",
     goalId: "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
     parentGoalId: "SEIS-GOAL-021",
@@ -69,6 +71,8 @@ function buildRecord() {
       waveCompleted: false,
       wave5ActivationApproved: false,
     },
+    historicalWave4DirectCardSnapshot,
+    currentMarketplaceProjection,
     currentEvidence: {
       handoffPreparation: isSupportedHandoffPreparation(handoffPreparation),
       wave4Program: isSupportedWave4Program(wave4Program),
@@ -198,6 +202,8 @@ function isSupportedHandoffPreparation(record) {
     && record?.handoffGate?.wave5ActivationApproved === false
     && record?.recommendedFollowUp?.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE"
     && record?.recommendedFollowUp?.decisionPath === OUTPUT_PATH
+    && hasHistoricalWave4DirectCardSnapshot(record)
+    && isCurrentMarketplaceProjection(record?.currentMarketplaceProjection)
     && Object.values(record?.externalClaims || {}).every((value) => value === false);
   const preApplication = record?.status === "in-progress-repository-local-handoff-preparation"
     && record?.recommendedFollowUp?.status === "created-proposed-owner-decision-required";
@@ -247,10 +253,13 @@ function isSupportedPublicBoundaryDecision(record) {
   return record?.id === "seis-public-plugin-wave-4-public-boundary-decision"
     && record?.status === "completed-repository-local-public-boundary-decision"
     && list(record?.completedSteps).join(",") === "91,92,93,94,95"
-    && record?.publicCountReconciliation?.marketplaceName === "seis-repo"
-    && record?.publicCountReconciliation?.marketplaceDisplayName === "SEIS Repo"
-    && record?.publicCountReconciliation?.applicationPluginCount === 74
-    && record?.publicCountReconciliation?.publicCardCount === 380
+    && record?.historicalWave4Distribution?.classification === "immutable-wave-4-public-boundary-direct-card-snapshot"
+    && record?.historicalWave4Distribution?.projectionModel === "direct-source-package-marketplace-cards"
+    && record?.historicalWave4Distribution?.applicationPluginCount === 74
+    && record?.historicalWave4Distribution?.publicCardCount === 380
+    && record?.historicalWave4Distribution?.topologyCardCount === 1
+    && record?.historicalWave4Distribution?.selectedCapabilityHadDirectMarketplaceCard === true
+    && isCurrentMarketplaceProjection(record?.currentMarketplaceProjection)
     && record?.externalProofAndApprovals?.publicReleaseAllowed === false
     && Object.values(record?.externalClaims || {}).every((value) => value === false);
 }
@@ -310,14 +319,14 @@ function isSupportedContinuityCadence(record) {
     && wave4?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave4?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
   const activeWave5 = record?.cadence?.waveSeries?.activeWave === 5
-    && record?.cadence?.waveSeries?.activeWaveState === "wave-5-first-40-steps-completed-step-41-in-progress"
+    && ["wave-5-first-60-steps-completed-step-61-in-progress", "wave-5-first-80-steps-completed-step-81-in-progress"].includes(record?.cadence?.waveSeries?.activeWaveState)
     && wave4?.status === "completed"
     && wave4?.completedSteps === 100
     && list(wave4?.inProgressSteps).length === 0
     && list(record?.waves)[4]?.status === "in-progress"
     && list(record?.waves)[4]?.selectedCapability === "seis-plugin-capability-coverage"
-    && list(record?.waves)[4]?.completedSteps === 40
-    && list(list(record?.waves)[4]?.inProgressSteps).join(",") === "41";
+    && [[60, "61"], [80, "81"]].some(([completedSteps, activeStep]) => list(record?.waves)[4]?.completedSteps === completedSteps
+      && list(list(record?.waves)[4]?.inProgressSteps).join(",") === activeStep);
   return shared && (preApplication || postApplication || afterHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout || activeWave5);
 }
 
@@ -325,6 +334,8 @@ function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-4-closeout-sequence-decision" && record.goalId === "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE" && record.parentGoalId === "SEIS-GOAL-021" && record.wave === 4 && record.round === 5 && record.status === "approved-current-user-continuation-authority" && record.maturity === "specification", "closeout-sequence identity is invalid");
   assert(record.stateAtDecision?.completedStepCount === 95 && record.stateAtDecision?.activeStep === 96 && list(record.stateAtDecision?.plannedStepNumbers).join(",") === REMAINING_STEPS.join(",") && record.stateAtDecision?.terminalHandoffPublished === false && record.stateAtDecision?.waveCompleted === false && record.stateAtDecision?.wave5ActivationApproved === false, "closeout-sequence state is invalid");
   assert(record.stateAfterApplication?.completedStepCount === 96 && record.stateAfterApplication?.activeStep === 97 && list(record.stateAfterApplication?.plannedStepNumbers).join(",") === "98,99,100" && record.stateAfterApplication?.terminalHandoffPublished === false && record.stateAfterApplication?.waveCompleted === false && record.stateAfterApplication?.wave5ActivationApproved === false, "closeout-sequence applied state is invalid");
+  assert(hasHistoricalWave4DirectCardSnapshot(record), "historical Wave 4 direct-card snapshot is invalid");
+  assert(isCurrentMarketplaceProjection(record.currentMarketplaceProjection), "current curated marketplace projection is invalid");
   assert(Object.values(record.currentEvidence || {}).every(Boolean), "a required closeout-sequence evidence input is not current");
   assert(record.decisionBoundary?.status === "approved-owner-mapping-applied" && record.decisionBoundary?.approvalRequired === true && record.decisionBoundary?.approvalSource === "active-thread-user-continuation-objective" && record.decisionBoundary?.approved === true && record.decisionBoundary?.appliedToCanonicalProgram === true && record.decisionBoundary?.automaticStepStatusChangesAllowed === false && record.decisionBoundary?.terminalHandoffPublished === false && record.decisionBoundary?.waveCompleted === false && record.decisionBoundary?.wave5ActivationApproved === false, "closeout-sequence decision boundary is invalid");
   assert(record.cycleAnalysis?.detected === true && list(record.cycleAnalysis?.affectedSteps).join(",") === [96, ...REMAINING_STEPS].join(",") && list(record.cycleAnalysis?.safeguards).length === 3, "closeout-sequence cycle analysis is invalid");
@@ -334,6 +345,63 @@ function validateRecord(record) {
   assert(list(record.risks).length === 2 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "closeout-sequence risks or rollback are invalid");
   assert(record.inputSafetyScan?.machineSpecificPathFindingCount === 0 && record.inputSafetyScan?.secretLikeFindingCount === 0 && record.inputSafetyScan?.rawValuesStored === false, "closeout-sequence inputs contain unsafe values");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "closeout-sequence record must not contain a machine-specific path");
+}
+
+function currentProjectionForRecord(projection) {
+  return {
+    observedAt: projection?.observedAt || null,
+    projectionModel: "curated-bundle-cards",
+    distributionMode: "curated-bounded-public-bundles",
+    marketplaceName: projection?.marketplaceName,
+    marketplaceDisplayName: projection?.marketplaceDisplayName,
+    publicCardCount: projection?.publicCardCount,
+    canonicalCardCount: projection?.canonicalCardCount,
+    bundleCardCount: projection?.bundleCardCount,
+    applicationBundleCardCount: projection?.applicationBundleCardCount,
+    topicBundleCardCount: projection?.topicBundleCardCount,
+    sourceCapabilityInventory: { ...projection?.sourceCapabilityInventory },
+    directSourceCapabilityCardCount: 0,
+  };
+}
+
+function hasHistoricalWave4DirectCardSnapshot(record) {
+  const snapshot = record?.historicalWave4DirectCardSnapshot;
+  return snapshot?.projectionModel === "direct-source-cards"
+    && snapshot?.marketplaceName === "seis-repo"
+    && snapshot?.marketplaceDisplayName === "SEIS Repo"
+    && snapshot?.applicationSourcePackageCount === 74
+    && snapshot?.topicSourcePackageCount === 300
+    && snapshot?.rootSourceModuleCount === 5
+    && snapshot?.retainedSourceCapabilityCount === 379
+    && snapshot?.publicCardCount === 380
+    && snapshot?.current === false
+    && snapshot?.immutableHistoricalEvidence === true;
+}
+
+function isCurrentMarketplaceProjection(projection) {
+  const selected = projection?.selectedApplicationCapability;
+  const directBoundary = projection?.directSourceCapabilityCardCount === 0
+    || (selected?.id === "seis-swift-package-topology"
+      && selected?.retainedSource === true
+      && selected?.directMarketplaceCardRequired === false
+      && selected?.directMarketplaceCardCount === 0
+      && selected?.bundleCardCount === 1
+      && selected?.bundleId === "seis-application-bundle-06");
+  return projection?.projectionModel === "curated-bundle-cards"
+    && projection?.distributionMode === "curated-bounded-public-bundles"
+    && projection?.marketplaceName === "seis-repo"
+    && projection?.marketplaceDisplayName === "SEIS Repo"
+    && projection?.publicCardCount === 34
+    && projection?.canonicalCardCount === 1
+    && projection?.bundleCardCount === 33
+    && projection?.applicationBundleCardCount === 6
+    && projection?.topicBundleCardCount === 27
+    && projection?.sourceCapabilityInventory?.rootSourceModuleCount === 5
+    && projection?.sourceCapabilityInventory?.applicationSourcePackageCount === 75
+    && projection?.sourceCapabilityInventory?.topicSourcePackageCount === 300
+    && projection?.sourceCapabilityInventory?.retainedSourcePackageCount === 380
+    && projection?.sourceCapabilityInventory?.sourcePackagesDeleted === false
+    && directBoundary;
 }
 
 function scanPublicSafeInputs(paths) {

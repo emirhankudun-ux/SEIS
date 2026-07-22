@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "SEIS Plugin Capability Coverage",
     "shortDescription": "Summarize declared public SEIS plugin coverage safely.",
-    "longDescription": "Reads only four fixed checked-in public SEIS Repo registry projections and returns derived category counts, normalized capability-token frequencies, and reconciliation counts. It never returns raw registry content, follows symlinks, writes files, uses a network, reads secrets, inspects arbitrary paths, or treats static metadata as installation, runtime, provider, deployment, signing, or release proof.",
+    "longDescription": "Reads only five fixed checked-in public SEIS Repo registry projections, including the public bundle catalog, and returns derived category counts, normalized capability-token frequencies, and reconciliation counts. It never returns raw registry content, follows symlinks, writes files, uses a network, reads secrets, inspects arbitrary paths, or treats static metadata as installation, runtime, provider, deployment, signing, or release proof.",
     "developerName": "SEIS Repository",
     "category": "Developer",
     "capabilities": [

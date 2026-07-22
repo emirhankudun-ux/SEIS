@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-application-bundle-06",
+  "family": "application",
+  "journeyId": "developer-engineering",
+  "journeyLabel": "Developer Engineering",
+  "journeyPart": 3,
+  "journeyPartCount": 3,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 13,
+  "category": "Developer",
+  "categoryLabels": [
+    "Developer"
+  ],
+  "members": [
+    {
+      "name": "seis-release-cadence",
+      "displayName": "SEIS Release Cadence",
+      "sourcePath": "./plugins/seis-core/seis-release-cadence",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-release-readiness",
+      "displayName": "SEIS Release Readiness",
+      "sourcePath": "./plugins/seis-core/seis-release-readiness",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-repository-health",
+      "displayName": "SEIS Repository Health",
+      "sourcePath": "./plugins/seis-core/seis-repository-health",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-repository-scorecard",
+      "displayName": "SEIS Repository Scorecard",
+      "sourcePath": "./plugins/seis-core/seis-repository-scorecard",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-rollback-readiness",
+      "displayName": "SEIS Rollback Readiness",
+      "sourcePath": "./plugins/seis-core/seis-rollback-readiness",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-semver-audit",
+      "displayName": "SEIS Semver Audit",
+      "sourcePath": "./plugins/seis-core/seis-semver-audit",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-swift-concurrency-audit",
+      "displayName": "SEIS Swift Concurrency Audit",
+      "sourcePath": "./plugins/seis-core/seis-swift-concurrency-audit",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-swift-package-topology",
+      "displayName": "SEIS Swift Package Topology",
+      "sourcePath": "./plugins/seis-core/seis-swift-package-topology",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-test-flakiness",
+      "displayName": "SEIS Test Flakiness",
+      "sourcePath": "./plugins/seis-core/seis-test-flakiness",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-tool-permission-audit",
+      "displayName": "SEIS Tool Permission Audit",
+      "sourcePath": "./plugins/seis-core/seis-tool-permission-audit",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-trusted-marketplace",
+      "displayName": "SEIS Trusted Marketplace",
+      "sourcePath": "./plugins/seis-core/seis-trusted-marketplace",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-workflow-linter",
+      "displayName": "SEIS Workflow Linter",
+      "sourcePath": "./plugins/seis-core/seis-workflow-linter",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-workspace-inspector",
+      "displayName": "SEIS Workspace Inspector",
+      "sourcePath": "./plugins/seis-core/seis-workspace-inspector",
+      "category": "Developer"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

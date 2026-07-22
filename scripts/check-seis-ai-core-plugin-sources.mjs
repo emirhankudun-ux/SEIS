@@ -48,7 +48,9 @@ for (const entry of entries) {
     if (profile.license !== "MIT") fail(`${entry.name}: profile must use the public MIT license`);
     if (profile.publicRepositoryAvailable !== true) fail(`${entry.name}: profile must be public-repository available`);
     if (profile.publicAudience !== "everyone") fail(`${entry.name}: profile public audience must be everyone`);
-    if (profile.publicMarketplace !== true) fail(`${entry.name}: app-owned plugin must be available in the public seis-repo marketplace`);
+    if (profile.publicMarketplace !== true || profile.marketplaceDiscoverable !== true) fail(`${entry.name}: app-owned source must be discoverable through the public seis-repo marketplace`);
+    if (profile.marketplaceCard !== false) fail(`${entry.name}: retained app source must not be a direct marketplace card`);
+    if (!/^seis-application-bundle-\d{2}$/.test(profile.marketplaceBundleId || "")) fail(`${entry.name}: retained app source must name its application bundle`);
     if (!Array.isArray(profile.permissions?.write) || profile.permissions.write.length !== 0) fail(`${entry.name}: write permissions are not empty`);
     if (!Array.isArray(profile.permissions?.network) || profile.permissions.network.length !== 0) fail(`${entry.name}: network permissions are not empty`);
     if (!Array.isArray(profile.permissions?.secrets) || profile.permissions.secrets.length !== 0) fail(`${entry.name}: secret permissions are not empty`);

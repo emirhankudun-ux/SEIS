@@ -1,0 +1,2267 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-supervised-autopilot",
+  "goalId": "SEIS-GOAL-0025",
+  "parentGoalId": "SEIS-GOAL-0024",
+  "status": "active-supervised-foreground-automation",
+  "maturity": "prototype",
+  "generatedAt": "2026-07-22",
+  "purpose": "Run an explicit local plan, generation, and validation sequence in one foreground invocation while preserving the curated public plugin marketplace and refusing hidden background work or external delivery actions.",
+  "currentMarketplace": {
+    "canonicalInstall": "seis-ai-agent@seis-repo",
+    "publicCardCount": 34,
+    "optionalBundleCardCount": 33,
+    "retainedSourceCapabilityCount": 380,
+    "maximumBundleSize": 15
+  },
+  "executionModel": {
+    "name": "supervised-foreground-plan-and-build",
+    "planAndBuildInOneInvocation": true,
+    "persistentProcess": false,
+    "backgroundExecution": false,
+    "subagentsAreAutomationRoles": true,
+    "externalWrites": false,
+    "intentionalNetworkActions": false,
+    "intentionalSecretAccess": false,
+    "isolationLevel": "reviewed-allowlist-no-os-sandbox",
+    "ambientNetworkIsolationEnforced": false,
+    "ambientFilesystemIsolationEnforced": false,
+    "descendantTerminationGuaranteed": false,
+    "githubPush": false,
+    "commit": false,
+    "merge": false,
+    "release": false,
+    "deployment": false,
+    "destructiveActions": false,
+    "rule": "The runner exists only while its foreground command is running. It cannot continue work after the command exits."
+  },
+  "automationRoles": [
+    {
+      "id": "architect-planner",
+      "responsibility": "Check goal, source-of-truth inputs, current marketplace boundary, risks, and the next bounded cycle.",
+      "automatedActions": [
+        "read approved local artifacts",
+        "produce a deterministic plan"
+      ]
+    },
+    {
+      "id": "bundle-builder",
+      "responsibility": "Regenerate deterministic marketplace, bundle-package, and consolidation artifacts only through the allowlist.",
+      "automatedActions": [
+        "run reviewed local generators"
+      ]
+    },
+    {
+      "id": "safety-reviewer",
+      "responsibility": "Verify no network, secret, external-write, source-deletion, or bulk-install claim enters the generated contract.",
+      "automatedActions": [
+        "run local safety validations"
+      ]
+    },
+    {
+      "id": "qa-validator",
+      "responsibility": "Run deterministic freshness and node test suites and expose failures directly.",
+      "automatedActions": [
+        "run reviewed local checks"
+      ]
+    },
+    {
+      "id": "evidence-reporter",
+      "responsibility": "Return a bounded foreground report with success, failure, blocked-delivery, and next-action state.",
+      "automatedActions": [
+        "format local report"
+      ]
+    },
+    {
+      "id": "delivery-coordinator",
+      "responsibility": "Prepare but never execute a separate feature-branch GitHub delivery decision.",
+      "automatedActions": [
+        "report approval-gated next step"
+      ]
+    }
+  ],
+  "immediateCycle": {
+    "totalSteps": 30,
+    "rounds": [
+      {
+        "round": 1,
+        "name": "Inspect and plan",
+        "steps": [
+          {
+            "number": 1,
+            "title": "Inspect the active goal, branch, worktree, and source-of-truth boundaries.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 2,
+            "title": "Snapshot the canonical install, public-card count, bundle count, and retained-source count.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 3,
+            "title": "Confirm public-only, no-personal, no-network, no-secret, and no-external-write boundaries.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 4,
+            "title": "Inspect maximum bundle size, exact-once coverage, and protected product-category boundaries.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 5,
+            "title": "Record risks, rollback, and any concurrent-generator change before overlapping writes.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 6,
+            "title": "Emit the plan-only foreground report and choose the smallest safe next phase.",
+            "status": "ready-for-supervised-foreground-run"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "name": "Build deterministically",
+        "steps": [
+          {
+            "number": 7,
+            "title": "Regenerate the public plugin family from reviewed source data.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 8,
+            "title": "Regenerate the bounded public bundle packages from the family projection.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 9,
+            "title": "Regenerate the consolidation record and retained-source evidence.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 10,
+            "title": "Regenerate this supervised automation program and documentation.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 11,
+            "title": "Run freshness checks for every generated artifact.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 12,
+            "title": "Inspect the local diff for unexpected changes without committing or pushing.",
+            "status": "ready-for-supervised-foreground-run"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "name": "Validate locally",
+        "steps": [
+          {
+            "number": 13,
+            "title": "Run deterministic bundle coverage and local MCP boundary tests.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 14,
+            "title": "Run consolidation projection and exact-once source-coverage tests.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 15,
+            "title": "Run the supervised-autopilot plan/report tests.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 16,
+            "title": "Validate that no allowlisted phase calls network, credentials, or external delivery tools.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 17,
+            "title": "Validate that the canonical SEIS-Agent install remains the only default install.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 18,
+            "title": "Stop and report any failing phase before planning additional work.",
+            "status": "ready-for-supervised-foreground-run"
+          }
+        ]
+      },
+      {
+        "round": 4,
+        "name": "Review boundaries",
+        "steps": [
+          {
+            "number": 19,
+            "title": "Review category and product-identity boundaries for bundle clarity.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 20,
+            "title": "Review source-retention and rollback evidence before any scope expansion.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 21,
+            "title": "Review command output bounds, link safety, and symbolic-link rejection behavior.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 22,
+            "title": "Review documentation freshness and user-facing installation language.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 23,
+            "title": "Review feature-branch delivery readiness without executing GitHub delivery.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 24,
+            "title": "Create explicit follow-up work only when it has a goal, risk, validation, and rollback boundary.",
+            "status": "ready-for-supervised-foreground-run"
+          }
+        ]
+      },
+      {
+        "round": 5,
+        "name": "Handoff deliberately",
+        "steps": [
+          {
+            "number": 25,
+            "title": "Summarize foreground build and validation evidence.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 26,
+            "title": "Record failed, skipped, blocked, and approval-gated actions honestly.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 27,
+            "title": "Check worktree state and keep unrelated changes untouched.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 28,
+            "title": "Prepare a focused local commit recommendation without creating a commit automatically.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 29,
+            "title": "Prepare a separate GitHub feature-branch delivery decision without pushing automatically.",
+            "status": "ready-for-supervised-foreground-run"
+          },
+          {
+            "number": 30,
+            "title": "Hand off to the gated five-wave 200-step series only after the fifth 100-step wave closes and current evidence and authority are reviewed.",
+            "status": "ready-for-supervised-foreground-run"
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "number": 1,
+        "round": 1,
+        "title": "Inspect the active goal, branch, worktree, and source-of-truth boundaries.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 2,
+        "round": 1,
+        "title": "Snapshot the canonical install, public-card count, bundle count, and retained-source count.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 3,
+        "round": 1,
+        "title": "Confirm public-only, no-personal, no-network, no-secret, and no-external-write boundaries.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 4,
+        "round": 1,
+        "title": "Inspect maximum bundle size, exact-once coverage, and protected product-category boundaries.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 5,
+        "round": 1,
+        "title": "Record risks, rollback, and any concurrent-generator change before overlapping writes.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 6,
+        "round": 1,
+        "title": "Emit the plan-only foreground report and choose the smallest safe next phase.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 7,
+        "round": 2,
+        "title": "Regenerate the public plugin family from reviewed source data.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 8,
+        "round": 2,
+        "title": "Regenerate the bounded public bundle packages from the family projection.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 9,
+        "round": 2,
+        "title": "Regenerate the consolidation record and retained-source evidence.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 10,
+        "round": 2,
+        "title": "Regenerate this supervised automation program and documentation.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 11,
+        "round": 2,
+        "title": "Run freshness checks for every generated artifact.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 12,
+        "round": 2,
+        "title": "Inspect the local diff for unexpected changes without committing or pushing.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 13,
+        "round": 3,
+        "title": "Run deterministic bundle coverage and local MCP boundary tests.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 14,
+        "round": 3,
+        "title": "Run consolidation projection and exact-once source-coverage tests.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 15,
+        "round": 3,
+        "title": "Run the supervised-autopilot plan/report tests.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 16,
+        "round": 3,
+        "title": "Validate that no allowlisted phase calls network, credentials, or external delivery tools.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 17,
+        "round": 3,
+        "title": "Validate that the canonical SEIS-Agent install remains the only default install.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 18,
+        "round": 3,
+        "title": "Stop and report any failing phase before planning additional work.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 19,
+        "round": 4,
+        "title": "Review category and product-identity boundaries for bundle clarity.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 20,
+        "round": 4,
+        "title": "Review source-retention and rollback evidence before any scope expansion.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 21,
+        "round": 4,
+        "title": "Review command output bounds, link safety, and symbolic-link rejection behavior.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 22,
+        "round": 4,
+        "title": "Review documentation freshness and user-facing installation language.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 23,
+        "round": 4,
+        "title": "Review feature-branch delivery readiness without executing GitHub delivery.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 24,
+        "round": 4,
+        "title": "Create explicit follow-up work only when it has a goal, risk, validation, and rollback boundary.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 25,
+        "round": 5,
+        "title": "Summarize foreground build and validation evidence.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 26,
+        "round": 5,
+        "title": "Record failed, skipped, blocked, and approval-gated actions honestly.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 27,
+        "round": 5,
+        "title": "Check worktree state and keep unrelated changes untouched.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 28,
+        "round": 5,
+        "title": "Prepare a focused local commit recommendation without creating a commit automatically.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 29,
+        "round": 5,
+        "title": "Prepare a separate GitHub feature-branch delivery decision without pushing automatically.",
+        "status": "ready-for-supervised-foreground-run"
+      },
+      {
+        "number": 30,
+        "round": 5,
+        "title": "Hand off to the gated five-wave 200-step series only after the fifth 100-step wave closes and current evidence and authority are reviewed.",
+        "status": "ready-for-supervised-foreground-run"
+      }
+    ]
+  },
+  "fiveWaveSeries": {
+    "source": "content/development/seis-public-plugin-continuity-cadence.json",
+    "bootstrap": {
+      "totalSteps": 30,
+      "rounds": 5,
+      "stepsPerRound": 6
+    },
+    "waves": 5,
+    "stepsPerWave": 100,
+    "roundsPerWave": 5,
+    "stepsPerRound": 20,
+    "nextSeries": {
+      "waves": 5,
+      "stepsPerWave": 200,
+      "status": "active-round-11-plan-and-local-build"
+    },
+    "continuationRule": "Round 11 is the first active 200-step plan-and-local-build cycle under the current user direction. The retained Wave 5 tracker remains at 80 completed with step 81 in progress, so this transition does not fabricate Wave 5 closeout evidence.",
+    "backgroundExecution": false
+  },
+  "round11Cycle": {
+    "round": 11,
+    "seriesWave": 1,
+    "totalSteps": 200,
+    "roundCount": 10,
+    "stepsPerRound": 20,
+    "status": "in-progress-plan-and-local-build",
+    "activationAuthority": "current-user-direction-2026-07-22",
+    "historicalWave5EvidenceState": "wave-5-first-80-steps-completed-step-81-in-progress",
+    "historicalWave5CloseoutClaimed": false,
+    "backgroundExecution": false,
+    "progress": {
+      "completedStepCount": 0,
+      "inProgressStepNumbers": [
+        1
+      ],
+      "plannedStepCount": 199
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "name": "Authority and repository truth",
+        "objective": "Reconcile active goals, ownership, branch state, aliases, and public/private boundaries.",
+        "stepRange": [
+          1,
+          20
+        ],
+        "steps": [
+          {
+            "number": 1,
+            "title": "Inspect the authoritative goal and non-goals for authority and repository truth.",
+            "status": "in-progress"
+          },
+          {
+            "number": 2,
+            "title": "Verify canonical repository ownership and affected paths for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 3,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 4,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 5,
+            "title": "Inventory current inputs and generated outputs for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 6,
+            "title": "Identify the smallest reversible implementation slice for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 7,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 8,
+            "title": "Define measurable acceptance evidence for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 9,
+            "title": "Implement the bounded local change for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 10,
+            "title": "Regenerate only declared deterministic artifacts for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 11,
+            "title": "Run syntax and freshness checks for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 12,
+            "title": "Run focused unit and integration tests for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 13,
+            "title": "Run adversarial boundary tests for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 14,
+            "title": "Inspect the diff for scope drift and machine-specific data for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 15,
+            "title": "Review security, architecture, documentation, and usability impact for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 16,
+            "title": "Record failed, skipped, and environment-blocked checks for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 17,
+            "title": "Update goal, risk, rollback, and evidence records for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 18,
+            "title": "Prepare a focused commit and feature-branch delivery decision for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 19,
+            "title": "Recheck repository state and retained-source invariants for authority and repository truth.",
+            "status": "planned"
+          },
+          {
+            "number": 20,
+            "title": "Hand off the verified result and next bounded action for authority and repository truth.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "name": "Curated marketplace architecture",
+        "objective": "Keep one canonical installation inside a clear 30-to-50-card total marketplace surface.",
+        "stepRange": [
+          21,
+          40
+        ],
+        "steps": [
+          {
+            "number": 21,
+            "title": "Inspect the authoritative goal and non-goals for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 22,
+            "title": "Verify canonical repository ownership and affected paths for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 23,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 24,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 25,
+            "title": "Inventory current inputs and generated outputs for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 26,
+            "title": "Identify the smallest reversible implementation slice for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 27,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 28,
+            "title": "Define measurable acceptance evidence for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 29,
+            "title": "Implement the bounded local change for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 30,
+            "title": "Regenerate only declared deterministic artifacts for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 31,
+            "title": "Run syntax and freshness checks for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 32,
+            "title": "Run focused unit and integration tests for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 33,
+            "title": "Run adversarial boundary tests for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 34,
+            "title": "Inspect the diff for scope drift and machine-specific data for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 35,
+            "title": "Review security, architecture, documentation, and usability impact for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 36,
+            "title": "Record failed, skipped, and environment-blocked checks for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 37,
+            "title": "Update goal, risk, rollback, and evidence records for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 38,
+            "title": "Prepare a focused commit and feature-branch delivery decision for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 39,
+            "title": "Recheck repository state and retained-source invariants for curated marketplace architecture.",
+            "status": "planned"
+          },
+          {
+            "number": 40,
+            "title": "Hand off the verified result and next bounded action for curated marketplace architecture.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "name": "Exact capability preservation",
+        "objective": "Prove all retained application and topic capabilities remain mapped exactly once.",
+        "stepRange": [
+          41,
+          60
+        ],
+        "steps": [
+          {
+            "number": 41,
+            "title": "Inspect the authoritative goal and non-goals for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 42,
+            "title": "Verify canonical repository ownership and affected paths for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 43,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 44,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 45,
+            "title": "Inventory current inputs and generated outputs for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 46,
+            "title": "Identify the smallest reversible implementation slice for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 47,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 48,
+            "title": "Define measurable acceptance evidence for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 49,
+            "title": "Implement the bounded local change for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 50,
+            "title": "Regenerate only declared deterministic artifacts for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 51,
+            "title": "Run syntax and freshness checks for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 52,
+            "title": "Run focused unit and integration tests for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 53,
+            "title": "Run adversarial boundary tests for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 54,
+            "title": "Inspect the diff for scope drift and machine-specific data for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 55,
+            "title": "Review security, architecture, documentation, and usability impact for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 56,
+            "title": "Record failed, skipped, and environment-blocked checks for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 57,
+            "title": "Update goal, risk, rollback, and evidence records for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 58,
+            "title": "Prepare a focused commit and feature-branch delivery decision for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 59,
+            "title": "Recheck repository state and retained-source invariants for exact capability preservation.",
+            "status": "planned"
+          },
+          {
+            "number": 60,
+            "title": "Hand off the verified result and next bounded action for exact capability preservation.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 4,
+        "name": "Bundle runtime safety",
+        "objective": "Harden input, output, filesystem, profile, and permission boundaries with adversarial tests.",
+        "stepRange": [
+          61,
+          80
+        ],
+        "steps": [
+          {
+            "number": 61,
+            "title": "Inspect the authoritative goal and non-goals for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 62,
+            "title": "Verify canonical repository ownership and affected paths for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 63,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 64,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 65,
+            "title": "Inventory current inputs and generated outputs for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 66,
+            "title": "Identify the smallest reversible implementation slice for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 67,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 68,
+            "title": "Define measurable acceptance evidence for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 69,
+            "title": "Implement the bounded local change for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 70,
+            "title": "Regenerate only declared deterministic artifacts for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 71,
+            "title": "Run syntax and freshness checks for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 72,
+            "title": "Run focused unit and integration tests for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 73,
+            "title": "Run adversarial boundary tests for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 74,
+            "title": "Inspect the diff for scope drift and machine-specific data for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 75,
+            "title": "Review security, architecture, documentation, and usability impact for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 76,
+            "title": "Record failed, skipped, and environment-blocked checks for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 77,
+            "title": "Update goal, risk, rollback, and evidence records for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 78,
+            "title": "Prepare a focused commit and feature-branch delivery decision for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 79,
+            "title": "Recheck repository state and retained-source invariants for bundle runtime safety.",
+            "status": "planned"
+          },
+          {
+            "number": 80,
+            "title": "Hand off the verified result and next bounded action for bundle runtime safety.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 5,
+        "name": "Manifest and registry reconciliation",
+        "objective": "Align the project manifest, marketplace, family, bundle catalog, and audit evidence.",
+        "stepRange": [
+          81,
+          100
+        ],
+        "steps": [
+          {
+            "number": 81,
+            "title": "Inspect the authoritative goal and non-goals for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 82,
+            "title": "Verify canonical repository ownership and affected paths for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 83,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 84,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 85,
+            "title": "Inventory current inputs and generated outputs for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 86,
+            "title": "Identify the smallest reversible implementation slice for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 87,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 88,
+            "title": "Define measurable acceptance evidence for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 89,
+            "title": "Implement the bounded local change for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 90,
+            "title": "Regenerate only declared deterministic artifacts for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 91,
+            "title": "Run syntax and freshness checks for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 92,
+            "title": "Run focused unit and integration tests for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 93,
+            "title": "Run adversarial boundary tests for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 94,
+            "title": "Inspect the diff for scope drift and machine-specific data for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 95,
+            "title": "Review security, architecture, documentation, and usability impact for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 96,
+            "title": "Record failed, skipped, and environment-blocked checks for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 97,
+            "title": "Update goal, risk, rollback, and evidence records for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 98,
+            "title": "Prepare a focused commit and feature-branch delivery decision for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 99,
+            "title": "Recheck repository state and retained-source invariants for manifest and registry reconciliation.",
+            "status": "planned"
+          },
+          {
+            "number": 100,
+            "title": "Hand off the verified result and next bounded action for manifest and registry reconciliation.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 6,
+        "name": "Supervised autopilot integrity",
+        "objective": "Keep plan-and-build execution anchored, allowlisted, bounded, foreground-only, and honestly scoped.",
+        "stepRange": [
+          101,
+          120
+        ],
+        "steps": [
+          {
+            "number": 101,
+            "title": "Inspect the authoritative goal and non-goals for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 102,
+            "title": "Verify canonical repository ownership and affected paths for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 103,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 104,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 105,
+            "title": "Inventory current inputs and generated outputs for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 106,
+            "title": "Identify the smallest reversible implementation slice for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 107,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 108,
+            "title": "Define measurable acceptance evidence for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 109,
+            "title": "Implement the bounded local change for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 110,
+            "title": "Regenerate only declared deterministic artifacts for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 111,
+            "title": "Run syntax and freshness checks for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 112,
+            "title": "Run focused unit and integration tests for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 113,
+            "title": "Run adversarial boundary tests for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 114,
+            "title": "Inspect the diff for scope drift and machine-specific data for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 115,
+            "title": "Review security, architecture, documentation, and usability impact for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 116,
+            "title": "Record failed, skipped, and environment-blocked checks for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 117,
+            "title": "Update goal, risk, rollback, and evidence records for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 118,
+            "title": "Prepare a focused commit and feature-branch delivery decision for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 119,
+            "title": "Recheck repository state and retained-source invariants for supervised autopilot integrity.",
+            "status": "planned"
+          },
+          {
+            "number": 120,
+            "title": "Hand off the verified result and next bounded action for supervised autopilot integrity.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 7,
+        "name": "Continuity and historical evidence",
+        "objective": "Preserve prior-wave facts while activating the current 200-step plan without fake completion.",
+        "stepRange": [
+          121,
+          140
+        ],
+        "steps": [
+          {
+            "number": 121,
+            "title": "Inspect the authoritative goal and non-goals for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 122,
+            "title": "Verify canonical repository ownership and affected paths for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 123,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 124,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 125,
+            "title": "Inventory current inputs and generated outputs for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 126,
+            "title": "Identify the smallest reversible implementation slice for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 127,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 128,
+            "title": "Define measurable acceptance evidence for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 129,
+            "title": "Implement the bounded local change for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 130,
+            "title": "Regenerate only declared deterministic artifacts for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 131,
+            "title": "Run syntax and freshness checks for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 132,
+            "title": "Run focused unit and integration tests for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 133,
+            "title": "Run adversarial boundary tests for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 134,
+            "title": "Inspect the diff for scope drift and machine-specific data for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 135,
+            "title": "Review security, architecture, documentation, and usability impact for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 136,
+            "title": "Record failed, skipped, and environment-blocked checks for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 137,
+            "title": "Update goal, risk, rollback, and evidence records for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 138,
+            "title": "Prepare a focused commit and feature-branch delivery decision for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 139,
+            "title": "Recheck repository state and retained-source invariants for continuity and historical evidence.",
+            "status": "planned"
+          },
+          {
+            "number": 140,
+            "title": "Hand off the verified result and next bounded action for continuity and historical evidence.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 8,
+        "name": "Cross-project identity boundaries",
+        "objective": "Keep SEIS, Eleni-Neferi, and Pantechnoesis distinct while documenting explicit interoperability.",
+        "stepRange": [
+          141,
+          160
+        ],
+        "steps": [
+          {
+            "number": 141,
+            "title": "Inspect the authoritative goal and non-goals for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 142,
+            "title": "Verify canonical repository ownership and affected paths for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 143,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 144,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 145,
+            "title": "Inventory current inputs and generated outputs for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 146,
+            "title": "Identify the smallest reversible implementation slice for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 147,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 148,
+            "title": "Define measurable acceptance evidence for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 149,
+            "title": "Implement the bounded local change for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 150,
+            "title": "Regenerate only declared deterministic artifacts for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 151,
+            "title": "Run syntax and freshness checks for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 152,
+            "title": "Run focused unit and integration tests for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 153,
+            "title": "Run adversarial boundary tests for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 154,
+            "title": "Inspect the diff for scope drift and machine-specific data for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 155,
+            "title": "Review security, architecture, documentation, and usability impact for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 156,
+            "title": "Record failed, skipped, and environment-blocked checks for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 157,
+            "title": "Update goal, risk, rollback, and evidence records for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 158,
+            "title": "Prepare a focused commit and feature-branch delivery decision for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 159,
+            "title": "Recheck repository state and retained-source invariants for cross-project identity boundaries.",
+            "status": "planned"
+          },
+          {
+            "number": 160,
+            "title": "Hand off the verified result and next bounded action for cross-project identity boundaries.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 9,
+        "name": "Validation and delivery readiness",
+        "objective": "Run local quality gates, disclose unavailable checks, and prepare reversible feature-branch delivery.",
+        "stepRange": [
+          161,
+          180
+        ],
+        "steps": [
+          {
+            "number": 161,
+            "title": "Inspect the authoritative goal and non-goals for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 162,
+            "title": "Verify canonical repository ownership and affected paths for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 163,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 164,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 165,
+            "title": "Inventory current inputs and generated outputs for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 166,
+            "title": "Identify the smallest reversible implementation slice for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 167,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 168,
+            "title": "Define measurable acceptance evidence for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 169,
+            "title": "Implement the bounded local change for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 170,
+            "title": "Regenerate only declared deterministic artifacts for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 171,
+            "title": "Run syntax and freshness checks for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 172,
+            "title": "Run focused unit and integration tests for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 173,
+            "title": "Run adversarial boundary tests for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 174,
+            "title": "Inspect the diff for scope drift and machine-specific data for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 175,
+            "title": "Review security, architecture, documentation, and usability impact for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 176,
+            "title": "Record failed, skipped, and environment-blocked checks for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 177,
+            "title": "Update goal, risk, rollback, and evidence records for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 178,
+            "title": "Prepare a focused commit and feature-branch delivery decision for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 179,
+            "title": "Recheck repository state and retained-source invariants for validation and delivery readiness.",
+            "status": "planned"
+          },
+          {
+            "number": 180,
+            "title": "Hand off the verified result and next bounded action for validation and delivery readiness.",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "round": 10,
+        "name": "Human usability and handoff",
+        "objective": "Review discovery clarity, installation choices, documentation, risks, rollback, and the next decision.",
+        "stepRange": [
+          181,
+          200
+        ],
+        "steps": [
+          {
+            "number": 181,
+            "title": "Inspect the authoritative goal and non-goals for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 182,
+            "title": "Verify canonical repository ownership and affected paths for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 183,
+            "title": "Snapshot the current branch and worktree without rewriting unrelated changes for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 184,
+            "title": "Confirm public/private, network, secret, and external-write boundaries for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 185,
+            "title": "Inventory current inputs and generated outputs for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 186,
+            "title": "Identify the smallest reversible implementation slice for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 187,
+            "title": "Check dependencies, blockers, and concurrent-writer risk for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 188,
+            "title": "Define measurable acceptance evidence for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 189,
+            "title": "Implement the bounded local change for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 190,
+            "title": "Regenerate only declared deterministic artifacts for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 191,
+            "title": "Run syntax and freshness checks for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 192,
+            "title": "Run focused unit and integration tests for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 193,
+            "title": "Run adversarial boundary tests for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 194,
+            "title": "Inspect the diff for scope drift and machine-specific data for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 195,
+            "title": "Review security, architecture, documentation, and usability impact for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 196,
+            "title": "Record failed, skipped, and environment-blocked checks for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 197,
+            "title": "Update goal, risk, rollback, and evidence records for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 198,
+            "title": "Prepare a focused commit and feature-branch delivery decision for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 199,
+            "title": "Recheck repository state and retained-source invariants for human usability and handoff.",
+            "status": "planned"
+          },
+          {
+            "number": 200,
+            "title": "Hand off the verified result and next bounded action for human usability and handoff.",
+            "status": "planned"
+          }
+        ]
+      }
+    ]
+  },
+  "tenYearHorizon": [
+    {
+      "year": 1,
+      "theme": "Public package clarity",
+      "intendedOutcome": "Stabilize the curated marketplace, exact-once source maps, and bundle usability evidence.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 2,
+      "theme": "Bundle experience maturity",
+      "intendedOutcome": "Improve selection language, migration compatibility, and reversible package evolution.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 3,
+      "theme": "Cross-platform contracts",
+      "intendedOutcome": "Align public package contracts with macOS, iPadOS, iOS, web, and CLI evidence where justified.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 4,
+      "theme": "Quality and resilience",
+      "intendedOutcome": "Increase local validation, compatibility, security, performance, and documentation coverage.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 5,
+      "theme": "Contributor readiness",
+      "intendedOutcome": "Prepare public contribution, review, and package lifecycle guidance without weakening governance.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 6,
+      "theme": "Extension governance",
+      "intendedOutcome": "Evaluate plugin and MCP extension pathways under least privilege and reviewed permissions.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 7,
+      "theme": "Ecosystem interoperability",
+      "intendedOutcome": "Publish stable, explicit contracts between SEIS, Eleni-Neferi, and Pantechnoesis without identity collapse.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 8,
+      "theme": "Sustainable operations",
+      "intendedOutcome": "Strengthen rollback, deprecation, observability, and long-horizon maintenance evidence.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 9,
+      "theme": "Public quality benchmark",
+      "intendedOutcome": "Review public package discovery, accessibility, performance, and documentation against current user evidence.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    },
+    {
+      "year": 10,
+      "theme": "Ten-year renewal",
+      "intendedOutcome": "Run a human-owned strategy review, retire stale assumptions, and define the next horizon only with current evidence.",
+      "execution": "strategic-gated-not-background",
+      "entryGate": "Current goal, risk, validation, rollback, repository ownership, and human authority are required before work starts.",
+      "prohibitedAssumption": "No future work, agent process, external delivery, or provider integration is presumed to run automatically."
+    }
+  ],
+  "commandAllowlist": [
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-family.mjs"
+      ],
+      "purpose": "regenerate curated marketplace projection",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-bundles.mjs"
+      ],
+      "purpose": "regenerate bounded bundle packages",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-core-plugin-catalog.mjs"
+      ],
+      "purpose": "regenerate SEIS Core application catalog",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-unified-plugin-suite.mjs"
+      ],
+      "purpose": "regenerate unified plugin suite",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-mcp-permission.mjs"
+      ],
+      "purpose": "regenerate MCP permission evidence",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-install-state.mjs"
+      ],
+      "purpose": "regenerate public install state",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-install-evidence.mjs"
+      ],
+      "purpose": "regenerate public install evidence",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-runtime-status.mjs"
+      ],
+      "purpose": "regenerate public runtime status",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-ui-state-contract-audit.mjs"
+      ],
+      "purpose": "regenerate UI state audit evidence",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-integration-checkpoint.mjs"
+      ],
+      "purpose": "regenerate Wave 4 integration checkpoint",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-public-boundary-decision.mjs"
+      ],
+      "purpose": "regenerate Wave 4 public-boundary decision",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-handoff-preparation.mjs"
+      ],
+      "purpose": "regenerate Wave 4 handoff preparation",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-closeout-sequence-decision.mjs"
+      ],
+      "purpose": "regenerate Wave 4 closeout-sequence decision",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-repository-local-handoff.mjs"
+      ],
+      "purpose": "regenerate Wave 4 repository-local handoff",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-following-wave-review.mjs"
+      ],
+      "purpose": "regenerate Wave 4 following-wave review",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-evidence-retention.mjs"
+      ],
+      "purpose": "regenerate Wave 4 evidence retention",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-closeout.mjs"
+      ],
+      "purpose": "regenerate Wave 4 closeout",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-program.mjs"
+      ],
+      "purpose": "regenerate Wave 4 program",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-continuity-cadence.mjs"
+      ],
+      "purpose": "regenerate continuity cadence",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-consolidation.mjs"
+      ],
+      "purpose": "regenerate consolidation evidence",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-supervised-autopilot.mjs"
+      ],
+      "purpose": "regenerate this program and roadmap",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-project-manifest-audit.mjs"
+      ],
+      "purpose": "regenerate project manifest audit evidence",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-family.mjs",
+        "--check"
+      ],
+      "purpose": "check marketplace freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-bundles.mjs",
+        "--check"
+      ],
+      "purpose": "check bundle freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-core-plugin-catalog.mjs",
+        "--check"
+      ],
+      "purpose": "check SEIS Core application catalog freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-unified-plugin-suite.mjs",
+        "--check"
+      ],
+      "purpose": "check unified plugin suite freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-mcp-permission.mjs",
+        "--check"
+      ],
+      "purpose": "check MCP permission freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-install-state.mjs",
+        "--check"
+      ],
+      "purpose": "check public install state freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-ui-state-contract-audit.mjs",
+        "--check"
+      ],
+      "purpose": "check UI state audit freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-integration-checkpoint.mjs",
+        "--check"
+      ],
+      "purpose": "check Wave 4 integration checkpoint freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-wave-4-public-boundary-decision.mjs",
+        "--check"
+      ],
+      "purpose": "check Wave 4 public-boundary decision freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-consolidation.mjs",
+        "--check"
+      ],
+      "purpose": "check consolidation freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-supervised-autopilot.mjs",
+        "--check"
+      ],
+      "purpose": "check autopilot freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-public-plugin-continuity-cadence.mjs",
+        "--check"
+      ],
+      "purpose": "check continuity cadence freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/check-seis-public-plugin-expansion-program.mjs"
+      ],
+      "purpose": "check expansion program",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/check-seis-plugin-bundle.mjs",
+        "--no-local"
+      ],
+      "purpose": "check canonical plugin bundle",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/check-seis-specialist-plugins.mjs"
+      ],
+      "purpose": "check curated specialist packages",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/check-seis-public-marketplace-terminology.mjs"
+      ],
+      "purpose": "check public marketplace terminology",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/check-seis-agent-plugin-integration.mjs"
+      ],
+      "purpose": "check SEIS-Agent integration",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/public-plugin-bundles.test.mjs"
+      ],
+      "purpose": "run bundle tests",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/public-plugin-consolidation.test.mjs"
+      ],
+      "purpose": "run consolidation tests",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/public-plugin-supervised-autopilot.test.mjs"
+      ],
+      "purpose": "run supervised autopilot tests",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/marketplace-integrity.test.mjs"
+      ],
+      "purpose": "run marketplace integrity tests",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "scripts/create-seis-project-manifest-audit.mjs",
+        "--check"
+      ],
+      "purpose": "check project manifest audit freshness",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "node",
+      "args": [
+        "--test",
+        "plugins/seis-core/test/project-manifest-audit.test.mjs"
+      ],
+      "purpose": "run project manifest audit tests",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    },
+    {
+      "command": "git",
+      "args": [
+        "diff",
+        "--check"
+      ],
+      "purpose": "check diff whitespace",
+      "externalWrite": false,
+      "network": false,
+      "secrets": false,
+      "approvalRequired": false
+    }
+  ],
+  "modes": {
+    "plan": {
+      "command": "npm run seis:public-plugin-autopilot -- --plan",
+      "writesGeneratedArtifacts": false,
+      "purpose": "Inspect current local state and report the next safe foreground phases."
+    },
+    "applySafe": {
+      "command": "npm run seis:public-plugin-autopilot -- --apply-safe",
+      "writesGeneratedArtifacts": true,
+      "purpose": "Run only the reviewed local generation and validation allowlist during the current foreground invocation."
+    }
+  },
+  "githubDelivery": {
+    "branch": "plugins/seis-plugin-root-20260715",
+    "status": "approval-and-environment-gated",
+    "automaticPush": false,
+    "nextAction": "After a focused commit and current authorization, use a separate feature-branch delivery action. Do not push from the autopilot."
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-supervised-autopilot",
+    "npm run seis:public-plugin-autopilot -- --plan",
+    "npm run seis:public-plugin-autopilot -- --apply-safe",
+    "node --test plugins/seis-core/test/public-plugin-supervised-autopilot.test.mjs",
+    "git diff --check"
+  ],
+  "validatorBoundary": {
+    "bundledChecksIncluded": true,
+    "officialPluginCreatorValidator": "manual-external-gate-not-embedded",
+    "reason": "The official validator and its Python dependencies are environment-owned, so the portable runner does not hard-code a machine-specific path or install dependencies."
+  },
+  "checks": {
+    "activeGoal": true,
+    "parentGoal": true,
+    "curatedMarketplace": true,
+    "continuityCadence": true,
+    "bundleProjection": true,
+    "immediateCycle": true,
+    "round11Cycle": true,
+    "tenYearHorizon": true,
+    "commandAllowlist": true
+  },
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "protectedDefaultBranchWrites": false,
+    "publicReleaseAllowed": false
+  },
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the focused autopilot generator, runner, documentation, and package scripts. The curated marketplace and retained source packages are unaffected by plan mode.",
+    "dataMigrationRequired": false
+  }
+}

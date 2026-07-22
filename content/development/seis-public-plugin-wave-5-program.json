@@ -23,8 +23,8 @@
       "SEIS"
     ],
     "selectedCapability": "seis-plugin-capability-coverage",
-    "outcome": "One public repository package now reports bounded, derived coverage across four fixed public SEIS Repo registry projections. The first 40 Wave 5 steps are implemented and validated locally; step 41 starts the coverage-interpretation and resilience-review tranche. No personal marketplace, external write, network, secret, installation, runtime, provider, deployment, signing, or release claim is authorized.",
-    "entryRule": "Wave 4 closed with a historical candidate review, the separate Wave 5 activation decision records current user authority and bounded scope, and the active package has current public source, catalog, matrix, marketplace, evidence, and deny-by-default permission projections."
+    "outcome": "One public repository package now reports bounded, derived coverage across five fixed public SEIS Repo registry projections. The first 80 Wave 5 steps are implemented and validated locally; 381 discovery cards are projected as one canonical SEIS-Agent card plus 33 optional bounded bundle cards without deleting source packages. No personal marketplace, external write, network, secret, installation, provider, deployment, signing, publication, or release claim is authorized.",
+    "entryRule": "Wave 4 closed with a historical candidate review, the separate Wave 5 activation decision records current user authority and bounded scope, and the active package has current source, catalog, matrix, bundle membership, marketplace, evidence, and deny-by-default permission projections."
   },
   "nonGoals": [
     "Adding a second Wave 5 package or card without a separate capability decision.",
@@ -37,7 +37,9 @@
     "activationDecisionPath": "content/development/seis-public-plugin-wave-5-activation-decision.json",
     "implementationStarted": true,
     "candidatePackageExists": true,
-    "candidatePublicCardExists": true,
+    "candidateDirectPublicCardExists": false,
+    "candidateBundleId": "seis-application-bundle-05",
+    "candidateBundleCardExists": true,
     "publicReleaseApproved": false
   },
   "publicBoundary": {
@@ -123,7 +125,7 @@
       "round": 3,
       "name": "Coverage interpretation and resilience review",
       "objective": "Extend only after the first public checkpoint proves the static contract remains clear, bounded, and useful.",
-      "status": "in-progress",
+      "status": "completed",
       "steps": [
         41,
         42,
@@ -149,9 +151,9 @@
     },
     {
       "round": 4,
-      "name": "Public-contract and integration maintenance",
-      "objective": "Keep the coverage package interoperable with existing registry and marketplace contracts without expanding its authority.",
-      "status": "planned",
+      "name": "Public-install consolidation and integration maintenance",
+      "objective": "Keep one canonical public install while grouping overlapping discovery cards into existing SEIS source and suite boundaries without expanding authority or silently deleting packages.",
+      "status": "completed",
       "steps": [
         61,
         62,
@@ -179,7 +181,7 @@
       "round": 5,
       "name": "Wave 5 closeout and next-series decision",
       "objective": "Finish only when all remaining steps have current evidence; keep future series activation separate and human-authorized.",
-      "status": "planned",
+      "status": "in-progress",
       "steps": [
         81,
         82,
@@ -278,7 +280,7 @@
     {
       "number": 11,
       "round": 1,
-      "title": "Fix the only allowed repo marketplace path below the SEIS repository root.",
+      "title": "Fix the only allowed repo marketplace and public bundle-catalog paths below the SEIS repository root.",
       "status": "completed",
       "validation": "focused runtime, MCP, and fixture test"
     },
@@ -369,14 +371,14 @@
     {
       "number": 24,
       "round": 2,
-      "title": "Implement fixed app-owned marketplace-card parsing.",
+      "title": "Implement fixed optional bundle-catalog membership parsing.",
       "status": "completed",
       "validation": "public projection, structural, evidence, and repository validation"
     },
     {
       "number": 25,
       "round": 2,
-      "title": "Implement aggregate source, catalog, matrix, and marketplace reconciliation counts.",
+      "title": "Implement aggregate source, catalog, matrix, bundle-member, and marketplace-card reconciliation counts.",
       "status": "completed",
       "validation": "public projection, structural, evidence, and repository validation"
     },
@@ -446,7 +448,7 @@
     {
       "number": 35,
       "round": 2,
-      "title": "Refresh the one public SEIS Repo marketplace card projection.",
+      "title": "Refresh the exact optional SEIS Repo bundle membership projection.",
       "status": "completed",
       "validation": "public projection, structural, evidence, and repository validation"
     },
@@ -489,287 +491,287 @@
       "number": 41,
       "round": 3,
       "title": "Review aggregate coverage categories for clarity without collecting new private data.",
-      "status": "in-progress",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 42,
       "round": 3,
       "title": "Review capability-token normalization for stable public terminology.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 43,
       "round": 3,
       "title": "Review attention-state wording for actionable but non-alarming output.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 44,
       "round": 3,
       "title": "Test malformed source-manifest structures without raw echoes.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 45,
       "round": 3,
       "title": "Test malformed catalog structures without raw echoes.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 46,
       "round": 3,
       "title": "Test malformed matrix structures without raw echoes.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 47,
       "round": 3,
       "title": "Test malformed marketplace structures without raw echoes.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 48,
       "round": 3,
       "title": "Test duplicate plugin-name handling across each fixed projection.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 49,
       "round": 3,
       "title": "Test category and capability-token count limits.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 50,
       "round": 3,
       "title": "Test fixed-root validation from the package entrypoint.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 51,
       "round": 3,
       "title": "Test evidence output when the committed record is unavailable.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 52,
       "round": 3,
       "title": "Review safe output size bounds for large capability vocabularies.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 53,
       "round": 3,
       "title": "Document registry evolution and backward-compatibility assumptions.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 54,
       "round": 3,
       "title": "Review read-only permission boundaries against the public profile.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 55,
       "round": 3,
       "title": "Review source, catalog, matrix, and marketplace count consistency.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 56,
       "round": 3,
       "title": "Review terminology against SEIS Repo public-marketplace policy.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 57,
       "round": 3,
       "title": "Record a resilience checkpoint with no external runtime claim.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 58,
       "round": 3,
       "title": "Inspect the feature-branch worktree and generated evidence drift.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 59,
       "round": 3,
       "title": "Prepare a focused reversible continuation commit if the next tranche is approved.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 60,
       "round": 3,
       "title": "Record the next active Wave 5 step and its evidence requirement.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "status": "completed",
+      "validation": "coverage interpretation, resilience, output-bound, and public-contract validation"
     },
     {
       "number": 61,
       "round": 4,
-      "title": "Review catalog search wording for the coverage package.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Inventory the canonical install, embedded modules, app-owned packages, and topic-card surfaces without reading a personal marketplace.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 62,
       "round": 4,
-      "title": "Review app source ownership documentation for the coverage package.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Record the one-install default policy so public discovery cards are not interpreted as a 600-plugin requirement.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 63,
       "round": 4,
-      "title": "Review matrix status behavior under registry attention conditions.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Measure public discovery-card counts and category coverage using checked-in SEIS Repo metadata only.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 64,
       "round": 4,
-      "title": "Review public install-state language for static metadata packages.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Detect exact normalized capability-profile overlaps as merge-review candidates without exposing private data.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 65,
       "round": 4,
-      "title": "Review public runtime-state language for status-only tools.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Separate exact overlaps from complementary specialist packages before any consolidation decision.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 66,
       "round": 4,
-      "title": "Review MCP permission ledger wording for fixed registry reads.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Define which overlapping skills can live inside an existing canonical package or SEIS-Agent lane.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 67,
       "round": 4,
-      "title": "Review public-family report language for app-owned package counts.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Require compatibility, ownership, rollback, and human approval before any physical package merge or deletion.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 68,
       "round": 4,
-      "title": "Review lifecycle metadata for the extra public card.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Keep direct source packages optional and preserve one canonical default install target.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 69,
       "round": 4,
-      "title": "Review provenance metadata for source and artifact safety.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Treat topic cards as discoverability metadata rather than default installations.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 70,
       "round": 4,
-      "title": "Review external-install proof boundaries without claiming external proof.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Review public install-state wording so availability never implies recommended bulk installation.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 71,
       "round": 4,
-      "title": "Review secret scan coverage for the new package files.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Review source ownership and redirect requirements for any future consolidation.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 72,
       "round": 4,
-      "title": "Review documentation link integrity for the Wave 5 evidence chain.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Review public marketplace category wording for clear bundle discovery.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 73,
       "round": 4,
-      "title": "Review test coverage gaps and create explicit follow-up tasks.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Generate a deterministic public consolidation record and stale-artifact check.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 74,
       "round": 4,
-      "title": "Review rollback instructions for package and evidence removal.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Add focused tests for counts, grouping boundaries, and no automatic physical merge.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 75,
       "round": 4,
-      "title": "Review provider, deployment, signing, and release non-claims.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Link the consolidation record to the existing unified-suite policy rather than creating a second install root.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 76,
       "round": 4,
-      "title": "Review accessibility and clarity of marketplace metadata.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Review documentation links, rollout language, and the no-bulk-install user journey.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 77,
       "round": 4,
-      "title": "Review performance implications of bounded JSON parsing.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Review secret, provider, deployment, signing, and release non-claims for the consolidation surface.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 78,
       "round": 4,
-      "title": "Record a public-contract checkpoint with current validation evidence.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Record a consolidation checkpoint with current validation evidence.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 79,
       "round": 4,
-      "title": "Prepare the next non-destructive continuation sequence.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Prepare the next reversible continuation sequence without changing protected branches.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 80,
       "round": 4,
-      "title": "Confirm no protected-default-branch write is implied by repository evidence.",
-      "status": "planned",
-      "validation": "future evidence required before completion"
+      "title": "Confirm any future physical merge remains explicitly approved and separately reversible.",
+      "status": "completed",
+      "validation": "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation"
     },
     {
       "number": 81,
       "round": 5,
       "title": "Run the dedicated Wave 5 program and activation-decision checks.",
-      "status": "planned",
+      "status": "in-progress",
       "validation": "future evidence required before completion"
     },
     {
@@ -907,13 +909,13 @@
     }
   ],
   "progress": {
-    "completedStepCount": 40,
-    "plannedStepCount": 59,
+    "completedStepCount": 80,
+    "plannedStepCount": 19,
     "inProgressStepNumbers": [
-      41
+      81
     ],
-    "completedRoundCount": 2,
-    "nextStepNumber": 41,
+    "completedRoundCount": 4,
+    "nextStepNumber": 81,
     "firstDeliveryTranche": {
       "totalSteps": 30,
       "status": "completed-repository-local",
@@ -925,15 +927,32 @@
       "stepRange": "21-40",
       "status": "completed-repository-local",
       "scope": "coverage implementation, public registry projections, evidence generation, structural validation, focused checks, and full repository-local validation"
+    },
+    "thirdDeliveryTranche": {
+      "totalSteps": 20,
+      "completedSteps": 20,
+      "stepRange": "41-60",
+      "status": "completed-repository-local",
+      "scope": "coverage interpretation, malformed-input resilience, fixed-root and unavailable-evidence handling, aggregate output bounds, public-contract review, and checkpoint evidence"
+    },
+    "fourthDeliveryTranche": {
+      "totalSteps": 20,
+      "completedSteps": 20,
+      "stepRange": "61-80",
+      "status": "completed-repository-local",
+      "scope": "curated capability-package projection, exact-once coverage, source retention, bounded MCP runtimes, implementation documentation, and focused validation"
     }
   },
   "evidence": {
     "activationDecision": "content/development/seis-public-plugin-wave-5-activation-decision.json",
     "capabilityEvidence": "content/development/seis-plugin-capability-coverage.json",
+    "round3Checkpoint": "content/development/seis-public-plugin-wave-5-round-3-checkpoint.json",
+    "consolidation": "content/development/seis-public-plugin-consolidation.json",
     "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "catalog": "apps/seis-core/data/seis-core-plugin-catalog.json",
     "matrix": "content/development/seis-core-plugin-matrix.json",
     "marketplace": ".agents/plugins/marketplace.json",
+    "bundleCatalog": "content/development/seis-public-plugin-bundle-catalog.json",
     "predecessorReview": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
     "predecessorCloseout": "content/development/seis-public-plugin-wave-4-closeout.json"
   },
@@ -944,17 +963,25 @@
     "publicCandidateProjection": true,
     "coverageEvidence": true,
     "fixedRegistrySafetyCoverage": true,
+    "outputBounds": true,
+    "round3Checkpoint": true,
+    "consolidationInventory": true,
     "permissions": true,
     "publicBoundary": true
   },
   "validation": [
     "npm run check:seis-public-plugin-wave-5-activation-decision",
     "npm run check:seis-plugin-capability-coverage",
+    "npm run check:seis-public-plugin-wave-5-round-3-checkpoint",
+    "npm run check:seis-public-plugin-consolidation",
+    "npm run check:seis-public-plugin-capability-packages",
     "npm run check:seis-public-plugin-wave-5-program",
     "npm run check:seis-public-plugin-continuity",
     "npm run check:seis-repo-marketplace",
     "node --test plugins/seis-core/test/plugin-capability-coverage.test.mjs",
-    "node --test plugins/seis-core/test/plugin-capability-coverage-evidence.test.mjs"
+    "node --test plugins/seis-core/test/plugin-capability-coverage-evidence.test.mjs",
+    "node --test plugins/seis-core/test/public-plugin-consolidation.test.mjs",
+    "node --test plugins/seis-core/test/public-plugin-bundles.test.mjs"
   ],
   "risks": [
     {
@@ -972,7 +999,7 @@
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert the focused Wave 5 package, generated evidence, public card projection, and program records on the feature branch; no external state or data migration exists.",
+    "scope": "Revert the focused Wave 5 package, generated evidence, optional bundle projection, and program records on the feature branch; retained source packages remain intact and no external state or data migration exists.",
     "dataMigrationRequired": false
   }
 }

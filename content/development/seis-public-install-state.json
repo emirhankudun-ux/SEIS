@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-install-state",
   "goalId": "SEIS-GOAL-021",
-  "generatedAt": "2026-07-20",
+  "generatedAt": "2026-07-22",
   "status": "public-seis-repo-source-available-independent-install-pending",
   "decision": "not-ready-for-public-release",
   "purpose": "Make public SEIS Repo source availability, local artifact evidence, independent installation proof, and human release approval visibly distinct so marketplace cards never overstate their runtime or release status.",
@@ -11,36 +11,51 @@
     "displayName": "SEIS Public Install State",
     "marketplaceName": "seis-repo",
     "sourcePath": "plugins/seis-core/seis-public-install-state",
+    "distributionMode": "bundled-source-capability",
+    "marketplaceCardName": "seis-application-bundle-05",
+    "marketplaceCardSourcePath": "./plugins/seis-bundles/seis-application-bundle-05",
     "publicAudience": "everyone",
     "publicMarketplace": true
   },
   "publicCards": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "count": 381,
+    "count": 34,
     "canonicalOrchestratorCount": 1,
-    "migratedRootPluginCount": 5,
-    "applicationPluginCount": 75,
-    "topicPluginCount": 300,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
     "sourceAvailability": "public-repository-source-available",
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL",
     "externalInstallationProven": false
+  },
+  "sourceCapabilities": {
+    "count": 380,
+    "migratedRootCount": 5,
+    "applicationCount": 75,
+    "topicCount": 300,
+    "separateMarketplaceCards": false,
+    "retentionMode": "repository-source-capabilities-behind-curated-cards"
   },
   "canonicalDefaultInstall": {
     "installId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
     "sourceAvailability": "public-repository-source-available",
     "independentInstallationProven": false,
-    "note": "The canonical default install remains separate from source visibility for every direct SEIS Repo card."
+    "note": "The canonical default install remains distinct from the 33 optional curated bundle cards and their retained source capabilities."
   },
   "evidence": {
-    "repoLocalArtifactStage": {
+    "historicalRepoLocalArtifactStage": {
       "status": "repo-local-clean-artifact-staged-external-proof-pending",
       "verified": true,
-      "marketplaceEntryCount": 381,
+      "historicalSnapshot": true,
+      "capturedMarketplaceCardCount": 381,
+      "capturedSourceCapabilityCount": 380,
+      "currentMarketplaceCardCount": 34,
+      "matchesCurrentMarketplaceProjection": false,
       "stageDeletedAfterValidation": true,
-      "scope": "repo-local-clean-artifact-staging"
+      "scope": "historical-pre-bundle-repo-local-clean-artifact-staging"
     },
     "freshTaskReload": {
       "status": "incomplete-local-fresh-task-evidence",
@@ -57,7 +72,8 @@
   },
   "readiness": {
     "repositorySourceAvailable": true,
-    "localArtifactStageVerified": true,
+    "currentMarketplaceProjectionVerified": true,
+    "historicalSourceArtifactStageVerified": true,
     "freshTaskReloadRecorded": false,
     "independentInstallationVerified": false,
     "humanReleaseApprovalRecorded": false,
@@ -67,11 +83,11 @@
   "stateModel": [
     {
       "id": "public-source-available",
-      "meaning": "A bounded SEIS Repo card and repository source package are visible to everyone."
+      "meaning": "The bounded curated SEIS Repo cards and their retained repository source capabilities are visible to everyone."
     },
     {
-      "id": "locally-artifact-validated",
-      "meaning": "A disposable local stage validated declared package artifacts without using a public marketplace installation."
+      "id": "historical-source-artifact-validated",
+      "meaning": "The preserved pre-bundle disposable stage validated the canonical package and retained source capabilities without proving the current curated bundle projection."
     },
     {
       "id": "independently-installed",

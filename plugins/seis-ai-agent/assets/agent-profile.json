@@ -19,9 +19,9 @@
     "legacyPersonalMarketplace": "compatibility-mirror-only",
     "legacyPersonalAliasesPreserved": true,
     "standaloneLaneInstallMode": "source-module-only",
-    "marketplacePolicy": "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages",
+    "marketplacePolicy": "seis-agent-is-the-canonical-public-orchestrator-with-curated-bounded-public-bundles",
     "unifiedSuite": "assets/unified-suite.json",
-    "futurePluginIntake": "Every future cross-lane SEIS plugin must be registered in assets/unified-suite.json; future SEIS Core app packages must also be published under plugins/seis-core as public seis-repo entries.",
+    "futurePluginIntake": "Every future cross-lane SEIS plugin must be registered in assets/unified-suite.json; future SEIS Core app packages remain public repository sources and are added to a reviewed bounded public bundle only when their scope warrants a marketplace card.",
     "embeddedSkills": [
       "seis-ai-agent",
       "seis-governance",
@@ -57,12 +57,15 @@
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
-    "distributionScope": "direct-repository-source",
+    "distributionScope": "curated-bounded-public-bundles",
     "applicationOwnedPluginCount": 75,
-    "publicMarketplaceEntryCount": 75,
+    "publicMarketplaceEntryCount": 6,
+    "publicMarketplaceCardCount": 34,
+    "publicMarketplaceBundleCount": 33,
+    "sourceCapabilityCount": 380,
     "publicReleaseAllowed": false,
     "coreSourceOwner": false,
-    "futureIntake": "New public plugins for the SEIS Command Center are created under plugins/seis-core/<plugin-name>, use MIT metadata, regenerated into the app inventory/catalog, published as seis-repo entries, and covered by the unified suite without entering packages/seis-ai or becoming personal sources."
+    "futureIntake": "New public plugins for the SEIS Command Center are created under plugins/seis-core/<plugin-name>, use MIT metadata, regenerate the app inventory/catalog, remain retained public repository sources, and enter a reviewed bounded seis-repo bundle only when a marketplace card is justified; they never become personal sources."
   },
   "composedLanes": [
     "seis",

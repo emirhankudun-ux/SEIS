@@ -6,43 +6,156 @@ import os from "node:os";
 import path from "node:path";
 
 import { pluginIntegrationStatus } from "../packages/seis-ai/src/lib/plugin-integration.mjs";
-import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
-import { TOPIC_PLUGIN_SOURCE_ROOT, TOPIC_PLUGIN_TARGET } from "../plugins/seis-topics/runtime/topic-definitions.mjs";
+
+const CURATED_TOPOLOGY = Object.freeze({
+  marketplaceCardCount: 34,
+  canonicalCardCount: 1,
+  bundleCardCount: 33,
+  applicationBundleCardCount: 6,
+  topicBundleCardCount: 27,
+  rootSourceModuleCount: 5,
+  applicationSourcePackageCount: 75,
+  topicSourcePackageCount: 300,
+  retainedSourceCapabilityCount: 380,
+  bundledSourceMemberCount: 375,
+  maximumBundleMemberCount: 15,
+});
 
 const root = process.cwd();
-const args = new Set(process.argv.slice(2));
-const requireInstalled = args.has("--require-installed");
-const runMcpSmoke = args.has("--mcp-smoke");
+const failures = [];
+const options = parseOptions(process.argv.slice(2));
+const { requireInstalled, runMcpSmoke, selectedBundleId } = options;
 const cacheRoot = process.env.SEIS_CODEX_PLUGIN_CACHE_ROOT || path.join(os.homedir(), ".codex", "plugins", "cache");
 const marketplaceName = "seis-repo";
 const marketplaceCacheRoot = path.join(cacheRoot, marketplaceName);
-const failures = [];
 
 const publicFamily = readJson("content/development/seis-public-plugin-family.json", "public plugin family contract");
 const marketplace = readJson(".agents/plugins/marketplace.json", "repo marketplace");
+const bundleCatalog = readJson("content/development/seis-public-plugin-bundle-catalog.json", "public bundle catalog");
 const integration = pluginIntegrationStatus(root);
 const installer = runInstallerCheck();
 const retiredCompatibilityInstaller = runInstallerCheck(["--with-standalone-lanes"]);
 
-const entries = publicFamily?.marketplace?.entries || [];
-const expectedNames = ["seis-ai-agent"];
-const expectedMigratedRootNames = (publicFamily?.migratedRootPlugins || []).map((plugin) => plugin.name);
-const expectedApplicationNames = (publicFamily?.applicationPlugins || []).map((plugin) => plugin.name);
-const expectedTopicNames = (publicFamily?.topicPlugins || []).map((plugin) => plugin.name);
-const expectedMarketplaceNames = [...expectedNames, ...expectedMigratedRootNames, ...expectedApplicationNames, ...expectedTopicNames];
+const entries = Array.isArray(publicFamily?.marketplace?.entries) ? publicFamily.marketplace.entries : [];
+const marketplaceCards = Array.isArray(marketplace?.plugins) ? marketplace.plugins : [];
+const bundles = Array.isArray(bundleCatalog?.bundles) ? bundleCatalog.bundles : [];
+const canonicalNames = ["seis-ai-agent"];
+const expectedMigratedRootNames = pluginNames(publicFamily?.migratedRootPlugins);
+const expectedApplicationNames = pluginNames(publicFamily?.applicationPlugins);
+const expectedTopicNames = pluginNames(publicFamily?.topicPlugins);
 const expectedEmbeddedModuleNames = (publicFamily?.embeddedModules || []).map((module) => module.name);
-const expectedInstallIds = expectedNames.map((name) => `${name}@${marketplaceName}`);
-const expectedReleaseVersions = Object.fromEntries(expectedNames.map((name) => {
-  const manifest = readJson(`plugins/${name}/.codex-plugin/plugin.json`, `${name} source manifest`);
-  return [name, manifest?.version || null];
-}));
+const bundleIds = bundles.map((bundle) => bundle?.id).filter(Boolean);
+const expectedMarketplaceNames = [...canonicalNames, ...bundleIds];
+const sourceCapabilityNames = [
+  ...expectedMigratedRootNames,
+  ...expectedApplicationNames,
+  ...expectedTopicNames,
+];
+const expectedBundledMemberNames = [...expectedApplicationNames, ...expectedTopicNames];
+const directSourceCardNames = marketplaceCards
+  .map((card) => card?.name)
+  .filter((name) => sourceCapabilityNames.includes(name));
+const selectedBundle = selectedBundleId ? bundles.find((bundle) => bundle.id === selectedBundleId) || null : null;
+if (selectedBundleId) ensure(Boolean(selectedBundle), `unknown optional bundle selection: ${selectedBundleId}`);
 
-ensure(Array.isArray(entries), "public plugin family entries must be an array");
-ensure(entries.length === expectedMarketplaceNames.length, "public plugin family must expose the canonical agent, migrated root cards, and every public app and topic marketplace entry");
-ensure(publicFamily?.marketplace?.canonicalOrchestratorCount === expectedNames.length, "public plugin family must keep one canonical orchestrator");
-ensure(publicFamily?.marketplace?.migratedRootPluginCount === 5 && expectedMigratedRootNames.length === 5, "public plugin family must expose all five migrated root marketplace cards");
-ensure(publicFamily?.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "public plugin family must expose every app marketplace entry");
-ensure(publicFamily?.marketplace?.topicPluginCount === TOPIC_PLUGIN_TARGET, "public plugin family must expose every objective-derived topic marketplace entry");
+ensure(Array.isArray(publicFamily?.marketplace?.entries), "public plugin family entries must be an array");
+ensure(Array.isArray(marketplace?.plugins), "repo marketplace plugins must be an array");
+ensure(Array.isArray(bundleCatalog?.bundles), "public bundle catalog bundles must be an array");
+ensure(entries.length === CURATED_TOPOLOGY.marketplaceCardCount, "public plugin family must expose exactly 34 curated marketplace cards");
+ensure(marketplaceCards.length === CURATED_TOPOLOGY.marketplaceCardCount, "repo marketplace must expose exactly 34 curated cards");
+ensure(publicFamily?.marketplace?.publicPluginCount === CURATED_TOPOLOGY.marketplaceCardCount, "public plugin family marketplace card count must be 34");
+ensure(publicFamily?.marketplace?.canonicalOrchestratorCount === CURATED_TOPOLOGY.canonicalCardCount, "public plugin family must keep one canonical orchestrator");
+ensure(publicFamily?.marketplace?.bundlePluginCount === CURATED_TOPOLOGY.bundleCardCount, "public plugin family must expose 33 optional bundle cards");
+ensure(publicFamily?.marketplace?.applicationBundlePluginCount === CURATED_TOPOLOGY.applicationBundleCardCount, "public plugin family must expose six application bundle cards");
+ensure(publicFamily?.marketplace?.topicBundlePluginCount === CURATED_TOPOLOGY.topicBundleCardCount, "public plugin family must expose 27 topic bundle cards");
+ensure(publicFamily?.marketplace?.migratedRootPluginCount === CURATED_TOPOLOGY.rootSourceModuleCount, "public plugin family must retain five root source modules");
+ensure(publicFamily?.marketplace?.applicationPluginCount === CURATED_TOPOLOGY.applicationSourcePackageCount, "public plugin family must retain 75 application source packages");
+ensure(publicFamily?.marketplace?.topicPluginCount === CURATED_TOPOLOGY.topicSourcePackageCount, "public plugin family must retain 300 topic source packages");
+ensure(publicFamily?.marketplace?.sourceCapabilityCount === CURATED_TOPOLOGY.retainedSourceCapabilityCount, "public plugin family must retain 380 source capabilities");
+ensure(expectedMigratedRootNames.length === CURATED_TOPOLOGY.rootSourceModuleCount, "root source inventory must contain five modules");
+ensure(expectedApplicationNames.length === CURATED_TOPOLOGY.applicationSourcePackageCount, "application source inventory must contain 75 packages");
+ensure(expectedTopicNames.length === CURATED_TOPOLOGY.topicSourcePackageCount, "topic source inventory must contain 300 packages");
+ensure(sourceCapabilityNames.length === CURATED_TOPOLOGY.retainedSourceCapabilityCount, "combined retained source inventory must contain 380 capabilities");
+ensure(uniqueStrings(sourceCapabilityNames), "retained source capability names must be unique across root, application, and topic inventories");
+ensure(directSourceCardNames.length === 0, "retained source capabilities must not be required as direct marketplace cards");
+ensure(sameUniqueStrings(entries.map((entry) => entry?.name), expectedMarketplaceNames), "public family marketplace entries must match the canonical card and 33 bundle cards exactly");
+ensure(sameUniqueStrings(marketplaceCards.map((card) => card?.name), expectedMarketplaceNames), "repo marketplace cards must match the canonical card and 33 bundle cards exactly");
+ensure(marketplaceCards.every((card) => card?.name === "seis-ai-agent" || card?.source?.path?.startsWith("./plugins/seis-bundles/")), "repo marketplace must not project retained source packages as direct cards");
+
+ensure(bundleCatalog?.marketplace?.publicCardCount === CURATED_TOPOLOGY.marketplaceCardCount, "bundle catalog must declare 34 public cards");
+ensure(bundleCatalog?.marketplace?.canonicalCardCount === CURATED_TOPOLOGY.canonicalCardCount, "bundle catalog must declare one canonical card");
+ensure(bundleCatalog?.marketplace?.bundleCardCount === CURATED_TOPOLOGY.bundleCardCount, "bundle catalog must declare 33 bundle cards");
+ensure(bundleCatalog?.marketplace?.applicationBundleCardCount === CURATED_TOPOLOGY.applicationBundleCardCount, "bundle catalog must declare six application bundle cards");
+ensure(bundleCatalog?.marketplace?.topicBundleCardCount === CURATED_TOPOLOGY.topicBundleCardCount, "bundle catalog must declare 27 topic bundle cards");
+ensure(bundleCatalog?.sourceCapabilityInventory?.rootSourceModuleCount === CURATED_TOPOLOGY.rootSourceModuleCount, "bundle catalog must retain five root source modules");
+ensure(bundleCatalog?.sourceCapabilityInventory?.applicationSourcePackageCount === CURATED_TOPOLOGY.applicationSourcePackageCount, "bundle catalog must retain 75 application source packages");
+ensure(bundleCatalog?.sourceCapabilityInventory?.topicSourcePackageCount === CURATED_TOPOLOGY.topicSourcePackageCount, "bundle catalog must retain 300 topic source packages");
+ensure(bundleCatalog?.sourceCapabilityInventory?.retainedSourcePackageCount === CURATED_TOPOLOGY.retainedSourceCapabilityCount, "bundle catalog must retain 380 source packages");
+ensure(bundleCatalog?.sourceCapabilityInventory?.sourcePackagesDeleted === false, "bundle catalog must preserve retained source packages");
+ensure(bundleCatalog?.installationPolicy?.bulkInstallRequired === false, "bundle catalog must not require bulk installation");
+ensure(bundleCatalog?.installationPolicy?.bundleMembersAutoInstalled === false, "bundle catalog must not auto-install bundle members");
+ensure(bundleCatalog?.installationPolicy?.bundleMembersRemainRepositorySources === true, "bundle catalog must keep bundle members as repository sources");
+ensure(bundles.length === CURATED_TOPOLOGY.bundleCardCount, "bundle catalog must contain exactly 33 bundles");
+ensure(uniqueStrings(bundleIds), "bundle catalog ids must be unique");
+ensure(bundles.filter((bundle) => bundle?.family === "application").length === CURATED_TOPOLOGY.applicationBundleCardCount, "bundle catalog must contain six application bundles");
+ensure(bundles.filter((bundle) => bundle?.family === "topic").length === CURATED_TOPOLOGY.topicBundleCardCount, "bundle catalog must contain 27 topic bundles");
+
+const bundledMemberNames = [];
+for (const bundle of bundles) {
+  const memberNames = Array.isArray(bundle?.memberNames) ? bundle.memberNames : [];
+  const familySourceNames = bundle?.family === "application" ? expectedApplicationNames : bundle?.family === "topic" ? expectedTopicNames : [];
+  const expectedPath = `./plugins/seis-bundles/${bundle?.id || "missing-id"}`;
+  ensure(["application", "topic"].includes(bundle?.family), `${bundle?.id || "bundle"} must declare an application or topic family`);
+  ensure(bundle?.sourcePath === expectedPath, `${bundle?.id || "bundle"} source path must stay under plugins/seis-bundles`);
+  ensureFile(bundle?.sourcePath || "", `${bundle?.id || "bundle"} source path`);
+  ensure(memberNames.length > 0 && memberNames.length <= CURATED_TOPOLOGY.maximumBundleMemberCount, `${bundle?.id || "bundle"} must contain between one and 15 source members`);
+  ensure(bundle?.memberCount === memberNames.length, `${bundle?.id || "bundle"} member count must match memberNames`);
+  ensure(uniqueStrings(memberNames), `${bundle?.id || "bundle"} member names must be unique within the bundle`);
+  ensure(memberNames.every((name) => familySourceNames.includes(name)), `${bundle?.id || "bundle"} must contain only ${bundle?.family || "declared-family"} source members`);
+  bundledMemberNames.push(...memberNames);
+
+  const profile = readJson(`${bundle?.sourcePath || ""}/assets/bundle-profile.json`, `${bundle?.id || "bundle"} profile`);
+  ensure(profile?.id === bundle?.id, `${bundle?.id || "bundle"} profile id must match the catalog`);
+  ensure(profile?.memberCount === memberNames.length, `${bundle?.id || "bundle"} profile member count must match the catalog`);
+  ensure(profile?.installationPolicy?.defaultInstall === false, `${bundle?.id || "bundle"} must not be a default install`);
+  ensure(profile?.installationPolicy?.optionalSelectionBundle === true, `${bundle?.id || "bundle"} must be explicitly selectable`);
+  ensure(profile?.installationPolicy?.bundleMembersAutoInstalled === false, `${bundle?.id || "bundle"} must not auto-install member sources`);
+  ensure(profile?.installationPolicy?.sourcePackagesRetained === true, `${bundle?.id || "bundle"} must retain source packages`);
+}
+
+const bundledMemberCoverageExactOnce =
+  bundledMemberNames.length === CURATED_TOPOLOGY.bundledSourceMemberCount &&
+  uniqueStrings(bundledMemberNames) &&
+  sameUniqueStrings(bundledMemberNames, expectedBundledMemberNames);
+ensure(bundledMemberCoverageExactOnce, "the 375 application and topic source packages must appear in bundles exactly once");
+ensure(expectedMigratedRootNames.every((name) => !bundledMemberNames.includes(name)), "root source modules must remain separate from application and topic bundle membership");
+
+for (const source of [
+  ...(publicFamily?.migratedRootPlugins || []),
+  ...(publicFamily?.applicationPlugins || []),
+  ...(publicFamily?.topicPlugins || []),
+]) {
+  ensureFile(source?.sourcePath || "", `${source?.name || "retained source capability"} source path`);
+}
+
+for (const name of expectedMarketplaceNames) {
+  const entry = entries.find((candidate) => candidate.name === name);
+  const marketplaceEntry = marketplaceCards.find((candidate) => candidate.name === name);
+  const expectedPath = name === "seis-ai-agent"
+    ? "./plugins/seis-ai-agent"
+    : bundles.find((bundle) => bundle.id === name)?.sourcePath;
+  ensure(Boolean(entry), `public plugin family missing marketplace card ${name}`);
+  ensure(Boolean(marketplaceEntry), `repo marketplace missing card ${name}`);
+  ensure(entry?.sourcePath === expectedPath, `public family source path mismatch for ${name}`);
+  ensure(marketplaceEntry?.source?.source === "local", `repo marketplace ${name} must use a local source`);
+  ensure(marketplaceEntry?.source?.path === expectedPath, `repo marketplace path mismatch for ${name}`);
+  ensure(entry?.installation === "AVAILABLE", `${name} must be AVAILABLE in the public family`);
+  ensure(entry?.authentication === "ON_INSTALL", `${name} must authenticate ON_INSTALL in the public family`);
+  ensure(marketplaceEntry?.policy?.installation === "AVAILABLE", `repo marketplace ${name} must be AVAILABLE`);
+  ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace ${name} must authenticate ON_INSTALL`);
+  ensureFile(expectedPath || "", `${name} marketplace source path`);
+}
+
 ensure(publicFamily?.defaultInstall?.installId === "seis-ai-agent@seis-repo", "public plugin family must keep SEIS-Agent as the canonical install");
 ensure(publicFamily?.defaultInstall?.mode === "single-public-plugin", "public plugin family must use single-public-plugin mode");
 ensure(publicFamily?.defaultInstall?.unifiedSuite === "plugins/seis-ai-agent/assets/unified-suite.json", "public plugin family must point at the unified suite");
@@ -50,82 +163,23 @@ ensure(expectedEmbeddedModuleNames.length >= 10, "public plugin family must reta
 ensure(integration.ok === true, "SEIS AI plugin integration must load");
 ensure(integration.installMode === "single-public-plugin", "SEIS AI integration must use single-public-plugin mode");
 ensure(integration.standaloneLaneInstallMode === "source-module-only", "SEIS AI integration must keep lane packages as source modules only");
-ensure(integration.publicPluginCount === expectedNames.length, "SEIS AI integration must expose one public plugin");
+ensure(integration.publicPluginCount === CURATED_TOPOLOGY.canonicalCardCount, "SEIS AI integration must expose one canonical public plugin");
 ensure(integration.embeddedModuleCount === expectedEmbeddedModuleNames.length, "SEIS AI integration must expose every embedded source module");
 ensure(integration.unifiedSuite?.canonicalInstallId === "seis-ai-agent@seis-repo", "SEIS AI integration must expose the unified suite canonical install");
 ensure(integration.unifiedSuite?.componentCount >= expectedEmbeddedModuleNames.length, "SEIS AI unified suite must contain every embedded source module");
-ensure(integration.applicationOwnedPluginCount === APP_PLUGIN_EXPANSION_TARGET, "SEIS AI integration must expose every app-owned plugin");
+ensure(integration.applicationOwnedPluginCount === CURATED_TOPOLOGY.applicationSourcePackageCount, "SEIS AI integration must expose every app-owned source package");
 ensure(integration.applicationPluginSourceRoot === "plugins/seis-core", "SEIS AI integration must expose the app-owned source root");
 ensure(integration.applicationPluginManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "SEIS AI integration must expose the app-owned source manifest");
 ensure(integration.applicationPluginInstallSurface === "repo-source-app", "SEIS AI integration must expose the direct repo app surface");
 ensure(integration.applicationPluginSourceAvailableInRepository === true, "SEIS AI integration must mark app-owned sources as repo-available");
 ensure(integration.applicationPluginPublicRepositoryAvailable === true, "SEIS AI integration must mark app-owned sources as public-repository available");
 ensure(integration.applicationPluginPublicAudience === "everyone", "SEIS AI integration app public audience must be everyone");
-ensure(integration.applicationPluginMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "app-owned plugins must expose separate seis-repo marketplace entries");
-
-for (const name of expectedNames) {
-  const entry = entries.find((candidate) => candidate.name === name);
-  ensure(Boolean(entry), `public plugin family missing ${name}`);
-  ensure(entry?.installation === "AVAILABLE", `${name} must be AVAILABLE in public family contract`);
-  ensure(entry?.authentication === "ON_INSTALL", `${name} must authenticate ON_INSTALL in public family contract`);
-  ensureFile(entry?.sourcePath || "", `${name} source path`);
-
-  const marketplaceEntry = marketplace?.plugins?.find((candidate) => candidate.name === name);
-  ensure(Boolean(marketplaceEntry), `repo marketplace missing ${name}`);
-  ensure(marketplaceEntry?.source?.path === entry?.sourcePath, `repo marketplace path mismatch for ${name}`);
-  ensure(marketplaceEntry?.policy?.installation === "AVAILABLE", `repo marketplace ${name} must be AVAILABLE`);
-  ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace ${name} must authenticate ON_INSTALL`);
-}
-
-for (const name of expectedMigratedRootNames) {
-  const entry = entries.find((candidate) => candidate.name === name);
-  const expectedPath = `./plugins/${name}`;
-  ensure(Boolean(entry), `migrated root marketplace family missing ${name}`);
-  ensure(entry?.installation === "AVAILABLE", `${name} must be AVAILABLE in the migrated root marketplace`);
-  ensure(entry?.authentication === "ON_INSTALL", `${name} must authenticate ON_INSTALL in the migrated root marketplace`);
-  ensure(entry?.sourcePath === expectedPath, `migrated root marketplace path mismatch for ${name}`);
-  ensureFile(entry?.sourcePath || "", `${name} source path`);
-  const marketplaceEntry = marketplace?.plugins?.find((candidate) => candidate.name === name);
-  ensure(Boolean(marketplaceEntry), `repo marketplace missing migrated root ${name}`);
-  ensure(marketplaceEntry?.source?.path === expectedPath, `repo marketplace migrated root path mismatch for ${name}`);
-  ensure(marketplaceEntry?.policy?.installation === "AVAILABLE", `repo marketplace migrated root ${name} must be AVAILABLE`);
-  ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace migrated root ${name} must authenticate ON_INSTALL`);
-}
-
-for (const name of expectedApplicationNames) {
-  const entry = entries.find((candidate) => candidate.name === name);
-  const expectedPath = `./plugins/seis-core/${name}`;
-  ensure(Boolean(entry), `public app marketplace family missing ${name}`);
-  ensure(entry?.installation === "AVAILABLE", `${name} must be AVAILABLE in the public app marketplace`);
-  ensure(entry?.authentication === "ON_INSTALL", `${name} must authenticate ON_INSTALL in the public app marketplace`);
-  ensure(entry?.sourcePath === expectedPath, `public app marketplace path mismatch for ${name}`);
-  const marketplaceEntry = marketplace?.plugins?.find((candidate) => candidate.name === name);
-  ensure(Boolean(marketplaceEntry), `repo marketplace missing public app ${name}`);
-  ensure(marketplaceEntry?.source?.path === expectedPath, `repo marketplace public app path mismatch for ${name}`);
-  ensure(marketplaceEntry?.policy?.installation === "AVAILABLE", `repo marketplace public app ${name} must be AVAILABLE`);
-  ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace public app ${name} must authenticate ON_INSTALL`);
-}
-
-for (const name of expectedTopicNames) {
-  const entry = entries.find((candidate) => candidate.name === name);
-  const expectedPath = `./${TOPIC_PLUGIN_SOURCE_ROOT}/${name}`;
-  ensure(Boolean(entry), `public topic marketplace family missing ${name}`);
-  ensure(entry?.installation === "AVAILABLE", `${name} must be AVAILABLE in the public topic marketplace`);
-  ensure(entry?.authentication === "ON_INSTALL", `${name} must authenticate ON_INSTALL in the public topic marketplace`);
-  ensure(entry?.sourcePath === expectedPath, `public topic marketplace path mismatch for ${name}`);
-  const marketplaceEntry = marketplace?.plugins?.find((candidate) => candidate.name === name);
-  ensure(Boolean(marketplaceEntry), `repo marketplace missing public topic ${name}`);
-  ensure(marketplaceEntry?.source?.path === expectedPath, `repo marketplace public topic path mismatch for ${name}`);
-  ensure(marketplaceEntry?.policy?.installation === "AVAILABLE", `repo marketplace public topic ${name} must be AVAILABLE`);
-  ensure(marketplaceEntry?.policy?.authentication === "ON_INSTALL", `repo marketplace public topic ${name} must authenticate ON_INSTALL`);
-  ensure(fs.existsSync(path.join(root, expectedPath, "assets", "topic-profile.json")), `public topic profile must exist for ${name}`);
-}
-
-ensure(marketplace?.plugins?.length === expectedMarketplaceNames.length, "repo marketplace must contain the canonical agent, migrated roots, and all public app and topic packages");
+ensure(integration.applicationPluginDistribution === "curated-bounded-public-bundles", "app-owned sources must use curated bounded public bundles");
+ensure(integration.applicationPluginMarketplaceEntryCount === CURATED_TOPOLOGY.applicationBundleCardCount, "app-owned sources must project six application bundle cards");
 
 for (const module of publicFamily?.embeddedModules || []) {
   ensure(module?.canonicalInstallId === "seis-ai-agent@seis-repo", `${module?.name || "embedded module"} must resolve to SEIS-Agent`);
-  ensure(["public-plugin", "public-marketplace-and-embedded-source-module", "embedded-source-module"].includes(module?.publicStatus), `${module?.name || "embedded module"} must declare its public status`);
+  ensure(["public-plugin", "embedded-retained-source-module"].includes(module?.publicStatus), `${module?.name || "embedded module"} must declare its current public status`);
   ensureFile(module?.sourcePath || "", `${module?.name || "embedded module"} source path`);
 }
 
@@ -136,18 +190,24 @@ ensure(installer.payload?.targets?.length === 1, "default installer plan must co
 ensure(installer.payload?.targets?.[0] === "seis-ai-agent@seis-repo", "default installer target must be SEIS-Agent");
 ensure(!retiredCompatibilityInstaller.ok, "retired standalone lane installer option must be rejected");
 
-const cacheEntries = expectedNames.map((name) => inspectCachePlugin(name, expectedReleaseVersions[name]));
+const smokeTargetNames = [...canonicalNames, ...(selectedBundle ? [selectedBundle.id] : [])];
+const expectedReleaseVersions = Object.fromEntries(smokeTargetNames.map((name) => {
+  const card = marketplaceCards.find((candidate) => candidate.name === name);
+  const manifest = readJson(`${card?.source?.path || ""}/.codex-plugin/plugin.json`, `${name} source manifest`);
+  return [name, manifest?.version || null];
+}));
+const cacheEntries = smokeTargetNames.map((name) => inspectCachePlugin(name, expectedReleaseVersions[name]));
 const installedCount = cacheEntries.filter((entry) => entry.installed).length;
 const currentInstalledCount = cacheEntries.filter((entry) => entry.installed && entry.currentVersion).length;
-const cacheComplete = currentInstalledCount === expectedNames.length;
+const cacheComplete = currentInstalledCount === smokeTargetNames.length;
 if (requireInstalled) {
-  ensure(cacheComplete, `local Codex plugin cache must contain the current public SEIS-Agent plugin; found ${currentInstalledCount} current of ${expectedNames.length} installed`);
+  ensure(cacheComplete, `local Codex plugin cache must contain every explicitly selected smoke target; found ${currentInstalledCount} current of ${smokeTargetNames.length} installed`);
 }
 
 const mcpSmoke = runMcpSmoke ? cacheEntries.map((entry) => smokeInstalledMcp(entry)) : [];
 const mcpSmokePassed = mcpSmoke.every((entry) => entry.ok);
 if (runMcpSmoke) {
-  ensure(mcpSmokePassed, "installed SEIS-Agent MCP smoke must pass");
+  ensure(mcpSmokePassed, "installed canonical and explicitly selected bundle MCP smoke must pass");
 }
 
 const report = {
@@ -157,11 +217,16 @@ const report = {
   marketplaceName,
   cacheRoot,
   status: cacheComplete ? "repo-and-local-cache-ready" : "repo-ready-local-cache-partial-or-missing",
-  publicPluginCount: expectedNames.length,
+  publicPluginCount: CURATED_TOPOLOGY.canonicalCardCount,
+  marketplaceCardCount: CURATED_TOPOLOGY.marketplaceCardCount,
+  canonicalCardCount: CURATED_TOPOLOGY.canonicalCardCount,
+  bundleCardCount: CURATED_TOPOLOGY.bundleCardCount,
+  applicationBundleCardCount: CURATED_TOPOLOGY.applicationBundleCardCount,
+  topicBundleCardCount: CURATED_TOPOLOGY.topicBundleCardCount,
   migratedRootPluginCount: expectedMigratedRootNames.length,
-  repoMarketplaceEntryCount: expectedMarketplaceNames.length,
+  repoMarketplaceEntryCount: marketplaceCards.length,
   topicPluginCount: expectedTopicNames.length,
-  topicPluginMarketplaceEntryCount: expectedTopicNames.length,
+  topicPluginMarketplaceEntryCount: CURATED_TOPOLOGY.topicBundleCardCount,
   embeddedModuleCount: expectedEmbeddedModuleNames.length,
   applicationOwnedPluginCount: integration.applicationOwnedPluginCount,
   applicationPluginSourceRoot: integration.applicationPluginSourceRoot,
@@ -173,6 +238,25 @@ const report = {
   applicationPluginPublicRepositoryAvailable: integration.applicationPluginPublicRepositoryAvailable,
   applicationPluginPublicAudience: integration.applicationPluginPublicAudience,
   applicationPluginMarketplaceEntryCount: integration.applicationPluginMarketplaceEntryCount,
+  sourceCapabilities: {
+    retainedCount: sourceCapabilityNames.length,
+    rootSourceModuleCount: expectedMigratedRootNames.length,
+    applicationSourcePackageCount: expectedApplicationNames.length,
+    topicSourcePackageCount: expectedTopicNames.length,
+    bundledApplicationAndTopicMemberCount: bundledMemberNames.length,
+    bundledApplicationAndTopicExactOnce: bundledMemberCoverageExactOnce,
+    maximumBundleMemberCount: Math.max(0, ...bundles.map((bundle) => Number(bundle?.memberCount) || 0)),
+    directMarketplaceCardCount: directSourceCardNames.length,
+  },
+  bundleSelection: {
+    requestedId: selectedBundleId,
+    selectedId: selectedBundle?.id || null,
+    explicit: Boolean(selectedBundle),
+    defaultInstall: false,
+    bundleMembersAutoInstalled: false,
+  },
+  smokeTargetCount: smokeTargetNames.length,
+  smokeTargets: smokeTargetNames.map((name) => `${name}@${marketplaceName}`),
   installedCount,
   currentInstalledCount,
   requireInstalled,
@@ -201,6 +285,54 @@ const report = {
 
 console.log(JSON.stringify(report, null, 2));
 process.exit(report.ok ? 0 : 1);
+
+function parseOptions(argv) {
+  const parsed = {
+    requireInstalled: false,
+    runMcpSmoke: false,
+    selectedBundleId: null,
+  };
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+    if (argument === "--require-installed") {
+      parsed.requireInstalled = true;
+      continue;
+    }
+    if (argument === "--mcp-smoke") {
+      parsed.runMcpSmoke = true;
+      continue;
+    }
+    if (argument === "--bundle" || argument.startsWith("--bundle=")) {
+      const value = argument === "--bundle" ? argv[index + 1] : argument.slice("--bundle=".length);
+      if (argument === "--bundle") index += 1;
+      if (!value || value.startsWith("--")) {
+        failures.push("--bundle requires one explicit bundle card id");
+        if (value?.startsWith("--")) index -= 1;
+        continue;
+      }
+      if (parsed.selectedBundleId !== null) {
+        failures.push("only one optional bundle may be selected for install smoke");
+        continue;
+      }
+      parsed.selectedBundleId = value;
+      continue;
+    }
+    failures.push(`unsupported install smoke option: ${argument}`);
+  }
+  return parsed;
+}
+
+function pluginNames(plugins) {
+  return Array.isArray(plugins) ? plugins.map((plugin) => plugin?.name).filter(Boolean) : [];
+}
+
+function uniqueStrings(values) {
+  return Array.isArray(values) && values.every((value) => typeof value === "string" && value.length > 0) && new Set(values).size === values.length;
+}
+
+function sameUniqueStrings(actual, expected) {
+  return uniqueStrings(actual) && uniqueStrings(expected) && actual.length === expected.length && actual.every((value) => expected.includes(value));
+}
 
 function inspectCachePlugin(name, expectedVersion) {
   const pluginCacheRoot = path.join(marketplaceCacheRoot, name);

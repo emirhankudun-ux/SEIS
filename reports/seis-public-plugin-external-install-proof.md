@@ -8,16 +8,18 @@
 ## Repo-Local Clean Artifact Staging
 
 - Mode: temporary-local-clean-artifact-staging
-  - Expected public marketplace packages: 381
-  - Canonical orchestrators: 1
-  - Migrated root packages: 5
-  - Application packages: 75
-  - Objective-derived topic packages: 300
-- Staged public plugins: 381
+  - Expected public marketplace cards: 34
+  - Canonical card: 1
+  - Optional bundle cards: 33 (6 application + 27 topic)
+  - Retained source capabilities: 380 (5 root + 75 application + 300 topic)
+  - Exact-once bundled source capabilities: 375
+- Staged marketplace cards: 34
+- Staged retained source capabilities: 380
+- Staged artifacts total: 414
 - Embedded source modules: 10
-- Staged manifests: 381
-- Staged MCP entry scripts: 381
-- Staged files: 2583
+- Staged manifests: 414
+- Staged MCP entry scripts: 414
+- Staged files: 2781
 - Excluded source metadata files: 0
 - Disallowed source artifacts: 0
 - Forbidden files in stage: 0
@@ -25,389 +27,426 @@
 - External network used: no
 - Existing Codex cache used: no
 
-| plugin | source files | staged files | excluded metadata | MCP entry scripts | stage |
-| --- | --- | --- | --- | --- | --- |
-| seis-ai-agent | 34 | 34 | 0 | 1 | pass |
-| seis | 33 | 33 | 0 | 1 | pass |
-| seis-cloud | 8 | 8 | 0 | 1 | pass |
-| seis-code | 8 | 8 | 0 | 1 | pass |
-| seis-design | 8 | 8 | 0 | 1 | pass |
-| seis-data | 8 | 8 | 0 | 1 | pass |
-| seis-a11y-regression | 5 | 5 | 0 | 1 | pass |
-| seis-action-pin-audit | 5 | 5 | 0 | 1 | pass |
-| seis-agent-audit | 5 | 5 | 0 | 1 | pass |
-| seis-agent-contract-validator | 5 | 5 | 0 | 1 | pass |
-| seis-apple-native-readiness | 6 | 6 | 0 | 1 | pass |
-| seis-approval-gate-review | 5 | 5 | 0 | 1 | pass |
-| seis-architecture-drift | 5 | 5 | 0 | 1 | pass |
-| seis-artifact-attestation | 5 | 5 | 0 | 1 | pass |
-| seis-branch-protection-audit | 5 | 5 | 0 | 1 | pass |
-| seis-canonical-registry-validator | 5 | 5 | 0 | 1 | pass |
-| seis-changelog-validator | 5 | 5 | 0 | 1 | pass |
-| seis-codeowners-audit | 5 | 5 | 0 | 1 | pass |
-| seis-community-health | 5 | 5 | 0 | 1 | pass |
-| seis-context-efficiency | 5 | 5 | 0 | 1 | pass |
-| seis-contract-compatibility | 5 | 5 | 0 | 1 | pass |
-| seis-contributor-map | 5 | 5 | 0 | 1 | pass |
-| seis-cost-latency-budget | 5 | 5 | 0 | 1 | pass |
-| seis-data-retention-audit | 5 | 5 | 0 | 1 | pass |
-| seis-dependency-freshness | 5 | 5 | 0 | 1 | pass |
-| seis-design-token-audit | 5 | 5 | 0 | 1 | pass |
-| seis-doc-indexer | 5 | 5 | 0 | 1 | pass |
-| seis-docs-freshness | 5 | 5 | 0 | 1 | pass |
-| seis-dora-metrics | 5 | 5 | 0 | 1 | pass |
-| seis-download-anomaly | 5 | 5 | 0 | 1 | pass |
-| seis-evidence-index | 6 | 6 | 0 | 1 | pass |
-| seis-focus-navigation-audit | 6 | 6 | 0 | 1 | pass |
-| seis-github-metrics-collector | 5 | 5 | 0 | 1 | pass |
-| seis-goal-dependency-map | 5 | 5 | 0 | 1 | pass |
-| seis-goal-integrity | 5 | 5 | 0 | 1 | pass |
-| seis-issue-triage | 5 | 5 | 0 | 1 | pass |
-| seis-license-compatibility | 5 | 5 | 0 | 1 | pass |
-| seis-localization-coverage | 5 | 5 | 0 | 1 | pass |
-| seis-maintainer-risk | 5 | 5 | 0 | 1 | pass |
-| seis-marketplace-integrity | 5 | 5 | 0 | 1 | pass |
-| seis-mcp-inventory | 5 | 5 | 0 | 1 | pass |
-| seis-mcp-permission | 5 | 5 | 0 | 1 | pass |
-| seis-migration-guide-check | 5 | 5 | 0 | 1 | pass |
-| seis-model-fallback | 5 | 5 | 0 | 1 | pass |
-| seis-offline-mode-check | 5 | 5 | 0 | 1 | pass |
-| seis-package-adoption | 5 | 5 | 0 | 1 | pass |
-| seis-performance-budget | 5 | 5 | 0 | 1 | pass |
-| seis-plugin-capability-coverage | 6 | 6 | 0 | 1 | pass |
-| seis-plugin-discovery | 5 | 5 | 0 | 1 | pass |
-| seis-plugin-migration | 5 | 5 | 0 | 1 | pass |
-| seis-pr-cycle-time | 5 | 5 | 0 | 1 | pass |
-| seis-project-manifest-audit | 6 | 6 | 0 | 1 | pass |
-| seis-prompt-injection-audit | 5 | 5 | 0 | 1 | pass |
-| seis-provider-health | 5 | 5 | 0 | 1 | pass |
-| seis-public-distribution-audit | 5 | 5 | 0 | 1 | pass |
-| seis-public-install-evidence | 5 | 5 | 0 | 1 | pass |
-| seis-public-install-state | 5 | 5 | 0 | 1 | pass |
-| seis-public-runtime-status | 5 | 5 | 0 | 1 | pass |
-| seis-public-safe-scan | 5 | 5 | 0 | 1 | pass |
-| seis-rag-citation-coverage | 5 | 5 | 0 | 1 | pass |
-| seis-release-cadence | 5 | 5 | 0 | 1 | pass |
-| seis-release-readiness | 5 | 5 | 0 | 1 | pass |
-| seis-repository-health | 5 | 5 | 0 | 1 | pass |
-| seis-repository-scorecard | 5 | 5 | 0 | 1 | pass |
-| seis-rollback-readiness | 5 | 5 | 0 | 1 | pass |
-| seis-route-explainer | 5 | 5 | 0 | 1 | pass |
-| seis-sbom-generator | 5 | 5 | 0 | 1 | pass |
-| seis-secret-boundary-scan | 5 | 5 | 0 | 1 | pass |
-| seis-semver-audit | 5 | 5 | 0 | 1 | pass |
-| seis-source-provenance | 5 | 5 | 0 | 1 | pass |
-| seis-swift-concurrency-audit | 6 | 6 | 0 | 1 | pass |
-| seis-swift-package-topology | 6 | 6 | 0 | 1 | pass |
-| seis-technology-ontology | 5 | 5 | 0 | 1 | pass |
-| seis-test-flakiness | 5 | 5 | 0 | 1 | pass |
-| seis-tool-permission-audit | 5 | 5 | 0 | 1 | pass |
-| seis-trusted-marketplace | 5 | 5 | 0 | 1 | pass |
-| seis-ui-state-contract-audit | 6 | 6 | 0 | 1 | pass |
-| seis-vulnerability-triage | 5 | 5 | 0 | 1 | pass |
-| seis-workflow-linter | 5 | 5 | 0 | 1 | pass |
-| seis-workflow-permission-audit | 5 | 5 | 0 | 1 | pass |
-| seis-workspace-inspector | 5 | 5 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-agent-runtime | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-agent-swarms | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-ai-agents | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-ai-alignment | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-ai-core | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-ai-evaluation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-ai-safety | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-audio-ai | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-computer-vision | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-context-engineering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-deep-learning | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-embeddings | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-generative-ai | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-graphrag | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-knowledge-graph | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-knowledge-systems | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-large-language-models | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-machine-learning | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-memory-systems | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-model-routing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-multimodal-ai | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-natural-language-processing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-neural-networks | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-prompt-engineering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-provider-routing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-rag | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-reasoning-models | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-responsible-ai | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-retrieval | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-semantic-search | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-small-language-models | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-speech-ai | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-vector-search | 7 | 7 | 0 | 1 | pass |
-| seis-topic-artificial-intelligence-world-models | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-command-center | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-connectors | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-integrations | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-mcp | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-orchestration | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-pipelines | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-plugin-registry | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-plugins | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-providers | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-scheduling | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-skills | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-task-management | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-templates | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-tools | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-workflow | 7 | 7 | 0 | 1 | pass |
-| seis-topic-automation-workspace | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-ci-cd | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-cloud-native | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-containers | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-devops | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-devsecops | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-docker | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-edge-computing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-hybrid-cloud | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-infrastructure | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-infrastructure-as-code | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-kubernetes | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-logging | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-metrics | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-monitoring | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-networking | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-observability | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-platform-engineering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-private-cloud | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-public-cloud | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-serverless | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-site-reliability-engineering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-telemetry | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-tracing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cloud-computing-virtualization | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-animation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-asset-management | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-audio | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-cgi | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-content-creation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-creative-engineering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-digital-art | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-media-production | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-moodboards | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-music | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-publishing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-story-world | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-storytelling | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-video | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-virtual-production | 7 | 7 | 0 | 1 | pass |
-| seis-topic-creative-production-visual-effects | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-abac | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-ai-security | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-application-security | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-authentication | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-authorization | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-compliance | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-encryption | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-identity-management | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-incident-response | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-information-security | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-network-security | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-privacy | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-rbac | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-risk-management | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-secrets-management | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-security-auditing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-supply-chain-security | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-threat-intelligence | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-threat-modeling | 7 | 7 | 0 | 1 | pass |
-| seis-topic-cybersecurity-zero-trust | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-analytics | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-business-intelligence | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-data-architecture | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-data-engineering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-data-governance | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-data-lineage | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-data-pipelines | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-data-quality | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-data-science | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-databases | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-elt | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-etl | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-graph-databases | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-metadata | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-nosql | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-search-engine | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-sql | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-storage | 7 | 7 | 0 | 1 | pass |
-| seis-topic-data-vector-databases | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-3d-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-accessibility | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-branding | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-creative-coding | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-design-systems | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-design-tokens | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-editorial-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-graphic-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-illustration | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-interaction-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-localization | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-motion-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-photography | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-product-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-responsive-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-typography | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-ui-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-ux-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-visual-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-design-visual-identity | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-android | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-cross-platform | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-ios | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-ipados | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-linux | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-macos | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-visionos | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-watchos | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-web | 7 | 7 | 0 | 1 | pass |
-| seis-topic-desktop-windows | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-architecture | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-asset-universe | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-cinematic-experience | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-creative-studio | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-editorial | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-fashion | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-identity-bible | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-lifestyle | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-media-pipeline | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-moodboard-system | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-prompt-registry | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-story-universe | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-travel | 7 | 7 | 0 | 1 | pass |
-| seis-topic-eleni-neferi-visual-identity | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-color-theory | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-composition | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-game-engine | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-graphics-engine | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-iconography | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-layout | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-lighting | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-materials | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-path-tracing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-ray-tracing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-rendering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-graphics-shaders | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-ar | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-automation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-biology | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-blockchain | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-chemistry | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-digital-twin | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-documentation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-future-technologies | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-genetics | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-human-ai-collaboration | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-innovation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-iot | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-mathematics | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-neuroscience | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-physics | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-quantum-computing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-research | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-robotics | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-science | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-simulation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-spatial-computing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-sustainability | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-vr | 7 | 7 | 0 | 1 | pass |
-| seis-topic-knowledge-xr | 7 | 7 | 0 | 1 | pass |
-| seis-topic-pantechnoepistemonoesis | 7 | 7 | 0 | 1 | pass |
-| seis-topic-pantechnoepistemonoesis-engineering-civilization | 7 | 7 | 0 | 1 | pass |
-| seis-topic-pantechnoepistemonoesis-knowledge-civilization | 7 | 7 | 0 | 1 | pass |
-| seis-topic-pantechnoepistemonoesis-research-lab | 7 | 7 | 0 | 1 | pass |
-| seis-topic-pantechnoepistemonoesis-scientific-computing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-pantechnoepistemonoesis-technology-atlas | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-architecture-governance | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-audit | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-evidence | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-goal-tracking | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-milestones | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-ontology | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-permissions | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-policies | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-product-management | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-registries | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-repository-intelligence | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-repository-management | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-risk | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-roadmaps | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-taxonomy | 7 | 7 | 0 | 1 | pass |
-| seis-topic-project-management-validation | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-9router | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-agent-runtime | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-ai-core | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-ai-desktop | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-brain | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-command-center | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-goal-tracking | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-intelligence-cube | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-knowledge-engine | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-repository-intelligence | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-technology-ontology | 7 | 7 | 0 | 1 | pass |
-| seis-topic-seis-seis-workflow-engine | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-algorithms | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-api | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-backend | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-build-systems | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-clean-architecture | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-cli | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-compilers | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-data-structures | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-debugging | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-desktop-development | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-distributed-systems | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-domain-driven-design | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-embedded-systems | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-frameworks | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-frontend | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-full-stack | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-game-development | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-git | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-github | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-gui | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-hexagonal-architecture | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-interpreters | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-libraries | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-microservices | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-migration | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-mobile-development | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-modular-monolith | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-operating-systems | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-optimization | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-package-managers | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-profiling | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-programming | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-programming-languages | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-quality-assurance | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-release-engineering | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-repository | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-rollback | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-sdk | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-software-architecture | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-testing | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-tui | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-version-control | 7 | 7 | 0 | 1 | pass |
-| seis-topic-software-engineering-web-development | 7 | 7 | 0 | 1 | pass |
+The historical pre-consolidation 381-card projection is retained only as a
+non-current snapshot. The current install surface is 34 cards; retained source
+capabilities are validated separately and are not direct cards.
+
+| artifact | distribution | bundle | source files | staged files | excluded metadata | MCP entry scripts | stage |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| seis-ai-agent | marketplace-card | n/a | 34 | 34 | 0 | 1 | pass |
+| seis-application-bundle-01 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-application-bundle-02 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-application-bundle-03 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-application-bundle-04 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-application-bundle-05 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-application-bundle-06 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-01 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-02 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-03 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-04 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-05 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-06 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-07 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-08 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-09 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-10 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-11 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-12 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-13 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-14 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-15 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-16 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-17 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-18 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-19 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-20 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-21 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-22 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-23 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-24 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-25 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-26 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis-topic-bundle-27 | marketplace-card | n/a | 6 | 6 | 0 | 1 | pass |
+| seis | retained-source-capability | n/a | 33 | 33 | 0 | 1 | pass |
+| seis-cloud | retained-source-capability | n/a | 8 | 8 | 0 | 1 | pass |
+| seis-code | retained-source-capability | n/a | 8 | 8 | 0 | 1 | pass |
+| seis-design | retained-source-capability | n/a | 8 | 8 | 0 | 1 | pass |
+| seis-data | retained-source-capability | n/a | 8 | 8 | 0 | 1 | pass |
+| seis-a11y-regression | retained-source-capability | seis-application-bundle-02 | 5 | 5 | 0 | 1 | pass |
+| seis-action-pin-audit | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-agent-audit | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-agent-contract-validator | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-apple-native-readiness | retained-source-capability | seis-application-bundle-04 | 6 | 6 | 0 | 1 | pass |
+| seis-approval-gate-review | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-architecture-drift | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-artifact-attestation | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-branch-protection-audit | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-canonical-registry-validator | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-changelog-validator | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-codeowners-audit | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-community-health | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-context-efficiency | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-contract-compatibility | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-contributor-map | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-cost-latency-budget | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-data-retention-audit | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-dependency-freshness | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-design-token-audit | retained-source-capability | seis-application-bundle-02 | 5 | 5 | 0 | 1 | pass |
+| seis-doc-indexer | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-docs-freshness | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-dora-metrics | retained-source-capability | seis-application-bundle-02 | 5 | 5 | 0 | 1 | pass |
+| seis-download-anomaly | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-evidence-index | retained-source-capability | seis-application-bundle-04 | 6 | 6 | 0 | 1 | pass |
+| seis-focus-navigation-audit | retained-source-capability | seis-application-bundle-02 | 6 | 6 | 0 | 1 | pass |
+| seis-github-metrics-collector | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-goal-dependency-map | retained-source-capability | seis-application-bundle-04 | 5 | 5 | 0 | 1 | pass |
+| seis-goal-integrity | retained-source-capability | seis-application-bundle-02 | 5 | 5 | 0 | 1 | pass |
+| seis-issue-triage | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-license-compatibility | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-localization-coverage | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-maintainer-risk | retained-source-capability | seis-application-bundle-02 | 5 | 5 | 0 | 1 | pass |
+| seis-marketplace-integrity | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-mcp-inventory | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-mcp-permission | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-migration-guide-check | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-model-fallback | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-offline-mode-check | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-package-adoption | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-performance-budget | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-plugin-capability-coverage | retained-source-capability | seis-application-bundle-05 | 6 | 6 | 0 | 1 | pass |
+| seis-plugin-discovery | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-plugin-migration | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-pr-cycle-time | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-project-manifest-audit | retained-source-capability | seis-application-bundle-02 | 6 | 6 | 0 | 1 | pass |
+| seis-prompt-injection-audit | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-provider-health | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-public-distribution-audit | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-public-install-evidence | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-public-install-state | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-public-runtime-status | retained-source-capability | seis-application-bundle-05 | 5 | 5 | 0 | 1 | pass |
+| seis-public-safe-scan | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-rag-citation-coverage | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-release-cadence | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-release-readiness | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-repository-health | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-repository-scorecard | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-rollback-readiness | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-route-explainer | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-sbom-generator | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-secret-boundary-scan | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-semver-audit | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-source-provenance | retained-source-capability | seis-application-bundle-02 | 5 | 5 | 0 | 1 | pass |
+| seis-swift-concurrency-audit | retained-source-capability | seis-application-bundle-06 | 6 | 6 | 0 | 1 | pass |
+| seis-swift-package-topology | retained-source-capability | seis-application-bundle-06 | 6 | 6 | 0 | 1 | pass |
+| seis-technology-ontology | retained-source-capability | seis-application-bundle-01 | 5 | 5 | 0 | 1 | pass |
+| seis-test-flakiness | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-tool-permission-audit | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-trusted-marketplace | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-ui-state-contract-audit | retained-source-capability | seis-application-bundle-02 | 6 | 6 | 0 | 1 | pass |
+| seis-vulnerability-triage | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-workflow-linter | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-workflow-permission-audit | retained-source-capability | seis-application-bundle-03 | 5 | 5 | 0 | 1 | pass |
+| seis-workspace-inspector | retained-source-capability | seis-application-bundle-06 | 5 | 5 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-agent-runtime | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-agent-swarms | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-ai-agents | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-ai-alignment | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-ai-core | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-ai-evaluation | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-ai-safety | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-audio-ai | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-computer-vision | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-context-engineering | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-deep-learning | retained-source-capability | seis-topic-bundle-01 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-embeddings | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-generative-ai | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-graphrag | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-knowledge-graph | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-knowledge-systems | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-large-language-models | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-machine-learning | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-memory-systems | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-model-routing | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-multimodal-ai | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-natural-language-processing | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-neural-networks | retained-source-capability | seis-topic-bundle-02 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-prompt-engineering | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-provider-routing | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-rag | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-reasoning-models | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-responsible-ai | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-retrieval | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-semantic-search | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-small-language-models | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-speech-ai | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-vector-search | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-artificial-intelligence-world-models | retained-source-capability | seis-topic-bundle-03 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-command-center | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-connectors | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-integrations | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-mcp | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-orchestration | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-pipelines | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-plugin-registry | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-plugins | retained-source-capability | seis-topic-bundle-04 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-providers | retained-source-capability | seis-topic-bundle-05 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-scheduling | retained-source-capability | seis-topic-bundle-05 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-skills | retained-source-capability | seis-topic-bundle-05 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-task-management | retained-source-capability | seis-topic-bundle-05 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-templates | retained-source-capability | seis-topic-bundle-05 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-tools | retained-source-capability | seis-topic-bundle-05 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-workflow | retained-source-capability | seis-topic-bundle-05 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-automation-workspace | retained-source-capability | seis-topic-bundle-05 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-ci-cd | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-cloud-native | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-containers | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-devops | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-devsecops | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-docker | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-edge-computing | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-hybrid-cloud | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-infrastructure | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-infrastructure-as-code | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-kubernetes | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-logging | retained-source-capability | seis-topic-bundle-06 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-metrics | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-monitoring | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-networking | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-observability | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-platform-engineering | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-private-cloud | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-public-cloud | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-serverless | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-site-reliability-engineering | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-telemetry | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-tracing | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cloud-computing-virtualization | retained-source-capability | seis-topic-bundle-07 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-animation | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-asset-management | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-audio | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-cgi | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-content-creation | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-creative-engineering | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-digital-art | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-media-production | retained-source-capability | seis-topic-bundle-08 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-moodboards | retained-source-capability | seis-topic-bundle-09 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-music | retained-source-capability | seis-topic-bundle-09 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-publishing | retained-source-capability | seis-topic-bundle-09 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-story-world | retained-source-capability | seis-topic-bundle-09 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-storytelling | retained-source-capability | seis-topic-bundle-09 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-video | retained-source-capability | seis-topic-bundle-09 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-virtual-production | retained-source-capability | seis-topic-bundle-09 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-creative-production-visual-effects | retained-source-capability | seis-topic-bundle-09 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-abac | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-ai-security | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-application-security | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-authentication | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-authorization | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-compliance | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-encryption | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-identity-management | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-incident-response | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-information-security | retained-source-capability | seis-topic-bundle-10 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-network-security | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-privacy | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-rbac | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-risk-management | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-secrets-management | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-security-auditing | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-supply-chain-security | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-threat-intelligence | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-threat-modeling | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-cybersecurity-zero-trust | retained-source-capability | seis-topic-bundle-11 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-analytics | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-business-intelligence | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-data-architecture | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-data-engineering | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-data-governance | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-data-lineage | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-data-pipelines | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-data-quality | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-data-science | retained-source-capability | seis-topic-bundle-12 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-databases | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-elt | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-etl | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-graph-databases | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-metadata | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-nosql | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-search-engine | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-sql | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-storage | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-data-vector-databases | retained-source-capability | seis-topic-bundle-13 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-3d-design | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-accessibility | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-branding | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-creative-coding | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-design-systems | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-design-tokens | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-editorial-design | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-graphic-design | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-illustration | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-interaction-design | retained-source-capability | seis-topic-bundle-14 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-localization | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-motion-design | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-photography | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-product-design | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-responsive-design | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-typography | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-ui-design | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-ux-design | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-visual-design | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-design-visual-identity | retained-source-capability | seis-topic-bundle-15 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-android | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-cross-platform | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-ios | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-ipados | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-linux | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-macos | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-visionos | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-watchos | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-web | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-desktop-windows | retained-source-capability | seis-topic-bundle-16 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-architecture | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-asset-universe | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-cinematic-experience | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-creative-studio | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-editorial | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-fashion | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-identity-bible | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-lifestyle | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-media-pipeline | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-moodboard-system | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-prompt-registry | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-story-universe | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-travel | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-eleni-neferi-visual-identity | retained-source-capability | seis-topic-bundle-17 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-color-theory | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-composition | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-game-engine | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-graphics-engine | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-iconography | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-layout | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-lighting | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-materials | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-path-tracing | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-ray-tracing | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-rendering | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-graphics-shaders | retained-source-capability | seis-topic-bundle-18 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-ar | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-automation | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-biology | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-blockchain | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-chemistry | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-digital-twin | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-documentation | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-future-technologies | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-genetics | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-human-ai-collaboration | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-innovation | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-iot | retained-source-capability | seis-topic-bundle-19 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-mathematics | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-neuroscience | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-physics | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-quantum-computing | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-research | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-robotics | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-science | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-simulation | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-spatial-computing | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-sustainability | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-vr | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-knowledge-xr | retained-source-capability | seis-topic-bundle-20 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-pantechnoepistemonoesis | retained-source-capability | seis-topic-bundle-21 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-pantechnoepistemonoesis-engineering-civilization | retained-source-capability | seis-topic-bundle-21 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-pantechnoepistemonoesis-knowledge-civilization | retained-source-capability | seis-topic-bundle-21 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-pantechnoepistemonoesis-research-lab | retained-source-capability | seis-topic-bundle-21 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-pantechnoepistemonoesis-scientific-computing | retained-source-capability | seis-topic-bundle-21 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-pantechnoepistemonoesis-technology-atlas | retained-source-capability | seis-topic-bundle-21 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-architecture-governance | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-audit | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-evidence | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-goal-tracking | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-milestones | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-ontology | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-permissions | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-policies | retained-source-capability | seis-topic-bundle-22 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-product-management | retained-source-capability | seis-topic-bundle-23 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-registries | retained-source-capability | seis-topic-bundle-23 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-repository-intelligence | retained-source-capability | seis-topic-bundle-23 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-repository-management | retained-source-capability | seis-topic-bundle-23 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-risk | retained-source-capability | seis-topic-bundle-23 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-roadmaps | retained-source-capability | seis-topic-bundle-23 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-taxonomy | retained-source-capability | seis-topic-bundle-23 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-project-management-validation | retained-source-capability | seis-topic-bundle-23 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-9router | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-agent-runtime | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-ai-core | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-ai-desktop | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-brain | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-command-center | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-goal-tracking | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-intelligence-cube | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-knowledge-engine | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-repository-intelligence | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-technology-ontology | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-seis-seis-workflow-engine | retained-source-capability | seis-topic-bundle-24 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-algorithms | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-api | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-backend | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-build-systems | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-clean-architecture | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-cli | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-compilers | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-data-structures | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-debugging | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-desktop-development | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-distributed-systems | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-domain-driven-design | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-embedded-systems | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-frameworks | retained-source-capability | seis-topic-bundle-25 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-frontend | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-full-stack | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-game-development | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-git | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-github | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-gui | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-hexagonal-architecture | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-interpreters | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-libraries | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-microservices | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-migration | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-mobile-development | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-modular-monolith | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-operating-systems | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-optimization | retained-source-capability | seis-topic-bundle-26 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-package-managers | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-profiling | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-programming | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-programming-languages | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-quality-assurance | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-release-engineering | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-repository | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-rollback | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-sdk | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-software-architecture | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-testing | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-tui | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-version-control | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
+| seis-topic-software-engineering-web-development | retained-source-capability | seis-topic-bundle-27 | 7 | 7 | 0 | 1 | pass |
 
 ## Excluded Source Metadata
 
@@ -447,7 +486,7 @@ installation or public release proof.
 
 - A clean runner or machine that cannot read the original working tree or existing Codex plugin cache.
 - The public SEIS marketplace source or published package revision used for the install, including its immutable revision identifier.
-- Installation evidence for seis-ai-agent@seis-repo plus the public app-package and objective-derived topic entries selected from the seis-repo marketplace, including the embedded module inventory.
+- Installation evidence for seis-ai-agent@seis-repo plus any explicitly selected optional bundle cards from the seis-repo marketplace, including the embedded module inventory.
 - MCP initialization, tools/list, and representative tool-call evidence from the independent runner.
 - A newly opened Codex task after the independent installation, with the SEIS AI public-plugin-family bridge visible.
 - Sanitized runner metadata: operating system, Node major version, Codex version, and command exit summaries only.

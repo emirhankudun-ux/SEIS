@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-wave-5-round-3-checkpoint",
+  "goalId": "SEIS-GOAL-021",
+  "parentProgramId": "seis-public-plugin-wave-5-program",
+  "wave": 5,
+  "round": 3,
+  "status": "completed-repository-local-round-3-checkpoint",
+  "maturity": "prototype",
+  "generatedAt": "2026-07-21",
+  "completedSteps": [
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60
+  ],
+  "purpose": "Record bounded Wave 5 coverage interpretation, malformed-input resilience, output limits, public-contract review, and next-tranche readiness without collecting private data or claiming external runtime proof.",
+  "capability": {
+    "id": "seis-plugin-capability-coverage",
+    "sourcePath": "plugins/seis-core/seis-plugin-capability-coverage",
+    "publicMarketplace": "seis-repo",
+    "publicMarketplaceDisplayName": "SEIS Repo",
+    "additionalPublicCardAdded": false
+  },
+  "boundedCoverage": {
+    "sourcePluginCount": 75,
+    "catalogPluginCount": 75,
+    "matrixPluginCount": 75,
+    "bundleApplicationMemberCount": 75,
+    "marketplacePublicCardCount": 34,
+    "declaredCategoryCount": 8,
+    "reportedCategoryCount": 8,
+    "declaredCapabilityTokenKindCount": 171,
+    "reportedCapabilityTokenKindCount": 171,
+    "coverageOutputTruncated": false,
+    "rawRegistryContentStored": false
+  },
+  "outputContract": {
+    "aggregateOnly": true,
+    "normalizedCategoryTerminology": "lower-case-ascii-kebab",
+    "attentionDisposition": "review-required-not-alarm",
+    "maxReturnedCategoryKinds": 128,
+    "maxReturnedCapabilityTokenKinds": 256,
+    "maxReturnedFindings": 64,
+    "arbitraryRootsAllowed": false,
+    "rawRegistryContentReturned": false
+  },
+  "worktreeAndDriftReview": {
+    "repositoryLocalOnly": true,
+    "generatedArtifactCheckRequiredBeforeCommit": true,
+    "featureBranchDeliveryRequiredWhenAuthorized": true,
+    "protectedDefaultBranchWrites": false,
+    "backgroundExecutionClaimed": false
+  },
+  "evidence": {
+    "activationDecision": "content/development/seis-public-plugin-wave-5-activation-decision.json",
+    "capabilityEvidence": "content/development/seis-plugin-capability-coverage.json",
+    "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "catalog": "apps/seis-core/data/seis-core-plugin-catalog.json",
+    "matrix": "content/development/seis-core-plugin-matrix.json",
+    "marketplace": ".agents/plugins/marketplace.json",
+    "bundleCatalog": "content/development/seis-public-plugin-bundle-catalog.json",
+    "profile": "plugins/seis-core/seis-plugin-capability-coverage/assets/plugin-profile.json",
+    "manifest": "plugins/seis-core/seis-plugin-capability-coverage/.codex-plugin/plugin.json",
+    "runtime": "plugins/seis-core/seis-plugin-capability-coverage/runtime/plugin-capability-coverage.mjs",
+    "test": "plugins/seis-core/test/plugin-capability-coverage.test.mjs",
+    "skill": "plugins/seis-core/seis-plugin-capability-coverage/skills/seis-plugin-capability-coverage/SKILL.md"
+  },
+  "checks": {
+    "activation": true,
+    "boundedEvidence": true,
+    "malformedRegistryTests": true,
+    "duplicateAndLimitTests": true,
+    "fixedRootAndEvidenceTests": true,
+    "aggregateOutputBounds": true,
+    "compatibilityDocumentation": true,
+    "profilePermissions": true,
+    "projectionCounts": true,
+    "terminology": true,
+    "nonClaims": true
+  },
+  "validation": [
+    "node --test plugins/seis-core/test/plugin-capability-coverage.test.mjs",
+    "node --test plugins/seis-core/test/plugin-capability-coverage-evidence.test.mjs",
+    "npm run check:seis-plugin-capability-coverage",
+    "npm run check:seis-public-plugin-wave-5-round-3-checkpoint",
+    "npm run check:seis-public-plugin-wave-5-program",
+    "npm run check:seis-public-plugin-continuity",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "protectedDefaultBranchWrites": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "independentInstallation": false,
+    "nativeRuntime": false,
+    "liveProvider": false,
+    "deployment": false,
+    "signing": false,
+    "publicRelease": false
+  },
+  "risks": [
+    {
+      "id": "RISK-W5-003",
+      "status": "tracked",
+      "description": "A future public registry vocabulary may exceed safe aggregate output bounds.",
+      "mitigation": "Keep declared totals, cap returned aggregate vocabularies, and require a reviewed contract change before widening limits."
+    },
+    {
+      "id": "RISK-W5-004",
+      "status": "tracked",
+      "description": "Schema evolution could make a formerly supported fixed projection ambiguous.",
+      "mitigation": "Fail closed to attention for malformed required shapes and document compatibility assumptions in the public skill."
+    }
+  ],
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the bounded runtime, tests, skill, profile, checkpoint, and generated evidence changes on the feature branch; no external system or registry data is changed.",
+    "dataMigrationRequired": false
+  }
+}

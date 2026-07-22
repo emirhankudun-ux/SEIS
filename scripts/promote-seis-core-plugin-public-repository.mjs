@@ -6,6 +6,8 @@ import path from "node:path";
 const root = process.cwd();
 const checkMode = process.argv.includes("--check");
 const sourceRoot = path.join(root, "plugins", "seis-core");
+const bundleCatalog = readJson(path.join(root, "content", "development", "seis-public-plugin-bundle-catalog.json"));
+const applicationBundleByMember = buildApplicationBundleMap(bundleCatalog);
 const failures = [];
 let count = 0;
 
@@ -18,6 +20,11 @@ for (const entry of fs.readdirSync(sourceRoot, { withFileTypes: true })) {
 
   const manifest = readJson(manifestPath);
   const profile = readJson(profilePath);
+  const marketplaceBundleId = applicationBundleByMember.get(entry.name);
+  if (!marketplaceBundleId) {
+    failures.push(`${path.relative(root, profilePath)}: missing exact-one application bundle mapping`);
+    continue;
+  }
   const nextManifest = {
     ...manifest,
     license: "MIT",
@@ -32,6 +39,9 @@ for (const entry of fs.readdirSync(sourceRoot, { withFileTypes: true })) {
     publicRepositoryAvailable: true,
     publicAudience: "everyone",
     publicMarketplace: true,
+    marketplaceDiscoverable: true,
+    marketplaceCard: false,
+    marketplaceBundleId,
     liveRuntimeStatus: "local-demo-or-auth-gated",
   };
   const expectedManifest = `${JSON.stringify(nextManifest, null, 2)}\n`;
@@ -65,4 +75,17 @@ function readText(file) {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
+}
+
+function buildApplicationBundleMap(catalog) {
+  const mapping = new Map();
+  const bundles = Array.isArray(catalog?.bundles) ? catalog.bundles.filter((bundle) => bundle?.family === "application") : [];
+  for (const bundle of bundles) {
+    for (const name of bundle.memberNames || []) {
+      if (mapping.has(name)) throw new Error(`duplicate application bundle member: ${name}`);
+      mapping.set(name, bundle.id);
+    }
+  }
+  if (bundles.length !== 6 || mapping.size !== 75) throw new Error("application bundle catalog must contain six cards and 75 exact-once members");
+  return mapping;
 }

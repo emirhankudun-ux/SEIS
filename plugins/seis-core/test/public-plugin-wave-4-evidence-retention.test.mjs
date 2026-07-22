@@ -18,15 +18,17 @@ test("retains bounded Wave 4 evidence alongside the active public-only Wave 5 co
   assert.equal(result.status, 0, result.stderr);
 
   const retention = JSON.parse(fs.readFileSync(recordPath, "utf8"));
+  assert.equal(retention.schemaVersion, 2);
   assert.equal(retention.status, "completed-public-evidence-retention");
+  assertCurrentAndHistoricalMarketplaceSemantics(retention);
   assert.equal(retention.step, 99);
   assert.equal(retention.stateAtCheckpoint.completedStepCountBeforeTrackerUpdate, 98);
   assert.equal(retention.stateAtCheckpoint.activeStepBeforeTrackerUpdate, 99);
   assert.equal(retention.stateAtCheckpoint.nextPlannedDecisionStep, 100);
   assert.equal(retention.currentContext.activeWave, 5);
   assert.equal(retention.currentContext.status, "in-progress");
-  assert.equal(retention.currentContext.completedSteps, 40);
-  assert.deepEqual(retention.currentContext.inProgressSteps, [41]);
+  assert.ok([[60, 61], [80, 81]].some(([completed, active]) => retention.currentContext.completedSteps === completed
+    && JSON.stringify(retention.currentContext.inProgressSteps) === JSON.stringify([active])));
   assert.ok(Object.values(retention.checks).every(Boolean));
   assert.equal(retention.retention.status, "bounded-public-evidence-retained");
   assert.equal(retention.retention.relativePathOnly, true);
@@ -42,3 +44,23 @@ test("retains bounded Wave 4 evidence alongside the active public-only Wave 5 co
   assert.ok(Object.values(retention.externalClaims).every((value) => value === false));
   assert.equal(JSON.stringify(retention).includes(repositoryRoot), false);
 });
+
+function assertCurrentAndHistoricalMarketplaceSemantics(record) {
+  assert.equal(record.historicalWave4DirectCardSnapshot.projectionModel, "direct-source-cards");
+  assert.equal(record.historicalWave4DirectCardSnapshot.publicCardCount, 380);
+  assert.equal(record.historicalWave4DirectCardSnapshot.retainedSourceCapabilityCount, 379);
+  assert.equal(record.historicalWave4DirectCardSnapshot.current, false);
+  assert.equal(record.historicalWave4DirectCardSnapshot.immutableHistoricalEvidence, true);
+  assert.equal(record.currentMarketplaceProjection.publicCardCount, 34);
+  assert.notEqual(record.currentMarketplaceProjection.publicCardCount, 380);
+  assert.notEqual(record.currentMarketplaceProjection.publicCardCount, 381);
+  assert.equal(record.currentMarketplaceProjection.canonicalCardCount, 1);
+  assert.equal(record.currentMarketplaceProjection.bundleCardCount, 33);
+  assert.equal(record.currentMarketplaceProjection.applicationBundleCardCount, 6);
+  assert.equal(record.currentMarketplaceProjection.topicBundleCardCount, 27);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.rootSourceModuleCount, 5);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.applicationSourcePackageCount, 75);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.topicSourcePackageCount, 300);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.retainedSourcePackageCount, 380);
+  assert.equal(record.currentMarketplaceProjection.directSourceCapabilityCardCount, 0);
+}

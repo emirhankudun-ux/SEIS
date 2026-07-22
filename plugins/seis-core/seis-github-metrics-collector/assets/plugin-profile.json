@@ -36,5 +36,8 @@
   "publicRepositoryAvailable": true,
   "publicAudience": "everyone",
   "publicMarketplace": true,
-  "liveRuntimeStatus": "local-demo-or-auth-gated"
+  "liveRuntimeStatus": "local-demo-or-auth-gated",
+  "marketplaceDiscoverable": true,
+  "marketplaceCard": false,
+  "marketplaceBundleId": "seis-application-bundle-04"
 }

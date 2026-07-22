@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-01",
+  "family": "topic",
+  "journeyId": "artificial-intelligence",
+  "journeyLabel": "Artificial Intelligence",
+  "journeyPart": 1,
+  "journeyPartCount": 3,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 12,
+  "category": "Artificial Intelligence",
+  "categoryLabels": [
+    "Artificial Intelligence"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-artificial-intelligence",
+      "displayName": "SEIS Artificial Intelligence",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-agent-runtime",
+      "displayName": "SEIS Agent Runtime",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-agent-runtime",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-agent-swarms",
+      "displayName": "SEIS Agent Swarms",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-agent-swarms",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-agents",
+      "displayName": "SEIS AI Agents",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-agents",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-alignment",
+      "displayName": "SEIS AI Alignment",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-alignment",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-core",
+      "displayName": "SEIS AI Core",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-core",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-evaluation",
+      "displayName": "SEIS AI Evaluation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-evaluation",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-ai-safety",
+      "displayName": "SEIS AI Safety",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-ai-safety",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-audio-ai",
+      "displayName": "SEIS Audio AI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-audio-ai",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-computer-vision",
+      "displayName": "SEIS Computer Vision",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-computer-vision",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-context-engineering",
+      "displayName": "SEIS Context Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-context-engineering",
+      "category": "Artificial Intelligence"
+    },
+    {
+      "name": "seis-topic-artificial-intelligence-deep-learning",
+      "displayName": "SEIS Deep Learning",
+      "sourcePath": "./plugins/seis-topics/seis-topic-artificial-intelligence-deep-learning",
+      "category": "Artificial Intelligence"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

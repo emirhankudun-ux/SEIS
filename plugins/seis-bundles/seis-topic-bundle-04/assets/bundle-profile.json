@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-04",
+  "family": "topic",
+  "journeyId": "automation",
+  "journeyLabel": "Automation",
+  "journeyPart": 1,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 9,
+  "category": "Automation",
+  "categoryLabels": [
+    "Automation"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-automation",
+      "displayName": "SEIS Automation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation",
+      "category": "Automation"
+    },
+    {
+      "name": "seis-topic-automation-command-center",
+      "displayName": "SEIS Command Center",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-command-center",
+      "category": "Automation"
+    },
+    {
+      "name": "seis-topic-automation-connectors",
+      "displayName": "SEIS Connectors",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-connectors",
+      "category": "Automation"
+    },
+    {
+      "name": "seis-topic-automation-integrations",
+      "displayName": "SEIS Integrations",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-integrations",
+      "category": "Automation"
+    },
+    {
+      "name": "seis-topic-automation-mcp",
+      "displayName": "SEIS MCP",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-mcp",
+      "category": "Automation"
+    },
+    {
+      "name": "seis-topic-automation-orchestration",
+      "displayName": "SEIS Orchestration",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-orchestration",
+      "category": "Automation"
+    },
+    {
+      "name": "seis-topic-automation-pipelines",
+      "displayName": "SEIS Pipelines",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-pipelines",
+      "category": "Automation"
+    },
+    {
+      "name": "seis-topic-automation-plugin-registry",
+      "displayName": "SEIS Plugin Registry",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-plugin-registry",
+      "category": "Automation"
+    },
+    {
+      "name": "seis-topic-automation-plugins",
+      "displayName": "SEIS Plugins",
+      "sourcePath": "./plugins/seis-topics/seis-topic-automation-plugins",
+      "category": "Automation"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

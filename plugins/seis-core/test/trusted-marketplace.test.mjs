@@ -18,6 +18,9 @@ test("SEIS Trusted Marketplace validates the public SEIS Repo intake without act
   assert.equal(report.marketplaceName, "seis-repo");
   assert.equal(report.marketplaceDisplayName, "SEIS Repo");
   assert.equal(report.cardPresent, true);
+  assert.equal(report.directCardPresent, false);
+  assert.equal(report.distributionBundleId, "seis-application-bundle-06");
+  assert.equal(report.distributionBundleMembershipCount, 1);
   assert.equal(report.channelCount, intake.marketplaceChannels.length);
   assert.equal(report.trustedSourceCount, intake.trustedSourceShortlist.length);
   assert.equal(report.errorCount, 0);

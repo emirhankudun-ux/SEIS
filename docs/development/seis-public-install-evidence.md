@@ -1,12 +1,15 @@
 # SEIS Public Install Evidence
 
-`seis-public-install-evidence@seis-repo` is a public, app-owned SEIS Repo
-card for inspecting the designated sanitized independent-runner evidence gate.
+`seis-public-install-evidence` is a retained application source capability in
+the curated `seis-application-bundle-05@seis-repo` card. It inspects the
+designated sanitized independent-runner evidence gate without claiming a
+separate marketplace card.
 
 ## Public boundary
 
 - Source: `plugins/seis-core/seis-public-install-evidence`
 - Marketplace: `SEIS Repo` (`seis-repo`)
+- Curated card: `seis-application-bundle-05@seis-repo`
 - Audience: everyone
 - Contract: `content/development/seis-public-install-evidence.json`
 - Goal: `SEIS-GOAL-021`
@@ -27,6 +30,10 @@ access the network.
 
 A valid independent-runner record is not proof of current Codex enablement and
 does not grant release authority.
+
+The current distribution contract records 34 curated cards separately from
+380 retained source capabilities: 5 migrated root, 75 application, and 300
+topic capabilities.
 
 ## Validate
 

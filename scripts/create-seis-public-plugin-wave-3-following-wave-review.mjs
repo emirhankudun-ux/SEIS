@@ -16,6 +16,7 @@ const INTEGRATED_APPLICATION_PLUGIN_COUNT = 74;
 const INTEGRATED_PUBLIC_CARD_COUNT = 380;
 const ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT = 75;
 const ACTIVE_WAVE_5_PUBLIC_CARD_COUNT = 381;
+const CURATED_PUBLIC_PACKAGE_CARD_COUNT = 34;
 const ACTIVE_WAVE_5_CAPABILITY = "seis-plugin-capability-coverage";
 const PATHS = Object.freeze({
   repositoryLocalHandoff: "content/development/seis-public-plugin-wave-3-repository-local-handoff.json",
@@ -285,7 +286,22 @@ function assertSupportedCurrentInventory({ sourceEntries, catalog, catalogEntrie
     && matrixEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
     && marketplaceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${CANDIDATE_CAPABILITY}`)
     && marketplaceEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${ACTIVE_WAVE_5_CAPABILITY}`);
-  assert(historicalInventory || integratedWave4Inventory || activeWave5Inventory, "current inventory is neither the Wave 3 snapshot, the one-package Wave 4 integration, nor the active Wave 5 coverage state");
+  const curatedPublicPackageInventory = sourceEntries.length === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
+    && catalog.counts?.discovered === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
+    && matrix.pluginCount === ACTIVE_WAVE_5_APPLICATION_PLUGIN_COUNT
+    && matrix.failureCount === 0
+    && marketplace.name === "seis-repo"
+    && marketplaceEntries.length === CURATED_PUBLIC_PACKAGE_CARD_COUNT
+    && fs.existsSync(path.join(ROOT, CANDIDATE_SOURCE_PATH))
+    && fs.existsSync(path.join(ROOT, "plugins", "seis-core", ACTIVE_WAVE_5_CAPABILITY))
+    && sourceEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
+    && sourceEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
+    && catalogEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
+    && catalogEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
+    && matrixEntries.some((entry) => entry?.name === CANDIDATE_CAPABILITY)
+    && matrixEntries.some((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY)
+    && marketplaceEntries.some((entry) => entry?.name === "seis-ai-agent" && entry?.source?.path === "./plugins/seis-ai-agent");
+  assert(historicalInventory || integratedWave4Inventory || activeWave5Inventory || curatedPublicPackageInventory, "current inventory is neither the Wave 3 snapshot, the one-package Wave 4 integration, the active Wave 5 coverage state, nor the curated public package state");
 }
 
 function validateRecord(record) {

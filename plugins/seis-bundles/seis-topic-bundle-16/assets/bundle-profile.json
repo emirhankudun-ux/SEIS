@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-16",
+  "family": "topic",
+  "journeyId": "desktop",
+  "journeyLabel": "Desktop",
+  "journeyPart": 1,
+  "journeyPartCount": 1,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 11,
+  "category": "Desktop",
+  "categoryLabels": [
+    "Desktop"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-desktop",
+      "displayName": "SEIS Desktop",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-android",
+      "displayName": "SEIS Android",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-android",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-cross-platform",
+      "displayName": "SEIS Cross Platform",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-cross-platform",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-ios",
+      "displayName": "SEIS iOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-ios",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-ipados",
+      "displayName": "SEIS iPadOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-ipados",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-linux",
+      "displayName": "SEIS Linux",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-linux",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-macos",
+      "displayName": "SEIS macOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-macos",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-visionos",
+      "displayName": "SEIS visionOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-visionos",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-watchos",
+      "displayName": "SEIS watchOS",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-watchos",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-web",
+      "displayName": "SEIS Web",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-web",
+      "category": "Desktop"
+    },
+    {
+      "name": "seis-topic-desktop-windows",
+      "displayName": "SEIS Windows",
+      "sourcePath": "./plugins/seis-topics/seis-topic-desktop-windows",
+      "category": "Desktop"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

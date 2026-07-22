@@ -9,16 +9,19 @@
 ## Outcome
 
 Wave 2 completed 100 bounded steps in five reviewable rounds. It added the
-read-only `seis-apple-native-readiness` package, then reconciled the public
+read-only `seis-apple-native-readiness` source package, then reconciled public
 distribution around it. The final overlap review intentionally added no second
-card: one well-scoped Apple/Swift static-readiness capability is more useful
-than a duplicate plugin.
+source capability: one well-scoped Apple/Swift static-readiness capability is
+more useful than a duplicate plugin.
 
 At Wave 2 completion, the historical public contract was 72 application-owned
-packages and 378 `SEIS Repo` cards. The current Wave 3 public contract is 73
-application-owned packages and 379 `SEIS Repo` cards after the separately
-selected bounded concurrency-audit package. Neither the personal marketplace
-nor external write, network, or secret permissions are involved.
+packages and 378 `SEIS Repo` cards under the direct-card model. That immutable
+historical snapshot is now kept separate from current evidence. The current
+contract has 34 marketplace cards (1 canonical and 33 bundles) backed by 380
+retained source capabilities (5 root, 75 application, and 300 topic).
+`seis-apple-native-readiness` has no direct card and appears exactly once in
+`seis-application-bundle-04`. Neither the personal marketplace nor external
+write, network, or secret permissions are involved.
 
 ## Evidence
 
@@ -49,13 +52,14 @@ CI execution is required before any such claim is made.
 Wave 3 is a completed, 100-step repository-local evidence program at
 `content/development/seis-public-plugin-wave-3-program.json`. Its closeout is
 `content/development/seis-public-plugin-wave-3-closeout.json`. It selected the
-single `seis-swift-concurrency-audit` package and added its public `SEIS Repo`
-card only after its Wave 2 handoff, focused implementation design, current
-repository-local validation evidence, and continued user authority. It still
-does not imply a public release, independent installation, compiler result, or
-native-runtime claim. That Wave 4 gate was later completed through a separate
-repository-local evidence cycle. For the current active Wave 5 state, including
-the public `seis-plugin-capability-coverage` package, see
+single `seis-swift-concurrency-audit` package. Its historical completion
+snapshot was 73 application sources and 379 direct-model cards; today it has
+no direct card and appears exactly once in `seis-application-bundle-06`. Wave
+3 remains completed and does not imply a public release, independent
+installation, compiler result, or native-runtime claim. That Wave 4 gate was
+later completed through a separate repository-local evidence cycle. For the
+current active Wave 5 state, including the retained
+`seis-plugin-capability-coverage` source capability, see
 `SEIS_PUBLIC_PLUGIN_CONTINUITY_CADENCE.md` rather than treating this historical
 Wave 2 record as the current marketplace contract.
 

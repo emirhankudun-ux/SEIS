@@ -18,16 +18,25 @@
     "marketplaceDisplayName": "SEIS Repo",
     "marketplaceCategory": "Developer",
     "publicAudience": "everyone",
-    "publicMarketplace": true
+    "publicMarketplace": true,
+    "directMarketplaceCard": false,
+    "distributionBundleId": "seis-application-bundle-06",
+    "distributionBundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+    "distributionBundleMembershipCount": 1
   },
   "marketplace": {
-    "publicCardCount": 381,
-    "expectedPublicCardCount": 381,
-    "applicationPluginCount": 75,
-    "expectedApplicationPluginCount": 75,
+    "publicCardCount": 34,
+    "expectedPublicCardCount": 34,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "applicationSourceCapabilityCount": 75,
+    "expectedApplicationSourceCapabilityCount": 75,
     "canonicalOrchestratorCount": 1,
-    "migratedRootPluginCount": 5,
-    "topicPluginCount": 300
+    "migratedRootSourceCapabilityCount": 5,
+    "topicSourceCapabilityCount": 300,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCapabilityCardCount": 0
   },
   "activation": {
     "id": "seis-public-plugin-wave-4-activation-decision",
@@ -180,7 +189,7 @@
   },
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert the source package, public SEIS Repo card, generated topology evidence, and their reconciled projections on the feature branch; no manifest mutation, external state, release, or data migration exists.",
+    "scope": "Revert the source capability compatibility update, generated topology evidence, and its curated bundle projection on the feature branch; no manifest mutation, external state, release, or data migration exists.",
     "dataMigrationRequired": false
   }
 }

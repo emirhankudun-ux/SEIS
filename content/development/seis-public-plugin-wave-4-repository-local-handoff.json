@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-4-repository-local-handoff",
   "goalId": "SEIS-GOAL-021",
   "parentGoalId": "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
@@ -17,6 +17,40 @@
     "terminalHandoffPublished": false,
     "waveCompleted": false,
     "wave5ActivationApproved": false
+  },
+  "historicalWave4DirectCardSnapshot": {
+    "observedAt": "2026-07-21",
+    "projectionModel": "direct-source-cards",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "applicationSourcePackageCount": 74,
+    "topicSourcePackageCount": 300,
+    "rootSourceModuleCount": 5,
+    "retainedSourceCapabilityCount": 379,
+    "publicCardCount": 380,
+    "current": false,
+    "immutableHistoricalEvidence": true,
+    "evidencePath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json"
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "directSourceCapabilityCardCount": 0
   },
   "checks": {
     "wave4Tracker": true,

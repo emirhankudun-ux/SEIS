@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-4-closeout",
   "goalId": "SEIS-GOAL-021",
   "parentGoalId": "SEIS-GOAL-021-W4-CLOSEOUT-SEQUENCE",
@@ -22,16 +22,50 @@
   },
   "currentContext": {
     "activeWave": 5,
-    "activeWaveState": "wave-5-first-40-steps-completed-step-41-in-progress",
+    "activeWaveState": "wave-5-first-80-steps-completed-step-81-in-progress",
     "status": "in-progress",
-    "completedSteps": 40,
+    "completedSteps": 80,
     "inProgressSteps": [
-      41
+      81
     ],
     "activationDecisionPath": "content/development/seis-public-plugin-wave-5-activation-decision.json",
     "capabilityCoveragePath": "content/development/seis-plugin-capability-coverage.json",
     "activationDecisionStatus": "approved-public-local-wave-5-activation",
     "capabilityCoverageStatus": "ready-public-static-capability-coverage-evidence"
+  },
+  "historicalWave4DirectCardSnapshot": {
+    "observedAt": "2026-07-21",
+    "projectionModel": "direct-source-cards",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "applicationSourcePackageCount": 74,
+    "topicSourcePackageCount": 300,
+    "rootSourceModuleCount": 5,
+    "retainedSourceCapabilityCount": 379,
+    "publicCardCount": 380,
+    "current": false,
+    "immutableHistoricalEvidence": true,
+    "evidencePath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json"
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "directSourceCapabilityCardCount": 0
   },
   "checks": {
     "wave4Tracker": true,
@@ -40,7 +74,9 @@
     "repositoryLocalHandoff": true,
     "continuity": true,
     "expansionProgram": true,
-    "publicInventory": true,
+    "historicalIntegrationCheckpoint": true,
+    "validationDeliveryCurrentProjection": true,
+    "currentPublicInventory": true,
     "currentWave5": true,
     "boundedInputs": true,
     "evidenceBoundary": true
@@ -96,42 +132,42 @@
         "path": "content/development/seis-public-plugin-wave-4-program.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 38433
+        "bytes": 39894
       },
       {
         "key": "evidenceRetention",
         "path": "content/development/seis-public-plugin-wave-4-evidence-retention.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 10655
+        "bytes": 11880
       },
       {
         "key": "followingWaveReview",
         "path": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 7121
+        "bytes": 8348
       },
       {
         "key": "repositoryLocalHandoff",
         "path": "content/development/seis-public-plugin-wave-4-repository-local-handoff.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 5485
+        "bytes": 6711
       },
       {
         "key": "continuityCadence",
         "path": "content/development/seis-public-plugin-continuity-cadence.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 40215
+        "bytes": 42155
       },
       {
         "key": "expansionProgram",
         "path": "content/development/seis-public-plugin-expansion-program.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 14099
+        "bytes": 14461
       },
       {
         "key": "activationDecision",
@@ -145,63 +181,63 @@
         "path": "content/development/seis-swift-package-topology.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 6225
+        "bytes": 6672
       },
       {
         "key": "integrationCheckpoint",
         "path": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 5431
+        "bytes": 7647
       },
       {
         "key": "validationDeliveryEvidence",
         "path": "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 4455
+        "bytes": 5698
       },
       {
         "key": "publicBoundaryDecision",
         "path": "content/development/seis-public-plugin-wave-4-public-boundary-decision.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 4605
+        "bytes": 6040
       },
       {
         "key": "wave5ActivationDecision",
         "path": "content/development/seis-public-plugin-wave-5-activation-decision.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 5369
+        "bytes": 5701
       },
       {
         "key": "capabilityCoverage",
         "path": "content/development/seis-plugin-capability-coverage.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 19445
+        "bytes": 20093
       },
       {
         "key": "wave5Program",
         "path": "content/development/seis-public-plugin-wave-5-program.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 31964
+        "bytes": 36345
       },
       {
         "key": "sourceManifest",
         "path": "apps/seis-core/data/seis-core-plugin-sources.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 40375
+        "bytes": 50592
       },
       {
         "key": "catalog",
         "path": "apps/seis-core/data/seis-core-plugin-catalog.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 127817
+        "bytes": 138192
       },
       {
         "key": "matrix",
@@ -215,7 +251,21 @@
         "path": ".agents/plugins/marketplace.json",
         "regularFile": true,
         "symlink": false,
-        "bytes": 125762
+        "bytes": 10470
+      },
+      {
+        "key": "publicFamily",
+        "path": "content/development/seis-public-plugin-family.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 376394
+      },
+      {
+        "key": "bundleCatalog",
+        "path": "content/development/seis-public-plugin-bundle-catalog.json",
+        "regularFile": true,
+        "symlink": false,
+        "bytes": 33367
       }
     ]
   },
@@ -251,7 +301,7 @@
     "dataMigrationRequired": false
   },
   "inputSafetyScan": {
-    "inputCount": 18,
+    "inputCount": 20,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

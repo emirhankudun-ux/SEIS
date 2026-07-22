@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-26",
+  "family": "topic",
+  "journeyId": "software-engineering",
+  "journeyLabel": "Software Engineering",
+  "journeyPart": 2,
+  "journeyPartCount": 3,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 15,
+  "category": "Software Engineering",
+  "categoryLabels": [
+    "Software Engineering"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-software-engineering-frontend",
+      "displayName": "SEIS Frontend",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-frontend",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-full-stack",
+      "displayName": "SEIS Full Stack",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-full-stack",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-game-development",
+      "displayName": "SEIS Game Development",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-game-development",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-git",
+      "displayName": "SEIS Git",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-git",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-github",
+      "displayName": "SEIS GitHub",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-github",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-gui",
+      "displayName": "SEIS GUI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-gui",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-hexagonal-architecture",
+      "displayName": "SEIS Hexagonal Architecture",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-hexagonal-architecture",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-interpreters",
+      "displayName": "SEIS Interpreters",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-interpreters",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-libraries",
+      "displayName": "SEIS Libraries",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-libraries",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-microservices",
+      "displayName": "SEIS Microservices",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-microservices",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-migration",
+      "displayName": "SEIS Migration",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-migration",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-mobile-development",
+      "displayName": "SEIS Mobile Development",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-mobile-development",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-modular-monolith",
+      "displayName": "SEIS Modular Monolith",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-modular-monolith",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-operating-systems",
+      "displayName": "SEIS Operating Systems",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-operating-systems",
+      "category": "Software Engineering"
+    },
+    {
+      "name": "seis-topic-software-engineering-optimization",
+      "displayName": "SEIS Optimization",
+      "sourcePath": "./plugins/seis-topics/seis-topic-software-engineering-optimization",
+      "category": "Software Engineering"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

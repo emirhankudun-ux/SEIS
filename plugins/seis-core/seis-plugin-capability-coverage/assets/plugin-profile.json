@@ -17,7 +17,7 @@
   "entrypoint": "scripts/seis-plugin-capability-coverage-mcp-server.mjs",
   "permissions": {
     "read": [
-      "four fixed checked-in public SEIS Repo registry projections",
+      "five fixed checked-in public SEIS Repo registry projections",
       "bounded derived category and capability coverage metadata"
     ],
     "write": [],
@@ -31,9 +31,13 @@
       "apps/seis-core/data/seis-core-plugin-sources.json",
       "apps/seis-core/data/seis-core-plugin-catalog.json",
       "content/development/seis-core-plugin-matrix.json",
-      ".agents/plugins/marketplace.json"
+      ".agents/plugins/marketplace.json",
+      "content/development/seis-public-plugin-bundle-catalog.json"
     ],
     "maxRegistryBytes": 524288,
+    "maxReturnedCategoryKinds": 128,
+    "maxReturnedCapabilityTokenKinds": 256,
+    "maxReturnedFindings": 64,
     "regularFilesRequired": true,
     "symlinkRefusal": true,
     "rawRegistryContentReturned": false
@@ -52,5 +56,8 @@
   "publicRepositoryAvailable": true,
   "publicAudience": "everyone",
   "publicMarketplace": true,
-  "liveRuntimeStatus": "local-demo-or-auth-gated"
+  "liveRuntimeStatus": "local-demo-or-auth-gated",
+  "marketplaceDiscoverable": true,
+  "marketplaceCard": false,
+  "marketplaceBundleId": "seis-application-bundle-05"
 }

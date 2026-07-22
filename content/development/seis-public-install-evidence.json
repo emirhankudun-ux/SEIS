@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-install-evidence",
   "goalId": "SEIS-GOAL-021",
-  "generatedAt": "2026-07-20",
+  "generatedAt": "2026-07-22",
   "status": "public-seis-repo-independent-install-evidence-gate",
   "decision": "independent-evidence-may-validate-but-human-release-approval-remains-required",
   "purpose": "Expose the current independent clean-runner evidence gate for the public SEIS Repo marketplace without accepting arbitrary paths, emitting raw evidence, or turning a valid evidence record into release approval.",
@@ -11,20 +11,31 @@
     "displayName": "SEIS Public Install Evidence",
     "marketplaceName": "seis-repo",
     "sourcePath": "plugins/seis-core/seis-public-install-evidence",
+    "distributionMode": "bundled-source-capability",
+    "marketplaceCardName": "seis-application-bundle-05",
+    "marketplaceCardSourcePath": "./plugins/seis-bundles/seis-application-bundle-05",
     "publicAudience": "everyone",
     "publicMarketplace": true
   },
   "publicCards": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "count": 381,
+    "count": 34,
     "canonicalOrchestratorCount": 1,
-    "migratedRootPluginCount": 5,
-    "applicationPluginCount": 75,
-    "topicPluginCount": 300,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
     "sourceAvailability": "public-repository-source-available",
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL"
+  },
+  "sourceCapabilities": {
+    "count": 380,
+    "migratedRootCount": 5,
+    "applicationCount": 75,
+    "topicCount": 300,
+    "separateMarketplaceCards": false,
+    "retentionMode": "repository-source-capabilities-behind-curated-cards"
   },
   "independentEvidence": {
     "contractPath": "content/development/seis-public-plugin-independent-runner-evidence-contract.json",

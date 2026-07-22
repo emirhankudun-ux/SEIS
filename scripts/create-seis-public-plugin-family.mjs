@@ -11,6 +11,7 @@ import {
   flattenTopicObjective,
   readTopicObjective,
 } from "../plugins/seis-topics/runtime/topic-definitions.mjs";
+import { buildSeisPublicBundlePlan } from "./lib/seis-public-bundle-plan.mjs";
 
 const ROOT = process.cwd();
 const checkMode = process.argv.includes("--check");
@@ -213,17 +214,27 @@ const reportPath = "reports/seis-public-plugin-family.md";
 
 const materializedPlugins = publicPlugins.filter((plugin) => plugin.materialize);
 const canonicalMarketplacePlugins = publicPlugins.filter((plugin) => plugin.name === "seis-ai-agent");
-const migratedRootMarketplacePlugins = publicPlugins.filter((plugin) => ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"].includes(plugin.name));
+const migratedRootSourcePlugins = publicPlugins.filter((plugin) => ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"].includes(plugin.name));
 const applicationMarketplacePlugins = discoverApplicationMarketplacePlugins();
 const topicMarketplacePlugins = discoverTopicMarketplacePlugins();
 if (applicationMarketplacePlugins.length !== APP_PLUGIN_EXPANSION_TARGET) throw new Error(`Expected ${APP_PLUGIN_EXPANSION_TARGET} app marketplace packages; found ${applicationMarketplacePlugins.length}`);
 if (topicMarketplacePlugins.length !== TOPIC_PLUGIN_TARGET) throw new Error(`Expected ${TOPIC_PLUGIN_TARGET} topic marketplace packages; found ${topicMarketplacePlugins.length}`);
-if (migratedRootMarketplacePlugins.length !== 5) throw new Error(`Expected five migrated root marketplace packages; found ${migratedRootMarketplacePlugins.length}`);
+if (migratedRootSourcePlugins.length !== 5) throw new Error(`Expected five retained root source modules; found ${migratedRootSourcePlugins.length}`);
+const bundlePlan = buildSeisPublicBundlePlan({
+  applicationPlugins: applicationMarketplacePlugins,
+  topicPlugins: topicMarketplacePlugins,
+});
+const distributionBundleByMember = new Map();
+for (const bundle of bundlePlan.bundles) {
+  for (const member of bundle.members) {
+    if (distributionBundleByMember.has(member.name)) throw new Error(`Duplicate curated bundle member: ${member.name}`);
+    distributionBundleByMember.set(member.name, bundle.id);
+  }
+}
+if (distributionBundleByMember.size !== APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET) throw new Error("Curated bundle member projection is incomplete");
 const marketplacePlugins = [
   ...canonicalMarketplacePlugins,
-  ...migratedRootMarketplacePlugins,
-  ...applicationMarketplacePlugins,
-  ...topicMarketplacePlugins,
+  ...bundlePlan.bundles,
 ];
 
 const marketplace = {
@@ -246,12 +257,12 @@ const marketplace = {
 };
 
 const contract = {
-  version: 4,
+  version: 5,
   id: "seis-public-plugin-family",
   generatedAt: GENERATED_AT,
-  mode: "public_seis_agent_with_migrated_root_app_and_topic_repository_plugins",
+  mode: "public_seis_agent_with_curated_bounded_repository_bundle_cards",
   summary:
-    `SEIS exposes SEIS-Agent as the canonical public orchestrator and publishes five migrated SEIS root packages, ${APP_PLUGIN_EXPANSION_TARGET} app-owned MIT packages, and 300 objective-derived topic packages directly from the public SEIS repository marketplace. The default install remains SEIS-Agent and every root lane remains connected to its embedded SEIS-Agent source module.`,
+    `SEIS exposes SEIS-Agent as the canonical public orchestrator and projects ${bundlePlan.targetMarketplaceCardCount} public SEIS Repo cards: one canonical install, ${bundlePlan.applicationBundleCount} optional application bundles, and ${bundlePlan.topicBundleCount} optional topic bundles with no more than ${bundlePlan.maximumBundleSize} capabilities each. The ${migratedRootSourcePlugins.length} root modules, ${APP_PLUGIN_EXPANSION_TARGET} app-owned packages, and ${TOPIC_PLUGIN_TARGET} topic packages remain retained public repository sources rather than hundreds of separate marketplace cards.`,
   defaultInstall: {
     installId: "seis-ai-agent@seis-repo",
     mode: "single-public-plugin",
@@ -266,9 +277,13 @@ const contract = {
     publicAudience: "everyone",
     publicPluginCount: marketplace.plugins.length,
     canonicalOrchestratorCount: canonicalMarketplacePlugins.length,
-    migratedRootPluginCount: migratedRootMarketplacePlugins.length,
+    bundlePluginCount: bundlePlan.publicBundleCardCount,
+    applicationBundlePluginCount: bundlePlan.applicationBundleCount,
+    topicBundlePluginCount: bundlePlan.topicBundleCount,
+    migratedRootPluginCount: migratedRootSourcePlugins.length,
     applicationPluginCount: applicationMarketplacePlugins.length,
     topicPluginCount: topicMarketplacePlugins.length,
+    sourceCapabilityCount: migratedRootSourcePlugins.length + applicationMarketplacePlugins.length + topicMarketplacePlugins.length,
     entries: marketplace.plugins.map((entry) => ({
       name: entry.name,
       sourcePath: entry.source.path,
@@ -283,10 +298,13 @@ const contract = {
     category: plugin.category,
     installId: `${plugin.name}@seis-repo`,
     license: "MIT",
-    publicStatus: "repo_marketplace_available",
+    publicStatus: "retained-source-module-in-optional-bundle",
+    marketplaceDiscoverable: true,
+    marketplaceCard: false,
+    marketplaceBundleId: distributionBundleByMember.get(plugin.name),
     liveRuntimeStatus: "local_demo_or_auth_gated",
   })),
-  migratedRootPlugins: migratedRootMarketplacePlugins.map((plugin) => ({
+  migratedRootPlugins: migratedRootSourcePlugins.map((plugin) => ({
     name: plugin.name,
     displayName: plugin.displayName,
     role: plugin.role,
@@ -294,7 +312,10 @@ const contract = {
     category: plugin.category,
     installId: `${plugin.name}@seis-repo`,
     license: "MIT",
-    publicStatus: "repo_marketplace_available",
+    publicStatus: "embedded-retained-source-module",
+    marketplaceDiscoverable: true,
+    marketplaceCard: false,
+    marketplaceBundleId: null,
     publicAudience: "everyone",
     liveRuntimeStatus: "local_demo_or_auth_gated",
     sourceKind: "migrated-seis-root-package",
@@ -307,11 +328,42 @@ const contract = {
     category: plugin.category,
     installId: `${plugin.name}@seis-repo`,
     license: "MIT",
-    publicStatus: "repo_marketplace_available",
+    publicStatus: "retained-source-module-in-optional-bundle",
+    marketplaceDiscoverable: true,
+    marketplaceCard: false,
+    marketplaceBundleId: distributionBundleByMember.get(plugin.name),
     publicAudience: "everyone",
     liveRuntimeStatus: "local_demo_only",
     sourceKind: "objective-derived-topic",
   })),
+  bundlePackages: bundlePlan.bundles.map((bundle) => ({
+    id: bundle.id,
+    family: bundle.family,
+    journeyId: bundle.journeyId,
+    journeyLabel: bundle.journeyLabel,
+    journeyPart: bundle.journeyPart,
+    journeyPartCount: bundle.journeyPartCount,
+    displayName: bundle.displayName,
+    shortDescription: bundle.shortDescription,
+    longDescription: bundle.longDescription,
+    sourcePath: bundle.sourcePath,
+    category: bundle.category,
+    categoryLabels: bundle.categoryLabels,
+    memberCount: bundle.memberCount,
+    members: bundle.members,
+    installId: `${bundle.id}@seis-repo`,
+    license: "MIT",
+    publicStatus: "repo-marketplace-available-optional-bundle",
+    liveRuntimeStatus: "local_read_only_bundle_metadata",
+  })),
+  sourceInventory: {
+    retainedRootSourceModuleCount: migratedRootSourcePlugins.length,
+    retainedApplicationSourcePackageCount: applicationMarketplacePlugins.length,
+    retainedTopicSourcePackageCount: topicMarketplacePlugins.length,
+    retainedSourcePackageCount: migratedRootSourcePlugins.length + applicationMarketplacePlugins.length + topicMarketplacePlugins.length,
+    sourcePackagesDeleted: false,
+    maximumSourceCapabilitiesPerBundle: bundlePlan.maximumBundleSize,
+  },
   seisAiConnection: {
     orchestrator: "seis-ai-agent@seis-repo",
     mcpServer: "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
@@ -330,10 +382,11 @@ const contract = {
   },
   longHorizonGovernance: [
     "Keep SEIS-Agent as the canonical orchestration layer for cross-lane work.",
-    "Keep the five historical SEIS root packages under plugins/seis available as direct public seis-repo cards while preserving their embedded SEIS-Agent lane connections.",
+    "Keep the five historical SEIS root packages under plugins/seis as retained embedded SEIS-Agent source modules rather than separate public cards.",
     "Keep specialist source modules other than the migrated root cards embedded in SEIS-Agent unless an explicit public distribution decision adds them to the repo marketplace.",
-    "Keep every app-owned package under plugins/seis-core available as a public MIT package in the seis-repo marketplace.",
-    "Keep every objective-derived package under plugins/seis-topics available as a public MIT package in the seis-repo marketplace.",
+    `Keep every app-owned package under plugins/seis-core as a retained public MIT source capability surfaced through exactly one of ${bundlePlan.applicationBundleCount} deterministic optional application bundles.`,
+    `Keep every objective-derived package under plugins/seis-topics as a retained public MIT source capability surfaced through exactly one of ${bundlePlan.topicBundleCount} deterministic optional topic bundles.`,
+    `Keep the public marketplace at one canonical SEIS-Agent card plus ${bundlePlan.publicBundleCardCount} optional bundle cards, within the reviewed 30-to-50-card user-experience range.`,
     "Require every future plugins/seis-* manifest to enter the unified suite before it can be used through SEIS AI.",
     "Validate manifests, MCP tools, marketplace entries, and SEIS-AI lane wiring before claiming public readiness.",
     "Record mock, disabled, planned, and connected states honestly.",
@@ -360,12 +413,13 @@ const contract = {
     validation: plugin.validation,
     canonicalInstallId: "seis-ai-agent@seis-repo",
     license: "MIT",
-    publicStatus: plugin.name === "seis-ai-agent" ? "public-plugin" : migratedRootMarketplacePlugins.some((rootPlugin) => rootPlugin.name === plugin.name) ? "public-marketplace-and-embedded-source-module" : "embedded-source-module",
+    publicStatus: plugin.name === "seis-ai-agent" ? "public-plugin" : "embedded-retained-source-module",
     liveRuntimeStatus: "local_demo_or_auth_gated",
     connectedToSeisAi: true,
   })),
   validation: [
     "npm run check:seis-public-plugin-family",
+    "npm run check:seis-public-plugin-bundles",
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",
     "npm run check:seis-plugin-bundle -- --no-local",
@@ -389,7 +443,10 @@ const markdown = [
   `- Canonical install: ${contract.defaultInstall.installId}`,
   `- Public plugin count: ${contract.marketplace.publicPluginCount}`,
   `- Canonical default installs: ${contract.marketplace.canonicalOrchestratorCount}`,
-  `- Migrated root repository cards: ${contract.marketplace.migratedRootPluginCount}`,
+  `- Optional bundle cards: ${contract.marketplace.bundlePluginCount}`,
+  `- Application bundle cards: ${contract.marketplace.applicationBundlePluginCount}`,
+  `- Topic bundle cards: ${contract.marketplace.topicBundlePluginCount}`,
+  `- Retained source capabilities: ${contract.marketplace.sourceCapabilityCount}`,
   `- Mode: ${contract.defaultInstall.mode}`,
   `- Unified suite: ${contract.defaultInstall.unifiedSuite}`,
   `- Standalone lanes: ${contract.defaultInstall.standaloneLaneInstallMode}`,
@@ -403,20 +460,21 @@ const markdown = [
       `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | ${plugin.category} | AVAILABLE | ON_INSTALL | ${plugin.liveRuntimeStatus} | connected |`,
   ),
   "",
-  "## Migrated SEIS Root Repository Packages",
+  `## Optional Bundles (up to ${contract.sourceInventory.maximumSourceCapabilitiesPerBundle} capabilities each)`,
   "",
-  "| plugin | role | source | category | direct public install | SEIS AI |",
-  "| --- | --- | --- | --- | --- | --- |",
-  ...contract.migratedRootPlugins.map(
-    (plugin) =>
-      `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | ${plugin.category} | ${plugin.installId} | connected |`,
+  "| bundle | family | journey | members | source | category | direct public install |",
+  "| --- | --- | --- | ---: | --- | --- | --- |",
+  ...contract.bundlePackages.map(
+    (bundle) =>
+      `| ${bundle.id} | ${bundle.family} | ${bundle.journeyLabel} | ${bundle.memberCount} | ${bundle.sourcePath} | ${bundle.categoryLabels.join(" + ")} | ${bundle.installId} |`,
   ),
   "",
-  "These cards replace the historical personal-marketplace visibility for the five root packages. SEIS-Agent remains the one canonical default install.",
+  "SEIS-Agent remains the one canonical default install. Bundle cards are optional choice surfaces; they never bulk-install all members.",
   "",
-  "## Public SEIS Core Repository Packages",
+  "## Retained SEIS Core Source Packages",
   "",
-  `- Marketplace entries: ${contract.marketplace.applicationPluginCount}`,
+  `- Retained source packages: ${contract.marketplace.applicationPluginCount}`,
+  `- Optional bundle cards: ${contract.marketplace.applicationBundlePluginCount}`,
   "- Source root: plugins/seis-core",
   "- Audience: everyone",
   "- License: MIT",
@@ -428,7 +486,7 @@ const markdown = [
   "| --- | --- | --- | --- | --- |",
   ...contract.embeddedModules.map(
     (plugin) =>
-      `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | connected | ${plugin.publicStatus === "public-marketplace-and-embedded-source-module" || plugin.publicStatus === "public-plugin" ? "yes" : "no"} |`,
+      `| ${plugin.name} | ${plugin.role} | ${plugin.sourcePath} | connected | ${plugin.publicStatus === "public-plugin" ? "yes" : "no"} |`,
   ),
   "",
   "## SEIS AI Connection",
@@ -439,11 +497,12 @@ const markdown = [
   `- Embedded lane profiles: ${contract.seisAiConnection.embeddedLaneProfiles}`,
   `- Objective-derived topic source root: ${contract.seisAiConnection.topicPluginSourceRoot}`,
   `- Objective-derived topic packages: ${contract.seisAiConnection.topicPluginCount}`,
-  "- Topic packages are separate public repository cards; the canonical default install remains SEIS-Agent.",
+  "- Topic packages are retained source capabilities surfaced through optional public bundle cards; the canonical default install remains SEIS-Agent.",
   "",
-  "## Objective-Derived Topic Packages",
+  "## Retained Objective-Derived Topic Packages",
   "",
-  `- Marketplace entries: ${contract.marketplace.topicPluginCount}`,
+  `- Retained source packages: ${contract.marketplace.topicPluginCount}`,
+  `- Optional bundle cards: ${contract.marketplace.topicBundlePluginCount}`,
   "- Source root: plugins/seis-topics",
   "- Objective source: content/development/seis-topic-plugin-objective.json",
   "- Audience: everyone",
@@ -526,6 +585,7 @@ function discoverApplicationMarketplacePlugins() {
       const profile = JSON.parse(fs.readFileSync(profilePath, "utf8"));
       return {
         name: manifest.name || entry.name,
+        displayName: manifest.interface?.displayName || manifest.name || entry.name,
         sourcePath: `./plugins/seis-core/${entry.name}`,
         category: manifest.interface?.category || profile.category || "Developer",
       };

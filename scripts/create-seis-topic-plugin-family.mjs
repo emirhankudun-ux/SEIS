@@ -10,6 +10,7 @@ import {
   flattenTopicObjective,
   readTopicObjective,
 } from "../plugins/seis-topics/runtime/topic-definitions.mjs";
+import { buildSeisPublicTopicBundles } from "./lib/seis-public-bundle-plan.mjs";
 
 const ROOT = process.cwd();
 const checkMode = process.argv.includes("--check");
@@ -18,6 +19,15 @@ const SOURCE_ROOT = TOPIC_PLUGIN_SOURCE_ROOT;
 const objective = readTopicObjective(ROOT);
 const topics = flattenTopicObjective(objective);
 assertTopicObjective(objective, topics);
+const topicBundles = buildSeisPublicTopicBundles({
+  topicPlugins: topics.map((topic) => ({
+    name: topic.id,
+    displayName: topic.displayName,
+    sourcePath: topic.sourcePath,
+    category: topic.category,
+  })),
+});
+const topicBundleByMember = buildTopicBundleMap(topicBundles);
 const runtimePath = path.join(ROOT, SOURCE_ROOT, "runtime", "topic-plugin-runtime.mjs");
 const runtimeSource = readRequiredText(runtimePath);
 
@@ -111,8 +121,9 @@ function topicMcpManifest(topic) {
 }
 
 function topicProfile(topic) {
+  const marketplaceBundleId = requiredTopicBundleId(topic.id);
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: topic.id,
     displayName: topic.displayName,
     category: topic.category,
@@ -127,6 +138,9 @@ function topicProfile(topic) {
     status: topic.status,
     maturity: topic.maturity,
     publicMarketplace: true,
+    marketplaceDiscoverable: true,
+    marketplaceCard: false,
+    marketplaceBundleId,
     publicAudience: topic.audience,
     license: topic.license,
     liveRuntimeStatus: "local-demo-only",
@@ -148,16 +162,17 @@ function topicProfile(topic) {
 }
 
 function topicReadme(topic) {
+  const marketplaceBundleId = requiredTopicBundleId(topic.id);
   return [
     `# ${topic.displayName} — SEIS Topic Plugin`,
     "",
-    `This is an objective-derived public SEIS topic package for the **${topic.category}** family. It is published directly from the SEIS repository marketplace as \`${topic.installId}\`.`,
+    `This is an objective-derived retained SEIS topic source package for the **${topic.category}** family. It is discoverable through the optional \`${marketplaceBundleId}@seis-repo\` card and is not a direct marketplace card.`,
     "",
     `The package gives Codex a bounded **${topic.displayName}** context lane: deterministic status, repository-shape evidence, and planning boundaries. It does not call external providers, read secrets, use the network, or write files.`,
     "",
     "## Package boundary",
     "",
-    "- `.codex-plugin/plugin.json` defines the public plugin card.",
+    "- `.codex-plugin/plugin.json` defines the retained source-package identity.",
     "- `.mcp.json` exposes the local MCP server.",
     `- \`skills/${topic.id}/SKILL.md\` defines the topic workflow.`,
     "- `assets/topic-profile.json` records source, audience, license, maturity, and permissions.",
@@ -233,9 +248,9 @@ function rootReadme(allTopics) {
   return [
     "# SEIS Topic Plugins",
     "",
-    `The SEIS repository publishes ${allTopics.length} objective-derived topic plugins directly in the \`seis-repo\` marketplace.`,
+    `The SEIS repository retains ${allTopics.length} objective-derived topic source packages and exposes them through ${topicBundles.length} bounded optional cards in the \`seis-repo\` marketplace.`,
     "",
-    "These packages are public, MIT-licensed, available to everyone, and implemented as local read-only demo lanes. The canonical SEIS-Agent remains the default orchestration install; topic cards are independently discoverable repository packages.",
+    "These packages are public, MIT-licensed, available to everyone, and implemented as local read-only demo lanes. The canonical SEIS-Agent remains the default orchestration install; each topic source maps to exactly one optional bundle and is not a separate card.",
     "",
     "## Source of truth",
     "",
@@ -266,6 +281,24 @@ function brandColor(categoryId) {
   let hash = 0;
   for (const character of categoryId) hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
   return colors[hash % colors.length];
+}
+
+function buildTopicBundleMap(bundles) {
+  const mapping = new Map();
+  for (const bundle of bundles) {
+    for (const member of bundle.members || []) {
+      if (mapping.has(member.name)) throw new Error(`SEIS topic plugin family: duplicate bundle member ${member.name}`);
+      mapping.set(member.name, bundle.id);
+    }
+  }
+  if (bundles.length !== 27 || mapping.size !== TOPIC_PLUGIN_TARGET) throw new Error("SEIS topic plugin family: topic bundle coverage is incomplete");
+  return mapping;
+}
+
+function requiredTopicBundleId(topicId) {
+  const bundleId = topicBundleByMember.get(topicId);
+  if (!bundleId) throw new Error(`SEIS topic plugin family: missing bundle mapping for ${topicId}`);
+  return bundleId;
 }
 
 function readText(file) {

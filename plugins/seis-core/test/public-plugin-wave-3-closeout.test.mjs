@@ -43,10 +43,16 @@ test("preserves the Wave 3 closeout snapshot after the single Wave 4 integration
   const sourceManifest = JSON.parse(fs.readFileSync(path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json"), "utf8"));
   const marketplace = JSON.parse(fs.readFileSync(path.join(repositoryRoot, ".agents/plugins/marketplace.json"), "utf8"));
   assert.ok([74, 75].includes(sourceManifest.pluginCount));
-  assert.equal(marketplace.plugins.length, sourceManifest.pluginCount + 306);
+  assert.ok([34, sourceManifest.pluginCount + 306].includes(marketplace.plugins.length));
   assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-swift-package-topology"));
   if (sourceManifest.pluginCount === 75) {
     assert.ok(sourceManifest.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage"));
-    assert.ok(marketplace.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage" && entry.source?.path === "./plugins/seis-core/seis-plugin-capability-coverage"));
+    const directCoverageCard = marketplace.plugins.some((entry) => entry.name === "seis-plugin-capability-coverage" && entry.source?.path === "./plugins/seis-core/seis-plugin-capability-coverage");
+    const curatedCoverageBundle = marketplace.plugins.length === 34
+      && marketplace.plugins.some((entry) => entry.name === "seis-ai-agent" && entry.source?.path === "./plugins/seis-ai-agent")
+      && marketplace.plugins.some((entry) => entry.name === "seis-application-bundle-05" && entry.source?.path === "./plugins/seis-bundles/seis-application-bundle-05")
+      && JSON.parse(fs.readFileSync(path.join(repositoryRoot, "content/development/seis-public-plugin-bundle-catalog.json"), "utf8"))
+        .bundles.some((bundle) => bundle.id === "seis-application-bundle-05" && bundle.memberNames.includes("seis-plugin-capability-coverage"));
+    assert.ok(directCoverageCard || curatedCoverageBundle);
   }
 });

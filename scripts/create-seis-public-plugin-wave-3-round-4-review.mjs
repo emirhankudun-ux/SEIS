@@ -11,6 +11,7 @@ const ROUND_3_CHECKPOINT_PATH = "content/development/seis-public-plugin-wave-3-r
 const AUDIT_PATH = "content/development/seis-swift-concurrency-audit.json";
 const SOURCE_MANIFEST_PATH = "apps/seis-core/data/seis-core-plugin-sources.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
+const BUNDLE_CATALOG_PATH = "content/development/seis-public-plugin-bundle-catalog.json";
 const MATRIX_PATH = "content/development/seis-core-plugin-matrix.json";
 const MCP_PERMISSION_PATH = "content/development/seis-mcp-permission-risk-matrix.json";
 const LIFECYCLE_PATH = "content/development/seis-public-plugin-lifecycle.json";
@@ -23,7 +24,20 @@ const SKILL_PATH = "plugins/seis-core/seis-swift-concurrency-audit/skills/seis-s
 const RUNTIME_TEST_PATH = "plugins/seis-core/test/swift-concurrency-audit.test.mjs";
 const EVIDENCE_TEST_PATH = "plugins/seis-core/test/swift-concurrency-audit-evidence.test.mjs";
 const CHECKPOINT_COMMIT = "d6bfaab79ec26451d8ef9ca1c9556c5cb689f186";
+const CAPABILITY = "seis-swift-concurrency-audit";
+const DISTRIBUTION_BUNDLE_ID = "seis-application-bundle-06";
 const HISTORICAL_INVENTORY = Object.freeze({ applicationPluginCount: 73, marketplaceCardCount: 379, matrixPluginCount: 73, matrixAttentionCount: 3 });
+const CURRENT_DISTRIBUTION = Object.freeze({
+  publicCardCount: 34,
+  canonicalCardCount: 1,
+  bundleCardCount: 33,
+  applicationBundleCardCount: 6,
+  topicBundleCardCount: 27,
+  rootSourceModuleCount: 5,
+  applicationSourcePackageCount: 75,
+  topicSourcePackageCount: 300,
+  retainedSourcePackageCount: 380,
+});
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 
 const record = buildRecord();
@@ -45,6 +59,7 @@ function buildRecord() {
   const audit = readJson(AUDIT_PATH);
   const sourceManifest = readJson(SOURCE_MANIFEST_PATH);
   const marketplace = readJson(MARKETPLACE_PATH);
+  const bundleCatalog = readJson(BUNDLE_CATALOG_PATH);
   const matrix = readJson(MATRIX_PATH);
   const mcpPermission = readJson(MCP_PERMISSION_PATH);
   const lifecycle = readJson(LIFECYCLE_PATH);
@@ -56,14 +71,18 @@ function buildRecord() {
   const skill = readText(SKILL_PATH);
   const runtimeTest = readText(RUNTIME_TEST_PATH);
   const evidenceTest = readText(EVIDENCE_TEST_PATH);
-  const sourceEntries = list(sourceManifest.plugins).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
-  const marketplaceEntries = list(marketplace.plugins).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
-  const matrixEntries = list(matrix.plugins).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
-  const mcpEntries = list(mcpPermission.records).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
+  const sourceEntries = list(sourceManifest.plugins).filter((entry) => entry?.name === CAPABILITY);
+  const marketplaceEntries = list(marketplace.plugins).filter((entry) => entry?.name === CAPABILITY);
+  const matrixEntries = list(matrix.plugins).filter((entry) => entry?.name === CAPABILITY);
+  const mcpEntries = list(mcpPermission.records).filter((entry) => entry?.name === CAPABILITY);
+  const bundleMemberships = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(CAPABILITY));
+  const distributionBundle = bundleMemberships.length === 1 ? bundleMemberships[0] : null;
+  const distributionBundleCard = list(marketplace.plugins).find((entry) => entry?.name === distributionBundle?.id) || null;
   assertCurrentInventory(sourceManifest, marketplace, matrix);
+  const currentMarketplaceProjection = buildCurrentMarketplaceProjection({ sourceManifest, marketplace, bundleCatalog, sourceEntries, marketplaceEntries, distributionBundle, distributionBundleCard, bundleMembershipCount: bundleMemberships.length });
   const checkpointDiff = inspectCheckpointDiff();
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-plugin-wave-3-round-4-review",
     goalId: "SEIS-GOAL-021",
     wave: 3,
@@ -78,12 +97,16 @@ function buildRecord() {
       commit: checkpoint.delivery?.commit || null,
     },
     overlapReview: {
-      selectedCapability: "seis-swift-concurrency-audit",
+      selectedCapability: CAPABILITY,
       sourceManifestEntryCount: sourceEntries.length,
-      marketplaceCardCount: marketplaceEntries.length,
+      currentMarketplaceDirectCardCount: marketplaceEntries.length,
+      currentMarketplaceSourceRetained: sourceEntries.length === 1,
+      currentDistributionBundleId: distributionBundle?.id || null,
+      currentDistributionBundleCardPresent: distributionBundleCard !== null,
+      currentDistributionBundleMembershipCount: bundleMemberships.length,
       matrixEntryCount: matrixEntries.length,
       mcpEntryCount: mcpEntries.length,
-      nonDuplicative: sourceEntries.length === 1 && marketplaceEntries.length === 1 && matrixEntries.length === 1 && mcpEntries.length === 1,
+      nonDuplicative: sourceEntries.length === 1 && marketplaceEntries.length === 0 && distributionBundle?.id === DISTRIBUTION_BUNDLE_ID && distributionBundleCard !== null && bundleMemberships.length === 1 && matrixEntries.length === 1 && mcpEntries.length === 1,
     },
     pathAndLimitReview: {
       fixedSourceRootCount: audit.audit?.sourceRootCount || 0,
@@ -127,17 +150,26 @@ function buildRecord() {
       publicReleaseAllowed: audit.safety?.publicReleaseAllowed === true,
       providerOrDeploymentClaim: documentation.includes("provider is connected") || documentation.includes("deployment succeeded"),
     },
-    lifecycleAndCounts: {
+    lifecycleState: {
       lifecycleStatus: lifecycle.status || null,
       externalProofStatus: externalProof.status || null,
       independentRunnerEvidenceStatus: lifecycle.independentRunnerEvidenceIntake?.evidenceStatus || null,
       publicReleaseAllowed: externalProof.publicReleaseAllowed === true,
+      matrixFailureCount: matrix.failureCount || 0,
+    },
+    historicalWave3Distribution: {
+      classification: "immutable-wave-3-round-4-direct-card-snapshot",
+      projectionModel: "direct-source-package-marketplace-cards",
       applicationPluginCount: HISTORICAL_INVENTORY.applicationPluginCount,
       marketplaceCardCount: HISTORICAL_INVENTORY.marketplaceCardCount,
       matrixPluginCount: HISTORICAL_INVENTORY.matrixPluginCount,
-      matrixFailureCount: matrix.failureCount || 0,
       matrixAttentionCount: HISTORICAL_INVENTORY.matrixAttentionCount,
+      selectedCapability: CAPABILITY,
+      selectedCapabilityHadDirectMarketplaceCard: true,
+      additionalDirectCardAddedAtExecution: true,
+      note: "These counts and direct-card facts are immutable Wave 3 round 4 history and do not describe the current curated marketplace.",
     },
+    currentMarketplaceProjection,
     documentationAndCoverage: {
       publicMarketplaceNamed: documentation.includes("SEIS Repo"),
       noCompileLimitNamed: documentation.includes("no-compile/no-native-run"),
@@ -186,7 +218,7 @@ function buildRecord() {
     ],
     rollback: {
       strategy: "revert",
-      scope: "Revert the focused Wave 3 package, public card, generated evidence, and review records on the feature branch. No data migration or external mutation exists.",
+      scope: "Revert the focused Wave 3 package, historical direct-card evidence, current bundle reconciliation, generated evidence, and review records on the feature branch. No data migration or external mutation exists.",
       dataMigrationRequired: false,
     },
   };
@@ -243,16 +275,62 @@ function isExpectedCheckpointPath(value) {
   return exact.has(value) || prefixes.some((prefix) => value.startsWith(prefix));
 }
 
+function buildCurrentMarketplaceProjection({ sourceManifest, marketplace, bundleCatalog, sourceEntries, marketplaceEntries, distributionBundle, distributionBundleCard, bundleMembershipCount }) {
+  const allSourceEntries = list(sourceManifest.plugins);
+  const allMarketplaceEntries = list(marketplace.plugins);
+  assert(marketplace.name === "seis-repo" && marketplace.interface?.displayName === "SEIS Repo", "current marketplace identity is invalid");
+  assert(sourceManifest.publicDistribution?.distributionMode === "curated-bounded-public-bundles" && sourceManifest.publicDistribution?.separateMarketplaceCards === false, "current source distribution mode is invalid");
+  assert(allSourceEntries.length === CURRENT_DISTRIBUTION.applicationSourcePackageCount && allMarketplaceEntries.length === CURRENT_DISTRIBUTION.publicCardCount, "current source or marketplace count is invalid");
+  assert(bundleCatalog.marketplace?.publicCardCount === CURRENT_DISTRIBUTION.publicCardCount && bundleCatalog.marketplace?.canonicalCardCount === CURRENT_DISTRIBUTION.canonicalCardCount && bundleCatalog.marketplace?.bundleCardCount === CURRENT_DISTRIBUTION.bundleCardCount && bundleCatalog.marketplace?.applicationBundleCardCount === CURRENT_DISTRIBUTION.applicationBundleCardCount && bundleCatalog.marketplace?.topicBundleCardCount === CURRENT_DISTRIBUTION.topicBundleCardCount, "current bundle-card inventory is invalid");
+  assert(bundleCatalog.sourceCapabilityInventory?.rootSourceModuleCount === CURRENT_DISTRIBUTION.rootSourceModuleCount && bundleCatalog.sourceCapabilityInventory?.applicationSourcePackageCount === CURRENT_DISTRIBUTION.applicationSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.topicSourcePackageCount === CURRENT_DISTRIBUTION.topicSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_DISTRIBUTION.retainedSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.sourcePackagesDeleted === false, "current retained-source inventory is invalid");
+  assert(sourceEntries.length === 1 && sourceEntries[0]?.sourcePath === `plugins/seis-core/${CAPABILITY}` && marketplaceEntries.length === 0, "current selected capability must remain a retained source without a direct card");
+  assert(distributionBundle?.id === DISTRIBUTION_BUNDLE_ID && distributionBundle?.family === "application" && distributionBundle?.sourcePath === `./plugins/seis-bundles/${DISTRIBUTION_BUNDLE_ID}` && bundleMembershipCount === 1, "current selected capability bundle membership is invalid");
+  assert(distributionBundleCard?.source?.path === distributionBundle.sourcePath, "current selected capability bundle card is invalid");
+  return {
+    observedAt: bundleCatalog.generatedAt || null,
+    projectionModel: "curated-bundle-cards",
+    distributionMode: "curated-bounded-public-bundles",
+    marketplaceName: marketplace.name,
+    marketplaceDisplayName: marketplace.interface.displayName,
+    publicCardCount: allMarketplaceEntries.length,
+    canonicalCardCount: bundleCatalog.marketplace.canonicalCardCount,
+    bundleCardCount: bundleCatalog.marketplace.bundleCardCount,
+    applicationBundleCardCount: bundleCatalog.marketplace.applicationBundleCardCount,
+    topicBundleCardCount: bundleCatalog.marketplace.topicBundleCardCount,
+    sourceCapabilityInventory: {
+      rootSourceModuleCount: bundleCatalog.sourceCapabilityInventory.rootSourceModuleCount,
+      applicationSourcePackageCount: allSourceEntries.length,
+      topicSourcePackageCount: bundleCatalog.sourceCapabilityInventory.topicSourcePackageCount,
+      retainedSourcePackageCount: bundleCatalog.sourceCapabilityInventory.retainedSourcePackageCount,
+      sourcePackagesDeleted: false,
+    },
+    selectedApplicationCapability: {
+      id: CAPABILITY,
+      retainedSource: true,
+      sourcePath: sourceEntries[0].sourcePath,
+      directMarketplaceCardRequired: false,
+      directMarketplaceCardCount: 0,
+      bundleCardCount: 1,
+      bundleId: distributionBundle.id,
+      bundleSourcePath: distributionBundle.sourcePath,
+      bundleFamily: distributionBundle.family,
+    },
+  };
+}
+
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-3-round-4-review" && record.goalId === "SEIS-GOAL-021" && record.wave === 3 && record.round === 4, "review identity is invalid");
   assert(record.status === "completed-repository-local-round-review" && list(record.completedSteps).join(",") === range(61, 79).join(","), "completed step range is invalid");
   assert(record.sourceCheckpoint?.status === "completed-repository-local-checkpoint" && record.sourceCheckpoint?.commit === CHECKPOINT_COMMIT, "source checkpoint is invalid");
-  assert(record.overlapReview?.nonDuplicative === true, "capability overlap review is invalid");
+  assert(record.overlapReview?.selectedCapability === CAPABILITY && record.overlapReview?.sourceManifestEntryCount === 1 && record.overlapReview?.currentMarketplaceDirectCardCount === 0 && record.overlapReview?.currentMarketplaceSourceRetained === true && record.overlapReview?.currentDistributionBundleId === DISTRIBUTION_BUNDLE_ID && record.overlapReview?.currentDistributionBundleCardPresent === true && record.overlapReview?.currentDistributionBundleMembershipCount === 1 && record.overlapReview?.nonDuplicative === true, "capability overlap review is invalid");
   assert(record.pathAndLimitReview?.fixedSourceRootCount === 2 && record.pathAndLimitReview?.sourceRootsSafe === true && record.pathAndLimitReview?.maxSwiftFiles === 64 && record.pathAndLimitReview?.maxFileBytes === 131072 && record.pathAndLimitReview?.maxTotalBytes === 1048576 && record.pathAndLimitReview?.maxSourceDepth === 4 && record.pathAndLimitReview?.maxReportedPaths === 24 && record.pathAndLimitReview?.coveredFailureModeCount === 7 && record.pathAndLimitReview?.arbitraryPathRefusalCovered === true && record.pathAndLimitReview?.symlinkRefusalCovered === true, "path and limit review is invalid");
   assert(record.stateAndOutputReview?.staticState === "attention" && record.stateAndOutputReview?.staticOk === true && record.stateAndOutputReview?.blockingFindingCount === 0 && record.stateAndOutputReview?.reviewRequired === true && record.stateAndOutputReview?.rawSourceReturned === false && record.stateAndOutputReview?.rawMatchedValuesReturned === false && record.stateAndOutputReview?.machineSpecificPathReturned === false && record.stateAndOutputReview?.sourceFilesCompiled === false, "state and output review is invalid");
   assert(record.accessibilityAndPerformance?.publicUiSurfaceChanged === false && record.accessibilityAndPerformance?.accessibilityReview === "not-applicable-no-public-ui-surface-changed" && record.accessibilityAndPerformance?.dependencyManifestPresent === false && record.accessibilityAndPerformance?.boundedStaticScan === true && record.accessibilityAndPerformance?.maxTotalBytes === 1048576, "accessibility or performance review is invalid");
   assert(record.permissionsAndClaims?.write?.length === 0 && record.permissionsAndClaims?.network?.length === 0 && record.permissionsAndClaims?.secrets?.length === 0 && record.permissionsAndClaims?.mcpTransport === "local-stdio" && record.permissionsAndClaims?.remoteEndpointDeclared === false && record.permissionsAndClaims?.environmentInjectionDeclared === false && record.permissionsAndClaims?.compilesSwift === false && record.permissionsAndClaims?.runsSwiftTests === false && record.permissionsAndClaims?.nativeRuntimeStarted === false && record.permissionsAndClaims?.publicReleaseAllowed === false && record.permissionsAndClaims?.providerOrDeploymentClaim === false, "permission or claim boundary is invalid");
-  assert(record.lifecycleAndCounts?.publicReleaseAllowed === false && record.lifecycleAndCounts?.applicationPluginCount === 73 && record.lifecycleAndCounts?.marketplaceCardCount === 379 && record.lifecycleAndCounts?.matrixPluginCount === 73 && record.lifecycleAndCounts?.matrixFailureCount === 0, "lifecycle or count review is invalid");
+  assert(record.lifecycleState?.publicReleaseAllowed === false && record.lifecycleState?.matrixFailureCount === 0, "lifecycle review is invalid");
+  assert(record.historicalWave3Distribution?.classification === "immutable-wave-3-round-4-direct-card-snapshot" && record.historicalWave3Distribution?.projectionModel === "direct-source-package-marketplace-cards" && record.historicalWave3Distribution?.applicationPluginCount === HISTORICAL_INVENTORY.applicationPluginCount && record.historicalWave3Distribution?.marketplaceCardCount === HISTORICAL_INVENTORY.marketplaceCardCount && record.historicalWave3Distribution?.matrixPluginCount === HISTORICAL_INVENTORY.matrixPluginCount && record.historicalWave3Distribution?.matrixAttentionCount === HISTORICAL_INVENTORY.matrixAttentionCount && record.historicalWave3Distribution?.selectedCapability === CAPABILITY && record.historicalWave3Distribution?.selectedCapabilityHadDirectMarketplaceCard === true && record.historicalWave3Distribution?.additionalDirectCardAddedAtExecution === true, "historical Wave 3 distribution is invalid");
+  assert(record.currentMarketplaceProjection?.projectionModel === "curated-bundle-cards" && record.currentMarketplaceProjection?.distributionMode === "curated-bounded-public-bundles" && record.currentMarketplaceProjection?.publicCardCount === CURRENT_DISTRIBUTION.publicCardCount && record.currentMarketplaceProjection?.canonicalCardCount === CURRENT_DISTRIBUTION.canonicalCardCount && record.currentMarketplaceProjection?.bundleCardCount === CURRENT_DISTRIBUTION.bundleCardCount && record.currentMarketplaceProjection?.applicationBundleCardCount === CURRENT_DISTRIBUTION.applicationBundleCardCount && record.currentMarketplaceProjection?.topicBundleCardCount === CURRENT_DISTRIBUTION.topicBundleCardCount, "current marketplace card projection is invalid");
+  assert(record.currentMarketplaceProjection?.sourceCapabilityInventory?.rootSourceModuleCount === CURRENT_DISTRIBUTION.rootSourceModuleCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.applicationSourcePackageCount === CURRENT_DISTRIBUTION.applicationSourcePackageCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.topicSourcePackageCount === CURRENT_DISTRIBUTION.topicSourcePackageCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_DISTRIBUTION.retainedSourcePackageCount && record.currentMarketplaceProjection?.selectedApplicationCapability?.id === CAPABILITY && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardRequired === false && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardCount === 0 && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleCardCount === 1 && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleId === DISTRIBUTION_BUNDLE_ID, "current retained-source or selected-capability projection is invalid");
   assert(record.documentationAndCoverage?.publicMarketplaceNamed === true && record.documentationAndCoverage?.noCompileLimitNamed === true && record.documentationAndCoverage?.staticAttentionExplained === true && record.documentationAndCoverage?.skillNoCompileLimitNamed === true && record.documentationAndCoverage?.runtimeTestPresent === true && record.documentationAndCoverage?.evidenceTestPresent === true && record.documentationAndCoverage?.pathRefusalFixturePresent === true && record.documentationAndCoverage?.boundaryEvidenceFixturePresent === true && record.documentationAndCoverage?.runtimeBoundaryMarkerPresent === true, "documentation or coverage review is invalid");
   assert(record.checkpointDiff?.commit === CHECKPOINT_COMMIT && record.checkpointDiff?.changedFileCount === 67 && record.checkpointDiff?.unexpectedPathCount === 0 && record.checkpointDiff?.whitespaceCheckPassed === true, "checkpoint diff review is invalid");
   assert(list(record.risks).length === 4 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "risk or rollback review is invalid");
@@ -263,12 +341,7 @@ function assertCurrentInventory(sourceManifest, marketplace, matrix) {
   const applicationPluginCount = list(sourceManifest.plugins).length;
   const marketplaceCardCount = list(marketplace.plugins).length;
   const matrixPluginCount = matrix.pluginCount || 0;
-  const historical = applicationPluginCount === HISTORICAL_INVENTORY.applicationPluginCount
-    && marketplaceCardCount === HISTORICAL_INVENTORY.marketplaceCardCount
-    && matrixPluginCount === HISTORICAL_INVENTORY.matrixPluginCount;
-  const wave4Integrated = applicationPluginCount === 74 && marketplaceCardCount === 380 && matrixPluginCount === 74;
-  const wave5CoverageActive = applicationPluginCount === 75 && marketplaceCardCount === 381 && matrixPluginCount === 75;
-  assert(historical || wave4Integrated || wave5CoverageActive, "current public inventory is outside the supported historical, Wave 4, or active Wave 5 coverage state");
+  assert(applicationPluginCount === CURRENT_DISTRIBUTION.applicationSourcePackageCount && marketplaceCardCount === CURRENT_DISTRIBUTION.publicCardCount && matrixPluginCount === CURRENT_DISTRIBUTION.applicationSourcePackageCount && matrix.failureCount === 0, "current inventory must match the curated public-package projection");
 }
 
 function range(start, end) {

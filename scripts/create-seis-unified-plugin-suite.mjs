@@ -8,12 +8,14 @@ const checkMode = process.argv.includes("--check");
 const generatedAt = "2026-07-12";
 const sourcePath = "plugins/seis-ai-agent/assets/unified-suite.json";
 const publicFamilyPath = "content/development/seis-public-plugin-family.json";
+const publicBundleCatalogPath = "content/development/seis-public-plugin-bundle-catalog.json";
 const canonicalizationPath = "content/development/seis-plugin-canonicalization.json";
 const agentManifestPath = "plugins/seis-ai-agent/.codex-plugin/plugin.json";
 const applicationPluginSourcesPath = "apps/seis-core/data/seis-core-plugin-sources.json";
 const applicationReleaseTrainPath = "content/development/seis-core-plugin-release-train.json";
 
 const family = readJson(publicFamilyPath);
+const bundleCatalog = readJson(publicBundleCatalogPath);
 const canonicalization = readJson(canonicalizationPath);
 const agentManifest = readJson(agentManifestPath);
 const applicationPluginSources = readJson(applicationPluginSourcesPath);
@@ -22,9 +24,12 @@ const discoveredPluginNames = discoverSeisPluginNames();
 const discoveredApplicationPluginNames = discoverApplicationPluginNames();
 const publicPlugins = family.publicPlugins || [];
 const embeddedModules = family.embeddedModules || family.plugins || [];
+const familyMarketplace = family.marketplace || {};
+const curatedMarketplace = family.mode === "public_seis_agent_with_curated_bounded_repository_bundle_cards";
+const bundleMembership = buildBundleMembership(bundleCatalog);
 const embeddedModuleNames = embeddedModules.map((plugin) => plugin.name);
 const uncoveredSourcePlugins = discoveredPluginNames.filter((name) => !embeddedModuleNames.includes(name));
-const applicationPlugins = buildApplicationPlugins(applicationPluginSources);
+const applicationPlugins = buildApplicationPlugins(applicationPluginSources, bundleMembership);
 const applicationPluginNames = applicationPlugins.map((plugin) => plugin.moduleId);
 const uncoveredApplicationSourcePlugins = discoveredApplicationPluginNames.filter((name) => !applicationPluginNames.includes(name));
 const components = embeddedModules.map((plugin) => {
@@ -60,6 +65,7 @@ const suite = {
   },
   sourceContracts: {
     publicPluginFamily: publicFamilyPath,
+    publicBundleCatalog: publicBundleCatalogPath,
     canonicalization: canonicalizationPath,
     agentManifest: agentManifestPath,
   },
@@ -72,15 +78,20 @@ const suite = {
     discoveredApplicationPluginNames,
     applicationPluginNames,
     uncoveredApplicationSourcePlugins,
-    directRepoSourceRoots: ["plugins", "plugins/seis-core"],
+    directRepoSourceRoots: ["plugins", "plugins/seis-core", "plugins/seis-bundles"],
     rule: "Every current or future SEIS plugin manifest must be registered as an embedded module in this single SEIS-Agent suite before it can be treated as a SEIS capability.",
   },
   publicDistribution: {
     publicPluginCount: publicPlugins.length,
     publicInstallIds: publicPlugins.map((plugin) => plugin.installId),
+    marketplaceCardCount: familyMarketplace.publicPluginCount,
+    optionalBundleCardCount: familyMarketplace.bundlePluginCount,
+    applicationBundleCardCount: familyMarketplace.applicationBundlePluginCount,
+    topicBundleCardCount: familyMarketplace.topicBundlePluginCount,
+    sourceCapabilityCount: familyMarketplace.sourceCapabilityCount,
     embeddedModuleCount: components.length,
     applicationOwnedPluginCount: applicationPlugins.length,
-    applicationMarketplacePluginCount: applicationPlugins.length,
+    applicationMarketplacePluginCount: familyMarketplace.applicationBundlePluginCount,
     applicationSourceRoot: applicationPluginSources.sourceRoot,
     applicationSourceManifest: applicationPluginSourcesPath,
   },
@@ -100,10 +111,12 @@ const suite = {
     sourceAvailableInRepository: true,
     publicRepositoryAvailable: true,
     publicAudience: "everyone",
-    publicDistribution: "direct-repository-source",
+    publicDistribution: "curated-bounded-public-bundles",
     marketplaceName: "seis-repo",
     publicMarketplace: true,
-    marketplaceEntryCount: applicationPlugins.length,
+    marketplaceEntryCount: familyMarketplace.applicationBundlePluginCount,
+    marketplaceCardCount: familyMarketplace.publicPluginCount,
+    sourceCapabilityCount: familyMarketplace.sourceCapabilityCount,
     installSurface: "repo-source-app",
     executionMode: applicationPluginSources.application?.sourceExecution || "task-scoped-local-demo-only",
     publicReleaseAllowed: false,
@@ -140,7 +153,7 @@ const suite = {
       "validate app catalog status, SEIS AI status, MCP routing, installer plan, and compatibility smoke",
     ],
     defaultInstallRule: "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets.",
-    applicationDefaultInstallRule: "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and become available directly from this repository as individual seis-repo marketplace entries without entering packages/seis-ai.",
+    applicationDefaultInstallRule: "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and are added to a reviewed bounded public bundle when a marketplace card is justified without entering packages/seis-ai.",
   },
   releaseBoundary: {
     publicReleaseAllowed: false,
@@ -199,7 +212,9 @@ function validateSuite(record) {
   if (record.compatibility.personalAliases.length !== 5) failures.push("suite must expose five personal aliases");
   if (!record.compatibility.personalAliases.every((alias) => alias.userPluginPreserved === true)) failures.push("suite must preserve every personal alias");
   if (record.publicDistribution.publicPluginCount !== 1 || record.publicDistribution.publicInstallIds[0] !== "seis-ai-agent@seis-repo") failures.push("SEIS-Agent must remain the canonical public orchestrator");
-  if (record.publicDistribution.applicationMarketplacePluginCount !== applicationPlugins.length) failures.push("public distribution app marketplace count is stale");
+  if (!curatedMarketplace || familyMarketplace.publicPluginCount !== 34 || familyMarketplace.bundlePluginCount !== 33 || familyMarketplace.applicationBundlePluginCount !== 6 || familyMarketplace.topicBundlePluginCount !== 27 || familyMarketplace.sourceCapabilityCount !== 380) failures.push("curated public bundle family is invalid");
+  if (record.publicDistribution.marketplaceCardCount !== familyMarketplace.publicPluginCount || record.publicDistribution.optionalBundleCardCount !== familyMarketplace.bundlePluginCount || record.publicDistribution.applicationBundleCardCount !== familyMarketplace.applicationBundlePluginCount || record.publicDistribution.topicBundleCardCount !== familyMarketplace.topicBundlePluginCount || record.publicDistribution.sourceCapabilityCount !== familyMarketplace.sourceCapabilityCount) failures.push("public distribution curated card counts are stale");
+  if (record.publicDistribution.applicationMarketplacePluginCount !== familyMarketplace.applicationBundlePluginCount) failures.push("public distribution application bundle count is stale");
   if (record.publicDistribution.embeddedModuleCount !== record.componentCount) failures.push("public distribution must expose every embedded module");
   if (!Array.isArray(record.sourceDiscovery?.discoveredPluginNames) || record.sourceDiscovery.discoveredPluginNames.length !== record.componentCount) failures.push("suite discovery must cover every current SEIS plugin manifest");
   if (record.sourceDiscovery.uncoveredSourcePlugins.length !== 0) failures.push(`unified suite is missing source plugins: ${record.sourceDiscovery.uncoveredSourcePlugins.join(", ")}`);
@@ -215,18 +230,18 @@ function validateSuite(record) {
   if (record.applicationDistribution?.sourceAvailableInRepository !== true) failures.push("application-owned sources must be available in the repository");
   if (record.applicationDistribution?.publicRepositoryAvailable !== true) failures.push("application-owned sources must be public-repository available");
   if (record.applicationDistribution?.publicAudience !== "everyone") failures.push("application-owned sources must declare everyone as the public audience");
-  if (record.applicationDistribution?.publicDistribution !== "direct-repository-source") failures.push("application-owned sources must use direct repository distribution");
+  if (record.applicationDistribution?.publicDistribution !== "curated-bounded-public-bundles") failures.push("application-owned sources must use curated bounded public bundles");
   if (record.applicationDistribution?.marketplaceName !== "seis-repo") failures.push("app-owned sources must use the seis-repo marketplace");
   if (record.applicationDistribution?.publicMarketplace !== true) failures.push("app-owned sources must be public marketplace entries");
-  if (record.applicationDistribution?.marketplaceEntryCount !== applicationPlugins.length) failures.push("app-owned marketplace count must match app source count");
+  if (record.applicationDistribution?.marketplaceEntryCount !== familyMarketplace.applicationBundlePluginCount || record.applicationDistribution?.marketplaceCardCount !== familyMarketplace.publicPluginCount || record.applicationDistribution?.sourceCapabilityCount !== familyMarketplace.sourceCapabilityCount) failures.push("app-owned curated marketplace counts are stale");
   if (record.applicationDistribution?.publicReleaseAllowed !== false) failures.push("live external public release must remain gated");
   if (record.applicationDistribution?.coreSourceOwner !== false) failures.push("packages/seis-ai must not own app plugin sources");
   if (!Array.isArray(record.applicationDistribution?.plugins) || record.applicationDistribution.plugins.length !== applicationPluginSources.pluginCount) failures.push("suite must cover every app-owned plugin source");
   if (!Array.isArray(record.sourceDiscovery?.discoveredApplicationPluginNames) || record.sourceDiscovery.discoveredApplicationPluginNames.length !== applicationPluginSources.pluginCount) failures.push("suite discovery must cover every app-owned plugin manifest");
   if (record.sourceDiscovery.uncoveredApplicationSourcePlugins.length !== 0) failures.push(`unified suite is missing app-owned source plugins: ${record.sourceDiscovery.uncoveredApplicationSourcePlugins.join(", ")}`);
   if (new Set(record.applicationDistribution.plugins.map((plugin) => plugin.moduleId)).size !== record.applicationDistribution.plugins.length) failures.push("app-owned module ids must be unique");
-  if (!record.applicationDistribution.plugins.every((plugin) => plugin.sourcePath.startsWith("plugins/seis-core/") && plugin.publicMarketplace === true && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === `${plugin.moduleId}@seis-repo`)) failures.push("app-owned modules must stay in the public seis-repo marketplace with stable install ids");
-  if (!record.futurePluginIntake?.applicationDefaultInstallRule?.includes("plugins/seis-core")) failures.push("suite must define the direct repo app-owned intake rule");
+  if (!record.applicationDistribution.plugins.every((plugin) => plugin.sourcePath.startsWith("plugins/seis-core/") && plugin.publicMarketplace === false && typeof plugin.marketplaceBundleId === "string" && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === `${plugin.moduleId}@seis-repo`)) failures.push("app-owned modules must stay as retained sources with a bounded marketplace bundle");
+  if (!record.futurePluginIntake?.applicationDefaultInstallRule?.includes("plugins/seis-core") || !record.futurePluginIntake?.applicationDefaultInstallRule?.includes("bounded public bundle")) failures.push("suite must define the curated app-owned intake rule");
   if (!record.futurePluginIntake?.defaultInstallRule?.includes("must not become separate public plugin")) failures.push("suite must keep future plugins under the single public install surface");
   if (failures.length) {
     console.error("SEIS unified plugin suite validation failed:");
@@ -260,7 +275,7 @@ function discoverApplicationPluginNames() {
     .sort();
 }
 
-function buildApplicationPlugins(sourceManifest) {
+function buildApplicationPlugins(sourceManifest, membership) {
   return (sourceManifest.plugins || []).map((sourcePlugin) => {
     const sourcePath = normalizeSourcePath(sourcePlugin.sourcePath);
     const manifestPath = `${sourcePath}/.codex-plugin/plugin.json`;
@@ -283,15 +298,26 @@ function buildApplicationPlugins(sourceManifest) {
       applicationPath: "apps/seis-core",
       canonicalInstallId: `${sourcePlugin.name}@seis-repo`,
       installSurface: "repo-source-app",
-      publicMarketplace: true,
+      publicMarketplace: false,
+      marketplaceBundleId: membership.get(sourcePlugin.name) || null,
       publicRepositoryAvailable: true,
       publicAudience: "everyone",
-      publicStatus: "public-repo-marketplace",
+      publicStatus: "retained-public-repository-source",
       publicReleaseAllowed: false,
-      sourceModuleStatus: "public-application-marketplace-source-module",
+      sourceModuleStatus: "retained-application-source-module",
       permissions: profile.permissions || { read: [], write: [], network: [], secrets: [] },
     };
   }).sort((left, right) => left.moduleId.localeCompare(right.moduleId));
+}
+
+function buildBundleMembership(catalog) {
+  const membership = new Map();
+  for (const bundle of Array.isArray(catalog?.bundles) ? catalog.bundles : []) {
+    for (const member of Array.isArray(bundle?.memberNames) ? bundle.memberNames : []) {
+      if (typeof member === "string" && !membership.has(member)) membership.set(member, bundle.id);
+    }
+  }
+  return membership;
 }
 
 function readJson(file) {

@@ -1,10 +1,54 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-1-handoff",
   "goalId": "SEIS-GOAL-021",
   "generatedAt": "2026-07-21",
   "status": "completed-repository-local-handoff",
   "purpose": "Record a reproducible repository-local Wave 1 handoff and its current public-contract revalidation during later evidence-led work. This is not a public release, external installation, provider, deployment, or approval claim.",
+  "historicalWave1Snapshot": {
+    "observedAt": "2026-07-21",
+    "projectionModel": "direct-source-cards",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 377,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "applicationPluginCount": 71,
+    "topicPluginCount": 300,
+    "selectedCapability": "seis-evidence-index",
+    "selectedCapabilityDirectCardCount": 1,
+    "immutableHistoricalEvidence": true,
+    "evidencePath": "docs/development/SEIS_PUBLIC_PLUGIN_WAVE_1_HANDOFF.md"
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "selectedApplicationCapability": {
+      "id": "seis-evidence-index",
+      "retainedSource": true,
+      "sourcePath": "plugins/seis-core/seis-evidence-index",
+      "directMarketplaceCardRequired": false,
+      "directMarketplaceCardCount": 0,
+      "bundleCardCount": 1,
+      "bundleId": "seis-application-bundle-04",
+      "bundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-04",
+      "bundleFamily": "application"
+    }
+  },
   "program": {
     "id": "seis-public-plugin-wave-1-program",
     "status": "completed",
@@ -12,16 +56,9 @@
     "inProgressStepNumbers": [],
     "completedRoundCount": 5
   },
-  "marketplace": {
-    "name": "seis-repo",
-    "displayName": "SEIS Repo",
-    "publicCardCount": 381,
-    "expectedCardCount": 381,
-    "applicationPluginCount": 75,
-    "expectedApplicationPluginCount": 75
-  },
   "validation": {
     "sourceAndCatalog": true,
+    "selectedCapabilityBundleResolution": true,
     "matrix": true,
     "waveEvidence": true,
     "pluginEvidence": true,
@@ -30,8 +67,10 @@
     "freshTaskReload": true,
     "releaseReadiness": true,
     "mcpBoundary": true,
+    "capabilityDecisionCompatibility": true,
     "wave2Completion": true,
-    "wave3Continuation": true
+    "wave3HistoricalExecution": true,
+    "wave3CurrentCompatibility": true
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -50,7 +89,17 @@
     "selectedCapabilityAtWave1Handoff": null,
     "implementationStartedAtWave1Handoff": false,
     "additionalPublicCardAddedAtWave1Handoff": false,
-    "note": "This preserves the Wave 3 state recorded when the completed Wave 1 handoff was first prepared; the current continuation is tracked separately below."
+    "note": "This preserves the Wave 3 state recorded when the completed Wave 1 handoff was first prepared; the current completed bundle projection is tracked separately below."
+  },
+  "historicalWave3Execution": {
+    "projectionModel": "direct-source-cards",
+    "statusAtCompletion": "completed",
+    "completedStepCount": 100,
+    "selectionStatus": "implementation-approved",
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "implementationStarted": true,
+    "additionalPublicCardAdded": true,
+    "note": "These fields preserve Wave 3's completed pre-consolidation execution, when the selected source was added as a direct marketplace card."
   },
   "knownGaps": [
     {
@@ -100,21 +149,29 @@
     "completedStepCount": 100,
     "completionRule": "Wave 2 completed only after its separately reviewed, bounded public Apple/Swift static-readiness scope retained empty write, network, and secret permissions and recorded no native-runtime or public-release claim."
   },
-  "currentContinuation": {
+  "currentWave3Projection": {
     "number": 3,
-    "status": "in-progress",
+    "status": "completed",
+    "completedStepCount": 100,
     "programId": "seis-public-plugin-wave-3-program",
     "scopeRiskReviewPath": "content/development/seis-public-plugin-wave-2-handoff.json",
     "selectionStatus": "implementation-approved",
     "selectedCapability": "seis-swift-concurrency-audit",
     "implementationStarted": true,
-    "additionalPublicCardAdded": true,
+    "marketplacePresentation": "retained-source-through-bundle-card",
+    "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
+    "directMarketplaceCardRequired": false,
+    "directMarketplaceCardCount": 0,
+    "bundleCardCount": 1,
+    "bundleId": "seis-application-bundle-06",
+    "bundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+    "bundleFamily": "application",
     "historicalStatusAtWave1Handoff": "planned",
     "historicalSelectionStatusAtWave1Handoff": "discovery-required",
-    "activationRule": "Wave 3 entered an in-progress implementation scope only after a separate non-duplicative capability decision and current repository-local validation evidence; it does not imply external release, installation, provider, deployment, or native-runtime proof."
+    "completionRule": "Wave 3 completed its repository-local program after a separate non-duplicative capability decision; current discovery retains the selected source through one curated application bundle without implying external release, installation, provider, deployment, or native-runtime proof."
   },
   "inputSafetyScan": {
-    "inputCount": 16,
+    "inputCount": 18,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

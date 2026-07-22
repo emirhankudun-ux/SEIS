@@ -10,12 +10,16 @@
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
-    "distributionScope": "direct-repository-source",
+    "distributionScope": "curated-bounded-public-bundles",
     "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "installSurface": "repo-source-app",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 75,
+    "marketplaceEntryCount": 6,
+    "marketplaceCardCount": 34,
+    "sourceCapabilityCount": 75,
+    "separateMarketplaceCards": false,
+    "sourcePackagesRetained": true,
     "coreSourceOwner": false
   },
   "release": {
@@ -52,8 +56,8 @@
     "returned": 75,
     "contractValid": 75,
     "contractInvalid": 0,
-    "statusReady": 68,
-    "statusAttention": 7,
+    "statusReady": 72,
+    "statusAttention": 3,
     "statusOk": 75,
     "statusNotChecked": 0,
     "statusFailed": 0
@@ -85,6 +89,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "bounded local accessibility JSON declarations"
@@ -134,6 +143,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local workflow files"
@@ -183,6 +197,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local agent JSON metadata"
@@ -233,6 +252,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local JSON agent contracts"
@@ -292,6 +316,11 @@
         "maxSourceDepth": 8,
         "limitReachedState": "attention"
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded Swift Package manifest markers",
@@ -350,6 +379,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -403,6 +437,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -452,6 +491,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local artifact and provenance evidence"
@@ -503,6 +547,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local branch and ruleset policy files"
@@ -556,6 +605,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded JSON registry and catalog projections"
@@ -605,6 +659,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded local changelog files"
@@ -654,6 +713,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded local CODEOWNERS files"
@@ -703,6 +767,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded local contribution and community documents"
@@ -751,6 +820,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local context usage JSON"
@@ -806,6 +880,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -855,6 +934,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded local contributor and ownership JSON"
@@ -910,6 +994,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -963,6 +1052,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -1012,6 +1106,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local dependency manifests and lockfiles"
@@ -1062,6 +1161,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "bounded local JSON token and theme files"
@@ -1112,6 +1216,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local Markdown and text files"
@@ -1161,6 +1270,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local Markdown metadata"
@@ -1209,6 +1323,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "bounded local delivery JSON"
@@ -1260,6 +1379,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local download metrics JSON"
@@ -1313,6 +1437,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "checked-in Wave 1 evidence index",
@@ -1370,6 +1499,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "bounded local HTML, JavaScript, and CSS UI source",
@@ -1423,6 +1557,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded local recorded GitHub-style metrics"
@@ -1478,6 +1617,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-04"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -1529,6 +1673,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "bounded goal files"
@@ -1577,6 +1726,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded local issue JSON"
@@ -1628,6 +1782,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local package and license files"
@@ -1677,6 +1836,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local locale JSON dictionaries"
@@ -1726,6 +1890,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "bounded local maintainer and activity JSON"
@@ -1780,6 +1949,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded public SEIS Repo marketplace manifest",
@@ -1831,6 +2005,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local MCP and plugin JSON manifests"
@@ -1882,6 +2061,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "fixed public SEIS Repo marketplace, source inventory, and MCP permission ledger contracts"
@@ -1934,6 +2118,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded local migration documentation"
@@ -1983,6 +2172,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local route and fallback JSON"
@@ -2036,6 +2230,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -2085,6 +2284,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local package adoption JSON"
@@ -2136,6 +2340,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded local performance JSON"
@@ -2193,16 +2402,25 @@
           "apps/seis-core/data/seis-core-plugin-sources.json",
           "apps/seis-core/data/seis-core-plugin-catalog.json",
           "content/development/seis-core-plugin-matrix.json",
-          ".agents/plugins/marketplace.json"
+          ".agents/plugins/marketplace.json",
+          "content/development/seis-public-plugin-bundle-catalog.json"
         ],
         "maxRegistryBytes": 524288,
+        "maxReturnedCategoryKinds": 128,
+        "maxReturnedCapabilityTokenKinds": 256,
+        "maxReturnedFindings": 64,
         "regularFilesRequired": true,
         "symlinkRefusal": true,
         "rawRegistryContentReturned": false
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
-          "four fixed checked-in public SEIS Repo registry projections",
+          "five fixed checked-in public SEIS Repo registry projections",
           "bounded derived category and capability coverage metadata"
         ],
         "write": [],
@@ -2255,6 +2473,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "SEIS Repo marketplace metadata",
@@ -2307,6 +2530,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "selected local plugin metadata"
@@ -2357,6 +2585,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded local pull-request JSON"
@@ -2410,6 +2643,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "checked-in project manifest",
@@ -2469,6 +2707,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -2518,6 +2761,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local provider and capability JSON records"
@@ -2569,6 +2817,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded public SEIS Repo distribution contracts",
@@ -2583,7 +2836,7 @@
         "failures": []
       },
       "status": {
-        "state": "attention",
+        "state": "ready",
         "ok": true,
         "execution": "status-only",
         "failures": []
@@ -2622,6 +2875,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "fixed public SEIS Repo evidence contracts and one designated sanitized evidence record"
@@ -2635,7 +2893,7 @@
         "failures": []
       },
       "status": {
-        "state": "attention",
+        "state": "ready",
         "ok": true,
         "execution": "status-only",
         "failures": []
@@ -2676,6 +2934,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded public SEIS Repo marketplace and install-evidence contracts"
@@ -2689,7 +2952,7 @@
         "failures": []
       },
       "status": {
-        "state": "attention",
+        "state": "ready",
         "ok": true,
         "execution": "status-only",
         "failures": []
@@ -2729,6 +2992,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-05"
+      },
       "permissions": {
         "read": [
           "bounded public SEIS Repo metadata and declared cache manifests"
@@ -2742,7 +3010,7 @@
         "failures": []
       },
       "status": {
-        "state": "attention",
+        "state": "ready",
         "ok": true,
         "execution": "status-only",
         "failures": []
@@ -2781,6 +3049,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local text files and path names"
@@ -2830,6 +3103,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bounded local retrieval JSON records"
@@ -2879,6 +3157,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "bounded local changelog files"
@@ -2929,6 +3212,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "recorded local JSON release-check evidence"
@@ -2980,6 +3268,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "explicit repository metadata",
@@ -3030,6 +3323,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "bounded local repository metadata"
@@ -3083,6 +3381,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -3133,6 +3436,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "task route parameters"
@@ -3182,6 +3490,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local package manifests and lockfiles"
@@ -3232,6 +3545,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local text files and path names"
@@ -3281,6 +3599,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "bounded local package.json files"
@@ -3332,6 +3655,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "bounded regular files under an explicit workspace"
@@ -3392,6 +3720,11 @@
         "maxSourceDepth": 4,
         "maxReportedPaths": 24,
         "limitReachedState": "attention"
+      },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
       },
       "permissions": {
         "read": [
@@ -3458,6 +3791,11 @@
         "symlinkRefusal": true,
         "unsupportedSyntaxState": "attention"
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "one fixed checked-in Swift Package manifest",
@@ -3513,6 +3851,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-01"
+      },
       "permissions": {
         "read": [
           "bundled ontology profile"
@@ -3562,6 +3905,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "bounded local test result JSON"
@@ -3615,6 +3963,11 @@
         "mode": "read-only-report",
         "checkCount": 3
       },
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "bounded SEIS repository evidence"
@@ -3666,6 +4019,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "bounded public SEIS marketplace intake contracts",
@@ -3719,6 +4077,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-02"
+      },
       "permissions": {
         "read": [
           "bounded local HTML, JavaScript, and CSS UI source",
@@ -3772,6 +4135,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local vulnerability JSON reports"
@@ -3822,6 +4190,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "bounded local JSON workflow definitions"
@@ -3871,6 +4244,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-03"
+      },
       "permissions": {
         "read": [
           "bounded local workflow JSON and YAML-like files"
@@ -3922,6 +4300,11 @@
       "lifecycleStatus": "approved-public-readonly",
       "risk": "low",
       "audit": null,
+      "marketplace": {
+        "discoverable": true,
+        "card": false,
+        "bundleId": "seis-application-bundle-06"
+      },
       "permissions": {
         "read": [
           "explicit workspace root metadata"

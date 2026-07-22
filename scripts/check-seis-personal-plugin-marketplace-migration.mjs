@@ -2,26 +2,46 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
 
-const root = process.cwd();
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const failures = [];
 const coveragePath = "content/development/seis-ai-core-personal-plugin-coverage.json";
 const familyPath = "content/development/seis-public-plugin-family.json";
+const bundleCatalogPath = "content/development/seis-public-plugin-bundle-catalog.json";
 const marketplacePath = ".agents/plugins/marketplace.json";
+const unifiedSuitePath = "plugins/seis-ai-agent/assets/unified-suite.json";
 
 const coverage = readJson(coveragePath);
 const family = readJson(familyPath);
+const bundleCatalog = readJson(bundleCatalogPath);
 const marketplace = readJson(marketplacePath);
+const unifiedSuite = readJson(unifiedSuitePath);
 const historicalPluginIds = coverage?.personalMarketplace?.pluginIds || [];
 const migratedRootPlugins = family?.migratedRootPlugins || [];
 const applicationPlugins = family?.applicationPlugins || [];
 const topicPlugins = family?.topicPlugins || [];
 const canonicalPlugins = family?.publicPlugins || [];
+const bundles = Array.isArray(bundleCatalog?.bundles) ? bundleCatalog.bundles : [];
 const migratedRootNames = new Set(migratedRootPlugins.map((plugin) => plugin.name));
+const applicationNames = new Set(applicationPlugins.map((plugin) => plugin.name));
+const topicNames = new Set(topicPlugins.map((plugin) => plugin.name));
+const sourceCapabilityNames = new Set([...applicationNames, ...topicNames]);
+const bundleMemberNames = bundles.flatMap((bundle) => Array.isArray(bundle?.memberNames) ? bundle.memberNames : []);
+const bundleMemberNameSet = new Set(bundleMemberNames);
+const bundlesByMemberName = new Map();
+for (const bundle of bundles) {
+  for (const memberName of bundle?.memberNames || []) {
+    const memberships = bundlesByMemberName.get(memberName) || [];
+    memberships.push(bundle);
+    bundlesByMemberName.set(memberName, memberships);
+  }
+}
 const marketplaceEntries = Array.isArray(marketplace?.plugins) ? marketplace.plugins : [];
-const expectedMarketplaceCount = canonicalPlugins.length + migratedRootPlugins.length + applicationPlugins.length + topicPlugins.length;
+const expectedMarketplaceCount = canonicalPlugins.length + bundles.length;
+const retainedSourceCapabilityCount = migratedRootPlugins.length + applicationPlugins.length + topicPlugins.length;
 const legacyPublicRenames = Array.isArray(coverage?.repository?.legacyPublicRenames)
   ? coverage.repository.legacyPublicRenames
   : [];
@@ -33,22 +53,49 @@ ensure(family?.marketplace?.migratedRootPluginCount === migratedRootPlugins.leng
 ensure(applicationPlugins.length === APP_PLUGIN_EXPANSION_TARGET, `public family must retain every ${APP_PLUGIN_EXPANSION_TARGET} app-owned packages`);
 ensure(topicPlugins.length === 300, "public family must retain every objective-derived topic package");
 ensure(canonicalPlugins.length === 1 && canonicalPlugins[0]?.name === "seis-ai-agent", "SEIS-Agent must remain the sole canonical default install");
-ensure(marketplaceEntries.length === expectedMarketplaceCount, "repo marketplace count must match canonical, root, app, and topic package families");
+ensure(bundles.length === 33, "bundle catalog must expose 33 curated optional bundles");
+ensure(bundles.filter((bundle) => bundle?.family === "application").length === 6, "bundle catalog must expose six application bundles");
+ensure(bundles.filter((bundle) => bundle?.family === "topic").length === 27, "bundle catalog must expose 27 topic bundles");
+ensure(bundleMemberNames.length === 375, "bundle catalog must retain all 75 application and 300 topic capabilities");
+ensure(bundleMemberNameSet.size === bundleMemberNames.length, "each source capability must belong to exactly one curated bundle");
+ensure(bundleMemberNameSet.size === sourceCapabilityNames.size && [...sourceCapabilityNames].every((name) => bundleMemberNameSet.has(name)), "bundle membership must exactly cover the retained application and topic sources");
+ensure(bundles.every((bundle) => Number.isInteger(bundle?.memberCount) && bundle.memberCount === bundle.memberNames?.length && bundle.memberCount >= 1 && bundle.memberCount <= 15), "every curated bundle must contain between one and 15 declared capabilities");
+ensure(marketplaceEntries.length === expectedMarketplaceCount, "repo marketplace count must match the canonical card plus curated bundle cards");
 ensure(family?.marketplace?.publicPluginCount === expectedMarketplaceCount, "public family marketplace count must be current");
 ensure(new Set(marketplaceEntries.map((entry) => entry.name)).size === marketplaceEntries.length, "repo marketplace plugin names must be unique");
+ensure(retainedSourceCapabilityCount === 380, "all 380 root, application, and topic source capabilities must remain retained");
 ensure(legacyPublicRenames.length === 1, "historical coverage must declare the one public card rename");
 ensure(publicNameForLegacyId.get("seis-personal-plugin-discovery") === "seis-plugin-discovery", "legacy discovery card must resolve to the public discovery card");
+
+const canonicalEntry = marketplaceEntries.find((entry) => entry?.name === "seis-ai-agent");
+ensure(Boolean(canonicalEntry), "canonical SEIS-Agent marketplace card must remain available");
+const embeddedModuleNames = new Set(unifiedSuite?.sourceDiscovery?.embeddedModuleNames || []);
+
+for (const bundle of bundles) {
+  const entry = marketplaceEntries.find((candidate) => candidate?.name === bundle.id);
+  ensure(Boolean(entry), `curated bundle is not available from seis-repo: ${bundle.id}`);
+  if (!entry) continue;
+  ensure(entry.source?.source === "local", `${bundle.id} marketplace source must be local`);
+  ensure(entry.source?.path === bundle.sourcePath, `${bundle.id} must use its catalog source path`);
+  ensure(entry.policy?.installation === "AVAILABLE", `${bundle.id} must be AVAILABLE in seis-repo`);
+  ensure(entry.policy?.authentication === "ON_INSTALL", `${bundle.id} must authenticate ON_INSTALL in seis-repo`);
+}
 
 for (const legacyId of historicalPluginIds) {
   const id = publicNameForLegacyId.get(legacyId) || legacyId;
   const expectedPath = migratedRootNames.has(id) ? `./plugins/${id}` : `./plugins/seis-core/${id}`;
-  const entry = marketplaceEntries.find((candidate) => candidate?.name === id);
-  ensure(Boolean(entry), `historical card is not available from seis-repo: ${legacyId} -> ${id}`);
-  if (!entry) continue;
-  ensure(entry.source?.source === "local", `${id} marketplace source must be local`);
-  ensure(entry.source?.path === expectedPath, `${id} must use its canonical repo source path`);
-  ensure(entry.policy?.installation === "AVAILABLE", `${id} must be AVAILABLE in seis-repo`);
-  ensure(entry.policy?.authentication === "ON_INSTALL", `${id} must authenticate ON_INSTALL in seis-repo`);
+  ensure(migratedRootNames.has(id) || applicationNames.has(id), `historical capability must resolve to a retained root or application source: ${legacyId} -> ${id}`);
+  ensure(!marketplaceEntries.some((candidate) => candidate?.name === id), `retained source capability must not reappear as a direct marketplace card: ${id}`);
+
+  if (migratedRootNames.has(id)) {
+    ensure(embeddedModuleNames.has(id), `${id} must remain embedded in the canonical SEIS-Agent suite`);
+  } else {
+    const memberships = bundlesByMemberName.get(id) || [];
+    ensure(memberships.length === 1, `${id} must be discoverable through exactly one curated marketplace bundle`);
+    if (memberships.length === 1) {
+      ensure(marketplaceEntries.some((entry) => entry?.name === memberships[0].id), `${id} bundle card must remain available in seis-repo`);
+    }
+  }
 
   const sourceRoot = path.join(root, expectedPath);
   const manifestPath = path.join(sourceRoot, ".codex-plugin", "plugin.json");
@@ -66,7 +113,8 @@ for (const rename of legacyPublicRenames) {
   const legacyId = rename?.legacyPluginId;
   const publicId = rename?.publicPluginId;
   ensure(typeof legacyId === "string" && historicalPluginIds.includes(legacyId), "legacy public rename must reference a historical card");
-  ensure(typeof publicId === "string" && marketplaceEntries.some((entry) => entry.name === publicId), "legacy public rename must resolve to an available seis-repo card");
+  ensure(typeof publicId === "string" && (bundlesByMemberName.get(publicId) || []).length === 1, "legacy public rename must resolve through exactly one available curated bundle");
+  ensure(!marketplaceEntries.some((entry) => entry.name === publicId), `renamed source capability must not remain a separate marketplace card: ${publicId}`);
   ensure(!marketplaceEntries.some((entry) => entry.name === legacyId), `legacy card must not remain visible in seis-repo: ${legacyId}`);
 }
 
@@ -78,17 +126,19 @@ for (const plugin of migratedRootPlugins) {
 
 const report = {
   ok: failures.length === 0,
-  status: failures.length === 0 ? "historical-personal-cards-covered-by-public-seis-repo" : "migration-coverage-failed",
+  status: failures.length === 0 ? "historical-personal-capabilities-covered-by-curated-public-seis-repo" : "migration-coverage-failed",
   scope: "repo-only-static-validation",
   personalConfigRead: false,
   personalConfigMutated: false,
   historicalPersonalPluginCount: historicalPluginIds.length,
   legacyPublicRenameCount: legacyPublicRenames.length,
   legacyPublicRenames,
-  migratedRootMarketplacePluginCount: migratedRootPlugins.length,
-  applicationMarketplacePluginCount: applicationPlugins.length,
-  topicMarketplacePluginCount: topicPlugins.length,
+  migratedRootSourceCapabilityCount: migratedRootPlugins.length,
+  applicationSourceCapabilityCount: applicationPlugins.length,
+  topicSourceCapabilityCount: topicPlugins.length,
+  retainedSourceCapabilityCount,
   canonicalDefaultInstallCount: canonicalPlugins.length,
+  bundleMarketplaceCardCount: bundles.length,
   repoMarketplaceEntryCount: marketplaceEntries.length,
   expectedMarketplaceEntryCount: expectedMarketplaceCount,
   failures,

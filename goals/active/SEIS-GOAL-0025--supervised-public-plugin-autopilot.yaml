@@ -1,0 +1,232 @@
+schema_version: 2
+
+id: SEIS-GOAL-0025
+project: seis
+program: public-plugin-governance
+initiative: supervised-long-horizon-automation
+parent_goal: SEIS-GOAL-0024
+
+title: Add a supervised plan-and-build autopilot for public SEIS plugin packages
+summary: >-
+  Provide a deterministic local command that plans, regenerates, and validates
+  the curated public plugin marketplace during one foreground invocation,
+  retaining the 30-step bootstrap and five 100-step historical cadence while
+  activating Round 11 as the first 200-step plan-and-local-build cycle under
+  current user direction and a ten-year strategic roadmap. It must not claim
+  the unfinished Wave 5 steps completed, background execution, or self-authorize
+  GitHub, release, provider, credential, network, destructive, or write actions.
+
+category:
+  - plugins
+  - automation
+  - architecture
+  - documentation
+  - testing
+  - security
+
+priority: high
+status: in-progress
+maturity: prototype
+confidence: medium
+
+owner_agent: lead-architect
+accountable_human: project-owner
+supporting_agents:
+  - automation
+  - testing-and-qa
+  - security
+  - documentation
+
+horizon: 10-years-strategic
+start_after: null
+target_window:
+  start: 2026-07-22
+  end: null
+
+scope:
+  repositories:
+    - SEIS-plugin-root-20260715
+  paths:
+    - goals/active/SEIS-GOAL-0025--supervised-public-plugin-autopilot.yaml
+    - content/development/seis-public-plugin-supervised-autopilot.json
+    - docs/roadmap/SEIS_PUBLIC_PLUGIN_SUPERVISED_AUTOPILOT.md
+    - scripts/create-seis-public-plugin-supervised-autopilot.mjs
+    - scripts/run-seis-public-plugin-supervised-autopilot.mjs
+    - scripts/create-seis-public-plugin-continuity-cadence.mjs
+    - content/development/seis-public-plugin-continuity-cadence.json
+    - docs/roadmap/SEIS_PUBLIC_PLUGIN_CONTINUITY_CADENCE.md
+    - plugins/seis-core/test/public-plugin-supervised-autopilot.test.mjs
+    - package.json
+
+canonical_owner_repo: SEIS-plugin-root-20260715
+
+platforms:
+  - repository
+  - cli
+  - codex-plugin
+
+architecture_layers:
+  - governance
+  - automation
+  - integration
+
+security_classification: public-safe
+privacy_impact: none
+
+requirements:
+  - define exactly 30 immediate steps in five six-step rounds
+  - define five evidence-led 100-step waves and a ten-year strategic horizon
+  - increase the next five-wave series to 200 steps per wave after the current series closes
+  - activate Round 11 as one explicit 200-step cycle in ten 20-step rounds without claiming historical Wave 5 closeout
+  - execute plan, generation, and validation only during a foreground local invocation
+  - allowlist exactly 46 local generator, validation, test, and diff-check phases explicitly
+  - anchor repository identity and phase targets independently of the caller working directory
+  - refuse linked or replaced phase targets and revalidate device, inode, size, and digest immediately before execution
+  - disclose that the reviewed allowlist is source containment rather than an operating-system sandbox
+  - keep all external writes, network access, secrets, provider calls, deployment, release, GitHub push, merge, and destructive work disabled
+  - report a clear approval-gated GitHub delivery next action
+  - preserve the canonical SEIS-Agent default installation and curated bundle boundaries
+
+non_goals:
+  - background agents continuing after the command exits
+  - autonomous commits, pushes, merges, releases, deployments, or installations
+  - self-granted credentials, provider access, network access, or secret access
+  - changing the current curated marketplace algorithm without a separate goal
+  - deleting source packages or bundle members
+
+acceptance_criteria:
+  - a generated ten-year autopilot program is current and validates its inputs
+  - a plan mode reports the next safe phases without writing generated artifacts
+  - an apply-safe mode runs only allowlisted local generators and validators
+  - the automation has no GitHub push or external command path
+  - the 30-step bootstrap, five 100-step historical waves, and active 200-step Round 11 are machine-validated
+  - Round 11 contains exactly 200 steps in ten 20-step rounds with only step 1 in progress initially
+  - all 46 phase targets are repository-anchored; executable targets are regular, link-free, bounded, hashed, and checked again before spawn
+  - plan mode succeeds from a foreign working directory and a linked phase-target fixture is rejected
+  - failures are reported without a success claim
+  - documentation states that the command is supervised foreground automation, not persistent autonomous execution
+
+definition_of_ready:
+  - curated marketplace goal and current bundle artifacts are present
+  - public/private boundary is known
+  - the current branch is known
+  - no destructive migration or external permission is required
+
+definition_of_done:
+  - focused generator, runner, docs, and tests are committed on a feature branch
+  - local plan and apply-safe validation pass
+  - the public/private boundary and rollback are documented
+  - all external delivery actions remain approval-gated
+
+dependencies:
+  - SEIS-GOAL-0024
+blocked_by: []
+related_goals:
+  - SEIS-GOAL-021
+  - SEIS-GOAL-0024
+
+validation:
+  commands:
+    - npm run check:seis-public-plugin-supervised-autopilot
+    - npm run seis:public-plugin-autopilot -- --plan
+    - npm run seis:public-plugin-autopilot -- --apply-safe
+    - node --test plugins/seis-core/test/public-plugin-supervised-autopilot.test.mjs
+    - git diff --check
+  manual:
+    - automation permission-boundary review
+    - long-horizon roadmap review
+  evidence:
+    - generated supervised autopilot program
+    - foreground plan/build/validation output
+
+quality_gates:
+  architecture: required
+  design: not-applicable
+  security: required
+  accessibility: not-applicable
+  performance: required
+  documentation: required
+  testing: required
+
+risks:
+  - id: RISK-0025-001
+    description: An automation label could be mistaken for persistent autonomous execution.
+    likelihood: medium
+    impact: high
+    owner: lead-architect
+    mitigation: Foreground-only execution, explicit no-background fields, and a command allowlist.
+    trigger: A script adds persistence, daemon, scheduled, or network behavior.
+    contingency: Disable apply-safe mode and revert the runner.
+    status: active
+  - id: RISK-0025-002
+    description: A plan-and-build runner could accidentally expand into external GitHub delivery.
+    likelihood: low
+    impact: high
+    owner: security
+    mitigation: No git push, gh, network, shell, or arbitrary command inputs in the runner.
+    trigger: An external delivery command is introduced or invoked.
+    contingency: Revert the runner and require a separate approved delivery action.
+    status: active
+  - id: RISK-0025-003
+    description: Long-horizon planning could be presented as completed future work.
+    likelihood: medium
+    impact: medium
+    owner: documentation
+    mitigation: Mark every future phase strategic, gated, and non-automatic.
+    trigger: Documentation claims a future phase executed.
+    contingency: Correct the record and add a review gate.
+    status: active
+  - id: RISK-0025-004
+    description: A reviewed command allowlist could be mistaken for operating-system sandboxing.
+    likelihood: medium
+    impact: high
+    owner: security
+    mitigation: Report reviewed-allowlist-no-os-sandbox, keep ambient network and filesystem isolation claims false, and document that hostile descendant termination is not guaranteed.
+    trigger: Output or documentation claims kernel-enforced network, filesystem, or descendant isolation.
+    contingency: Disable apply-safe mode, correct the claims, and require a real sandbox design before re-enabling execution.
+    status: active
+  - id: RISK-0025-005
+    description: A phase file or ancestor could change after validation and before process execution.
+    likelihood: low
+    impact: high
+    owner: security
+    mitigation: Reject links, snapshot device, inode, size, and digest, then revalidate immediately before spawning the absolute target path.
+    trigger: Any target identity or digest changes between inspection and execution.
+    contingency: Abort the run, trust no partial success, inspect the checkout, and rerun from a stable local tree.
+    status: active
+
+rollback:
+  strategy: revert
+  steps:
+    - revert the focused supervised-autopilot commit
+    - remove the package scripts introduced by the goal
+    - retain curated marketplace and retained source packages unchanged
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: automation/seis-public-plugin-supervised-autopilot
+  suggested_commit: "feat(automation): add supervised public plugin autopilot"
+
+observability:
+  metrics:
+    - autopilot_plan_success
+    - autopilot_apply_safe_success
+    - autopilot_blocked_external_action_count
+    - public_marketplace_card_count
+  logs: []
+
+outputs:
+  - supervised foreground plan-and-build runner
+  - 30-step immediate execution map
+  - five-wave and ten-year strategic program
+  - permission-boundary documentation
+  - tests and validation commands
+
+notes:
+  - The ten-year horizon is strategic planning only; it never implies hidden or continuous execution.
+  - GitHub delivery remains a separate current-approval and environment-availability decision.

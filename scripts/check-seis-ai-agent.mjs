@@ -56,6 +56,8 @@ const required = [
   "content/development/seis-public-plugin-external-install-proof.json",
   "content/development/seis-plugin-canonicalization.json",
   "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
+  "content/development/seis-public-plugin-family.json",
+  "content/development/seis-public-plugin-bundle-catalog.json",
   "plugins/seis-ai-agent/assets/unified-suite.json",
   "reports/seis-public-plugin-lifecycle.md",
   "reports/seis-public-plugin-fresh-task-proof.md",
@@ -79,18 +81,12 @@ const manifest = readJson("plugins/seis-ai-agent/.codex-plugin/plugin.json");
 const profile = readJson("plugins/seis-ai-agent/assets/agent-profile.json");
 const mcp = readJson("plugins/seis-ai-agent/.mcp.json");
 const marketplace = readJson(".agents/plugins/marketplace.json");
+const publicFamily = readJson("content/development/seis-public-plugin-family.json");
+const bundleCatalog = readJson("content/development/seis-public-plugin-bundle-catalog.json");
 const identities = readJson("data/seis-operating-identities.json");
 const packageJson = readJson("package.json");
-const publicPluginEntries = [
-  ["seis-ai-agent", "./plugins/seis-ai-agent"],
-  ["seis", "./plugins/seis"],
-  ["seis-cloud", "./plugins/seis-cloud"],
-  ["seis-code", "./plugins/seis-code"],
-  ["seis-design", "./plugins/seis-design"],
-  ["seis-data", "./plugins/seis-data"],
-];
-const publicApplicationEntries = (marketplace?.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/"));
-const publicTopicEntries = (marketplace?.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith(`./${TOPIC_PLUGIN_SOURCE_ROOT}/`));
+const publicCards = marketplace?.plugins || [];
+const publicBundleEntries = publicCards.filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-bundles/"));
 ensure(manifest?.name === "seis-ai-agent", "manifest name must be seis-ai-agent");
 ensure(manifest?.mcpServers === "./.mcp.json", "manifest must reference ./.mcp.json");
 ensure(manifest?.interface?.capabilities?.includes("Unified SEIS orchestration"), "manifest must expose unified orchestration");
@@ -107,7 +103,7 @@ ensure(profile?.version === 2, "profile must use unified suite profile version 2
 ensure(profile?.releaseVersion === "0.3.0+codex.20260712", "profile must expose the unified release version");
 ensure(profile?.consolidationPolicy?.defaultInstallMode === "single-public-plugin", "profile must use a single public install");
 ensure(profile?.consolidationPolicy?.standaloneLaneInstallMode === "source-module-only", "profile must retain lane packages as source modules only");
-ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages", "profile must publish the canonical orchestrator and public app marketplace policy");
+ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-curated-bounded-public-bundles", "profile must publish the canonical orchestrator and curated public bundle policy");
 ensure(profile?.consolidationPolicy?.unifiedSuite === "assets/unified-suite.json", "profile must point at the unified suite file");
 ensure(profile?.consolidationPolicy?.futurePluginIntake?.includes("assets/unified-suite.json"), "profile must route future SEIS plugins into the unified suite");
 ensure(profile?.applicationSourceBoundary?.application === "apps/seis-core", "profile must expose the SEIS Core application boundary");
@@ -118,7 +114,11 @@ ensure(profile?.applicationSourceBoundary?.sourceAvailableInRepository === true,
 ensure(profile?.applicationSourceBoundary?.publicRepositoryAvailable === true, "profile must mark app sources as public-repository available");
 ensure(profile?.applicationSourceBoundary?.publicAudience === "everyone", "profile app public audience must be everyone");
 ensure(profile?.applicationSourceBoundary?.applicationOwnedPluginCount === APP_PLUGIN_EXPANSION_TARGET, `profile must expose all ${APP_PLUGIN_EXPANSION_TARGET} app-owned plugins`);
-ensure(profile?.applicationSourceBoundary?.publicMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, `profile must expose all ${APP_PLUGIN_EXPANSION_TARGET} app-owned marketplace cards`);
+ensure(profile?.applicationSourceBoundary?.distributionScope === "curated-bounded-public-bundles", "profile must use curated public bundles for app source distribution");
+ensure(profile?.applicationSourceBoundary?.publicMarketplaceEntryCount === 6, "profile must expose six application bundle cards");
+ensure(profile?.applicationSourceBoundary?.publicMarketplaceCardCount === 34, "profile must expose 34 public marketplace cards");
+ensure(profile?.applicationSourceBoundary?.publicMarketplaceBundleCount === 33, "profile must expose 33 optional public bundles");
+ensure(profile?.applicationSourceBoundary?.sourceCapabilityCount === 380, "profile must retain 380 public source capabilities");
 ensure(profile?.applicationSourceBoundary?.publicReleaseAllowed === false, "app-owned plugins must remain public-release gated");
 ensure(profile?.applicationSourceBoundary?.coreSourceOwner === false, "profile must keep packages/seis-ai out of app source ownership");
 ensure(profile?.terminalInstall?.defaultTarget === "seis-ai-agent@seis-repo", "profile must keep SEIS-Agent as terminal default target");
@@ -128,29 +128,27 @@ for (const platform of ["macos", "windows", "linux"]) ensure(profile?.terminalIn
 ensure(profile?.websiteRoadmap?.direction?.includes("Cinematic"), "website roadmap must preserve cinematic direction");
 ensure((identities?.identities || []).some((identity) => identity.name === "SEIS-Agent" && identity.repoSurface === "plugins/seis-ai-agent"), "operating identities must map SEIS-Agent to plugin");
 ensure(mcp?.mcpServers?.["seis-ai-agent"]?.args?.[0] === "./scripts/seis-ai-agent-mcp-server.mjs", "MCP manifest must point at server");
-ensure(marketplace?.plugins?.length === publicPluginEntries.length + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, "marketplace must publish SEIS-Agent, all migrated root cards, and all public app and topic packages");
-ensure(publicApplicationEntries.length === APP_PLUGIN_EXPANSION_TARGET, "marketplace must publish every app-owned package as a public seis-repo entry");
-ensure(publicTopicEntries.length === TOPIC_PLUGIN_TARGET, "marketplace must publish every objective-derived topic package as a public seis-repo entry");
-for (const [name, sourcePath] of publicPluginEntries) {
-  const entry = marketplace?.plugins?.find((plugin) => plugin.name === name);
-  ensure(entry?.source?.path === sourcePath, `marketplace must include ${name} at ${sourcePath}`);
-  ensure(entry?.policy?.installation === "AVAILABLE", `marketplace ${name} must be AVAILABLE`);
-  ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace ${name} must authenticate ON_INSTALL`);
-}
-for (const entry of publicApplicationEntries) {
-  ensure(entry?.policy?.installation === "AVAILABLE", `marketplace app ${entry?.name || "unknown"} must be AVAILABLE`);
-  ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace app ${entry?.name || "unknown"} must authenticate ON_INSTALL`);
-  ensure(fs.existsSync(path.join(root, entry.source.path)), `marketplace app ${entry?.name || "unknown"} source must exist`);
-}
-for (const entry of publicTopicEntries) {
-  ensure(entry?.policy?.installation === "AVAILABLE", `marketplace topic ${entry?.name || "unknown"} must be AVAILABLE`);
-  ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace topic ${entry?.name || "unknown"} must authenticate ON_INSTALL`);
-  ensure(fs.existsSync(path.join(root, entry.source.path)), `marketplace topic ${entry?.name || "unknown"} source must exist`);
-  const profile = readJson(path.join(entry.source.path, "assets", "topic-profile.json"));
-  ensure(profile?.id === entry.name, `marketplace topic ${entry?.name || "unknown"} profile id must match`);
-  ensure(profile?.license === "MIT", `marketplace topic ${entry?.name || "unknown"} profile license must be MIT`);
-  ensure(profile?.publicAudience === "everyone", `marketplace topic ${entry?.name || "unknown"} audience must be everyone`);
-  ensure(profile?.publicMarketplace === true, `marketplace topic ${entry?.name || "unknown"} profile must mark public marketplace availability`);
+ensure(publicFamily?.mode === "public_seis_agent_with_curated_bounded_repository_bundle_cards", "public family must use curated bounded public bundle cards");
+ensure(publicFamily?.marketplace?.publicPluginCount === 34 && publicFamily?.marketplace?.bundlePluginCount === 33, "public family must declare 34 cards and 33 bundles");
+ensure(publicFamily?.marketplace?.applicationBundlePluginCount === 6 && publicFamily?.marketplace?.topicBundlePluginCount === 27, "public family bundle composition is invalid");
+ensure(publicFamily?.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && publicFamily?.marketplace?.topicPluginCount === TOPIC_PLUGIN_TARGET && publicFamily?.marketplace?.sourceCapabilityCount === 380, "public family source capability counts are invalid");
+ensure(publicCards.length === 34, "marketplace must expose one canonical card and 33 optional bundles");
+ensure(publicBundleEntries.length === 33, "marketplace must expose exactly 33 optional bundles");
+ensure(publicCards.length === publicBundleEntries.length + 1, "marketplace must not expose direct source-package cards");
+const canonicalCard = publicCards.find((plugin) => plugin?.name === "seis-ai-agent");
+ensure(canonicalCard?.source?.path === "./plugins/seis-ai-agent", "marketplace must include canonical SEIS-Agent");
+ensure(canonicalCard?.policy?.installation === "AVAILABLE" && canonicalCard?.policy?.authentication === "ON_INSTALL", "canonical SEIS-Agent card policy is invalid");
+ensure(bundleCatalog?.marketplace?.publicCardCount === publicCards.length && bundleCatalog?.marketplace?.bundleCardCount === publicBundleEntries.length, "bundle catalog must match the marketplace card projection");
+ensure(bundleCatalog?.sourceCapabilityInventory?.applicationSourcePackageCount === APP_PLUGIN_EXPANSION_TARGET && bundleCatalog?.sourceCapabilityInventory?.topicSourcePackageCount === TOPIC_PLUGIN_TARGET && bundleCatalog?.sourceCapabilityInventory?.retainedSourcePackageCount === 380 && bundleCatalog?.sourceCapabilityInventory?.sourcePackagesDeleted === false, "bundle catalog source retention is invalid");
+for (const entry of publicBundleEntries) {
+  ensure(entry?.policy?.installation === "AVAILABLE", `marketplace bundle ${entry?.name || "unknown"} must be AVAILABLE`);
+  ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace bundle ${entry?.name || "unknown"} must authenticate ON_INSTALL`);
+  ensure(fs.existsSync(path.join(root, entry.source.path)), `marketplace bundle ${entry?.name || "unknown"} source must exist`);
+  const bundle = (bundleCatalog?.bundles || []).find((candidate) => candidate?.id === entry?.name);
+  const bundleProfile = readJson(path.join(entry.source.path, "assets", "bundle-profile.json"));
+  ensure(bundle?.sourcePath === entry?.source?.path, `marketplace bundle ${entry?.name || "unknown"} must match the bundle catalog`);
+  ensure(bundleProfile?.id === entry?.name && bundleProfile?.memberCount > 0 && bundleProfile?.memberCount <= 15, `marketplace bundle ${entry?.name || "unknown"} profile is invalid`);
+  ensure(bundleProfile?.installationPolicy?.bundleMembersAutoInstalled === false && bundleProfile?.installationPolicy?.sourcePackagesRetained === true && bundleProfile?.installationPolicy?.sourcePackagesDeleted === false, `marketplace bundle ${entry?.name || "unknown"} must retain source packages without auto-install`);
 }
 ensure(packageJson?.scripts?.["cloud:migration:audit"] === "node scripts/cloud-migration-audit.mjs", "package scripts must expose cloud:migration:audit");
 ensure(packageJson?.scripts?.["cloud:migration:audit:json"] === "node scripts/cloud-migration-audit.mjs --json", "package scripts must expose cloud:migration:audit:json");
@@ -177,7 +175,7 @@ ensure(packageJson?.scripts?.["check:seis-topic-plugin-family"] === "node script
 ensure(packageJson?.scripts?.["automation:seis-topic-plugin-family"] === "node scripts/create-seis-topic-plugin-family.mjs", "package scripts must expose automation:seis-topic-plugin-family");
 contains("scripts/install-seis-ai-agent.mjs", "seis-ai-agent@seis-repo", "installer must include repo install id");
 contains("scripts/install-seis-ai-agent.mjs", "plan-only", "installer must default to plan-only");
-contains("scripts/install-seis-ai-agent.mjs", "SEIS-Agent is the canonical public install target", "installer must document single public install policy");
+contains("scripts/install-seis-ai-agent.mjs", "curated public bundles", "installer must document curated public bundle policy");
 contains("scripts/install-seis-ai-agent.mjs", "single-public-plugin", "installer must default to one public plugin");
 contains("scripts/install-seis-ai-agent.mjs", "standalone lane installation is retired", "installer must reject standalone lane installation");
 contains("scripts/check-seis-public-plugin-install-smoke.mjs", "publicPluginCount", "install smoke checker must report public plugin count");
@@ -258,8 +256,9 @@ function validateInstallerPlan(extraArgs) {
   ensure(payload?.readiness?.applicationSource?.publicAudience === "everyone", "installer app public audience must be everyone");
   ensure(payload?.readiness?.applicationSource?.marketplaceName === "seis-repo", "installer app marketplace must be seis-repo");
   ensure(payload?.readiness?.applicationSource?.publicMarketplace === true, "installer must expose app sources in the public marketplace");
-  ensure(payload?.readiness?.applicationSource?.marketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, `installer must expose all ${APP_PLUGIN_EXPANSION_TARGET} app-owned marketplace cards`);
-  ensure(payload?.readiness?.consolidationPolicy?.includes("SEIS-Agent is the canonical public install target"), "installer must document the canonical public plugin policy");
+  ensure(payload?.readiness?.applicationSource?.marketplaceEntryCount === 6, "installer must expose six application bundle cards");
+  ensure(payload?.readiness?.applicationSource?.marketplaceCardCount === 34, "installer must expose 34 public marketplace cards");
+  ensure(payload?.readiness?.consolidationPolicy?.includes("curated public bundles"), "installer must document the curated public bundle policy");
   ensure(payload?.readiness?.canonicalization?.effectivePluginCount === 1, "installer must expose one canonical public plugin");
   ensure(payload?.readiness?.canonicalization?.legacyAliasCount === 5, "installer must preserve five legacy aliases");
   ensure(payload?.readiness?.canonicalization?.personalMarketplaceMutation === false, "installer must not mutate the personal marketplace");

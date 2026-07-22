@@ -7,17 +7,20 @@ const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-5-program.json";
 const CANDIDATE = "seis-plugin-capability-coverage";
-const COMPLETED_STEP_COUNT = 40;
-const NEXT_STEP_NUMBER = 41;
-const PLANNED_STEP_COUNT = 59;
-const COMPLETED_ROUND_COUNT = 2;
+const COMPLETED_STEP_COUNT = 80;
+const NEXT_STEP_NUMBER = 81;
+const PLANNED_STEP_COUNT = 19;
+const COMPLETED_ROUND_COUNT = 4;
 const PATHS = Object.freeze({
   activationDecision: "content/development/seis-public-plugin-wave-5-activation-decision.json",
   capabilityEvidence: "content/development/seis-plugin-capability-coverage.json",
+  round3Checkpoint: "content/development/seis-public-plugin-wave-5-round-3-checkpoint.json",
+  consolidation: "content/development/seis-public-plugin-consolidation.json",
   sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
   catalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
   matrix: "content/development/seis-core-plugin-matrix.json",
   marketplace: ".agents/plugins/marketplace.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
   predecessorReview: "content/development/seis-public-plugin-wave-4-following-wave-review.json",
   predecessorCloseout: "content/development/seis-public-plugin-wave-4-closeout.json",
 });
@@ -38,7 +41,7 @@ const ROUND_DEFINITIONS = Object.freeze([
       "Fix the only allowed source manifest path below the SEIS repository root.",
       "Fix the only allowed catalog path below the SEIS repository root.",
       "Fix the only allowed matrix path below the SEIS repository root.",
-      "Fix the only allowed repo marketplace path below the SEIS repository root.",
+      "Fix the only allowed repo marketplace and public bundle-catalog paths below the SEIS repository root.",
       "Refuse arbitrary roots and paths before registry access.",
       "Require regular files and refuse symlinks before registry reads.",
       "Enforce the 512 KiB registry byte limit before JSON parsing.",
@@ -57,8 +60,8 @@ const ROUND_DEFINITIONS = Object.freeze([
       "Implement fixed source-manifest plugin-name parsing.",
       "Implement fixed catalog category and capability-token parsing.",
       "Implement fixed matrix plugin-name parsing.",
-      "Implement fixed app-owned marketplace-card parsing.",
-      "Implement aggregate source, catalog, matrix, and marketplace reconciliation counts.",
+      "Implement fixed optional bundle-catalog membership parsing.",
+      "Implement aggregate source, catalog, matrix, bundle-member, and marketplace-card reconciliation counts.",
       "Implement deterministic declared category-count summaries.",
       "Implement deterministic declared capability-token frequency summaries.",
       "Report aggregate projection drift as attention without returning plugin names.",
@@ -68,7 +71,7 @@ const ROUND_DEFINITIONS = Object.freeze([
       "Register the candidate through the app-owned public source manifest projection.",
       "Refresh the public application catalog projection.",
       "Refresh the local status matrix projection.",
-      "Refresh the one public SEIS Repo marketplace card projection.",
+      "Refresh the exact optional SEIS Repo bundle membership projection.",
       "Refresh public-family, lifecycle, installation, runtime, permission, and provenance projections.",
       "Reconcile app and public-card count validators in one change.",
       "Run plugin-creator structural validation for the repo-backed package.",
@@ -103,29 +106,29 @@ const ROUND_DEFINITIONS = Object.freeze([
     ],
   },
   {
-    name: "Public-contract and integration maintenance",
-    objective: "Keep the coverage package interoperable with existing registry and marketplace contracts without expanding its authority.",
+    name: "Public-install consolidation and integration maintenance",
+    objective: "Keep one canonical public install while grouping overlapping discovery cards into existing SEIS source and suite boundaries without expanding authority or silently deleting packages.",
     tasks: [
-      "Review catalog search wording for the coverage package.",
-      "Review app source ownership documentation for the coverage package.",
-      "Review matrix status behavior under registry attention conditions.",
-      "Review public install-state language for static metadata packages.",
-      "Review public runtime-state language for status-only tools.",
-      "Review MCP permission ledger wording for fixed registry reads.",
-      "Review public-family report language for app-owned package counts.",
-      "Review lifecycle metadata for the extra public card.",
-      "Review provenance metadata for source and artifact safety.",
-      "Review external-install proof boundaries without claiming external proof.",
-      "Review secret scan coverage for the new package files.",
-      "Review documentation link integrity for the Wave 5 evidence chain.",
-      "Review test coverage gaps and create explicit follow-up tasks.",
-      "Review rollback instructions for package and evidence removal.",
-      "Review provider, deployment, signing, and release non-claims.",
-      "Review accessibility and clarity of marketplace metadata.",
-      "Review performance implications of bounded JSON parsing.",
-      "Record a public-contract checkpoint with current validation evidence.",
-      "Prepare the next non-destructive continuation sequence.",
-      "Confirm no protected-default-branch write is implied by repository evidence.",
+      "Inventory the canonical install, embedded modules, app-owned packages, and topic-card surfaces without reading a personal marketplace.",
+      "Record the one-install default policy so public discovery cards are not interpreted as a 600-plugin requirement.",
+      "Measure public discovery-card counts and category coverage using checked-in SEIS Repo metadata only.",
+      "Detect exact normalized capability-profile overlaps as merge-review candidates without exposing private data.",
+      "Separate exact overlaps from complementary specialist packages before any consolidation decision.",
+      "Define which overlapping skills can live inside an existing canonical package or SEIS-Agent lane.",
+      "Require compatibility, ownership, rollback, and human approval before any physical package merge or deletion.",
+      "Keep direct source packages optional and preserve one canonical default install target.",
+      "Treat topic cards as discoverability metadata rather than default installations.",
+      "Review public install-state wording so availability never implies recommended bulk installation.",
+      "Review source ownership and redirect requirements for any future consolidation.",
+      "Review public marketplace category wording for clear bundle discovery.",
+      "Generate a deterministic public consolidation record and stale-artifact check.",
+      "Add focused tests for counts, grouping boundaries, and no automatic physical merge.",
+      "Link the consolidation record to the existing unified-suite policy rather than creating a second install root.",
+      "Review documentation links, rollout language, and the no-bulk-install user journey.",
+      "Review secret, provider, deployment, signing, and release non-claims for the consolidation surface.",
+      "Record a consolidation checkpoint with current validation evidence.",
+      "Prepare the next reversible continuation sequence without changing protected branches.",
+      "Confirm any future physical merge remains explicitly approved and separately reversible.",
     ],
   },
   {
@@ -173,16 +176,24 @@ if (CHECK_MODE) {
 function buildRecord() {
   const activationDecision = readJson(PATHS.activationDecision);
   const capabilityEvidence = readJson(PATHS.capabilityEvidence);
+  const round3Checkpoint = readJson(PATHS.round3Checkpoint);
+  const consolidation = readJson(PATHS.consolidation);
   const sourceManifest = readJson(PATHS.sourceManifest);
   const catalog = readJson(PATHS.catalog);
   const matrix = readJson(PATHS.matrix);
   const marketplace = readJson(PATHS.marketplace);
+  const bundleCatalog = readJson(PATHS.bundleCatalog);
   const predecessorReview = readJson(PATHS.predecessorReview);
   const predecessorCloseout = readJson(PATHS.predecessorCloseout);
   const sourceEntries = list(sourceManifest.plugins);
   const catalogEntries = list(catalog.plugins);
   const matrixEntries = list(matrix.plugins);
   const marketplaceEntries = list(marketplace.plugins);
+  const applicationBundleMembers = list(bundleCatalog.bundles)
+    .filter((bundle) => bundle?.family === "application")
+    .flatMap((bundle) => list(bundle?.memberNames));
+  const candidateBundles = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(CANDIDATE));
+  const candidateBundleId = candidateBundles.length === 1 ? candidateBundles[0].id : null;
   const steps = ROUND_DEFINITIONS.flatMap((round, roundIndex) => round.tasks.map((title, taskIndex) => {
     const number = (roundIndex * 20) + taskIndex + 1;
     return {
@@ -207,7 +218,8 @@ function buildRecord() {
     publicCandidateProjection: sourceEntries.filter((entry) => entry?.name === CANDIDATE).length === 1
       && catalogEntries.filter((entry) => entry?.name === CANDIDATE && entry?.status?.state === "ready").length === 1
       && matrixEntries.filter((entry) => entry?.name === CANDIDATE && entry?.status === "ready" && entry?.ok === true).length === 1
-      && marketplaceEntries.filter((entry) => entry?.name === CANDIDATE && entry?.source?.path === `./plugins/seis-core/${CANDIDATE}`).length === 1,
+      && candidateBundles.length === 1
+      && marketplaceEntries.filter((entry) => entry?.name === candidateBundleId && entry?.source?.path === `./plugins/seis-bundles/${candidateBundleId}`).length === 1,
     coverageEvidence: capabilityEvidence?.id === CANDIDATE
       && capabilityEvidence?.status === "ready-public-static-capability-coverage-evidence"
       && capabilityEvidence?.activation?.activationApproved === true
@@ -215,6 +227,41 @@ function buildRecord() {
       && capabilityEvidence?.audit?.reconciliation?.reconciled === true,
     fixedRegistrySafetyCoverage: capabilityEvidence?.fixedRegistrySafetyCoverage?.status === "ready-fixed-registry-safety-coverage"
       && list(capabilityEvidence?.fixedRegistrySafetyCoverage?.coveredFailureModes).length === 7,
+    outputBounds: capabilityEvidence?.outputBounds?.aggregateOnly === true
+      && capabilityEvidence?.outputBounds?.maxReturnedCategoryKinds === 128
+      && capabilityEvidence?.outputBounds?.maxReturnedCapabilityTokenKinds === 256
+      && capabilityEvidence?.outputBounds?.maxReturnedFindings === 64
+      && capabilityEvidence?.outputBounds?.categoryCountsTruncated === false
+      && capabilityEvidence?.outputBounds?.capabilityTokenFrequenciesTruncated === false,
+    round3Checkpoint: round3Checkpoint?.id === "seis-public-plugin-wave-5-round-3-checkpoint"
+      && round3Checkpoint?.status === "completed-repository-local-round-3-checkpoint"
+      && list(round3Checkpoint?.completedSteps).join(",") === Array.from({ length: 20 }, (_, index) => index + 41).join(",")
+      && round3Checkpoint?.boundedCoverage?.sourcePluginCount === sourceEntries.length
+      && round3Checkpoint?.boundedCoverage?.catalogPluginCount === catalogEntries.length
+      && round3Checkpoint?.boundedCoverage?.matrixPluginCount === matrixEntries.length
+      && round3Checkpoint?.boundedCoverage?.bundleApplicationMemberCount === applicationBundleMembers.length
+      && round3Checkpoint?.boundedCoverage?.marketplacePublicCardCount === marketplaceEntries.length
+      && Object.values(round3Checkpoint?.checks || {}).every(Boolean)
+      && Object.values(round3Checkpoint?.externalClaims || {}).every((value) => value === false),
+    consolidationInventory: consolidation?.id === "seis-public-plugin-consolidation"
+      && consolidation?.goalId === "SEIS-GOAL-0024"
+      && consolidation?.status === "implemented-repository-local-not-published"
+      && consolidation?.installationPolicy?.canonicalInstallId === "seis-ai-agent@seis-repo"
+      && consolidation?.installationPolicy?.defaultInstallMode === "single-public-plugin"
+      && consolidation?.installationPolicy?.publicDefaultInstallCount === 1
+      && consolidation?.inventory?.publicCardCount === marketplaceEntries.length
+      && consolidation?.inventory?.applicationSourcePluginCount === sourceEntries.length
+      && consolidation?.inventory?.applicationCatalogPluginCount === catalogEntries.length
+      && consolidation?.consolidationReview?.automaticPhysicalMerge === false
+      && consolidation?.consolidationReview?.physicalMergePerformed === false
+      && consolidation?.bundlePlan?.status === "implemented-repository-local-not-published"
+      && consolidation?.bundlePlan?.maximumBundleSize === 15
+      && consolidation?.bundlePlan?.targetMarketplaceCardCount === 34
+      && consolidation?.bundlePlan?.marketplaceProjectionGenerated === true
+      && consolidation?.bundlePlan?.sourcePackagesDeleted === false
+      && consolidation?.bundlePlan?.exactOnceCoverage === true
+      && Object.values(consolidation?.checks || {}).every(Boolean)
+      && Object.values(consolidation?.externalClaims || {}).every((value) => value === false),
     permissions: list(capabilityEvidence?.safety?.write).length === 0
       && list(capabilityEvidence?.safety?.network).length === 0
       && list(capabilityEvidence?.safety?.secrets).length === 0,
@@ -249,8 +296,8 @@ function buildRecord() {
     scope: {
       repositories: ["SEIS"],
       selectedCapability: CANDIDATE,
-      outcome: "One public repository package now reports bounded, derived coverage across four fixed public SEIS Repo registry projections. The first 40 Wave 5 steps are implemented and validated locally; step 41 starts the coverage-interpretation and resilience-review tranche. No personal marketplace, external write, network, secret, installation, runtime, provider, deployment, signing, or release claim is authorized.",
-      entryRule: "Wave 4 closed with a historical candidate review, the separate Wave 5 activation decision records current user authority and bounded scope, and the active package has current public source, catalog, matrix, marketplace, evidence, and deny-by-default permission projections.",
+      outcome: "One public repository package now reports bounded, derived coverage across five fixed public SEIS Repo registry projections. The first 80 Wave 5 steps are implemented and validated locally; 381 discovery cards are projected as one canonical SEIS-Agent card plus 33 optional bounded bundle cards without deleting source packages. No personal marketplace, external write, network, secret, installation, provider, deployment, signing, publication, or release claim is authorized.",
+      entryRule: "Wave 4 closed with a historical candidate review, the separate Wave 5 activation decision records current user authority and bounded scope, and the active package has current source, catalog, matrix, bundle membership, marketplace, evidence, and deny-by-default permission projections.",
     },
     nonGoals: [
       "Adding a second Wave 5 package or card without a separate capability decision.",
@@ -263,7 +310,9 @@ function buildRecord() {
       activationDecisionPath: PATHS.activationDecision,
       implementationStarted: true,
       candidatePackageExists: true,
-      candidatePublicCardExists: true,
+      candidateDirectPublicCardExists: false,
+      candidateBundleId,
+      candidateBundleCardExists: true,
       publicReleaseApproved: false,
     },
     publicBoundary: {
@@ -314,17 +363,36 @@ function buildRecord() {
         status: "completed-repository-local",
         scope: "coverage implementation, public registry projections, evidence generation, structural validation, focused checks, and full repository-local validation",
       },
+      thirdDeliveryTranche: {
+        totalSteps: 20,
+        completedSteps: 20,
+        stepRange: "41-60",
+        status: "completed-repository-local",
+        scope: "coverage interpretation, malformed-input resilience, fixed-root and unavailable-evidence handling, aggregate output bounds, public-contract review, and checkpoint evidence",
+      },
+      fourthDeliveryTranche: {
+        totalSteps: 20,
+        completedSteps: 20,
+        stepRange: "61-80",
+        status: "completed-repository-local",
+        scope: "curated capability-package projection, exact-once coverage, source retention, bounded MCP runtimes, implementation documentation, and focused validation",
+      },
     },
     evidence: PATHS,
     checks,
     validation: [
       "npm run check:seis-public-plugin-wave-5-activation-decision",
       "npm run check:seis-plugin-capability-coverage",
+      "npm run check:seis-public-plugin-wave-5-round-3-checkpoint",
+      "npm run check:seis-public-plugin-consolidation",
+      "npm run check:seis-public-plugin-capability-packages",
       "npm run check:seis-public-plugin-wave-5-program",
       "npm run check:seis-public-plugin-continuity",
       "npm run check:seis-repo-marketplace",
       "node --test plugins/seis-core/test/plugin-capability-coverage.test.mjs",
       "node --test plugins/seis-core/test/plugin-capability-coverage-evidence.test.mjs",
+      "node --test plugins/seis-core/test/public-plugin-consolidation.test.mjs",
+      "node --test plugins/seis-core/test/public-plugin-bundles.test.mjs",
     ],
     risks: [
       {
@@ -342,7 +410,7 @@ function buildRecord() {
     ],
     rollback: {
       strategy: "revert",
-      scope: "Revert the focused Wave 5 package, generated evidence, public card projection, and program records on the feature branch; no external state or data migration exists.",
+      scope: "Revert the focused Wave 5 package, generated evidence, optional bundle projection, and program records on the feature branch; retained source packages remain intact and no external state or data migration exists.",
       dataMigrationRequired: false,
     },
   };
@@ -353,17 +421,19 @@ function buildRecord() {
 function validationFor(number) {
   if (number <= 20) return "focused runtime, MCP, and fixture test";
   if (number <= 40) return "public projection, structural, evidence, and repository validation";
+  if (number <= 60) return "coverage interpretation, resilience, output-bound, and public-contract validation";
+  if (number <= 80) return "capability-package projection, exact-once coverage, source-retention, and bounded-runtime validation";
   return "future evidence required before completion";
 }
 
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-5-program" && record.goalId === "SEIS-GOAL-021" && record.status === "in-progress" && record.maturity === "prototype", "record identity is invalid");
   assert(record.wave?.number === 5 && record.wave?.totalSteps === 100 && record.wave?.roundCount === 5 && record.wave?.stepsPerRound === 20, "wave shape is invalid");
-  assert(record.scope?.selectedCapability === CANDIDATE && record.activationGate?.status === "implemented-repository-local" && record.activationGate?.implementationStarted === true && record.activationGate?.candidatePackageExists === true && record.activationGate?.candidatePublicCardExists === true && record.activationGate?.publicReleaseApproved === false, "activation gate is invalid");
+  assert(record.scope?.selectedCapability === CANDIDATE && record.activationGate?.status === "implemented-repository-local" && record.activationGate?.implementationStarted === true && record.activationGate?.candidatePackageExists === true && record.activationGate?.candidateDirectPublicCardExists === false && typeof record.activationGate?.candidateBundleId === "string" && record.activationGate?.candidateBundleCardExists === true && record.activationGate?.publicReleaseApproved === false, "activation gate is invalid");
   assert(list(record.rounds).length === 5 && list(record.steps).length === 100 && record.steps.every((step, index) => step?.number === index + 1 && step?.round === Math.floor(index / 20) + 1 && typeof step?.title === "string" && step.title.length > 0), "step plan is invalid");
   assert(record.steps.filter((step) => step.status === "completed").length === COMPLETED_STEP_COUNT && list(record.steps.filter((step) => step.status === "in-progress")).map((step) => step.number).join(",") === String(NEXT_STEP_NUMBER) && record.steps.filter((step) => step.status === "planned").length === PLANNED_STEP_COUNT, "step status plan is invalid");
   assert(list(record.rounds).slice(0, COMPLETED_ROUND_COUNT).every((round) => round?.status === "completed") && record.rounds?.[COMPLETED_ROUND_COUNT]?.status === "in-progress", "round status plan is invalid");
-  assert(record.progress?.completedStepCount === COMPLETED_STEP_COUNT && record.progress?.plannedStepCount === PLANNED_STEP_COUNT && list(record.progress?.inProgressStepNumbers).join(",") === String(NEXT_STEP_NUMBER) && record.progress?.completedRoundCount === COMPLETED_ROUND_COUNT && record.progress?.nextStepNumber === NEXT_STEP_NUMBER && record.progress?.firstDeliveryTranche?.totalSteps === 30 && record.progress?.firstDeliveryTranche?.status === "completed-repository-local" && record.progress?.secondDeliveryTranche?.stepRange === "21-40" && record.progress?.secondDeliveryTranche?.status === "completed-repository-local", "progress is invalid");
+  assert(record.progress?.completedStepCount === COMPLETED_STEP_COUNT && record.progress?.plannedStepCount === PLANNED_STEP_COUNT && list(record.progress?.inProgressStepNumbers).join(",") === String(NEXT_STEP_NUMBER) && record.progress?.completedRoundCount === COMPLETED_ROUND_COUNT && record.progress?.nextStepNumber === NEXT_STEP_NUMBER && record.progress?.firstDeliveryTranche?.totalSteps === 30 && record.progress?.firstDeliveryTranche?.status === "completed-repository-local" && record.progress?.secondDeliveryTranche?.stepRange === "21-40" && record.progress?.secondDeliveryTranche?.status === "completed-repository-local" && record.progress?.thirdDeliveryTranche?.stepRange === "41-60" && record.progress?.thirdDeliveryTranche?.status === "completed-repository-local" && record.progress?.fourthDeliveryTranche?.stepRange === "61-80" && record.progress?.fourthDeliveryTranche?.status === "completed-repository-local", "progress is invalid");
   assert(Object.values(record.checks || {}).every(Boolean), "required Wave 5 checks are not current");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.protectedDefaultBranchWrites === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(Object.values(record.externalClaims || {}).every((value) => value === false), "external claims must remain false");

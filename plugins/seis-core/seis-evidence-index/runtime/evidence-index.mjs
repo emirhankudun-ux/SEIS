@@ -32,23 +32,36 @@ export function auditEvidenceIndex(rootPath, options = {}) {
   );
 
   if (evidence) {
+    const historicalSnapshot = evidence.historicalWave1Snapshot;
+    const currentProjection = evidence.currentMarketplaceProjection;
+    const selectedCapability = currentProjection?.selectedApplicationCapability;
     addCheck(checks, findings, "wave-evidence-id", evidence.id === "seis-public-plugin-wave-1-evidence-index");
-    addCheck(checks, findings, "wave-evidence-marketplace", evidence.marketplace?.name === "seis-repo" && evidence.marketplace?.displayName === "SEIS Repo");
+    addCheck(checks, findings, "wave-evidence-schema", evidence.schemaVersion === 2);
+    addCheck(
+      checks,
+      findings,
+      "wave-evidence-historical-snapshot",
+      isHistoricalWave1Snapshot(historicalSnapshot)
+    );
+    addCheck(checks, findings, "wave-evidence-marketplace", currentProjection?.marketplaceName === "seis-repo" && currentProjection?.marketplaceDisplayName === "SEIS Repo");
     addCheck(
       checks,
       findings,
       "wave-evidence-public-count",
-      Number.isInteger(evidence.marketplace?.publicCardCount)
-        && evidence.marketplace.publicCardCount > 0
-        && evidence.marketplace.publicCardCount === evidence.marketplace?.expectedCardCount
+      isCurrentMarketplaceProjection(currentProjection)
     );
     addCheck(
       checks,
       findings,
       "wave-evidence-app-count",
-      Number.isInteger(evidence.marketplace?.applicationPluginCount)
-        && evidence.marketplace.applicationPluginCount > 0
-        && evidence.marketplace.applicationPluginCount === evidence.release?.appPluginCount
+      isCurrentSourceInventory(currentProjection?.sourceCapabilityInventory)
+        && currentProjection.sourceCapabilityInventory.applicationSourcePackageCount === evidence.release?.appPluginCount
+    );
+    addCheck(
+      checks,
+      findings,
+      "wave-evidence-selected-capability-bundle",
+      isCurrentEvidenceIndexCapability(selectedCapability)
     );
     addCheck(
       checks,
@@ -89,6 +102,13 @@ function result({ evidence, program, checks, findings }) {
     .filter((step) => step?.status === "in-progress" && Number.isInteger(step.number))
     .map((step) => step.number)
     .sort((left, right) => left - right);
+  const historicalSnapshot = evidence?.historicalWave1Snapshot;
+  const currentProjection = evidence?.currentMarketplaceProjection;
+  const selectedCapability = currentProjection?.selectedApplicationCapability;
+  const historicalSnapshotValid = isHistoricalWave1Snapshot(historicalSnapshot);
+  const currentProjectionValid = isCurrentMarketplaceProjection(currentProjection);
+  const currentSourceInventoryValid = isCurrentSourceInventory(currentProjection?.sourceCapabilityInventory);
+  const selectedCapabilityValid = isCurrentEvidenceIndexCapability(selectedCapability);
 
   return {
     state: errorCount === 0 ? "ready" : "attention",
@@ -96,11 +116,15 @@ function result({ evidence, program, checks, findings }) {
     mode: "public-evidence-index-read-only",
     indexId: EVIDENCE_INDEX_ID,
     summary: {
-      marketplaceName: evidence?.marketplace?.name === "seis-repo" ? "seis-repo" : null,
-      marketplaceDisplayName: evidence?.marketplace?.displayName === "SEIS Repo" ? "SEIS Repo" : null,
-      publicCardCount: numberOrNull(evidence?.marketplace?.publicCardCount),
-      expectedCardCount: numberOrNull(evidence?.marketplace?.expectedCardCount),
-      applicationPluginCount: numberOrNull(evidence?.marketplace?.applicationPluginCount),
+      historicalWave1PublicCardCount: historicalSnapshotValid ? historicalSnapshot.publicCardCount : null,
+      historicalWave1ApplicationPluginCount: historicalSnapshotValid ? historicalSnapshot.applicationPluginCount : null,
+      marketplaceName: currentProjection?.marketplaceName === "seis-repo" ? "seis-repo" : null,
+      marketplaceDisplayName: currentProjection?.marketplaceDisplayName === "SEIS Repo" ? "SEIS Repo" : null,
+      publicCardCount: currentProjectionValid ? currentProjection.publicCardCount : null,
+      bundleCardCount: currentProjectionValid ? currentProjection.bundleCardCount : null,
+      applicationPluginCount: currentSourceInventoryValid ? currentProjection.sourceCapabilityInventory.applicationSourcePackageCount : null,
+      selectedCapabilityBundleId: selectedCapabilityValid ? selectedCapability.bundleId : null,
+      selectedCapabilityDirectCardRequired: selectedCapabilityValid ? false : null,
       releaseLabel: stringOrNull(evidence?.release?.label),
       releaseSemver: stringOrNull(evidence?.release?.semver),
       recordedAttentionContractIds: attentionContractIds,
@@ -163,8 +187,52 @@ function hasUnsafeInput(value) {
   return MACHINE_PATH_PATTERN.test(value) || SECRET_PATTERNS.some((pattern) => pattern.test(value));
 }
 
-function numberOrNull(value) {
-  return Number.isInteger(value) ? value : null;
+function isHistoricalWave1Snapshot(snapshot) {
+  return snapshot?.observedAt === "2026-07-21"
+    && snapshot?.projectionModel === "direct-source-cards"
+    && snapshot?.marketplaceName === "seis-repo"
+    && snapshot?.marketplaceDisplayName === "SEIS Repo"
+    && snapshot?.publicCardCount === 377
+    && snapshot?.canonicalOrchestratorCount === 1
+    && snapshot?.migratedRootPluginCount === 5
+    && snapshot?.applicationPluginCount === 71
+    && snapshot?.topicPluginCount === 300
+    && snapshot?.selectedCapability === EVIDENCE_INDEX_ID
+    && snapshot?.selectedCapabilityDirectCardCount === 1
+    && snapshot?.immutableHistoricalEvidence === true
+    && snapshot?.evidencePath === "docs/development/SEIS_PUBLIC_PLUGIN_WAVE_1_HANDOFF.md";
+}
+
+function isCurrentMarketplaceProjection(projection) {
+  return projection?.observedAt === "2026-07-22"
+    && projection?.projectionModel === "curated-bundle-cards"
+    && projection?.marketplaceName === "seis-repo"
+    && projection?.marketplaceDisplayName === "SEIS Repo"
+    && projection?.publicCardCount === 34
+    && projection?.canonicalCardCount === 1
+    && projection?.bundleCardCount === 33
+    && projection?.applicationBundleCardCount === 6
+    && projection?.topicBundleCardCount === 27;
+}
+
+function isCurrentSourceInventory(inventory) {
+  return inventory?.rootSourceModuleCount === 5
+    && inventory?.applicationSourcePackageCount === 75
+    && inventory?.topicSourcePackageCount === 300
+    && inventory?.retainedSourcePackageCount === 380
+    && inventory?.sourcePackagesDeleted === false;
+}
+
+function isCurrentEvidenceIndexCapability(capability) {
+  return capability?.id === EVIDENCE_INDEX_ID
+    && capability?.retainedSource === true
+    && capability?.sourcePath === "plugins/seis-core/seis-evidence-index"
+    && capability?.directMarketplaceCardRequired === false
+    && capability?.directMarketplaceCardCount === 0
+    && capability?.bundleCardCount === 1
+    && capability?.bundleId === "seis-application-bundle-04"
+    && capability?.bundleSourcePath === "./plugins/seis-bundles/seis-application-bundle-04"
+    && capability?.bundleFamily === "application";
 }
 
 function stringOrNull(value) {

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-10",
+  "family": "topic",
+  "journeyId": "cybersecurity",
+  "journeyLabel": "Cybersecurity",
+  "journeyPart": 1,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 11,
+  "category": "Cybersecurity",
+  "categoryLabels": [
+    "Cybersecurity"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-cybersecurity",
+      "displayName": "SEIS Cybersecurity",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-abac",
+      "displayName": "SEIS ABAC",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-abac",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-ai-security",
+      "displayName": "SEIS AI Security",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-ai-security",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-application-security",
+      "displayName": "SEIS Application Security",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-application-security",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-authentication",
+      "displayName": "SEIS Authentication",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-authentication",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-authorization",
+      "displayName": "SEIS Authorization",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-authorization",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-compliance",
+      "displayName": "SEIS Compliance",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-compliance",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-encryption",
+      "displayName": "SEIS Encryption",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-encryption",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-identity-management",
+      "displayName": "SEIS Identity Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-identity-management",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-incident-response",
+      "displayName": "SEIS Incident Response",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-incident-response",
+      "category": "Cybersecurity"
+    },
+    {
+      "name": "seis-topic-cybersecurity-information-security",
+      "displayName": "SEIS Information Security",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cybersecurity-information-security",
+      "category": "Cybersecurity"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

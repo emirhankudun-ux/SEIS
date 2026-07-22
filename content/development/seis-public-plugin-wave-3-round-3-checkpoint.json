@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-3-round-3-checkpoint",
   "goalId": "SEIS-GOAL-021",
   "wave": 3,
@@ -26,19 +26,54 @@
   "selectedCapability": {
     "id": "seis-swift-concurrency-audit",
     "implementationStarted": true,
-    "additionalPublicCardAdded": true,
+    "historicalAdditionalDirectCardAddedAtExecution": true,
     "packagePresent": true
   },
-  "publicDistribution": {
+  "historicalWave3Distribution": {
+    "classification": "immutable-wave-3-round-3-direct-card-snapshot",
+    "projectionModel": "direct-source-package-marketplace-cards",
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "marketplaceCardPresent": true,
+    "marketplaceCardPresentAtCheckpoint": true,
     "applicationPluginCount": 73,
     "marketplaceCardCount": 379,
     "matrixPluginCount": 73,
     "matrixReadyCount": 70,
     "matrixAttentionCount": 3,
-    "matrixFailureCount": 0
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "selectedCapabilityHadDirectMarketplaceCard": true,
+    "additionalDirectCardAddedAtExecution": true,
+    "note": "These counts and direct-card facts are immutable Wave 3 round 3 history and do not describe the current curated marketplace."
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "selectedApplicationCapability": {
+      "id": "seis-swift-concurrency-audit",
+      "retainedSource": true,
+      "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
+      "directMarketplaceCardRequired": false,
+      "directMarketplaceCardCount": 0,
+      "bundleCardCount": 1,
+      "bundleId": "seis-application-bundle-06",
+      "bundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+      "bundleFamily": "application"
+    }
   },
   "localEvidence": {
     "staticAuditPath": "content/development/seis-swift-concurrency-audit.json",
@@ -89,7 +124,7 @@
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert the focused feature-branch package, its public card, generated records, and checkpoint references; no external state or data migration exists.",
+    "scope": "Revert the focused feature-branch package, historical direct-card evidence, current bundle reconciliation, generated records, and checkpoint references; no external state or data migration exists.",
     "dataMigrationRequired": false
   }
 }

@@ -1,0 +1,42 @@
+{
+  "name": "seis-application-bundle-03",
+  "version": "0.1.0",
+  "description": "Security application selection bundle with 11 retained SEIS source capabilities. It provides local, read-only member discovery and planning; it does not bulk-install members or grant external access.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "bundle",
+    "application",
+    "read-only",
+    "repository-source",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Application: Security",
+    "shortDescription": "11 Security source capabilities.",
+    "longDescription": "Security application selection bundle with 11 retained SEIS source capabilities. It provides local, read-only member discovery and planning; it does not bulk-install members or grant external access.",
+    "developerName": "emirhankudun-ux",
+    "category": "Security",
+    "capabilities": [
+      "11 source capabilities",
+      "Read-only bundle inventory",
+      "Bundle selection planning",
+      "MCP status and member tools",
+      "Explicit safety boundaries"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Show the 11 source capabilities in SEIS Application: Security.",
+      "Plan a safe SEIS task using SEIS Application: Security."
+    ],
+    "brandColor": "#0F766E"
+  }
+}

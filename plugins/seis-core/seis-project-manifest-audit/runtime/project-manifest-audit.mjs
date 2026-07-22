@@ -6,6 +6,7 @@ export const PROJECT_MANIFEST_PATH = "project.ecosystem.yaml";
 export const MAX_MANIFEST_BYTES = 160_000;
 
 const REQUIRED_VALUES = [
+  ["schema_version", "2"],
   ["project.id", "seis-plugin-root"],
   ["project.display_name", "SEIS Core App-Owned Plugins"],
   ["project.visibility", "public-repo-internal-local"],
@@ -19,6 +20,8 @@ const REQUIRED_VALUES = [
   ["plugin_boundary.direct_repo_distribution.public_audience", "everyone"],
   ["plugin_boundary.direct_repo_distribution.marketplace_name", "seis-repo"],
   ["plugin_boundary.direct_repo_distribution.public_marketplace", "true"],
+  ["plugin_boundary.direct_repo_distribution.separate_marketplace_cards", "false"],
+  ["plugin_boundary.direct_repo_distribution.source_packages_retained", "true"],
   ["architecture.source_of_truth", "plugins/seis-core"],
   ["security.default_plugin_permissions.write", "[]"],
   ["security.default_plugin_permissions.network", "[]"],
@@ -64,27 +67,65 @@ export function auditProjectManifest(rootPath, options = {}) {
 }
 
 function reconcileCounts({ scalars, sourceManifest, marketplace, publicFamily, findings }) {
-  const declaredTotal = toNumber(scalars.get("plugin_boundary.direct_repo_distribution.marketplace_entry_count")?.value);
-  const declaredApplication = toNumber(scalars.get("plugin_boundary.direct_repo_distribution.application_marketplace_entry_count")?.value);
-  const sourceCount = toNumber(sourceManifest?.pluginCount);
+  const value = (suffix) => toNumber(scalars.get(`plugin_boundary.direct_repo_distribution.${suffix}`)?.value);
+  const declaredCardCount = value("marketplace_projection.card_count");
+  const declaredCanonicalCardCount = value("marketplace_projection.canonical_card_count");
+  const declaredBundleCardCount = value("marketplace_projection.bundle_card_count");
+  const declaredApplicationBundleCardCount = value("marketplace_projection.application_bundle_card_count");
+  const declaredTopicBundleCardCount = value("marketplace_projection.topic_bundle_card_count");
+  const declaredRetainedSourceCapabilityCount = value("source_capabilities.retained_count");
+  const declaredMigratedRootSourceCount = value("source_capabilities.migrated_root_count");
+  const declaredApplicationSourceCount = value("source_capabilities.application_count");
+  const declaredTopicSourceCount = value("source_capabilities.topic_count");
+  const sourceManifestApplicationCount = toNumber(sourceManifest?.pluginCount);
   const marketplaceCards = Array.isArray(marketplace?.plugins) ? marketplace.plugins : [];
-  const marketplaceApplicationCount = marketplaceCards.filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/")).length;
-  const familyApplicationCount = Array.isArray(publicFamily?.applicationPlugins) ? publicFamily.applicationPlugins.length : null;
-  const familyTotal = toNumber(publicFamily?.marketplace?.publicPluginCount);
+  const marketplaceCanonicalCardCount = marketplaceCards.filter((plugin) => plugin?.name === "seis-ai-agent" && plugin?.source?.path === "./plugins/seis-ai-agent").length;
+  const marketplaceBundleCards = marketplaceCards.filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-bundles/"));
+  const marketplaceApplicationBundleCardCount = marketplaceBundleCards.filter((plugin) => plugin?.name?.startsWith("seis-application-bundle-")).length;
+  const marketplaceTopicBundleCardCount = marketplaceBundleCards.filter((plugin) => plugin?.name?.startsWith("seis-topic-bundle-")).length;
+  const familyMarketplaceCardCount = toNumber(publicFamily?.marketplace?.publicPluginCount);
+  const familyCanonicalCardCount = toNumber(publicFamily?.marketplace?.canonicalOrchestratorCount);
+  const familyBundleCardCount = Array.isArray(publicFamily?.bundlePackages) ? publicFamily.bundlePackages.length : null;
+  const familyApplicationBundleCardCount = Array.isArray(publicFamily?.bundlePackages) ? publicFamily.bundlePackages.filter((bundle) => bundle?.family === "application").length : null;
+  const familyTopicBundleCardCount = Array.isArray(publicFamily?.bundlePackages) ? publicFamily.bundlePackages.filter((bundle) => bundle?.family === "topic").length : null;
+  const familyMigratedRootSourceCount = Array.isArray(publicFamily?.migratedRootPlugins) ? publicFamily.migratedRootPlugins.length : null;
+  const familyApplicationSourceCount = Array.isArray(publicFamily?.applicationPlugins) ? publicFamily.applicationPlugins.length : null;
+  const familyTopicSourceCount = Array.isArray(publicFamily?.topicPlugins) ? publicFamily.topicPlugins.length : null;
+  const familyRetainedSourceCapabilityCount = toNumber(publicFamily?.marketplace?.sourceCapabilityCount);
 
   if (sourceManifest && sourceManifest.owner !== "apps/seis-core") findings.push(finding("error", "app-source-manifest-owner-mismatch"));
   if (marketplace && (marketplace.name !== "seis-repo" || marketplace.interface?.displayName !== "SEIS Repo")) findings.push(finding("error", "repo-marketplace-identity-mismatch"));
-  if (!equalKnown(declaredApplication, sourceCount, marketplaceApplicationCount, familyApplicationCount)) findings.push(finding("error", "application-plugin-count-mismatch"));
-  if (!equalKnown(declaredTotal, marketplaceCards.length, familyTotal)) findings.push(finding("error", "marketplace-entry-count-mismatch"));
+  if (!equalKnown(declaredCardCount, marketplaceCards.length, familyMarketplaceCardCount)) findings.push(finding("error", "marketplace-card-count-mismatch"));
+  if (!equalKnown(declaredCanonicalCardCount, marketplaceCanonicalCardCount, familyCanonicalCardCount)) findings.push(finding("error", "canonical-card-count-mismatch"));
+  if (!equalKnown(declaredBundleCardCount, marketplaceBundleCards.length, familyBundleCardCount)) findings.push(finding("error", "bundle-card-count-mismatch"));
+  if (!equalKnown(declaredApplicationBundleCardCount, marketplaceApplicationBundleCardCount, familyApplicationBundleCardCount)) findings.push(finding("error", "application-bundle-card-count-mismatch"));
+  if (!equalKnown(declaredTopicBundleCardCount, marketplaceTopicBundleCardCount, familyTopicBundleCardCount)) findings.push(finding("error", "topic-bundle-card-count-mismatch"));
+  if (!equalKnown(declaredApplicationSourceCount, sourceManifestApplicationCount, familyApplicationSourceCount)) findings.push(finding("error", "application-source-count-mismatch"));
+  if (!equalKnown(declaredTopicSourceCount, familyTopicSourceCount)) findings.push(finding("error", "topic-source-count-mismatch"));
+  if (!equalKnown(declaredMigratedRootSourceCount, familyMigratedRootSourceCount)) findings.push(finding("error", "migrated-root-source-count-mismatch"));
+  if (!equalKnown(declaredRetainedSourceCapabilityCount, familyRetainedSourceCapabilityCount, declaredMigratedRootSourceCount + declaredApplicationSourceCount + declaredTopicSourceCount)) findings.push(finding("error", "retained-source-capability-count-mismatch"));
 
   return {
-    declaredMarketplaceEntryCount: declaredTotal,
-    declaredApplicationMarketplaceEntryCount: declaredApplication,
-    sourceManifestPluginCount: sourceCount,
-    marketplaceApplicationPluginCount: marketplaceApplicationCount,
-    marketplaceEntryCount: marketplaceCards.length,
-    publicFamilyApplicationPluginCount: familyApplicationCount,
-    publicFamilyMarketplaceEntryCount: familyTotal,
+    declaredMarketplaceCardCount: declaredCardCount,
+    declaredCanonicalCardCount,
+    declaredBundleCardCount,
+    declaredApplicationBundleCardCount,
+    declaredTopicBundleCardCount,
+    marketplaceCardCount: marketplaceCards.length,
+    marketplaceCanonicalCardCount,
+    marketplaceBundleCardCount: marketplaceBundleCards.length,
+    marketplaceApplicationBundleCardCount,
+    marketplaceTopicBundleCardCount,
+    publicFamilyMarketplaceCardCount: familyMarketplaceCardCount,
+    declaredRetainedSourceCapabilityCount,
+    declaredMigratedRootSourceCount,
+    declaredApplicationSourceCount,
+    declaredTopicSourceCount,
+    sourceManifestApplicationCount,
+    publicFamilyRetainedSourceCapabilityCount: familyRetainedSourceCapabilityCount,
+    publicFamilyMigratedRootSourceCount: familyMigratedRootSourceCount,
+    publicFamilyApplicationSourceCount: familyApplicationSourceCount,
+    publicFamilyTopicSourceCount: familyTopicSourceCount,
   };
 }
 
@@ -176,12 +217,25 @@ function finding(severity, code, marker = null) {
 
 function emptyCounts() {
   return {
-    declaredMarketplaceEntryCount: null,
-    declaredApplicationMarketplaceEntryCount: null,
-    sourceManifestPluginCount: null,
-    marketplaceApplicationPluginCount: null,
-    marketplaceEntryCount: null,
-    publicFamilyApplicationPluginCount: null,
-    publicFamilyMarketplaceEntryCount: null,
+    declaredMarketplaceCardCount: null,
+    declaredCanonicalCardCount: null,
+    declaredBundleCardCount: null,
+    declaredApplicationBundleCardCount: null,
+    declaredTopicBundleCardCount: null,
+    marketplaceCardCount: null,
+    marketplaceCanonicalCardCount: null,
+    marketplaceBundleCardCount: null,
+    marketplaceApplicationBundleCardCount: null,
+    marketplaceTopicBundleCardCount: null,
+    publicFamilyMarketplaceCardCount: null,
+    declaredRetainedSourceCapabilityCount: null,
+    declaredMigratedRootSourceCount: null,
+    declaredApplicationSourceCount: null,
+    declaredTopicSourceCount: null,
+    sourceManifestApplicationCount: null,
+    publicFamilyRetainedSourceCapabilityCount: null,
+    publicFamilyMigratedRootSourceCount: null,
+    publicFamilyApplicationSourceCount: null,
+    publicFamilyTopicSourceCount: null,
   };
 }

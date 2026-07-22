@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-07",
+  "family": "topic",
+  "journeyId": "cloud-computing",
+  "journeyLabel": "Cloud Computing",
+  "journeyPart": 2,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 12,
+  "category": "Cloud Computing",
+  "categoryLabels": [
+    "Cloud Computing"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-cloud-computing-metrics",
+      "displayName": "SEIS Metrics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-metrics",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-monitoring",
+      "displayName": "SEIS Monitoring",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-monitoring",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-networking",
+      "displayName": "SEIS Networking",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-networking",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-observability",
+      "displayName": "SEIS Observability",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-observability",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-platform-engineering",
+      "displayName": "SEIS Platform Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-platform-engineering",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-private-cloud",
+      "displayName": "SEIS Private Cloud",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-private-cloud",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-public-cloud",
+      "displayName": "SEIS Public Cloud",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-public-cloud",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-serverless",
+      "displayName": "SEIS Serverless",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-serverless",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-site-reliability-engineering",
+      "displayName": "SEIS Site Reliability Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-site-reliability-engineering",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-telemetry",
+      "displayName": "SEIS Telemetry",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-telemetry",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-tracing",
+      "displayName": "SEIS Tracing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-tracing",
+      "category": "Cloud Computing"
+    },
+    {
+      "name": "seis-topic-cloud-computing-virtualization",
+      "displayName": "SEIS Virtualization",
+      "sourcePath": "./plugins/seis-topics/seis-topic-cloud-computing-virtualization",
+      "category": "Cloud Computing"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-08",
+  "family": "topic",
+  "journeyId": "creative-production",
+  "journeyLabel": "Creative Production",
+  "journeyPart": 1,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 9,
+  "category": "Creative Production",
+  "categoryLabels": [
+    "Creative Production"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-creative-production",
+      "displayName": "SEIS Creative Production",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-animation",
+      "displayName": "SEIS Animation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-animation",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-asset-management",
+      "displayName": "SEIS Asset Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-asset-management",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-audio",
+      "displayName": "SEIS Audio",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-audio",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-cgi",
+      "displayName": "SEIS CGI",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-cgi",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-content-creation",
+      "displayName": "SEIS Content Creation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-content-creation",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-creative-engineering",
+      "displayName": "SEIS Creative Engineering",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-creative-engineering",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-digital-art",
+      "displayName": "SEIS Digital Art",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-digital-art",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-media-production",
+      "displayName": "SEIS Media Production",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-media-production",
+      "category": "Creative Production"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

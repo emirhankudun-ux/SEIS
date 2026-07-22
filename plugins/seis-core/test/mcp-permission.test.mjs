@@ -11,7 +11,7 @@ const repoRoot = path.resolve(pluginRoot, "../..");
 const entrypoint = path.join(pluginRoot, "seis-mcp-permission", "scripts", "seis-mcp-permission-mcp-server.mjs");
 const ledger = JSON.parse(readFileSync(path.join(repoRoot, "content", "development", "seis-mcp-permission-risk-matrix.json"), "utf8"));
 
-test("SEIS MCP Permission validates declared public package MCP boundaries", () => {
+test("SEIS MCP Permission validates retained app-source MCP boundaries", () => {
   const result = runCli(["--validate"]);
 
   assert.equal(result.state, "ready");
@@ -19,10 +19,26 @@ test("SEIS MCP Permission validates declared public package MCP boundaries", () 
   assert.equal(result.mode, "public-seis-repo-mcp-permission-read-only");
   assert.equal(result.marketplaceName, "seis-repo");
   assert.equal(result.marketplaceDisplayName, "SEIS Repo");
-  assert.equal(result.publicCards.applicationPluginCount, ledger.counts.applicationPluginCount);
-  assert.equal(result.publicCards.applicationMcpServerCount, ledger.counts.applicationMcpServerCount);
+  assert.deepEqual(result.publicCards, {
+    count: 34,
+    canonicalOrchestratorCount: 1,
+    bundleCardCount: 33,
+    applicationBundleCardCount: 6,
+    topicBundleCardCount: 27,
+    directApplicationCardCount: 0,
+  });
+  assert.deepEqual(result.sourceCapabilities, {
+    count: 380,
+    retainedRootCount: 5,
+    applicationCount: 75,
+    topicCount: 300,
+    applicationBundleMembershipCount: 75,
+    applicationMcpServerCount: ledger.counts.applicationMcpServerCount,
+  });
   assert.equal(result.policy.transport, "local-stdio");
   assert.equal(result.policy.command, "node");
+  assert.equal(result.policy.remoteUrlAllowed, false);
+  assert.equal(result.policy.environmentInjectionAllowed, false);
   assert.deepEqual(result.permissions.write, []);
   assert.deepEqual(result.permissions.network, []);
   assert.deepEqual(result.permissions.secrets, []);
@@ -38,6 +54,8 @@ test("SEIS MCP Permission returns a bounded public ledger record", () => {
   assert.equal(result.returnedRecordCount, 1);
   assert.deepEqual(result.records, [{
     name: "seis-mcp-permission",
+    marketplaceCard: false,
+    distributionBundleId: "seis-application-bundle-03",
     transport: "local-stdio",
     command: "node",
     permissionState: "deny-by-default",
@@ -70,6 +88,37 @@ test("SEIS MCP Permission rejects a contaminated generated ledger without echoin
     assert.equal(JSON.stringify(invalid).includes(fixture.root), false);
     assert.equal(JSON.stringify(invalid).includes("/Users/example/secret.mjs"), false);
     assert.equal(JSON.stringify(invalid).includes("https://unsafe.invalid"), false);
+  } finally {
+    rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("SEIS MCP Permission rejects direct app cards and duplicate bundle membership", () => {
+  const fixture = createFixtureRoot();
+  try {
+    const marketplace = fixture.marketplace();
+    marketplace.plugins.push({
+      name: "seis-mcp-permission",
+      source: { source: "local", path: "./plugins/seis-core/seis-mcp-permission" },
+      policy: { installation: "AVAILABLE", authentication: "ON_INSTALL" },
+    });
+    writeJson(fixture.root, ".agents/plugins/marketplace.json", marketplace);
+
+    const catalog = fixture.bundleCatalog();
+    catalog.bundles.push({
+      id: "seis-application-bundle-02",
+      family: "application",
+      sourcePath: "./plugins/seis-bundles/seis-application-bundle-02",
+      memberCount: 1,
+      memberNames: ["seis-mcp-permission"],
+    });
+    writeJson(fixture.root, "content/development/seis-public-plugin-bundle-catalog.json", catalog);
+
+    const invalid = runCli(["--validate"], { SEIS_REPO_ROOT: fixture.root });
+    assert.equal(invalid.state, "attention");
+    assert.equal(invalid.ok, false);
+    assert.equal(invalid.findings.some((finding) => finding.code === "marketplace-direct-application-card-present"), true);
+    assert.equal(invalid.findings.some((finding) => finding.code === "application-source-multiple-bundle-memberships"), true);
   } finally {
     rmSync(fixture.root, { recursive: true, force: true });
   }
@@ -108,11 +157,11 @@ test("SEIS MCP Permission exposes bounded MCP tools without writes", () => {
 function createFixtureRoot() {
   const root = mkdtempSync(path.join(os.tmpdir(), "seis-mcp-permission-"));
   const ledger = () => ({
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-mcp-permission-risk-matrix",
     goalId: "SEIS-GOAL-021",
-    plugin: { name: "seis-mcp-permission", marketplaceName: "seis-repo" },
-    scope: { marketplaceName: "seis-repo", marketplaceDisplayName: "SEIS Repo" },
+    plugin: { name: "seis-mcp-permission", marketplaceName: "seis-repo", marketplaceCard: false, distributionBundleId: "seis-application-bundle-01" },
+    scope: { marketplaceName: "seis-repo", marketplaceDisplayName: "SEIS Repo", bundleCatalogPath: "content/development/seis-public-plugin-bundle-catalog.json" },
     policy: {
       transport: "local-stdio",
       command: "node",
@@ -122,8 +171,17 @@ function createFixtureRoot() {
       humanApprovalRequiredFor: ["network"],
     },
     counts: {
-      marketplaceCardCount: 1,
-      applicationPluginCount: 1,
+      marketplaceCardCount: 2,
+      canonicalOrchestratorCount: 1,
+      bundleCardCount: 1,
+      applicationBundleCardCount: 1,
+      topicBundleCardCount: 0,
+      sourceCapabilityCount: 1,
+      retainedRootSourceCapabilityCount: 0,
+      applicationSourceCapabilityCount: 1,
+      topicSourceCapabilityCount: 0,
+      directApplicationMarketplaceCardCount: 0,
+      applicationBundleMembershipCount: 1,
       applicationMcpServerCount: 1,
       localStdioServerCount: 1,
       remoteServerCount: 0,
@@ -135,7 +193,8 @@ function createFixtureRoot() {
     },
     records: [{
       name: "seis-mcp-permission",
-      marketplaceCard: true,
+      marketplaceCard: false,
+      distributionBundleId: "seis-application-bundle-01",
       sourcePath: "plugins/seis-core/seis-mcp-permission",
       transport: "local-stdio",
       serverName: "seis-mcp-permission",
@@ -150,21 +209,64 @@ function createFixtureRoot() {
     }],
     safety: { write: [], network: [], secrets: [], startsMcpServers: false, permissionGrant: false, publicReleaseAllowed: false },
   });
-  writeJson(root, ".agents/plugins/marketplace.json", {
+  const marketplace = () => ({
     name: "seis-repo",
     interface: { displayName: "SEIS Repo" },
-    plugins: [{
-      name: "seis-mcp-permission",
-      source: { source: "local", path: "./plugins/seis-core/seis-mcp-permission" },
-      policy: { installation: "AVAILABLE", authentication: "ON_INSTALL" },
+    plugins: [
+      {
+        name: "seis-ai-agent",
+        source: { source: "local", path: "./plugins/seis-ai-agent" },
+        policy: { installation: "AVAILABLE", authentication: "ON_INSTALL" },
+      },
+      {
+        name: "seis-application-bundle-01",
+        source: { source: "local", path: "./plugins/seis-bundles/seis-application-bundle-01" },
+        policy: { installation: "AVAILABLE", authentication: "ON_INSTALL" },
+      },
+    ],
+  });
+  const bundleCatalog = () => ({
+    id: "seis-public-plugin-bundle-catalog",
+    marketplace: {
+      publicCardCount: 2,
+      canonicalCardCount: 1,
+      bundleCardCount: 1,
+      applicationBundleCardCount: 1,
+      topicBundleCardCount: 0,
+    },
+    sourceCapabilityInventory: {
+      rootSourceModuleCount: 0,
+      applicationSourcePackageCount: 1,
+      topicSourcePackageCount: 0,
+      retainedSourcePackageCount: 1,
+    },
+    bundles: [{
+      id: "seis-application-bundle-01",
+      family: "application",
+      sourcePath: "./plugins/seis-bundles/seis-application-bundle-01",
+      memberCount: 1,
+      memberNames: ["seis-mcp-permission"],
     }],
   });
+  writeJson(root, ".agents/plugins/marketplace.json", marketplace());
   writeJson(root, "content/development/seis-public-plugin-family.json", {
-    publicPlugins: [],
+    marketplace: {
+      publicPluginCount: 2,
+      canonicalOrchestratorCount: 1,
+      bundlePluginCount: 1,
+      applicationBundlePluginCount: 1,
+      topicBundlePluginCount: 0,
+      migratedRootPluginCount: 0,
+      applicationPluginCount: 1,
+      topicPluginCount: 0,
+      sourceCapabilityCount: 1,
+    },
+    publicPlugins: [{ name: "seis-ai-agent" }],
     migratedRootPlugins: [],
     applicationPlugins: [{ name: "seis-mcp-permission" }],
     topicPlugins: [],
   });
+  writeJson(root, "content/development/seis-public-plugin-bundle-catalog.json", bundleCatalog());
   writeJson(root, "apps/seis-core/data/seis-core-plugin-sources.json", {
     id: "seis-core-plugin-sources",
     sourceRoot: "plugins/seis-core",
@@ -172,7 +274,7 @@ function createFixtureRoot() {
     plugins: [{ name: "seis-mcp-permission" }],
   });
   writeJson(root, "content/development/seis-mcp-permission-risk-matrix.json", ledger());
-  return { root, ledger };
+  return { root, ledger, marketplace, bundleCatalog };
 }
 
 function writeJson(root, relativePath, value) {

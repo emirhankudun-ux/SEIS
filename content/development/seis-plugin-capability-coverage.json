@@ -18,15 +18,18 @@
     "marketplaceDisplayName": "SEIS Repo",
     "marketplaceCategory": "Developer",
     "publicAudience": "everyone",
+    "directMarketplaceCard": false,
+    "publicBundleId": "seis-application-bundle-05",
     "publicMarketplace": true
   },
   "marketplace": {
-    "publicCardCount": 381,
-    "expectedPublicCardCount": 381,
+    "publicCardCount": 34,
+    "expectedPublicCardCount": 34,
     "applicationPluginCount": 75,
     "expectedApplicationPluginCount": 75,
     "canonicalOrchestratorCount": 1,
-    "migratedRootPluginCount": 5,
+    "bundlePluginCount": 33,
+    "applicationBundleMemberCount": 75,
     "topicPluginCount": 300
   },
   "activation": {
@@ -46,24 +49,27 @@
     "sourcePluginCount": 75,
     "catalogPluginCount": 75,
     "matrixPluginCount": 75,
-    "marketplaceApplicationCardCount": 75,
-    "marketplacePublicCardCount": 381,
+    "bundleApplicationMemberCount": 75,
+    "marketplacePublicCardCount": 34,
     "declaredCategoryCount": 8,
+    "reportedCategoryCount": 8,
     "declaredCapabilityTokenKindCount": 171,
+    "reportedCapabilityTokenKindCount": 171,
     "declaredCapabilityTokenCount": 213,
+    "coverageOutputTruncated": false,
     "findingCodes": [],
     "reconciliation": {
       "sourcePluginCount": 75,
       "catalogPluginCount": 75,
       "matrixPluginCount": 75,
-      "marketplaceApplicationCardCount": 75,
-      "marketplacePublicCardCount": 381,
+      "bundleApplicationMemberCount": 75,
+      "marketplacePublicCardCount": 34,
       "sourceMissingFromCatalogCount": 0,
       "catalogMissingFromSourceCount": 0,
       "sourceMissingFromMatrixCount": 0,
       "matrixMissingFromSourceCount": 0,
-      "sourceMissingFromMarketplaceCount": 0,
-      "marketplaceMissingFromSourceCount": 0,
+      "sourceMissingFromBundleCount": 0,
+      "bundleMissingFromSourceCount": 0,
       "mismatchCount": 0,
       "reconciled": true
     },
@@ -788,6 +794,14 @@
       }
     ]
   },
+  "outputBounds": {
+    "aggregateOnly": true,
+    "maxReturnedCategoryKinds": 128,
+    "maxReturnedCapabilityTokenKinds": 256,
+    "maxReturnedFindings": 64,
+    "categoryCountsTruncated": false,
+    "capabilityTokenFrequenciesTruncated": false
+  },
   "fixedRegistrySafetyCoverage": {
     "status": "ready-fixed-registry-safety-coverage",
     "coveredFailureModes": [
@@ -834,15 +848,18 @@
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert the local package, one SEIS Repo card, and generated evidence record; no registry source, external system, or release state is mutated by the plugin runtime.",
+    "scope": "Revert the local package, its optional bundle membership, and generated evidence record; no registry source, external system, or release state is mutated by the plugin runtime.",
     "dataMigrationRequired": false
   },
   "publicSafetyReview": {
     "runtimeContainsFixedScope": true,
     "runtimeRefusesSymlinks": true,
     "runtimeAvoidsRawRegistryOutput": true,
+    "runtimeBoundsAggregateOutput": true,
     "testCoversRedaction": true,
     "skillStatesStaticOnlyBoundary": true,
+    "skillDocumentsRegistryEvolution": true,
+    "profileMatchesReadOnlyBoundary": true,
     "rawValuesStored": false
   },
   "outputBoundary": {
@@ -851,7 +868,8 @@
     "rawCapabilityPhrasesReturned": false,
     "rawMatchedValuesReturned": false,
     "absolutePathsReturned": false,
-    "machineSpecificPathsReturned": false
+    "machineSpecificPathsReturned": false,
+    "aggregateOutputBounded": true
   },
   "nativeExecution": "not-run-and-not-claimed"
 }

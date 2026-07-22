@@ -1,6 +1,6 @@
 {
   "id": "seis-public-plugin-lifecycle",
-  "version": 1,
+  "version": 2,
   "generatedAt": "2026-07-12",
   "status": "active-local-proof-public-release-gated",
   "sourcePath": "content/development/seis-public-plugin-lifecycle.json",
@@ -15,7 +15,11 @@
   "externalInstallProofReport": "reports/seis-public-plugin-external-install-proof.md",
   "externalInstallProofSummary": {
     "status": "repo-local-clean-artifact-staged-external-proof-pending",
+    "schemaVersion": 2,
     "artifactStagingOk": true,
+    "bundledSourceCapabilityCount": 375,
+    "bundleMembershipExactOnce": true,
+    "maximumBundleSize": 15,
     "independentRunnerEvidenceStatus": "pending-independent-clean-runner-or-public-install",
     "publicReleaseAllowed": false
   },
@@ -52,7 +56,7 @@
     "recordedGate": "npm run check:seis-public-plugin-independent-runner-evidence:recorded"
   },
   "marketplace": ".agents/plugins/marketplace.json",
-  "purpose": "Keep the canonical public SEIS-Agent suite, five migrated root repository cards, its embedded SEIS source modules, the 75 public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.",
+  "purpose": "Keep one canonical SEIS-Agent card, 33 optional bundle cards, and 380 retained source capabilities maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries without treating source packages as direct marketplace cards.",
   "publicAudience": "everyone",
   "orchestrator": "seis-ai-agent@seis-repo",
   "publicDistribution": {
@@ -61,10 +65,19 @@
     "canonicalInstallId": "seis-ai-agent@seis-repo",
     "mode": "single-public-plugin",
     "marketplaceName": "seis-repo",
-    "repoMarketplaceEntryCount": 381,
-    "migratedRootPluginCount": 5,
-    "applicationPluginCount": 75,
-    "topicPluginCount": 300
+    "repoMarketplaceEntryCount": 34,
+    "canonicalMarketplaceCardCount": 1,
+    "bundleMarketplaceCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "migratedRootSourceCapabilityCount": 5,
+    "applicationSourceCapabilityCount": 75,
+    "topicSourceCapabilityCount": 300,
+    "retainedSourceCapabilityCount": 380,
+    "bundledSourceCapabilityCount": 375,
+    "bundleMembershipExactOnce": true,
+    "maximumBundleSize": 15,
+    "separateSourceMarketplaceCards": false
   },
   "releasePolicy": {
     "currentChannel": "internal-review-local-proof",
@@ -127,7 +140,7 @@
         ".agents/plugins/marketplace.json",
         "npm run check:seis-public-plugin-family"
       ],
-      "exitRule": "All public plugin manifests, marketplace entries, source mirrors, and SEIS AI lane links validate in the repo."
+      "exitRule": "The exact curated marketplace-card set and the separate retained-source inventory validate in the repo, together with SEIS AI lane links."
     },
     {
       "id": "canonical-alias-resolution",
@@ -144,7 +157,7 @@
     },
     {
       "id": "single-public-install",
-      "label": "Single Public Install",
+      "label": "Canonical Default Install",
       "status": "active-single-public-plugin",
       "ownerLane": "seis-ai-agent",
       "requiredEvidence": [
@@ -153,7 +166,7 @@
         "npm run install:seis-ai-agent",
         "the default installer targets only seis-ai-agent@seis-repo"
       ],
-      "exitRule": "All SEIS source modules share one versioned suite file, and SEIS-Agent is the only public install target; module folders do not create standalone public installs."
+      "exitRule": "All SEIS source modules share one versioned suite file, and SEIS-Agent is the only canonical default public install target; optional bundles remain explicit user-selected cards and source folders are not standalone installs."
     },
     {
       "id": "installed-cache",
@@ -177,7 +190,7 @@
         "npm run check:seis-public-plugin-external-install-proof",
         "disposable local stage excludes macOS metadata and forbidden artifact classes"
       ],
-      "exitRule": "A disposable local artifact stage contains the canonical suite and every public app package from the repo marketplace without forbidden release artifacts. This does not prove an independent installation."
+      "exitRule": "A disposable local artifact stage contains all 34 marketplace cards and separately validates all 380 retained source capabilities without forbidden release artifacts. This does not prove an independent installation."
     },
     {
       "id": "fresh-task-reload",
@@ -208,7 +221,7 @@
         "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
         "sanitized evidence from an external clean runner or public package install"
       ],
-      "exitRule": "A strict recorded-evidence check proves the single SEIS-Agent public plugin installed from an independent public source, exposed every embedded module, passed MCP smoke, and was visible through SEIS AI in a fresh task. Human approval still remains required."
+      "exitRule": "A strict recorded-evidence check proves the canonical SEIS-Agent default installed from an independent public source, exposed every embedded module, passed MCP smoke, and was visible through SEIS AI in a fresh task. Human approval still remains required."
     },
     {
       "id": "public-preview",
@@ -294,8 +307,10 @@
       "mcpServers": [
         "seis"
       ],
-      "lifecycleState": "public-repo-available-root-card",
-      "supportTier": "root-lane-direct-card",
+      "lifecycleState": "retained-root-source-in-canonical-suite",
+      "supportTier": "root-lane-retained-source",
+      "marketplaceCard": false,
+      "distributionMode": "embedded-in-canonical-seis-agent",
       "compatibilityBand": "^0.3.x",
       "releaseChannel": "internal-review-local-proof",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
@@ -303,11 +318,12 @@
       "requiredGates": [
         "manifest-valid",
         "mcp-manifest-valid",
-        "repo-marketplace-available",
+        "retained-source-manifest-valid",
+        "canonical-suite-discovery",
         "seis-ai-connected",
         "security-boundary"
       ],
-      "rollback": "Remove seis@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+      "rollback": "Restore this retained source contract and regenerate the canonical SEIS-Agent suite; do not create a direct marketplace card during rollback."
     },
     {
       "name": "seis-cloud",
@@ -321,8 +337,10 @@
       "mcpServers": [
         "seis-cloud"
       ],
-      "lifecycleState": "public-repo-available-root-card",
-      "supportTier": "root-lane-direct-card",
+      "lifecycleState": "retained-root-source-in-canonical-suite",
+      "supportTier": "root-lane-retained-source",
+      "marketplaceCard": false,
+      "distributionMode": "embedded-in-canonical-seis-agent",
       "compatibilityBand": "^0.3.x",
       "releaseChannel": "internal-review-local-proof",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
@@ -330,11 +348,12 @@
       "requiredGates": [
         "manifest-valid",
         "mcp-manifest-valid",
-        "repo-marketplace-available",
+        "retained-source-manifest-valid",
+        "canonical-suite-discovery",
         "seis-ai-connected",
         "security-boundary"
       ],
-      "rollback": "Remove seis-cloud@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+      "rollback": "Restore this retained source contract and regenerate the canonical SEIS-Agent suite; do not create a direct marketplace card during rollback."
     },
     {
       "name": "seis-code",
@@ -348,8 +367,10 @@
       "mcpServers": [
         "seis-code"
       ],
-      "lifecycleState": "public-repo-available-root-card",
-      "supportTier": "root-lane-direct-card",
+      "lifecycleState": "retained-root-source-in-canonical-suite",
+      "supportTier": "root-lane-retained-source",
+      "marketplaceCard": false,
+      "distributionMode": "embedded-in-canonical-seis-agent",
       "compatibilityBand": "^0.3.x",
       "releaseChannel": "internal-review-local-proof",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
@@ -357,11 +378,12 @@
       "requiredGates": [
         "manifest-valid",
         "mcp-manifest-valid",
-        "repo-marketplace-available",
+        "retained-source-manifest-valid",
+        "canonical-suite-discovery",
         "seis-ai-connected",
         "security-boundary"
       ],
-      "rollback": "Remove seis-code@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+      "rollback": "Restore this retained source contract and regenerate the canonical SEIS-Agent suite; do not create a direct marketplace card during rollback."
     },
     {
       "name": "seis-design",
@@ -375,8 +397,10 @@
       "mcpServers": [
         "seis-design"
       ],
-      "lifecycleState": "public-repo-available-root-card",
-      "supportTier": "root-lane-direct-card",
+      "lifecycleState": "retained-root-source-in-canonical-suite",
+      "supportTier": "root-lane-retained-source",
+      "marketplaceCard": false,
+      "distributionMode": "embedded-in-canonical-seis-agent",
       "compatibilityBand": "^0.3.x",
       "releaseChannel": "internal-review-local-proof",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
@@ -384,11 +408,12 @@
       "requiredGates": [
         "manifest-valid",
         "mcp-manifest-valid",
-        "repo-marketplace-available",
+        "retained-source-manifest-valid",
+        "canonical-suite-discovery",
         "seis-ai-connected",
         "security-boundary"
       ],
-      "rollback": "Remove seis-design@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+      "rollback": "Restore this retained source contract and regenerate the canonical SEIS-Agent suite; do not create a direct marketplace card during rollback."
     },
     {
       "name": "seis-data",
@@ -402,8 +427,10 @@
       "mcpServers": [
         "seis-data"
       ],
-      "lifecycleState": "public-repo-available-root-card",
-      "supportTier": "root-lane-direct-card",
+      "lifecycleState": "retained-root-source-in-canonical-suite",
+      "supportTier": "root-lane-retained-source",
+      "marketplaceCard": false,
+      "distributionMode": "embedded-in-canonical-seis-agent",
       "compatibilityBand": "^0.3.x",
       "releaseChannel": "internal-review-local-proof",
       "liveRuntimeStatus": "local_demo_or_auth_gated",
@@ -411,11 +438,12 @@
       "requiredGates": [
         "manifest-valid",
         "mcp-manifest-valid",
-        "repo-marketplace-available",
+        "retained-source-manifest-valid",
+        "canonical-suite-discovery",
         "seis-ai-connected",
         "security-boundary"
       ],
-      "rollback": "Remove seis-data@seis-repo from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks."
+      "rollback": "Restore this retained source contract and regenerate the canonical SEIS-Agent suite; do not create a direct marketplace card during rollback."
     }
   ],
   "embeddedModules": [
@@ -450,7 +478,7 @@
       "role": "governance",
       "sourcePath": "./plugins/seis",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -475,7 +503,7 @@
       "role": "cloud",
       "sourcePath": "./plugins/seis-cloud",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -500,7 +528,7 @@
       "role": "code",
       "sourcePath": "./plugins/seis-code",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -525,7 +553,7 @@
       "role": "design",
       "sourcePath": "./plugins/seis-design",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -550,7 +578,7 @@
       "role": "data",
       "sourcePath": "./plugins/seis-data",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "public-marketplace-and-embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -575,7 +603,7 @@
       "role": "security",
       "sourcePath": "./plugins/seis-security",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -600,7 +628,7 @@
       "role": "research",
       "sourcePath": "./plugins/seis-research",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -625,7 +653,7 @@
       "role": "automation",
       "sourcePath": "./plugins/seis-automation",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -650,7 +678,7 @@
       "role": "product",
       "sourcePath": "./plugins/seis-product",
       "canonicalInstallId": "seis-ai-agent@seis-repo",
-      "sourceModuleStatus": "embedded-source-module",
+      "sourceModuleStatus": "embedded-retained-source-module",
       "version": "0.3.0+codex.20260712",
       "license": "MIT",
       "mcpServers": [
@@ -688,5 +716,5 @@
     "npm run check:seis-personal-plugin-marketplace-migration",
     "npm run check:seis-repo-marketplace"
   ],
-  "completionRule": "The lifecycle is ready for internal review when the canonical public SEIS-Agent suite, five migrated root marketplace cards, its embedded module discovery, all public seis-repo app package cards, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, migration coverage, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval."
+  "completionRule": "The lifecycle is ready for internal review when the canonical SEIS-Agent card, 33 optional bundle cards, five retained root sources, 75 retained app sources, 300 retained topic sources, exact-once bundle coverage, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, migration coverage, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval."
 }

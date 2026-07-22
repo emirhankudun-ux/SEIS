@@ -48,22 +48,30 @@ function validatePublicInstallEvidence() {
   const findings = [];
   const cards = array(marketplace.plugins);
   const canonicalCards = array(family.publicPlugins);
-  const rootCards = array(family.migratedRootPlugins);
-  const applicationCards = array(family.applicationPlugins);
-  const topicCards = array(family.topicPlugins);
-  const expectedCardCount = canonicalCards.length + rootCards.length + applicationCards.length + topicCards.length;
+  const bundleCards = array(family.bundlePackages);
+  const applicationBundleCards = bundleCards.filter((bundle) => bundle?.family === "application");
+  const topicBundleCards = bundleCards.filter((bundle) => bundle?.family === "topic");
+  const rootCapabilities = array(family.migratedRootPlugins);
+  const applicationCapabilities = array(family.applicationPlugins);
+  const topicCapabilities = array(family.topicPlugins);
+  const expectedCardCount = canonicalCards.length + bundleCards.length;
+  const expectedSourceCapabilityCount = rootCapabilities.length + applicationCapabilities.length + topicCapabilities.length;
   const expectedInstallIds = canonicalCards.map((item) => text(item?.installId)).filter(Boolean).sort();
   const expectedEmbeddedIds = array(family.embeddedModules || family.plugins).map((item) => text(item?.name)).filter(Boolean).sort();
-  const evidenceCard = cards.find((card) => card?.name === "seis-public-install-evidence");
+  const evidenceBundle = findCapabilityBundle(bundleCards, "seis-public-install-evidence");
+  const evidenceCard = cards.find((card) => card?.name === evidenceBundle?.id);
 
   ensure(marketplace.name === "seis-repo", findings, "marketplace-name-invalid");
   ensure(marketplace.interface?.displayName === "SEIS Repo", findings, "marketplace-display-name-invalid");
   ensure(cards.length === expectedCardCount, findings, "marketplace-card-count-mismatch");
+  ensure(cardsMatchProjection(cards, family.marketplace?.entries), findings, "marketplace-curated-projection-mismatch");
   ensure(cardsHavePublicSource(cards), findings, "marketplace-public-source-boundary-invalid");
   ensure(family.marketplace?.publicPluginCount === expectedCardCount, findings, "family-card-count-mismatch");
-  ensure(family.marketplace?.applicationPluginCount === applicationCards.length, findings, "family-application-count-mismatch");
-  ensure(Boolean(evidenceCard), findings, "install-evidence-card-missing");
-  ensure(evidenceCard?.source?.path === "./plugins/seis-core/seis-public-install-evidence", findings, "install-evidence-card-source-path-invalid");
+  ensure(family.marketplace?.bundlePluginCount === bundleCards.length, findings, "family-bundle-count-mismatch");
+  ensure(family.marketplace?.sourceCapabilityCount === expectedSourceCapabilityCount, findings, "family-source-capability-count-mismatch");
+  ensure(Boolean(evidenceBundle), findings, "install-evidence-capability-bundle-missing");
+  ensure(Boolean(evidenceCard), findings, "install-evidence-bundle-card-missing");
+  ensure(evidenceCard?.source?.path === evidenceBundle?.sourcePath, findings, "install-evidence-bundle-card-source-path-invalid");
   ensure(evidenceCard?.policy?.installation === "AVAILABLE", findings, "install-evidence-card-installation-invalid");
   ensure(evidenceCard?.policy?.authentication === "ON_INSTALL", findings, "install-evidence-card-authentication-invalid");
   ensure(evidenceContract.id === "seis-public-plugin-independent-runner-evidence-contract", findings, "evidence-contract-id-invalid");
@@ -76,8 +84,19 @@ function validatePublicInstallEvidence() {
   ensure(installEvidence.plugin?.name === "seis-public-install-evidence", findings, "install-evidence-plugin-name-invalid");
   ensure(installEvidence.plugin?.marketplaceName === "seis-repo", findings, "install-evidence-plugin-marketplace-invalid");
   ensure(installEvidence.plugin?.sourcePath === "plugins/seis-core/seis-public-install-evidence", findings, "install-evidence-plugin-source-path-invalid");
+  ensure(installEvidence.plugin?.distributionMode === "bundled-source-capability", findings, "install-evidence-distribution-mode-invalid");
+  ensure(installEvidence.plugin?.marketplaceCardName === evidenceBundle?.id, findings, "install-evidence-bundle-name-invalid");
+  ensure(installEvidence.plugin?.marketplaceCardSourcePath === evidenceBundle?.sourcePath, findings, "install-evidence-bundle-source-path-invalid");
   ensure(installEvidence.publicCards?.count === expectedCardCount, findings, "install-evidence-card-count-invalid");
-  ensure(installEvidence.publicCards?.applicationPluginCount === applicationCards.length, findings, "install-evidence-application-count-invalid");
+  ensure(installEvidence.publicCards?.canonicalOrchestratorCount === canonicalCards.length, findings, "install-evidence-canonical-count-invalid");
+  ensure(installEvidence.publicCards?.bundleCardCount === bundleCards.length, findings, "install-evidence-bundle-count-invalid");
+  ensure(installEvidence.publicCards?.applicationBundleCardCount === applicationBundleCards.length, findings, "install-evidence-application-bundle-count-invalid");
+  ensure(installEvidence.publicCards?.topicBundleCardCount === topicBundleCards.length, findings, "install-evidence-topic-bundle-count-invalid");
+  ensure(installEvidence.sourceCapabilities?.count === expectedSourceCapabilityCount, findings, "install-evidence-source-capability-count-invalid");
+  ensure(installEvidence.sourceCapabilities?.migratedRootCount === rootCapabilities.length, findings, "install-evidence-root-source-count-invalid");
+  ensure(installEvidence.sourceCapabilities?.applicationCount === applicationCapabilities.length, findings, "install-evidence-application-source-count-invalid");
+  ensure(installEvidence.sourceCapabilities?.topicCount === topicCapabilities.length, findings, "install-evidence-topic-source-count-invalid");
+  ensure(installEvidence.sourceCapabilities?.separateMarketplaceCards === false, findings, "install-evidence-source-card-boundary-invalid");
   ensure(installEvidence.independentEvidence?.contractPath === CONTRACTS.evidenceContract, findings, "install-evidence-contract-reference-invalid");
   ensure(installEvidence.independentEvidence?.evidencePath === DEFAULT_INDEPENDENT_RUNNER_EVIDENCE_PATH, findings, "install-evidence-record-reference-invalid");
   ensure(installEvidence.independentEvidence?.strictRecordedEvidenceGate === "npm run check:seis-public-plugin-independent-runner-evidence:recorded", findings, "install-evidence-strict-gate-invalid");
@@ -102,9 +121,16 @@ function validatePublicInstallEvidence() {
     publicCards: {
       count: cards.length,
       canonicalOrchestratorCount: canonicalCards.length,
-      migratedRootPluginCount: rootCards.length,
-      applicationPluginCount: applicationCards.length,
-      topicPluginCount: topicCards.length,
+      bundleCardCount: bundleCards.length,
+      applicationBundleCardCount: applicationBundleCards.length,
+      topicBundleCardCount: topicBundleCards.length,
+    },
+    sourceCapabilities: {
+      count: expectedSourceCapabilityCount,
+      migratedRootCount: rootCapabilities.length,
+      applicationCount: applicationCapabilities.length,
+      topicCount: topicCapabilities.length,
+      separateMarketplaceCards: false,
     },
     expectedInstallIds,
     expectedEmbeddedModuleCount: expectedEmbeddedIds.length,
@@ -148,6 +174,7 @@ function inspectPublicInstallEvidence() {
     marketplaceName: validation.marketplaceName,
     marketplaceDisplayName: validation.marketplaceDisplayName,
     publicCards: validation.publicCards,
+    sourceCapabilities: validation.sourceCapabilities,
     evidenceObserved: report.evidenceRecorded === true,
     evidenceRecorded: report.evidenceRecorded === true,
     evidenceValid: report.evidenceValid === true,
@@ -181,7 +208,8 @@ function compactMarketplace(report) {
     marketplaceName: report.marketplaceName || null,
     marketplaceDisplayName: report.marketplaceDisplayName || null,
     publicCardCount: report.publicCards?.count ?? null,
-    applicationPluginCount: report.publicCards?.applicationPluginCount ?? null,
+    bundleCardCount: report.publicCards?.bundleCardCount ?? null,
+    sourceCapabilityCount: report.sourceCapabilities?.count ?? null,
   };
 }
 
@@ -238,6 +266,17 @@ function cardsHavePublicSource(cards) {
     && card?.policy?.installation === "AVAILABLE"
     && card?.policy?.authentication === "ON_INSTALL"
   );
+}
+
+function cardsMatchProjection(cards, entries) {
+  const projection = array(entries);
+  if (cards.length !== projection.length) return false;
+  const expected = new Map(projection.map((entry) => [text(entry?.name), text(entry?.sourcePath)]));
+  return expected.size === projection.length && cards.every((card) => expected.get(text(card?.name)) === text(card?.source?.path));
+}
+
+function findCapabilityBundle(bundles, capabilityName) {
+  return bundles.find((bundle) => array(bundle?.members).some((member) => text(member?.name) === capabilityName)) || null;
 }
 
 function sameStringSet(actual, expected) {

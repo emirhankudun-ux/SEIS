@@ -60,6 +60,9 @@ export function validatePluginContract(bundle, currentRelease) {
   if (profile.publicRepositoryAvailable !== true) failures.push("public-repository-availability-missing");
   if (profile.publicAudience !== "everyone") failures.push("public-audience-not-everyone");
   if (profile.publicMarketplace !== true) failures.push("public-marketplace-availability-missing");
+  if (profile.marketplaceDiscoverable !== true) failures.push("marketplace-discoverability-missing");
+  if (profile.marketplaceCard !== false) failures.push("retained-source-must-not-be-marketplace-card");
+  if (!/^seis-application-bundle-\d{2}$/.test(profile.marketplaceBundleId || "")) failures.push("application-bundle-mapping-missing");
   for (const permission of ["write", "network", "secrets"]) {
     if (!Array.isArray(profile.permissions?.[permission]) || profile.permissions[permission].length !== 0) {
       failures.push(`permission-${permission}-not-empty`);

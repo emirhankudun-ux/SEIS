@@ -9,17 +9,32 @@ const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-2-follow-up-decision.json";
 const APPLE_PLUGIN_ID = "seis-apple-native-readiness";
-const PUBLIC_TOPIC_PLUGIN_COUNT = 300;
-const MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT = 5;
-const CANONICAL_DEFAULT_INSTALL_COUNT = 1;
-const EXPECTED_PUBLIC_CARD_COUNT = APP_PLUGIN_EXPANSION_TARGET
-  + PUBLIC_TOPIC_PLUGIN_COUNT
-  + MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT
-  + CANONICAL_DEFAULT_INSTALL_COUNT;
+const APPLE_BUNDLE_ID = "seis-application-bundle-04";
+const CURRENT_DISTRIBUTION = Object.freeze({
+  marketplaceCardCount: 34,
+  canonicalCardCount: 1,
+  bundleCardCount: 33,
+  applicationBundleCardCount: 6,
+  topicBundleCardCount: 27,
+  retainedSourceCapabilityCount: 380,
+  rootSourceCapabilityCount: 5,
+  applicationSourceCapabilityCount: APP_PLUGIN_EXPANSION_TARGET,
+  topicSourceCapabilityCount: 300,
+});
+const HISTORICAL_WAVE_2_DISTRIBUTION = Object.freeze({
+  applicationSourcePackageCount: 72,
+  topicSourcePackageCount: 300,
+  migratedRootCardCount: 5,
+  canonicalCardCount: 1,
+  directApplicationCardCount: 72,
+  marketplaceCardCount: 378,
+});
 const PATHS = Object.freeze({
   packageManifest: "packages/seis_platform_swift/Package.swift",
   strategy: "docs/APPLE_PLATFORM_STRATEGY.md",
   source: "apps/seis-core/data/seis-core-plugin-sources.json",
+  marketplace: ".agents/plugins/marketplace.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
   catalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
   matrix: "content/development/seis-core-plugin-matrix.json",
   capabilityDecision: "content/development/seis-public-plugin-wave-2-capability-decision.json",
@@ -46,6 +61,8 @@ function buildRecord() {
   const packageManifest = readText(PATHS.packageManifest);
   const strategy = readText(PATHS.strategy);
   const source = readJson(PATHS.source);
+  const marketplace = readJson(PATHS.marketplace);
+  const bundleCatalog = readJson(PATHS.bundleCatalog);
   const catalog = readJson(PATHS.catalog);
   const matrix = readJson(PATHS.matrix);
   const capabilityDecision = readJson(PATHS.capabilityDecision);
@@ -54,6 +71,11 @@ function buildRecord() {
   const sourceApple = list(source.plugins).find((plugin) => plugin?.name === APPLE_PLUGIN_ID);
   const catalogApple = list(catalog.plugins).find((plugin) => plugin?.name === APPLE_PLUGIN_ID);
   const matrixApple = list(matrix.plugins).find((plugin) => plugin?.name === APPLE_PLUGIN_ID);
+  const cards = list(marketplace.plugins);
+  const directAppleCard = cards.find((card) => card?.name === APPLE_PLUGIN_ID || card?.source?.path === `./plugins/seis-core/${APPLE_PLUGIN_ID}`);
+  const appleBundleMemberships = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(APPLE_PLUGIN_ID));
+  const appleBundle = appleBundleMemberships[0];
+  const appleBundleCard = cards.find((card) => card?.name === appleBundle?.id);
 
   assert(packageManifest.includes('name: "SeisPlatformKit"'), "SwiftPM package identity is missing");
   assert(packageManifest.includes('.library(name: "SeisPlatformKit"') && packageManifest.includes('.executable(name: "SeisAppleNativeShell"') && packageManifest.includes('.testTarget(name: "SeisPlatformKitTests"'), "SwiftPM product or test contract is missing");
@@ -64,15 +86,16 @@ function buildRecord() {
   assert(capabilityDecision?.decision?.selectedCapability === APPLE_PLUGIN_ID && capabilityDecision?.status === "approved-public-local-implementation", "initial Apple plugin decision is invalid");
   assert(appleEvidence?.audit?.classification === "documented-static-readiness-only" && appleEvidence?.resilienceReview?.externalNativeValidation === "not-run-and-not-claimed", "Apple static-readiness evidence is invalid");
   assert(distributionReview?.status === "completed-repository-local-distribution-maintenance-review", "distribution review is invalid");
+  assert(!directAppleCard && appleBundleMemberships.length === 1 && appleBundle?.id === APPLE_BUNDLE_ID && appleBundleCard?.source?.path === `./plugins/seis-bundles/${APPLE_BUNDLE_ID}`, "Apple source current bundle distribution is invalid");
 
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-plugin-wave-2-follow-up-decision",
     goalId: "SEIS-GOAL-021",
     wave: 2,
     round: 4,
     status: "completed-no-additional-public-plugin-selected",
-    generatedAt: "2026-07-21",
+    generatedAt: "2026-07-22",
     purpose: "Record the evidence-based Round 4 decision not to add a duplicate public Apple/Swift plugin before a bounded, completed SwiftPM execution result exists.",
     decision: {
       selectedCapability: null,
@@ -136,15 +159,36 @@ function buildRecord() {
       visionOS: "research-only",
       releaseReadiness: "not-asserted",
     },
+    historicalWave2Distribution: {
+      classification: "immutable-wave-2-follow-up-snapshot",
+      distributionMode: "direct-source-package-marketplace-cards",
+      ...HISTORICAL_WAVE_2_DISTRIBUTION,
+      additionalDirectCardAddedByFollowUp: false,
+      note: "The follow-up added no direct card; these historical counts are not the current marketplace projection.",
+    },
     publicDistribution: {
       marketplaceName: "seis-repo",
       marketplaceDisplayName: "SEIS Repo",
       publicAudience: "everyone",
-      applicationPluginCount: source.pluginCount ?? null,
-      expectedApplicationPluginCount: APP_PLUGIN_EXPANSION_TARGET,
-      publicCardCount: distributionReview.distribution?.publicCardCount ?? null,
-      expectedPublicCardCount: EXPECTED_PUBLIC_CARD_COUNT,
+      distributionMode: source.publicDistribution?.distributionMode || null,
+      marketplaceCardCount: cards.length,
+      canonicalCardCount: bundleCatalog.marketplace?.canonicalCardCount ?? null,
+      bundleCardCount: bundleCatalog.marketplace?.bundleCardCount ?? null,
+      applicationBundleCardCount: bundleCatalog.marketplace?.applicationBundleCardCount ?? null,
+      topicBundleCardCount: bundleCatalog.marketplace?.topicBundleCardCount ?? null,
+      retainedSourceCapabilityCount: bundleCatalog.sourceCapabilityInventory?.retainedSourcePackageCount ?? null,
+      rootSourceCapabilityCount: bundleCatalog.sourceCapabilityInventory?.rootSourceModuleCount ?? null,
+      applicationSourceCapabilityCount: source.pluginCount ?? null,
+      topicSourceCapabilityCount: bundleCatalog.sourceCapabilityInventory?.topicSourcePackageCount ?? null,
+      separateMarketplaceCards: source.publicDistribution?.separateMarketplaceCards ?? null,
+      appleReadinessSourcePath: sourceApple?.sourcePath || null,
+      appleReadinessMarketplaceCard: Boolean(directAppleCard),
+      appleReadinessDistributionBundleId: appleBundle?.id || null,
+      appleReadinessDistributionBundleCardPresent: Boolean(appleBundleCard),
+      appleReadinessBundleMembershipCount: appleBundleMemberships.length,
       additionalCardAdded: false,
+      additionalCardAddedScope: "Wave 2 follow-up added no source capability or marketplace card; current Apple distribution remains bundle-only.",
+      currentDirectCardAdded: false,
       personalMarketplaceRead: false,
       personalMarketplaceMutation: false,
       writes: false,
@@ -170,6 +214,7 @@ function buildRecord() {
       "npm run check:seis-core-plugin-sources",
       "npm run check:seis-core-plugin-catalog",
       "npm run check:seis-core-plugin-matrix",
+      "npm run check:seis-public-plugin-bundles",
       "npm run check:seis-repo-marketplace",
     ],
     rollback: {
@@ -189,7 +234,11 @@ function validateRecord(record) {
   assert(record.swiftPmEvidence?.localToolingObservation?.swiftToolchain === "available-local-inspection-only" && record.swiftPmEvidence?.localToolingObservation?.xcodebuild === "unavailable-from-active-command-line-tools-directory" && record.swiftPmEvidence?.localToolingObservation?.packageDescribe === "completed-local-package-graph-inspection" && record.swiftPmEvidence?.localToolingObservation?.swiftTestState === "interrupted-after-no-output-observation-window" && record.swiftPmEvidence?.localToolingObservation?.swiftTestCompletionClaim === "not-completed-and-not-claimed" && record.swiftPmEvidence?.localToolingObservation?.buildCacheTracked === false && record.swiftPmEvidence?.localToolingObservation?.networkUsedByPackageGraph === false, "SwiftPM local tooling observation is invalid");
   assert(record.swiftPmEvidence?.validationBoundary?.compiledSwiftClaim === false && record.swiftPmEvidence?.validationBoundary?.testPassClaim === false && record.swiftPmEvidence?.validationBoundary?.nativeApplicationRunClaim === false && record.swiftPmEvidence?.validationBoundary?.simulatorOrDeviceClaim === false && record.swiftPmEvidence?.validationBoundary?.signingOrProvisioningClaim === false && record.swiftPmEvidence?.validationBoundary?.deploymentOrAppStoreClaim === false, "native validation boundary is invalid");
   assert(record.platformBoundary?.macOS === "primary-native-command-center" && record.platformBoundary?.iPadOS === "brain-review-and-creative-planning-surface" && record.platformBoundary?.iOS === "companion-surface" && record.platformBoundary?.visionOS === "research-only" && record.platformBoundary?.releaseReadiness === "not-asserted", "platform boundary is invalid");
-  assert(record.publicDistribution?.marketplaceName === "seis-repo" && record.publicDistribution?.marketplaceDisplayName === "SEIS Repo" && record.publicDistribution?.publicAudience === "everyone" && record.publicDistribution?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.publicDistribution?.expectedApplicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.publicDistribution?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.publicDistribution?.expectedPublicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.publicDistribution?.additionalCardAdded === false, "public distribution count boundary is invalid");
+  assert(record.historicalWave2Distribution?.applicationSourcePackageCount === HISTORICAL_WAVE_2_DISTRIBUTION.applicationSourcePackageCount && record.historicalWave2Distribution?.marketplaceCardCount === HISTORICAL_WAVE_2_DISTRIBUTION.marketplaceCardCount && record.historicalWave2Distribution?.directApplicationCardCount === HISTORICAL_WAVE_2_DISTRIBUTION.directApplicationCardCount && record.historicalWave2Distribution?.additionalDirectCardAddedByFollowUp === false, "historical Wave 2 follow-up distribution is invalid");
+  assert(record.publicDistribution?.marketplaceName === "seis-repo" && record.publicDistribution?.marketplaceDisplayName === "SEIS Repo" && record.publicDistribution?.publicAudience === "everyone" && record.publicDistribution?.distributionMode === "curated-bounded-public-bundles" && record.publicDistribution?.separateMarketplaceCards === false, "public distribution mode boundary is invalid");
+  assert(record.publicDistribution?.marketplaceCardCount === CURRENT_DISTRIBUTION.marketplaceCardCount && record.publicDistribution?.canonicalCardCount === CURRENT_DISTRIBUTION.canonicalCardCount && record.publicDistribution?.bundleCardCount === CURRENT_DISTRIBUTION.bundleCardCount && record.publicDistribution?.applicationBundleCardCount === CURRENT_DISTRIBUTION.applicationBundleCardCount && record.publicDistribution?.topicBundleCardCount === CURRENT_DISTRIBUTION.topicBundleCardCount, "public marketplace card counts are invalid");
+  assert(record.publicDistribution?.retainedSourceCapabilityCount === CURRENT_DISTRIBUTION.retainedSourceCapabilityCount && record.publicDistribution?.rootSourceCapabilityCount === CURRENT_DISTRIBUTION.rootSourceCapabilityCount && record.publicDistribution?.applicationSourceCapabilityCount === CURRENT_DISTRIBUTION.applicationSourceCapabilityCount && record.publicDistribution?.topicSourceCapabilityCount === CURRENT_DISTRIBUTION.topicSourceCapabilityCount, "public source capability counts are invalid");
+  assert(record.publicDistribution?.appleReadinessSourcePath === `plugins/seis-core/${APPLE_PLUGIN_ID}` && record.publicDistribution?.appleReadinessMarketplaceCard === false && record.publicDistribution?.appleReadinessDistributionBundleId === APPLE_BUNDLE_ID && record.publicDistribution?.appleReadinessDistributionBundleCardPresent === true && record.publicDistribution?.appleReadinessBundleMembershipCount === 1 && record.publicDistribution?.additionalCardAdded === false && record.publicDistribution?.currentDirectCardAdded === false, "Apple readiness current bundle distribution is invalid");
   assert(record.publicDistribution?.personalMarketplaceRead === false && record.publicDistribution?.personalMarketplaceMutation === false && record.publicDistribution?.writes === false && record.publicDistribution?.network === false && record.publicDistribution?.secrets === false && record.publicDistribution?.publicReleaseAllowed === false, "public safety boundary is invalid");
   assert(record.externalValidationGap?.status === "approval-required" && typeof record.externalValidationGap?.unblockCondition === "string" && list(record.nonGoals).length === 4 && record.rollback?.strategy === "revert" && record.rollback?.dataMigrationRequired === false, "gap or rollback record is invalid");
   assert(!MACHINE_PATH_PATTERN.test(JSON.stringify(record)), "decision must not contain a machine-specific path");

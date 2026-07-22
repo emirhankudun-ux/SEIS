@@ -18,7 +18,9 @@ test("completes Wave 4 locally while keeping Wave 5 planned-gated", () => {
   assert.equal(result.status, 0, result.stderr);
 
   const program = JSON.parse(fs.readFileSync(programPath, "utf8"));
+  assert.equal(program.schemaVersion, 2);
   assert.equal(program.status, "completed");
+  assertCurrentAndHistoricalMarketplaceSemantics(program);
   assert.equal(program.maturity, "prototype");
   assert.equal(program.wave.number, 4);
   assert.equal(program.wave.totalSteps, 100);
@@ -96,3 +98,23 @@ test("completes Wave 4 locally while keeping Wave 5 planned-gated", () => {
   assert.equal(program.externalClaims.publicRelease, false);
   assert.equal(JSON.stringify(program).includes(repositoryRoot), false);
 });
+
+function assertCurrentAndHistoricalMarketplaceSemantics(record) {
+  assert.equal(record.historicalWave4DirectCardSnapshot.projectionModel, "direct-source-cards");
+  assert.equal(record.historicalWave4DirectCardSnapshot.publicCardCount, 380);
+  assert.equal(record.historicalWave4DirectCardSnapshot.retainedSourceCapabilityCount, 379);
+  assert.equal(record.historicalWave4DirectCardSnapshot.current, false);
+  assert.equal(record.historicalWave4DirectCardSnapshot.immutableHistoricalEvidence, true);
+  assert.equal(record.currentMarketplaceProjection.publicCardCount, 34);
+  assert.notEqual(record.currentMarketplaceProjection.publicCardCount, 380);
+  assert.notEqual(record.currentMarketplaceProjection.publicCardCount, 381);
+  assert.equal(record.currentMarketplaceProjection.canonicalCardCount, 1);
+  assert.equal(record.currentMarketplaceProjection.bundleCardCount, 33);
+  assert.equal(record.currentMarketplaceProjection.applicationBundleCardCount, 6);
+  assert.equal(record.currentMarketplaceProjection.topicBundleCardCount, 27);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.rootSourceModuleCount, 5);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.applicationSourcePackageCount, 75);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.topicSourcePackageCount, 300);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.retainedSourcePackageCount, 380);
+  assert.equal(record.currentMarketplaceProjection.directSourceCapabilityCardCount, 0);
+}

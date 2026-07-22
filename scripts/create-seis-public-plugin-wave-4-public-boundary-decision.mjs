@@ -9,6 +9,20 @@ const OUTPUT_PATH = "content/development/seis-public-plugin-wave-4-public-bounda
 const FEATURE_BRANCH = "plugins/seis-plugin-root-20260715";
 const VALIDATION_DELIVERY_COMMIT = "6f94f08612839984fc841ac56f01e224010456c3";
 const COMPLETED_STEPS = range(91, 95);
+const CAPABILITY = "seis-swift-package-topology";
+const DISTRIBUTION_BUNDLE_ID = "seis-application-bundle-06";
+const HISTORICAL_WAVE_4_DISTRIBUTION = Object.freeze({ applicationPluginCount: 74, publicCardCount: 380 });
+const CURRENT_DISTRIBUTION = Object.freeze({
+  publicCardCount: 34,
+  canonicalCardCount: 1,
+  bundleCardCount: 33,
+  applicationBundleCardCount: 6,
+  topicBundleCardCount: 27,
+  rootSourceModuleCount: 5,
+  applicationSourcePackageCount: 75,
+  topicSourcePackageCount: 300,
+  retainedSourcePackageCount: 380,
+});
 const PATHS = Object.freeze({
   wave4Program: "content/development/seis-public-plugin-wave-4-program.json",
   validationDeliveryEvidence: "content/development/seis-public-plugin-wave-4-validation-delivery-evidence.json",
@@ -16,6 +30,8 @@ const PATHS = Object.freeze({
   topologyEvidence: "content/development/seis-swift-package-topology.json",
   continuityCadence: "content/development/seis-public-plugin-continuity-cadence.json",
   marketplace: ".agents/plugins/marketplace.json",
+  sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
   lifecycle: "content/development/seis-public-plugin-lifecycle.json",
   installState: "content/development/seis-public-install-state.json",
   installEvidence: "content/development/seis-public-install-evidence.json",
@@ -50,12 +66,20 @@ function buildRecord() {
   const topologyEvidence = readJson(PATHS.topologyEvidence);
   const continuityCadence = readJson(PATHS.continuityCadence);
   const marketplace = readJson(PATHS.marketplace);
+  const sourceManifest = readJson(PATHS.sourceManifest);
+  const bundleCatalog = readJson(PATHS.bundleCatalog);
   const lifecycle = readJson(PATHS.lifecycle);
   const installState = readJson(PATHS.installState);
   const installEvidence = readJson(PATHS.installEvidence);
   const securityReview = readJson(PATHS.securityReview);
+  const sourceEntry = list(sourceManifest.plugins).find((entry) => entry?.name === CAPABILITY) || null;
+  const directMarketplaceEntry = list(marketplace.plugins).find((entry) => entry?.name === CAPABILITY) || null;
+  const bundleMemberships = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(CAPABILITY));
+  const distributionBundle = bundleMemberships.length === 1 ? bundleMemberships[0] : null;
+  const distributionBundleCard = list(marketplace.plugins).find((entry) => entry?.name === distributionBundle?.id) || null;
+  const currentMarketplaceProjection = buildCurrentMarketplaceProjection({ sourceManifest, marketplace, bundleCatalog, sourceEntry, directMarketplaceEntry, distributionBundle, distributionBundleCard, bundleMembershipCount: bundleMemberships.length });
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-plugin-wave-4-public-boundary-decision",
     goalId: "SEIS-GOAL-021",
     wave: 4,
@@ -90,10 +114,12 @@ function buildRecord() {
         && topologyEvidence.safety?.publicReleaseAllowed === false,
       publicCountReconciliation: marketplace.name === "seis-repo"
         && marketplace.interface?.displayName === "SEIS Repo"
-        && [380, 381].includes(list(marketplace.plugins).length)
-        && list(marketplace.plugins).filter((entry) => entry?.name === "seis-swift-package-topology").length === 1
-        && (list(marketplace.plugins).length === 380
-          || list(marketplace.plugins).filter((entry) => entry?.name === "seis-plugin-capability-coverage").length === 1),
+        && list(marketplace.plugins).length === CURRENT_DISTRIBUTION.publicCardCount
+        && list(sourceManifest.plugins).length === CURRENT_DISTRIBUTION.applicationSourcePackageCount
+        && directMarketplaceEntry === null
+        && bundleMemberships.length === 1
+        && distributionBundle?.id === DISTRIBUTION_BUNDLE_ID
+        && distributionBundleCard?.source?.path === distributionBundle.sourcePath,
       releaseBoundary: lifecycle.status === "active-local-proof-public-release-gated"
         && lifecycle.externalInstallProofSummary?.publicReleaseAllowed === false
         && installState.decision === "not-ready-for-public-release"
@@ -118,15 +144,18 @@ function buildRecord() {
       ],
       interpretation: "The host accepted the named feature-branch update while retaining policy observations. This is not a merge, a protected default-branch write, code-scanning success, or a verified-signature claim.",
     },
-    publicCountReconciliation: {
+    historicalWave4Distribution: {
+      classification: "immutable-wave-4-public-boundary-direct-card-snapshot",
+      projectionModel: "direct-source-package-marketplace-cards",
       marketplaceName: "seis-repo",
       marketplaceDisplayName: "SEIS Repo",
-      applicationPluginCount: 74,
-      publicCardCount: 380,
+      ...HISTORICAL_WAVE_4_DISTRIBUTION,
       topologyCardCount: 1,
-      personalMarketplaceRead: false,
-      personalMarketplaceMutation: false,
+      selectedCapability: CAPABILITY,
+      selectedCapabilityHadDirectMarketplaceCard: true,
+      note: "These counts and direct-card facts are immutable Wave 4 public-boundary history and do not describe the current curated marketplace.",
     },
+    currentMarketplaceProjection,
     publicBoundary: {
       marketplaceName: "seis-repo",
       marketplaceDisplayName: "SEIS Repo",
@@ -261,15 +290,57 @@ function isSupportedContinuity(cadence) {
     && wave?.closeoutPath === "content/development/seis-public-plugin-wave-4-closeout.json"
     && wave?.currentEvidencePath === "content/development/seis-public-plugin-wave-4-closeout.json";
   const activeWave5 = cadence?.cadence?.waveSeries?.activeWave === 5
-    && cadence?.cadence?.waveSeries?.activeWaveState === "wave-5-first-40-steps-completed-step-41-in-progress"
+    && ["wave-5-first-60-steps-completed-step-61-in-progress", "wave-5-first-80-steps-completed-step-81-in-progress"].includes(cadence?.cadence?.waveSeries?.activeWaveState)
     && wave?.status === "completed"
     && wave?.completedSteps === 100
     && list(wave?.inProgressSteps).length === 0
     && cadence?.waves?.[4]?.status === "in-progress"
     && cadence?.waves?.[4]?.selectedCapability === "seis-plugin-capability-coverage"
-    && cadence?.waves?.[4]?.completedSteps === 40
-    && list(cadence?.waves?.[4]?.inProgressSteps).join(",") === "41";
+    && [[60, "61"], [80, "81"]].some(([completedSteps, activeStep]) => cadence?.waves?.[4]?.completedSteps === completedSteps && list(cadence?.waves?.[4]?.inProgressSteps).join(",") === activeStep);
   return cadence?.id === "seis-public-plugin-continuity-cadence" && cadence?.status === "active-evidence-led-cadence" && (beforeDecision || afterDecision || afterCloseoutSequenceApproval || afterRepositoryLocalHandoff || afterFollowingWaveReview || afterEvidenceRetention || afterCloseout || activeWave5);
+}
+
+function buildCurrentMarketplaceProjection({ sourceManifest, marketplace, bundleCatalog, sourceEntry, directMarketplaceEntry, distributionBundle, distributionBundleCard, bundleMembershipCount }) {
+  const sourceEntries = list(sourceManifest.plugins);
+  const marketplaceEntries = list(marketplace.plugins);
+  assert(marketplace.name === "seis-repo" && marketplace.interface?.displayName === "SEIS Repo", "current marketplace identity is invalid");
+  assert(sourceManifest.publicDistribution?.distributionMode === "curated-bounded-public-bundles" && sourceManifest.publicDistribution?.separateMarketplaceCards === false, "current source distribution mode is invalid");
+  assert(sourceEntries.length === CURRENT_DISTRIBUTION.applicationSourcePackageCount && marketplaceEntries.length === CURRENT_DISTRIBUTION.publicCardCount, "current source or marketplace count is invalid");
+  assert(bundleCatalog.marketplace?.publicCardCount === CURRENT_DISTRIBUTION.publicCardCount && bundleCatalog.marketplace?.canonicalCardCount === CURRENT_DISTRIBUTION.canonicalCardCount && bundleCatalog.marketplace?.bundleCardCount === CURRENT_DISTRIBUTION.bundleCardCount && bundleCatalog.marketplace?.applicationBundleCardCount === CURRENT_DISTRIBUTION.applicationBundleCardCount && bundleCatalog.marketplace?.topicBundleCardCount === CURRENT_DISTRIBUTION.topicBundleCardCount, "current bundle-card inventory is invalid");
+  assert(bundleCatalog.sourceCapabilityInventory?.rootSourceModuleCount === CURRENT_DISTRIBUTION.rootSourceModuleCount && bundleCatalog.sourceCapabilityInventory?.applicationSourcePackageCount === CURRENT_DISTRIBUTION.applicationSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.topicSourcePackageCount === CURRENT_DISTRIBUTION.topicSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_DISTRIBUTION.retainedSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.sourcePackagesDeleted === false, "current retained-source inventory is invalid");
+  assert(sourceEntry?.sourcePath === `plugins/seis-core/${CAPABILITY}` && directMarketplaceEntry === null, "current selected capability must remain a retained source without a direct card");
+  assert(distributionBundle?.id === DISTRIBUTION_BUNDLE_ID && distributionBundle?.family === "application" && distributionBundle?.sourcePath === `./plugins/seis-bundles/${DISTRIBUTION_BUNDLE_ID}` && bundleMembershipCount === 1, "current selected capability bundle membership is invalid");
+  assert(distributionBundleCard?.source?.path === distributionBundle.sourcePath, "current selected capability bundle card is invalid");
+  return {
+    observedAt: bundleCatalog.generatedAt || null,
+    projectionModel: "curated-bundle-cards",
+    distributionMode: "curated-bounded-public-bundles",
+    marketplaceName: marketplace.name,
+    marketplaceDisplayName: marketplace.interface.displayName,
+    publicCardCount: marketplaceEntries.length,
+    canonicalCardCount: bundleCatalog.marketplace.canonicalCardCount,
+    bundleCardCount: bundleCatalog.marketplace.bundleCardCount,
+    applicationBundleCardCount: bundleCatalog.marketplace.applicationBundleCardCount,
+    topicBundleCardCount: bundleCatalog.marketplace.topicBundleCardCount,
+    sourceCapabilityInventory: {
+      rootSourceModuleCount: bundleCatalog.sourceCapabilityInventory.rootSourceModuleCount,
+      applicationSourcePackageCount: sourceEntries.length,
+      topicSourcePackageCount: bundleCatalog.sourceCapabilityInventory.topicSourcePackageCount,
+      retainedSourcePackageCount: bundleCatalog.sourceCapabilityInventory.retainedSourcePackageCount,
+      sourcePackagesDeleted: false,
+    },
+    selectedApplicationCapability: {
+      id: CAPABILITY,
+      retainedSource: true,
+      sourcePath: sourceEntry.sourcePath,
+      directMarketplaceCardRequired: false,
+      directMarketplaceCardCount: 0,
+      bundleCardCount: 1,
+      bundleId: distributionBundle.id,
+      bundleSourcePath: distributionBundle.sourcePath,
+      bundleFamily: distributionBundle.family,
+    },
+  };
 }
 
 function validateRecord(record) {
@@ -278,7 +349,9 @@ function validateRecord(record) {
   assert(record.stateAtCheckpoint?.completedStepCountBeforeTrackerUpdate === 90 && record.stateAtCheckpoint?.activeStepBeforeTrackerUpdate === 91 && record.stateAtCheckpoint?.nextPlannedStep === 96 && record.stateAtCheckpoint?.waveCompleted === false && record.stateAtCheckpoint?.finalHandoffPublished === false, "decision state is invalid");
   assert(Object.values(record.checks || {}).every(Boolean), "a required public-boundary check is not current");
   assert(record.remotePolicyObservations?.validationDeliveryCommit === VALIDATION_DELIVERY_COMMIT && record.remotePolicyObservations?.remoteReferenceVerified === true && record.remotePolicyObservations?.protectedDefaultBranchWritten === false && list(record.remotePolicyObservations?.hostReported).length === 4, "remote policy observations are invalid");
-  assert(record.publicCountReconciliation?.marketplaceName === "seis-repo" && record.publicCountReconciliation?.applicationPluginCount === 74 && record.publicCountReconciliation?.publicCardCount === 380 && record.publicCountReconciliation?.topologyCardCount === 1 && record.publicCountReconciliation?.personalMarketplaceRead === false && record.publicCountReconciliation?.personalMarketplaceMutation === false, "public count reconciliation is invalid");
+  assert(record.historicalWave4Distribution?.classification === "immutable-wave-4-public-boundary-direct-card-snapshot" && record.historicalWave4Distribution?.projectionModel === "direct-source-package-marketplace-cards" && record.historicalWave4Distribution?.marketplaceName === "seis-repo" && record.historicalWave4Distribution?.marketplaceDisplayName === "SEIS Repo" && record.historicalWave4Distribution?.applicationPluginCount === HISTORICAL_WAVE_4_DISTRIBUTION.applicationPluginCount && record.historicalWave4Distribution?.publicCardCount === HISTORICAL_WAVE_4_DISTRIBUTION.publicCardCount && record.historicalWave4Distribution?.topologyCardCount === 1 && record.historicalWave4Distribution?.selectedCapability === CAPABILITY && record.historicalWave4Distribution?.selectedCapabilityHadDirectMarketplaceCard === true, "historical Wave 4 distribution is invalid");
+  assert(record.currentMarketplaceProjection?.projectionModel === "curated-bundle-cards" && record.currentMarketplaceProjection?.distributionMode === "curated-bounded-public-bundles" && record.currentMarketplaceProjection?.marketplaceName === "seis-repo" && record.currentMarketplaceProjection?.marketplaceDisplayName === "SEIS Repo" && record.currentMarketplaceProjection?.publicCardCount === CURRENT_DISTRIBUTION.publicCardCount && record.currentMarketplaceProjection?.canonicalCardCount === CURRENT_DISTRIBUTION.canonicalCardCount && record.currentMarketplaceProjection?.bundleCardCount === CURRENT_DISTRIBUTION.bundleCardCount && record.currentMarketplaceProjection?.applicationBundleCardCount === CURRENT_DISTRIBUTION.applicationBundleCardCount && record.currentMarketplaceProjection?.topicBundleCardCount === CURRENT_DISTRIBUTION.topicBundleCardCount, "current marketplace card projection is invalid");
+  assert(record.currentMarketplaceProjection?.sourceCapabilityInventory?.rootSourceModuleCount === CURRENT_DISTRIBUTION.rootSourceModuleCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.applicationSourcePackageCount === CURRENT_DISTRIBUTION.applicationSourcePackageCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.topicSourcePackageCount === CURRENT_DISTRIBUTION.topicSourcePackageCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_DISTRIBUTION.retainedSourcePackageCount && record.currentMarketplaceProjection?.selectedApplicationCapability?.id === CAPABILITY && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardRequired === false && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardCount === 0 && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleCardCount === 1 && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleId === DISTRIBUTION_BUNDLE_ID, "current retained-source or selected-capability projection is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");
   assert(Object.values(record.externalClaims || {}).every((value) => value === false), "external claims must remain false");
   assert(record.externalProofAndApprovals?.independentInstallationEvidenceRecorded === false && record.externalProofAndApprovals?.publicReleaseAllowed === false && list(record.externalProofAndApprovals?.approvalsStillRequired).length === 5, "external proof boundary is invalid");

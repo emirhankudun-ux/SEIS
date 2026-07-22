@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-19",
+  "family": "topic",
+  "journeyId": "knowledge",
+  "journeyLabel": "Knowledge",
+  "journeyPart": 1,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 13,
+  "category": "Knowledge",
+  "categoryLabels": [
+    "Knowledge"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-knowledge",
+      "displayName": "SEIS Knowledge",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-ar",
+      "displayName": "SEIS AR",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-ar",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-automation",
+      "displayName": "SEIS Automation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-automation",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-biology",
+      "displayName": "SEIS Biology",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-biology",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-blockchain",
+      "displayName": "SEIS Blockchain",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-blockchain",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-chemistry",
+      "displayName": "SEIS Chemistry",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-chemistry",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-digital-twin",
+      "displayName": "SEIS Digital Twin",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-digital-twin",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-documentation",
+      "displayName": "SEIS Documentation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-documentation",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-future-technologies",
+      "displayName": "SEIS Future Technologies",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-future-technologies",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-genetics",
+      "displayName": "SEIS Genetics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-genetics",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-human-ai-collaboration",
+      "displayName": "SEIS Human-AI Collaboration",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-human-ai-collaboration",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-innovation",
+      "displayName": "SEIS Innovation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-innovation",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-iot",
+      "displayName": "SEIS IoT",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-iot",
+      "category": "Knowledge"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

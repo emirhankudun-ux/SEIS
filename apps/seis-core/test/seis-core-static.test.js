@@ -108,12 +108,15 @@ test("SEIS Command Center owns the public repository plugin source boundary", as
   assert.equal(catalog.distribution.sourceAvailableInRepository, true);
   assert.equal(catalog.distribution.publicRepositoryAvailable, true);
   assert.equal(catalog.distribution.publicAudience, "everyone");
-  assert.equal(catalog.distribution.distributionScope, "direct-repository-source");
+  assert.equal(catalog.distribution.distributionScope, "curated-bounded-public-bundles");
   assert.equal(catalog.distribution.sourceManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
   assert.equal(catalog.distribution.installSurface, "repo-source-app");
   assert.equal(catalog.distribution.marketplaceName, "seis-repo");
   assert.equal(catalog.distribution.publicMarketplace, true);
-  assert.equal(catalog.distribution.marketplaceEntryCount, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.distribution.marketplaceEntryCount, 6);
+  assert.equal(catalog.distribution.marketplaceCardCount, 34);
+  assert.equal(catalog.distribution.sourceCapabilityCount, APP_PLUGIN_EXPANSION_TARGET);
+  assert.equal(catalog.distribution.separateMarketplaceCards, false);
   assert.equal(catalog.distribution.coreSourceOwner, false);
   assert.equal(catalog.counts.discovered, APP_PLUGIN_EXPANSION_TARGET);
   assert.equal(catalog.plugins.length, APP_PLUGIN_EXPANSION_TARGET);

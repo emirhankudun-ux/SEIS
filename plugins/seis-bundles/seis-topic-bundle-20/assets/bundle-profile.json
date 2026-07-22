@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-20",
+  "family": "topic",
+  "journeyId": "knowledge",
+  "journeyLabel": "Knowledge",
+  "journeyPart": 2,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 12,
+  "category": "Knowledge",
+  "categoryLabels": [
+    "Knowledge"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-knowledge-mathematics",
+      "displayName": "SEIS Mathematics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-mathematics",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-neuroscience",
+      "displayName": "SEIS Neuroscience",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-neuroscience",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-physics",
+      "displayName": "SEIS Physics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-physics",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-quantum-computing",
+      "displayName": "SEIS Quantum Computing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-quantum-computing",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-research",
+      "displayName": "SEIS Research",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-research",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-robotics",
+      "displayName": "SEIS Robotics",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-robotics",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-science",
+      "displayName": "SEIS Science",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-science",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-simulation",
+      "displayName": "SEIS Simulation",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-simulation",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-spatial-computing",
+      "displayName": "SEIS Spatial Computing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-spatial-computing",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-sustainability",
+      "displayName": "SEIS Sustainability",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-sustainability",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-vr",
+      "displayName": "SEIS VR",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-vr",
+      "category": "Knowledge"
+    },
+    {
+      "name": "seis-topic-knowledge-xr",
+      "displayName": "SEIS XR",
+      "sourcePath": "./plugins/seis-topics/seis-topic-knowledge-xr",
+      "category": "Knowledge"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

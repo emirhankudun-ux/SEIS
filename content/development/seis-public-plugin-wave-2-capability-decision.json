@@ -1,15 +1,15 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-2-capability-decision",
   "goalId": "SEIS-GOAL-021",
   "backlogId": "SEIS-BL-021",
-  "generatedAt": "2026-07-21",
+  "generatedAt": "2026-07-22",
   "status": "approved-public-local-implementation",
   "wave": 2,
   "decision": {
     "selectedCapability": "seis-apple-native-readiness",
     "displayName": "SEIS Apple Native Readiness",
-    "selectionReason": "The repository contains a real Swift Package and Apple platform strategy, while the current public app-owned plugins only perform generic root manifest discovery, repository hygiene, package inventory, or technology taxonomy work. No existing package jointly audits the declared Swift Package targets, bounded Swift source/test presence, and anti-symbolic Apple platform strategy markers without compiling or claiming a runtime.",
+    "selectionReason": "At Wave 2 selection time, the repository contained a real Swift Package and Apple platform strategy, while the then-current public app-owned plugins only performed generic root manifest discovery, repository hygiene, package inventory, or technology taxonomy work. No existing package jointly audited the declared Swift Package targets, bounded Swift source/test presence, and anti-symbolic Apple platform strategy markers without compiling or claiming a runtime.",
     "overlapReview": [
       {
         "plugin": "seis-workspace-inspector",
@@ -44,20 +44,21 @@
       "packages/seis_platform_swift/Tests/SeisPlatformKitTests",
       "docs/APPLE_PLATFORM_STRATEGY.md"
     ],
-    "outcome": "Provide a bounded local static-readiness audit for real Apple/Swift Package evidence and make that evidence available through one public SEIS Repo card."
+    "outcome": "Provide a bounded local static-readiness audit for real Apple/Swift Package evidence and retain it as a source capability distributed through one curated SEIS Repo application bundle."
   },
   "nonGoals": [
     "Compiling, testing, building, signing, provisioning, or distributing a Swift package or native application.",
     "Claiming a simulator, device, macOS, iPadOS, iOS, visionOS, App Store, deployment, provider, or release result.",
     "Reading or mutating the personal marketplace.",
-    "Adding a plugin solely to increase the public card count.",
+    "Adding a plugin or direct marketplace card solely to increase public counts.",
     "Writing source, marketplace, GitHub, or release state from the plugin runtime."
   ],
   "acceptanceCriteria": [
     "A public app-owned package exists at plugins/seis-core/seis-apple-native-readiness.",
     "The package returns bounded static readiness evidence without raw source content.",
     "The package has empty write, network, and secret permissions.",
-    "The package has exactly one public seis-repo marketplace card and no personal marketplace dependency.",
+    "The retained source package has no direct marketplace card and appears exactly once in the public bundle catalog.",
+    "\"seis-application-bundle-04\" has one current SEIS Repo marketplace card and includes the Apple readiness source capability.",
     "Focused test, generator, structural plugin validation, marketplace, source, catalog, matrix, and integration checks are current."
   ],
   "publicBoundary": {
@@ -73,19 +74,43 @@
   },
   "implementation": {
     "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
-    "marketplaceSourcePath": "./plugins/seis-core/seis-apple-native-readiness",
+    "marketplaceCard": false,
+    "distributionBundleId": "seis-application-bundle-04",
+    "distributionBundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-04",
+    "distributionBundleCardPresent": true,
+    "bundleMembershipCount": 1,
     "pluginVersion": "0.0.20",
     "releaseTrainVersion": "0.00000002",
     "implementationState": "functional-local-demo"
   },
-  "evidence": {
+  "historicalWave2Distribution": {
+    "classification": "immutable-wave-2-handoff-snapshot",
+    "distributionMode": "direct-source-package-marketplace-cards",
+    "applicationSourcePackageCount": 72,
+    "topicSourcePackageCount": 300,
+    "migratedRootCardCount": 5,
+    "canonicalCardCount": 1,
+    "directApplicationCardCount": 72,
+    "marketplaceCardCount": 378,
+    "selectedCapabilityHadDirectMarketplaceCard": true,
+    "note": "These counts describe the historical Wave 2 handoff and are not the current marketplace projection."
+  },
+  "currentDistributionEvidence": {
     "initialProgramId": "seis-public-plugin-expansion-program",
     "initialWave2Status": "completed",
     "wave1HandoffId": "seis-public-plugin-wave-1-handoff",
     "wave1HandoffStatus": "completed-repository-local-handoff",
-    "applicationPluginCount": 75,
-    "expectedApplicationPluginCount": 75,
-    "publicCardCount": 381
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "rootSourceCapabilityCount": 5,
+    "applicationSourceCapabilityCount": 75,
+    "topicSourceCapabilityCount": 300,
+    "separateMarketplaceCards": false
   },
   "risks": [
     {
@@ -109,6 +134,7 @@
   "validation": [
     "npm run check:seis-public-plugin-wave-2-capability-decision",
     "npm run check:seis-apple-native-readiness",
+    "npm run check:seis-public-plugin-bundles",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-agent-plugin-integration"
   ]

@@ -1,22 +1,48 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-2-distribution-review",
   "goalId": "SEIS-GOAL-021",
   "wave": 2,
   "status": "completed-repository-local-distribution-maintenance-review",
-  "generatedAt": "2026-07-21",
-  "purpose": "Reconcile the public SEIS Repo application-plugin distribution chain after Wave 2 resilience work without treating repository visibility, local artifacts, cache observations, or static checks as independent installation, activation, release, provider, deployment, or approval proof.",
+  "generatedAt": "2026-07-22",
+  "purpose": "Reconcile the historical Wave 2 direct-card facts with the current curated SEIS Repo bundle distribution without treating repository visibility, local artifacts, cache observations, or static checks as independent installation, activation, release, provider, deployment, or approval proof.",
+  "historicalWave2Distribution": {
+    "classification": "immutable-wave-2-handoff-snapshot",
+    "distributionMode": "direct-source-package-marketplace-cards",
+    "applicationSourcePackageCount": 72,
+    "topicSourcePackageCount": 300,
+    "migratedRootCardCount": 5,
+    "canonicalCardCount": 1,
+    "directApplicationCardCount": 72,
+    "marketplaceCardCount": 378,
+    "appleReadinessHadDirectMarketplaceCard": true,
+    "note": "These historical counts are retained for provenance and do not describe the current marketplace projection."
+  },
   "distribution": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
     "publicAudience": "everyone",
-    "publicCardCount": 381,
-    "expectedPublicCardCount": 381,
-    "applicationPluginCount": 75,
-    "expectedApplicationPluginCount": 75,
-    "topicPluginCount": 300,
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceCardCount": 34,
+    "expectedMarketplaceCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "rootSourceCapabilityCount": 5,
+    "applicationSourceCapabilityCount": 75,
+    "topicSourceCapabilityCount": 300,
+    "separateMarketplaceCards": false,
     "sourceAvailableInRepository": true,
-    "publicRepositoryAvailable": true
+    "publicRepositoryAvailable": true,
+    "appleReadiness": {
+      "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
+      "distributionBundleCardPresent": true,
+      "bundleMembershipCount": 1
+    }
   },
   "contracts": {
     "sourceCatalog": {
@@ -24,15 +50,25 @@
       "catalogContractValid": true,
       "sourcePluginCount": 75,
       "catalogPluginCount": 75,
-      "applePluginStatus": "ready"
+      "applePluginStatus": "ready",
+      "sourceDistributionMode": "curated-bounded-public-bundles",
+      "catalogDistributionMode": "curated-bounded-public-bundles",
+      "catalogMarketplaceEntryCount": 6,
+      "separateMarketplaceCards": false
     },
     "matrixRegistrySuite": {
       "matrixPluginCount": 75,
       "matrixFailureCount": 0,
       "matrixAppleStatus": "ready",
       "registryEntryCount": 5000,
-      "registryAppleInstallId": "seis-apple-native-readiness@seis-repo",
-      "suiteApplicationPluginCount": 75,
+      "registryAppleSourceId": "seis-apple-native-readiness",
+      "registryDistributionAuthority": false,
+      "suiteApplicationSourceCapabilityCount": 75,
+      "suiteMarketplaceEntryCount": 6,
+      "suiteMarketplaceCardCount": 34,
+      "suiteRetainedSourceCapabilityCount": 380,
+      "suiteAppleMarketplaceCard": false,
+      "suiteAppleDistributionBundleId": "seis-application-bundle-04",
       "suitePublicReleaseAllowed": false
     },
     "permissions": {
@@ -45,7 +81,7 @@
     },
     "installAndRuntime": {
       "repositorySourceAvailable": true,
-      "localArtifactStageVerified": true,
+      "historicalSourceArtifactStageVerified": true,
       "freshTaskReloadRecorded": false,
       "freshTaskReloadState": "incomplete-local-fresh-task-evidence",
       "independentInstallationVerified": false,
@@ -64,8 +100,10 @@
     },
     "manifest": {
       "overallState": "ready",
-      "declaredMarketplaceEntryCount": 381,
-      "declaredApplicationMarketplaceEntryCount": 75,
+      "declaredMarketplaceCardCount": 34,
+      "declaredBundleCardCount": 33,
+      "declaredRetainedSourceCapabilityCount": 380,
+      "declaredApplicationSourceCount": 75,
       "findingCount": 0
     },
     "appleReadiness": {
@@ -97,6 +135,7 @@
     "npm run check:seis-core-plugin-matrix",
     "npm run check:seis-ai-core-plugin-registry",
     "npm run check:seis-unified-plugin-suite",
+    "npm run check:seis-public-plugin-bundles",
     "npm run check:seis-public-plugin-security-provenance-review",
     "npm run check:seis-repo-marketplace",
     "npm run check:seis-public-plugin-wave-2-distribution-review"

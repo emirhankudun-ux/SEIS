@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-22",
+  "family": "topic",
+  "journeyId": "project-management",
+  "journeyLabel": "Project Management",
+  "journeyPart": 1,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 9,
+  "category": "Project Management",
+  "categoryLabels": [
+    "Project Management"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-project-management",
+      "displayName": "SEIS Project Management",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management",
+      "category": "Project Management"
+    },
+    {
+      "name": "seis-topic-project-management-architecture-governance",
+      "displayName": "SEIS Architecture Governance",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-architecture-governance",
+      "category": "Project Management"
+    },
+    {
+      "name": "seis-topic-project-management-audit",
+      "displayName": "SEIS Audit",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-audit",
+      "category": "Project Management"
+    },
+    {
+      "name": "seis-topic-project-management-evidence",
+      "displayName": "SEIS Evidence",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-evidence",
+      "category": "Project Management"
+    },
+    {
+      "name": "seis-topic-project-management-goal-tracking",
+      "displayName": "SEIS Goal Tracking",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-goal-tracking",
+      "category": "Project Management"
+    },
+    {
+      "name": "seis-topic-project-management-milestones",
+      "displayName": "SEIS Milestones",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-milestones",
+      "category": "Project Management"
+    },
+    {
+      "name": "seis-topic-project-management-ontology",
+      "displayName": "SEIS Ontology",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-ontology",
+      "category": "Project Management"
+    },
+    {
+      "name": "seis-topic-project-management-permissions",
+      "displayName": "SEIS Permissions",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-permissions",
+      "category": "Project Management"
+    },
+    {
+      "name": "seis-topic-project-management-policies",
+      "displayName": "SEIS Policies",
+      "sourcePath": "./plugins/seis-topics/seis-topic-project-management-policies",
+      "category": "Project Management"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

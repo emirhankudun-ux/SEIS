@@ -44,12 +44,12 @@ claiming that a live provider has been called. The remaining desktop-web gaps
 are recorded separately in the UI-state evidence; they are not silently
 absorbed into this Command Center checkpoint.
 
-Round 4 audits overlap before adding one package, promotes the former plan-only
+Round 4 historically audited overlap before adding one package and promoted the former plan-only
 `seis-evidence-index` slot into a public SEIS Repo source package, adds a
 bounded local MCP surface and deterministic fixtures, and records its scope,
 non-goals, rollback, public-only placement, and no-personal/no-network/no-write
-boundary. The current contract is 71 app-owned public packages and 377 public
-`SEIS Repo` cards. Round 5 reruns the source, catalog, matrix, UI-state, focus,
+boundary. The Wave 1 handoff snapshot is 71 app-owned public packages and 377
+direct public `SEIS Repo` cards. Round 5 reruns the source, catalog, matrix, UI-state, focus,
 manifest, integration, lifecycle, provenance, fresh-task, unified-suite,
 registry, and baseline-web checks; it then records the focused feature-branch
 handoff. It remains local evidence only: no external installation,
@@ -61,9 +61,11 @@ The machine-readable 100-step source of truth is
 
 The cross-contract index is
 `content/development/seis-public-plugin-wave-1-evidence-index.json`. It keeps
-the current 377-card public marketplace contract, release labels, deny-by-default MCP
-boundary, generated evidence safety scan, and known desktop UI-state gap in one
-read-only record. Validate it with
+that immutable 377-card / 71-package historical snapshot while separately
+revalidating the current 34-card bundle projection, 380 retained sources, exact
+one-bundle resolution for `seis-evidence-index`, release labels,
+deny-by-default MCP boundary, generated evidence safety scan, and known desktop
+UI-state gap in one read-only record. Validate it with
 `npm run check:seis-public-plugin-wave-1-evidence-index`.
 
 The completed release-quality handoff is
@@ -77,13 +79,15 @@ risk, rollback, and the Wave 2 planning gate. Validate it with
 Wave 2 passed the Wave 1 gate, completed its bounded 100-step record, and has a
 current repository-local handoff at
 `content/development/seis-public-plugin-wave-2-handoff.json`. Its only new
-public capability was the read-only `seis-apple-native-readiness` package; the
+public source capability was the read-only `seis-apple-native-readiness`
+package; its direct card belonged to the historical pre-consolidation model. The
 subsequent overlap review deliberately selected no second card. Wave 3 is now
 completed at `content/development/seis-public-plugin-wave-3-program.json` and
 its closeout is `content/development/seis-public-plugin-wave-3-closeout.json`.
 It selected and implemented the one bounded `seis-swift-concurrency-audit`
-package with a public `SEIS Repo` card while keeping release, installation,
-compiler, and native-runtime claims false. Wave 4 had a separately
+source package with a direct public `SEIS Repo` card in the historical model;
+current discovery resolves retained sources through curated bundle cards while
+keeping release, installation, compiler, and native-runtime claims false. Wave 4 had a separately
 planned-gated topology specification at the time of this historical record.
 Later Wave 4 evidence and the active Wave 5 public-only cycle are tracked in
 `SEIS_PUBLIC_PLUGIN_CONTINUITY_CADENCE.md`. This preserves the

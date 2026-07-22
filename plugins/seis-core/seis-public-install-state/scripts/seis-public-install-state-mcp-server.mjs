@@ -41,11 +41,35 @@ function validateInstallState() {
   const findings = [];
   const cards = safeArray(marketplace.plugins);
   const canonicalCards = safeArray(family.publicPlugins);
-  const rootCards = safeArray(family.migratedRootPlugins);
-  const applicationCards = safeArray(family.applicationPlugins);
-  const topicCards = safeArray(family.topicPlugins);
-  const expectedCardCount = canonicalCards.length + rootCards.length + applicationCards.length + topicCards.length;
-  const installStateCard = cards.find((card) => card?.name === "seis-public-install-state");
+  const bundleCards = safeArray(family.bundlePackages);
+  const applicationBundleCards = bundleCards.filter((bundle) => bundle?.family === "application");
+  const topicBundleCards = bundleCards.filter((bundle) => bundle?.family === "topic");
+  const rootCapabilities = safeArray(family.migratedRootPlugins);
+  const applicationCapabilities = safeArray(family.applicationPlugins);
+  const topicCapabilities = safeArray(family.topicPlugins);
+  const expectedCardCount = canonicalCards.length + bundleCards.length;
+  const expectedSourceCapabilityCount = rootCapabilities.length + applicationCapabilities.length + topicCapabilities.length;
+  const installStateBundle = findCapabilityBundle(bundleCards, "seis-public-install-state");
+  const installStateCard = cards.find((card) => card?.name === installStateBundle?.id);
+  const artifactStage = externalProof.repoLocalArtifactStaging || {};
+  const historicalArtifactCardCount = artifactStage.historicalPreConsolidationSnapshot?.marketplaceCardCount
+    ?? artifactStage.marketplaceEntryCount
+    ?? null;
+  const historicalCanonicalCardCount = artifactStage.canonicalMarketplaceCardCount
+    ?? artifactStage.canonicalOrchestratorCount
+    ?? null;
+  const historicalRootSourceCapabilityCount = artifactStage.migratedRootSourceCapabilityCount
+    ?? artifactStage.migratedRootPluginCount
+    ?? null;
+  const historicalApplicationSourceCapabilityCount = artifactStage.applicationSourceCapabilityCount
+    ?? artifactStage.applicationPluginCount
+    ?? null;
+  const historicalTopicSourceCapabilityCount = artifactStage.topicSourceCapabilityCount
+    ?? artifactStage.topicPluginCount
+    ?? null;
+  const historicalSourceCapabilityCount = Number(historicalRootSourceCapabilityCount || 0)
+    + Number(historicalApplicationSourceCapabilityCount || 0)
+    + Number(historicalTopicSourceCapabilityCount || 0);
   const independentEvidence = readOptionalEvidence(located.repoRoot, independentContract.evidencePath);
   const independentEvidenceStatus = text(independentEvidence?.status) || "pending-independent-clean-runner-or-public-install";
   const independentInstallationVerified = independentEvidenceStatus === "recorded-independent-clean-runner-evidence";
@@ -54,11 +78,20 @@ function validateInstallState() {
   ensure(marketplace.name === "seis-repo", findings, "marketplace-name-invalid");
   ensure(marketplace.interface?.displayName === "SEIS Repo", findings, "marketplace-display-name-invalid");
   ensure(cards.length === expectedCardCount, findings, "marketplace-card-count-mismatch");
+  ensure(cardsMatchProjection(cards, family.marketplace?.entries), findings, "marketplace-curated-projection-mismatch");
   ensure(cardsHavePublicSource(cards), findings, "marketplace-public-source-boundary-invalid");
   ensure(family.marketplace?.publicPluginCount === expectedCardCount, findings, "family-card-count-mismatch");
-  ensure(family.marketplace?.applicationPluginCount === applicationCards.length, findings, "family-application-count-mismatch");
-  ensure(Boolean(installStateCard), findings, "install-state-card-missing");
-  ensure(installStateCard?.source?.path === "./plugins/seis-core/seis-public-install-state", findings, "install-state-card-source-path-invalid");
+  ensure(family.marketplace?.canonicalOrchestratorCount === canonicalCards.length, findings, "family-canonical-count-mismatch");
+  ensure(family.marketplace?.bundlePluginCount === bundleCards.length, findings, "family-bundle-count-mismatch");
+  ensure(family.marketplace?.applicationBundlePluginCount === applicationBundleCards.length, findings, "family-application-bundle-count-mismatch");
+  ensure(family.marketplace?.topicBundlePluginCount === topicBundleCards.length, findings, "family-topic-bundle-count-mismatch");
+  ensure(family.marketplace?.migratedRootPluginCount === rootCapabilities.length, findings, "family-root-source-count-mismatch");
+  ensure(family.marketplace?.applicationPluginCount === applicationCapabilities.length, findings, "family-application-source-count-mismatch");
+  ensure(family.marketplace?.topicPluginCount === topicCapabilities.length, findings, "family-topic-source-count-mismatch");
+  ensure(family.marketplace?.sourceCapabilityCount === expectedSourceCapabilityCount, findings, "family-source-capability-count-mismatch");
+  ensure(Boolean(installStateBundle), findings, "install-state-capability-bundle-missing");
+  ensure(Boolean(installStateCard), findings, "install-state-bundle-card-missing");
+  ensure(installStateCard?.source?.path === installStateBundle?.sourcePath, findings, "install-state-bundle-card-source-path-invalid");
   ensure(installStateCard?.policy?.installation === "AVAILABLE", findings, "install-state-card-installation-invalid");
   ensure(installStateCard?.policy?.authentication === "ON_INSTALL", findings, "install-state-card-authentication-invalid");
   ensure(installState.id === "seis-public-install-state", findings, "install-state-id-invalid");
@@ -66,26 +99,40 @@ function validateInstallState() {
   ensure(installState.plugin?.name === "seis-public-install-state", findings, "install-state-plugin-name-invalid");
   ensure(installState.plugin?.marketplaceName === "seis-repo", findings, "install-state-plugin-marketplace-invalid");
   ensure(installState.plugin?.sourcePath === "plugins/seis-core/seis-public-install-state", findings, "install-state-plugin-source-path-invalid");
+  ensure(installState.plugin?.distributionMode === "bundled-source-capability", findings, "install-state-distribution-mode-invalid");
+  ensure(installState.plugin?.marketplaceCardName === installStateBundle?.id, findings, "install-state-bundle-name-invalid");
+  ensure(installState.plugin?.marketplaceCardSourcePath === installStateBundle?.sourcePath, findings, "install-state-bundle-source-path-invalid");
   ensure(installState.publicCards?.count === expectedCardCount, findings, "install-state-card-count-invalid");
   ensure(installState.publicCards?.canonicalOrchestratorCount === canonicalCards.length, findings, "install-state-canonical-count-invalid");
-  ensure(installState.publicCards?.migratedRootPluginCount === rootCards.length, findings, "install-state-root-count-invalid");
-  ensure(installState.publicCards?.applicationPluginCount === applicationCards.length, findings, "install-state-application-count-invalid");
-  ensure(installState.publicCards?.topicPluginCount === topicCards.length, findings, "install-state-topic-count-invalid");
+  ensure(installState.publicCards?.bundleCardCount === bundleCards.length, findings, "install-state-bundle-count-invalid");
+  ensure(installState.publicCards?.applicationBundleCardCount === applicationBundleCards.length, findings, "install-state-application-bundle-count-invalid");
+  ensure(installState.publicCards?.topicBundleCardCount === topicBundleCards.length, findings, "install-state-topic-bundle-count-invalid");
+  ensure(installState.sourceCapabilities?.count === expectedSourceCapabilityCount, findings, "install-state-source-capability-count-invalid");
+  ensure(installState.sourceCapabilities?.migratedRootCount === rootCapabilities.length, findings, "install-state-root-source-count-invalid");
+  ensure(installState.sourceCapabilities?.applicationCount === applicationCapabilities.length, findings, "install-state-application-source-count-invalid");
+  ensure(installState.sourceCapabilities?.topicCount === topicCapabilities.length, findings, "install-state-topic-source-count-invalid");
+  ensure(installState.sourceCapabilities?.separateMarketplaceCards === false, findings, "install-state-source-card-boundary-invalid");
   ensure(installState.publicCards?.sourceAvailability === "public-repository-source-available", findings, "install-state-source-availability-invalid");
   ensure(installState.publicCards?.externalInstallationProven === independentInstallationVerified, findings, "install-state-independent-installation-stale");
   ensure(installState.canonicalDefaultInstall?.installId === "seis-ai-agent@seis-repo", findings, "install-state-canonical-install-id-invalid");
-  ensure(installState.evidence?.repoLocalArtifactStage?.verified === true, findings, "install-state-local-artifact-stage-invalid");
-  ensure(installState.evidence?.repoLocalArtifactStage?.marketplaceEntryCount === expectedCardCount, findings, "install-state-local-artifact-count-invalid");
-  ensure(installState.evidence?.repoLocalArtifactStage?.status === externalProof.status, findings, "install-state-local-artifact-status-stale");
+  ensure(installState.evidence?.historicalRepoLocalArtifactStage?.verified === true, findings, "install-state-historical-artifact-stage-invalid");
+  ensure(installState.evidence?.historicalRepoLocalArtifactStage?.historicalSnapshot === true, findings, "install-state-historical-artifact-label-invalid");
+  ensure(installState.evidence?.historicalRepoLocalArtifactStage?.capturedMarketplaceCardCount === historicalArtifactCardCount, findings, "install-state-historical-artifact-card-count-invalid");
+  ensure(installState.evidence?.historicalRepoLocalArtifactStage?.capturedSourceCapabilityCount === historicalSourceCapabilityCount, findings, "install-state-historical-artifact-source-count-invalid");
+  ensure(installState.evidence?.historicalRepoLocalArtifactStage?.currentMarketplaceCardCount === expectedCardCount, findings, "install-state-current-card-count-invalid");
+  ensure(installState.evidence?.historicalRepoLocalArtifactStage?.status === externalProof.status, findings, "install-state-historical-artifact-status-stale");
   ensure(installState.evidence?.freshTaskReload?.status === freshTaskStatus, findings, "install-state-fresh-task-status-stale");
   ensure(installState.evidence?.independentRunner?.contractStatus === independentContract.status, findings, "install-state-independent-contract-status-stale");
   ensure(installState.evidence?.independentRunner?.evidenceStatus === independentEvidenceStatus, findings, "install-state-independent-evidence-status-stale");
   ensure(installState.readiness?.repositorySourceAvailable === true, findings, "install-state-repository-source-readiness-invalid");
-  ensure(installState.readiness?.localArtifactStageVerified === true, findings, "install-state-local-artifact-readiness-invalid");
+  ensure(installState.readiness?.currentMarketplaceProjectionVerified === true, findings, "install-state-current-marketplace-readiness-invalid");
+  ensure(installState.readiness?.historicalSourceArtifactStageVerified === true, findings, "install-state-historical-artifact-readiness-invalid");
   ensure(installState.readiness?.independentInstallationVerified === independentInstallationVerified, findings, "install-state-independent-readiness-stale");
   ensure(installState.readiness?.publicReleaseAllowed === false, findings, "install-state-must-not-claim-public-release");
-  ensure(externalProof.repoLocalArtifactStaging?.ok === true, findings, "external-artifact-stage-not-verified");
-  ensure(externalProof.repoLocalArtifactStaging?.marketplaceEntryCount === expectedCardCount, findings, "external-artifact-stage-card-count-stale");
+  ensure(artifactStage.ok === true, findings, "external-artifact-stage-not-verified");
+  ensure(historicalCanonicalCardCount === canonicalCards.length, findings, "external-artifact-stage-canonical-count-stale");
+  ensure(historicalSourceCapabilityCount === expectedSourceCapabilityCount, findings, "external-artifact-stage-source-count-stale");
+  ensure(historicalArtifactCardCount === canonicalCards.length + historicalSourceCapabilityCount, findings, "external-artifact-stage-historical-projection-invalid");
   ensure(externalProof.publicReleaseAllowed === false, findings, "external-artifact-stage-must-not-claim-public-release");
   ensure(independentContract.status === "active-evidence-intake-contract", findings, "independent-evidence-contract-invalid");
   ensure(independentContract.publicReleaseAllowed === false, findings, "independent-evidence-contract-must-not-claim-public-release");
@@ -102,10 +149,17 @@ function validateInstallState() {
     publicCards: {
       count: cards.length,
       canonicalOrchestratorCount: canonicalCards.length,
-      migratedRootPluginCount: rootCards.length,
-      applicationPluginCount: applicationCards.length,
-      topicPluginCount: topicCards.length,
+      bundleCardCount: bundleCards.length,
+      applicationBundleCardCount: applicationBundleCards.length,
+      topicBundleCardCount: topicBundleCards.length,
       sourceAvailability: installState.publicCards?.sourceAvailability || null
+    },
+    sourceCapabilities: {
+      count: expectedSourceCapabilityCount,
+      migratedRootCount: rootCapabilities.length,
+      applicationCount: applicationCapabilities.length,
+      topicCount: topicCapabilities.length,
+      separateMarketplaceCards: false
     },
     readiness: installState.readiness || null,
     evidence: installState.evidence || null,
@@ -128,7 +182,8 @@ function compactMarketplace(report) {
     marketplaceName: report.marketplaceName || null,
     marketplaceDisplayName: report.marketplaceDisplayName || null,
     publicCardCount: report.publicCards?.count ?? null,
-    applicationPluginCount: report.publicCards?.applicationPluginCount ?? null
+    bundleCardCount: report.publicCards?.bundleCardCount ?? null,
+    sourceCapabilityCount: report.sourceCapabilities?.count ?? null
   };
 }
 
@@ -181,6 +236,17 @@ function cardsHavePublicSource(cards) {
     && card?.policy?.installation === "AVAILABLE"
     && card?.policy?.authentication === "ON_INSTALL"
   );
+}
+
+function cardsMatchProjection(cards, entries) {
+  const projection = safeArray(entries);
+  if (cards.length !== projection.length) return false;
+  const expected = new Map(projection.map((entry) => [text(entry?.name), text(entry?.sourcePath)]));
+  return expected.size === projection.length && cards.every((card) => expected.get(text(card?.name)) === text(card?.source?.path));
+}
+
+function findCapabilityBundle(bundles, capabilityName) {
+  return bundles.find((bundle) => safeArray(bundle?.members).some((member) => text(member?.name) === capabilityName)) || null;
 }
 
 function unavailable(reason) {

@@ -1,10 +1,10 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-2-handoff",
   "goalId": "SEIS-GOAL-021",
-  "generatedAt": "2026-07-21",
+  "generatedAt": "2026-07-22",
   "status": "completed-repository-local-handoff",
-  "purpose": "Record a reproducible repository-local Wave 2 completion, its public SEIS Repo boundary, its known native and external validation limits, and its current Wave 3 continuation reference. This is not a public release, independent installation, provider, deployment, or approval claim.",
+  "purpose": "Record a reproducible repository-local Wave 2 completion, preserve its historical direct-card facts, reconcile the current curated SEIS Repo boundary, retain native and external validation limits, and identify Wave 3 as completed and bundle-distributed. This is not a public release, independent installation, provider, deployment, or approval claim.",
   "program": {
     "id": "seis-public-plugin-wave-2-program",
     "status": "completed",
@@ -16,10 +16,25 @@
   "marketplace": {
     "name": "seis-repo",
     "displayName": "SEIS Repo",
-    "publicCardCount": 381,
-    "expectedCardCount": 381,
-    "applicationPluginCount": 75,
-    "expectedApplicationPluginCount": 75
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceCardCount": 34,
+    "expectedMarketplaceCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedSourceCapabilityCount": 380,
+    "rootSourceCapabilityCount": 5,
+    "applicationSourceCapabilityCount": 75,
+    "topicSourceCapabilityCount": 300,
+    "separateMarketplaceCards": false,
+    "appleReadiness": {
+      "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
+      "distributionBundleCardPresent": true,
+      "bundleMembershipCount": 1
+    }
   },
   "validation": {
     "wave1Continuity": true,
@@ -54,6 +69,28 @@
     "implementationStartedAtWave2Handoff": false,
     "additionalPublicCardAddedAtWave2Handoff": false,
     "note": "This preserves the Wave 3 state recorded when the completed Wave 2 handoff was first prepared; the current continuation is tracked separately below."
+  },
+  "historicalWave2Distribution": {
+    "classification": "immutable-wave-2-handoff-snapshot",
+    "distributionMode": "direct-source-package-marketplace-cards",
+    "applicationSourcePackageCount": 72,
+    "topicSourcePackageCount": 300,
+    "migratedRootCardCount": 5,
+    "canonicalCardCount": 1,
+    "directApplicationCardCount": 72,
+    "marketplaceCardCount": 378,
+    "appleReadinessHadDirectMarketplaceCard": true,
+    "note": "These counts are historical facts and do not describe the current curated marketplace."
+  },
+  "historicalWave3Distribution": {
+    "classification": "immutable-wave-3-direct-card-completion-snapshot",
+    "distributionMode": "direct-source-package-marketplace-cards",
+    "applicationSourcePackageCount": 73,
+    "directApplicationCardCount": 73,
+    "marketplaceCardCount": 379,
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "selectedCapabilityHadDirectMarketplaceCard": true,
+    "note": "Wave 3 historically added a direct card; the current source capability is retained behind a curated bundle card."
   },
   "nativeValidationBoundary": {
     "packageGraphStatus": "completed-local-package-graph-inspection",
@@ -106,14 +143,14 @@
     {
       "id": "RISK-W2-002",
       "status": "tracked",
-      "description": "Public marketplace metadata can drift as app-owned package counts change.",
-      "mitigation": "Require source, catalog, matrix, marketplace, integration, lifecycle, provenance, and manifest reconciliation for every future changed public card."
+      "description": "Public marketplace metadata can drift when retained source-capability counts are confused with curated bundle-card counts.",
+      "mitigation": "Require source, bundle catalog, matrix, marketplace, lifecycle, provenance, and manifest reconciliation while reporting cards and retained sources separately."
     },
     {
       "id": "RISK-W2-003",
       "status": "tracked",
-      "description": "The next wave could add a duplicate card merely to satisfy cadence.",
-      "mitigation": "Wave 3 became active only after a separate non-duplicative decision selected the bounded concurrency audit; future public cards still require a separate scope, overlap, and validation gate."
+      "description": "A completed wave could be misreported as still active or its historical direct card could be mistaken for current distribution.",
+      "mitigation": "Keep Wave 3 completed, preserve its direct-card facts only in the historical snapshot, and validate its current exact-one bundle membership."
     }
   ],
   "rollback": {
@@ -123,19 +160,25 @@
   },
   "nextWave": {
     "number": 3,
-    "status": "in-progress",
+    "status": "completed",
     "programId": "seis-public-plugin-wave-3-program",
     "selectionStatus": "implementation-approved",
     "selectedCapability": "seis-swift-concurrency-audit",
     "implementationStarted": true,
-    "additionalPublicCardAdded": true,
+    "completedStepCount": 100,
+    "currentDistributionMode": "curated-bounded-public-bundles",
+    "marketplaceCard": false,
+    "distributionBundleId": "seis-application-bundle-06",
+    "distributionBundleCardPresent": true,
+    "bundleMembershipCount": 1,
+    "historicalAdditionalDirectCardAddedAtExecution": true,
     "historicalStatusAtWave2Handoff": "planned",
     "historicalSelectionStatusAtWave2Handoff": "discovery-required",
     "scopeRiskReviewPath": "content/development/seis-public-plugin-wave-2-handoff.json",
-    "activationRule": "Wave 3 entered an in-progress implementation scope only after a separate non-duplicative capability decision, current repository-local validation evidence, and continued user authority; this does not authorize external release or protected-branch writes."
+    "activationRule": "Wave 3 completed after a separate non-duplicative capability decision and repository-local validation. Its retained source capability is now distributed through a curated bundle; this does not authorize external release or protected-branch writes."
   },
   "inputSafetyScan": {
-    "inputCount": 15,
+    "inputCount": 16,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

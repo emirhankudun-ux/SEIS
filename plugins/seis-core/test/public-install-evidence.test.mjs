@@ -12,6 +12,9 @@ const entrypoint = path.join(pluginRoot, "seis-public-install-evidence", "script
 const generatedEvidence = JSON.parse(readFileSync(path.join(repoRoot, "content", "development", "seis-public-install-evidence.json"), "utf8"));
 
 test("SEIS Public Install Evidence validates the public contract without release authority", () => {
+  assert.equal(generatedEvidence.schemaVersion, 2);
+  assert.equal(generatedEvidence.plugin.distributionMode, "bundled-source-capability");
+  assert.equal(generatedEvidence.plugin.marketplaceCardName, "seis-application-bundle-05");
   const result = runCli(["--validate"]);
 
   assert.equal(result.state, "ready");
@@ -20,7 +23,18 @@ test("SEIS Public Install Evidence validates the public contract without release
   assert.equal(result.marketplaceName, "seis-repo");
   assert.equal(result.marketplaceDisplayName, "SEIS Repo");
   assert.equal(result.publicCards.count, generatedEvidence.publicCards.count);
-  assert.equal(result.publicCards.applicationPluginCount, generatedEvidence.publicCards.applicationPluginCount);
+  assert.equal(result.publicCards.count, 34);
+  assert.equal(result.publicCards.canonicalOrchestratorCount, 1);
+  assert.equal(result.publicCards.bundleCardCount, 33);
+  assert.equal(result.publicCards.applicationBundleCardCount, 6);
+  assert.equal(result.publicCards.topicBundleCardCount, 27);
+  assert.deepEqual(result.sourceCapabilities, {
+    count: 380,
+    migratedRootCount: 5,
+    applicationCount: 75,
+    topicCount: 300,
+    separateMarketplaceCards: false,
+  });
   assert.equal(result.expectedInstallIds.length, generatedEvidence.independentEvidence.expectedPluginIds.length);
   assert.equal(result.expectedEmbeddedModuleCount, generatedEvidence.independentEvidence.expectedEmbeddedModuleCount);
   assert.deepEqual(result.permissions.write, []);
@@ -36,6 +50,9 @@ test("SEIS Public Install Evidence exposes only bounded, release-safe evidence s
   assert.equal(result.publicReleaseAllowed, false);
   assert.equal(result.marketplaceName, "seis-repo");
   assert.equal(result.marketplaceDisplayName, "SEIS Repo");
+  assert.equal(result.publicCards.count, 34);
+  assert.equal(result.sourceCapabilities.count, 380);
+  assert.equal(result.sourceCapabilities.separateMarketplaceCards, false);
   assert.deepEqual(result.permissions.write, []);
   assert.deepEqual(result.permissions.network, []);
   assert.deepEqual(result.permissions.secrets, []);
@@ -53,6 +70,9 @@ test("SEIS Public Install Evidence distinguishes valid and secret-contaminated f
     assert.equal(valid.evidenceRecorded, true);
     assert.equal(valid.evidenceValid, true);
     assert.equal(valid.publicReleaseAllowed, false);
+    assert.equal(valid.publicCards.count, 2);
+    assert.equal(valid.sourceCapabilities.count, 1);
+    assert.equal(valid.sourceCapabilities.separateMarketplaceCards, false);
     assert.equal(valid.nextAction.includes("human approval"), true);
     assert.deepEqual(valid.permissions.write, []);
     assert.deepEqual(valid.permissions.network, []);
@@ -121,16 +141,36 @@ function createFixtureRoot() {
     interface: { displayName: "SEIS Repo" },
     plugins: [
       publicCard("seis-ai-agent", "./plugins/seis-core/seis-ai-agent"),
-      publicCard("seis-public-install-evidence", "./plugins/seis-core/seis-public-install-evidence"),
+      publicCard("seis-application-bundle-01", "./plugins/seis-bundles/seis-application-bundle-01"),
     ],
   });
   writeJson(root, "content/development/seis-public-plugin-family.json", {
-    publicPlugins: [{ installId: "seis-ai-agent@seis-repo" }],
+    publicPlugins: [{ name: "seis-ai-agent", sourcePath: "./plugins/seis-core/seis-ai-agent", installId: "seis-ai-agent@seis-repo" }],
     migratedRootPlugins: [],
-    applicationPlugins: [{ name: "seis-public-install-evidence" }],
+    applicationPlugins: [{ name: "seis-public-install-evidence", sourcePath: "./plugins/seis-core/seis-public-install-evidence" }],
     topicPlugins: [],
+    bundlePackages: [{
+      id: "seis-application-bundle-01",
+      family: "application",
+      sourcePath: "./plugins/seis-bundles/seis-application-bundle-01",
+      members: [{ name: "seis-public-install-evidence", sourcePath: "./plugins/seis-core/seis-public-install-evidence" }],
+    }],
     embeddedModules: [{ name: "seis-ai-agent" }],
-    marketplace: { publicPluginCount: 2, applicationPluginCount: 1 },
+    marketplace: {
+      publicPluginCount: 2,
+      canonicalOrchestratorCount: 1,
+      bundlePluginCount: 1,
+      applicationBundlePluginCount: 1,
+      topicBundlePluginCount: 0,
+      migratedRootPluginCount: 0,
+      applicationPluginCount: 1,
+      topicPluginCount: 0,
+      sourceCapabilityCount: 1,
+      entries: [
+        { name: "seis-ai-agent", sourcePath: "./plugins/seis-core/seis-ai-agent" },
+        { name: "seis-application-bundle-01", sourcePath: "./plugins/seis-bundles/seis-application-bundle-01" },
+      ],
+    },
   });
   writeJson(root, evidenceContractPath, {
     id: "seis-public-plugin-independent-runner-evidence-contract",
@@ -146,8 +186,24 @@ function createFixtureRoot() {
       name: "seis-public-install-evidence",
       marketplaceName: "seis-repo",
       sourcePath: "plugins/seis-core/seis-public-install-evidence",
+      distributionMode: "bundled-source-capability",
+      marketplaceCardName: "seis-application-bundle-01",
+      marketplaceCardSourcePath: "./plugins/seis-bundles/seis-application-bundle-01",
     },
-    publicCards: { count: 2, applicationPluginCount: 1 },
+    publicCards: {
+      count: 2,
+      canonicalOrchestratorCount: 1,
+      bundleCardCount: 1,
+      applicationBundleCardCount: 1,
+      topicBundleCardCount: 0,
+    },
+    sourceCapabilities: {
+      count: 1,
+      migratedRootCount: 0,
+      applicationCount: 1,
+      topicCount: 0,
+      separateMarketplaceCards: false,
+    },
     independentEvidence: {
       contractPath: evidenceContractPath,
       evidencePath,

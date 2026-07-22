@@ -277,7 +277,7 @@ if (manifest) {
   ensure(manifest.unifiedPluginSuite?.applicationPluginSourceAvailableInRepository === true, "manifest unified suite must mark app sources repo-available");
   ensure(manifest.unifiedPluginSuite?.applicationPluginPublicRepositoryAvailable === true, "manifest unified suite must mark app sources public-repository available");
   ensure(manifest.unifiedPluginSuite?.applicationPluginPublicAudience === "everyone", "manifest unified suite app public audience must be everyone");
-  ensure(manifest.unifiedPluginSuite?.applicationPluginMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "manifest unified suite must expose all app plugins in the public marketplace");
+  ensure(manifest.unifiedPluginSuite?.applicationPluginMarketplaceEntryCount === 6, "manifest unified suite must expose six curated application bundle cards");
   ensure(manifest.unifiedPluginSuite?.applicationPluginPublicReleaseAllowed === false, "manifest unified suite must keep app public release gated");
   ensure(manifest.unifiedPluginSuite?.applicationPluginCoreSourceOwner === false, "manifest unified suite must keep core out of app source ownership");
   ensureArrayIncludesAll(manifest.canonicalAgent?.publishedPluginFamily, requiredPublicPlugins.map((id) => id.replace("@seis-repo", "")), "canonicalAgent.publishedPluginFamily");
@@ -336,7 +336,7 @@ if (manifest) {
   ensure(manifest.runtimeIntegration?.applicationPluginSourceAvailableInRepository === true, "runtimeIntegration must mark app sources repo-available");
   ensure(manifest.runtimeIntegration?.applicationPluginPublicRepositoryAvailable === true, "runtimeIntegration must mark app sources public-repository available");
   ensure(manifest.runtimeIntegration?.applicationPluginPublicAudience === "everyone", "runtimeIntegration app public audience must be everyone");
-  ensure(manifest.runtimeIntegration?.applicationPluginMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "runtimeIntegration must expose all app plugins in the public marketplace");
+  ensure(manifest.runtimeIntegration?.applicationPluginMarketplaceEntryCount === 6, "runtimeIntegration must expose six curated application bundle cards");
   ensure(manifest.runtimeIntegration?.applicationPluginPublicReleaseAllowed === false, "runtimeIntegration must keep app public release gated");
   ensure(manifest.runtimeIntegration?.applicationPluginCoreSourceOwner === false, "runtimeIntegration must keep core out of app source ownership");
   ensureArrayIncludesAll(manifest.runtimeIntegration?.mcpResources, [
@@ -524,8 +524,10 @@ if (manifest) {
   ensure(mcpPermission?.id === "seis-mcp-permission-risk-matrix", "MCP permission boundary ledger id is stale");
   ensure(mcpPermission?.plugin?.name === "seis-mcp-permission", "MCP permission boundary ledger plugin id is stale");
   ensure(mcpPermission?.plugin?.marketplaceName === "seis-repo", "MCP permission boundary ledger must remain public SEIS Repo scoped");
-  ensure(mcpPermission?.counts?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "MCP permission boundary ledger app plugin count is stale");
+  ensure(mcpPermission?.schemaVersion === 2 && mcpPermission?.counts?.marketplaceCardCount === 34 && mcpPermission?.counts?.bundleCardCount === 33, "MCP permission boundary ledger curated card counts are stale");
+  ensure(mcpPermission?.counts?.applicationSourceCapabilityCount === APP_PLUGIN_EXPANSION_TARGET && mcpPermission?.counts?.sourceCapabilityCount === 380, "MCP permission boundary ledger source capability counts are stale");
   ensure(mcpPermission?.counts?.applicationMcpServerCount === APP_PLUGIN_EXPANSION_TARGET, "MCP permission boundary ledger MCP server count is stale");
+  ensure(mcpPermission?.counts?.directApplicationMarketplaceCardCount === 0 && mcpPermission?.records?.every((record) => record?.marketplaceCard === false && typeof record?.distributionBundleId === "string"), "MCP permission boundary ledger must map every app source through a curated bundle without direct cards");
   ensure(mcpPermission?.counts?.writePermissionGrantCount === 0 && mcpPermission?.counts?.networkPermissionGrantCount === 0 && mcpPermission?.counts?.secretPermissionGrantCount === 0, "MCP permission boundary ledger must retain deny-by-default permissions");
   ensure(mcpPermission?.safety?.startsMcpServers === false && mcpPermission?.safety?.permissionGrant === false && mcpPermission?.safety?.publicReleaseAllowed === false, "MCP permission boundary ledger must remain a non-executing public gate");
   ensure(mcpPermissionScript.includes("seis-mcp-permission-risk-matrix"), "MCP permission boundary generator must write the declared ledger");
@@ -560,8 +562,8 @@ if (manifest) {
   ensure(projectManifestAudit?.plugin?.releaseLabel === appReleaseLabel && projectManifestAudit?.plugin?.releaseSemver === appReleaseSemver, "project-manifest audit evidence release is stale");
   ensure(projectManifestAudit?.manifestAuditCompleted === true && projectManifestAudit?.overallState === "ready", "project-manifest audit must retain a completed ready local declaration check");
   ensure(Array.isArray(projectManifestAudit?.checks) && projectManifestAudit.checks.length >= 15 && projectManifestAudit.checks.every((check) => check?.observed === true), "project-manifest audit checks are incomplete");
-  ensure(projectManifestAudit?.counts?.declaredApplicationMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET && projectManifestAudit?.counts?.sourceManifestPluginCount === APP_PLUGIN_EXPANSION_TARGET && projectManifestAudit?.counts?.marketplaceApplicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "project-manifest audit application counts are stale");
-  ensure(projectManifestAudit?.counts?.declaredMarketplaceEntryCount === projectManifestAudit?.counts?.marketplaceEntryCount, "project-manifest audit marketplace counts are inconsistent");
+  ensure(projectManifestAudit?.counts?.declaredApplicationSourceCount === APP_PLUGIN_EXPANSION_TARGET && projectManifestAudit?.counts?.sourceManifestApplicationCount === APP_PLUGIN_EXPANSION_TARGET && projectManifestAudit?.counts?.publicFamilyApplicationSourceCount === APP_PLUGIN_EXPANSION_TARGET, "project-manifest audit application source counts are stale");
+  ensure(projectManifestAudit?.counts?.declaredMarketplaceCardCount === projectManifestAudit?.counts?.marketplaceCardCount && projectManifestAudit?.counts?.declaredMarketplaceCardCount === 34 && projectManifestAudit?.counts?.declaredBundleCardCount === 33, "project-manifest audit curated marketplace counts are inconsistent");
   ensure(Array.isArray(projectManifestAudit?.findings) && projectManifestAudit.findings.length === 0, "project-manifest audit must not conceal findings");
   ensure(projectManifestAudit?.safety?.write?.length === 0 && projectManifestAudit?.safety?.network?.length === 0 && projectManifestAudit?.safety?.secrets?.length === 0, "project-manifest audit must retain no write, network, or secret permissions");
   ensure(projectManifestAudit?.safety?.executesPlugin === false && projectManifestAudit?.safety?.publicReleaseAllowed === false, "project-manifest audit must retain a non-executing public boundary");
@@ -573,7 +575,8 @@ if (manifest) {
   ensure(appPluginCatalog?.distribution?.sourceAvailableInRepository === true, "app plugin catalog must mark source as repo-available");
   ensure(appPluginCatalog?.distribution?.sourceManifest === "apps/seis-core/data/seis-core-plugin-sources.json", "app plugin catalog source manifest is stale");
   ensure(appPluginCatalog?.distribution?.installSurface === "repo-source-app", "app plugin catalog must expose the direct repo app surface");
-  ensure(appPluginCatalog?.distribution?.marketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog must expose all app plugins in the public marketplace");
+  ensure(appPluginCatalog?.distribution?.distributionScope === "curated-bounded-public-bundles" && appPluginCatalog?.distribution?.marketplaceEntryCount === 6 && appPluginCatalog?.distribution?.marketplaceCardCount === 34, "app plugin catalog curated marketplace projection is stale");
+  ensure(appPluginCatalog?.distribution?.sourceCapabilityCount === APP_PLUGIN_EXPANSION_TARGET && appPluginCatalog?.distribution?.separateMarketplaceCards === false && appPluginCatalog?.distribution?.sourcePackagesRetained === true, "app plugin catalog source capability boundary is stale");
   ensure(appPluginCatalog?.distribution?.coreSourceOwner === false, "app plugin catalog must keep core out of app source ownership");
   ensure(appPluginCatalog?.counts?.discovered === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog discovered count is stale");
   ensure(appPluginCatalog?.plugins?.length === APP_PLUGIN_EXPANSION_TARGET, "app plugin catalog length is stale");
@@ -595,7 +598,7 @@ if (manifest) {
   ensure(manifest.applicationIntegration?.pluginSourcePublicRepositoryAvailable === true, "applicationIntegration must mark app sources public-repository available");
   ensure(manifest.applicationIntegration?.pluginSourcePublicAudience === "everyone", "applicationIntegration public audience must be everyone");
   ensure(manifest.applicationIntegration?.pluginSourceCount === APP_PLUGIN_EXPANSION_TARGET, "applicationIntegration app source count is stale");
-  ensure(manifest.applicationIntegration?.pluginMarketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "applicationIntegration must expose all app plugins in the public marketplace");
+  ensure(manifest.applicationIntegration?.pluginMarketplaceEntryCount === 6, "applicationIntegration must expose six curated application bundle cards");
   const appSourceNames = (appPluginSources?.plugins || []).map((plugin) => plugin.name).sort();
   const suiteAppPlugins = unifiedSuite?.applicationDistribution?.plugins || [];
   const suiteAppNames = suiteAppPlugins.map((plugin) => plugin.moduleId).sort();
@@ -610,14 +613,14 @@ if (manifest) {
   ensure(unifiedSuite?.applicationDistribution?.pluginCount === APP_PLUGIN_EXPANSION_TARGET, "unified suite app-owned plugin count is stale");
   ensure(unifiedSuite?.publicDistribution?.applicationOwnedPluginCount === APP_PLUGIN_EXPANSION_TARGET, "unified suite public distribution app-owned count is stale");
   ensure(unifiedSuite?.applicationDistribution?.sourceAvailableInRepository === true, "unified suite app sources must be repo-available");
-  ensure(unifiedSuite?.applicationDistribution?.marketplaceEntryCount === APP_PLUGIN_EXPANSION_TARGET, "app-owned plugins must become public seis-repo marketplace entries");
+  ensure(unifiedSuite?.applicationDistribution?.marketplaceEntryCount === 6 && unifiedSuite?.applicationDistribution?.marketplaceCardCount === 34, "app-owned source capabilities must resolve through six curated application bundles in the 34-card marketplace");
   ensure(unifiedSuite?.applicationDistribution?.publicReleaseAllowed === false, "app-owned plugins must remain public-release gated");
   ensure(suiteAppPlugins.length === APP_PLUGIN_EXPANSION_TARGET, "unified suite must list every app-owned plugin");
   ensure(JSON.stringify(suiteAppNames) === JSON.stringify(appSourceNames), "unified suite app-owned list must match the app source manifest");
   ensure(unifiedSuite?.sourceDiscovery?.applicationPattern === "plugins/seis-core/*/.codex-plugin/plugin.json", "unified suite must define app-owned source discovery");
   ensure(unifiedSuite?.sourceDiscovery?.discoveredApplicationPluginNames?.length === APP_PLUGIN_EXPANSION_TARGET, "unified suite app discovery count is stale");
   ensure(unifiedSuite?.sourceDiscovery?.uncoveredApplicationSourcePlugins?.length === 0, "unified suite must not leave app-owned sources uncovered");
-  ensure(suiteAppPlugins.every((plugin) => plugin.publicMarketplace === true && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === `${plugin.moduleId}@seis-repo` && plugin.sourcePath.startsWith("plugins/seis-core/")), "unified suite app modules must remain app-owned public seis-repo sources");
+  ensure(suiteAppPlugins.every((plugin) => plugin.publicMarketplace === false && typeof plugin.marketplaceBundleId === "string" && plugin.marketplaceBundleId.startsWith("seis-application-bundle-") && plugin.canonicalApplicationId === "seis-core" && plugin.canonicalInstallId === `${plugin.moduleId}@seis-repo` && plugin.sourcePath.startsWith("plugins/seis-core/")), "unified suite app modules must remain retained app-owned sources mapped to curated bundles");
   ensure(packageJson.scripts?.["check:seis-core-plugin-catalog"] === "node scripts/create-seis-core-plugin-catalog.mjs --check", "package scripts must expose the app plugin catalog check");
   ensure(packageJson.scripts?.["check:seis-core-requested-plugin-coverage"] === "node scripts/check-seis-core-requested-plugin-coverage.mjs", "package scripts must expose requested plugin coverage");
   ensure(packageJson.scripts?.["seis:core:plugins"] === "node plugins/seis-core/bin/seis-core-plugins.mjs", "package scripts must expose the app plugin CLI");

@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-application-bundle-04",
+  "family": "application",
+  "journeyId": "developer-engineering",
+  "journeyLabel": "Developer Engineering",
+  "journeyPart": 1,
+  "journeyPartCount": 3,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 14,
+  "category": "Developer",
+  "categoryLabels": [
+    "Developer"
+  ],
+  "members": [
+    {
+      "name": "seis-apple-native-readiness",
+      "displayName": "SEIS Apple Native Readiness",
+      "sourcePath": "./plugins/seis-core/seis-apple-native-readiness",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-approval-gate-review",
+      "displayName": "SEIS Approval Gate Review",
+      "sourcePath": "./plugins/seis-core/seis-approval-gate-review",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-architecture-drift",
+      "displayName": "SEIS Architecture Drift",
+      "sourcePath": "./plugins/seis-core/seis-architecture-drift",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-canonical-registry-validator",
+      "displayName": "SEIS Canonical Registry Validator",
+      "sourcePath": "./plugins/seis-core/seis-canonical-registry-validator",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-changelog-validator",
+      "displayName": "SEIS Changelog Validator",
+      "sourcePath": "./plugins/seis-core/seis-changelog-validator",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-codeowners-audit",
+      "displayName": "SEIS CODEOWNERS Audit",
+      "sourcePath": "./plugins/seis-core/seis-codeowners-audit",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-community-health",
+      "displayName": "SEIS Community Health",
+      "sourcePath": "./plugins/seis-core/seis-community-health",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-contract-compatibility",
+      "displayName": "SEIS Contract Compatibility",
+      "sourcePath": "./plugins/seis-core/seis-contract-compatibility",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-contributor-map",
+      "displayName": "Seis Contributor Map",
+      "sourcePath": "./plugins/seis-core/seis-contributor-map",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-cost-latency-budget",
+      "displayName": "SEIS Cost and Latency Budget",
+      "sourcePath": "./plugins/seis-core/seis-cost-latency-budget",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-data-retention-audit",
+      "displayName": "SEIS Data Retention Audit",
+      "sourcePath": "./plugins/seis-core/seis-data-retention-audit",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-evidence-index",
+      "displayName": "SEIS Evidence Index",
+      "sourcePath": "./plugins/seis-core/seis-evidence-index",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-github-metrics-collector",
+      "displayName": "Seis Github Metrics Collector",
+      "sourcePath": "./plugins/seis-core/seis-github-metrics-collector",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-goal-dependency-map",
+      "displayName": "SEIS Goal Dependency Map",
+      "sourcePath": "./plugins/seis-core/seis-goal-dependency-map",
+      "category": "Developer"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

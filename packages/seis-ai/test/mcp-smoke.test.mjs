@@ -11,8 +11,11 @@ const repoRoot = path.resolve(pkgRoot, "..", "..");
 const serverBin = path.join(pkgRoot, "bin", "seis-mcp.mjs");
 const EXPECTED_PHYSICAL_PLUGIN_COUNT = APP_PLUGIN_EXPANSION_TARGET + 10;
 const EXPECTED_CATALOG_ONLY_ENTRY_COUNT = 5000 - EXPECTED_PHYSICAL_PLUGIN_COUNT;
-const EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT = JSON.parse(readFileSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json"), "utf8")).plugins.length;
-const EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT = 5;
+const bundleCatalog = JSON.parse(readFileSync(path.join(repoRoot, "content", "development", "seis-public-plugin-bundle-catalog.json"), "utf8"));
+const EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT = bundleCatalog.marketplace.publicCardCount;
+const EXPECTED_MIGRATED_ROOT_DIRECT_CARD_COUNT = 0;
+const EXPECTED_MIGRATED_ROOT_SOURCE_COUNT = bundleCatalog.sourceCapabilityInventory.rootSourceModuleCount;
+const EXPECTED_APPLICATION_MARKETPLACE_PLUGIN_COUNT = bundleCatalog.marketplace.applicationBundleCardCount;
 
 /**
  * Drive the MCP server over its real stdio transport: spawn the bin, perform
@@ -276,8 +279,8 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(status.personalPluginCount, 55);
     assert.equal(status.personalRepoCounterpartCount, 55);
     assert.equal(status.publicMarketplacePluginCount, EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT);
-    assert.equal(status.migratedRootMarketplacePluginCount, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
-    assert.equal(status.applicationMarketplacePluginCount, APP_PLUGIN_EXPANSION_TARGET);
+    assert.equal(status.migratedRootMarketplacePluginCount, EXPECTED_MIGRATED_ROOT_DIRECT_CARD_COUNT);
+    assert.equal(status.applicationMarketplacePluginCount, EXPECTED_APPLICATION_MARKETPLACE_PLUGIN_COUNT);
     assert.equal(status.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
     assert.equal(status.applicationPluginSourceRoot, "plugins/seis-core");
     assert.equal(status.applicationPluginManifest, "apps/seis-core/data/seis-core-plugin-sources.json");
@@ -295,8 +298,14 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const registry = JSON.parse(resource.result.contents[0].text);
     assert.equal(registry.id, "seis-ai-core-plugin-registry");
+    assert.equal(registry.schemaVersion, 2);
     assert.equal(registry.entries.length, 5000);
     assert.equal(registry.target.appOwnedPluginCount, APP_PLUGIN_EXPANSION_TARGET);
+    assert.equal(registry.currentMarketplaceProjection.publicCardCount, 34);
+    assert.equal(registry.currentMarketplaceProjection.bundleCardCount, 33);
+    assert.equal(registry.currentMarketplaceProjection.applicationBundleCardCount, 6);
+    assert.equal(registry.currentMarketplaceProjection.topicBundleCardCount, 27);
+    assert.equal(registry.currentMarketplaceProjection.sourceCapabilityInventory.retainedSourcePackageCount, 380);
     assert.equal(registry.target.appReleaseLabel, status.applicationPluginReleaseLabel);
     assert.equal(registry.target.appReleaseSemver, status.applicationPluginReleaseSemver);
     assert.equal(registry.target.appReleaseRevision, status.applicationPluginReleaseRevision);
@@ -328,9 +337,9 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.lifecycleId, "seis-public-plugin-lifecycle");
     assert.equal(payload.publicPluginCount, 1);
     assert.equal(payload.repoMarketplaceEntryCount, EXPECTED_PUBLIC_MARKETPLACE_PLUGIN_COUNT);
-    assert.equal(payload.migratedRootPluginCount, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
-    assert.equal(payload.migratedRootPlugins.length, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
-    assert.equal(payload.connectedMigratedRootPluginCount, EXPECTED_MIGRATED_ROOT_MARKETPLACE_PLUGIN_COUNT);
+    assert.equal(payload.migratedRootPluginCount, EXPECTED_MIGRATED_ROOT_SOURCE_COUNT);
+    assert.equal(payload.migratedRootPlugins.length, EXPECTED_MIGRATED_ROOT_SOURCE_COUNT);
+    assert.equal(payload.connectedMigratedRootPluginCount, EXPECTED_MIGRATED_ROOT_SOURCE_COUNT);
     assert.equal(payload.embeddedModuleCount, 10);
     assert.equal(payload.connectedPluginCount, 1);
     assert.equal(payload.connectedModuleCount, 10);

@@ -1,0 +1,42 @@
+{
+  "name": "seis-topic-bundle-17",
+  "version": "0.1.0",
+  "description": "ELENI-NEFERI topic selection bundle with 15 retained SEIS source capabilities. It provides local, read-only member discovery and planning; it does not bulk-install members or grant external access.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "bundle",
+    "topic",
+    "read-only",
+    "repository-source",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Topic: ELENI-NEFERI",
+    "shortDescription": "15 ELENI-NEFERI source capabilities.",
+    "longDescription": "ELENI-NEFERI topic selection bundle with 15 retained SEIS source capabilities. It provides local, read-only member discovery and planning; it does not bulk-install members or grant external access.",
+    "developerName": "emirhankudun-ux",
+    "category": "ELENI-NEFERI",
+    "capabilities": [
+      "15 source capabilities",
+      "Read-only bundle inventory",
+      "Bundle selection planning",
+      "MCP status and member tools",
+      "Explicit safety boundaries"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Show the 15 source capabilities in SEIS Topic: ELENI-NEFERI.",
+      "Plan a safe SEIS task using SEIS Topic: ELENI-NEFERI."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

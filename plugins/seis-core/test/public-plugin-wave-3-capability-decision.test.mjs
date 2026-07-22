@@ -12,7 +12,7 @@ const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plug
 const sourceManifestPath = path.join(repositoryRoot, "apps/seis-core/data/seis-core-plugin-sources.json");
 const marketplacePath = path.join(repositoryRoot, ".agents/plugins/marketplace.json");
 
-test("records the bounded non-duplicative Wave 3 concurrency package and SEIS Repo card", () => {
+test("preserves the Wave 3 decision while resolving the concurrency capability through one curated bundle", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -25,26 +25,46 @@ test("records the bounded non-duplicative Wave 3 concurrency package and SEIS Re
   assert.equal(decision.status, "approved-public-local-implementation");
   assert.equal(decision.decision.selectedCapability, "seis-swift-concurrency-audit");
   assert.equal(decision.decision.implementationStarted, true);
-  assert.equal(decision.decision.additionalPublicCardAdded, true);
+  assert.equal(decision.decision.historicalAdditionalDirectCardAddedAtExecution, true);
   assert.equal(decision.implementation.packageExists, true);
-  assert.equal(decision.implementation.publicCardExists, true);
+  assert.equal(decision.implementation.publicCardExists, false);
+  assert.equal(decision.implementation.directMarketplaceCard, false);
   assert.equal(decision.implementation.sourcePath, "plugins/seis-core/seis-swift-concurrency-audit");
-  assert.equal(decision.implementation.marketplaceSourcePath, "./plugins/seis-core/seis-swift-concurrency-audit");
+  assert.equal(decision.implementation.marketplaceSourcePath, null);
+  assert.equal(decision.implementation.distributionBundleId, "seis-application-bundle-06");
+  assert.equal(decision.implementation.distributionBundleCardExists, true);
+  assert.equal(decision.implementation.distributionBundleMembershipCount, 1);
+  assert.equal(decision.implementation.historicalAdditionalDirectCardAddedAtExecution, true);
   assert.equal(decision.preconditions.wave2HandoffStatus, "completed-repository-local-handoff");
   assert.equal(decision.preconditions.wave3ProgramStatus, "in-progress");
   assert.equal(decision.preconditions.wave3ProgramSelectionStatus, "implementation-approved");
   assert.equal(decision.preconditions.wave3ProgramSelectedCapability, "seis-swift-concurrency-audit");
-  assert.equal(decision.publicDistribution.marketplaceName, "seis-repo");
-  assert.equal(decision.publicDistribution.marketplaceDisplayName, "SEIS Repo");
-  assert.equal(decision.publicDistribution.applicationPluginCount, sourceManifest.plugins.length);
-  assert.equal(decision.publicDistribution.publicCardCount, marketplace.plugins.length);
-  assert.equal(decision.publicDistribution.additionalPublicCardAdded, true);
-  assert.equal(decision.publicDistribution.personalMarketplaceRead, false);
-  assert.equal(decision.publicDistribution.personalMarketplaceMutation, false);
-  assert.equal(decision.publicDistribution.network, false);
-  assert.equal(decision.publicDistribution.externalWrites, false);
-  assert.equal(decision.publicDistribution.secrets, false);
-  assert.equal(decision.publicDistribution.publicReleaseAllowed, false);
+  assert.equal(decision.historicalWave3Distribution.applicationSourcePackageCount, 73);
+  assert.equal(decision.historicalWave3Distribution.marketplaceCardCount, 379);
+  assert.equal(decision.historicalWave3Distribution.selectedCapabilityHadDirectMarketplaceCard, true);
+  assert.equal(decision.historicalWave3Distribution.additionalDirectCardAddedAtExecution, true);
+  assert.equal(decision.currentMarketplaceProjection.marketplaceName, "seis-repo");
+  assert.equal(decision.currentMarketplaceProjection.marketplaceDisplayName, "SEIS Repo");
+  assert.equal(decision.currentMarketplaceProjection.sourceCapabilityInventory.applicationSourcePackageCount, sourceManifest.plugins.length);
+  assert.equal(decision.currentMarketplaceProjection.publicCardCount, marketplace.plugins.length);
+  assert.equal(decision.currentMarketplaceProjection.publicCardCount, 34);
+  assert.equal(decision.currentMarketplaceProjection.canonicalCardCount, 1);
+  assert.equal(decision.currentMarketplaceProjection.bundleCardCount, 33);
+  assert.equal(decision.currentMarketplaceProjection.applicationBundleCardCount, 6);
+  assert.equal(decision.currentMarketplaceProjection.topicBundleCardCount, 27);
+  assert.equal(decision.currentMarketplaceProjection.sourceCapabilityInventory.rootSourceModuleCount, 5);
+  assert.equal(decision.currentMarketplaceProjection.sourceCapabilityInventory.topicSourcePackageCount, 300);
+  assert.equal(decision.currentMarketplaceProjection.sourceCapabilityInventory.retainedSourcePackageCount, 380);
+  assert.equal(decision.currentMarketplaceProjection.selectedApplicationCapability.directMarketplaceCardRequired, false);
+  assert.equal(decision.currentMarketplaceProjection.selectedApplicationCapability.directMarketplaceCardCount, 0);
+  assert.equal(decision.currentMarketplaceProjection.selectedApplicationCapability.bundleId, "seis-application-bundle-06");
+  assert.equal(decision.currentMarketplaceProjection.selectedApplicationCapability.bundleCardCount, 1);
+  assert.equal(decision.publicBoundary.personalMarketplaceRead, false);
+  assert.equal(decision.publicBoundary.personalMarketplaceMutation, false);
+  assert.equal(decision.publicBoundary.network, false);
+  assert.equal(decision.publicBoundary.externalWrites, false);
+  assert.equal(decision.publicBoundary.secrets, false);
+  assert.equal(decision.publicBoundary.publicReleaseAllowed, false);
   assert.equal(decision.staticEvidence.classification, "bounded-static-concurrency-signals-only");
   assert.ok(decision.staticEvidence.scannedSwiftFileCount > 0);
   assert.equal(decision.staticEvidence.scannedSwiftFileCount, decision.staticEvidence.discoveredSwiftFileCount);

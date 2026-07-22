@@ -1,0 +1,42 @@
+{
+  "name": "seis-topic-bundle-22",
+  "version": "0.1.0",
+  "description": "Project Management topic selection bundle with 9 retained SEIS source capabilities. It provides local, read-only member discovery and planning; it does not bulk-install members or grant external access.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "MIT",
+  "keywords": [
+    "seis",
+    "bundle",
+    "topic",
+    "read-only",
+    "repository-source",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS Topic: Project Management 01 of 02",
+    "shortDescription": "9 Project Management source capabilities.",
+    "longDescription": "Project Management topic selection bundle with 9 retained SEIS source capabilities. It provides local, read-only member discovery and planning; it does not bulk-install members or grant external access.",
+    "developerName": "emirhankudun-ux",
+    "category": "Project Management",
+    "capabilities": [
+      "9 source capabilities",
+      "Read-only bundle inventory",
+      "Bundle selection planning",
+      "MCP status and member tools",
+      "Explicit safety boundaries"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Show the 9 source capabilities in SEIS Topic: Project Management 01 of 02.",
+      "Plan a safe SEIS task using SEIS Topic: Project Management 01 of 02."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

@@ -21,9 +21,11 @@ test("SEIS Public Distribution Audit validates every public SEIS Repo projection
   assert.equal(result.cardCount, expectedCardCount);
   assert.equal(result.expectedCardCount, expectedCardCount);
   assert.equal(result.canonicalPluginCount, family.publicPlugins.length);
+  assert.equal(result.bundlePluginCount, family.bundlePackages.length);
   assert.equal(result.migratedRootPluginCount, family.migratedRootPlugins.length);
   assert.equal(result.applicationPluginCount, family.applicationPlugins.length);
   assert.equal(result.topicPluginCount, family.topicPlugins.length);
+  assert.equal(result.retainedSourceCapabilityCount, 380);
   assert.equal(result.errorCount, 0);
   assert.equal(result.warningCount, 0);
   assert.deepEqual(result.findings, []);
@@ -59,8 +61,10 @@ test("SEIS Public Distribution Audit exposes bounded validation through MCP with
   const validation = responses.find((response) => response.id === 4)?.result;
   assert.equal(validation?.ok, true);
   assert.equal(validation?.cardCount, expectedCardCount);
+  assert.equal(validation?.bundlePluginCount, family.bundlePackages.length);
   assert.equal(validation?.applicationPluginCount, family.applicationPlugins.length);
   assert.equal(validation?.topicPluginCount, family.topicPlugins.length);
+  assert.equal(validation?.retainedSourceCapabilityCount, 380);
   assert.deepEqual(validation?.permissions?.write, []);
   assert.deepEqual(validation?.permissions?.network, []);
   assert.deepEqual(validation?.permissions?.secrets, []);

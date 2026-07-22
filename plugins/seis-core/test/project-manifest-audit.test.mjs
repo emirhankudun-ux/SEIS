@@ -19,8 +19,13 @@ test("SEIS Project Manifest Audit reconciles the checked-in public repository co
   assert.equal(result.ok, true);
   assert.equal(result.mode, "project-manifest-governance-read-only");
   assert.equal(result.auditId, PROJECT_MANIFEST_AUDIT_ID);
-  assert.equal(result.counts.declaredApplicationMarketplaceEntryCount, result.counts.sourceManifestPluginCount);
-  assert.equal(result.counts.declaredMarketplaceEntryCount, result.counts.marketplaceEntryCount);
+  assert.equal(result.counts.declaredApplicationSourceCount, result.counts.sourceManifestApplicationCount);
+  assert.equal(result.counts.declaredApplicationSourceCount, result.counts.publicFamilyApplicationSourceCount);
+  assert.equal(result.counts.declaredMarketplaceCardCount, result.counts.marketplaceCardCount);
+  assert.equal(result.counts.declaredMarketplaceCardCount, result.counts.publicFamilyMarketplaceCardCount);
+  assert.equal(result.counts.declaredMarketplaceCardCount, 34);
+  assert.equal(result.counts.declaredBundleCardCount, 33);
+  assert.equal(result.counts.declaredRetainedSourceCapabilityCount, 380);
   assert.equal(result.findings.length, 0);
   assert.deepEqual(result.permissions.write, []);
   assert.deepEqual(result.permissions.network, []);

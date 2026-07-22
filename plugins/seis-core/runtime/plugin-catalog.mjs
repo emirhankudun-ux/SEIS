@@ -29,7 +29,7 @@ export function buildApplicationPluginCatalog(repoRoot, options = {}) {
 
   const allPlugins = discoverApplicationPlugins(repoRoot)
     .map((bundle) => toCatalogEntry(bundle, repoRoot, currentRelease, { includeStatus: false }));
-  const marketplaceEntryCount = readPublicMarketplaceEntryCount(repoRoot);
+  const marketplaceProjection = readPublicMarketplaceProjection(repoRoot);
 
   return {
     schemaVersion: 1,
@@ -43,12 +43,16 @@ export function buildApplicationPluginCatalog(repoRoot, options = {}) {
       sourceAvailableInRepository: true,
       publicRepositoryAvailable: true,
       publicAudience: "everyone",
-      distributionScope: "direct-repository-source",
+      distributionScope: "curated-bounded-public-bundles",
       sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
       installSurface: "repo-source-app",
       marketplaceName: "seis-repo",
       publicMarketplace: true,
-      marketplaceEntryCount,
+      marketplaceEntryCount: marketplaceProjection.applicationBundleCardCount,
+      marketplaceCardCount: marketplaceProjection.publicCardCount,
+      sourceCapabilityCount: allPlugins.length,
+      separateMarketplaceCards: false,
+      sourcePackagesRetained: true,
       coreSourceOwner: false,
     },
     release: compactRelease(currentRelease),
@@ -79,12 +83,17 @@ export function buildApplicationPluginCatalog(repoRoot, options = {}) {
   };
 }
 
-function readPublicMarketplaceEntryCount(repoRoot) {
+function readPublicMarketplaceProjection(repoRoot) {
   try {
     const marketplace = JSON.parse(fs.readFileSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json"), "utf8"));
-    return (marketplace.plugins || []).filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/")).length;
+    const bundleCatalog = JSON.parse(fs.readFileSync(path.join(repoRoot, "content", "development", "seis-public-plugin-bundle-catalog.json"), "utf8"));
+    const applicationBundleIds = new Set((bundleCatalog.bundles || []).filter((bundle) => bundle?.family === "application").map((bundle) => bundle?.id));
+    return {
+      publicCardCount: (marketplace.plugins || []).length,
+      applicationBundleCardCount: (marketplace.plugins || []).filter((plugin) => applicationBundleIds.has(plugin?.name)).length,
+    };
   } catch {
-    return 0;
+    return { publicCardCount: 0, applicationBundleCardCount: 0 };
   }
 }
 
@@ -187,6 +196,11 @@ function toCatalogEntry(bundle, repoRoot, currentRelease, { includeStatus }) {
     lifecycleStatus: profile.status || "unknown",
     risk: profile.risk || "unclassified",
     audit: profile.audit || null,
+    marketplace: {
+      discoverable: profile.marketplaceDiscoverable === true,
+      card: profile.marketplaceCard === true,
+      bundleId: profile.marketplaceBundleId || null,
+    },
     permissions: {
       read: Array.isArray(profile.permissions?.read) ? profile.permissions.read : [],
       write: Array.isArray(profile.permissions?.write) ? profile.permissions.write : [],

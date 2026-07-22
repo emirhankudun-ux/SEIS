@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-topic-eleni-neferi-creative-studio",
   "displayName": "Creative Studio",
   "category": "ELENI-NEFERI",
@@ -14,6 +14,9 @@
   "status": "public-repository-preview",
   "maturity": "prototype",
   "publicMarketplace": true,
+  "marketplaceDiscoverable": true,
+  "marketplaceCard": false,
+  "marketplaceBundleId": "seis-topic-bundle-17",
   "publicAudience": "everyone",
   "license": "MIT",
   "liveRuntimeStatus": "local-demo-only",

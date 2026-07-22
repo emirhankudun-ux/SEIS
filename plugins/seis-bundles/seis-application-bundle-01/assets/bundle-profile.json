@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-application-bundle-01",
+  "family": "application",
+  "journeyId": "ai-data",
+  "journeyLabel": "AI and Data",
+  "journeyPart": 1,
+  "journeyPartCount": 1,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 14,
+  "category": "Developer",
+  "categoryLabels": [
+    "AI",
+    "Data"
+  ],
+  "members": [
+    {
+      "name": "seis-agent-audit",
+      "displayName": "SEIS Agent Audit",
+      "sourcePath": "./plugins/seis-core/seis-agent-audit",
+      "category": "AI"
+    },
+    {
+      "name": "seis-agent-contract-validator",
+      "displayName": "SEIS Agent Contract Validator",
+      "sourcePath": "./plugins/seis-core/seis-agent-contract-validator",
+      "category": "AI"
+    },
+    {
+      "name": "seis-context-efficiency",
+      "displayName": "Seis Context Efficiency",
+      "sourcePath": "./plugins/seis-core/seis-context-efficiency",
+      "category": "AI"
+    },
+    {
+      "name": "seis-doc-indexer",
+      "displayName": "SEIS Doc Indexer",
+      "sourcePath": "./plugins/seis-core/seis-doc-indexer",
+      "category": "Data"
+    },
+    {
+      "name": "seis-docs-freshness",
+      "displayName": "SEIS Docs Freshness",
+      "sourcePath": "./plugins/seis-core/seis-docs-freshness",
+      "category": "Data"
+    },
+    {
+      "name": "seis-download-anomaly",
+      "displayName": "Seis Download Anomaly",
+      "sourcePath": "./plugins/seis-core/seis-download-anomaly",
+      "category": "Data"
+    },
+    {
+      "name": "seis-localization-coverage",
+      "displayName": "SEIS Localization Coverage",
+      "sourcePath": "./plugins/seis-core/seis-localization-coverage",
+      "category": "Data"
+    },
+    {
+      "name": "seis-mcp-inventory",
+      "displayName": "SEIS MCP Inventory",
+      "sourcePath": "./plugins/seis-core/seis-mcp-inventory",
+      "category": "AI"
+    },
+    {
+      "name": "seis-model-fallback",
+      "displayName": "SEIS Model Fallback",
+      "sourcePath": "./plugins/seis-core/seis-model-fallback",
+      "category": "AI"
+    },
+    {
+      "name": "seis-package-adoption",
+      "displayName": "Seis Package Adoption",
+      "sourcePath": "./plugins/seis-core/seis-package-adoption",
+      "category": "Data"
+    },
+    {
+      "name": "seis-provider-health",
+      "displayName": "SEIS Provider Health",
+      "sourcePath": "./plugins/seis-core/seis-provider-health",
+      "category": "AI"
+    },
+    {
+      "name": "seis-rag-citation-coverage",
+      "displayName": "SEIS RAG Citation Coverage",
+      "sourcePath": "./plugins/seis-core/seis-rag-citation-coverage",
+      "category": "Data"
+    },
+    {
+      "name": "seis-route-explainer",
+      "displayName": "SEIS Route Explainer",
+      "sourcePath": "./plugins/seis-core/seis-route-explainer",
+      "category": "AI"
+    },
+    {
+      "name": "seis-technology-ontology",
+      "displayName": "SEIS Technology Ontology",
+      "sourcePath": "./plugins/seis-core/seis-technology-ontology",
+      "category": "Data"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

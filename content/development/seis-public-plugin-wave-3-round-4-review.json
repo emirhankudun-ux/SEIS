@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-3-round-4-review",
   "goalId": "SEIS-GOAL-021",
   "wave": 3,
@@ -36,7 +36,11 @@
   "overlapReview": {
     "selectedCapability": "seis-swift-concurrency-audit",
     "sourceManifestEntryCount": 1,
-    "marketplaceCardCount": 1,
+    "currentMarketplaceDirectCardCount": 0,
+    "currentMarketplaceSourceRetained": true,
+    "currentDistributionBundleId": "seis-application-bundle-06",
+    "currentDistributionBundleCardPresent": true,
+    "currentDistributionBundleMembershipCount": 1,
     "matrixEntryCount": 1,
     "mcpEntryCount": 1,
     "nonDuplicative": true
@@ -83,16 +87,54 @@
     "publicReleaseAllowed": false,
     "providerOrDeploymentClaim": false
   },
-  "lifecycleAndCounts": {
+  "lifecycleState": {
     "lifecycleStatus": "active-local-proof-public-release-gated",
     "externalProofStatus": "repo-local-clean-artifact-staged-external-proof-pending",
     "independentRunnerEvidenceStatus": "pending-independent-clean-runner-or-public-install",
     "publicReleaseAllowed": false,
+    "matrixFailureCount": 0
+  },
+  "historicalWave3Distribution": {
+    "classification": "immutable-wave-3-round-4-direct-card-snapshot",
+    "projectionModel": "direct-source-package-marketplace-cards",
     "applicationPluginCount": 73,
     "marketplaceCardCount": 379,
     "matrixPluginCount": 73,
-    "matrixFailureCount": 0,
-    "matrixAttentionCount": 3
+    "matrixAttentionCount": 3,
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "selectedCapabilityHadDirectMarketplaceCard": true,
+    "additionalDirectCardAddedAtExecution": true,
+    "note": "These counts and direct-card facts are immutable Wave 3 round 4 history and do not describe the current curated marketplace."
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "selectedApplicationCapability": {
+      "id": "seis-swift-concurrency-audit",
+      "retainedSource": true,
+      "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
+      "directMarketplaceCardRequired": false,
+      "directMarketplaceCardCount": 0,
+      "bundleCardCount": 1,
+      "bundleId": "seis-application-bundle-06",
+      "bundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+      "bundleFamily": "application"
+    }
   },
   "documentationAndCoverage": {
     "publicMarketplaceNamed": true,
@@ -154,7 +196,7 @@
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert the focused Wave 3 package, public card, generated evidence, and review records on the feature branch. No data migration or external mutation exists.",
+    "scope": "Revert the focused Wave 3 package, historical direct-card evidence, current bundle reconciliation, generated evidence, and review records on the feature branch. No data migration or external mutation exists.",
     "dataMigrationRequired": false
   }
 }

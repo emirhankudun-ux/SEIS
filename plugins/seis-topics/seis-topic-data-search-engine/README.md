@@ -1,12 +1,12 @@
 # Search Engine — SEIS Topic Plugin
 
-This is an objective-derived public SEIS topic package for the **Data** family. It is published directly from the SEIS repository marketplace as `seis-topic-data-search-engine@seis-repo`.
+This is an objective-derived retained SEIS topic source package for the **Data** family. It is discoverable through the optional `seis-topic-bundle-13@seis-repo` card and is not a direct marketplace card.
 
 The package gives Codex a bounded **Search Engine** context lane: deterministic status, repository-shape evidence, and planning boundaries. It does not call external providers, read secrets, use the network, or write files.
 
 ## Package boundary
 
-- `.codex-plugin/plugin.json` defines the public plugin card.
+- `.codex-plugin/plugin.json` defines the retained source-package identity.
 - `.mcp.json` exposes the local MCP server.
 - `skills/seis-topic-data-search-engine/SKILL.md` defines the topic workflow.
 - `assets/topic-profile.json` records source, audience, license, maturity, and permissions.

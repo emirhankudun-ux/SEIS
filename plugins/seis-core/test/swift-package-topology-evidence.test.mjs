@@ -30,8 +30,13 @@ test("reconciles bounded Swift Package topology evidence with the public SEIS Re
   assert.equal(evidence.plugin.marketplaceDisplayName, "SEIS Repo");
   assert.equal(evidence.plugin.marketplaceCategory, "Developer");
   assert.equal(evidence.plugin.publicMarketplace, true);
-  assert.equal(evidence.marketplace.applicationPluginCount, sourceManifest.plugins.length);
+  assert.equal(evidence.plugin.directMarketplaceCard, false);
+  assert.equal(evidence.plugin.distributionBundleId, "seis-application-bundle-06");
+  assert.equal(evidence.plugin.distributionBundleMembershipCount, 1);
+  assert.equal(evidence.marketplace.applicationSourceCapabilityCount, sourceManifest.plugins.length);
   assert.equal(evidence.marketplace.publicCardCount, marketplace.plugins.length);
+  assert.equal(evidence.marketplace.bundleCardCount, 33);
+  assert.equal(evidence.marketplace.retainedSourceCapabilityCount, 380);
   assert.equal(evidence.activation.selectedCapability, "seis-swift-package-topology");
   assert.equal(evidence.activation.implementationObserved, true);
   assert.equal(evidence.activation.publicReleaseApproved, false);

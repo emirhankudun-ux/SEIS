@@ -46,7 +46,7 @@ function buildRecord() {
     backlogId: "SEIS-BL-021",
     generatedAt: "2026-07-21",
     status: "active-project-manifest-governance-evidence",
-    purpose: "Keep the checked-in SEIS project manifest, app-owned source inventory, canonical ownership, and public SEIS Repo marketplace counts aligned without turning local metadata into a live GitHub, provider, or release claim.",
+    purpose: "Keep the checked-in SEIS project manifest, retained source inventory, canonical ownership, and curated public SEIS Repo marketplace-card projection aligned without conflating source capabilities with discovery cards or turning local metadata into a live GitHub, provider, or release claim.",
     portfolioPosition: {
       nonDuplicative: true,
       complements: [
@@ -54,7 +54,7 @@ function buildRecord() {
         "seis-public-distribution-audit: public marketplace projection consistency",
         "seis-goal-integrity: goal lifecycle and evidence-hint validation",
       ],
-      adds: "Cross-file validation for project.ecosystem.yaml ownership, source-of-truth, public-distribution boundary, deny-by-default permissions, and marketplace count declarations.",
+      adds: "Cross-file validation for project.ecosystem.yaml ownership, source-of-truth, public-distribution boundary, deny-by-default permissions, curated marketplace-card declarations, and retained source-capability counts.",
     },
     plugin: {
       name: PLUGIN_ID,
@@ -107,8 +107,9 @@ function validateRecord(record, release) {
   assert(record.portfolioPosition?.nonDuplicative === true, "portfolio overlap decision is missing");
   assert(record.manifestAuditCompleted === true && record.overallState === "ready", "project manifest audit must be ready");
   assert(Array.isArray(record.checks) && record.checks.length >= 15 && record.checks.every((check) => check.observed === true), "manifest check evidence is incomplete");
-  assert(record.counts?.sourceManifestPluginCount === record.counts?.marketplaceApplicationPluginCount, "application source counts are inconsistent");
-  assert(record.counts?.declaredMarketplaceEntryCount === record.counts?.marketplaceEntryCount, "marketplace counts are inconsistent");
+  assert(record.counts?.declaredApplicationSourceCount === record.counts?.sourceManifestApplicationCount && record.counts?.declaredApplicationSourceCount === record.counts?.publicFamilyApplicationSourceCount, "application source counts are inconsistent");
+  assert(record.counts?.declaredMarketplaceCardCount === record.counts?.marketplaceCardCount && record.counts?.declaredMarketplaceCardCount === record.counts?.publicFamilyMarketplaceCardCount, "marketplace card counts are inconsistent");
+  assert(record.counts?.declaredBundleCardCount === record.counts?.marketplaceBundleCardCount && record.counts?.declaredRetainedSourceCapabilityCount === record.counts?.publicFamilyRetainedSourceCapabilityCount, "bundle or retained-source counts are inconsistent");
   assert(Array.isArray(record.findings) && record.findings.length === 0, "manifest evidence findings are invalid");
   assert(record.safety?.write?.length === 0 && record.safety?.network?.length === 0 && record.safety?.secrets?.length === 0, "safety permissions must remain empty");
   assert(record.safety?.executesPlugin === false && record.safety?.publicReleaseAllowed === false, "non-executing safety boundary is invalid");

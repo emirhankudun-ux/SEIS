@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { APP_PLUGIN_EXPANSION_TARGET } from "../plugins/seis-core/runtime/plugin-audit-definitions.mjs";
+import { buildWave1MarketplaceCompatibility } from "./lib/seis-wave-1-marketplace-compatibility.mjs";
 
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
@@ -11,6 +12,7 @@ const OUTPUT_PATH = "content/development/seis-public-plugin-wave-1-evidence-inde
 const PATHS = Object.freeze({
   marketplace: ".agents/plugins/marketplace.json",
   publicFamily: "content/development/seis-public-plugin-family.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
   sourceManifest: "apps/seis-core/data/seis-core-plugin-sources.json",
   releaseTrain: "content/development/seis-core-plugin-release-train.json",
   installState: "content/development/seis-public-install-state.json",
@@ -26,10 +28,6 @@ const PATHS = Object.freeze({
   waveProgram: "content/development/seis-public-plugin-wave-1-program.json",
 });
 const EXPECTED_DESKTOP_GAPS = ["degraded", "loading", "provider-failed", "validation-failed"];
-const CANONICAL_ORCHESTRATOR_COUNT = 1;
-const MIGRATED_ROOT_PLUGIN_COUNT = 5;
-const TOPIC_PLUGIN_COUNT = 300;
-const EXPECTED_PUBLIC_CARD_COUNT = CANONICAL_ORCHESTRATOR_COUNT + MIGRATED_ROOT_PLUGIN_COUNT + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_COUNT;
 const SECRET_PATTERNS = [
   { id: "openai-like-api-key", regex: /\bsk-[A-Za-z0-9_-]{20,}\b/ },
   { id: "github-token", regex: /\bgh[pousr]_[A-Za-z0-9_]{20,}\b/ },
@@ -55,6 +53,7 @@ if (CHECK_MODE) {
 function buildRecord() {
   const marketplace = readJson(PATHS.marketplace);
   const family = readJson(PATHS.publicFamily);
+  const bundleCatalog = readJson(PATHS.bundleCatalog);
   const sourceManifest = readJson(PATHS.sourceManifest);
   const releaseTrain = readJson(PATHS.releaseTrain);
   const installState = readJson(PATHS.installState);
@@ -75,23 +74,27 @@ function buildRecord() {
   const desktop = findSurface(uiAudit, "seis-desktop-second-brain");
   const safetyScan = scanPublicSafeInputs(Object.values(PATHS));
   const publicCardCount = cards.length;
-  const familyCounts = {
-    canonicalOrchestratorCount: number(family.marketplace?.canonicalOrchestratorCount),
-    migratedRootPluginCount: number(family.marketplace?.migratedRootPluginCount),
-    applicationPluginCount: number(family.marketplace?.applicationPluginCount),
-    topicPluginCount: number(family.marketplace?.topicPluginCount),
-  };
-  const expectedCardCount = Object.values(familyCounts).reduce((total, value) => total + value, 0);
+  const compatibility = buildWave1MarketplaceCompatibility({
+    marketplace,
+    publicFamily: family,
+    sourceManifest,
+    bundleCatalog,
+  });
+  const currentProjection = compatibility.currentMarketplaceProjection;
   const contracts = [
     {
       id: "public-marketplace-family",
-      state: publicCardCount === expectedCardCount && family.marketplace?.name === "seis-repo" ? "ready" : "attention",
-      summary: "The repository marketplace and public family agree on public-card ownership and counts.",
-      evidencePaths: [PATHS.marketplace, PATHS.publicFamily],
+      state: publicCardCount === currentProjection.publicCardCount
+        && family.marketplace?.name === "seis-repo"
+        && currentProjection.selectedApplicationCapability.bundleCardCount === 1
+        ? "ready"
+        : "attention",
+      summary: "The current 34-card marketplace and bundle catalog retain the selected Wave 1 source capability through exactly one application bundle card.",
+      evidencePaths: [PATHS.marketplace, PATHS.publicFamily, PATHS.bundleCatalog],
     },
     {
       id: "app-source-and-release-train",
-      state: applicationPlugins.length === familyCounts.applicationPluginCount && applicationPlugins.every((plugin) => plugin?.version === release.semver && plugin?.releaseTrainVersion === release.label) ? "ready" : "attention",
+      state: applicationPlugins.length === currentProjection.sourceCapabilityInventory.applicationSourcePackageCount && applicationPlugins.every((plugin) => plugin?.version === release.semver && plugin?.releaseTrainVersion === release.label) ? "ready" : "attention",
       summary: "Every app-owned public package matches the active app release train.",
       evidencePaths: [PATHS.sourceManifest, PATHS.releaseTrain],
     },
@@ -137,6 +140,9 @@ function buildRecord() {
         && capabilityDecision.publicBoundary?.externalWrites === false
         && capabilityDecision.publicBoundary?.secrets === false
         && capabilityDecision.publicBoundary?.publicReleaseAllowed === false
+        && capabilityDecision.historicalWave1Snapshot?.publicCardCount === 377
+        && capabilityDecision.currentMarketplaceProjection?.selectedApplicationCapability?.bundleCardCount === 1
+        && capabilityDecision.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardRequired === false
         ? "ready"
         : "attention",
       summary: "The Round 4 evidence-index capability decision remains public-only, read-only, no-network, no-secret, and non-releasing.",
@@ -164,11 +170,13 @@ function buildRecord() {
     },
   ];
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-plugin-wave-1-evidence-index",
     goalId: "SEIS-GOAL-021",
     generatedAt: "2026-07-21",
     status: "completed-repo-local-evidence-index",
+    historicalWave1Snapshot: compatibility.historicalWave1Snapshot,
+    currentMarketplaceProjection: currentProjection,
     scope: {
       programId: waveProgram.id,
       wave: 1,
@@ -178,15 +186,6 @@ function buildRecord() {
       sourceOnly: true,
     },
     purpose: "Reconcile current public SEIS Repo evidence without turning repository-local checks into browser, provider, installation, publication, deployment, or human-approval claims.",
-    marketplace: {
-      name: marketplace.name,
-      displayName: marketplace.interface?.displayName || null,
-      publicCardCount,
-      expectedCardCount,
-      ...familyCounts,
-      installationPolicy: family.marketplace?.installationPolicy || null,
-      authenticationPolicy: family.marketplace?.authenticationPolicy || null,
-    },
     release: {
       label: release.label || null,
       semver: release.semver || null,
@@ -235,13 +234,15 @@ function buildRecord() {
 
 function validateRecord(record, context) {
   assert(record.id === "seis-public-plugin-wave-1-evidence-index", "record id is invalid");
+  assert(record.schemaVersion === 2, "schema version is invalid");
   assert(record.goalId === "SEIS-GOAL-021", "goal linkage is invalid");
   assert(record.status === "completed-repo-local-evidence-index", "record status is invalid");
   assert(record.scope?.programId === "seis-public-plugin-wave-1-program" && record.scope?.wave === 1 && record.scope?.round === 5, "Wave 1 scope is invalid");
-  assert(record.marketplace?.name === "seis-repo" && record.marketplace?.displayName === "SEIS Repo", "public marketplace identity is invalid");
-  assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.expectedCardCount === EXPECTED_PUBLIC_CARD_COUNT, "public marketplace count is invalid");
-  assert(record.marketplace?.canonicalOrchestratorCount === CANONICAL_ORCHESTRATOR_COUNT && record.marketplace?.migratedRootPluginCount === MIGRATED_ROOT_PLUGIN_COUNT && record.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.marketplace?.topicPluginCount === TOPIC_PLUGIN_COUNT, "public marketplace family counts are invalid");
-  assert(record.marketplace?.installationPolicy === "AVAILABLE" && record.marketplace?.authenticationPolicy === "ON_INSTALL", "public marketplace policy is invalid");
+  assert(record.historicalWave1Snapshot?.projectionModel === "direct-source-cards" && record.historicalWave1Snapshot?.publicCardCount === 377 && record.historicalWave1Snapshot?.applicationPluginCount === 71 && record.historicalWave1Snapshot?.selectedCapabilityDirectCardCount === 1, "historical Wave 1 marketplace snapshot is invalid");
+  assert(record.currentMarketplaceProjection?.marketplaceName === "seis-repo" && record.currentMarketplaceProjection?.marketplaceDisplayName === "SEIS Repo", "current public marketplace identity is invalid");
+  assert(record.currentMarketplaceProjection?.publicCardCount === 34 && record.currentMarketplaceProjection?.canonicalCardCount === 1 && record.currentMarketplaceProjection?.bundleCardCount === 33 && record.currentMarketplaceProjection?.applicationBundleCardCount === 6 && record.currentMarketplaceProjection?.topicBundleCardCount === 27, "current curated marketplace counts are invalid");
+  assert(record.currentMarketplaceProjection?.sourceCapabilityInventory?.applicationSourcePackageCount === APP_PLUGIN_EXPANSION_TARGET && record.currentMarketplaceProjection?.sourceCapabilityInventory?.retainedSourcePackageCount === 380, "current retained source counts are invalid");
+  assert(record.currentMarketplaceProjection?.selectedApplicationCapability?.id === "seis-evidence-index" && record.currentMarketplaceProjection?.selectedApplicationCapability?.retainedSource === true && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardRequired === false && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardCount === 0 && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleCardCount === 1, "current selected-capability bundle resolution is invalid");
   assert(record.release?.label === "0.00000002" && record.release?.semver === "0.0.20" && record.release?.appPluginCount === APP_PLUGIN_EXPANSION_TARGET, "app release reconciliation is invalid");
   assert(record.release?.publicReleaseBlocked === true, "app release policy must retain the public-release block");
   assert(Array.isArray(record.contracts) && record.contracts.length === 9, "cross-contract evidence is incomplete");

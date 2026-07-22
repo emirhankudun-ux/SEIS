@@ -11,6 +11,7 @@ const ABSOLUTE_PATH = /(?:^\/|^~\/|^[A-Za-z]:[\\/]|\/Users\/|\/home\/)/;
 const CONTRACTS = Object.freeze({
   marketplace: ".agents/plugins/marketplace.json",
   family: "content/development/seis-public-plugin-family.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
   appSources: "apps/seis-core/data/seis-core-plugin-sources.json",
   appCatalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
   unifiedSuite: "plugins/seis-ai-agent/assets/unified-suite.json",
@@ -45,6 +46,7 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
   const findings = [];
   const marketplace = loaded.contracts.marketplace;
   const family = loaded.contracts.family;
+  const bundleCatalog = loaded.contracts.bundleCatalog;
   const appSources = loaded.contracts.appSources;
   const appCatalog = loaded.contracts.appCatalog;
   const unifiedSuite = loaded.contracts.unifiedSuite;
@@ -56,13 +58,16 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
   const appPlugins = safeArray(family.applicationPlugins);
   const topicPlugins = safeArray(family.topicPlugins);
   const canonicalPlugins = safeArray(family.publicPlugins);
+  const bundlePackages = safeArray(family.bundlePackages);
   const marketplaceEntries = safeArray(marketplace.plugins);
-  const expectedCardCount = canonicalPlugins.length + rootPlugins.length + appPlugins.length + topicPlugins.length;
+  const expectedCardCount = canonicalPlugins.length + bundlePackages.length;
   const appNames = names(appPlugins);
   const topicNames = names(topicPlugins);
   const rootNames = names(rootPlugins);
   const canonicalNames = names(canonicalPlugins);
+  const bundleNames = names(bundlePackages, "id");
   const marketplaceNames = names(marketplaceEntries);
+  const applicationBundleCount = bundlePackages.filter((bundle) => bundle?.family === "application").length;
 
   ensure(marketplace.name === "seis-repo", findings, "marketplace-name-invalid");
   ensure(marketplace.interface?.displayName === "SEIS Repo", findings, "marketplace-display-name-invalid");
@@ -75,15 +80,17 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
   ensure(family.marketplace?.name === "seis-repo", findings, "family-marketplace-name-invalid");
   ensure(family.marketplace?.publicPluginCount === expectedCardCount, findings, "family-marketplace-count-mismatch");
   ensure(family.marketplace?.canonicalOrchestratorCount === canonicalNames.length, findings, "family-canonical-count-mismatch");
+  ensure(family.marketplace?.bundlePluginCount === bundleNames.length, findings, "family-bundle-count-mismatch");
   ensure(family.marketplace?.migratedRootPluginCount === rootNames.length, findings, "family-root-count-mismatch");
   ensure(family.marketplace?.applicationPluginCount === appNames.length, findings, "family-application-count-mismatch");
   ensure(family.marketplace?.topicPluginCount === topicNames.length, findings, "family-topic-count-mismatch");
 
-  validateMarketplaceFamilies(marketplaceEntries, canonicalNames, rootNames, appNames, topicNames, findings);
-  validateApplicationProjections(appSources, appCatalog, unifiedSuite, lifecycle, appNames, findings, includeCatalogStatus);
+  validateMarketplaceFamilies(marketplaceEntries, canonicalNames, bundleNames, rootNames, appNames, topicNames, findings);
+  validateBundleCoverage(bundlePackages, bundleCatalog, appNames, topicNames, findings);
+  validateApplicationProjections(appSources, appCatalog, unifiedSuite, lifecycle, appNames, applicationBundleCount, findings, includeCatalogStatus);
   validateTrustedMarketplaceBridge(trustedMarketplace, findings);
-  validatePublicInstallState(publicInstallState, expectedCardCount, canonicalNames.length, rootNames.length, appNames.length, topicNames.length, findings);
-  validateProjectBoundary(project, expectedCardCount, appNames.length, topicNames.length, rootNames.length, findings);
+  validatePublicInstallState(publicInstallState, expectedCardCount, canonicalNames.length, bundlePackages.length, bundlePackages.filter((bundle) => bundle?.family === "application").length, bundlePackages.filter((bundle) => bundle?.family === "topic").length, rootNames.length, appNames.length, topicNames.length, findings);
+  validateProjectBoundary(project, expectedCardCount, canonicalNames.length, bundlePackages, appNames.length, topicNames.length, rootNames.length, findings);
   validatePublicTerminology(marketplace, family, appSources, appCatalog, unifiedSuite, lifecycle, trustedMarketplace, publicInstallState, project, findings);
 
   const errorCount = findings.filter((finding) => finding.severity === "error").length;
@@ -96,9 +103,11 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
     cardCount: marketplaceEntries.length,
     expectedCardCount,
     canonicalPluginCount: canonicalNames.length,
+    bundlePluginCount: bundleNames.length,
     migratedRootPluginCount: rootNames.length,
     applicationPluginCount: appNames.length,
     topicPluginCount: topicNames.length,
+    retainedSourceCapabilityCount: rootNames.length + appNames.length + topicNames.length,
     errorCount,
     warningCount: 0,
     findings: findings.slice(0, MAX_FINDINGS),
@@ -111,12 +120,13 @@ function validateDistribution({ includeCatalogStatus = true } = {}) {
   };
 }
 
-function validateMarketplaceFamilies(entries, canonicalNames, rootNames, appNames, topicNames, findings) {
+function validateMarketplaceFamilies(entries, canonicalNames, bundleNames, rootNames, appNames, topicNames, findings) {
   const byName = new Map(entries.map((entry) => [entry?.name, entry]));
   validateFamilyEntries(canonicalNames, byName, "./plugins/", findings, "canonical");
-  validateFamilyEntries(rootNames, byName, "./plugins/", findings, "root", true);
-  validateFamilyEntries(appNames, byName, "./plugins/seis-core/", findings, "application");
-  validateFamilyEntries(topicNames, byName, "./plugins/seis-topics/", findings, "topic");
+  validateFamilyEntries(bundleNames, byName, "./plugins/seis-bundles/", findings, "bundle");
+  for (const name of [...rootNames, ...appNames, ...topicNames]) {
+    ensure(!byName.has(name), findings, "retained-source-exposed-as-separate-marketplace-card", name);
+  }
 }
 
 function validateFamilyEntries(pluginNames, entries, sourcePrefix, findings, family, rootOnly = false) {
@@ -137,7 +147,26 @@ function validateFamilyEntries(pluginNames, entries, sourcePrefix, findings, fam
   }
 }
 
-function validateApplicationProjections(appSources, appCatalog, unifiedSuite, lifecycle, appNames, findings, includeCatalogStatus) {
+function validateBundleCoverage(bundlePackages, bundleCatalog, appNames, topicNames, findings) {
+  const applicationBundles = bundlePackages.filter((bundle) => bundle?.family === "application");
+  const topicBundles = bundlePackages.filter((bundle) => bundle?.family === "topic");
+  const memberNames = (bundles) => bundles.flatMap((bundle) => safeArray(bundle?.members).map((member) => text(member?.name)).filter(Boolean));
+  const applicationMembers = memberNames(applicationBundles);
+  const topicMembers = memberNames(topicBundles);
+  const allMembers = [...applicationMembers, ...topicMembers];
+  ensure(applicationBundles.length === 6, findings, "application-bundle-count-invalid");
+  ensure(topicBundles.length === 27, findings, "topic-bundle-count-invalid");
+  ensure(bundlePackages.every((bundle) => Number.isSafeInteger(bundle?.memberCount) && bundle.memberCount === safeArray(bundle?.members).length && bundle.memberCount >= 1 && bundle.memberCount <= 15), findings, "bundle-member-bound-invalid");
+  ensure(unique(allMembers), findings, "bundle-member-duplicate");
+  ensure(sameNames(appNames, applicationMembers), findings, "application-bundle-coverage-mismatch");
+  ensure(sameNames(topicNames, topicMembers), findings, "topic-bundle-coverage-mismatch");
+  ensure(bundleCatalog?.id === "seis-public-plugin-bundle-catalog", findings, "bundle-catalog-id-invalid");
+  ensure(bundleCatalog?.marketplace?.publicCardCount === 34 && bundleCatalog?.marketplace?.canonicalCardCount === 1 && bundleCatalog?.marketplace?.bundleCardCount === bundlePackages.length, findings, "bundle-catalog-marketplace-count-invalid");
+  ensure(bundleCatalog?.marketplace?.applicationBundleCardCount === applicationBundles.length && bundleCatalog?.marketplace?.topicBundleCardCount === topicBundles.length, findings, "bundle-catalog-family-count-invalid");
+  ensure(sameNames(names(bundlePackages, "id"), names(safeArray(bundleCatalog?.bundles), "id")), findings, "bundle-catalog-id-set-mismatch");
+}
+
+function validateApplicationProjections(appSources, appCatalog, unifiedSuite, lifecycle, appNames, applicationBundleCount, findings, includeCatalogStatus) {
   const appCount = appNames.length;
   ensure(appSources.id === "seis-core-plugin-sources", findings, "app-source-id-invalid");
   ensure(appSources.status === "active-public-repository-boundary", findings, "app-source-status-invalid");
@@ -148,14 +177,22 @@ function validateApplicationProjections(appSources, appCatalog, unifiedSuite, li
   ensure(appSources.publicDistribution?.marketplaceName === "seis-repo", findings, "app-source-marketplace-invalid");
   ensure(appSources.publicDistribution?.publicMarketplace === true, findings, "app-source-public-marketplace-invalid");
   ensure(appSources.publicDistribution?.directRepoSource === true, findings, "app-source-direct-repository-invalid");
-  ensure(appSources.publicDistribution?.marketplaceEntryCount === appCount, findings, "app-source-marketplace-count-mismatch");
+  ensure(appSources.publicDistribution?.distributionMode === "curated-bounded-public-bundles", findings, "app-source-distribution-mode-invalid");
+  ensure(appSources.publicDistribution?.marketplaceEntryCount === applicationBundleCount, findings, "app-source-marketplace-count-mismatch");
+  ensure(appSources.publicDistribution?.marketplaceCardCount === 34, findings, "app-source-total-marketplace-count-mismatch");
+  ensure(appSources.publicDistribution?.sourceCapabilityCount === appCount, findings, "app-source-capability-count-mismatch");
+  ensure(appSources.publicDistribution?.separateMarketplaceCards === false && appSources.publicDistribution?.sourcePackagesRetained === true, findings, "app-source-consolidation-boundary-invalid");
   ensure(sameNames(appNames, names(safeArray(appSources.plugins))), findings, "app-source-name-set-mismatch");
 
   ensure(appCatalog.id === "seis-core-application-plugin-catalog", findings, "app-catalog-id-invalid");
   ensure(appCatalog.distribution?.marketplaceName === "seis-repo", findings, "app-catalog-marketplace-invalid");
   ensure(appCatalog.distribution?.publicMarketplace === true, findings, "app-catalog-public-marketplace-invalid");
   ensure(appCatalog.distribution?.publicAudience === "everyone", findings, "app-catalog-audience-invalid");
-  ensure(appCatalog.distribution?.marketplaceEntryCount === appCount, findings, "app-catalog-marketplace-count-mismatch");
+  ensure(appCatalog.distribution?.distributionScope === "curated-bounded-public-bundles", findings, "app-catalog-distribution-mode-invalid");
+  ensure(appCatalog.distribution?.marketplaceEntryCount === applicationBundleCount, findings, "app-catalog-marketplace-count-mismatch");
+  ensure(appCatalog.distribution?.marketplaceCardCount === 34, findings, "app-catalog-total-marketplace-count-mismatch");
+  ensure(appCatalog.distribution?.sourceCapabilityCount === appCount, findings, "app-catalog-source-capability-count-mismatch");
+  ensure(appCatalog.distribution?.separateMarketplaceCards === false && appCatalog.distribution?.sourcePackagesRetained === true, findings, "app-catalog-consolidation-boundary-invalid");
   ensure(appCatalog.counts?.discovered === appCount, findings, "app-catalog-discovered-count-mismatch");
   ensure(appCatalog.counts?.contractValid === appCount, findings, "app-catalog-contract-count-mismatch");
   if (includeCatalogStatus) {
@@ -171,24 +208,36 @@ function validateApplicationProjections(appSources, appCatalog, unifiedSuite, li
   ensure(appDistribution.publicMarketplace === true, findings, "suite-public-marketplace-invalid");
   ensure(appDistribution.publicAudience === "everyone", findings, "suite-audience-invalid");
   ensure(appDistribution.pluginCount === appCount, findings, "suite-app-count-mismatch");
-  ensure(appDistribution.marketplaceEntryCount === appCount, findings, "suite-marketplace-count-mismatch");
+  ensure(appDistribution.publicDistribution === "curated-bounded-public-bundles", findings, "suite-distribution-mode-invalid");
+  ensure(appDistribution.marketplaceEntryCount === applicationBundleCount, findings, "suite-marketplace-count-mismatch");
+  ensure(appDistribution.marketplaceCardCount === 34, findings, "suite-total-marketplace-count-mismatch");
   ensure(sameNames(appNames, names(safeArray(appDistribution.plugins), "moduleId")), findings, "suite-app-name-set-mismatch");
   ensure(publicDistribution.applicationOwnedPluginCount === appCount, findings, "suite-public-app-count-mismatch");
-  ensure(publicDistribution.applicationMarketplacePluginCount === appCount, findings, "suite-public-marketplace-count-mismatch");
+  ensure(publicDistribution.applicationMarketplacePluginCount === applicationBundleCount, findings, "suite-public-marketplace-count-mismatch");
   ensure(sameNames(appNames, safeArray(unifiedSuite.sourceDiscovery?.discoveredApplicationPluginNames)), findings, "suite-discovery-name-set-mismatch");
 
   const lifecycleDistribution = lifecycle.publicDistribution || {};
   ensure(lifecycleDistribution.marketplaceName === "seis-repo", findings, "lifecycle-marketplace-invalid");
-  ensure(lifecycleDistribution.applicationPluginCount === appCount, findings, "lifecycle-app-count-mismatch");
+  ensure(lifecycleDistribution.applicationSourceCapabilityCount === appCount, findings, "lifecycle-app-source-count-mismatch");
+  ensure(lifecycleDistribution.repoMarketplaceEntryCount === 34 && lifecycleDistribution.bundleMarketplaceCardCount === 33, findings, "lifecycle-curated-card-count-mismatch");
+  ensure(lifecycleDistribution.bundleMembershipExactOnce === true && lifecycleDistribution.bundledSourceCapabilityCount === 375 && lifecycleDistribution.maximumBundleSize === 15, findings, "lifecycle-bundle-evidence-mismatch");
 }
 
-function validateProjectBoundary(project, expectedCardCount, appCount, topicCount, rootCount, findings) {
+function validateProjectBoundary(project, expectedCardCount, canonicalCount, bundlePackages, appCount, topicCount, rootCount, findings) {
+  const applicationBundleCount = bundlePackages.filter((bundle) => bundle?.family === "application").length;
+  const topicBundleCount = bundlePackages.filter((bundle) => bundle?.family === "topic").length;
   ensure(project.marketplaceName === "seis-repo", findings, "project-marketplace-name-invalid");
   ensure(project.publicMarketplace === true, findings, "project-public-marketplace-invalid");
-  ensure(project.marketplaceEntryCount === expectedCardCount, findings, "project-marketplace-count-mismatch");
-  ensure(project.applicationEntryCount === appCount, findings, "project-application-count-mismatch");
-  ensure(project.topicEntryCount === topicCount, findings, "project-topic-count-mismatch");
-  ensure(project.migratedRootEntryCount === rootCount, findings, "project-root-count-mismatch");
+  ensure(project.marketplaceCardCount === expectedCardCount, findings, "project-marketplace-count-mismatch");
+  ensure(project.canonicalCardCount === canonicalCount, findings, "project-canonical-card-count-mismatch");
+  ensure(project.bundleCardCount === bundlePackages.length, findings, "project-bundle-card-count-mismatch");
+  ensure(project.applicationBundleCardCount === applicationBundleCount, findings, "project-application-bundle-count-mismatch");
+  ensure(project.topicBundleCardCount === topicBundleCount, findings, "project-topic-bundle-count-mismatch");
+  ensure(project.applicationSourceCount === appCount, findings, "project-application-source-count-mismatch");
+  ensure(project.topicSourceCount === topicCount, findings, "project-topic-source-count-mismatch");
+  ensure(project.migratedRootSourceCount === rootCount, findings, "project-root-source-count-mismatch");
+  ensure(project.retainedSourceCount === rootCount + appCount + topicCount, findings, "project-retained-source-count-mismatch");
+  ensure(project.separateMarketplaceCards === false && project.sourcePackagesRetained === true, findings, "project-consolidation-boundary-invalid");
 }
 
 function validateTrustedMarketplaceBridge(bridge, findings) {
@@ -207,9 +256,10 @@ function validateTrustedMarketplaceBridge(bridge, findings) {
   ensure(activationBoundary.externalActivation === "approval-required", findings, "trusted-marketplace-activation-boundary-invalid");
 }
 
-function validatePublicInstallState(state, expectedCardCount, canonicalCount, rootCount, applicationCount, topicCount, findings) {
+function validatePublicInstallState(state, expectedCardCount, canonicalCount, bundleCount, applicationBundleCount, topicBundleCount, rootCount, applicationCount, topicCount, findings) {
   const plugin = state?.plugin || {};
   const publicCards = state?.publicCards || {};
+  const sourceCapabilities = state?.sourceCapabilities || {};
   const readiness = state?.readiness || {};
   ensure(state.id === "seis-public-install-state", findings, "public-install-state-id-invalid");
   ensure(state.goalId === "SEIS-GOAL-021", findings, "public-install-state-goal-invalid");
@@ -222,16 +272,21 @@ function validatePublicInstallState(state, expectedCardCount, canonicalCount, ro
   ensure(plugin.publicMarketplace === true, findings, "public-install-state-marketplace-availability-invalid");
   ensure(publicCards.count === expectedCardCount, findings, "public-install-state-card-count-invalid");
   ensure(publicCards.canonicalOrchestratorCount === canonicalCount, findings, "public-install-state-canonical-count-invalid");
-  ensure(publicCards.migratedRootPluginCount === rootCount, findings, "public-install-state-root-count-invalid");
-  ensure(publicCards.applicationPluginCount === applicationCount, findings, "public-install-state-application-count-invalid");
-  ensure(publicCards.topicPluginCount === topicCount, findings, "public-install-state-topic-count-invalid");
+  ensure(publicCards.bundleCardCount === bundleCount, findings, "public-install-state-bundle-count-invalid");
+  ensure(publicCards.applicationBundleCardCount === applicationBundleCount, findings, "public-install-state-application-bundle-count-invalid");
+  ensure(publicCards.topicBundleCardCount === topicBundleCount, findings, "public-install-state-topic-bundle-count-invalid");
+  ensure(sourceCapabilities.count === rootCount + applicationCount + topicCount, findings, "public-install-state-retained-source-count-invalid");
+  ensure(sourceCapabilities.migratedRootCount === rootCount, findings, "public-install-state-root-source-count-invalid");
+  ensure(sourceCapabilities.applicationCount === applicationCount, findings, "public-install-state-application-source-count-invalid");
+  ensure(sourceCapabilities.topicCount === topicCount, findings, "public-install-state-topic-source-count-invalid");
+  ensure(sourceCapabilities.separateMarketplaceCards === false, findings, "public-install-state-source-card-boundary-invalid");
   ensure(publicCards.sourceAvailability === "public-repository-source-available", findings, "public-install-state-source-availability-invalid");
   ensure(state.canonicalDefaultInstall?.installId === "seis-ai-agent@seis-repo", findings, "public-install-state-canonical-install-invalid");
-  ensure(state.evidence?.repoLocalArtifactStage?.verified === true, findings, "public-install-state-artifact-stage-invalid");
-  ensure(state.evidence?.repoLocalArtifactStage?.marketplaceEntryCount === expectedCardCount, findings, "public-install-state-artifact-count-invalid");
+  ensure(state.evidence?.historicalRepoLocalArtifactStage?.verified === true && state.evidence?.historicalRepoLocalArtifactStage?.historicalSnapshot === true, findings, "public-install-state-artifact-stage-invalid");
+  ensure(state.evidence?.historicalRepoLocalArtifactStage?.capturedMarketplaceCardCount === 381 && state.evidence?.historicalRepoLocalArtifactStage?.currentMarketplaceCardCount === expectedCardCount && state.evidence?.historicalRepoLocalArtifactStage?.matchesCurrentMarketplaceProjection === false, findings, "public-install-state-artifact-count-invalid");
   ensure(state.evidence?.independentRunner?.contractStatus === "active-evidence-intake-contract", findings, "public-install-state-independent-contract-invalid");
   ensure(readiness.repositorySourceAvailable === true, findings, "public-install-state-source-readiness-invalid");
-  ensure(readiness.localArtifactStageVerified === true, findings, "public-install-state-artifact-readiness-invalid");
+  ensure(readiness.currentMarketplaceProjectionVerified === true && readiness.historicalSourceArtifactStageVerified === true, findings, "public-install-state-artifact-readiness-invalid");
   ensure(readiness.publicReleaseAllowed === false, findings, "public-install-state-must-not-claim-release");
 }
 
@@ -314,10 +369,17 @@ function parseProjectBoundary(textValue) {
   return {
     marketplaceName: yamlValue(textValue, "marketplace_name"),
     publicMarketplace: yamlValue(textValue, "public_marketplace") === "true",
-    marketplaceEntryCount: yamlNumber(textValue, "marketplace_entry_count"),
-    applicationEntryCount: yamlNumber(textValue, "application_marketplace_entry_count"),
-    topicEntryCount: yamlNumber(textValue, "topic_marketplace_entry_count"),
-    migratedRootEntryCount: yamlNumber(textValue, "migrated_root_marketplace_entry_count")
+    marketplaceCardCount: yamlNumber(textValue, "card_count"),
+    canonicalCardCount: yamlNumber(textValue, "canonical_card_count"),
+    bundleCardCount: yamlNumber(textValue, "bundle_card_count"),
+    applicationBundleCardCount: yamlNumber(textValue, "application_bundle_card_count"),
+    topicBundleCardCount: yamlNumber(textValue, "topic_bundle_card_count"),
+    retainedSourceCount: yamlNumber(textValue, "retained_count"),
+    migratedRootSourceCount: yamlNumber(textValue, "migrated_root_count"),
+    applicationSourceCount: yamlNumber(textValue, "application_count"),
+    topicSourceCount: yamlNumber(textValue, "topic_count"),
+    separateMarketplaceCards: yamlValue(textValue, "separate_marketplace_cards") === "true",
+    sourcePackagesRetained: yamlValue(textValue, "source_packages_retained") === "true"
   };
 }
 
@@ -349,8 +411,10 @@ function compactReport(report) {
     marketplaceName: report.marketplaceName || null,
     marketplaceDisplayName: report.marketplaceDisplayName || null,
     cardCount: report.cardCount ?? null,
+    bundlePluginCount: report.bundlePluginCount ?? null,
     applicationPluginCount: report.applicationPluginCount ?? null,
     topicPluginCount: report.topicPluginCount ?? null,
+    retainedSourceCapabilityCount: report.retainedSourceCapabilityCount ?? null,
     errorCount: report.errorCount ?? null
   };
 }

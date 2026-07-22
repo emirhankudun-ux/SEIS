@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-topic-bundle-14": {
+      "command": "node",
+      "args": [
+        "./scripts/seis-bundle-mcp-server.mjs"
+      ]
+    }
+  }
+}

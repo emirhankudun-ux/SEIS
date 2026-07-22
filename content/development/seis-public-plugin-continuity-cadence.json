@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-continuity-cadence",
   "goalId": "SEIS-GOAL-021",
   "status": "active-evidence-led-cadence",
@@ -7,6 +7,40 @@
   "generatedAt": "2026-07-21",
   "purpose": "Make the requested 30-step bootstrap, five 100-step public SEIS Repo waves, and future series handoff explicit without claiming background execution or pre-approving future capability changes.",
   "parentProgramPath": "content/development/seis-public-plugin-expansion-program.json",
+  "historicalWave4DirectCardSnapshot": {
+    "observedAt": "2026-07-21",
+    "projectionModel": "direct-source-cards",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "applicationSourcePackageCount": 74,
+    "topicSourcePackageCount": 300,
+    "rootSourceModuleCount": 5,
+    "retainedSourceCapabilityCount": 379,
+    "publicCardCount": 380,
+    "current": false,
+    "immutableHistoricalEvidence": true,
+    "evidencePath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json"
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "directSourceCapabilityCardCount": 0
+  },
   "executionBoundary": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
@@ -35,7 +69,7 @@
       "stepsPerRound": 20,
       "totalPlannedWaveSteps": 500,
       "activeWave": 5,
-      "activeWaveState": "wave-5-first-40-steps-completed-step-41-in-progress"
+      "activeWaveState": "wave-5-first-80-steps-completed-step-81-in-progress"
     },
     "githubDelivery": {
       "branch": "plugins/seis-plugin-root-20260715",
@@ -45,10 +79,14 @@
       "externalBlockerHandling": "Record an unavailable network, approval, or branch-policy limit honestly; do not replace it with a success claim."
     },
     "afterFiveWaves": {
-      "nextBootstrapSteps": 30,
+      "completedSeriesStepSize": 100,
       "nextWaveCount": 5,
-      "nextWaveSteps": 100,
-      "continuationRule": "Start a new 30-step scope, dependency, risk, and rollback review before another five-wave series. The next series is not automatic and requires current evidence plus current user authority.",
+      "nextWaveSteps": 200,
+      "activationState": "active-round-11-plan-and-local-build",
+      "activationAuthority": "current-user-direction-2026-07-22",
+      "historicalEvidenceState": "wave-5-first-80-steps-completed-step-81-in-progress",
+      "historicalWave5CloseoutClaimed": false,
+      "continuationRule": "Round 11 is the first active 200-step plan-and-local-build cycle under current user direction. Preserve the retained Wave 5 evidence at 80 completed with step 81 in progress; do not fabricate closeout, automatic background execution, or external delivery.",
       "backgroundExecutionClaimed": false
     }
   },
@@ -125,18 +163,22 @@
       "candidateReviewPath": "content/development/seis-public-plugin-wave-4-following-wave-review.json",
       "activationDecisionPath": "content/development/seis-public-plugin-wave-5-activation-decision.json",
       "capabilityEvidencePath": "content/development/seis-plugin-capability-coverage.json",
+      "round3CheckpointPath": "content/development/seis-public-plugin-wave-5-round-3-checkpoint.json",
+      "consolidationPath": "content/development/seis-public-plugin-consolidation.json",
       "selectedCapability": "seis-plugin-capability-coverage",
       "implementationApproved": true,
       "activationApproved": true,
       "implementationStarted": true,
       "candidatePackageExists": true,
-      "candidatePublicCardExists": true,
-      "completedSteps": 40,
+      "candidateDirectPublicCardExists": false,
+      "candidateBundleId": "seis-application-bundle-05",
+      "candidateBundleCardExists": true,
+      "completedSteps": 80,
       "inProgressSteps": [
-        41
+        81
       ],
-      "currentEvidencePath": "content/development/seis-plugin-capability-coverage.json",
-      "entryRule": "Wave 4 closed with historical scope evidence; the separate Wave 5 activation decision records current user authority. The first 40 repository-local steps are complete and step 41 starts the bounded coverage-interpretation and resilience-review tranche. This is not a merge, release, installation, external runtime, provider, deployment, signing, or public proof claim."
+      "currentEvidencePath": "content/development/seis-public-plugin-wave-5-program.json",
+      "entryRule": "Wave 4 closed with historical scope evidence; the separate Wave 5 activation decision records current user authority. The first 80 repository-local steps are complete and step 81 starts the closeout and next-series decision tranche. The capability remains discoverable through exactly one curated bundle rather than a direct card. This is not a merge, release, installation, external runtime, provider, deployment, signing, or public proof claim."
     }
   ],
   "futureWaveTemplate": {

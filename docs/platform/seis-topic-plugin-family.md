@@ -1,9 +1,9 @@
 # SEIS Objective-Derived Topic Plugin Family
 
-The SEIS repository publishes the objective-derived topic family directly in
-the public `seis-repo` marketplace (`SEIS Repo`). The family contains 300
-repository-owned MIT packages across 15 categories and is available to
-everyone.
+The SEIS repository retains the objective-derived topic family as 300
+repository-owned MIT source packages across 15 categories. The public
+`seis-repo` marketplace exposes them through 27 bounded topic bundle cards,
+available to everyone without presenting 300 separate cards.
 
 ## Source of truth
 
@@ -20,23 +20,23 @@ machine-specific path.
 
 ## Distribution
 
-The complete public repository marketplace is:
+The current curated public repository marketplace is:
 
 - 1 canonical `seis-ai-agent@seis-repo` orchestrator
-- 5 migrated root cards: `seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data`
-- 71 app-owned `plugins/seis-core` packages
-- 300 objective-derived `plugins/seis-topics` packages
-- 377 marketplace entries total
+- 6 application bundle cards covering 75 app-owned `plugins/seis-core` sources
+- 27 topic bundle cards covering 300 objective-derived `plugins/seis-topics` sources
+- 34 marketplace cards total
+- 380 retained source capabilities total: 5 root + 75 application + 300 topic
 
-The canonical default install remains `seis-ai-agent@seis-repo`. Topic cards
-are independently discoverable repository packages, not personal plugins and
-not embedded specialist-lane cards.
+The canonical default install remains `seis-ai-agent@seis-repo`. Each topic
+source maps to exactly one topic bundle and remains independently identifiable
+inside that bundle. It is not a personal plugin or a direct marketplace card.
 
 ## Package contract
 
 Each topic package contains:
 
-- `.codex-plugin/plugin.json` — public MIT plugin card
+- `.codex-plugin/plugin.json` — retained MIT source-package identity
 - `.mcp.json` — package-local MCP server declaration
 - `assets/topic-profile.json` — objective source, category, status, audience,
   license, and permission boundary
@@ -44,7 +44,9 @@ Each topic package contains:
 - `scripts/<topic-id>-mcp-server.mjs` — deterministic entrypoint
 - `runtime/topic-plugin-runtime.mjs` — standalone bounded read-only runtime
 
-The runtime supports status and repository-shape report tools. It does not
+The runtime supports status and repository-shape report tools. A source-level
+`publicMarketplace` marker means discoverable through the curated marketplace;
+it does not make the source a separate card. The runtime does not
 call providers, use the network, read secrets, or write files. Marketplace
 availability is not authentication and does not grant GitHub, cloud, SSH,
 deployment, connector, or destructive-action authority.

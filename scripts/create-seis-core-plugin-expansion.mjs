@@ -12,6 +12,8 @@ const root = process.cwd();
 const checkMode = process.argv.includes("--check");
 const sourceRoot = path.join(root, "plugins", "seis-core");
 const releaseTrain = readJson(path.join(root, "content", "development", "seis-core-plugin-release-train.json"));
+const bundleCatalog = readJson(path.join(root, "content", "development", "seis-public-plugin-bundle-catalog.json"));
+const applicationBundleByMember = buildApplicationBundleMap(bundleCatalog);
 const currentRelease = releaseTrain.currentRelease;
 
 if (PLUGIN_AUDIT_DEFINITIONS.length !== 10) {
@@ -37,6 +39,8 @@ else console.log(`SEIS app plugin expansion check passed for ${PLUGIN_AUDIT_DEFI
 
 function expectedFiles(definition) {
   const skillName = definition.id;
+  const marketplaceBundleId = applicationBundleByMember.get(definition.id);
+  if (!marketplaceBundleId) throw new Error(`${definition.id}: missing exact-one application bundle mapping`);
   const manifest = {
     id: definition.id,
     name: definition.id,
@@ -87,6 +91,9 @@ function expectedFiles(definition) {
     publicRepositoryAvailable: true,
     publicAudience: "everyone",
     publicMarketplace: true,
+    marketplaceDiscoverable: true,
+    marketplaceCard: false,
+    marketplaceBundleId,
     liveRuntimeStatus: "local-demo-or-auth-gated",
     provenance: "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021.",
   };
@@ -108,4 +115,17 @@ function expectedFiles(definition) {
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
+
+function buildApplicationBundleMap(catalog) {
+  const mapping = new Map();
+  const bundles = Array.isArray(catalog?.bundles) ? catalog.bundles.filter((bundle) => bundle?.family === "application") : [];
+  for (const bundle of bundles) {
+    for (const name of bundle.memberNames || []) {
+      if (mapping.has(name)) throw new Error(`duplicate application bundle member: ${name}`);
+      mapping.set(name, bundle.id);
+    }
+  }
+  if (bundles.length !== 6 || mapping.size !== APP_PLUGIN_EXPANSION_TARGET) throw new Error("application bundle catalog is incomplete");
+  return mapping;
 }

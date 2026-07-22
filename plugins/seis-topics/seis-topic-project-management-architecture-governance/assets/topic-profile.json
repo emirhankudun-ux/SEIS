@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-topic-project-management-architecture-governance",
   "displayName": "Architecture Governance",
   "category": "Project Management",
@@ -14,6 +14,9 @@
   "status": "public-repository-preview",
   "maturity": "prototype",
   "publicMarketplace": true,
+  "marketplaceDiscoverable": true,
+  "marketplaceCard": false,
+  "marketplaceBundleId": "seis-topic-bundle-22",
   "publicAudience": "everyone",
   "license": "MIT",
   "liveRuntimeStatus": "local-demo-only",

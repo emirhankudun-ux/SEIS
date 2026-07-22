@@ -11,6 +11,7 @@ import {
   flattenTopicObjective,
   readTopicObjective,
 } from "../plugins/seis-topics/runtime/topic-definitions.mjs";
+import { buildSeisPublicTopicBundles } from "./lib/seis-public-bundle-plan.mjs";
 
 const root = process.cwd();
 const runMcpSmoke = process.argv.includes("--mcp-smoke");
@@ -18,6 +19,11 @@ const objective = readTopicObjective(root);
 const topics = flattenTopicObjective(objective);
 const failures = [];
 assertTopicObjective(objective, topics);
+const topicBundles = buildSeisPublicTopicBundles({
+  topicPlugins: topics.map((topic) => ({ name: topic.id, displayName: topic.displayName, sourcePath: topic.sourcePath, category: topic.category })),
+});
+const topicBundleByMember = new Map(topicBundles.flatMap((bundle) => bundle.members.map((member) => [member.name, bundle.id])));
+ensure(topicBundles.length === 27 && topicBundleByMember.size === TOPIC_PLUGIN_TARGET, "topic bundle coverage must contain 27 cards and 300 exact-once members");
 
 const sourceRoot = path.join(root, TOPIC_PLUGIN_SOURCE_ROOT);
 const actualDirectories = fs.existsSync(sourceRoot)
@@ -61,6 +67,10 @@ for (const topic of topics) {
   ensure(profile?.license === "MIT", `${topic.id}: profile license must be MIT`);
   ensure(profile?.publicAudience === "everyone", `${topic.id}: profile audience must be everyone`);
   ensure(profile?.publicMarketplace === true, `${topic.id}: profile must be public marketplace available`);
+  ensure(profile?.schemaVersion === 2, `${topic.id}: profile schema version must be 2`);
+  ensure(profile?.marketplaceDiscoverable === true, `${topic.id}: source must be discoverable through the curated marketplace`);
+  ensure(profile?.marketplaceCard === false, `${topic.id}: retained source must not be a direct marketplace card`);
+  ensure(profile?.marketplaceBundleId === topicBundleByMember.get(topic.id), `${topic.id}: source must name its exact topic bundle`);
   ensure(profile?.liveRuntimeStatus === "local-demo-only", `${topic.id}: runtime state must remain local-demo-only`);
   for (const permission of ["write", "network", "secrets"]) {
     ensure(Array.isArray(profile?.permissions?.[permission]) && profile.permissions[permission].length === 0, `${topic.id}: ${permission} permissions must be empty`);

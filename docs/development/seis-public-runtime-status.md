@@ -1,12 +1,14 @@
 # SEIS Public Runtime Status
 
-`seis-public-runtime-status@seis-repo` is a public, app-owned SEIS Repo card
-that compares declared public source cards with bounded local cache records.
+`seis-public-runtime-status` is a retained application source capability in the
+curated `seis-application-bundle-05@seis-repo` card. It compares the 34 current
+curated marketplace cards with bounded local cache records.
 
 ## Public boundary
 
 - Source: `plugins/seis-core/seis-public-runtime-status`
 - Marketplace: `SEIS Repo` (`seis-repo`)
+- Curated card: `seis-application-bundle-05@seis-repo`
 - Audience: everyone
 - Contract: `content/development/seis-public-runtime-status.json`
 - Goal: `SEIS-GOAL-021`
@@ -28,6 +30,8 @@ deploy, push, write files, read secrets, or access the network.
 
 A cache record is not proof that Codex currently enables a package. It also is
 not independent installation evidence, authorization, or release approval.
+The separate 380-capability source inventory is retained for source access and
+is not counted as 380 additional cache-observed marketplace cards.
 
 ## Validate
 

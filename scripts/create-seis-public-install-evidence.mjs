@@ -5,7 +5,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
-const GENERATED_AT = "2026-07-20";
+const GENERATED_AT = "2026-07-22";
 const OUTPUT_PATH = "content/development/seis-public-install-evidence.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
 const FAMILY_PATH = "content/development/seis-public-plugin-family.json";
@@ -34,22 +34,30 @@ function buildState() {
   const evidenceContract = readJson(EVIDENCE_CONTRACT_PATH);
   const cards = array(marketplace.plugins);
   const canonicalCards = array(family.publicPlugins);
-  const rootCards = array(family.migratedRootPlugins);
-  const applicationCards = array(family.applicationPlugins);
-  const topicCards = array(family.topicPlugins);
-  const expectedCardCount = canonicalCards.length + rootCards.length + applicationCards.length + topicCards.length;
+  const bundleCards = array(family.bundlePackages);
+  const applicationBundleCards = bundleCards.filter((bundle) => bundle?.family === "application");
+  const topicBundleCards = bundleCards.filter((bundle) => bundle?.family === "topic");
+  const rootCapabilities = array(family.migratedRootPlugins);
+  const applicationCapabilities = array(family.applicationPlugins);
+  const topicCapabilities = array(family.topicPlugins);
+  const expectedCardCount = canonicalCards.length + bundleCards.length;
+  const expectedSourceCapabilityCount = rootCapabilities.length + applicationCapabilities.length + topicCapabilities.length;
   const expectedPluginIds = canonicalCards.map((item) => text(item?.installId)).filter(Boolean).sort();
   const expectedEmbeddedModuleIds = array(family.embeddedModules || family.plugins).map((item) => text(item?.name)).filter(Boolean).sort();
-  const evidenceCard = cards.find((card) => card?.name === "seis-public-install-evidence");
+  const evidenceBundle = findCapabilityBundle(bundleCards, "seis-public-install-evidence");
+  const evidenceCard = cards.find((card) => card?.name === evidenceBundle?.id);
 
   assert(marketplace.name === "seis-repo", "marketplace must be seis-repo");
   assert(marketplace.interface?.displayName === "SEIS Repo", "marketplace display name must be SEIS Repo");
   assert(cards.length === expectedCardCount, "marketplace card count must match the public plugin family");
+  assert(cardsMatchProjection(cards, family.marketplace?.entries), "marketplace cards must match the curated family projection");
   assert(cardsHavePublicSource(cards), "every marketplace card must retain a bounded public repository source");
   assert(family.marketplace?.publicPluginCount === expectedCardCount, "public plugin family card count must match the marketplace");
-  assert(family.marketplace?.applicationPluginCount === applicationCards.length, "public plugin family application count must match the marketplace");
-  assert(Boolean(evidenceCard), "marketplace must include seis-public-install-evidence");
-  assert(evidenceCard?.source?.path === "./plugins/seis-core/seis-public-install-evidence", "install evidence card source path is invalid");
+  assert(family.marketplace?.bundlePluginCount === bundleCards.length, "public plugin family bundle count must match the marketplace");
+  assert(family.marketplace?.sourceCapabilityCount === expectedSourceCapabilityCount, "public plugin family source capability count must match the retained inventory");
+  assert(Boolean(evidenceBundle), "install-evidence source capability must be covered by a bundle");
+  assert(Boolean(evidenceCard), "marketplace must include the install-evidence capability bundle");
+  assert(evidenceCard?.source?.path === evidenceBundle?.sourcePath, "install evidence bundle card source path is invalid");
   assert(evidenceCard?.policy?.installation === "AVAILABLE", "install evidence card must be available");
   assert(evidenceCard?.policy?.authentication === "ON_INSTALL", "install evidence card authentication is invalid");
   assert(evidenceContract.id === "seis-public-plugin-independent-runner-evidence-contract", "independent runner evidence contract is invalid");
@@ -59,7 +67,7 @@ function buildState() {
   assert(sameStringSet(evidenceContract.expectedEmbeddedModuleIds, expectedEmbeddedModuleIds), "independent runner expected embedded module ids are stale");
 
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-install-evidence",
     goalId: "SEIS-GOAL-021",
     generatedAt: GENERATED_AT,
@@ -71,6 +79,9 @@ function buildState() {
       displayName: "SEIS Public Install Evidence",
       marketplaceName: "seis-repo",
       sourcePath: "plugins/seis-core/seis-public-install-evidence",
+      distributionMode: "bundled-source-capability",
+      marketplaceCardName: evidenceBundle.id,
+      marketplaceCardSourcePath: evidenceBundle.sourcePath,
       publicAudience: "everyone",
       publicMarketplace: true,
     },
@@ -79,12 +90,20 @@ function buildState() {
       marketplaceDisplayName: marketplace.interface?.displayName,
       count: cards.length,
       canonicalOrchestratorCount: canonicalCards.length,
-      migratedRootPluginCount: rootCards.length,
-      applicationPluginCount: applicationCards.length,
-      topicPluginCount: topicCards.length,
+      bundleCardCount: bundleCards.length,
+      applicationBundleCardCount: applicationBundleCards.length,
+      topicBundleCardCount: topicBundleCards.length,
       sourceAvailability: "public-repository-source-available",
       installationPolicy: "AVAILABLE",
       authenticationPolicy: "ON_INSTALL",
+    },
+    sourceCapabilities: {
+      count: expectedSourceCapabilityCount,
+      migratedRootCount: rootCapabilities.length,
+      applicationCount: applicationCapabilities.length,
+      topicCount: topicCapabilities.length,
+      separateMarketplaceCards: false,
+      retentionMode: "repository-source-capabilities-behind-curated-cards",
     },
     independentEvidence: {
       contractPath: EVIDENCE_CONTRACT_PATH,
@@ -148,7 +167,18 @@ function buildState() {
       publicationMutation: false,
     },
   };
-  validateRecord(record, { expectedCardCount, applicationCards, expectedPluginIds, expectedEmbeddedModuleIds });
+  validateRecord(record, {
+    expectedCardCount,
+    expectedSourceCapabilityCount,
+    bundleCards,
+    applicationBundleCards,
+    topicBundleCards,
+    rootCapabilities,
+    applicationCapabilities,
+    topicCapabilities,
+    expectedPluginIds,
+    expectedEmbeddedModuleIds,
+  });
   return record;
 }
 
@@ -159,7 +189,14 @@ function validateRecord(record, context) {
   assert(record.plugin?.marketplaceName === "seis-repo", "record marketplace name is invalid");
   assert(record.plugin?.sourcePath === "plugins/seis-core/seis-public-install-evidence", "record source path is invalid");
   assert(record.publicCards?.count === context.expectedCardCount, "record public card count is stale");
-  assert(record.publicCards?.applicationPluginCount === context.applicationCards.length, "record application card count is stale");
+  assert(record.publicCards?.bundleCardCount === context.bundleCards.length, "record bundle card count is stale");
+  assert(record.publicCards?.applicationBundleCardCount === context.applicationBundleCards.length, "record application bundle card count is stale");
+  assert(record.publicCards?.topicBundleCardCount === context.topicBundleCards.length, "record topic bundle card count is stale");
+  assert(record.sourceCapabilities?.count === context.expectedSourceCapabilityCount, "record source capability count is stale");
+  assert(record.sourceCapabilities?.migratedRootCount === context.rootCapabilities.length, "record root source capability count is stale");
+  assert(record.sourceCapabilities?.applicationCount === context.applicationCapabilities.length, "record application source capability count is stale");
+  assert(record.sourceCapabilities?.topicCount === context.topicCapabilities.length, "record topic source capability count is stale");
+  assert(record.sourceCapabilities?.separateMarketplaceCards === false, "record must distinguish retained capabilities from public cards");
   assert(record.independentEvidence?.contractPath === EVIDENCE_CONTRACT_PATH, "record evidence contract path is invalid");
   assert(record.independentEvidence?.evidencePath === EVIDENCE_PATH, "record evidence path is invalid");
   assert(record.independentEvidence?.strictRecordedEvidenceGate === STRICT_RECORDED_GATE, "record strict evidence gate is invalid");
@@ -186,6 +223,17 @@ function cardsHavePublicSource(cards) {
     && card.policy?.installation === "AVAILABLE"
     && card.policy?.authentication === "ON_INSTALL"
   );
+}
+
+function cardsMatchProjection(cards, entries) {
+  const projection = array(entries);
+  if (cards.length !== projection.length) return false;
+  const expected = new Map(projection.map((entry) => [text(entry?.name), text(entry?.sourcePath)]));
+  return expected.size === projection.length && cards.every((card) => expected.get(text(card?.name)) === text(card?.source?.path));
+}
+
+function findCapabilityBundle(bundles, capabilityName) {
+  return bundles.find((bundle) => array(bundle?.members).some((member) => text(member?.name) === capabilityName)) || null;
 }
 
 function sameStringSet(actual, expected) {

@@ -49,10 +49,9 @@ const publicPlugins = (publicFamily.publicPlugins || []).map((plugin) => {
     mcpServers: Object.keys(mcp.mcpServers || {}),
   };
 });
-const migratedRootPlugins = (publicFamily.migratedRootPlugins || []).map((plugin) => {
+const migratedRootSources = (publicFamily.migratedRootPlugins || []).map((plugin) => {
   const manifest = readJson(path.join(plugin.sourcePath, ".codex-plugin", "plugin.json"));
   const mcp = readJson(path.join(plugin.sourcePath, ".mcp.json"));
-  const marketplaceEntry = marketplace.plugins.find((entry) => entry.name === plugin.name);
   return {
     name: plugin.name,
     displayName: plugin.displayName,
@@ -61,13 +60,17 @@ const migratedRootPlugins = (publicFamily.migratedRootPlugins || []).map((plugin
     installId: plugin.installId,
     version: manifest.version || "0.1.0",
     license: manifest.license,
-    category: marketplaceEntry?.category || plugin.category,
+    category: plugin.category,
     mcpServers: Object.keys(mcp.mcpServers || {}),
   };
 });
-const applicationPluginCount = publicFamily.applicationPlugins?.length || 0;
-const topicPluginCount = publicFamily.topicPlugins?.length || 0;
+const applicationSourceCapabilityCount = publicFamily.applicationPlugins?.length || 0;
+const topicSourceCapabilityCount = publicFamily.topicPlugins?.length || 0;
 const repoMarketplaceEntryCount = marketplace.plugins?.length || 0;
+const bundleMarketplaceCardCount = publicFamily.bundlePackages?.length || 0;
+const applicationBundleCardCount = publicFamily.marketplace?.applicationBundlePluginCount || 0;
+const topicBundleCardCount = publicFamily.marketplace?.topicBundlePluginCount || 0;
+const retainedSourceCapabilityCount = migratedRootSources.length + applicationSourceCapabilityCount + topicSourceCapabilityCount;
 const embeddedModules = (publicFamily.embeddedModules || publicFamily.plugins || []).map((module) => {
   const manifest = readJson(path.join(module.sourcePath, ".codex-plugin", "plugin.json"));
   const mcp = readJson(path.join(module.sourcePath, ".mcp.json"));
@@ -95,7 +98,7 @@ const phases = [
       ".agents/plugins/marketplace.json",
       "npm run check:seis-public-plugin-family",
     ],
-    exitRule: "All public plugin manifests, marketplace entries, source mirrors, and SEIS AI lane links validate in the repo.",
+    exitRule: "The exact curated marketplace-card set and the separate retained-source inventory validate in the repo, together with SEIS AI lane links.",
   },
   {
     id: "canonical-alias-resolution",
@@ -112,7 +115,7 @@ const phases = [
   },
   {
     id: "single-public-install",
-    label: "Single Public Install",
+    label: "Canonical Default Install",
     status: unifiedSuiteSummary.ready ? "active-single-public-plugin" : "blocked-unified-suite",
     ownerLane: "seis-ai-agent",
     requiredEvidence: [
@@ -121,7 +124,7 @@ const phases = [
       "npm run install:seis-ai-agent",
       "the default installer targets only seis-ai-agent@seis-repo",
     ],
-    exitRule: "All SEIS source modules share one versioned suite file, and SEIS-Agent is the only public install target; module folders do not create standalone public installs.",
+    exitRule: "All SEIS source modules share one versioned suite file, and SEIS-Agent is the only canonical default public install target; optional bundles remain explicit user-selected cards and source folders are not standalone installs.",
   },
   {
     id: "installed-cache",
@@ -145,7 +148,7 @@ const phases = [
       "npm run check:seis-public-plugin-external-install-proof",
       "disposable local stage excludes macOS metadata and forbidden artifact classes",
     ],
-    exitRule: "A disposable local artifact stage contains the canonical suite and every public app package from the repo marketplace without forbidden release artifacts. This does not prove an independent installation.",
+    exitRule: "A disposable local artifact stage contains all 34 marketplace cards and separately validates all 380 retained source capabilities without forbidden release artifacts. This does not prove an independent installation.",
   },
   {
     id: "fresh-task-reload",
@@ -176,7 +179,7 @@ const phases = [
       "npm run check:seis-public-plugin-independent-runner-evidence:recorded",
       "sanitized evidence from an external clean runner or public package install",
     ],
-    exitRule: "A strict recorded-evidence check proves the single SEIS-Agent public plugin installed from an independent public source, exposed every embedded module, passed MCP smoke, and was visible through SEIS AI in a fresh task. Human approval still remains required.",
+    exitRule: "A strict recorded-evidence check proves the canonical SEIS-Agent default installed from an independent public source, exposed every embedded module, passed MCP smoke, and was visible through SEIS AI in a fresh task. Human approval still remains required.",
   },
   {
     id: "public-preview",
@@ -221,7 +224,7 @@ const phases = [
 
 const lifecycle = {
   id: "seis-public-plugin-lifecycle",
-  version: 1,
+  version: 2,
   generatedAt,
   status: "active-local-proof-public-release-gated",
   sourcePath,
@@ -245,7 +248,7 @@ const lifecycle = {
   independentRunnerEvidenceIntake,
   marketplace: marketplacePath,
   purpose:
-    `Keep the canonical public SEIS-Agent suite, five migrated root repository cards, its embedded SEIS source modules, the ${applicationPluginCount} public app package cards, and the objective-derived topic package cards maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries.`,
+    `Keep one canonical SEIS-Agent card, ${bundleMarketplaceCardCount} optional bundle cards, and ${retainedSourceCapabilityCount} retained source capabilities maintainable over a long horizon by tracking release phases, compatibility, validation gates, ownership, and approval boundaries without treating source packages as direct marketplace cards.`,
   publicAudience: "everyone",
   orchestrator: "seis-ai-agent@seis-repo",
   publicDistribution: {
@@ -255,9 +258,18 @@ const lifecycle = {
     mode: "single-public-plugin",
     marketplaceName: publicFamily.marketplace?.name || "seis-repo",
     repoMarketplaceEntryCount,
-    migratedRootPluginCount: migratedRootPlugins.length,
-    applicationPluginCount,
-    topicPluginCount,
+    canonicalMarketplaceCardCount: publicPlugins.length,
+    bundleMarketplaceCardCount,
+    applicationBundleCardCount,
+    topicBundleCardCount,
+    migratedRootSourceCapabilityCount: migratedRootSources.length,
+    applicationSourceCapabilityCount,
+    topicSourceCapabilityCount,
+    retainedSourceCapabilityCount,
+    bundledSourceCapabilityCount: externalInstallProofSummary.bundledSourceCapabilityCount,
+    bundleMembershipExactOnce: externalInstallProofSummary.bundleMembershipExactOnce,
+    maximumBundleSize: externalInstallProofSummary.maximumBundleSize,
+    separateSourceMarketplaceCards: false,
   },
   releasePolicy: {
     currentChannel: "internal-review-local-proof",
@@ -329,10 +341,12 @@ const lifecycle = {
     ],
     rollback: `Remove ${plugin.installId} from the repo marketplace only with human approval, then rerun public plugin family, install smoke, and SEIS AI checks.`,
   })),
-  migratedRootPlugins: migratedRootPlugins.map((plugin) => ({
+  migratedRootPlugins: migratedRootSources.map((plugin) => ({
     ...plugin,
-    lifecycleState: "public-repo-available-root-card",
-    supportTier: "root-lane-direct-card",
+    lifecycleState: "retained-root-source-in-canonical-suite",
+    supportTier: "root-lane-retained-source",
+    marketplaceCard: false,
+    distributionMode: "embedded-in-canonical-seis-agent",
     compatibilityBand: "^0.3.x",
     releaseChannel: "internal-review-local-proof",
     liveRuntimeStatus: "local_demo_or_auth_gated",
@@ -340,11 +354,12 @@ const lifecycle = {
     requiredGates: [
       "manifest-valid",
       "mcp-manifest-valid",
-      "repo-marketplace-available",
+      "retained-source-manifest-valid",
+      "canonical-suite-discovery",
       "seis-ai-connected",
       "security-boundary",
     ],
-    rollback: `Remove ${plugin.installId} from the repo marketplace only with human approval, then rerun public plugin family, migration coverage, and SEIS AI checks.`,
+    rollback: `Restore this retained source contract and regenerate the canonical SEIS-Agent suite; do not create a direct marketplace card during rollback.`,
   })),
   embeddedModules: embeddedModules.map((module) => ({
     ...module,
@@ -380,7 +395,7 @@ const lifecycle = {
     "npm run check:seis-repo-marketplace",
   ],
   completionRule:
-    "The lifecycle is ready for internal review when the canonical public SEIS-Agent suite, five migrated root marketplace cards, its embedded module discovery, all public seis-repo app package cards, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, migration coverage, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval.",
+    "The lifecycle is ready for internal review when the canonical SEIS-Agent card, 33 optional bundle cards, five retained root sources, 75 retained app sources, 300 retained topic sources, exact-once bundle coverage, canonical alias resolution, repo, clean-artifact, install-smoke, MCP-smoke, SEIS AI, specialist, migration coverage, and marketplace checks pass. Public release remains gated on fresh-task reload proof, security/provenance review, strict independent clean-runner/public installation evidence, and human approval.",
 };
 
 const report = renderReport(lifecycle);
@@ -400,15 +415,22 @@ if (checkMode) {
 
 function validateLifecycle(contract) {
   const failures = [];
+  if (contract.version !== 2) failures.push("lifecycle schema version must be 2");
   if (contract.plugins.length !== 1 || contract.plugins[0]?.name !== "seis-ai-agent") failures.push("lifecycle must expose only the public SEIS-Agent plugin");
   if (contract.embeddedModules.length < 10) failures.push("lifecycle must track every current embedded SEIS source module");
   if (contract.publicDistribution?.publicPluginCount !== 1) failures.push("lifecycle public distribution must expose one public plugin");
   if (contract.publicDistribution?.embeddedModuleCount !== contract.embeddedModules.length) failures.push("lifecycle embedded module count must match its module matrix");
   if (contract.publicDistribution?.marketplaceName !== "seis-repo") failures.push("lifecycle must identify the seis-repo marketplace");
-  if (contract.publicDistribution?.repoMarketplaceEntryCount !== repoMarketplaceEntryCount) failures.push("lifecycle marketplace count must match the repo marketplace");
-  if (contract.publicDistribution?.migratedRootPluginCount !== migratedRootPlugins.length || migratedRootPlugins.length !== 5) failures.push("lifecycle must track all five migrated root marketplace packages");
-  if (contract.publicDistribution?.applicationPluginCount !== applicationPluginCount) failures.push("lifecycle app package count must match the public family");
-  if (contract.publicDistribution?.topicPluginCount !== topicPluginCount) failures.push("lifecycle topic package count must match the public family");
+  if (contract.publicDistribution?.repoMarketplaceEntryCount !== repoMarketplaceEntryCount || repoMarketplaceEntryCount !== 34) failures.push("lifecycle marketplace count must match the current 34-card repo marketplace");
+  if (contract.publicDistribution?.canonicalMarketplaceCardCount !== 1 || contract.publicDistribution?.bundleMarketplaceCardCount !== 33) failures.push("lifecycle marketplace card split is invalid");
+  if (contract.publicDistribution?.applicationBundleCardCount !== 6 || contract.publicDistribution?.topicBundleCardCount !== 27) failures.push("lifecycle bundle family card counts are invalid");
+  if (contract.publicDistribution?.migratedRootSourceCapabilityCount !== migratedRootSources.length || migratedRootSources.length !== 5) failures.push("lifecycle must track all five retained root source capabilities");
+  if (contract.publicDistribution?.applicationSourceCapabilityCount !== applicationSourceCapabilityCount || applicationSourceCapabilityCount !== 75) failures.push("lifecycle app source capability count must match the public family");
+  if (contract.publicDistribution?.topicSourceCapabilityCount !== topicSourceCapabilityCount || topicSourceCapabilityCount !== 300) failures.push("lifecycle topic source capability count must match the public family");
+  if (contract.externalInstallProofSummary?.schemaVersion !== 2 || contract.externalInstallProofSummary?.artifactStagingOk !== true) failures.push("lifecycle requires current external artifact-staging schema v2 evidence");
+  if (contract.publicDistribution?.retainedSourceCapabilityCount !== 380 || contract.publicDistribution?.bundledSourceCapabilityCount !== 375) failures.push("lifecycle retained and bundled source counts are invalid");
+  if (contract.publicDistribution?.bundleMembershipExactOnce !== true || contract.publicDistribution?.maximumBundleSize !== 15) failures.push("lifecycle must derive exact-once and maximum bundle-size evidence from artifact staging");
+  if (contract.publicDistribution?.separateSourceMarketplaceCards !== false) failures.push("lifecycle must not present retained sources as separate marketplace cards");
   if (contract.orchestrator !== "seis-ai-agent@seis-repo") failures.push("orchestrator must be seis-ai-agent@seis-repo");
   if (contract.freshTaskProofContract !== freshTaskProofPath) failures.push("lifecycle must point at the fresh-task proof contract");
   if (contract.freshTaskReloadEvidence !== freshTaskReloadEvidencePath) failures.push("lifecycle must point at the fresh-task reload evidence contract");
@@ -444,9 +466,10 @@ function validateLifecycle(contract) {
     if (!plugin.connectedToSeisAi) failures.push(`${plugin.name} must be connected to SEIS AI`);
   }
   for (const plugin of contract.migratedRootPlugins || []) {
-    if (plugin.license !== "MIT") failures.push(`${plugin.name} root marketplace package must be MIT`);
-    if (!plugin.mcpServers.length) failures.push(`${plugin.name} root marketplace package must expose an MCP server`);
-    if (!plugin.connectedToSeisAi) failures.push(`${plugin.name} root marketplace package must remain connected to SEIS AI`);
+    if (plugin.license !== "MIT") failures.push(`${plugin.name} retained root source must be MIT`);
+    if (!plugin.mcpServers.length) failures.push(`${plugin.name} retained root source must expose an MCP server`);
+    if (!plugin.connectedToSeisAi) failures.push(`${plugin.name} retained root source must remain connected to SEIS AI`);
+    if (plugin.marketplaceCard !== false || plugin.distributionMode !== "embedded-in-canonical-seis-agent") failures.push(`${plugin.name} retained root source must not be a direct marketplace card`);
   }
   for (const module of contract.embeddedModules) {
     if (module.license !== "MIT") failures.push(`${module.name} must be MIT`);
@@ -493,7 +516,7 @@ ${phasesTable}
 | --- | --- | --- | --- | --- | --- |
 ${rows}
 
-## Migrated Root Repository Cards
+## Retained Root Source Capabilities
 
 | plugin | role | version | channel | support tier | MCP servers |
 | --- | --- | --- | --- | --- | --- |
@@ -513,7 +536,7 @@ ${moduleRows}
 - Preserved legacy aliases: ${contract.canonicalizationSummary.legacyAliasCount}
 - Personal marketplace mutation: ${contract.canonicalizationSummary.personalMarketplaceMutation ? "yes" : "no"}
 
-## Single Public Install
+## Canonical Default Install
 
 - Suite file: ${contract.unifiedSuite}
 - Release version: ${contract.unifiedSuiteSummary.releaseVersion}
@@ -524,11 +547,13 @@ ${moduleRows}
 ## Public SEIS Repo Marketplace
 
 - Marketplace: ${contract.publicDistribution.marketplaceName}
-- Total entries: ${contract.publicDistribution.repoMarketplaceEntryCount}
-- Canonical orchestrator entries: ${contract.publicDistribution.publicPluginCount}
-- Migrated root package entries: ${contract.publicDistribution.migratedRootPluginCount}
-- App package entries: ${contract.publicDistribution.applicationPluginCount}
-- Objective-derived topic entries: ${contract.publicDistribution.topicPluginCount}
+- Total cards: ${contract.publicDistribution.repoMarketplaceEntryCount}
+- Canonical orchestrator cards: ${contract.publicDistribution.canonicalMarketplaceCardCount}
+- Optional bundle cards: ${contract.publicDistribution.bundleMarketplaceCardCount} (${contract.publicDistribution.applicationBundleCardCount} application + ${contract.publicDistribution.topicBundleCardCount} topic)
+- Retained source capabilities: ${contract.publicDistribution.retainedSourceCapabilityCount} (${contract.publicDistribution.migratedRootSourceCapabilityCount} root + ${contract.publicDistribution.applicationSourceCapabilityCount} application + ${contract.publicDistribution.topicSourceCapabilityCount} topic)
+- Exact-once bundled sources: ${contract.publicDistribution.bundledSourceCapabilityCount} (${contract.publicDistribution.bundleMembershipExactOnce ? "verified" : "not verified"})
+- Maximum bundle size: ${contract.publicDistribution.maximumBundleSize}
+- Separate source cards: ${contract.publicDistribution.separateSourceMarketplaceCards ? "yes" : "no"}
 
 ## Independent Runner Evidence
 
@@ -568,14 +593,22 @@ function summarizeExternalInstallProof(proof) {
   if (!proof) {
     return {
       status: "missing",
+      schemaVersion: null,
       artifactStagingOk: false,
+      bundledSourceCapabilityCount: null,
+      bundleMembershipExactOnce: false,
+      maximumBundleSize: null,
       independentRunnerEvidenceStatus: "missing",
       publicReleaseAllowed: false,
     };
   }
   return {
     status: proof.status,
+    schemaVersion: proof.version ?? null,
     artifactStagingOk: proof.repoLocalArtifactStaging?.ok === true,
+    bundledSourceCapabilityCount: proof.repoLocalArtifactStaging?.bundledSourceCapabilityCount ?? null,
+    bundleMembershipExactOnce: proof.repoLocalArtifactStaging?.bundleMembershipExactOnce === true,
+    maximumBundleSize: proof.repoLocalArtifactStaging?.maximumBundleSize ?? null,
     independentRunnerEvidenceStatus: proof.externalCleanRunnerEvidence?.status || "missing",
     publicReleaseAllowed: proof.publicReleaseAllowed === true,
   };

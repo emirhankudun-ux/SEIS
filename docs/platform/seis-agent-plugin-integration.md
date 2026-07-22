@@ -98,10 +98,11 @@ application:
 - source inventory: `apps/seis-core/data/seis-core-plugin-sources.json`
 - release train: `content/development/seis-core-plugin-release-train.json` (`0.00000002` / `0.0.20`)
 - registry projection: `content/development/seis-ai-core-plugin-registry.json`
-- current app-owned source count: 71
+- current app-owned source count: 75
 - public audience: everyone; source license: MIT
 - public marketplace: `.agents/plugins/marketplace.json` (`seis-repo`)
-- public marketplace entries: 377 total — 1 canonical SEIS-Agent, 5 migrated root packages, 71 app packages, and 300 objective-derived topic packages
+- current public marketplace cards: 34 total — 1 canonical SEIS-Agent plus 33 optional bundles (6 application and 27 topic)
+- retained public source capabilities: 380 total — 5 root, 75 application, and 300 objective-derived topic sources; the 375 application/topic sources map to exactly one bundle each
 - objective-derived topic source root: `plugins/seis-topics`
 - objective taxonomy: `content/development/seis-topic-plugin-objective.json`
 - direct repo surface: `apps/seis-core` reads and activates these packages through the bounded local catalog
@@ -124,21 +125,21 @@ source packages for the Command Center application:
 | --- | --- |
 | `seis-ai-agent@seis-repo` | SEIS AI orchestrator, cross-lane router, and canonical default install. |
 
-The five historical root packages are direct public repository cards while
-remaining embedded SEIS-Agent lanes: `seis@seis-repo`,
+The five historical root packages remain public repository source capabilities
+embedded in SEIS-Agent rather than direct cards: `seis@seis-repo`,
 `seis-cloud@seis-repo`, `seis-code@seis-repo`, `seis-design@seis-repo`, and
-`seis-data@seis-repo`. They replace the former personal-card visibility without
-creating another default install target.
+`seis-data@seis-repo`. They preserve former personal capability coverage without
+creating another default install target or another card.
 
-Each app-owned package also has its own public marketplace identity in the same
-repo marketplace: `<plugin-name>@seis-repo`, sourced from
-`plugins/seis-core/<plugin-name>`.
+Each app-owned package remains a distinct retained source capability under
+`plugins/seis-core/<plugin-name>`. All 75 sources are discoverable through six
+bounded application bundle cards; no app source is a separate card.
 
-The objective-derived topic family is also published directly in the same repo
-marketplace: 300 MIT packages under `plugins/seis-topics/<topic-id>`, sourced
-from `content/development/seis-topic-plugin-objective.json`. These cards are
-public repository packages with local read-only demo runtimes; they do not
-replace the canonical SEIS-Agent install or imply live external access.
+The objective-derived topic family retains 300 MIT source packages under
+`plugins/seis-topics/<topic-id>`, sourced from
+`content/development/seis-topic-plugin-objective.json`. They are discoverable
+through 27 bounded topic bundle cards with local read-only demo runtimes; the
+sources are not direct cards and do not imply live external access.
 
 Its embedded source modules are preserved in the repository and exposed through
 the installed agent:
@@ -159,7 +160,7 @@ The public-family contract is generated at `content/development/seis-public-plug
 The one-file suite installed by default is
 `plugins/seis-ai-agent/assets/unified-suite.json`. It records every current
 SEIS public component, the shared `0.3.0+codex.20260712` release version, the
-71 app-owned `plugins/seis-core/*` source packages, canonical
+75 app-owned `plugins/seis-core/*` source packages, canonical
 `seis-ai-agent@seis-repo` install id, and the future plugin intake rules. A
 new embedded specialist `plugins/seis-*` manifest must be registered as an
 embedded source module. A new package for the user's Command Center application must be
@@ -186,13 +187,30 @@ The clean-artifact and independent-install proof is generated at
 summarized at `reports/seis-public-plugin-external-install-proof.md`.
 
 Local installation smoke evidence is produced by
-`npm run check:seis-public-plugin-install-smoke`. On a machine where the Codex
-plugins have actually been installed, use
-`npm run check:seis-public-plugin-install-smoke:local` to require all ten
-source modules through the one `seis-ai-agent@seis-repo` cache entry. Use
+`npm run check:seis-public-plugin-install-smoke`. The repository-contract check
+validates the current 34-card topology (one canonical card and 33 optional
+bundle cards), the retained 5/75/300 source inventories, and exact-once bounded
+bundle coverage for the 375 application and topic sources. It does not require
+those retained sources to appear as direct marketplace cards. On a machine
+where the Codex plugins have actually been installed, use
+`npm run check:seis-public-plugin-install-smoke:local` to require the one
+canonical `seis-ai-agent@seis-repo` cache entry. Use
 `npm run check:seis-public-plugin-install-smoke:local:mcp` when the installed
 agent cache must also prove its MCP server can initialize, list tools, and
 execute representative embedded-lane status/plan calls.
+
+An optional bundle participates in cache and MCP smoke only when its card is
+explicitly selected. For example:
+
+```bash
+node scripts/check-seis-public-plugin-install-smoke.mjs \
+  --bundle seis-application-bundle-04 \
+  --require-installed \
+  --mcp-smoke
+```
+
+This checks the selected bundle card alongside SEIS-Agent; it does not install
+or auto-install the bundle's retained source members.
 
 ## Single Public Suite
 
@@ -211,15 +229,15 @@ repository sources for everyone to use through `apps/seis-core`; they do not
 transfer source ownership into `packages/seis-ai` or personal plugin roots.
 The objective-derived packages remain under `plugins/seis-topics` with their
 own package-local read-only runtime and are validated separately from the
-67-package app release train.
+75-package app release train.
 
 Validate the generated suite with `npm run check:seis-unified-plugin-suite`.
-The discovery rules cover embedded `plugins/seis-*` sources; five root packages
-also publish direct repository cards, while the
-explicit `plugins/seis-core/*/.codex-plugin/plugin.json` and
-`plugins/seis-topics/*/.codex-plugin/plugin.json` families publish direct
-repository cards. Neither package family creates another default install
-target.
+The discovery rules cover embedded `plugins/seis-*` sources. Five root sources
+remain embedded in the canonical suite, while the explicit
+`plugins/seis-core/*/.codex-plugin/plugin.json` and
+`plugins/seis-topics/*/.codex-plugin/plugin.json` families remain retained
+source identities mapped exactly once through curated bundles. None of these
+source packages is a direct card or another default install target.
 The machine-readable modes are `single-public-plugin` for the canonical
 orchestrator and `repo-source-app` for the public app packages.
 Topic packages use `public-repository-preview` and `local-read-only-demo`.
@@ -316,10 +334,10 @@ The SEIS Agent also includes two runtime lanes to validate plugin and MCP surfac
 - Treat `seis-ai-agent@seis-repo` as the single default orchestrator install.
 - Keep `seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`, `seis-security`, `seis-research`, `seis-automation`, and `seis-product` as embedded source modules inside the one public suite, never as separate public installs.
 - Keep `seis@personal`, `seis-cloud@personal`, `seis-code@personal`, `seis-design@personal`, and `seis-data@personal` as preserved aliases only.
-- Route every new embedded specialist `plugins/seis-*` package through `assets/unified-suite.json`, SEIS AI status, MCP routing, the suite generator, and its shared release version before treating it as an embedded SEIS capability; objective-derived `plugins/seis-topics` cards use their own taxonomy and read-only runtime checks.
+- Route every new embedded specialist `plugins/seis-*` package through `assets/unified-suite.json`, SEIS AI status, MCP routing, the suite generator, and its shared release version before treating it as an embedded SEIS capability; objective-derived `plugins/seis-topics` sources use their own taxonomy, bundle assignment, and read-only runtime checks.
 - Keep `seis-plugin-runtime` and `seis-mcp-runtime` embedded under SEIS-Agent for runtime contract evidence.
 - Keep public repository plugin source packages under `plugins/seis-core`; keep `packages/seis-ai` limited to contracts, registry metadata, permission policy, and read-only inspection.
-- Keep the 71 app-owned packages on one gradual shared release ladder; the current release is `0.00000002`, large-code changes advance exactly one micro/revision step, annual updates advance one major step, and the supported range ends at `45.0000` without bulk jumps.
+- Keep the 75 app-owned packages on one gradual shared release ladder; the current release is `0.00000002`, large-code changes advance exactly one micro/revision step, annual updates advance one major step, and the supported range ends at `45.0000` without bulk jumps.
 - Keep every app-owned package directly in the public SEIS repository under `plugins/seis-core` and consumed by `apps/seis-core`; a new package must not be placed under `packages/seis-ai` or a personal plugin root.
 - Do not claim connector authentication readiness from plugin inventory alone.
 - Validate the integration with `npm run check:seis-unified-plugin-suite`, `npm run check:seis-plugin-canonicalization`, `npm run check:seis-agent-plugin-integration`, `npm run check:seis-mcp-permission`, `npm run check:seis-core-mcp-permission`, `npm run check:seis-focus-navigation-audit`, `npm run check:seis-core-focus-navigation-audit`, `npm run check:seis-ui-state-contract-audit`, `npm run check:seis-core-ui-state-contract-audit`, `npm run check:seis-project-manifest-audit`, `npm run check:seis-core-project-manifest-audit`, `npm run check:seis-public-plugin-lifecycle`, `npm run check:seis-public-plugin-family`, `npm run check:seis-public-plugin-fresh-task-proof`, `npm run check:seis-public-plugin-fresh-task-reload-evidence`, `npm run check:seis-public-plugin-security-provenance-review`, `npm run check:seis-public-plugin-external-install-proof`, `npm run check:seis-public-plugin-independent-runner-evidence-contract`, `npm run check:seis-public-plugin-independent-runner-evidence`, `npm run check:seis-public-plugin-install-smoke`, and `npm run check:seis-public-plugin-install-smoke:mcp`.

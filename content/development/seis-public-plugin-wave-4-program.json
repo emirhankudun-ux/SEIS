@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-4-program",
   "goalId": "SEIS-GOAL-021",
   "parentProgramId": "seis-public-plugin-expansion-program",
@@ -24,11 +24,11 @@
       "SEIS"
     ],
     "selectedCapability": "seis-swift-package-topology",
-    "outcome": "One public repository package now reports bounded, derived Swift Package manifest topology with a single checked-in source, SEIS Repo card, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
+    "outcome": "One public repository package now reports bounded, derived Swift Package manifest topology with a retained checked-in source, exactly one curated application-bundle membership, generated catalog and matrix projections, and repository-local static evidence. It remains a prototype with no external installation, SwiftPM, compiler, runtime, provider, deployment, or release claim.",
     "entryRule": "Wave 3 closed step 100 and the separate activation decision confirmed current user authority, scope, risk, validation, rollback, and public-count reconciliation. All 100 Wave 4 steps now have current repository-local evidence: steps 96–99 record the closeout sequence, non-published handoff, Wave 5 candidate review, and bounded public evidence retention; step 100 records repository-local closeout. Wave 5 remains planned-gated and this is not a merge, release, or external proof claim."
   },
   "nonGoals": [
-    "Adding more than the one activation-approved public package or card without a new capability decision.",
+    "Adding more than the one activation-approved public source capability or curated bundle membership without a new capability decision.",
     "Reading or mutating a personal marketplace, using a network, granting writes or secrets, or changing protected branches.",
     "Compiling, testing, resolving, describing, running, signing, installing, deploying, or publishing Swift or plugin artifacts.",
     "Treating static manifest topology as proof of graph validity, compiler correctness, runtime behavior, independent installation, or public release."
@@ -646,7 +646,7 @@
     {
       "number": 63,
       "round": 4,
-      "title": "Add the candidate to the public SEIS Repo marketplace only after source validation passes.",
+      "title": "Distribute the candidate through exactly one approved public application bundle only after source validation passes.",
       "status": "completed",
       "validation": "conditional post-activation repository integration plan"
     },
@@ -849,7 +849,7 @@
     {
       "number": 92,
       "round": 5,
-      "title": "Record public marketplace count reconciliation only if a candidate card was actually added.",
+      "title": "Record public marketplace reconciliation only after the candidate is retained as a source and assigned to exactly one curated bundle.",
       "status": "completed",
       "validation": "conditional post-activation validation and delivery plan"
     },
@@ -916,6 +916,40 @@
     "inProgressStepNumbers": [],
     "completedRoundCount": 5,
     "nextStepNumber": null
+  },
+  "historicalWave4DirectCardSnapshot": {
+    "observedAt": "2026-07-21",
+    "projectionModel": "direct-source-cards",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "applicationSourcePackageCount": 74,
+    "topicSourcePackageCount": 300,
+    "rootSourceModuleCount": 5,
+    "retainedSourceCapabilityCount": 379,
+    "publicCardCount": 380,
+    "current": false,
+    "immutableHistoricalEvidence": true,
+    "evidencePath": "content/development/seis-public-plugin-wave-4-integration-checkpoint.json"
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "directSourceCapabilityCardCount": 0
   },
   "evidence": {
     "wave3CloseoutPath": "content/development/seis-public-plugin-wave-3-closeout.json",
@@ -1023,7 +1057,7 @@
       "id": "RISK-W4-002",
       "status": "tracked",
       "description": "A repository-local Wave 4 integration could be mistaken for independent installation, a public release, or an unbounded expansion.",
-      "mitigation": "Keep exactly one source and card, preserve external claims as false, retain the 74/380 reconciliation checks, and require separate approval for release or another package."
+      "mitigation": "Keep exactly one retained source and bundle membership, preserve external claims as false, retain 74/380 only as an explicit historical snapshot, require the current 34-card curated projection, and require separate approval for release or another package."
     },
     {
       "id": "RISK-W4-003",
@@ -1040,7 +1074,7 @@
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert the one Wave 4 source package, SEIS Repo card, generated projections, topology evidence, and this program update on the feature branch; no manifest mutation, external state, release, or data migration exists.",
+    "scope": "Revert the one Wave 4 source package, its curated bundle membership, generated projections, topology evidence, and this program update on the feature branch; no manifest mutation, external state, release, or data migration exists.",
     "dataMigrationRequired": false
   },
   "checks": {

@@ -12,7 +12,8 @@ const CONTRACTS = Object.freeze({
   marketplace: ".agents/plugins/marketplace.json",
   intake: "content/development/trusted-marketplace-intake.json",
   bridge: "content/development/seis-trusted-marketplace-plugin.json",
-  catalog: "content/development/plugin-capability-catalog.json"
+  catalog: "content/development/plugin-capability-catalog.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json"
 });
 
 function status() {
@@ -42,7 +43,10 @@ function validateTrustedMarketplace() {
   const intake = loaded.contracts.intake;
   const bridge = loaded.contracts.bridge;
   const catalog = loaded.contracts.catalog;
-  const card = safeArray(marketplace.plugins).find((entry) => entry?.name === "seis-trusted-marketplace");
+  const bundleMemberships = safeArray(loaded.contracts.bundleCatalog?.bundles).filter((bundle) => safeArray(bundle?.memberNames).includes("seis-trusted-marketplace"));
+  const distributionBundle = bundleMemberships.length === 1 ? bundleMemberships[0] : null;
+  const card = safeArray(marketplace.plugins).find((entry) => entry?.name === distributionBundle?.id);
+  const directCard = safeArray(marketplace.plugins).find((entry) => entry?.name === "seis-trusted-marketplace");
   const channels = safeArray(intake.marketplaceChannels);
   const shortlist = safeArray(intake.trustedSourceShortlist);
   const channelIds = new Set(channels.map((channel) => text(channel?.id)).filter(Boolean));
@@ -50,13 +54,15 @@ function validateTrustedMarketplace() {
 
   ensure(marketplace.name === "seis-repo", findings, "marketplace-name-invalid");
   ensure(marketplace.interface?.displayName === "SEIS Repo", findings, "marketplace-display-name-invalid");
-  ensure(Boolean(card), findings, "trusted-marketplace-card-missing");
+  ensure(bundleMemberships.length === 1, findings, "trusted-marketplace-bundle-membership-invalid");
+  ensure(!directCard, findings, "trusted-marketplace-direct-source-card-present");
+  ensure(Boolean(card), findings, "trusted-marketplace-bundle-card-missing");
   if (card) {
-    ensure(card.source?.source === "local", findings, "trusted-marketplace-card-source-invalid");
-    ensure(card.source?.path === "./plugins/seis-core/seis-trusted-marketplace", findings, "trusted-marketplace-card-path-invalid");
-    ensure(card.policy?.installation === "AVAILABLE", findings, "trusted-marketplace-card-installation-invalid");
-    ensure(card.policy?.authentication === "ON_INSTALL", findings, "trusted-marketplace-card-authentication-invalid");
-    ensure(card.category === "Developer", findings, "trusted-marketplace-card-category-invalid");
+    ensure(card.source?.source === "local", findings, "trusted-marketplace-bundle-card-source-invalid");
+    ensure(card.source?.path === distributionBundle?.sourcePath, findings, "trusted-marketplace-bundle-card-path-invalid");
+    ensure(card.policy?.installation === "AVAILABLE", findings, "trusted-marketplace-bundle-card-installation-invalid");
+    ensure(card.policy?.authentication === "ON_INSTALL", findings, "trusted-marketplace-bundle-card-authentication-invalid");
+    ensure(card.category === "Developer", findings, "trusted-marketplace-bundle-card-category-invalid");
   }
 
   ensure(intake.id === "seis-trusted-marketplace-intake", findings, "intake-id-invalid");
@@ -83,7 +89,7 @@ function validateTrustedMarketplace() {
   ensure(bridge.pluginRepository?.canonicalRepository === "SEIS", findings, "bridge-canonical-repository-invalid");
   ensure(bridge.activationBoundary?.externalActivation === "approval-required", findings, "bridge-external-activation-boundary-invalid");
 
-  validatePublicTerms({ card, publicPlugin, bridge }, findings);
+  validatePublicTerms({ card, publicPlugin, bridge, distributionBundle }, findings);
 
   const errorCount = findings.filter((finding) => finding.severity === "error").length;
   return {
@@ -93,6 +99,9 @@ function validateTrustedMarketplace() {
     marketplaceName: marketplace.name === "seis-repo" ? "seis-repo" : null,
     marketplaceDisplayName: marketplace.interface?.displayName === "SEIS Repo" ? "SEIS Repo" : null,
     cardPresent: Boolean(card),
+    directCardPresent: Boolean(directCard),
+    distributionBundleId: distributionBundle?.id || null,
+    distributionBundleMembershipCount: bundleMemberships.length,
     channelCount: channels.length,
     trustedSourceCount: shortlist.length,
     errorCount,

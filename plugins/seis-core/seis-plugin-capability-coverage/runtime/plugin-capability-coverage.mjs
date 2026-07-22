@@ -8,6 +8,7 @@ export const PLUGIN_CAPABILITY_COVERAGE_SCOPE = Object.freeze({
   catalogPath: "apps/seis-core/data/seis-core-plugin-catalog.json",
   matrixPath: "content/development/seis-core-plugin-matrix.json",
   marketplacePath: ".agents/plugins/marketplace.json",
+  bundleCatalogPath: "content/development/seis-public-plugin-bundle-catalog.json",
 });
 
 export const PLUGIN_CAPABILITY_COVERAGE_LIMITS = Object.freeze({
@@ -16,6 +17,9 @@ export const PLUGIN_CAPABILITY_COVERAGE_LIMITS = Object.freeze({
   maxCapabilitiesPerPlugin: 64,
   maxCategoryKinds: 128,
   maxCapabilityTokens: 2048,
+  maxReturnedCategoryKinds: 128,
+  maxReturnedCapabilityTokenKinds: 256,
+  maxReturnedFindings: 64,
 });
 
 const MACHINE_PATH_PATTERN = /(?:\/Users\/|\/home\/|[A-Za-z]:\\|[A-Za-z]:\/(?!\/))/g;
@@ -65,17 +69,19 @@ export function auditPluginCapabilityCoverage(rootPath) {
     const catalog = parseCatalog(inputs.catalogPath);
     const matrix = parseMatrix(inputs.matrixPath);
     const marketplace = parseMarketplace(inputs.marketplacePath);
-    for (const code of [...source.errors, ...catalog.errors, ...matrix.errors, ...marketplace.errors]) {
+    const bundleCatalog = parseBundleCatalog(inputs.bundleCatalogPath);
+    for (const code of [...source.errors, ...catalog.errors, ...matrix.errors, ...marketplace.errors, ...bundleCatalog.errors]) {
       findings.push(error(code));
     }
 
-    if (source.errors.length === 0 && catalog.errors.length === 0 && matrix.errors.length === 0 && marketplace.errors.length === 0) {
+    if (source.errors.length === 0 && catalog.errors.length === 0 && matrix.errors.length === 0 && marketplace.errors.length === 0 && bundleCatalog.errors.length === 0) {
       coverage = buildCoverage(catalog.plugins);
+      for (const code of coverage.findings) findings.push(error(code));
       reconciliation = buildReconciliation({
         sourceNames: source.names,
         catalogNames: catalog.names,
         matrixNames: matrix.names,
-        marketplaceNames: marketplace.names,
+        bundleApplicationNames: bundleCatalog.applicationMemberNames,
         marketplacePublicCardCount: marketplace.publicCardCount,
       });
       if (!reconciliation.reconciled) {
@@ -99,22 +105,31 @@ export function auditPluginCapabilityCoverage(rootPath) {
       sourcePluginCount: reconciliation.sourcePluginCount,
       catalogPluginCount: reconciliation.catalogPluginCount,
       matrixPluginCount: reconciliation.matrixPluginCount,
-      marketplaceApplicationCardCount: reconciliation.marketplaceApplicationCardCount,
+      bundleApplicationMemberCount: reconciliation.bundleApplicationMemberCount,
       marketplacePublicCardCount: reconciliation.marketplacePublicCardCount,
-      declaredCategoryCount: coverage.categoryCounts.length,
-      declaredCapabilityTokenKindCount: coverage.capabilityTokenFrequencies.length,
+      declaredCategoryCount: coverage.declaredCategoryKindCount,
+      reportedCategoryCount: coverage.categoryCounts.length,
+      declaredCapabilityTokenKindCount: coverage.declaredCapabilityTokenKindCount,
+      reportedCapabilityTokenKindCount: coverage.capabilityTokenFrequencies.length,
       declaredCapabilityTokenCount: coverage.declaredCapabilityTokenCount,
+      coverageOutputTruncated: coverage.categoryCountsTruncated || coverage.capabilityTokenFrequenciesTruncated,
       reconciliationAvailable: registryReadable && errorCount === 0,
     },
     coverage,
     reconciliation,
-    findings: sortFindings(findings),
+    attention: {
+      disposition: errorCount > 0 || attentionCount > 0 ? "review-required" : "not-required",
+      summary: errorCount > 0 || attentionCount > 0
+        ? "Fixed public registry evidence needs review before aggregate coverage is available."
+        : "The bounded static registry contract is available for aggregate coverage only.",
+    },
+    findings: sortFindings(findings).slice(0, PLUGIN_CAPABILITY_COVERAGE_LIMITS.maxReturnedFindings),
     errorCount,
     warningCount: attentionCount,
     limits: PLUGIN_CAPABILITY_COVERAGE_LIMITS,
     permissions: {
       read: [
-        "four fixed checked-in public SEIS Repo registry projections",
+        "five fixed checked-in public SEIS Repo registry projections",
         "bounded derived category and capability coverage metadata",
       ],
       write: [],
@@ -128,6 +143,7 @@ export function auditPluginCapabilityCoverage(rootPath) {
       rawMatchedValuesReturned: false,
       absolutePathsReturned: false,
       machineSpecificPathsReturned: false,
+      aggregateOutputBounded: true,
     },
     safety: {
       fixedRegistryPaths: Object.values(PLUGIN_CAPABILITY_COVERAGE_SCOPE),
@@ -146,7 +162,7 @@ export function auditPluginCapabilityCoverage(rootPath) {
       publicReleaseAllowed: false,
     },
     limitations: [
-      "This audit reads only four bounded static public registry projections and reports derived coverage metadata.",
+      "This audit reads only five bounded static public registry projections and reports derived coverage metadata.",
       "Declared registry entries do not prove manifest correctness, installation, MCP activation, runtime behavior, provider availability, deployment, signing, or release readiness.",
       "Malformed, unsafe, oversized, missing, non-regular, symlinked, or mismatched registry evidence is reported as attention without returning raw input values.",
       "The audit never follows symlinks, writes files, uses a network, reads a personal marketplace, reads credentials, or calls providers.",
@@ -159,6 +175,7 @@ function parseSourceManifest(value) {
   const parsed = parsePluginNames(plugins);
   const errors = [...parsed.errors];
   if (value?.id !== "seis-core-plugin-sources") errors.push("invalid-source-manifest-id");
+  if (!Array.isArray(value?.plugins)) errors.push("invalid-source-manifest-plugins");
   return { names: parsed.names, errors: unique(errors) };
 }
 
@@ -167,6 +184,7 @@ function parseCatalog(value) {
   const parsed = parsePluginNames(plugins);
   const errors = [...parsed.errors];
   if (value?.id !== "seis-core-application-plugin-catalog") errors.push("invalid-catalog-id");
+  if (!Array.isArray(value?.plugins)) errors.push("invalid-catalog-plugins");
   const normalizedPlugins = [];
   for (const plugin of plugins) {
     const name = safePluginName(plugin?.name);
@@ -196,19 +214,50 @@ function parseMatrix(value) {
   const parsed = parsePluginNames(array(value?.plugins));
   const errors = [...parsed.errors];
   if (value?.id !== "seis-core-plugin-matrix") errors.push("invalid-matrix-id");
+  if (!Array.isArray(value?.plugins)) errors.push("invalid-matrix-plugins");
   return { names: parsed.names, errors: unique(errors) };
 }
 
 function parseMarketplace(value) {
   const plugins = array(value?.plugins);
-  const applicationPlugins = plugins.filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/"));
-  const parsed = parsePluginNames(applicationPlugins);
+  const parsed = parsePluginNames(plugins);
   const errors = [...parsed.errors];
   if (value?.name !== "seis-repo") errors.push("invalid-marketplace-name");
   if (value?.interface?.displayName !== "SEIS Repo") errors.push("invalid-marketplace-display-name");
+  if (!Array.isArray(value?.plugins)) errors.push("invalid-marketplace-plugins");
   return {
-    names: parsed.names,
     publicCardCount: plugins.length,
+    errors: unique(errors),
+  };
+}
+
+function parseBundleCatalog(value) {
+  const bundles = array(value?.bundles);
+  const errors = [];
+  const applicationMemberNames = [];
+  if (value?.id !== "seis-public-plugin-bundle-catalog") errors.push("invalid-bundle-catalog-id");
+  if (!Array.isArray(value?.bundles)) errors.push("invalid-bundle-catalog-bundles");
+  if (bundles.length > PLUGIN_CAPABILITY_COVERAGE_LIMITS.maxRegistryPlugins) errors.push("registry-plugin-count-limit-exceeded");
+  for (const bundle of bundles) {
+    if (!safePluginName(bundle?.id)) {
+      errors.push("invalid-plugin-name");
+      continue;
+    }
+    if (bundle?.family !== "application" && bundle?.family !== "topic") {
+      errors.push("invalid-bundle-family");
+      continue;
+    }
+    if (!Array.isArray(bundle?.memberNames) || bundle.memberNames.length === 0 || bundle.memberNames.length > 15) {
+      errors.push("invalid-bundle-members");
+      continue;
+    }
+    const parsed = parsePluginNames(bundle.memberNames.map((name) => ({ name })));
+    errors.push(...parsed.errors);
+    if (bundle.family === "application") applicationMemberNames.push(...parsed.names);
+  }
+  if (new Set(applicationMemberNames).size !== applicationMemberNames.length) errors.push("duplicate-bundle-member-name");
+  return {
+    applicationMemberNames: [...new Set(applicationMemberNames)].sort(),
     errors: unique(errors),
   };
 }
@@ -239,41 +288,50 @@ function buildCoverage(plugins) {
   const findings = [];
   if (categoryCounts.length > PLUGIN_CAPABILITY_COVERAGE_LIMITS.maxCategoryKinds) findings.push("category-kind-limit-exceeded");
   if (capabilityTokenFrequencies.length > PLUGIN_CAPABILITY_COVERAGE_LIMITS.maxCapabilityTokens) findings.push("capability-token-kind-limit-exceeded");
+  const coverageAvailable = findings.length === 0;
   return {
-    categoryCounts: findings.length === 0 ? categoryCounts : [],
-    capabilityTokenFrequencies: findings.length === 0 ? capabilityTokenFrequencies : [],
-    declaredCapabilityTokenCount: findings.length === 0 ? capabilityTokens.length : 0,
-    coverageAvailable: findings.length === 0,
+    categoryCounts: coverageAvailable
+      ? categoryCounts.slice(0, PLUGIN_CAPABILITY_COVERAGE_LIMITS.maxReturnedCategoryKinds)
+      : [],
+    capabilityTokenFrequencies: coverageAvailable
+      ? capabilityTokenFrequencies.slice(0, PLUGIN_CAPABILITY_COVERAGE_LIMITS.maxReturnedCapabilityTokenKinds)
+      : [],
+    declaredCategoryKindCount: coverageAvailable ? categoryCounts.length : 0,
+    declaredCapabilityTokenKindCount: coverageAvailable ? capabilityTokenFrequencies.length : 0,
+    declaredCapabilityTokenCount: coverageAvailable ? capabilityTokens.length : 0,
+    categoryCountsTruncated: coverageAvailable && categoryCounts.length > PLUGIN_CAPABILITY_COVERAGE_LIMITS.maxReturnedCategoryKinds,
+    capabilityTokenFrequenciesTruncated: coverageAvailable && capabilityTokenFrequencies.length > PLUGIN_CAPABILITY_COVERAGE_LIMITS.maxReturnedCapabilityTokenKinds,
+    coverageAvailable,
     findings,
   };
 }
 
-function buildReconciliation({ sourceNames, catalogNames, matrixNames, marketplaceNames, marketplacePublicCardCount }) {
+function buildReconciliation({ sourceNames, catalogNames, matrixNames, bundleApplicationNames, marketplacePublicCardCount }) {
   const source = new Set(sourceNames);
   const catalog = new Set(catalogNames);
   const matrix = new Set(matrixNames);
-  const marketplace = new Set(marketplaceNames);
+  const bundle = new Set(bundleApplicationNames);
   const differences = [
     differenceCount(source, catalog),
     differenceCount(catalog, source),
     differenceCount(source, matrix),
     differenceCount(matrix, source),
-    differenceCount(source, marketplace),
-    differenceCount(marketplace, source),
+    differenceCount(source, bundle),
+    differenceCount(bundle, source),
   ];
   const mismatchCount = differences.reduce((sum, count) => sum + count, 0);
   return {
     sourcePluginCount: source.size,
     catalogPluginCount: catalog.size,
     matrixPluginCount: matrix.size,
-    marketplaceApplicationCardCount: marketplace.size,
+    bundleApplicationMemberCount: bundle.size,
     marketplacePublicCardCount: Number.isSafeInteger(marketplacePublicCardCount) ? marketplacePublicCardCount : 0,
     sourceMissingFromCatalogCount: differenceCount(source, catalog),
     catalogMissingFromSourceCount: differenceCount(catalog, source),
     sourceMissingFromMatrixCount: differenceCount(source, matrix),
     matrixMissingFromSourceCount: differenceCount(matrix, source),
-    sourceMissingFromMarketplaceCount: differenceCount(source, marketplace),
-    marketplaceMissingFromSourceCount: differenceCount(marketplace, source),
+    sourceMissingFromBundleCount: differenceCount(source, bundle),
+    bundleMissingFromSourceCount: differenceCount(bundle, source),
     mismatchCount,
     reconciled: mismatchCount === 0,
   };
@@ -352,7 +410,11 @@ function emptyCoverage() {
   return {
     categoryCounts: [],
     capabilityTokenFrequencies: [],
+    declaredCategoryKindCount: 0,
+    declaredCapabilityTokenKindCount: 0,
     declaredCapabilityTokenCount: 0,
+    categoryCountsTruncated: false,
+    capabilityTokenFrequenciesTruncated: false,
     coverageAvailable: false,
     findings: [],
   };
@@ -363,14 +425,14 @@ function emptyReconciliation() {
     sourcePluginCount: 0,
     catalogPluginCount: 0,
     matrixPluginCount: 0,
-    marketplaceApplicationCardCount: 0,
+    bundleApplicationMemberCount: 0,
     marketplacePublicCardCount: 0,
     sourceMissingFromCatalogCount: 0,
     catalogMissingFromSourceCount: 0,
     sourceMissingFromMatrixCount: 0,
     matrixMissingFromSourceCount: 0,
-    sourceMissingFromMarketplaceCount: 0,
-    marketplaceMissingFromSourceCount: 0,
+    sourceMissingFromBundleCount: 0,
+    bundleMissingFromSourceCount: 0,
     mismatchCount: 0,
     reconciled: false,
   };

@@ -1,9 +1,53 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-1-evidence-index",
   "goalId": "SEIS-GOAL-021",
   "generatedAt": "2026-07-21",
   "status": "completed-repo-local-evidence-index",
+  "historicalWave1Snapshot": {
+    "observedAt": "2026-07-21",
+    "projectionModel": "direct-source-cards",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 377,
+    "canonicalOrchestratorCount": 1,
+    "migratedRootPluginCount": 5,
+    "applicationPluginCount": 71,
+    "topicPluginCount": 300,
+    "selectedCapability": "seis-evidence-index",
+    "selectedCapabilityDirectCardCount": 1,
+    "immutableHistoricalEvidence": true,
+    "evidencePath": "docs/development/SEIS_PUBLIC_PLUGIN_WAVE_1_HANDOFF.md"
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "selectedApplicationCapability": {
+      "id": "seis-evidence-index",
+      "retainedSource": true,
+      "sourcePath": "plugins/seis-core/seis-evidence-index",
+      "directMarketplaceCardRequired": false,
+      "directMarketplaceCardCount": 0,
+      "bundleCardCount": 1,
+      "bundleId": "seis-application-bundle-04",
+      "bundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-04",
+      "bundleFamily": "application"
+    }
+  },
   "scope": {
     "programId": "seis-public-plugin-wave-1-program",
     "wave": 1,
@@ -13,18 +57,6 @@
     "sourceOnly": true
   },
   "purpose": "Reconcile current public SEIS Repo evidence without turning repository-local checks into browser, provider, installation, publication, deployment, or human-approval claims.",
-  "marketplace": {
-    "name": "seis-repo",
-    "displayName": "SEIS Repo",
-    "publicCardCount": 381,
-    "expectedCardCount": 381,
-    "canonicalOrchestratorCount": 1,
-    "migratedRootPluginCount": 5,
-    "applicationPluginCount": 75,
-    "topicPluginCount": 300,
-    "installationPolicy": "AVAILABLE",
-    "authenticationPolicy": "ON_INSTALL"
-  },
   "release": {
     "label": "0.00000002",
     "semver": "0.0.20",
@@ -36,10 +68,11 @@
     {
       "id": "public-marketplace-family",
       "state": "ready",
-      "summary": "The repository marketplace and public family agree on public-card ownership and counts.",
+      "summary": "The current 34-card marketplace and bundle catalog retain the selected Wave 1 source capability through exactly one application bundle card.",
       "evidencePaths": [
         ".agents/plugins/marketplace.json",
-        "content/development/seis-public-plugin-family.json"
+        "content/development/seis-public-plugin-family.json",
+        "content/development/seis-public-plugin-bundle-catalog.json"
       ]
     },
     {
@@ -131,7 +164,7 @@
     }
   ],
   "inputSafetyScan": {
-    "inputCount": 15,
+    "inputCount": 16,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],
@@ -159,6 +192,7 @@
     "reads": [
       ".agents/plugins/marketplace.json",
       "content/development/seis-public-plugin-family.json",
+      "content/development/seis-public-plugin-bundle-catalog.json",
       "apps/seis-core/data/seis-core-plugin-sources.json",
       "content/development/seis-core-plugin-release-train.json",
       "content/development/seis-public-install-state.json",

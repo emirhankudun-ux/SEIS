@@ -1,0 +1,250 @@
+schema_version: 2
+
+id: SEIS-GOAL-0024
+project: seis
+program: public-plugin-governance
+initiative: capability-package-consolidation
+parent_goal: SEIS-GOAL-021
+
+title: Curate the SEIS public marketplace into bounded capability packages
+summary: >-
+  Replace hundreds of individual discovery cards with one canonical SEIS-Agent
+  card inside a reviewed 30-to-50-card total marketplace surface, while retaining
+  every public source package and preserving distinct SEIS, Eleni-Neferi, and
+  Pantechnoesis capability boundaries.
+
+category:
+  - plugins
+  - architecture
+  - repository-hygiene
+  - security
+  - documentation
+
+priority: high
+status: in-progress
+maturity: prototype
+confidence: medium
+
+owner_agent: lead-architect
+accountable_human: project-owner
+supporting_agents:
+  - repository-hygiene
+  - security
+  - testing-and-qa
+  - documentation
+
+horizon: now
+start_after: null
+target_window:
+  start: 2026-07-22
+  end: null
+
+scope:
+  repositories:
+    - SEIS-plugin-root-20260715
+  paths:
+    - .agents/plugins/marketplace.json
+    - project.ecosystem.yaml
+    - apps/seis-core/data/seis-core-plugin-sources.json
+    - apps/seis-core/data/seis-core-plugin-catalog.json
+    - content/development/seis-public-plugin-family.json
+    - content/development/seis-public-plugin-bundle-catalog.json
+    - content/development/seis-public-plugin-consolidation.json
+    - content/development/seis-project-manifest-audit.json
+    - content/development/seis-mcp-permission-risk-matrix.json
+    - content/development/seis-public-install-state.json
+    - content/development/seis-public-install-evidence.json
+    - content/development/seis-public-runtime-status.json
+    - plugins/seis-bundles
+    - plugins/seis-core/runtime/plugin-catalog.mjs
+    - plugins/seis-core/runtime/plugin-surface.mjs
+    - scripts/create-seis-public-plugin-family.mjs
+    - scripts/create-seis-public-plugin-bundles.mjs
+    - scripts/create-seis-public-plugin-consolidation.mjs
+    - scripts/check-seis-agent-plugin-integration.mjs
+    - scripts/check-seis-personal-plugin-marketplace-migration.mjs
+    - scripts/check-seis-specialist-plugins.mjs
+    - scripts/create-seis-mcp-permission.mjs
+    - scripts/lib/seis-public-bundle-plan.mjs
+    - scripts/lib/seis-public-bundle-output-tree.mjs
+    - plugins/seis-core/test/public-plugin-bundles.test.mjs
+    - plugins/seis-core/test/public-plugin-consolidation.test.mjs
+    - docs/roadmap/SEIS_PUBLIC_PLUGIN_CONSOLIDATION.md
+
+canonical_owner_repo: SEIS-plugin-root-20260715
+
+platforms:
+  - repository
+  - codex-plugin
+  - mcp
+
+architecture_layers:
+  - governance
+  - integration
+  - security
+
+security_classification: public-safe
+privacy_impact: none
+
+requirements:
+  - keep SEIS-Agent as the only canonical default-install card
+  - expose between 30 and 50 total public marketplace cards
+  - retain every application and topic source package without deletion
+  - map every retained application and topic source package to exactly one bundle
+  - keep each bundle at no more than 15 source capabilities
+  - preserve dedicated SEIS, Eleni-Neferi, and Pantechnoesis topic boundaries
+  - keep bundle runtimes local, read-only, bounded, and free of network or secret access
+  - reject undeclared files, directories, links, and cross-family duplicate members
+  - validate runtime profiles against immutable generated bundle metadata
+  - generate marketplace and bundle artifacts from reviewed source data
+  - keep marketplace card counts separate from retained source capability counts in every current contract
+  - preserve historical wave snapshots while labeling them as historical rather than current distribution proof
+
+non_goals:
+  - deleting or physically merging retained source packages
+  - bulk-installing every bundle or member package
+  - publishing, pushing, signing, or deploying without current human approval
+  - granting network, secret, cloud, GitHub-write, or destructive permissions
+  - combining SEIS, Eleni-Neferi, and Pantechnoesis into one product identity
+
+acceptance_criteria:
+  - the generated marketplace contains 30 to 50 total cards, including one canonical card and 29 to 49 optional bundle cards
+  - all 75 application packages and all 300 topic packages are covered exactly once
+  - every bundle contains at least one and no more than 15 members
+  - category and project boundaries are explicit in bundle metadata
+  - generated plugin manifests pass the repository validator
+  - bundle MCP input, output, metadata reads, and profile values are bounded and fail closed
+  - generated bundle trees contain exactly the allowlisted files and directories
+  - source packages remain present and no source directory is deleted
+  - focused generation, freshness, marketplace, integration, and test checks pass
+  - current project, catalog, install-state, permission, Apple/Swift, and continuity evidence consistently reports 34 cards and 380 retained source capabilities
+
+definition_of_ready:
+  - the canonical plugin-root repository and branch are known
+  - the current marketplace transition is inventoried without reverting concurrent work
+  - no destructive migration is required
+  - the public and private permission boundary is understood
+
+definition_of_done:
+  - generated files are current on a focused branch
+  - required validation and tests pass with exact evidence
+  - security and rollback notes are current
+  - documentation describes the implemented state rather than a future-only plan
+  - GitHub publication remains approval-gated and is not claimed prematurely
+
+dependencies: []
+blocked_by: []
+related_goals:
+  - SEIS-GOAL-021
+
+validation:
+  commands:
+    - npm run check:seis-public-plugin-family
+    - npm run check:seis-public-plugin-bundles
+    - npm run check:seis-public-plugin-consolidation
+    - node --test plugins/seis-core/test/public-plugin-bundles.test.mjs
+    - node --test plugins/seis-core/test/public-plugin-consolidation.test.mjs
+    - npm run check:seis-repo-marketplace
+    - npm run check:seis-agent-plugin-integration
+    - npm run check:seis-core-plugin-catalog
+    - npm run check:seis-core-mcp-permission
+    - git diff --check
+  manual:
+    - plugin marketplace information-architecture review
+    - public and private permission-boundary review
+    - separate-project identity review
+  evidence:
+    - generated bundle catalog
+    - marketplace manifest
+    - validation command output
+
+quality_gates:
+  architecture: required
+  design: required
+  security: required
+  accessibility: not-applicable
+  performance: required
+  documentation: required
+  testing: required
+
+risks:
+  - id: RISK-0024-001
+    description: Concurrent generator edits could be overwritten or produce contradictory artifacts.
+    likelihood: medium
+    impact: high
+    owner: lead-architect
+    mitigation: Snapshot hashes before edits and regenerate only after the files are stable.
+    trigger: A relevant source hash or modification time changes during inspection.
+    contingency: Stop overlapping writes, preserve the incoming version, and rebase the focused patch.
+    status: active
+  - id: RISK-0024-002
+    description: Consolidation could hide or lose source capability coverage.
+    likelihood: low
+    impact: high
+    owner: testing-and-qa
+    mitigation: Enforce exact-once coverage and retain all source directories.
+    trigger: A missing, duplicate, or deleted member is detected.
+    contingency: Reject generation and revert the marketplace projection.
+    status: active
+  - id: RISK-0024-003
+    description: Generated MCP runtimes could accept unbounded input or unsafe file paths.
+    likelihood: medium
+    impact: high
+    owner: security
+    mitigation: Bound input, output, files, and requests; validate immutable profile fields; reject links; honor output backpressure; and keep network and writes disabled.
+    trigger: A boundary test or security review fails.
+    contingency: Keep bundles repository-local and remove them from the public projection by revert.
+    status: active
+  - id: RISK-0024-004
+    description: A hostile concurrent filesystem actor could swap an ancestor after validation and before a later path operation.
+    likelihood: low
+    impact: high
+    owner: security
+    mitigation: Validate every ancestor, refuse links, open read targets with no-follow, revalidate output parents before atomic rename, and prohibit concurrent untrusted writers.
+    trigger: An ancestor changes during generation or runtime metadata access.
+    contingency: Stop the operation, discard repository-local output, verify the tree from a trusted checkout, and rerun validation.
+    status: active
+  - id: RISK-0024-005
+    description: Historical direct-card snapshots could be mistaken for the current curated marketplace.
+    likelihood: medium
+    impact: high
+    owner: documentation
+    mitigation: Store historical counts in explicitly historical fields and require current contracts to prove 34 cards, 33 bundles, and 380 retained sources.
+    trigger: A current validator derives marketplace readiness from a historical 377-to-381 card count.
+    contingency: Reject the current projection, restore the last validated artifact, and migrate the consumer before regeneration.
+    status: active
+
+rollback:
+  strategy: revert
+  steps:
+    - revert the focused capability-package commit
+    - restore the previous generated marketplace and family artifacts
+    - keep every retained source package and the canonical SEIS-Agent package intact
+  data_migration_required: false
+
+github:
+  issue_required: true
+  branch_required: true
+  commit_required: true
+  pull_request_required: true
+  release_note_required: false
+  suggested_branch: plugins/seis-curated-capability-packages-v1
+  suggested_commit: "feat(plugins): curate public capability packages"
+
+observability:
+  metrics:
+    - public_marketplace_card_count
+    - bundle_source_capability_coverage
+    - duplicate_bundle_member_count
+    - bundle_validation_success
+  logs: []
+
+outputs:
+  - curated marketplace projection
+  - bounded capability bundle packages
+  - exact-once coverage validation
+  - security-hardened local MCP runtime template
+  - implementation and rollback documentation
+
+notes:
+  - GitHub issue, pull request, publication, and release actions require current human approval.

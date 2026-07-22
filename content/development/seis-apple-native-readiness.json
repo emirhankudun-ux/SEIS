@@ -13,16 +13,25 @@
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
     "publicAudience": "everyone",
-    "publicMarketplace": true
+    "publicMarketplace": true,
+    "directMarketplaceCard": false,
+    "distributionBundleId": "seis-application-bundle-04",
+    "distributionBundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-04",
+    "distributionBundleMembershipCount": 1
   },
   "marketplace": {
-    "publicCardCount": 381,
-    "expectedPublicCardCount": 381,
-    "applicationPluginCount": 75,
-    "expectedApplicationPluginCount": 75,
+    "publicCardCount": 34,
+    "expectedPublicCardCount": 34,
     "canonicalOrchestratorCount": 1,
-    "migratedRootPluginCount": 5,
-    "topicPluginCount": 300
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "applicationSourceCapabilityCount": 75,
+    "expectedApplicationSourceCapabilityCount": 75,
+    "retainedSourceCapabilityCount": 380,
+    "directSourceCapabilityCardCount": 0,
+    "migratedRootSourceCapabilityCount": 5,
+    "topicSourceCapabilityCount": 300
   },
   "audit": {
     "state": "ready",

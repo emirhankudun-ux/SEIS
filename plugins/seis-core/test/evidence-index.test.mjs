@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { auditEvidenceIndex, EVIDENCE_INDEX_ID } from "../seis-evidence-index/runtime/evidence-index.mjs";
+import { buildWave1MarketplaceCompatibility } from "../../../scripts/lib/seis-wave-1-marketplace-compatibility.mjs";
 
 const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = path.resolve(pluginRoot, "../..");
@@ -20,8 +21,13 @@ test("SEIS Evidence Index summarizes checked-in public Wave 1 evidence without l
   assert.equal(result.mode, "public-evidence-index-read-only");
   assert.equal(result.indexId, EVIDENCE_INDEX_ID);
   assert.equal(result.summary.marketplaceName, "seis-repo");
-  assert.equal(result.summary.publicCardCount, result.summary.expectedCardCount);
-  assert.equal(result.summary.applicationPluginCount > 0, true);
+  assert.equal(result.summary.historicalWave1PublicCardCount, 377);
+  assert.equal(result.summary.historicalWave1ApplicationPluginCount, 71);
+  assert.equal(result.summary.publicCardCount, 34);
+  assert.equal(result.summary.bundleCardCount, 33);
+  assert.equal(result.summary.applicationPluginCount, 75);
+  assert.equal(result.summary.selectedCapabilityBundleId, "seis-application-bundle-04");
+  assert.equal(result.summary.selectedCapabilityDirectCardRequired, false);
   assert.equal(result.summary.recordedAttentionContractIds.includes("ui-state-contract"), true);
   assert.equal(result.summary.completedWaveStepCount, 100);
   assert.deepEqual(result.summary.inProgressWaveStepNumbers, []);
@@ -29,6 +35,137 @@ test("SEIS Evidence Index summarizes checked-in public Wave 1 evidence without l
   assert.deepEqual(result.permissions.network, []);
   assert.deepEqual(result.permissions.secrets, []);
   assert.equal(JSON.stringify(result).includes(repoRoot), false);
+});
+
+test("Wave 1 compatibility preserves historical facts while resolving the current bundle card", () => {
+  const compatibility = buildCompatibilityFixture();
+
+  assert.equal(compatibility.historicalWave1Snapshot.publicCardCount, 377);
+  assert.equal(compatibility.historicalWave1Snapshot.applicationPluginCount, 71);
+  assert.equal(compatibility.historicalWave1Snapshot.selectedCapabilityDirectCardCount, 1);
+  assert.equal(compatibility.currentMarketplaceProjection.publicCardCount, 34);
+  assert.equal(compatibility.currentMarketplaceProjection.sourceCapabilityInventory.retainedSourcePackageCount, 380);
+  assert.deepEqual(compatibility.currentMarketplaceProjection.selectedApplicationCapability, {
+    id: "seis-evidence-index",
+    retainedSource: true,
+    sourcePath: "plugins/seis-core/seis-evidence-index",
+    directMarketplaceCardRequired: false,
+    directMarketplaceCardCount: 0,
+    bundleCardCount: 1,
+    bundleId: "seis-application-bundle-04",
+    bundleSourcePath: "./plugins/seis-bundles/seis-application-bundle-04",
+    bundleFamily: "application",
+  });
+});
+
+test("Wave 1 compatibility rejects source, membership, and marketplace-card drift", () => {
+  const baseline = loadCompatibilityInputs();
+  const cases = [
+    {
+      label: "missing selected source",
+      mutate(input) {
+        input.sourceManifest.plugins = input.sourceManifest.plugins.filter((plugin) => plugin.name !== EVIDENCE_INDEX_ID);
+      },
+      pattern: /remain exactly once/,
+    },
+    {
+      label: "duplicate selected source",
+      mutate(input) {
+        const source = input.sourceManifest.plugins.find((plugin) => plugin.name === EVIDENCE_INDEX_ID);
+        input.sourceManifest.plugins.push({ ...source });
+      },
+      pattern: /remain exactly once/,
+    },
+    {
+      label: "missing bundle membership",
+      mutate(input) {
+        for (const bundle of input.bundleCatalog.bundles) {
+          bundle.memberNames = bundle.memberNames.filter((name) => name !== EVIDENCE_INDEX_ID);
+        }
+      },
+      pattern: /occur exactly once/,
+    },
+    {
+      label: "duplicate membership in one bundle",
+      mutate(input) {
+        const bundle = input.bundleCatalog.bundles.find((candidate) => candidate.memberNames.includes(EVIDENCE_INDEX_ID));
+        bundle.memberNames.push(EVIDENCE_INDEX_ID);
+      },
+      pattern: /occur exactly once/,
+    },
+    {
+      label: "cross-family membership",
+      mutate(input) {
+        const applicationBundle = input.bundleCatalog.bundles.find((candidate) => candidate.memberNames.includes(EVIDENCE_INDEX_ID));
+        const topicBundle = input.bundleCatalog.bundles.find((candidate) => candidate.family === "topic");
+        applicationBundle.memberNames = applicationBundle.memberNames.filter((name) => name !== EVIDENCE_INDEX_ID);
+        topicBundle.memberNames.push(EVIDENCE_INDEX_ID);
+      },
+      pattern: /application bundle/,
+    },
+    {
+      label: "wrong bundle-card path",
+      mutate(input) {
+        const card = input.marketplace.plugins.find((candidate) => candidate.name === "seis-application-bundle-04");
+        card.source.path = "./plugins/seis-bundles/wrong";
+      },
+      pattern: /card identities and source paths/,
+    },
+    {
+      label: "wrong canonical-card path",
+      mutate(input) {
+        const card = input.marketplace.plugins.find((candidate) => candidate.name === "seis-ai-agent");
+        card.source.path = "./plugins/wrong";
+      },
+      pattern: /card identities and source paths/,
+    },
+    {
+      label: "wrong nonselected bundle-card path",
+      mutate(input) {
+        const card = input.marketplace.plugins.find((candidate) => candidate.name === "seis-application-bundle-01");
+        card.source.path = "./plugins/seis-bundles/wrong";
+      },
+      pattern: /card identities and source paths/,
+    },
+    {
+      label: "duplicate nonselected member with unchanged count",
+      mutate(input) {
+        const bundle = input.bundleCatalog.bundles.find((candidate) => candidate.id === "seis-application-bundle-01");
+        bundle.memberNames[1] = bundle.memberNames[0];
+      },
+      pattern: /occur exactly once across application bundle members/,
+    },
+    {
+      label: "rogue direct card with unchanged total",
+      mutate(input) {
+        const card = input.marketplace.plugins.find((candidate) => candidate.name === "seis-application-bundle-04");
+        card.name = EVIDENCE_INDEX_ID;
+        card.source.path = "./plugins/seis-core/seis-evidence-index";
+      },
+      pattern: /canonical card plus bundle catalog cards/,
+    },
+  ];
+
+  for (const fixtureCase of cases) {
+    const input = structuredClone(baseline);
+    fixtureCase.mutate(input);
+    assert.throws(
+      () => buildWave1MarketplaceCompatibility(input),
+      fixtureCase.pattern,
+      fixtureCase.label,
+    );
+  }
+});
+
+test("generated SEIS Evidence Index record uses the historical/current schema", () => {
+  const evidence = loadJson("content/development/seis-evidence-index.json");
+
+  assert.equal(evidence.schemaVersion, 2);
+  assert.equal(evidence.capabilityDecision.historicalWave1Snapshot.publicCardCount, 377);
+  assert.equal(evidence.capabilityDecision.currentMarketplaceProjection.publicCardCount, 34);
+  assert.equal(evidence.plugin.currentMarketplacePresentation, "retained-source-through-bundle-card");
+  assert.equal(evidence.plugin.currentBundleId, "seis-application-bundle-04");
+  assert.equal(evidence.plugin.directMarketplaceCardRequired, false);
 });
 
 test("SEIS Evidence Index reports malformed bounded evidence without returning raw values or paths", () => {
@@ -53,6 +190,125 @@ test("SEIS Evidence Index reports malformed bounded evidence without returning r
     assert.equal(JSON.stringify(result).includes("sk-abcdefghijklmnopqrstuvwxyz"), false);
   } finally {
     rmSync(fixture, { recursive: true, force: true });
+  }
+});
+
+test("SEIS Evidence Index rejects historical and current projection drift independently", () => {
+  const cases = [
+    {
+      label: "historical snapshot",
+      checkId: "wave-evidence-historical-snapshot",
+      suppressedSummaryKey: "historicalWave1PublicCardCount",
+      mutate(evidence) {
+        evidence.historicalWave1Snapshot.publicCardCount = 378;
+      },
+    },
+    {
+      label: "historical selected capability",
+      checkId: "wave-evidence-historical-snapshot",
+      suppressedSummaryKey: "historicalWave1PublicCardCount",
+      mutate(evidence) {
+        evidence.historicalWave1Snapshot.selectedCapability = "wrong-capability";
+      },
+    },
+    {
+      label: "historical topic count",
+      checkId: "wave-evidence-historical-snapshot",
+      suppressedSummaryKey: "historicalWave1PublicCardCount",
+      mutate(evidence) {
+        evidence.historicalWave1Snapshot.topicPluginCount = 299;
+      },
+    },
+    {
+      label: "historical root count",
+      checkId: "wave-evidence-historical-snapshot",
+      suppressedSummaryKey: "historicalWave1PublicCardCount",
+      mutate(evidence) {
+        evidence.historicalWave1Snapshot.migratedRootPluginCount = 4;
+      },
+    },
+    {
+      label: "current source inventory",
+      checkId: "wave-evidence-app-count",
+      suppressedSummaryKey: "applicationPluginCount",
+      mutate(evidence) {
+        evidence.currentMarketplaceProjection.sourceCapabilityInventory.applicationSourcePackageCount = 71;
+      },
+    },
+    {
+      label: "current retained-source count",
+      checkId: "wave-evidence-app-count",
+      suppressedSummaryKey: "applicationPluginCount",
+      mutate(evidence) {
+        evidence.currentMarketplaceProjection.sourceCapabilityInventory.retainedSourcePackageCount = 379;
+      },
+    },
+    {
+      label: "current bundle resolution",
+      checkId: "wave-evidence-selected-capability-bundle",
+      suppressedSummaryKey: "selectedCapabilityBundleId",
+      mutate(evidence) {
+        evidence.currentMarketplaceProjection.selectedApplicationCapability.bundleCardCount = 0;
+      },
+    },
+    {
+      label: "current bundle id",
+      checkId: "wave-evidence-selected-capability-bundle",
+      suppressedSummaryKey: "selectedCapabilityBundleId",
+      mutate(evidence) {
+        evidence.currentMarketplaceProjection.selectedApplicationCapability.bundleId = "seis-application-bundle-05";
+      },
+    },
+    {
+      label: "current bundle path",
+      checkId: "wave-evidence-selected-capability-bundle",
+      suppressedSummaryKey: "selectedCapabilityBundleId",
+      mutate(evidence) {
+        evidence.currentMarketplaceProjection.selectedApplicationCapability.bundleSourcePath = "./plugins/seis-bundles/wrong";
+      },
+    },
+    {
+      label: "current bundle family",
+      checkId: "wave-evidence-selected-capability-bundle",
+      suppressedSummaryKey: "selectedCapabilityBundleId",
+      mutate(evidence) {
+        evidence.currentMarketplaceProjection.selectedApplicationCapability.bundleFamily = "topic";
+      },
+    },
+    {
+      label: "current selected source path",
+      checkId: "wave-evidence-selected-capability-bundle",
+      suppressedSummaryKey: "selectedCapabilityBundleId",
+      mutate(evidence) {
+        evidence.currentMarketplaceProjection.selectedApplicationCapability.sourcePath = "plugins/seis-core/wrong";
+      },
+    },
+  ];
+
+  for (const fixtureCase of cases) {
+    const fixture = mkdtempSync(path.join(os.tmpdir(), "seis-evidence-index-projection-"));
+    try {
+      const evidence = loadJson("content/development/seis-public-plugin-wave-1-evidence-index.json");
+      const program = loadJson("content/development/seis-public-plugin-wave-1-program.json");
+      fixtureCase.mutate(evidence);
+      mkdirSync(path.join(fixture, "content", "development"), { recursive: true });
+      writeFileSync(
+        path.join(fixture, "content", "development", "seis-public-plugin-wave-1-evidence-index.json"),
+        JSON.stringify(evidence),
+      );
+      writeFileSync(
+        path.join(fixture, "content", "development", "seis-public-plugin-wave-1-program.json"),
+        JSON.stringify(program),
+      );
+
+      const result = auditEvidenceIndex(fixture);
+
+      assert.equal(result.ok, false, fixtureCase.label);
+      assert.equal(result.checks.find((check) => check.id === fixtureCase.checkId)?.observed, false, fixtureCase.label);
+      assert.equal(result.summary[fixtureCase.suppressedSummaryKey], null, fixtureCase.label);
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
   }
 });
 
@@ -107,4 +363,21 @@ function parseFrames(output) {
     offset = end;
   }
   return messages;
+}
+
+function buildCompatibilityFixture() {
+  return buildWave1MarketplaceCompatibility(loadCompatibilityInputs());
+}
+
+function loadCompatibilityInputs() {
+  return {
+    marketplace: loadJson(".agents/plugins/marketplace.json"),
+    publicFamily: loadJson("content/development/seis-public-plugin-family.json"),
+    sourceManifest: loadJson("apps/seis-core/data/seis-core-plugin-sources.json"),
+    bundleCatalog: loadJson("content/development/seis-public-plugin-bundle-catalog.json"),
+  };
+}
+
+function loadJson(relativePath) {
+  return JSON.parse(readFileSync(path.join(repoRoot, relativePath), "utf8"));
 }

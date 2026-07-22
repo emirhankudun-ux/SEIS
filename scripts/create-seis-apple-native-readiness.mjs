@@ -15,14 +15,16 @@ const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-apple-native-readiness.json";
 const SOURCE_MANIFEST_PATH = "apps/seis-core/data/seis-core-plugin-sources.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
+const BUNDLE_CATALOG_PATH = "content/development/seis-public-plugin-bundle-catalog.json";
 const PROJECT_MANIFEST_PATH = "project.ecosystem.yaml";
 const RUNTIME_PATH = "plugins/seis-core/seis-apple-native-readiness/runtime/apple-native-readiness.mjs";
 const TEST_PATH = "plugins/seis-core/test/apple-native-readiness.test.mjs";
 const SKILL_PATH = "plugins/seis-core/seis-apple-native-readiness/skills/seis-apple-native-readiness/SKILL.md";
 const CANONICAL_ORCHESTRATOR_COUNT = 1;
-const MIGRATED_ROOT_PLUGIN_COUNT = 5;
-const TOPIC_PLUGIN_COUNT = 300;
-const EXPECTED_PUBLIC_CARD_COUNT = CANONICAL_ORCHESTRATOR_COUNT + MIGRATED_ROOT_PLUGIN_COUNT + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_COUNT;
+const MIGRATED_ROOT_SOURCE_CAPABILITY_COUNT = 5;
+const TOPIC_SOURCE_CAPABILITY_COUNT = 300;
+const BUNDLE_CARD_COUNT = 33;
+const EXPECTED_PUBLIC_CARD_COUNT = CANONICAL_ORCHESTRATOR_COUNT + BUNDLE_CARD_COUNT;
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 
 const record = buildRecord();
@@ -42,8 +44,12 @@ if (CHECK_MODE) {
 function buildRecord() {
   const sourceManifest = readJson(SOURCE_MANIFEST_PATH);
   const marketplace = readJson(MARKETPLACE_PATH);
+  const bundleCatalog = readJson(BUNDLE_CATALOG_PATH);
   const plugin = (sourceManifest.plugins || []).find((entry) => entry?.name === APPLE_NATIVE_READINESS_ID);
   const marketplaceEntry = (marketplace.plugins || []).find((entry) => entry?.name === APPLE_NATIVE_READINESS_ID);
+  const bundleMemberships = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(APPLE_NATIVE_READINESS_ID));
+  const distributionBundle = bundleMemberships.length === 1 ? bundleMemberships[0] : null;
+  const distributionBundleEntry = list(marketplace.plugins).find((entry) => entry?.name === distributionBundle?.id) || null;
   const audit = auditAppleNativeReadiness(ROOT);
   const runtimeSource = readText(RUNTIME_PATH);
   const testSource = readText(TEST_PATH);
@@ -65,16 +71,25 @@ function buildRecord() {
       marketplaceName: marketplace.name || null,
       marketplaceDisplayName: marketplace.interface?.displayName || null,
       publicAudience: "everyone",
-      publicMarketplace: marketplaceEntry?.source?.path === `./plugins/seis-core/${APPLE_NATIVE_READINESS_ID}`,
+      publicMarketplace: distributionBundleEntry?.source?.path === distributionBundle?.sourcePath,
+      directMarketplaceCard: marketplaceEntry !== undefined,
+      distributionBundleId: distributionBundle?.id || null,
+      distributionBundleSourcePath: distributionBundle?.sourcePath || null,
+      distributionBundleMembershipCount: bundleMemberships.length,
     },
     marketplace: {
       publicCardCount,
       expectedPublicCardCount: EXPECTED_PUBLIC_CARD_COUNT,
-      applicationPluginCount,
-      expectedApplicationPluginCount: APP_PLUGIN_EXPANSION_TARGET,
       canonicalOrchestratorCount: CANONICAL_ORCHESTRATOR_COUNT,
-      migratedRootPluginCount: MIGRATED_ROOT_PLUGIN_COUNT,
-      topicPluginCount: TOPIC_PLUGIN_COUNT,
+      bundleCardCount: BUNDLE_CARD_COUNT,
+      applicationBundleCardCount: 6,
+      topicBundleCardCount: 27,
+      applicationSourceCapabilityCount: applicationPluginCount,
+      expectedApplicationSourceCapabilityCount: APP_PLUGIN_EXPANSION_TARGET,
+      retainedSourceCapabilityCount: MIGRATED_ROOT_SOURCE_CAPABILITY_COUNT + applicationPluginCount + TOPIC_SOURCE_CAPABILITY_COUNT,
+      directSourceCapabilityCardCount: 0,
+      migratedRootSourceCapabilityCount: MIGRATED_ROOT_SOURCE_CAPABILITY_COUNT,
+      topicSourceCapabilityCount: TOPIC_SOURCE_CAPABILITY_COUNT,
     },
     audit: {
       state: audit.state,
@@ -131,8 +146,8 @@ function validateRecord(record) {
   assert(record.goalId === "SEIS-GOAL-021", "goal linkage is invalid");
   assert(record.status === "completed-public-static-readiness-evidence", "record status is invalid");
   assert(record.plugin?.name === APPLE_NATIVE_READINESS_ID && record.plugin?.sourcePath === `plugins/seis-core/${APPLE_NATIVE_READINESS_ID}`, "plugin source contract is invalid");
-  assert(record.plugin?.marketplaceName === "seis-repo" && record.plugin?.marketplaceDisplayName === "SEIS Repo" && record.plugin?.publicMarketplace === true, "public marketplace contract is invalid");
-  assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "public count contract is invalid");
+  assert(record.plugin?.marketplaceName === "seis-repo" && record.plugin?.marketplaceDisplayName === "SEIS Repo" && record.plugin?.publicMarketplace === true && record.plugin?.directMarketplaceCard === false && record.plugin?.distributionBundleId === "seis-application-bundle-04" && record.plugin?.distributionBundleSourcePath === "./plugins/seis-bundles/seis-application-bundle-04" && record.plugin?.distributionBundleMembershipCount === 1, "public marketplace contract is invalid");
+  assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.canonicalOrchestratorCount === 1 && record.marketplace?.bundleCardCount === 33 && record.marketplace?.applicationBundleCardCount === 6 && record.marketplace?.topicBundleCardCount === 27 && record.marketplace?.applicationSourceCapabilityCount === APP_PLUGIN_EXPANSION_TARGET && record.marketplace?.retainedSourceCapabilityCount === 380 && record.marketplace?.directSourceCapabilityCardCount === 0, "public count contract is invalid");
   assert(record.audit?.state === "ready" && record.audit?.ok === true && record.audit?.classification === "documented-static-readiness-only", "static readiness audit is invalid");
   assert(record.audit?.checkCount >= 16 && record.audit?.readyCheckCount === record.audit?.checkCount && list(record.audit?.findingCodes).length === 0, "static readiness checks are incomplete");
   assert(record.resilienceReview?.status === "completed-repository-local-resilience-review", "resilience review status is invalid");

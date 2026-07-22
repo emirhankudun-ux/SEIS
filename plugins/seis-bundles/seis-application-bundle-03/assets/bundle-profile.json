@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-application-bundle-03",
+  "family": "application",
+  "journeyId": "security",
+  "journeyLabel": "Security",
+  "journeyPart": 1,
+  "journeyPartCount": 1,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 11,
+  "category": "Security",
+  "categoryLabels": [
+    "Security"
+  ],
+  "members": [
+    {
+      "name": "seis-action-pin-audit",
+      "displayName": "SEIS Action Pin Audit",
+      "sourcePath": "./plugins/seis-core/seis-action-pin-audit",
+      "category": "Security"
+    },
+    {
+      "name": "seis-artifact-attestation",
+      "displayName": "Seis Artifact Attestation",
+      "sourcePath": "./plugins/seis-core/seis-artifact-attestation",
+      "category": "Security"
+    },
+    {
+      "name": "seis-branch-protection-audit",
+      "displayName": "Seis Branch Protection Audit",
+      "sourcePath": "./plugins/seis-core/seis-branch-protection-audit",
+      "category": "Security"
+    },
+    {
+      "name": "seis-dependency-freshness",
+      "displayName": "SEIS Dependency Freshness",
+      "sourcePath": "./plugins/seis-core/seis-dependency-freshness",
+      "category": "Security"
+    },
+    {
+      "name": "seis-license-compatibility",
+      "displayName": "SEIS License Compatibility",
+      "sourcePath": "./plugins/seis-core/seis-license-compatibility",
+      "category": "Security"
+    },
+    {
+      "name": "seis-mcp-permission",
+      "displayName": "SEIS MCP Permission Boundary",
+      "sourcePath": "./plugins/seis-core/seis-mcp-permission",
+      "category": "Security"
+    },
+    {
+      "name": "seis-public-safe-scan",
+      "displayName": "SEIS Public-Safe Scan",
+      "sourcePath": "./plugins/seis-core/seis-public-safe-scan",
+      "category": "Security"
+    },
+    {
+      "name": "seis-sbom-generator",
+      "displayName": "SEIS SBOM Generator",
+      "sourcePath": "./plugins/seis-core/seis-sbom-generator",
+      "category": "Security"
+    },
+    {
+      "name": "seis-secret-boundary-scan",
+      "displayName": "SEIS Secret Boundary Scan",
+      "sourcePath": "./plugins/seis-core/seis-secret-boundary-scan",
+      "category": "Security"
+    },
+    {
+      "name": "seis-vulnerability-triage",
+      "displayName": "SEIS Vulnerability Triage",
+      "sourcePath": "./plugins/seis-core/seis-vulnerability-triage",
+      "category": "Security"
+    },
+    {
+      "name": "seis-workflow-permission-audit",
+      "displayName": "SEIS Workflow Permission Audit",
+      "sourcePath": "./plugins/seis-core/seis-workflow-permission-audit",
+      "category": "Security"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

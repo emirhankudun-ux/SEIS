@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-topic-bundle-09",
+  "family": "topic",
+  "journeyId": "creative-production",
+  "journeyLabel": "Creative Production",
+  "journeyPart": 2,
+  "journeyPartCount": 2,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 8,
+  "category": "Creative Production",
+  "categoryLabels": [
+    "Creative Production"
+  ],
+  "members": [
+    {
+      "name": "seis-topic-creative-production-moodboards",
+      "displayName": "SEIS Moodboards",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-moodboards",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-music",
+      "displayName": "SEIS Music",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-music",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-publishing",
+      "displayName": "SEIS Publishing",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-publishing",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-story-world",
+      "displayName": "SEIS Story World",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-story-world",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-storytelling",
+      "displayName": "SEIS Storytelling",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-storytelling",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-video",
+      "displayName": "SEIS Video",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-video",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-virtual-production",
+      "displayName": "SEIS Virtual Production",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-virtual-production",
+      "category": "Creative Production"
+    },
+    {
+      "name": "seis-topic-creative-production-visual-effects",
+      "displayName": "SEIS Visual Effects",
+      "sourcePath": "./plugins/seis-topics/seis-topic-creative-production-visual-effects",
+      "category": "Creative Production"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

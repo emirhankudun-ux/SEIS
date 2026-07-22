@@ -28,7 +28,9 @@ test("records a separate public-only Wave 5 activation decision", () => {
   assert.equal(decision.decision.implementationApproved, true);
   assert.equal(decision.decision.implementationStarted, true);
   assert.equal(decision.decision.candidatePackageExists, true);
-  assert.equal(decision.decision.candidatePublicCardExists, true);
+  assert.equal(decision.decision.candidateDirectPublicCardExists, false);
+  assert.equal(typeof decision.decision.candidateBundleId, "string");
+  assert.equal(decision.decision.candidateBundleCardExists, true);
   assert.equal(decision.decision.publicReleaseApproved, false);
   assert.ok(Object.values(decision.preconditions).every(Boolean));
   assert.equal(decision.publicBoundary.marketplaceName, "seis-repo");

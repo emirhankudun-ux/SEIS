@@ -46,21 +46,30 @@ function validateRuntimeStatus() {
   const findings = [];
   const cards = array(marketplace.plugins);
   const canonicalCards = array(family.publicPlugins);
-  const rootCards = array(family.migratedRootPlugins);
-  const applicationCards = array(family.applicationPlugins);
-  const topicCards = array(family.topicPlugins);
-  const expectedCardCount = canonicalCards.length + rootCards.length + applicationCards.length + topicCards.length;
-  const runtimeCard = cards.find((card) => card?.name === "seis-public-runtime-status");
+  const bundleCards = array(family.bundlePackages);
+  const applicationBundleCards = bundleCards.filter((bundle) => bundle?.family === "application");
+  const topicBundleCards = bundleCards.filter((bundle) => bundle?.family === "topic");
+  const rootCapabilities = array(family.migratedRootPlugins);
+  const applicationCapabilities = array(family.applicationPlugins);
+  const topicCapabilities = array(family.topicPlugins);
+  const expectedCardCount = canonicalCards.length + bundleCards.length;
+  const expectedSourceCapabilityCount = rootCapabilities.length + applicationCapabilities.length + topicCapabilities.length;
+  const runtimeBundle = findCapabilityBundle(bundleCards, "seis-public-runtime-status");
+  const runtimeCard = cards.find((card) => card?.name === runtimeBundle?.id);
 
   ensure(marketplace.name === "seis-repo", findings, "marketplace-name-invalid");
   ensure(marketplace.interface?.displayName === "SEIS Repo", findings, "marketplace-display-name-invalid");
   ensure(cards.length === expectedCardCount, findings, "marketplace-card-count-mismatch");
+  ensure(cardsMatchProjection(cards, family.marketplace?.entries), findings, "marketplace-curated-projection-mismatch");
   ensure(cardsHavePublicSource(cards), findings, "marketplace-public-source-boundary-invalid");
   ensure(family.marketplace?.publicPluginCount === expectedCardCount, findings, "family-card-count-mismatch");
-  ensure(family.marketplace?.applicationPluginCount === applicationCards.length, findings, "family-application-count-mismatch");
+  ensure(family.marketplace?.bundlePluginCount === bundleCards.length, findings, "family-bundle-count-mismatch");
+  ensure(family.marketplace?.sourceCapabilityCount === expectedSourceCapabilityCount, findings, "family-source-capability-count-mismatch");
   ensure(installState.publicCards?.count === expectedCardCount, findings, "install-state-card-count-stale");
-  ensure(Boolean(runtimeCard), findings, "runtime-status-card-missing");
-  ensure(runtimeCard?.source?.path === "./plugins/seis-core/seis-public-runtime-status", findings, "runtime-status-card-source-path-invalid");
+  ensure(installState.sourceCapabilities?.count === expectedSourceCapabilityCount, findings, "install-state-source-capability-count-stale");
+  ensure(Boolean(runtimeBundle), findings, "runtime-status-capability-bundle-missing");
+  ensure(Boolean(runtimeCard), findings, "runtime-status-bundle-card-missing");
+  ensure(runtimeCard?.source?.path === runtimeBundle?.sourcePath, findings, "runtime-status-bundle-card-source-path-invalid");
   ensure(runtimeCard?.policy?.installation === "AVAILABLE", findings, "runtime-status-card-installation-invalid");
   ensure(runtimeCard?.policy?.authentication === "ON_INSTALL", findings, "runtime-status-card-authentication-invalid");
   ensure(runtimeStatus.id === "seis-public-runtime-status", findings, "runtime-status-id-invalid");
@@ -68,8 +77,19 @@ function validateRuntimeStatus() {
   ensure(runtimeStatus.plugin?.name === "seis-public-runtime-status", findings, "runtime-status-plugin-name-invalid");
   ensure(runtimeStatus.plugin?.marketplaceName === "seis-repo", findings, "runtime-status-plugin-marketplace-invalid");
   ensure(runtimeStatus.plugin?.sourcePath === "plugins/seis-core/seis-public-runtime-status", findings, "runtime-status-plugin-source-path-invalid");
+  ensure(runtimeStatus.plugin?.distributionMode === "bundled-source-capability", findings, "runtime-status-distribution-mode-invalid");
+  ensure(runtimeStatus.plugin?.marketplaceCardName === runtimeBundle?.id, findings, "runtime-status-bundle-name-invalid");
+  ensure(runtimeStatus.plugin?.marketplaceCardSourcePath === runtimeBundle?.sourcePath, findings, "runtime-status-bundle-source-path-invalid");
   ensure(runtimeStatus.publicCards?.count === expectedCardCount, findings, "runtime-status-card-count-invalid");
-  ensure(runtimeStatus.publicCards?.applicationPluginCount === applicationCards.length, findings, "runtime-status-application-count-invalid");
+  ensure(runtimeStatus.publicCards?.canonicalOrchestratorCount === canonicalCards.length, findings, "runtime-status-canonical-count-invalid");
+  ensure(runtimeStatus.publicCards?.bundleCardCount === bundleCards.length, findings, "runtime-status-bundle-count-invalid");
+  ensure(runtimeStatus.publicCards?.applicationBundleCardCount === applicationBundleCards.length, findings, "runtime-status-application-bundle-count-invalid");
+  ensure(runtimeStatus.publicCards?.topicBundleCardCount === topicBundleCards.length, findings, "runtime-status-topic-bundle-count-invalid");
+  ensure(runtimeStatus.sourceCapabilities?.count === expectedSourceCapabilityCount, findings, "runtime-status-source-capability-count-invalid");
+  ensure(runtimeStatus.sourceCapabilities?.migratedRootCount === rootCapabilities.length, findings, "runtime-status-root-source-count-invalid");
+  ensure(runtimeStatus.sourceCapabilities?.applicationCount === applicationCapabilities.length, findings, "runtime-status-application-source-count-invalid");
+  ensure(runtimeStatus.sourceCapabilities?.topicCount === topicCapabilities.length, findings, "runtime-status-topic-source-count-invalid");
+  ensure(runtimeStatus.sourceCapabilities?.separateMarketplaceCards === false, findings, "runtime-status-source-card-boundary-invalid");
   ensure(runtimeStatus.observationBoundary?.cacheRecordIsInstallationProof === false, findings, "runtime-status-must-not-claim-installation");
   ensure(runtimeStatus.observationBoundary?.cacheRecordIsEnablementProof === false, findings, "runtime-status-must-not-claim-enablement");
   ensure(runtimeStatus.observationBoundary?.publicReleaseAllowed === false, findings, "runtime-status-must-not-claim-public-release");
@@ -89,9 +109,16 @@ function validateRuntimeStatus() {
     publicCards: {
       count: cards.length,
       canonicalOrchestratorCount: canonicalCards.length,
-      migratedRootPluginCount: rootCards.length,
-      applicationPluginCount: applicationCards.length,
-      topicPluginCount: topicCards.length
+      bundleCardCount: bundleCards.length,
+      applicationBundleCardCount: applicationBundleCards.length,
+      topicBundleCardCount: topicBundleCards.length
+    },
+    sourceCapabilities: {
+      count: expectedSourceCapabilityCount,
+      migratedRootCount: rootCapabilities.length,
+      applicationCount: applicationCapabilities.length,
+      topicCount: topicCapabilities.length,
+      separateMarketplaceCards: false
     },
     observationBoundary: runtimeStatus.observationBoundary || null,
     errorCount,
@@ -130,6 +157,7 @@ function inspectRuntimeCache() {
       marketplaceName: validation.marketplaceName,
       marketplaceDisplayName: validation.marketplaceDisplayName,
       publicCards: validation.publicCards,
+      sourceCapabilities: validation.sourceCapabilities,
       runtimeObserved: false,
       findings: sources.findings.slice(0, MAX_FINDINGS),
       permissions: permissionBoundary()
@@ -146,6 +174,7 @@ function inspectRuntimeCache() {
       marketplaceName: validation.marketplaceName,
       marketplaceDisplayName: validation.marketplaceDisplayName,
       publicCards: validation.publicCards,
+      sourceCapabilities: validation.sourceCapabilities,
       runtimeObserved: false,
       cacheRootDetected: false,
       permissions: permissionBoundary(),
@@ -234,6 +263,7 @@ function inspectCacheRoot(cacheRoot, sourceRecords, validation) {
     marketplaceName: validation.marketplaceName,
     marketplaceDisplayName: validation.marketplaceDisplayName,
     publicCards: validation.publicCards,
+    sourceCapabilities: validation.sourceCapabilities,
     runtimeObserved: true,
     cacheRootDetected: true,
     cacheRecordCount: directories.entries.length,
@@ -292,7 +322,8 @@ function compactMarketplace(report) {
     marketplaceName: report.marketplaceName || null,
     marketplaceDisplayName: report.marketplaceDisplayName || null,
     publicCardCount: report.publicCards?.count ?? null,
-    applicationPluginCount: report.publicCards?.applicationPluginCount ?? null
+    bundleCardCount: report.publicCards?.bundleCardCount ?? null,
+    sourceCapabilityCount: report.sourceCapabilities?.count ?? null
   };
 }
 
@@ -373,6 +404,17 @@ function cardsHavePublicSource(cards) {
     && card?.policy?.installation === "AVAILABLE"
     && card?.policy?.authentication === "ON_INSTALL"
   );
+}
+
+function cardsMatchProjection(cards, entries) {
+  const projection = array(entries);
+  if (cards.length !== projection.length) return false;
+  const expected = new Map(projection.map((entry) => [text(entry?.name), text(entry?.sourcePath)]));
+  return expected.size === projection.length && cards.every((card) => expected.get(text(card?.name)) === text(card?.source?.path));
+}
+
+function findCapabilityBundle(bundles, capabilityName) {
+  return bundles.find((bundle) => array(bundle?.members).some((member) => text(member?.name) === capabilityName)) || null;
 }
 
 function safeDirectoryEntries(directory, limit) {

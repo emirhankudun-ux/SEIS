@@ -16,14 +16,16 @@ const SOURCE_MANIFEST_PATH = "apps/seis-core/data/seis-core-plugin-sources.json"
 const CATALOG_PATH = "apps/seis-core/data/seis-core-plugin-catalog.json";
 const MATRIX_PATH = "content/development/seis-core-plugin-matrix.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
+const BUNDLE_CATALOG_PATH = "content/development/seis-public-plugin-bundle-catalog.json";
 const ACTIVATION_DECISION_PATH = "content/development/seis-public-plugin-wave-4-activation-decision.json";
 const RUNTIME_PATH = "plugins/seis-core/seis-swift-package-topology/runtime/swift-package-topology.mjs";
 const TEST_PATH = "plugins/seis-core/test/swift-package-topology.test.mjs";
 const SKILL_PATH = "plugins/seis-core/seis-swift-package-topology/skills/seis-swift-package-topology/SKILL.md";
 const CANONICAL_ORCHESTRATOR_COUNT = 1;
-const MIGRATED_ROOT_PLUGIN_COUNT = 5;
-const TOPIC_PLUGIN_COUNT = 300;
-const EXPECTED_PUBLIC_CARD_COUNT = CANONICAL_ORCHESTRATOR_COUNT + MIGRATED_ROOT_PLUGIN_COUNT + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_COUNT;
+const MIGRATED_ROOT_SOURCE_CAPABILITY_COUNT = 5;
+const TOPIC_SOURCE_CAPABILITY_COUNT = 300;
+const BUNDLE_CARD_COUNT = 33;
+const EXPECTED_PUBLIC_CARD_COUNT = CANONICAL_ORCHESTRATOR_COUNT + BUNDLE_CARD_COUNT;
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 
 const record = buildRecord();
@@ -45,11 +47,15 @@ function buildRecord() {
   const catalog = readJson(CATALOG_PATH);
   const matrix = readJson(MATRIX_PATH);
   const marketplace = readJson(MARKETPLACE_PATH);
+  const bundleCatalog = readJson(BUNDLE_CATALOG_PATH);
   const activation = readJson(ACTIVATION_DECISION_PATH);
   const sourceEntry = list(sourceManifest.plugins).find((entry) => entry?.name === SWIFT_PACKAGE_TOPOLOGY_ID);
   const catalogEntry = list(catalog.plugins).find((entry) => entry?.name === SWIFT_PACKAGE_TOPOLOGY_ID);
   const matrixEntry = list(matrix.plugins).find((entry) => entry?.name === SWIFT_PACKAGE_TOPOLOGY_ID);
   const marketplaceEntry = list(marketplace.plugins).find((entry) => entry?.name === SWIFT_PACKAGE_TOPOLOGY_ID);
+  const bundleMemberships = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(SWIFT_PACKAGE_TOPOLOGY_ID));
+  const distributionBundle = bundleMemberships.length === 1 ? bundleMemberships[0] : null;
+  const distributionBundleEntry = list(marketplace.plugins).find((entry) => entry?.name === distributionBundle?.id) || null;
   const audit = auditSwiftPackageTopology(ROOT);
   const runtimeSource = readText(RUNTIME_PATH);
   const testSource = readText(TEST_PATH);
@@ -72,18 +78,27 @@ function buildRecord() {
       matrixOk: matrixEntry?.ok === true,
       marketplaceName: marketplace.name || null,
       marketplaceDisplayName: marketplace.interface?.displayName || null,
-      marketplaceCategory: marketplaceEntry?.category || null,
+      marketplaceCategory: distributionBundleEntry?.category || null,
       publicAudience: "everyone",
-      publicMarketplace: marketplaceEntry?.source?.path === `./plugins/seis-core/${SWIFT_PACKAGE_TOPOLOGY_ID}`,
+      publicMarketplace: distributionBundleEntry?.source?.path === distributionBundle?.sourcePath,
+      directMarketplaceCard: marketplaceEntry !== undefined,
+      distributionBundleId: distributionBundle?.id || null,
+      distributionBundleSourcePath: distributionBundle?.sourcePath || null,
+      distributionBundleMembershipCount: bundleMemberships.length,
     },
     marketplace: {
       publicCardCount: list(marketplace.plugins).length,
       expectedPublicCardCount: EXPECTED_PUBLIC_CARD_COUNT,
-      applicationPluginCount: list(sourceManifest.plugins).length,
-      expectedApplicationPluginCount: APP_PLUGIN_EXPANSION_TARGET,
+      bundleCardCount: BUNDLE_CARD_COUNT,
+      applicationBundleCardCount: 6,
+      topicBundleCardCount: 27,
+      applicationSourceCapabilityCount: list(sourceManifest.plugins).length,
+      expectedApplicationSourceCapabilityCount: APP_PLUGIN_EXPANSION_TARGET,
       canonicalOrchestratorCount: CANONICAL_ORCHESTRATOR_COUNT,
-      migratedRootPluginCount: MIGRATED_ROOT_PLUGIN_COUNT,
-      topicPluginCount: TOPIC_PLUGIN_COUNT,
+      migratedRootSourceCapabilityCount: MIGRATED_ROOT_SOURCE_CAPABILITY_COUNT,
+      topicSourceCapabilityCount: TOPIC_SOURCE_CAPABILITY_COUNT,
+      retainedSourceCapabilityCount: 380,
+      directSourceCapabilityCardCount: 0,
     },
     activation: {
       id: activation.id || null,
@@ -91,7 +106,7 @@ function buildRecord() {
       selectedCapability: activation.decision?.selectedCapability || null,
       activationApproved: activation.decision?.activationApproved === true,
       implementationAuthorized: activation.decision?.implementationApproved === true,
-      implementationObserved: Boolean(sourceEntry && catalogEntry && matrixEntry && marketplaceEntry),
+      implementationObserved: Boolean(sourceEntry && catalogEntry && matrixEntry && distributionBundleEntry && bundleMemberships.length === 1 && !marketplaceEntry),
       publicReleaseApproved: activation.decision?.publicReleaseApproved === true,
     },
     audit: {
@@ -150,7 +165,7 @@ function buildRecord() {
     },
     rollback: {
       strategy: "revert",
-      scope: "Revert the source package, public SEIS Repo card, generated topology evidence, and their reconciled projections on the feature branch; no manifest mutation, external state, release, or data migration exists.",
+      scope: "Revert the source capability compatibility update, generated topology evidence, and its curated bundle projection on the feature branch; no manifest mutation, external state, release, or data migration exists.",
       dataMigrationRequired: false,
     },
   };
@@ -207,8 +222,8 @@ function validateRecord(record) {
   assert(record.id === SWIFT_PACKAGE_TOPOLOGY_ID && record.goalId === "SEIS-GOAL-021" && record.wave === 4, "record identity is invalid");
   assert(record.status === "ready-public-static-topology-evidence", "record status is invalid");
   assert(record.plugin?.name === SWIFT_PACKAGE_TOPOLOGY_ID && record.plugin?.sourcePath === `plugins/seis-core/${SWIFT_PACKAGE_TOPOLOGY_ID}` && record.plugin?.catalogStatus === "ready" && record.plugin?.matrixStatus === "ready" && record.plugin?.matrixOk === true, "plugin projection is invalid");
-  assert(record.plugin?.marketplaceName === "seis-repo" && record.plugin?.marketplaceDisplayName === "SEIS Repo" && record.plugin?.marketplaceCategory === "Developer" && record.plugin?.publicMarketplace === true, "public marketplace contract is invalid");
-  assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, "public count contract is invalid");
+  assert(record.plugin?.marketplaceName === "seis-repo" && record.plugin?.marketplaceDisplayName === "SEIS Repo" && record.plugin?.marketplaceCategory === "Developer" && record.plugin?.publicMarketplace === true && record.plugin?.directMarketplaceCard === false && record.plugin?.distributionBundleId === "seis-application-bundle-06" && record.plugin?.distributionBundleSourcePath === "./plugins/seis-bundles/seis-application-bundle-06" && record.plugin?.distributionBundleMembershipCount === 1, "public marketplace contract is invalid");
+  assert(record.marketplace?.publicCardCount === EXPECTED_PUBLIC_CARD_COUNT && record.marketplace?.bundleCardCount === 33 && record.marketplace?.applicationBundleCardCount === 6 && record.marketplace?.topicBundleCardCount === 27 && record.marketplace?.applicationSourceCapabilityCount === APP_PLUGIN_EXPANSION_TARGET && record.marketplace?.retainedSourceCapabilityCount === 380 && record.marketplace?.directSourceCapabilityCardCount === 0, "public count contract is invalid");
   assert(record.activation?.id === "seis-public-plugin-wave-4-activation-decision" && record.activation?.selectedCapability === SWIFT_PACKAGE_TOPOLOGY_ID && record.activation?.activationApproved === true && record.activation?.implementationAuthorized === true && record.activation?.implementationObserved === true && record.activation?.publicReleaseApproved === false, "Wave 4 activation linkage is invalid");
   assert(record.audit?.state === "ready" && record.audit?.ok === true && record.audit?.classification === "bounded-static-swift-package-manifest-topology" && record.audit?.manifestRelativePath === "packages/seis_platform_swift/Package.swift" && record.audit?.topologyAvailable === true, "static topology audit is invalid");
   assert(record.audit?.declaredPlatformCount === 2 && record.audit?.productCount === 2 && record.audit?.targetCount === 3 && record.audit?.targetDependencyEdgeCount === 1 && record.audit?.testTargetDependencyCount === 1 && record.audit?.executableResourceCount === 2 && list(record.audit?.findingCodes).length === 0, "declared topology is invalid");

@@ -10,13 +10,13 @@
 
 | phase | status | owner lane | exit rule |
 | --- | --- | --- | --- |
-| repo-contract | active | seis-governance | All public plugin manifests, marketplace entries, source mirrors, and SEIS AI lane links validate in the repo. |
+| repo-contract | active | seis-governance | The exact curated marketplace-card set and the separate retained-source inventory validate in the repo, together with SEIS AI lane links. |
 | canonical-alias-resolution | active-non-destructive-canonicalization | seis-governance | SEIS AI and the installer report one canonical public SEIS-Agent install while preserving legacy personal plugins as read-only compatibility aliases. |
-| single-public-install | active-single-public-plugin | seis-ai-agent | All SEIS source modules share one versioned suite file, and SEIS-Agent is the only public install target; module folders do not create standalone public installs. |
+| single-public-install | active-single-public-plugin | seis-ai-agent | All SEIS source modules share one versioned suite file, and SEIS-Agent is the only canonical default public install target; optional bundles remain explicit user-selected cards and source folders are not standalone installs. |
 | installed-cache | active-local-proof | seis-automation | The single public SEIS-Agent plugin exists in the local Codex cache, its MCP server initializes, lists tools, and answers representative lane calls. |
-| clean-artifact-stage | repo-local-artifact-staged | seis-automation | A disposable local artifact stage contains the canonical suite and every public app package from the repo marketplace without forbidden release artifacts. This does not prove an independent installation. |
+| clean-artifact-stage | repo-local-artifact-staged | seis-automation | A disposable local artifact stage contains all 34 marketplace cards and separately validates all 380 retained source capabilities without forbidden release artifacts. This does not prove an independent installation. |
 | fresh-task-reload | human-triggered-next-proof | seis-product | A newly started task can use the public SEIS plugin family without relying on this thread's pre-install tool surface. |
-| independent-runner-evidence | awaiting-independent-clean-runner-evidence | seis-automation | A strict recorded-evidence check proves the single SEIS-Agent public plugin installed from an independent public source, exposed every embedded module, passed MCP smoke, and was visible through SEIS AI in a fresh task. Human approval still remains required. |
+| independent-runner-evidence | awaiting-independent-clean-runner-evidence | seis-automation | A strict recorded-evidence check proves the canonical SEIS-Agent default installed from an independent public source, exposed every embedded module, passed MCP smoke, and was visible through SEIS AI in a fresh task. Human approval still remains required. |
 | public-preview | approval-gated | seis-security | Security, provenance, clean-artifact staging, independent installation, validation, rollback, and human release approval are recorded before public preview claims. |
 | stable | planned | seis-governance | Stable is only claimed after repeatable install/runtime evidence exists outside this local machine. |
 
@@ -26,30 +26,30 @@
 | --- | --- | --- | --- | --- | --- |
 | seis-ai-agent | orchestrator | 0.3.0+codex.20260712 | internal-review-local-proof | orchestrator-critical | seis-ai-agent |
 
-## Migrated Root Repository Cards
+## Retained Root Source Capabilities
 
 | plugin | role | version | channel | support tier | MCP servers |
 | --- | --- | --- | --- | --- | --- |
-| seis | governance | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis |
-| seis-cloud | cloud | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis-cloud |
-| seis-code | code | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis-code |
-| seis-design | design | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis-design |
-| seis-data | data | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-direct-card | seis-data |
+| seis | governance | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-retained-source | seis |
+| seis-cloud | cloud | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-retained-source | seis-cloud |
+| seis-code | code | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-retained-source | seis-code |
+| seis-design | design | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-retained-source | seis-design |
+| seis-data | data | 0.3.0+codex.20260712 | internal-review-local-proof | root-lane-retained-source | seis-data |
 
 ## Embedded Source Modules
 
 | module | role | status | version | canonical install |
 | --- | --- | --- | --- | --- |
 | seis-ai-agent | orchestrator | public-plugin | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis | governance | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-cloud | cloud | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-code | code | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-design | design | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-data | data | public-marketplace-and-embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-security | security | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-research | research | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-automation | automation | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
-| seis-product | product | embedded-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis | governance | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-cloud | cloud | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-code | code | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-design | design | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-data | data | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-security | security | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-research | research | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-automation | automation | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
+| seis-product | product | embedded-retained-source-module | 0.3.0+codex.20260712 | seis-ai-agent@seis-repo |
 
 ## Canonical Alias Resolution
 
@@ -59,7 +59,7 @@
 - Preserved legacy aliases: 5
 - Personal marketplace mutation: no
 
-## Single Public Install
+## Canonical Default Install
 
 - Suite file: plugins/seis-ai-agent/assets/unified-suite.json
 - Release version: 0.3.0+codex.20260712
@@ -70,11 +70,13 @@
 ## Public SEIS Repo Marketplace
 
 - Marketplace: seis-repo
-- Total entries: 381
-- Canonical orchestrator entries: 1
-- Migrated root package entries: 5
-- App package entries: 75
-- Objective-derived topic entries: 300
+- Total cards: 34
+- Canonical orchestrator cards: 1
+- Optional bundle cards: 33 (6 application + 27 topic)
+- Retained source capabilities: 380 (5 root + 75 application + 300 topic)
+- Exact-once bundled sources: 375 (verified)
+- Maximum bundle size: 15
+- Separate source cards: no
 
 ## Independent Runner Evidence
 

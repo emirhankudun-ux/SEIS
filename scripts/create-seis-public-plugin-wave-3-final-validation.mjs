@@ -9,7 +9,17 @@ const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-3-final-validation.json";
 const SELECTED_CAPABILITY = "seis-swift-concurrency-audit";
-const EXPECTED_PUBLIC_CARD_COUNT = APP_PLUGIN_EXPANSION_TARGET + 306;
+const CURRENT_DISTRIBUTION = Object.freeze({
+  publicCardCount: 34,
+  canonicalCardCount: 1,
+  bundleCardCount: 33,
+  applicationBundleCardCount: 6,
+  topicBundleCardCount: 27,
+  rootSourceModuleCount: 5,
+  applicationSourcePackageCount: 75,
+  topicSourcePackageCount: 300,
+  retainedSourcePackageCount: 380,
+});
 const PRIOR_FEATURE_CHECKPOINT = "7382fdb448f20c33b7cd29a3efee33b31798743d";
 const PATHS = Object.freeze({
   wave3Program: "content/development/seis-public-plugin-wave-3-program.json",
@@ -66,6 +76,10 @@ function buildRecord() {
   const selectedCardEntries = cards.filter((entry) => entry?.name === SELECTED_CAPABILITY);
   const selectedMatrixEntries = list(matrix.plugins).filter((entry) => entry?.name === SELECTED_CAPABILITY);
   const selectedMcpEntries = list(mcpPermission.records).filter((entry) => entry?.name === SELECTED_CAPABILITY);
+  const selectedCapabilityRetainedByCuratedProjection = selectedCardEntries.length === 0
+    && cards.length === CURRENT_DISTRIBUTION.publicCardCount
+    && cards.some((entry) => entry?.name === "seis-ai-agent" && entry?.source?.path === "./plugins/seis-ai-agent")
+    && isCurrentMarketplaceProjection(capabilityDecision.currentMarketplaceProjection);
   const inputSafetyScan = scanPublicSafeInputs(Object.values(PATHS));
   const record = {
     schemaVersion: 1,
@@ -93,7 +107,8 @@ function buildRecord() {
         && capabilityDecision.status === "approved-public-local-implementation"
         && capabilityDecision.decision?.selectedCapability === SELECTED_CAPABILITY
         && capabilityDecision.decision?.implementationStarted === true
-        && capabilityDecision.decision?.additionalPublicCardAdded === true,
+        && capabilityDecision.decision?.historicalAdditionalDirectCardAddedAtExecution === true
+        && isCurrentMarketplaceProjection(capabilityDecision.currentMarketplaceProjection),
       priorReadiness: handoffReadiness.id === "seis-public-plugin-wave-3-handoff-readiness"
         && handoffReadiness.status === "completed-repository-local-handoff-readiness"
         && handoffReadiness.step === 80
@@ -104,11 +119,12 @@ function buildRecord() {
         && round4Review.status === "completed-repository-local-round-review",
       selectedPackage: pluginManifest.name === SELECTED_CAPABILITY
         && selectedSourceEntries.length === 1
-        && selectedCardEntries.length === 1
+        && selectedCardEntries.length === 0
+        && selectedCapabilityRetainedByCuratedProjection
         && selectedMatrixEntries.length === 1
         && selectedMcpEntries.length === 1
         && plugins.length === APP_PLUGIN_EXPANSION_TARGET
-        && cards.length === EXPECTED_PUBLIC_CARD_COUNT
+        && cards.length === CURRENT_DISTRIBUTION.publicCardCount
         && matrix.pluginCount === APP_PLUGIN_EXPANSION_TARGET
         && matrix.failureCount === 0,
       staticAudit: auditEvidence.status === "attention-public-static-concurrency-evidence"
@@ -184,6 +200,30 @@ function buildRecord() {
   };
   validateRecord(record);
   return record;
+}
+
+function isCurrentMarketplaceProjection(projection) {
+  return projection?.projectionModel === "curated-bundle-cards"
+    && projection?.distributionMode === "curated-bounded-public-bundles"
+    && projection?.marketplaceName === "seis-repo"
+    && projection?.marketplaceDisplayName === "SEIS Repo"
+    && projection?.publicCardCount === CURRENT_DISTRIBUTION.publicCardCount
+    && projection?.canonicalCardCount === CURRENT_DISTRIBUTION.canonicalCardCount
+    && projection?.bundleCardCount === CURRENT_DISTRIBUTION.bundleCardCount
+    && projection?.applicationBundleCardCount === CURRENT_DISTRIBUTION.applicationBundleCardCount
+    && projection?.topicBundleCardCount === CURRENT_DISTRIBUTION.topicBundleCardCount
+    && projection?.sourceCapabilityInventory?.rootSourceModuleCount === CURRENT_DISTRIBUTION.rootSourceModuleCount
+    && projection?.sourceCapabilityInventory?.applicationSourcePackageCount === CURRENT_DISTRIBUTION.applicationSourcePackageCount
+    && projection?.sourceCapabilityInventory?.topicSourcePackageCount === CURRENT_DISTRIBUTION.topicSourcePackageCount
+    && projection?.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_DISTRIBUTION.retainedSourcePackageCount
+    && projection?.sourceCapabilityInventory?.sourcePackagesDeleted === false
+    && projection?.selectedApplicationCapability?.id === SELECTED_CAPABILITY
+    && projection?.selectedApplicationCapability?.retainedSource === true
+    && projection?.selectedApplicationCapability?.directMarketplaceCardRequired === false
+    && projection?.selectedApplicationCapability?.directMarketplaceCardCount === 0
+    && projection?.selectedApplicationCapability?.bundleCardCount === 1
+    && projection?.selectedApplicationCapability?.bundleId === "seis-application-bundle-06"
+    && projection?.selectedApplicationCapability?.bundleFamily === "application";
 }
 
 function validateRecord(record) {

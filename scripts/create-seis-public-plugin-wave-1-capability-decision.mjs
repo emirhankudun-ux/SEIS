@@ -3,12 +3,19 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import {
+  buildWave1MarketplaceCompatibility,
+  WAVE_1_SELECTED_CAPABILITY,
+} from "./lib/seis-wave-1-marketplace-compatibility.mjs";
+
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-1-capability-decision.json";
-const PLUGIN_ID = "seis-evidence-index";
+const PLUGIN_ID = WAVE_1_SELECTED_CAPABILITY;
 const SOURCE_MANIFEST_PATH = "apps/seis-core/data/seis-core-plugin-sources.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
+const PUBLIC_FAMILY_PATH = "content/development/seis-public-plugin-family.json";
+const BUNDLE_CATALOG_PATH = "content/development/seis-public-plugin-bundle-catalog.json";
 
 const record = buildRecord();
 const expected = JSON.stringify(record, null, 2) + "\n";
@@ -27,19 +34,26 @@ if (CHECK_MODE) {
 function buildRecord() {
   const sourceManifest = readJson(SOURCE_MANIFEST_PATH);
   const marketplace = readJson(MARKETPLACE_PATH);
+  const publicFamily = readJson(PUBLIC_FAMILY_PATH);
+  const bundleCatalog = readJson(BUNDLE_CATALOG_PATH);
   const sourceEntry = (sourceManifest.plugins || []).find((plugin) => plugin?.name === PLUGIN_ID);
-  const marketplaceEntry = (marketplace.plugins || []).find((plugin) => plugin?.name === PLUGIN_ID);
-  assert(sourceEntry, "selected capability must exist in the app-owned source manifest");
-  assert(marketplaceEntry?.source?.path === "./plugins/seis-core/" + PLUGIN_ID, "selected capability must have one public SEIS Repo marketplace card");
-  assert(marketplace.name === "seis-repo" && marketplace.interface?.displayName === "SEIS Repo", "public marketplace identity is invalid");
+  const compatibility = buildWave1MarketplaceCompatibility({
+    marketplace,
+    publicFamily,
+    sourceManifest,
+    bundleCatalog,
+    selectedCapability: PLUGIN_ID,
+  });
 
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-plugin-wave-1-capability-decision",
     goalId: "SEIS-GOAL-021",
     backlogId: "SEIS-BL-021",
     generatedAt: "2026-07-21",
     status: "approved-public-local-implementation",
+    historicalWave1Snapshot: compatibility.historicalWave1Snapshot,
+    currentMarketplaceProjection: compatibility.currentMarketplaceProjection,
     decision: {
       selectedCapability: PLUGIN_ID,
       displayName: "SEIS Evidence Index",
@@ -137,19 +151,26 @@ function buildRecord() {
       sourcePath: "plugins/seis-core/" + PLUGIN_ID,
       sourceManifest: SOURCE_MANIFEST_PATH,
       marketplacePath: MARKETPLACE_PATH,
+      bundleCatalogPath: BUNDLE_CATALOG_PATH,
       entrypoint: sourceEntry.entrypoint,
       releaseTrainVersion: sourceEntry.releaseTrainVersion,
       releaseSemver: sourceEntry.version,
       implementationState: sourceEntry.implementationState,
+      currentMarketplacePresentation: "retained-source-through-bundle-card",
+      currentBundleId: compatibility.currentMarketplaceProjection.selectedApplicationCapability.bundleId,
+      currentBundleSourcePath: compatibility.currentMarketplaceProjection.selectedApplicationCapability.bundleSourcePath,
+      directMarketplaceCardRequired: false,
     },
     validation: [
       "plugin-creator structural validation for plugins/seis-core/seis-evidence-index",
       "node --test plugins/seis-core/test/evidence-index.test.mjs",
       "node scripts/create-seis-evidence-index.mjs --check",
+      "npm run check:seis-public-plugin-bundles",
       "npm run check:seis-repo-marketplace",
     ],
     rollback: {
-      strategy: "revert the focused package, one marketplace card, the capability decision record, and generated outputs together",
+      historicalWave1Strategy: "At the Wave 1 handoff, revert the focused package, its direct marketplace card, the capability decision record, and generated outputs together.",
+      currentCompatibilityStrategy: "Revert this compatibility update and regenerate the curated bundle projection; do not restore hundreds of direct source cards.",
       dataMigrationRequired: false,
       externalCleanupRequired: false,
       releaseClaimRollback: "No external installation or release claim is created by this local package.",
@@ -161,8 +182,12 @@ function buildRecord() {
 
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-1-capability-decision", "decision id is invalid");
+  assert(record.schemaVersion === 2, "schema version is invalid");
   assert(record.goalId === "SEIS-GOAL-021" && record.backlogId === "SEIS-BL-021", "goal linkage is invalid");
   assert(record.decision?.selectedCapability === PLUGIN_ID, "selected capability is invalid");
+  assert(record.historicalWave1Snapshot?.projectionModel === "direct-source-cards" && record.historicalWave1Snapshot?.publicCardCount === 377 && record.historicalWave1Snapshot?.applicationPluginCount === 71 && record.historicalWave1Snapshot?.selectedCapabilityDirectCardCount === 1, "historical Wave 1 marketplace snapshot is invalid");
+  assert(record.currentMarketplaceProjection?.projectionModel === "curated-bundle-cards" && record.currentMarketplaceProjection?.publicCardCount === 34 && record.currentMarketplaceProjection?.bundleCardCount === 33, "current curated marketplace projection is invalid");
+  assert(record.currentMarketplaceProjection?.selectedApplicationCapability?.id === PLUGIN_ID && record.currentMarketplaceProjection?.selectedApplicationCapability?.retainedSource === true && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardRequired === false && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardCount === 0 && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleCardCount === 1, "current selected-capability bundle resolution is invalid");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo", "public marketplace boundary is invalid");
   assert(record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false, "personal marketplace boundary is invalid");
   assert(record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false, "runtime permission boundary is invalid");
@@ -170,6 +195,7 @@ function validateRecord(record) {
   assert(Array.isArray(record.overlapReview) && record.overlapReview.length >= 5, "overlap review is incomplete");
   assert(Array.isArray(record.sourceInputs) && record.sourceInputs.length === 2, "source input contract is incomplete");
   assert(Array.isArray(record.mcpBoundary?.tools) && record.mcpBoundary.tools.length === 3, "MCP tool boundary is incomplete");
+  assert(record.implementation?.currentMarketplacePresentation === "retained-source-through-bundle-card" && record.implementation?.currentBundleId === record.currentMarketplaceProjection.selectedApplicationCapability.bundleId && record.implementation?.directMarketplaceCardRequired === false, "current implementation presentation is invalid");
   assert(!/(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m.test(JSON.stringify(record)), "decision record must not contain machine-specific paths");
 }
 

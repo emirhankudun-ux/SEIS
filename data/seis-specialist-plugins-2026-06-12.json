@@ -9,7 +9,7 @@
     "defaultInstallMode": "single-public-plugin",
     "legacyPersonalMarketplace": "compatibility-mirror-only",
     "standaloneLaneInstallMode": "source-module-only",
-    "marketplacePolicy": "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages"
+    "marketplacePolicy": "seis-agent-is-the-canonical-public-orchestrator-with-curated-bounded-public-bundles"
   },
   "sourceEvidence": [
     "content/development/seis-public-plugin-family.json",

@@ -5,7 +5,7 @@
   "backlogId": "SEIS-BL-021",
   "generatedAt": "2026-07-21",
   "status": "active-project-manifest-governance-evidence",
-  "purpose": "Keep the checked-in SEIS project manifest, app-owned source inventory, canonical ownership, and public SEIS Repo marketplace counts aligned without turning local metadata into a live GitHub, provider, or release claim.",
+  "purpose": "Keep the checked-in SEIS project manifest, retained source inventory, canonical ownership, and curated public SEIS Repo marketplace-card projection aligned without conflating source capabilities with discovery cards or turning local metadata into a live GitHub, provider, or release claim.",
   "portfolioPosition": {
     "nonDuplicative": true,
     "complements": [
@@ -13,7 +13,7 @@
       "seis-public-distribution-audit: public marketplace projection consistency",
       "seis-goal-integrity: goal lifecycle and evidence-hint validation"
     ],
-    "adds": "Cross-file validation for project.ecosystem.yaml ownership, source-of-truth, public-distribution boundary, deny-by-default permissions, and marketplace count declarations."
+    "adds": "Cross-file validation for project.ecosystem.yaml ownership, source-of-truth, public-distribution boundary, deny-by-default permissions, curated marketplace-card declarations, and retained source-capability counts."
   },
   "plugin": {
     "name": "seis-project-manifest-audit",
@@ -30,6 +30,12 @@
   "manifestAuditCompleted": true,
   "overallState": "ready",
   "checks": [
+    {
+      "id": "schema_version",
+      "expected": "2",
+      "observed": true,
+      "line": 1
+    },
     {
       "id": "project.id",
       "expected": "seis-plugin-root",
@@ -109,38 +115,63 @@
       "line": 36
     },
     {
+      "id": "plugin_boundary.direct_repo_distribution.separate_marketplace_cards",
+      "expected": "false",
+      "observed": true,
+      "line": 54
+    },
+    {
+      "id": "plugin_boundary.direct_repo_distribution.source_packages_retained",
+      "expected": "true",
+      "observed": true,
+      "line": 55
+    },
+    {
       "id": "architecture.source_of_truth",
       "expected": "plugins/seis-core",
       "observed": true,
-      "line": 63
+      "line": 72
     },
     {
       "id": "security.default_plugin_permissions.write",
       "expected": "[]",
       "observed": true,
-      "line": 69
+      "line": 78
     },
     {
       "id": "security.default_plugin_permissions.network",
       "expected": "[]",
       "observed": true,
-      "line": 70
+      "line": 79
     },
     {
       "id": "security.default_plugin_permissions.secrets",
       "expected": "[]",
       "observed": true,
-      "line": 71
+      "line": 80
     }
   ],
   "counts": {
-    "declaredMarketplaceEntryCount": 381,
-    "declaredApplicationMarketplaceEntryCount": 75,
-    "sourceManifestPluginCount": 75,
-    "marketplaceApplicationPluginCount": 75,
-    "marketplaceEntryCount": 381,
-    "publicFamilyApplicationPluginCount": 75,
-    "publicFamilyMarketplaceEntryCount": 381
+    "declaredMarketplaceCardCount": 34,
+    "declaredCanonicalCardCount": 1,
+    "declaredBundleCardCount": 33,
+    "declaredApplicationBundleCardCount": 6,
+    "declaredTopicBundleCardCount": 27,
+    "marketplaceCardCount": 34,
+    "marketplaceCanonicalCardCount": 1,
+    "marketplaceBundleCardCount": 33,
+    "marketplaceApplicationBundleCardCount": 6,
+    "marketplaceTopicBundleCardCount": 27,
+    "publicFamilyMarketplaceCardCount": 34,
+    "declaredRetainedSourceCapabilityCount": 380,
+    "declaredMigratedRootSourceCount": 5,
+    "declaredApplicationSourceCount": 75,
+    "declaredTopicSourceCount": 300,
+    "sourceManifestApplicationCount": 75,
+    "publicFamilyRetainedSourceCapabilityCount": 380,
+    "publicFamilyMigratedRootSourceCount": 5,
+    "publicFamilyApplicationSourceCount": 75,
+    "publicFamilyTopicSourceCount": 300
   },
   "findings": [],
   "manualEvidenceRequired": [

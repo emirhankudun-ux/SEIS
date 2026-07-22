@@ -18,7 +18,9 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(result.status, 0, result.stderr);
 
   const cadence = JSON.parse(fs.readFileSync(recordPath, "utf8"));
+  assert.equal(cadence.schemaVersion, 2);
   assert.equal(cadence.status, "active-evidence-led-cadence");
+  assertCurrentAndHistoricalMarketplaceSemantics(cadence);
   assert.equal(cadence.cadence.bootstrap.totalSteps, 30);
   assert.equal(cadence.cadence.bootstrap.roundCount, 5);
   assert.equal(cadence.cadence.bootstrap.stepsPerRound, 6);
@@ -26,7 +28,14 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.cadence.waveSeries.stepsPerWave, 100);
   assert.equal(cadence.cadence.waveSeries.totalPlannedWaveSteps, 500);
   assert.equal(cadence.cadence.waveSeries.activeWave, 5);
-  assert.equal(cadence.cadence.waveSeries.activeWaveState, "wave-5-first-40-steps-completed-step-41-in-progress");
+  assert.equal(cadence.cadence.waveSeries.activeWaveState, "wave-5-first-80-steps-completed-step-81-in-progress");
+  assert.equal(cadence.cadence.afterFiveWaves.completedSeriesStepSize, 100);
+  assert.equal(cadence.cadence.afterFiveWaves.nextWaveCount, 5);
+  assert.equal(cadence.cadence.afterFiveWaves.nextWaveSteps, 200);
+  assert.equal(cadence.cadence.afterFiveWaves.activationState, "active-round-11-plan-and-local-build");
+  assert.equal(cadence.cadence.afterFiveWaves.activationAuthority, "current-user-direction-2026-07-22");
+  assert.equal(cadence.cadence.afterFiveWaves.historicalEvidenceState, "wave-5-first-80-steps-completed-step-81-in-progress");
+  assert.equal(cadence.cadence.afterFiveWaves.historicalWave5CloseoutClaimed, false);
   assert.equal(cadence.waves.length, 5);
   assert.equal(cadence.waves[0].status, "completed");
   assert.equal(cadence.waves[1].status, "completed");
@@ -66,15 +75,19 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.waves[4].candidateReviewPath, "content/development/seis-public-plugin-wave-4-following-wave-review.json");
   assert.equal(cadence.waves[4].activationDecisionPath, "content/development/seis-public-plugin-wave-5-activation-decision.json");
   assert.equal(cadence.waves[4].capabilityEvidencePath, "content/development/seis-plugin-capability-coverage.json");
+  assert.equal(cadence.waves[4].round3CheckpointPath, "content/development/seis-public-plugin-wave-5-round-3-checkpoint.json");
+  assert.equal(cadence.waves[4].consolidationPath, "content/development/seis-public-plugin-consolidation.json");
   assert.equal(cadence.waves[4].selectedCapability, "seis-plugin-capability-coverage");
   assert.equal(cadence.waves[4].implementationApproved, true);
   assert.equal(cadence.waves[4].activationApproved, true);
   assert.equal(cadence.waves[4].implementationStarted, true);
   assert.equal(cadence.waves[4].candidatePackageExists, true);
-  assert.equal(cadence.waves[4].candidatePublicCardExists, true);
-  assert.equal(cadence.waves[4].completedSteps, 40);
-  assert.deepEqual(cadence.waves[4].inProgressSteps, [41]);
-  assert.equal(cadence.waves[4].currentEvidencePath, "content/development/seis-plugin-capability-coverage.json");
+  assert.equal(cadence.waves[4].candidateDirectPublicCardExists, false);
+  assert.equal(typeof cadence.waves[4].candidateBundleId, "string");
+  assert.equal(cadence.waves[4].candidateBundleCardExists, true);
+  assert.equal(cadence.waves[4].completedSteps, 80);
+  assert.deepEqual(cadence.waves[4].inProgressSteps, [81]);
+  assert.equal(cadence.waves[4].currentEvidencePath, "content/development/seis-public-plugin-wave-5-program.json");
   assert.equal(cadence.futureWaveTemplate.steps.length, 100);
   assert.equal(cadence.executionBoundary.personalMarketplaceRead, false);
   assert.equal(cadence.executionBoundary.personalMarketplaceMutation, false);
@@ -82,3 +95,23 @@ test("keeps the requested 30-step bootstrap and five 100-step waves evidence-led
   assert.equal(cadence.executionBoundary.protectedDefaultBranchWrites, false);
   assert.equal(JSON.stringify(cadence).includes(repositoryRoot), false);
 });
+
+function assertCurrentAndHistoricalMarketplaceSemantics(record) {
+  assert.equal(record.historicalWave4DirectCardSnapshot.projectionModel, "direct-source-cards");
+  assert.equal(record.historicalWave4DirectCardSnapshot.publicCardCount, 380);
+  assert.equal(record.historicalWave4DirectCardSnapshot.retainedSourceCapabilityCount, 379);
+  assert.equal(record.historicalWave4DirectCardSnapshot.current, false);
+  assert.equal(record.historicalWave4DirectCardSnapshot.immutableHistoricalEvidence, true);
+  assert.equal(record.currentMarketplaceProjection.publicCardCount, 34);
+  assert.notEqual(record.currentMarketplaceProjection.publicCardCount, 380);
+  assert.notEqual(record.currentMarketplaceProjection.publicCardCount, 381);
+  assert.equal(record.currentMarketplaceProjection.canonicalCardCount, 1);
+  assert.equal(record.currentMarketplaceProjection.bundleCardCount, 33);
+  assert.equal(record.currentMarketplaceProjection.applicationBundleCardCount, 6);
+  assert.equal(record.currentMarketplaceProjection.topicBundleCardCount, 27);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.rootSourceModuleCount, 5);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.applicationSourcePackageCount, 75);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.topicSourcePackageCount, 300);
+  assert.equal(record.currentMarketplaceProjection.sourceCapabilityInventory.retainedSourcePackageCount, 380);
+  assert.equal(record.currentMarketplaceProjection.directSourceCapabilityCardCount, 0);
+}

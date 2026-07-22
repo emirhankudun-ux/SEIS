@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 
 project:
   id: seis-plugin-root
@@ -37,13 +37,22 @@ plugin_boundary:
     source_manifest: apps/seis-core/data/seis-core-plugin-sources.json
     catalog: apps/seis-core/data/seis-core-plugin-catalog.json
     unified_suite: plugins/seis-ai-agent/assets/unified-suite.json
-    marketplace_entry_count: 381
-    migrated_root_marketplace_entry_count: 5
-    application_marketplace_entry_count: 75
-    topic_marketplace_entry_count: 300
+    marketplace_projection:
+      card_count: 34
+      canonical_card_count: 1
+      bundle_card_count: 33
+      application_bundle_card_count: 6
+      topic_bundle_card_count: 27
+    source_capabilities:
+      retained_count: 380
+      migrated_root_count: 5
+      application_count: 75
+      topic_count: 300
+    bundle_catalog: content/development/seis-public-plugin-bundle-catalog.json
     topic_source_root: plugins/seis-topics
     topic_objective_source: content/development/seis-topic-plugin-objective.json
-    separate_marketplace_cards: true
+    separate_marketplace_cards: false
+    source_packages_retained: true
     core_source_owner: false
     future_plugin_path: plugins/seis-core/<plugin-name>
 

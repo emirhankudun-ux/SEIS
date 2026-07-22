@@ -27,5 +27,5 @@ The MCP tools are `seis_public_install_state_status` and
 ## Goal linkage
 
 Use within SEIS-GOAL-021 to keep the public `seis-repo` marketplace transparent:
-every direct card is publicly source-visible, while independent installation and
-release approval remain explicit evidence gates.
+34 curated cards and 380 retained source capabilities remain visibly distinct,
+while independent installation and release approval remain explicit evidence gates.

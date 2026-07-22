@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-4-integration-checkpoint",
   "goalId": "SEIS-GOAL-021",
   "wave": 4,
@@ -7,7 +7,7 @@
   "status": "completed-repository-local-integration-checkpoint",
   "maturity": "prototype",
   "generatedAt": "2026-07-21",
-  "purpose": "Record the completed public-repository integration steps for one bounded static Swift Package topology plugin. This checkpoint reconciles source, catalog, matrix, SEIS Repo card, generated evidence, and deny-by-default permissions without treating repository-local checks as independent installation, SwiftPM, compiler, runtime, provider, deployment, signing, or public-release proof.",
+  "purpose": "Record the completed public-repository integration steps for one bounded static Swift Package topology plugin. This checkpoint preserves the historical direct-card integration while reconciling the retained source through one current curated bundle card, generated evidence, and deny-by-default permissions without treating repository-local checks as independent installation, SwiftPM, compiler, runtime, provider, deployment, signing, or public-release proof.",
   "completedSteps": [
     74,
     75,
@@ -25,19 +25,66 @@
     "sourceManifestRegistered": true,
     "catalogRegistered": true,
     "matrixRegistered": true,
-    "marketplaceCardRegistered": true
+    "currentSourceRetained": true,
+    "currentDirectMarketplaceCard": false,
+    "currentDirectMarketplaceCardCount": 0,
+    "currentDistributionBundleId": "seis-application-bundle-06",
+    "currentDistributionBundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+    "currentDistributionBundleCardPresent": true,
+    "currentDistributionBundleMembershipCount": 1
   },
-  "publicProjection": {
+  "historicalWave4Distribution": {
+    "classification": "immutable-wave-4-direct-card-integration-snapshot",
+    "projectionModel": "direct-source-package-marketplace-cards",
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
     "applicationPluginCount": 74,
     "catalogPluginCount": 74,
     "matrixPluginCount": 74,
-    "matrixFailureCount": 0,
     "publicCardCount": 380,
-    "marketplaceCategory": "Developer",
-    "installationPolicy": "AVAILABLE",
-    "authenticationPolicy": "ON_INSTALL"
+    "selectedCapability": "seis-swift-package-topology",
+    "selectedCapabilityHadDirectMarketplaceCard": true,
+    "marketplaceCardRegisteredAtCheckpoint": true,
+    "marketplaceCategoryAtCheckpoint": "Developer",
+    "installationPolicyAtCheckpoint": "AVAILABLE",
+    "authenticationPolicyAtCheckpoint": "ON_INSTALL",
+    "note": "These counts and direct-card facts are immutable Wave 4 integration history and do not describe the current curated marketplace."
+  },
+  "currentRegistryReconciliation": {
+    "applicationSourceManifestCount": 75,
+    "applicationCatalogCount": 75,
+    "applicationMatrixCount": 75,
+    "matrixFailureCount": 0
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "selectedApplicationCapability": {
+      "id": "seis-swift-package-topology",
+      "retainedSource": true,
+      "sourcePath": "plugins/seis-core/seis-swift-package-topology",
+      "directMarketplaceCardRequired": false,
+      "directMarketplaceCardCount": 0,
+      "bundleCardCount": 1,
+      "bundleId": "seis-application-bundle-06",
+      "bundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+      "bundleFamily": "application"
+    }
   },
   "topologyEvidence": {
     "path": "content/development/seis-swift-package-topology.json",
@@ -125,11 +172,11 @@
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert the focused source package, its one SEIS Repo card, generated topology evidence, integration checkpoint, and aligned projections on the feature branch; no manifest mutation, external state, release, or data migration exists.",
+    "scope": "Revert the focused source package, historical direct-card evidence, current bundle reconciliation, generated topology evidence, integration checkpoint, and aligned projections on the feature branch; no manifest mutation, external state, release, or data migration exists.",
     "dataMigrationRequired": false
   },
   "inputSafetyScan": {
-    "inputCount": 11,
+    "inputCount": 12,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

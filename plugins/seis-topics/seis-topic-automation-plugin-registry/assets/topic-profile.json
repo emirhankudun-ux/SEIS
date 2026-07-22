@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-topic-automation-plugin-registry",
   "displayName": "Plugin Registry",
   "category": "Automation",
@@ -14,6 +14,9 @@
   "status": "public-repository-preview",
   "maturity": "prototype",
   "publicMarketplace": true,
+  "marketplaceDiscoverable": true,
+  "marketplaceCard": false,
+  "marketplaceBundleId": "seis-topic-bundle-04",
   "publicAudience": "everyone",
   "license": "MIT",
   "liveRuntimeStatus": "local-demo-only",

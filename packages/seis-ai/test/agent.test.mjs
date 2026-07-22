@@ -332,13 +332,18 @@ describe("executeTool", () => {
       }),
       "content/development/seis-public-plugin-external-install-proof.json": JSON.stringify({
         id: "seis-public-plugin-external-install-proof",
+        version: 2,
         status: "repo-local-clean-artifact-staged-external-proof-pending",
         decision: "not-ready-for-public-preview",
         publicReleaseAllowed: false,
         repoLocalArtifactStaging: {
           ok: true,
-          stagedPluginCount: 1,
-          stagedManifestCount: 1,
+          stagedMarketplaceCardCount: 34,
+          stagedSourceCapabilityCount: 380,
+          stagedArtifactCount: 414,
+          bundleMembershipExactOnce: true,
+          maximumBundleSize: 15,
+          stagedManifestCount: 414,
           stagedMcpEntryScriptCount: 1,
           excludedSourceArtifactCount: 0,
           disallowedSourceArtifactCount: 0
@@ -1303,8 +1308,13 @@ describe("executeTool", () => {
     assert.equal(payload.externalInstallProof.publicReleaseAllowed, false);
     assert.equal(payload.externalInstallProof.status, "repo-local-clean-artifact-staged-external-proof-pending");
     assert.equal(payload.externalInstallProof.artifactStagingOk, true);
-    assert.equal(payload.externalInstallProof.stagedPluginCount, 1);
-    assert.equal(payload.externalInstallProof.stagedManifestCount, 1);
+    assert.equal(payload.externalInstallProof.schemaVersion, 2);
+    assert.equal(payload.externalInstallProof.stagedMarketplaceCardCount, 34);
+    assert.equal(payload.externalInstallProof.stagedSourceCapabilityCount, 380);
+    assert.equal(payload.externalInstallProof.stagedArtifactCount, 414);
+    assert.equal(payload.externalInstallProof.bundleMembershipExactOnce, true);
+    assert.equal(payload.externalInstallProof.maximumBundleSize, 15);
+    assert.equal(payload.externalInstallProof.stagedManifestCount, 414);
     assert.equal(payload.externalInstallProof.stagedMcpEntryScriptCount, 1);
     assert.equal(payload.externalInstallProof.independentRunnerEvidenceStatus, "pending-independent-clean-runner-or-public-install");
   });

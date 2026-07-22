@@ -1,0 +1,598 @@
+{
+  "schemaVersion": 3,
+  "id": "seis-public-plugin-consolidation",
+  "goalId": "SEIS-GOAL-0024",
+  "parentGoalId": "SEIS-GOAL-021",
+  "status": "implemented-repository-local-not-published",
+  "maturity": "prototype",
+  "generatedAt": "2026-07-22",
+  "purpose": "Keep SEIS Repo discoverable with one canonical public install and 33 curated optional bundle cards, while retaining all source packages and preserving explicit project and category boundaries.",
+  "installationPolicy": {
+    "canonicalInstallId": "seis-ai-agent@seis-repo",
+    "canonicalPluginName": "seis-ai-agent",
+    "defaultInstallMode": "single-public-plugin",
+    "publicDefaultInstallCount": 1,
+    "publicDiscoveryCardsAreDefaultInstalls": false,
+    "userRecommendation": "Install SEIS-Agent by default; choose at most one optional bundle of no more than 15 capabilities when its named journey matches the task.",
+    "bundleMembersAutoInstalled": false
+  },
+  "inventory": {
+    "previousMarketplaceCardCount": 381,
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "retainedRootSourceModuleCount": 5,
+    "applicationSourcePluginCount": 75,
+    "applicationCatalogPluginCount": 75,
+    "topicSourcePluginCount": 300,
+    "retainedSourceCapabilityCount": 380,
+    "categoryCoverage": [
+      {
+        "category": "Artificial Intelligence",
+        "publicCardCount": 3
+      },
+      {
+        "category": "Automation",
+        "publicCardCount": 2
+      },
+      {
+        "category": "Cloud Computing",
+        "publicCardCount": 2
+      },
+      {
+        "category": "Creative Production",
+        "publicCardCount": 2
+      },
+      {
+        "category": "Cybersecurity",
+        "publicCardCount": 2
+      },
+      {
+        "category": "Data",
+        "publicCardCount": 2
+      },
+      {
+        "category": "Design",
+        "publicCardCount": 2
+      },
+      {
+        "category": "Desktop",
+        "publicCardCount": 1
+      },
+      {
+        "category": "Developer",
+        "publicCardCount": 6
+      },
+      {
+        "category": "ELENI-NEFERI",
+        "publicCardCount": 1
+      },
+      {
+        "category": "Graphics",
+        "publicCardCount": 1
+      },
+      {
+        "category": "Knowledge",
+        "publicCardCount": 2
+      },
+      {
+        "category": "PANTECHNOEPISTEMONOESIS",
+        "publicCardCount": 1
+      },
+      {
+        "category": "Project Management",
+        "publicCardCount": 2
+      },
+      {
+        "category": "Security",
+        "publicCardCount": 1
+      },
+      {
+        "category": "SEIS",
+        "publicCardCount": 1
+      },
+      {
+        "category": "Software Engineering",
+        "publicCardCount": 3
+      }
+    ]
+  },
+  "bundlePlan": {
+    "status": "implemented-repository-local-not-published",
+    "maximumBundleSize": 15,
+    "minimumBundleMemberCount": 6,
+    "maximumBundleMemberCount": 15,
+    "targetMarketplaceCardCount": 34,
+    "projectedCardReduction": 347,
+    "sourcePackagesDeleted": false,
+    "marketplaceProjectionGenerated": true,
+    "bundlePackagesCreated": true,
+    "sourcePackagesRetained": true,
+    "exactOnceCoverage": true,
+    "applicationBundles": [
+      {
+        "id": "seis-application-bundle-01",
+        "journeyId": "ai-data",
+        "journeyLabel": "AI and Data",
+        "journeyPart": 1,
+        "journeyPartCount": 1,
+        "memberCount": 14,
+        "categoryLabels": [
+          "AI",
+          "Data"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-application-bundle-01"
+      },
+      {
+        "id": "seis-application-bundle-02",
+        "journeyId": "product-design-operations",
+        "journeyLabel": "Product Design and Operations",
+        "journeyPart": 1,
+        "journeyPartCount": 1,
+        "memberCount": 9,
+        "categoryLabels": [
+          "Design",
+          "Observability",
+          "Productivity",
+          "Governance"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-application-bundle-02"
+      },
+      {
+        "id": "seis-application-bundle-03",
+        "journeyId": "security",
+        "journeyLabel": "Security",
+        "journeyPart": 1,
+        "journeyPartCount": 1,
+        "memberCount": 11,
+        "categoryLabels": [
+          "Security"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-application-bundle-03"
+      },
+      {
+        "id": "seis-application-bundle-04",
+        "journeyId": "developer-engineering",
+        "journeyLabel": "Developer Engineering",
+        "journeyPart": 1,
+        "journeyPartCount": 3,
+        "memberCount": 14,
+        "categoryLabels": [
+          "Developer"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-application-bundle-04"
+      },
+      {
+        "id": "seis-application-bundle-05",
+        "journeyId": "developer-engineering",
+        "journeyLabel": "Developer Engineering",
+        "journeyPart": 2,
+        "journeyPartCount": 3,
+        "memberCount": 14,
+        "categoryLabels": [
+          "Developer"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-application-bundle-05"
+      },
+      {
+        "id": "seis-application-bundle-06",
+        "journeyId": "developer-engineering",
+        "journeyLabel": "Developer Engineering",
+        "journeyPart": 3,
+        "journeyPartCount": 3,
+        "memberCount": 13,
+        "categoryLabels": [
+          "Developer"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-application-bundle-06"
+      }
+    ],
+    "topicBundles": [
+      {
+        "id": "seis-topic-bundle-01",
+        "journeyId": "artificial-intelligence",
+        "journeyLabel": "Artificial Intelligence",
+        "journeyPart": 1,
+        "journeyPartCount": 3,
+        "memberCount": 12,
+        "categoryLabels": [
+          "Artificial Intelligence"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-01"
+      },
+      {
+        "id": "seis-topic-bundle-02",
+        "journeyId": "artificial-intelligence",
+        "journeyLabel": "Artificial Intelligence",
+        "journeyPart": 2,
+        "journeyPartCount": 3,
+        "memberCount": 12,
+        "categoryLabels": [
+          "Artificial Intelligence"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-02"
+      },
+      {
+        "id": "seis-topic-bundle-03",
+        "journeyId": "artificial-intelligence",
+        "journeyLabel": "Artificial Intelligence",
+        "journeyPart": 3,
+        "journeyPartCount": 3,
+        "memberCount": 11,
+        "categoryLabels": [
+          "Artificial Intelligence"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-03"
+      },
+      {
+        "id": "seis-topic-bundle-04",
+        "journeyId": "automation",
+        "journeyLabel": "Automation",
+        "journeyPart": 1,
+        "journeyPartCount": 2,
+        "memberCount": 9,
+        "categoryLabels": [
+          "Automation"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-04"
+      },
+      {
+        "id": "seis-topic-bundle-05",
+        "journeyId": "automation",
+        "journeyLabel": "Automation",
+        "journeyPart": 2,
+        "journeyPartCount": 2,
+        "memberCount": 8,
+        "categoryLabels": [
+          "Automation"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-05"
+      },
+      {
+        "id": "seis-topic-bundle-06",
+        "journeyId": "cloud-computing",
+        "journeyLabel": "Cloud Computing",
+        "journeyPart": 1,
+        "journeyPartCount": 2,
+        "memberCount": 13,
+        "categoryLabels": [
+          "Cloud Computing"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-06"
+      },
+      {
+        "id": "seis-topic-bundle-07",
+        "journeyId": "cloud-computing",
+        "journeyLabel": "Cloud Computing",
+        "journeyPart": 2,
+        "journeyPartCount": 2,
+        "memberCount": 12,
+        "categoryLabels": [
+          "Cloud Computing"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-07"
+      },
+      {
+        "id": "seis-topic-bundle-08",
+        "journeyId": "creative-production",
+        "journeyLabel": "Creative Production",
+        "journeyPart": 1,
+        "journeyPartCount": 2,
+        "memberCount": 9,
+        "categoryLabels": [
+          "Creative Production"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-08"
+      },
+      {
+        "id": "seis-topic-bundle-09",
+        "journeyId": "creative-production",
+        "journeyLabel": "Creative Production",
+        "journeyPart": 2,
+        "journeyPartCount": 2,
+        "memberCount": 8,
+        "categoryLabels": [
+          "Creative Production"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-09"
+      },
+      {
+        "id": "seis-topic-bundle-10",
+        "journeyId": "cybersecurity",
+        "journeyLabel": "Cybersecurity",
+        "journeyPart": 1,
+        "journeyPartCount": 2,
+        "memberCount": 11,
+        "categoryLabels": [
+          "Cybersecurity"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-10"
+      },
+      {
+        "id": "seis-topic-bundle-11",
+        "journeyId": "cybersecurity",
+        "journeyLabel": "Cybersecurity",
+        "journeyPart": 2,
+        "journeyPartCount": 2,
+        "memberCount": 10,
+        "categoryLabels": [
+          "Cybersecurity"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-11"
+      },
+      {
+        "id": "seis-topic-bundle-12",
+        "journeyId": "data",
+        "journeyLabel": "Data",
+        "journeyPart": 1,
+        "journeyPartCount": 2,
+        "memberCount": 10,
+        "categoryLabels": [
+          "Data"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-12"
+      },
+      {
+        "id": "seis-topic-bundle-13",
+        "journeyId": "data",
+        "journeyLabel": "Data",
+        "journeyPart": 2,
+        "journeyPartCount": 2,
+        "memberCount": 10,
+        "categoryLabels": [
+          "Data"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-13"
+      },
+      {
+        "id": "seis-topic-bundle-14",
+        "journeyId": "design",
+        "journeyLabel": "Design",
+        "journeyPart": 1,
+        "journeyPartCount": 2,
+        "memberCount": 11,
+        "categoryLabels": [
+          "Design"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-14"
+      },
+      {
+        "id": "seis-topic-bundle-15",
+        "journeyId": "design",
+        "journeyLabel": "Design",
+        "journeyPart": 2,
+        "journeyPartCount": 2,
+        "memberCount": 10,
+        "categoryLabels": [
+          "Design"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-15"
+      },
+      {
+        "id": "seis-topic-bundle-16",
+        "journeyId": "desktop",
+        "journeyLabel": "Desktop",
+        "journeyPart": 1,
+        "journeyPartCount": 1,
+        "memberCount": 11,
+        "categoryLabels": [
+          "Desktop"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-16"
+      },
+      {
+        "id": "seis-topic-bundle-17",
+        "journeyId": "eleni-neferi",
+        "journeyLabel": "ELENI-NEFERI",
+        "journeyPart": 1,
+        "journeyPartCount": 1,
+        "memberCount": 15,
+        "categoryLabels": [
+          "ELENI-NEFERI"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-17"
+      },
+      {
+        "id": "seis-topic-bundle-18",
+        "journeyId": "graphics",
+        "journeyLabel": "Graphics",
+        "journeyPart": 1,
+        "journeyPartCount": 1,
+        "memberCount": 13,
+        "categoryLabels": [
+          "Graphics"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-18"
+      },
+      {
+        "id": "seis-topic-bundle-19",
+        "journeyId": "knowledge",
+        "journeyLabel": "Knowledge",
+        "journeyPart": 1,
+        "journeyPartCount": 2,
+        "memberCount": 13,
+        "categoryLabels": [
+          "Knowledge"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-19"
+      },
+      {
+        "id": "seis-topic-bundle-20",
+        "journeyId": "knowledge",
+        "journeyLabel": "Knowledge",
+        "journeyPart": 2,
+        "journeyPartCount": 2,
+        "memberCount": 12,
+        "categoryLabels": [
+          "Knowledge"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-20"
+      },
+      {
+        "id": "seis-topic-bundle-21",
+        "journeyId": "pantechnoepistemonoesis",
+        "journeyLabel": "PANTECHNOEPISTEMONOESIS",
+        "journeyPart": 1,
+        "journeyPartCount": 1,
+        "memberCount": 6,
+        "categoryLabels": [
+          "PANTECHNOEPISTEMONOESIS"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-21"
+      },
+      {
+        "id": "seis-topic-bundle-22",
+        "journeyId": "project-management",
+        "journeyLabel": "Project Management",
+        "journeyPart": 1,
+        "journeyPartCount": 2,
+        "memberCount": 9,
+        "categoryLabels": [
+          "Project Management"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-22"
+      },
+      {
+        "id": "seis-topic-bundle-23",
+        "journeyId": "project-management",
+        "journeyLabel": "Project Management",
+        "journeyPart": 2,
+        "journeyPartCount": 2,
+        "memberCount": 8,
+        "categoryLabels": [
+          "Project Management"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-23"
+      },
+      {
+        "id": "seis-topic-bundle-24",
+        "journeyId": "seis",
+        "journeyLabel": "SEIS",
+        "journeyPart": 1,
+        "journeyPartCount": 1,
+        "memberCount": 13,
+        "categoryLabels": [
+          "SEIS"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-24"
+      },
+      {
+        "id": "seis-topic-bundle-25",
+        "journeyId": "software-engineering",
+        "journeyLabel": "Software Engineering",
+        "journeyPart": 1,
+        "journeyPartCount": 3,
+        "memberCount": 15,
+        "categoryLabels": [
+          "Software Engineering"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-25"
+      },
+      {
+        "id": "seis-topic-bundle-26",
+        "journeyId": "software-engineering",
+        "journeyLabel": "Software Engineering",
+        "journeyPart": 2,
+        "journeyPartCount": 3,
+        "memberCount": 15,
+        "categoryLabels": [
+          "Software Engineering"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-26"
+      },
+      {
+        "id": "seis-topic-bundle-27",
+        "journeyId": "software-engineering",
+        "journeyLabel": "Software Engineering",
+        "journeyPart": 3,
+        "journeyPartCount": 3,
+        "memberCount": 14,
+        "categoryLabels": [
+          "Software Engineering"
+        ],
+        "sourcePath": "./plugins/seis-bundles/seis-topic-bundle-27"
+      }
+    ],
+    "userExperienceRule": "One canonical install remains the default. Optional bundles are named by user journey or topic boundary and are never silently installed together."
+  },
+  "identityBoundaries": {
+    "mergeProducts": false,
+    "protectedTopicCategories": [
+      "ELENI-NEFERI",
+      "PANTECHNOEPISTEMONOESIS",
+      "SEIS"
+    ],
+    "rule": "SEIS, Eleni-Neferi, and Pantechnoesis remain distinct product identities; marketplace bundling changes discovery only."
+  },
+  "consolidationReview": {
+    "exactNormalizedProfileGroupCount": 3,
+    "exactProfileCandidatePluginCount": 8,
+    "maximumCandidateGroupSize": 3,
+    "candidateNamesReturned": false,
+    "automaticPhysicalMerge": false,
+    "physicalMergePerformed": false,
+    "requiredBeforeSourceMerge": [
+      "Behavior and compatibility review",
+      "Canonical owner and redirect decision",
+      "Focused rollback and migration plan",
+      "Current human approval"
+    ]
+  },
+  "evidence": {
+    "publicFamily": "content/development/seis-public-plugin-family.json",
+    "unifiedSuite": "plugins/seis-ai-agent/assets/unified-suite.json",
+    "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
+    "catalog": "apps/seis-core/data/seis-core-plugin-catalog.json",
+    "marketplace": ".agents/plugins/marketplace.json",
+    "bundleCatalog": "content/development/seis-public-plugin-bundle-catalog.json",
+    "goal": "goals/active/SEIS-GOAL-0024--curated-public-plugin-capability-packages.yaml"
+  },
+  "checks": {
+    "goalRecord": true,
+    "publicFamily": true,
+    "unifiedSuite": true,
+    "marketplaceProjection": true,
+    "exactSourceCoverage": true,
+    "bundleShape": true,
+    "protectedProjectBoundaries": true,
+    "bundlePackageArtifacts": true,
+    "retainedSourceDirectories": true,
+    "boundedMergeReview": true,
+    "permissionBoundary": true
+  },
+  "validation": [
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-consolidation",
+    "node --test plugins/seis-core/test/public-plugin-bundles.test.mjs",
+    "node --test plugins/seis-core/test/public-plugin-consolidation.test.mjs",
+    "npm run check:seis-repo-marketplace",
+    "git diff --check"
+  ],
+  "publicBoundary": {
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicAudience": "everyone",
+    "personalMarketplaceRead": false,
+    "personalMarketplaceMutation": false,
+    "network": false,
+    "externalWrites": false,
+    "secrets": false,
+    "protectedDefaultBranchWrites": false,
+    "publicReleaseAllowed": false
+  },
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "signing": false,
+    "publicRelease": false,
+    "githubPush": false
+  },
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the focused marketplace projection, generated bundle packages, and evidence record. The canonical SEIS-Agent package and every retained source package remain intact.",
+    "dataMigrationRequired": false
+  }
+}

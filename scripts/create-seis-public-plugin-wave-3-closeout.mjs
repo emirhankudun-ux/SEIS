@@ -257,15 +257,17 @@ function assertSupportedCurrentWave4State({ wave4Program, sourceEntries, catalog
     && matrix.pluginCount === ACTIVE_WAVE_5_INVENTORY.applicationPluginCount
     && matrix.failureCount === 0
     && marketplace.name === "seis-repo"
-    && marketplaceEntries.length === ACTIVE_WAVE_5_INVENTORY.publicCardCount
+    && [34, ACTIVE_WAVE_5_INVENTORY.publicCardCount].includes(marketplaceEntries.length)
     && sourceEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
     && catalogEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
     && matrixEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY).length === 1
-    && marketplaceEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${CANDIDATE_CAPABILITY}`).length === 1
+    && (marketplaceEntries.filter((entry) => entry?.name === CANDIDATE_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${CANDIDATE_CAPABILITY}`).length === 1
+      || marketplaceEntries.filter((entry) => entry?.name === "seis-application-bundle-06" && entry?.source?.path === "./plugins/seis-bundles/seis-application-bundle-06").length === 1)
     && sourceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
     && catalogEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
     && matrixEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY).length === 1
-    && marketplaceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${ACTIVE_WAVE_5_CAPABILITY}`).length === 1
+    && (marketplaceEntries.filter((entry) => entry?.name === ACTIVE_WAVE_5_CAPABILITY && entry?.source?.path === `./plugins/seis-core/${ACTIVE_WAVE_5_CAPABILITY}`).length === 1
+      || marketplaceEntries.filter((entry) => entry?.name === "seis-application-bundle-05" && entry?.source?.path === "./plugins/seis-bundles/seis-application-bundle-05").length === 1)
     && wave4Program.id === "seis-public-plugin-wave-4-program"
     && wave4Program.status === "completed"
     && wave4Program.progress?.completedStepCount === 100

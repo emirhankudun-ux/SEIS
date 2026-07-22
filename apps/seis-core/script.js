@@ -2108,16 +2108,19 @@ async function loadSeisCorePluginArtifact() {
     const artifact = await response.json();
     if (
       artifact.sourceRoot !== "plugins/seis-core" ||
-      artifact.counts?.discovered !== 66 ||
+      artifact.counts?.discovered !== 75 ||
       artifact.distribution?.repository !== "SEIS" ||
       artifact.distribution?.sourceAvailableInRepository !== true ||
       artifact.distribution?.publicRepositoryAvailable !== true ||
       artifact.distribution?.publicAudience !== "everyone" ||
-      artifact.distribution?.distributionScope !== "direct-repository-source" ||
+      artifact.distribution?.distributionScope !== "curated-bounded-public-bundles" ||
       artifact.distribution?.installSurface !== "repo-source-app" ||
       artifact.distribution?.marketplaceName !== "seis-repo" ||
       artifact.distribution?.publicMarketplace !== true ||
-      artifact.distribution?.marketplaceEntryCount !== 66 ||
+      artifact.distribution?.marketplaceEntryCount !== 6 ||
+      artifact.distribution?.marketplaceCardCount !== 34 ||
+      artifact.distribution?.sourceCapabilityCount !== 75 ||
+      artifact.distribution?.separateMarketplaceCards !== false ||
       artifact.distribution?.coreSourceOwner !== false ||
       !Array.isArray(artifact.plugins)
     ) {

@@ -5,7 +5,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
-const GENERATED_AT = "2026-07-20";
+const GENERATED_AT = "2026-07-22";
 const OUTPUT_PATH = "content/development/seis-public-runtime-status.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
 const FAMILY_PATH = "content/development/seis-public-plugin-family.json";
@@ -32,26 +32,35 @@ function buildState() {
   const installState = readJson(INSTALL_STATE_PATH);
   const cards = array(marketplace.plugins);
   const canonicalCards = array(family.publicPlugins);
-  const rootCards = array(family.migratedRootPlugins);
-  const applicationCards = array(family.applicationPlugins);
-  const topicCards = array(family.topicPlugins);
-  const expectedCardCount = canonicalCards.length + rootCards.length + applicationCards.length + topicCards.length;
-  const runtimeStatusCard = cards.find((card) => card?.name === "seis-public-runtime-status");
+  const bundleCards = array(family.bundlePackages);
+  const applicationBundleCards = bundleCards.filter((bundle) => bundle?.family === "application");
+  const topicBundleCards = bundleCards.filter((bundle) => bundle?.family === "topic");
+  const rootCapabilities = array(family.migratedRootPlugins);
+  const applicationCapabilities = array(family.applicationPlugins);
+  const topicCapabilities = array(family.topicPlugins);
+  const expectedCardCount = canonicalCards.length + bundleCards.length;
+  const expectedSourceCapabilityCount = rootCapabilities.length + applicationCapabilities.length + topicCapabilities.length;
+  const runtimeStatusBundle = findCapabilityBundle(bundleCards, "seis-public-runtime-status");
+  const runtimeStatusCard = cards.find((card) => card?.name === runtimeStatusBundle?.id);
 
   assert(marketplace.name === "seis-repo", "marketplace must be seis-repo");
   assert(marketplace.interface?.displayName === "SEIS Repo", "marketplace display name must be SEIS Repo");
   assert(cards.length === expectedCardCount, "marketplace card count must match the public plugin family");
+  assert(cardsMatchProjection(cards, family.marketplace?.entries), "marketplace cards must match the curated family projection");
   assert(cardsHavePublicSource(cards), "every marketplace card must retain a bounded public repository source");
   assert(family.marketplace?.publicPluginCount === expectedCardCount, "public plugin family card count must match the marketplace");
-  assert(family.marketplace?.applicationPluginCount === applicationCards.length, "public plugin family application count must match the marketplace");
+  assert(family.marketplace?.bundlePluginCount === bundleCards.length, "public plugin family bundle count must match the marketplace");
+  assert(family.marketplace?.sourceCapabilityCount === expectedSourceCapabilityCount, "public plugin family source capability count must match the retained inventory");
   assert(installState.publicCards?.count === expectedCardCount, "public install state card count must match the marketplace");
-  assert(Boolean(runtimeStatusCard), "marketplace must include seis-public-runtime-status");
-  assert(runtimeStatusCard?.source?.path === "./plugins/seis-core/seis-public-runtime-status", "runtime status card source path is invalid");
+  assert(installState.sourceCapabilities?.count === expectedSourceCapabilityCount, "public install state source capability count must match the retained inventory");
+  assert(Boolean(runtimeStatusBundle), "runtime-status source capability must be covered by a bundle");
+  assert(Boolean(runtimeStatusCard), "marketplace must include the runtime-status capability bundle");
+  assert(runtimeStatusCard?.source?.path === runtimeStatusBundle?.sourcePath, "runtime status bundle card source path is invalid");
   assert(runtimeStatusCard?.policy?.installation === "AVAILABLE", "runtime status card must be available");
   assert(runtimeStatusCard?.policy?.authentication === "ON_INSTALL", "runtime status card authentication is invalid");
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-runtime-status",
     goalId: "SEIS-GOAL-021",
     generatedAt: GENERATED_AT,
@@ -63,6 +72,9 @@ function buildState() {
       displayName: "SEIS Public Runtime Status",
       marketplaceName: "seis-repo",
       sourcePath: "plugins/seis-core/seis-public-runtime-status",
+      distributionMode: "bundled-source-capability",
+      marketplaceCardName: runtimeStatusBundle.id,
+      marketplaceCardSourcePath: runtimeStatusBundle.sourcePath,
       publicAudience: "everyone",
       publicMarketplace: true
     },
@@ -71,12 +83,20 @@ function buildState() {
       marketplaceDisplayName: marketplace.interface?.displayName,
       count: cards.length,
       canonicalOrchestratorCount: canonicalCards.length,
-      migratedRootPluginCount: rootCards.length,
-      applicationPluginCount: applicationCards.length,
-      topicPluginCount: topicCards.length,
+      bundleCardCount: bundleCards.length,
+      applicationBundleCardCount: applicationBundleCards.length,
+      topicBundleCardCount: topicBundleCards.length,
       sourceAvailability: "public-repository-source-available",
       installationPolicy: "AVAILABLE",
       authenticationPolicy: "ON_INSTALL"
+    },
+    sourceCapabilities: {
+      count: expectedSourceCapabilityCount,
+      migratedRootCount: rootCapabilities.length,
+      applicationCount: applicationCapabilities.length,
+      topicCount: topicCapabilities.length,
+      separateMarketplaceCards: false,
+      retentionMode: "repository-source-capabilities-behind-curated-cards"
     },
     observationBoundary: {
       cacheScope: "bounded-seis-repo-cache-manifests-only",
@@ -144,6 +164,21 @@ function cardsHavePublicSource(cards) {
     && card.policy?.installation === "AVAILABLE"
     && card.policy?.authentication === "ON_INSTALL"
   );
+}
+
+function cardsMatchProjection(cards, entries) {
+  const projection = array(entries);
+  if (cards.length !== projection.length) return false;
+  const expected = new Map(projection.map((entry) => [text(entry?.name), text(entry?.sourcePath)]));
+  return expected.size === projection.length && cards.every((card) => expected.get(text(card?.name)) === text(card?.source?.path));
+}
+
+function findCapabilityBundle(bundles, capabilityName) {
+  return bundles.find((bundle) => array(bundle?.members).some((member) => text(member?.name) === capabilityName)) || null;
+}
+
+function text(value) {
+  return typeof value === "string" ? value.trim() : "";
 }
 
 function assert(condition, message) {

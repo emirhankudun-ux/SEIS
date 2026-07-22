@@ -13,17 +13,42 @@
 | Wave 2 | 100 steps / 5 rounds / 20 steps | Completed |
 | Wave 3 | 100 steps / 5 rounds / 20 steps | Completed: 100 repository-local evidence steps |
 | Wave 4 | 100 steps / 5 rounds / 20 steps | Completed: repository-local evidence cycle |
-| Wave 5 | 100 steps / 5 rounds / 20 steps | In progress: steps 1–40 complete; step 41 active |
+| Wave 5 | 100 steps / 5 rounds / 20 steps | In progress: steps 1–80 complete; step 81 active |
 
 The machine-readable cadence is
 `content/development/seis-public-plugin-continuity-cadence.json`. Wave 4 is a
 completed repository-local evidence cycle. Wave 5 is the currently authorized
 public-only cycle: its activation decision, capability-coverage evidence, and
 100-step program record live in `content/development/`. It adds the bounded
-`seis-plugin-capability-coverage` package and its `SEIS Repo` card while
+`seis-plugin-capability-coverage` package and exposes it through exactly one
+curated application bundle card while
 preserving deny-by-default writes, network, and secret permissions. None of
 those records claims independent installation, provider execution, native
 runtime, deployment, or public release.
+
+## Wave 5 Repository-Local Evidence
+
+Steps 41–60 are reconciled by
+`content/development/seis-public-plugin-wave-5-round-3-checkpoint.json`.
+They cover aggregate-only terminology, non-alarming attention wording,
+malformed fixed-projection handling, duplicate-name and count-limit fixtures,
+fixed-root and unavailable-evidence behavior, bounded output vocabularies,
+public-profile permission review, and a repository-local checkpoint. Steps
+61–80 then implement and harden the one-install public consolidation. The next
+active step is 81; it begins the closeout and next-series decision tranche
+without expanding authority or asserting an external runtime.
+
+## Wave 5 Public Bundle Plan
+
+Steps 61–80 have a repository-local consolidation implementation at
+`content/development/seis-public-plugin-consolidation.json`. It preserves one
+canonical `SEIS-Agent` default install and projects a 34-card public
+experience: one canonical card, six application-journey bundles, and 27
+topic-boundary bundles. All 75 application packages and all 300 topic packages
+are represented exactly once in bundles of at most 15 capabilities. Every
+source package remains retained; no physical merge or deletion was performed.
+The projection is repository-local and has not been pushed, published, signed,
+or released.
 
 ## Wave 3 Closeout Evidence
 
@@ -77,20 +102,23 @@ tracked separately so that the Wave 3 historical closeout remains intact.
 
 ## GitHub Delivery Rule
 
-Each validated, reviewable, reversible checkpoint is committed and pushed to
-the current feature branch:
+Each validated, reviewable, reversible checkpoint may be committed to the
+current feature branch:
 
 `plugins/seis-plugin-root-20260715`
 
-Protected default branches are excluded. A GitHub push, repository-local
+Pushes require current action-time authorization and remote verification;
+none is implied by this cadence. Protected default branches are excluded. A GitHub push, repository-local
 validation, or public card is never treated as independent installation,
 native-runtime, provider, deployment, signing, or public-release proof.
 
 ## Continuation After Wave 5
 
-After the five 100-step waves, the next series starts with a new 30-step
-scope, dependency, risk, rollback, and evidence review. That next series
-requires current user authority and is not background execution.
+Round 11 is now the first active 200-step plan-and-local-build cycle under the
+current user direction. The retained Wave 5 evidence remains at 80 completed
+steps with step 81 in progress, so this activation does not fabricate Wave 5
+closeout. It does not imply background execution or authorize external
+delivery.
 
 ## Public Boundary
 
@@ -115,6 +143,8 @@ npm run check:seis-public-plugin-wave-4-program
 npm run check:seis-public-plugin-wave-3-closeout
 npm run check:seis-public-plugin-wave-5-activation-decision
 npm run check:seis-plugin-capability-coverage
+npm run check:seis-public-plugin-wave-5-round-3-checkpoint
+npm run check:seis-public-plugin-consolidation
 npm run check:seis-public-plugin-wave-5-program
 npm run check:seis-public-plugin-expansion-program
 ```

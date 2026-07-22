@@ -7,12 +7,12 @@
   "status": "approved-public-local-wave-5-activation",
   "maturity": "prototype",
   "generatedAt": "2026-07-21",
-  "purpose": "Record the separate user-authorized activation decision for one bounded public SEIS Repo capability-coverage package. This decision approves only repository-local, read-only implementation and does not approve a release, merge, deployment, signing, provider access, personal marketplace access, or protected-default-branch write.",
+  "purpose": "Record the separate user-authorized activation decision for one bounded public SEIS Repo capability-coverage source package and reconcile its current optional bundle projection. This decision approves only repository-local, read-only implementation and does not approve a release, merge, deployment, signing, provider access, personal marketplace access, or protected-default-branch write.",
   "authority": {
     "source": "active-thread-user-continuation-objective",
     "permits": [
       "one fixed-registry public repository package",
-      "one matching SEIS Repo marketplace card",
+      "one exact optional SEIS Repo bundle membership",
       "repository-local validation and feature-branch delivery"
     ],
     "excludes": [
@@ -31,9 +31,11 @@
     "implementationApproved": true,
     "implementationStarted": true,
     "candidatePackageExists": true,
-    "candidatePublicCardExists": true,
+    "candidateDirectPublicCardExists": false,
+    "candidateBundleId": "seis-application-bundle-05",
+    "candidateBundleCardExists": true,
     "publicReleaseApproved": false,
-    "scope": "Read exactly four fixed checked-in public SEIS Repo registry projections and return only derived category counts, normalized capability-token frequencies, and aggregate projection reconciliation counts.",
+    "scope": "Read exactly five fixed checked-in public SEIS Repo registry projections and return only derived category counts, normalized capability-token frequencies, and aggregate projection reconciliation counts.",
     "nonGoals": [
       "Reading or mutating a personal marketplace, arbitrary path, secret, remote service, or external system.",
       "Replacing marketplace integrity, plugin discovery, technology ontology, or canonical registry validation.",
@@ -51,13 +53,15 @@
     "sourcePluginCount": 75,
     "catalogPluginCount": 75,
     "matrixPluginCount": 75,
-    "publicCardCount": 381,
+    "publicCardCount": 34,
     "candidatePresence": {
       "sourceDirectory": true,
       "sourceManifest": true,
       "catalog": true,
       "matrix": true,
-      "marketplaceCard": true
+      "directMarketplaceCardRemoved": true,
+      "bundleMembership": true,
+      "bundleMarketplaceCard": true
     }
   },
   "publicBoundary": {
@@ -74,7 +78,7 @@
   },
   "permissions": {
     "read": [
-      "four fixed checked-in public SEIS Repo registry projections"
+      "five fixed checked-in public SEIS Repo registry projections"
     ],
     "write": [],
     "network": [],
@@ -121,10 +125,11 @@
     "sourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json",
     "catalog": "apps/seis-core/data/seis-core-plugin-catalog.json",
     "matrix": "content/development/seis-core-plugin-matrix.json",
-    "marketplace": ".agents/plugins/marketplace.json"
+    "marketplace": ".agents/plugins/marketplace.json",
+    "bundleCatalog": "content/development/seis-public-plugin-bundle-catalog.json"
   },
   "inputSafetyScan": {
-    "inputCount": 6,
+    "inputCount": 7,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

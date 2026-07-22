@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-topic-seis-seis-9router",
   "displayName": "SEIS 9Router",
   "category": "SEIS",
@@ -14,6 +14,9 @@
   "status": "public-repository-preview",
   "maturity": "prototype",
   "publicMarketplace": true,
+  "marketplaceDiscoverable": true,
+  "marketplaceCard": false,
+  "marketplaceBundleId": "seis-topic-bundle-24",
   "publicAudience": "everyone",
   "license": "MIT",
   "liveRuntimeStatus": "local-demo-only",

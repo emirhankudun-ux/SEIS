@@ -14,6 +14,7 @@ const PATHS = Object.freeze({
   catalog: "apps/seis-core/data/seis-core-plugin-catalog.json",
   matrix: "content/development/seis-core-plugin-matrix.json",
   marketplace: ".agents/plugins/marketplace.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
 });
 const MACHINE_PATH_PATTERN = /(?:^|["'\s])(?:~\/|\/Users\/|\/home\/|[A-Za-z]:[\\/])/m;
 const SECRET_PATTERNS = [
@@ -44,17 +45,22 @@ function buildRecord() {
   const catalog = readJson(PATHS.catalog);
   const matrix = readJson(PATHS.matrix);
   const marketplace = readJson(PATHS.marketplace);
+  const bundleCatalog = readJson(PATHS.bundleCatalog);
   const sourceEntries = list(sourceManifest.plugins);
   const catalogEntries = list(catalog.plugins);
   const matrixEntries = list(matrix.plugins);
   const marketplaceEntries = list(marketplace.plugins);
+  const candidateBundles = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(CANDIDATE));
+  const candidateBundleId = candidateBundles.length === 1 ? candidateBundles[0].id : null;
   const candidateSourcePath = `plugins/seis-core/${CANDIDATE}`;
   const candidatePresence = {
     sourceDirectory: fs.existsSync(path.join(ROOT, candidateSourcePath)),
     sourceManifest: sourceEntries.filter((entry) => entry?.name === CANDIDATE).length === 1,
     catalog: catalogEntries.filter((entry) => entry?.name === CANDIDATE).length === 1,
     matrix: matrixEntries.filter((entry) => entry?.name === CANDIDATE && entry?.ok === true).length === 1,
-    marketplaceCard: marketplaceEntries.filter((entry) => entry?.name === CANDIDATE && entry?.source?.path === `./${candidateSourcePath}`).length === 1,
+    directMarketplaceCardRemoved: marketplaceEntries.filter((entry) => entry?.name === CANDIDATE).length === 0,
+    bundleMembership: candidateBundles.length === 1,
+    bundleMarketplaceCard: Boolean(candidateBundleId && marketplaceEntries.filter((entry) => entry?.name === candidateBundleId && entry?.source?.path === `./plugins/seis-bundles/${candidateBundleId}`).length === 1),
   };
   const record = {
     schemaVersion: 1,
@@ -65,12 +71,12 @@ function buildRecord() {
     status: "approved-public-local-wave-5-activation",
     maturity: "prototype",
     generatedAt: "2026-07-21",
-    purpose: "Record the separate user-authorized activation decision for one bounded public SEIS Repo capability-coverage package. This decision approves only repository-local, read-only implementation and does not approve a release, merge, deployment, signing, provider access, personal marketplace access, or protected-default-branch write.",
+    purpose: "Record the separate user-authorized activation decision for one bounded public SEIS Repo capability-coverage source package and reconcile its current optional bundle projection. This decision approves only repository-local, read-only implementation and does not approve a release, merge, deployment, signing, provider access, personal marketplace access, or protected-default-branch write.",
     authority: {
       source: "active-thread-user-continuation-objective",
       permits: [
         "one fixed-registry public repository package",
-        "one matching SEIS Repo marketplace card",
+        "one exact optional SEIS Repo bundle membership",
         "repository-local validation and feature-branch delivery",
       ],
       excludes: [
@@ -89,9 +95,11 @@ function buildRecord() {
       implementationApproved: true,
       implementationStarted: candidatePresence.sourceDirectory,
       candidatePackageExists: candidatePresence.sourceDirectory,
-      candidatePublicCardExists: candidatePresence.marketplaceCard,
+      candidateDirectPublicCardExists: false,
+      candidateBundleId,
+      candidateBundleCardExists: candidatePresence.bundleMarketplaceCard,
       publicReleaseApproved: false,
-      scope: "Read exactly four fixed checked-in public SEIS Repo registry projections and return only derived category counts, normalized capability-token frequencies, and aggregate projection reconciliation counts.",
+      scope: "Read exactly five fixed checked-in public SEIS Repo registry projections and return only derived category counts, normalized capability-token frequencies, and aggregate projection reconciliation counts.",
       nonGoals: [
         "Reading or mutating a personal marketplace, arbitrary path, secret, remote service, or external system.",
         "Replacing marketplace integrity, plugin discovery, technology ontology, or canonical registry validation.",
@@ -134,7 +142,7 @@ function buildRecord() {
       publicReleaseAllowed: false,
     },
     permissions: {
-      read: ["four fixed checked-in public SEIS Repo registry projections"],
+      read: ["five fixed checked-in public SEIS Repo registry projections"],
       write: [],
       network: [],
       secrets: [],
@@ -184,7 +192,7 @@ function buildRecord() {
 function validateRecord(record) {
   assert(record.id === "seis-public-plugin-wave-5-activation-decision" && record.goalId === "SEIS-GOAL-021" && record.wave === 5 && record.status === "approved-public-local-wave-5-activation" && record.maturity === "prototype", "record identity is invalid");
   assert(record.authority?.source === "active-thread-user-continuation-objective" && list(record.authority?.permits).length === 3 && list(record.authority?.excludes).length === 6, "authority boundary is invalid");
-  assert(record.decision?.selectedCapability === CANDIDATE && record.decision?.activationApproved === true && record.decision?.implementationApproved === true && record.decision?.implementationStarted === true && record.decision?.candidatePackageExists === true && record.decision?.candidatePublicCardExists === true && record.decision?.publicReleaseApproved === false, "activation decision is invalid");
+  assert(record.decision?.selectedCapability === CANDIDATE && record.decision?.activationApproved === true && record.decision?.implementationApproved === true && record.decision?.implementationStarted === true && record.decision?.candidatePackageExists === true && record.decision?.candidateDirectPublicCardExists === false && typeof record.decision?.candidateBundleId === "string" && record.decision?.candidateBundleCardExists === true && record.decision?.publicReleaseApproved === false, "activation decision is invalid");
   assert(Object.values(record.preconditions || {}).every(Boolean), "Wave 5 activation preconditions are not current");
   assert(record.currentProjection?.sourcePluginCount === record.currentProjection?.catalogPluginCount && record.currentProjection?.sourcePluginCount === record.currentProjection?.matrixPluginCount, "registry projections are not reconciled");
   assert(record.publicBoundary?.marketplaceName === "seis-repo" && record.publicBoundary?.marketplaceDisplayName === "SEIS Repo" && record.publicBoundary?.personalMarketplaceRead === false && record.publicBoundary?.personalMarketplaceMutation === false && record.publicBoundary?.network === false && record.publicBoundary?.externalWrites === false && record.publicBoundary?.secrets === false && record.publicBoundary?.protectedDefaultBranchWrites === false && record.publicBoundary?.publicReleaseAllowed === false, "public boundary is invalid");

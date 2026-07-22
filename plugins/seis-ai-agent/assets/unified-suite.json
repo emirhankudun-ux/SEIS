@@ -14,6 +14,7 @@
   },
   "sourceContracts": {
     "publicPluginFamily": "content/development/seis-public-plugin-family.json",
+    "publicBundleCatalog": "content/development/seis-public-plugin-bundle-catalog.json",
     "canonicalization": "content/development/seis-plugin-canonicalization.json",
     "agentManifest": "plugins/seis-ai-agent/.codex-plugin/plugin.json"
   },
@@ -202,7 +203,8 @@
     "uncoveredApplicationSourcePlugins": [],
     "directRepoSourceRoots": [
       "plugins",
-      "plugins/seis-core"
+      "plugins/seis-core",
+      "plugins/seis-bundles"
     ],
     "rule": "Every current or future SEIS plugin manifest must be registered as an embedded module in this single SEIS-Agent suite before it can be treated as a SEIS capability."
   },
@@ -211,9 +213,14 @@
     "publicInstallIds": [
       "seis-ai-agent@seis-repo"
     ],
+    "marketplaceCardCount": 34,
+    "optionalBundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityCount": 380,
     "embeddedModuleCount": 10,
     "applicationOwnedPluginCount": 75,
-    "applicationMarketplacePluginCount": 75,
+    "applicationMarketplacePluginCount": 6,
     "applicationSourceRoot": "plugins/seis-core",
     "applicationSourceManifest": "apps/seis-core/data/seis-core-plugin-sources.json"
   },
@@ -334,10 +341,12 @@
     "sourceAvailableInRepository": true,
     "publicRepositoryAvailable": true,
     "publicAudience": "everyone",
-    "publicDistribution": "direct-repository-source",
+    "publicDistribution": "curated-bounded-public-bundles",
     "marketplaceName": "seis-repo",
     "publicMarketplace": true,
-    "marketplaceEntryCount": 75,
+    "marketplaceEntryCount": 6,
+    "marketplaceCardCount": 34,
+    "sourceCapabilityCount": 380,
     "installSurface": "repo-source-app",
     "executionMode": "task-scoped-local-demo-only",
     "publicReleaseAllowed": false,
@@ -360,12 +369,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-a11y-regression@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local accessibility JSON declarations"
@@ -391,12 +401,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-action-pin-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local workflow files"
@@ -422,12 +433,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-agent-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local agent JSON metadata"
@@ -453,12 +465,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-agent-contract-validator@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local JSON agent contracts"
@@ -484,12 +497,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-apple-native-readiness@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded Swift Package manifest markers",
@@ -517,12 +531,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-approval-gate-review@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -548,12 +563,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-architecture-drift@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -579,12 +595,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-artifact-attestation@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local artifact and provenance evidence"
@@ -610,12 +627,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-branch-protection-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local branch and ruleset policy files"
@@ -641,12 +659,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-canonical-registry-validator@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded JSON registry and catalog projections"
@@ -672,12 +691,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-changelog-validator@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local changelog files"
@@ -703,12 +723,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-codeowners-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local CODEOWNERS files"
@@ -734,12 +755,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-community-health@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local contribution and community documents"
@@ -765,12 +787,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-context-efficiency@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local context usage JSON"
@@ -796,12 +819,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-contract-compatibility@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -827,12 +851,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-contributor-map@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local contributor and ownership JSON"
@@ -858,12 +883,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-cost-latency-budget@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -889,12 +915,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-data-retention-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -920,12 +947,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-dependency-freshness@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local dependency manifests and lockfiles"
@@ -951,12 +979,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-design-token-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local JSON token and theme files"
@@ -982,12 +1011,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-doc-indexer@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local Markdown and text files"
@@ -1013,12 +1043,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-docs-freshness@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local Markdown metadata"
@@ -1044,12 +1075,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-dora-metrics@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local delivery JSON"
@@ -1075,12 +1107,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-download-anomaly@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local download metrics JSON"
@@ -1106,12 +1139,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-evidence-index@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "checked-in Wave 1 evidence index",
@@ -1139,12 +1173,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-focus-navigation-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local HTML, JavaScript, and CSS UI source",
@@ -1171,12 +1206,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-github-metrics-collector@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local recorded GitHub-style metrics"
@@ -1202,12 +1238,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-goal-dependency-map@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-04",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -1233,12 +1270,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-goal-integrity@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded goal files"
@@ -1264,12 +1302,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-issue-triage@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local issue JSON"
@@ -1295,12 +1334,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-license-compatibility@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local package and license files"
@@ -1326,12 +1366,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-localization-coverage@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local locale JSON dictionaries"
@@ -1357,12 +1398,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-maintainer-risk@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local maintainer and activity JSON"
@@ -1388,12 +1430,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-marketplace-integrity@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded public SEIS Repo marketplace manifest",
@@ -1420,12 +1463,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-mcp-inventory@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local MCP and plugin JSON manifests"
@@ -1451,12 +1495,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-mcp-permission@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "fixed public SEIS Repo marketplace, source inventory, and MCP permission ledger contracts"
@@ -1482,12 +1527,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-migration-guide-check@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local migration documentation"
@@ -1513,12 +1559,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-model-fallback@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local route and fallback JSON"
@@ -1544,12 +1591,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-offline-mode-check@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -1575,12 +1623,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-package-adoption@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local package adoption JSON"
@@ -1606,12 +1655,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-performance-budget@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local performance JSON"
@@ -1637,15 +1687,16 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-plugin-capability-coverage@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
-            "four fixed checked-in public SEIS Repo registry projections",
+            "five fixed checked-in public SEIS Repo registry projections",
             "bounded derived category and capability coverage metadata"
           ],
           "write": [],
@@ -1669,12 +1720,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-plugin-discovery@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "SEIS Repo marketplace metadata",
@@ -1701,12 +1753,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-plugin-migration@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "selected local plugin metadata"
@@ -1732,12 +1785,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-pr-cycle-time@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local pull-request JSON"
@@ -1763,12 +1817,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-project-manifest-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "checked-in project manifest",
@@ -1797,12 +1852,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-prompt-injection-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -1828,12 +1884,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-provider-health@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local provider and capability JSON records"
@@ -1859,12 +1916,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-public-distribution-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded public SEIS Repo distribution contracts",
@@ -1891,12 +1949,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-public-install-evidence@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "fixed public SEIS Repo evidence contracts and one designated sanitized evidence record"
@@ -1922,12 +1981,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-public-install-state@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded public SEIS Repo marketplace and install-evidence contracts"
@@ -1953,12 +2013,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-public-runtime-status@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-05",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded public SEIS Repo metadata and declared cache manifests"
@@ -1984,12 +2045,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-public-safe-scan@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local text files and path names"
@@ -2015,12 +2077,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-rag-citation-coverage@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local retrieval JSON records"
@@ -2046,12 +2109,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-release-cadence@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local changelog files"
@@ -2077,12 +2141,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-release-readiness@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "recorded local JSON release-check evidence"
@@ -2108,12 +2173,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-repository-health@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "explicit repository metadata",
@@ -2140,12 +2206,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-repository-scorecard@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local repository metadata"
@@ -2171,12 +2238,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-rollback-readiness@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -2202,12 +2270,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-route-explainer@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "task route parameters"
@@ -2233,12 +2302,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-sbom-generator@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local package manifests and lockfiles"
@@ -2264,12 +2334,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-secret-boundary-scan@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local text files and path names"
@@ -2295,12 +2366,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-semver-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local package.json files"
@@ -2326,12 +2398,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-source-provenance@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded regular files under an explicit workspace"
@@ -2357,12 +2430,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-swift-concurrency-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "two fixed checked-in Swift source roots",
@@ -2389,12 +2463,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-swift-package-topology@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "one fixed checked-in Swift Package manifest",
@@ -2421,12 +2496,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-technology-ontology@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-01",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bundled ontology profile"
@@ -2452,12 +2528,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-test-flakiness@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local test result JSON"
@@ -2483,12 +2560,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-tool-permission-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded SEIS repository evidence"
@@ -2514,12 +2592,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-trusted-marketplace@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded public SEIS marketplace intake contracts",
@@ -2546,12 +2625,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-ui-state-contract-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-02",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local HTML, JavaScript, and CSS UI source",
@@ -2578,12 +2658,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-vulnerability-triage@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local vulnerability JSON reports"
@@ -2609,12 +2690,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-workflow-linter@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local JSON workflow definitions"
@@ -2640,12 +2722,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-workflow-permission-audit@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-03",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "bounded local workflow JSON and YAML-like files"
@@ -2671,12 +2754,13 @@
         "applicationPath": "apps/seis-core",
         "canonicalInstallId": "seis-workspace-inspector@seis-repo",
         "installSurface": "repo-source-app",
-        "publicMarketplace": true,
+        "publicMarketplace": false,
+        "marketplaceBundleId": "seis-application-bundle-06",
         "publicRepositoryAvailable": true,
         "publicAudience": "everyone",
-        "publicStatus": "public-repo-marketplace",
+        "publicStatus": "retained-public-repository-source",
         "publicReleaseAllowed": false,
-        "sourceModuleStatus": "public-application-marketplace-source-module",
+        "sourceModuleStatus": "retained-application-source-module",
         "permissions": {
           "read": [
             "explicit workspace root metadata"
@@ -2743,7 +2827,7 @@
       "validate app catalog status, SEIS AI status, MCP routing, installer plan, and compatibility smoke"
     ],
     "defaultInstallRule": "New SEIS plugins are embedded in seis-ai-agent and must not become separate public plugin or install targets.",
-    "applicationDefaultInstallRule": "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and become available directly from this repository as individual seis-repo marketplace entries without entering packages/seis-ai."
+    "applicationDefaultInstallRule": "New plugins for the user's SEIS Command Center application belong under plugins/seis-core, remain app-owned MIT source packages, and are added to a reviewed bounded public bundle when a marketplace card is justified without entering packages/seis-ai."
   },
   "releaseBoundary": {
     "publicReleaseAllowed": false,

@@ -10,6 +10,9 @@ import { TOPIC_PLUGIN_SOURCE_ROOT, TOPIC_PLUGIN_TARGET } from "../plugins/seis-t
 const ROOT = process.cwd();
 const args = parseArgs(process.argv.slice(2));
 const failures = [];
+const PUBLIC_FAMILY_PATH = path.join(ROOT, "content", "development", "seis-public-plugin-family.json");
+const BUNDLE_CATALOG_PATH = path.join(ROOT, "content", "development", "seis-public-plugin-bundle-catalog.json");
+const CURATED_BUNDLE_MODE = "public_seis_agent_with_curated_bounded_repository_bundle_cards";
 
 const standaloneLanes = [
   {
@@ -104,7 +107,6 @@ const migratedRootMarketplaceEntries = [
   { name: "seis-design", path: "./plugins/seis-design", category: "Design" },
   { name: "seis-data", path: "./plugins/seis-data", category: "Data" },
 ];
-const directMarketplaceEntries = [...canonicalMarketplaceEntries, ...migratedRootMarketplaceEntries];
 const embeddedModuleNames = [
   "seis-ai-agent",
   "seis",
@@ -170,7 +172,7 @@ if (specialistManifest) {
   ensure(specialistManifest.consolidation?.defaultInstallMode === "single-public-plugin", "specialist plugin manifest must use the single public install mode");
   ensure(specialistManifest.consolidation?.legacyPersonalMarketplace === "compatibility-mirror-only", "specialist plugin manifest must mark personal marketplace as compatibility mirror only");
   ensure(specialistManifest.consolidation?.standaloneLaneInstallMode === "source-module-only", "specialist plugin manifest must retain lanes as source modules only");
-  ensure(specialistManifest.consolidation?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages", "specialist plugin manifest must publish the canonical orchestrator and public app packages");
+  ensure(specialistManifest.consolidation?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-curated-bounded-public-bundles", "specialist plugin manifest must publish the canonical orchestrator and curated public bundles");
   for (const entry of canonicalMarketplaceEntries) {
     ensure(specialistManifest.marketplace?.publishedPlugins?.includes(entry.name), `specialist plugin manifest marketplace missing ${entry.name}`);
   }
@@ -307,7 +309,7 @@ function validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope) {
     }),
   ].join("");
 
-  const result = spawnSync("node", [mcpScript], {
+  const result = spawnSync(process.execPath, [mcpScript], {
     cwd: pluginRoot,
     env: smokeEnvironment(lane, pluginRoot),
     input,
@@ -393,7 +395,7 @@ function validateCentralMcpSmoke(centralMcp) {
     }),
   ].join("");
 
-  const result = spawnSync("node", [centralMcp], {
+  const result = spawnSync(process.execPath, [centralMcp], {
     cwd: ROOT,
     env: { ...process.env, SEIS_ROOT: ROOT },
     input,
@@ -518,12 +520,29 @@ function validateMarketplace(marketplacePath, label, expectedName) {
   ensure(Array.isArray(marketplace.plugins), `${label}: plugins must be an array`);
 
   if (expectedName === "seis-repo") {
+    const publicFamily = readJson(PUBLIC_FAMILY_PATH);
+    const bundleCatalog = readJson(BUNDLE_CATALOG_PATH);
+    if (publicFamily?.mode === CURATED_BUNDLE_MODE) {
+      validateCuratedPublicMarketplace(marketplace, publicFamily, bundleCatalog, label);
+      return;
+    }
     const applicationEntries = marketplace.plugins.filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-core/"));
     const topicEntries = marketplace.plugins.filter((plugin) => plugin?.source?.path?.startsWith(`./${TOPIC_PLUGIN_SOURCE_ROOT}/`));
-    ensure(applicationEntries.length === APP_PLUGIN_EXPANSION_TARGET, `${label}: must publish all app-owned public packages`);
-    ensure(topicEntries.length === TOPIC_PLUGIN_TARGET, `${label}: must publish all objective-derived topic packages`);
-    ensure(marketplace.plugins.length === directMarketplaceEntries.length + APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, `${label}: must publish SEIS-Agent, all migrated root cards, and all public app and topic packages`);
-    for (const expected of directMarketplaceEntries) {
+    const bundleEntries = marketplace.plugins.filter((plugin) => plugin?.source?.path?.startsWith("./plugins/seis-bundles/"));
+    const legacyBundleCatalog = readJson(path.join(ROOT, "content", "development", "seis-public-plugin-bundle-catalog.json"));
+    const catalogBundles = Array.isArray(legacyBundleCatalog?.bundles) ? legacyBundleCatalog.bundles : [];
+    const applicationBundles = catalogBundles.filter((bundle) => bundle?.family === "application");
+    const topicBundles = catalogBundles.filter((bundle) => bundle?.family === "topic");
+    const memberNames = catalogBundles.flatMap((bundle) => Array.isArray(bundle?.memberNames) ? bundle.memberNames : []);
+    ensure(applicationEntries.length === 0, `${label}: app-owned source capabilities must not be separate discovery cards`);
+    ensure(topicEntries.length === 0, `${label}: topic source capabilities must not be separate discovery cards`);
+    ensure(bundleEntries.length === 33, `${label}: must publish exactly 33 curated bundle cards`);
+    ensure(applicationBundles.length === 6, `${label}: must retain six application bundle cards`);
+    ensure(topicBundles.length === 27, `${label}: must retain twenty-seven topic bundle cards`);
+    ensure(legacyBundleCatalog?.marketplace?.publicCardCount === 34 && legacyBundleCatalog?.marketplace?.canonicalCardCount === 1 && legacyBundleCatalog?.marketplace?.bundleCardCount === 33, `${label}: bundle catalog card counts are stale`);
+    ensure(memberNames.length === APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET && new Set(memberNames).size === memberNames.length, `${label}: retained app and topic capabilities must have exact-once bundle coverage`);
+    ensure(marketplace.plugins.length === canonicalMarketplaceEntries.length + bundleEntries.length, `${label}: must publish one canonical card and 33 curated bundles`);
+    for (const expected of canonicalMarketplaceEntries) {
       const entry = marketplace.plugins?.find((plugin) => plugin.name === expected.name);
       ensure(entry, `${label}: entry missing: ${expected.name}`);
       if (!entry) continue;
@@ -536,33 +555,27 @@ function validateMarketplace(marketplacePath, label, expectedName) {
       const manifest = readJson(path.join(ROOT, expected.path, ".codex-plugin", "plugin.json"));
       ensure(manifest?.license === "MIT", `${label} ${expected.name}: manifest must be MIT`);
     }
-    for (const entry of applicationEntries) {
+    for (const expected of migratedRootMarketplaceEntries) {
+      ensure(marketplace.plugins.every((plugin) => plugin?.name !== expected.name), `${label}: migrated root source ${expected.name} must not be a separate discovery card`);
+      ensure(fs.existsSync(path.join(ROOT, expected.path)), `${label}: retained root source path must exist: ${expected.name}`);
+    }
+    for (const entry of bundleEntries) {
       const sourcePath = entry.source?.path || "";
-      ensure(fs.existsSync(path.join(ROOT, sourcePath)), `${label} ${entry.name}: public app source path must exist`);
+      ensure(fs.existsSync(path.join(ROOT, sourcePath)), `${label} ${entry.name}: public bundle source path must exist`);
       ensure(entry.source?.source === "local", `${label} ${entry.name}: source must be local`);
       ensure(entry.policy?.installation === "AVAILABLE", `${label} ${entry.name}: installation must be AVAILABLE`);
       ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${entry.name}: authentication must be ON_INSTALL`);
       const manifest = readJson(path.join(ROOT, sourcePath, ".codex-plugin", "plugin.json"));
-      const profile = readJson(path.join(ROOT, sourcePath, "assets", "plugin-profile.json"));
+      const profile = readJson(path.join(ROOT, sourcePath, "assets", "bundle-profile.json"));
       ensure(manifest?.license === "MIT", `${label} ${entry.name}: manifest must be MIT`);
-      ensure(profile?.publicMarketplace === true, `${label} ${entry.name}: profile must mark public marketplace availability`);
-      ensure(profile?.publicAudience === "everyone", `${label} ${entry.name}: profile audience must be everyone`);
+      ensure(profile?.id === entry.name, `${label} ${entry.name}: bundle profile id must match`);
+      ensure(Number.isSafeInteger(profile?.memberCount) && profile.memberCount >= 1 && profile.memberCount <= 15, `${label} ${entry.name}: bundle member count must stay between 1 and 15`);
+      ensure(catalogBundles.some((bundle) => bundle?.id === entry.name && bundle?.sourcePath === sourcePath && bundle?.memberCount === profile?.memberCount), `${label} ${entry.name}: bundle catalog projection is stale`);
     }
-    for (const entry of topicEntries) {
-      const sourcePath = entry.source?.path || "";
-      ensure(entry.source?.source === "local", `${label} ${entry.name}: topic source must be local`);
-      ensure(entry.policy?.installation === "AVAILABLE", `${label} ${entry.name}: topic installation must be AVAILABLE`);
-      ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${entry.name}: topic authentication must be ON_INSTALL`);
-      ensure(sourcePath === `./${TOPIC_PLUGIN_SOURCE_ROOT}/${entry.name}`, `${label} ${entry.name}: topic source path must be repo-owned`);
-      ensure(fs.existsSync(path.join(ROOT, sourcePath)), `${label} ${entry.name}: topic source path must exist`);
-      const manifest = readJson(path.join(ROOT, sourcePath, ".codex-plugin", "plugin.json"));
-      const profile = readJson(path.join(ROOT, sourcePath, "assets", "topic-profile.json"));
-      ensure(manifest?.license === "MIT", `${label} ${entry.name}: topic manifest must be MIT`);
-      ensure(profile?.id === entry.name, `${label} ${entry.name}: topic profile id must match`);
-      ensure(profile?.publicMarketplace === true, `${label} ${entry.name}: topic profile must mark public marketplace availability`);
-      ensure(profile?.publicAudience === "everyone", `${label} ${entry.name}: topic profile audience must be everyone`);
-      for (const permission of ["write", "network", "secrets"]) {
-        ensure(Array.isArray(profile?.permissions?.[permission]) && profile.permissions[permission].length === 0, `${label} ${entry.name}: topic ${permission} permissions must be empty`);
+    for (const bundle of catalogBundles) {
+      const sourceRoot = bundle?.family === "application" ? "plugins/seis-core" : TOPIC_PLUGIN_SOURCE_ROOT;
+      for (const memberName of Array.isArray(bundle?.memberNames) ? bundle.memberNames : []) {
+        ensure(fs.existsSync(path.join(ROOT, sourceRoot, memberName)), `${label}: retained ${bundle?.family || "unknown"} source path must exist: ${memberName}`);
       }
     }
     return;
@@ -571,13 +584,96 @@ function validateMarketplace(marketplacePath, label, expectedName) {
   ensure(Array.isArray(marketplace.plugins), `${label}: legacy plugin inventory must remain readable`);
 }
 
+function validateCuratedPublicMarketplace(marketplace, publicFamily, bundleCatalog, label) {
+  const cards = marketplace.plugins;
+  const familyMarketplace = publicFamily?.marketplace || {};
+  const expectedEntries = Array.isArray(familyMarketplace.entries) ? familyMarketplace.entries : [];
+  const bundles = Array.isArray(bundleCatalog?.bundles) ? bundleCatalog.bundles : [];
+  const bundleById = new Map(bundles.map((bundle) => [bundle?.id, bundle]));
+  const cardNames = cards.map((card) => card?.name);
+
+  ensure(familyMarketplace.publicPluginCount === 34, `${label}: curated family must declare 34 public cards`);
+  ensure(familyMarketplace.canonicalOrchestratorCount === 1, `${label}: curated family must declare one canonical orchestrator`);
+  ensure(familyMarketplace.bundlePluginCount === 33, `${label}: curated family must declare 33 optional bundles`);
+  ensure(familyMarketplace.applicationBundlePluginCount === 6, `${label}: curated family must declare six application bundles`);
+  ensure(familyMarketplace.topicBundlePluginCount === 27, `${label}: curated family must declare 27 topic bundles`);
+  ensure(familyMarketplace.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET, `${label}: curated family must retain all application source packages`);
+  ensure(familyMarketplace.topicPluginCount === TOPIC_PLUGIN_TARGET, `${label}: curated family must retain all topic source packages`);
+  ensure(familyMarketplace.sourceCapabilityCount === 380, `${label}: curated family must retain 380 source capabilities`);
+  ensure(cards.length === familyMarketplace.publicPluginCount, `${label}: card count must match curated family`);
+  ensure(expectedEntries.length === cards.length, `${label}: curated family entries must match marketplace cards`);
+  ensure(new Set(cardNames).size === cards.length, `${label}: curated marketplace card names must be unique`);
+  ensure(bundles.length === familyMarketplace.bundlePluginCount, `${label}: bundle catalog count must match curated family`);
+  ensure(bundleCatalog?.marketplace?.publicCardCount === cards.length, `${label}: bundle catalog public card count must match marketplace`);
+  ensure(bundleCatalog?.marketplace?.canonicalCardCount === 1 && bundleCatalog?.marketplace?.bundleCardCount === bundles.length, `${label}: bundle catalog card composition is invalid`);
+  ensure(bundleCatalog?.sourceCapabilityInventory?.rootSourceModuleCount === 5, `${label}: bundle catalog must retain five root source modules`);
+  ensure(bundleCatalog?.sourceCapabilityInventory?.applicationSourcePackageCount === APP_PLUGIN_EXPANSION_TARGET, `${label}: bundle catalog application source count is invalid`);
+  ensure(bundleCatalog?.sourceCapabilityInventory?.topicSourcePackageCount === TOPIC_PLUGIN_TARGET, `${label}: bundle catalog topic source count is invalid`);
+  ensure(bundleCatalog?.sourceCapabilityInventory?.retainedSourcePackageCount === 380, `${label}: bundle catalog retained source count is invalid`);
+  ensure(bundleCatalog?.sourceCapabilityInventory?.sourcePackagesDeleted === false, `${label}: curated packaging must not delete source packages`);
+
+  const canonical = cards.filter((card) => card?.name === "seis-ai-agent");
+  ensure(canonical.length === 1, `${label}: curated marketplace must contain exactly one SEIS-Agent card`);
+  const canonicalCard = canonical[0];
+  ensure(canonicalCard?.source?.source === "local" && canonicalCard?.source?.path === "./plugins/seis-ai-agent", `${label}: canonical SEIS-Agent source is invalid`);
+  ensure(canonicalCard?.policy?.installation === "AVAILABLE" && canonicalCard?.policy?.authentication === "ON_INSTALL", `${label}: canonical SEIS-Agent policy is invalid`);
+  ensure(canonicalCard?.category === "Developer", `${label}: canonical SEIS-Agent category is invalid`);
+  ensure(fs.existsSync(path.join(ROOT, canonicalCard.source.path)), `${label}: canonical SEIS-Agent source path must exist`);
+  ensure(readJson(path.join(ROOT, canonicalCard.source.path, ".codex-plugin", "plugin.json"))?.license === "MIT", `${label}: canonical SEIS-Agent manifest must be MIT`);
+
+  const bundleCards = cards.filter((card) => card?.source?.path?.startsWith("./plugins/seis-bundles/"));
+  ensure(bundleCards.length === bundles.length, `${label}: marketplace must contain exactly the declared bundle cards`);
+  ensure(cards.length === canonical.length + bundleCards.length, `${label}: curated marketplace must contain no direct source-package cards`);
+  for (const expected of expectedEntries) {
+    const card = cards.find((candidate) => candidate?.name === expected?.name);
+    ensure(card, `${label}: curated entry missing: ${expected?.name}`);
+    if (!card) continue;
+    ensure(card?.source?.source === "local" && card?.source?.path === expected?.sourcePath, `${label} ${expected?.name}: source path must match curated family`);
+    ensure(card?.policy?.installation === expected?.installation && card?.policy?.authentication === expected?.authentication, `${label} ${expected?.name}: policy must match curated family`);
+    ensure(card?.category === expected?.category, `${label} ${expected?.name}: category must match curated family`);
+  }
+
+  const memberNames = [];
+  const memberPaths = [];
+  for (const card of bundleCards) {
+    const sourcePath = card?.source?.path || "";
+    const bundleId = card?.name;
+    const bundle = bundleById.get(bundleId);
+    ensure(bundle, `${label} ${bundleId}: bundle card is missing from the catalog`);
+    ensure(sourcePath === bundle?.sourcePath, `${label} ${bundleId}: source path must match the bundle catalog`);
+    ensure(card?.source?.source === "local", `${label} ${bundleId}: bundle source must be local`);
+    ensure(card?.policy?.installation === "AVAILABLE" && card?.policy?.authentication === "ON_INSTALL", `${label} ${bundleId}: bundle policy is invalid`);
+    ensure(card?.category === bundle?.category, `${label} ${bundleId}: bundle category must match the catalog`);
+    ensure(fs.existsSync(path.join(ROOT, sourcePath)), `${label} ${bundleId}: bundle source path must exist`);
+    const manifest = readJson(path.join(ROOT, sourcePath, ".codex-plugin", "plugin.json"));
+    const profile = readJson(path.join(ROOT, sourcePath, "assets", "bundle-profile.json"));
+    ensure(manifest?.name === bundleId && manifest?.license === "MIT", `${label} ${bundleId}: bundle manifest is invalid`);
+    ensure(profile?.id === bundleId && profile?.status === "repository-local-public-bundle", `${label} ${bundleId}: bundle profile identity is invalid`);
+    ensure(profile?.memberCount === bundle?.memberCount && profile?.memberCount > 0 && profile?.memberCount <= 15, `${label} ${bundleId}: bundle membership bound is invalid`);
+    ensure(Array.isArray(profile?.members) && profile.members.length === profile.memberCount, `${label} ${bundleId}: bundle member list is invalid`);
+    ensure(JSON.stringify(profile.members.map((member) => member?.name)) === JSON.stringify(bundle?.memberNames), `${label} ${bundleId}: bundle member names must match the catalog`);
+    ensure(Array.isArray(profile?.permissions?.write) && profile.permissions.write.length === 0, `${label} ${bundleId}: bundle write permissions must be empty`);
+    ensure(Array.isArray(profile?.permissions?.network) && profile.permissions.network.length === 0, `${label} ${bundleId}: bundle network permissions must be empty`);
+    ensure(Array.isArray(profile?.permissions?.secrets) && profile.permissions.secrets.length === 0, `${label} ${bundleId}: bundle secret permissions must be empty`);
+    ensure(profile?.installationPolicy?.optionalSelectionBundle === true && profile?.installationPolicy?.bundleMembersAutoInstalled === false && profile?.installationPolicy?.sourcePackagesRetained === true && profile?.installationPolicy?.sourcePackagesDeleted === false, `${label} ${bundleId}: bundle installation boundary is invalid`);
+    for (const member of profile.members) {
+      memberNames.push(member?.name);
+      memberPaths.push(member?.sourcePath);
+      ensure(typeof member?.sourcePath === "string" && member.sourcePath.startsWith("./plugins/") && !member.sourcePath.includes(".."), `${label} ${bundleId}: member source path is invalid`);
+      ensure(fs.existsSync(path.join(ROOT, member.sourcePath)), `${label} ${bundleId}: retained member source must exist`);
+    }
+  }
+  ensure(memberNames.length === APP_PLUGIN_EXPANSION_TARGET + TOPIC_PLUGIN_TARGET, `${label}: curated bundles must cover all application and topic source packages`);
+  ensure(new Set(memberNames).size === memberNames.length && new Set(memberPaths).size === memberPaths.length, `${label}: curated bundle source coverage must be exact-once`);
+}
+
 function validateEmbeddedAgentPlugin() {
   const agentRoot = path.join(ROOT, "plugins", "seis-ai-agent");
   const profile = readJson(path.join(agentRoot, "assets", "agent-profile.json"));
   ensureFile(path.join(agentRoot, ".codex-plugin", "plugin.json"), "embedded SEIS-Agent manifest");
   ensureFile(path.join(agentRoot, "scripts", "seis-ai-agent-mcp-server.mjs"), "embedded SEIS-Agent MCP server");
   ensure(profile?.consolidationPolicy?.standaloneLaneInstallMode === "source-module-only", "SEIS-Agent profile must retain lanes as source modules only");
-  ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-public-app-repository-packages", "SEIS-Agent profile must expose the canonical orchestrator and public app marketplace policy");
+  ensure(profile?.consolidationPolicy?.marketplacePolicy === "seis-agent-is-the-canonical-public-orchestrator-with-curated-bounded-public-bundles", "SEIS-Agent profile must expose the canonical orchestrator and curated public bundle policy");
 
   for (const skill of ["seis-ai-agent", "seis-hub", ...lanes.map((lane) => lane.name)]) {
     ensureFile(path.join(agentRoot, "skills", skill, "SKILL.md"), `embedded ${skill} skill`);

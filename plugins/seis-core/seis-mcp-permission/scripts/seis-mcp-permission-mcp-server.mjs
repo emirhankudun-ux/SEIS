@@ -8,6 +8,7 @@ const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".
 const CONTRACTS = Object.freeze({
   marketplace: ".agents/plugins/marketplace.json",
   family: "content/development/seis-public-plugin-family.json",
+  bundleCatalog: "content/development/seis-public-plugin-bundle-catalog.json",
   sources: "apps/seis-core/data/seis-core-plugin-sources.json",
   ledger: "content/development/seis-mcp-permission-risk-matrix.json",
 });
@@ -34,28 +35,48 @@ function validateMcpPermission() {
   const loaded = loadContracts(located.repoRoot);
   if (loaded.error) return unavailable(loaded.error);
 
-  const { marketplace, family, sources, ledger } = loaded.contracts;
+  const { marketplace, family, bundleCatalog, sources, ledger } = loaded.contracts;
   const findings = [];
   const cards = array(marketplace.plugins);
-  const appCards = cards.filter((card) => typeof card?.source?.path === "string" && card.source.path.startsWith("./plugins/seis-core/"));
+  const directAppCards = cards.filter((card) => typeof card?.source?.path === "string" && card.source.path.startsWith("./plugins/seis-core/"));
   const expectedNames = array(sources.plugins).map((item) => safePluginId(item?.name)).filter(Boolean).sort();
   const recordNames = array(ledger.records).map((item) => safePluginId(item?.name)).filter(Boolean).sort();
-  const publicCount = array(family.publicPlugins).length + array(family.migratedRootPlugins).length + array(family.applicationPlugins).length + array(family.topicPlugins).length;
+  const canonicalCardNames = names(family.publicPlugins);
+  const rootSourceNames = names(family.migratedRootPlugins);
+  const applicationSourceNames = names(family.applicationPlugins);
+  const topicSourceNames = names(family.topicPlugins);
+  const bundleState = validateBundleCatalog(bundleCatalog, cards, expectedNames, topicSourceNames, findings);
+  const sourceCapabilityCount = rootSourceNames.length + applicationSourceNames.length + topicSourceNames.length;
 
   ensure(marketplace.name === "seis-repo", findings, "marketplace-name-invalid");
   ensure(marketplace.interface?.displayName === "SEIS Repo", findings, "marketplace-display-name-invalid");
+  ensure(bundleCatalog.id === "seis-public-plugin-bundle-catalog", findings, "bundle-catalog-id-invalid");
   ensure(sources.id === "seis-core-plugin-sources", findings, "source-manifest-id-invalid");
   ensure(sources.sourceRoot === "plugins/seis-core", findings, "source-manifest-root-invalid");
   ensure(sources.pluginCount === expectedNames.length, findings, "source-manifest-count-invalid");
   ensure(new Set(expectedNames).size === expectedNames.length, findings, "source-manifest-names-invalid");
+  ensure(sameStringSet(applicationSourceNames, expectedNames), findings, "family-application-source-names-stale");
   ensure(ledger.id === "seis-mcp-permission-risk-matrix", findings, "ledger-id-invalid");
+  ensure(ledger.schemaVersion === 2, findings, "ledger-schema-version-invalid");
   ensure(ledger.goalId === "SEIS-GOAL-021", findings, "ledger-goal-invalid");
   ensure(ledger.plugin?.name === "seis-mcp-permission", findings, "ledger-plugin-invalid");
+  ensure(ledger.plugin?.marketplaceCard === false, findings, "ledger-plugin-direct-card-invalid");
+  ensure(ledger.plugin?.distributionBundleId === bundleState.applicationBundleBySourceName.get("seis-mcp-permission"), findings, "ledger-plugin-distribution-bundle-invalid");
   ensure(ledger.plugin?.marketplaceName === "seis-repo", findings, "ledger-marketplace-invalid");
   ensure(ledger.scope?.marketplaceName === "seis-repo", findings, "ledger-scope-marketplace-invalid");
   ensure(ledger.scope?.marketplaceDisplayName === "SEIS Repo", findings, "ledger-scope-display-name-invalid");
+  ensure(ledger.scope?.bundleCatalogPath === CONTRACTS.bundleCatalog, findings, "ledger-bundle-catalog-path-invalid");
   ensure(ledger.counts?.marketplaceCardCount === cards.length, findings, "ledger-marketplace-count-stale");
-  ensure(ledger.counts?.applicationPluginCount === expectedNames.length, findings, "ledger-application-count-stale");
+  ensure(ledger.counts?.canonicalOrchestratorCount === canonicalCardNames.length, findings, "ledger-canonical-card-count-stale");
+  ensure(ledger.counts?.bundleCardCount === bundleState.bundles.length, findings, "ledger-bundle-card-count-stale");
+  ensure(ledger.counts?.applicationBundleCardCount === bundleState.applicationBundles.length, findings, "ledger-application-bundle-card-count-stale");
+  ensure(ledger.counts?.topicBundleCardCount === bundleState.topicBundles.length, findings, "ledger-topic-bundle-card-count-stale");
+  ensure(ledger.counts?.sourceCapabilityCount === sourceCapabilityCount, findings, "ledger-source-capability-count-stale");
+  ensure(ledger.counts?.retainedRootSourceCapabilityCount === rootSourceNames.length, findings, "ledger-root-source-count-stale");
+  ensure(ledger.counts?.applicationSourceCapabilityCount === expectedNames.length, findings, "ledger-application-source-count-stale");
+  ensure(ledger.counts?.topicSourceCapabilityCount === topicSourceNames.length, findings, "ledger-topic-source-count-stale");
+  ensure(ledger.counts?.directApplicationMarketplaceCardCount === 0, findings, "ledger-direct-application-card-count-invalid");
+  ensure(ledger.counts?.applicationBundleMembershipCount === expectedNames.length, findings, "ledger-application-bundle-membership-count-stale");
   ensure(ledger.counts?.applicationMcpServerCount === expectedNames.length, findings, "ledger-server-count-stale");
   ensure(ledger.counts?.localStdioServerCount === expectedNames.length, findings, "ledger-local-stdio-count-stale");
   ensure(ledger.counts?.remoteServerCount === 0, findings, "ledger-remote-server-count-invalid");
@@ -64,8 +85,26 @@ function validateMcpPermission() {
   ensure(ledger.counts?.secretPermissionGrantCount === 0, findings, "ledger-secret-grant-count-invalid");
   ensure(ledger.counts?.validRecordCount === expectedNames.length, findings, "ledger-valid-record-count-stale");
   ensure(ledger.counts?.invalidRecordCount === 0, findings, "ledger-invalid-record-count-invalid");
-  ensure(appCards.length === expectedNames.length, findings, "marketplace-app-card-count-stale");
-  ensure(cards.length === publicCount, findings, "marketplace-public-card-count-stale");
+  ensure(directAppCards.length === 0, findings, "marketplace-direct-application-card-present");
+  ensure(sameStringSet(cards.map((card) => safePluginId(card?.name)).filter(Boolean), [...canonicalCardNames, ...bundleState.bundles.map((bundle) => bundle.id)]), findings, "marketplace-curated-card-projection-stale");
+  ensure(family.marketplace?.publicPluginCount === cards.length, findings, "family-marketplace-card-count-stale");
+  ensure(family.marketplace?.canonicalOrchestratorCount === canonicalCardNames.length, findings, "family-canonical-card-count-stale");
+  ensure(family.marketplace?.bundlePluginCount === bundleState.bundles.length, findings, "family-bundle-card-count-stale");
+  ensure(family.marketplace?.applicationBundlePluginCount === bundleState.applicationBundles.length, findings, "family-application-bundle-card-count-stale");
+  ensure(family.marketplace?.topicBundlePluginCount === bundleState.topicBundles.length, findings, "family-topic-bundle-card-count-stale");
+  ensure(family.marketplace?.migratedRootPluginCount === rootSourceNames.length, findings, "family-root-source-count-stale");
+  ensure(family.marketplace?.applicationPluginCount === expectedNames.length, findings, "family-application-source-count-stale");
+  ensure(family.marketplace?.topicPluginCount === topicSourceNames.length, findings, "family-topic-source-count-stale");
+  ensure(family.marketplace?.sourceCapabilityCount === sourceCapabilityCount, findings, "family-source-capability-count-stale");
+  ensure(bundleCatalog.marketplace?.publicCardCount === cards.length, findings, "bundle-catalog-marketplace-count-stale");
+  ensure(bundleCatalog.marketplace?.canonicalCardCount === canonicalCardNames.length, findings, "bundle-catalog-canonical-count-stale");
+  ensure(bundleCatalog.marketplace?.bundleCardCount === bundleState.bundles.length, findings, "bundle-catalog-card-count-stale");
+  ensure(bundleCatalog.marketplace?.applicationBundleCardCount === bundleState.applicationBundles.length, findings, "bundle-catalog-application-bundle-count-stale");
+  ensure(bundleCatalog.marketplace?.topicBundleCardCount === bundleState.topicBundles.length, findings, "bundle-catalog-topic-bundle-count-stale");
+  ensure(bundleCatalog.sourceCapabilityInventory?.rootSourceModuleCount === rootSourceNames.length, findings, "bundle-catalog-root-source-count-stale");
+  ensure(bundleCatalog.sourceCapabilityInventory?.applicationSourcePackageCount === expectedNames.length, findings, "bundle-catalog-application-source-count-stale");
+  ensure(bundleCatalog.sourceCapabilityInventory?.topicSourcePackageCount === topicSourceNames.length, findings, "bundle-catalog-topic-source-count-stale");
+  ensure(bundleCatalog.sourceCapabilityInventory?.retainedSourcePackageCount === sourceCapabilityCount, findings, "bundle-catalog-retained-source-count-stale");
   ensure(sameStringSet(recordNames, expectedNames), findings, "ledger-record-names-stale");
   ensure(emptyPermissionSet(ledger.policy?.permissions), findings, "ledger-policy-permissions-invalid");
   ensure(ledger.policy?.transport === "local-stdio", findings, "ledger-transport-invalid");
@@ -78,7 +117,7 @@ function validateMcpPermission() {
   ensure(ledger.safety?.publicReleaseAllowed === false, findings, "ledger-release-policy-invalid");
   ensure(!containsUnsafeVisibleTerm(ledger), findings, "ledger-visible-unsafe-term");
 
-  for (const record of array(ledger.records)) validateRecord(record, expectedNames, findings);
+  for (const record of array(ledger.records)) validateRecord(record, expectedNames, bundleState, findings);
 
   const errorCount = findings.filter((finding) => finding.severity === "error").length;
   return {
@@ -89,7 +128,18 @@ function validateMcpPermission() {
     marketplaceDisplayName: marketplace.interface?.displayName === "SEIS Repo" ? "SEIS Repo" : null,
     publicCards: {
       count: cards.length,
-      applicationPluginCount: expectedNames.length,
+      canonicalOrchestratorCount: canonicalCardNames.length,
+      bundleCardCount: bundleState.bundles.length,
+      applicationBundleCardCount: bundleState.applicationBundles.length,
+      topicBundleCardCount: bundleState.topicBundles.length,
+      directApplicationCardCount: directAppCards.length,
+    },
+    sourceCapabilities: {
+      count: sourceCapabilityCount,
+      retainedRootCount: rootSourceNames.length,
+      applicationCount: expectedNames.length,
+      topicCount: topicSourceNames.length,
+      applicationBundleMembershipCount: bundleState.applicationBundleBySourceName.size,
       applicationMcpServerCount: array(ledger.records).length,
     },
     policy: compactPolicy(ledger.policy),
@@ -97,7 +147,8 @@ function validateMcpPermission() {
     findings: findings.slice(0, MAX_VISIBLE_RECORDS),
     permissions: permissionBoundary(),
     limitations: [
-      "Validation reads fixed public SEIS Repo contracts and does not start, connect to, or probe an MCP server.",
+      "Validation reads fixed public SEIS Repo contracts, including curated bundle membership, and does not start, connect to, or probe an MCP server.",
+      "Retained source capabilities are not direct marketplace cards and bundle selection does not automatically install members.",
       "A valid declared boundary is not proof of current Codex enablement, external connectivity, authorization, or release approval.",
       "Validation does not install, enable, update, publish, deploy, push, or grant permissions to any plugin.",
     ],
@@ -115,7 +166,7 @@ function inspectLedger(requestedPlugin) {
   if (requestedPlugin && !filter) return invalidInput("plugin-id-invalid");
   const allRecords = array(ledger.records);
   const selected = filter ? allRecords.filter((record) => record.name === filter) : allRecords;
-  if (filter && selected.length === 0) return invalidInput("public-plugin-not-found");
+  if (filter && selected.length === 0) return invalidInput("source-capability-not-found");
   return {
     state: "ready",
     ok: true,
@@ -129,19 +180,21 @@ function inspectLedger(requestedPlugin) {
     permissions: permissionBoundary(),
     publicReleaseAllowed: false,
     limitations: [
-      "Only declared public package metadata is shown; no MCP server is started or contacted.",
+      "Only declared retained source-capability metadata and its curated bundle id are shown; no MCP server is started or contacted.",
       "The ledger does not grant an MCP tool, network, write, secret, or release permission.",
     ],
   };
 }
 
-function validateRecord(record, expectedNames, findings) {
+function validateRecord(record, expectedNames, bundleState, findings) {
   const name = safePluginId(record?.name);
   if (!name || !expectedNames.includes(name)) {
     ensure(false, findings, "ledger-record-plugin-invalid");
     return;
   }
-  ensure(record.marketplaceCard === true, findings, "ledger-record-marketplace-invalid", name);
+  ensure(record.marketplaceCard === false, findings, "ledger-record-direct-marketplace-card-invalid", name);
+  ensure(record.distributionBundleId === bundleState.applicationBundleBySourceName.get(name), findings, "ledger-record-distribution-bundle-invalid", name);
+  ensure(bundleState.marketplaceBundleCardNames.has(record.distributionBundleId), findings, "ledger-record-distribution-card-missing", name);
   ensure(record.sourcePath === `plugins/seis-core/${name}`, findings, "ledger-record-source-path-invalid", name);
   ensure(record.transport === "local-stdio", findings, "ledger-record-transport-invalid", name);
   ensure(record.serverName === name, findings, "ledger-record-server-name-invalid", name);
@@ -159,8 +212,8 @@ function compactPolicy(policy) {
   return {
     transport: policy?.transport === "local-stdio" ? "local-stdio" : null,
     command: policy?.command === "node" ? "node" : null,
-    remoteUrlAllowed: policy?.remoteUrlAllowed === false,
-    environmentInjectionAllowed: policy?.environmentInjectionAllowed === false,
+    remoteUrlAllowed: policy?.remoteUrlAllowed === false ? false : null,
+    environmentInjectionAllowed: policy?.environmentInjectionAllowed === false ? false : null,
     permissions: { write: [], network: [], secrets: [] },
     humanApprovalRequiredFor: array(policy?.humanApprovalRequiredFor).filter((item) => typeof item === "string").slice(0, 8),
   };
@@ -169,6 +222,8 @@ function compactPolicy(policy) {
 function compactRecord(record) {
   return {
     name: safePluginId(record?.name),
+    marketplaceCard: record?.marketplaceCard === true,
+    distributionBundleId: safePluginId(record?.distributionBundleId),
     transport: record?.transport === "local-stdio" ? "local-stdio" : null,
     command: record?.command === "node" ? "node" : null,
     permissionState: record?.permissionState === "deny-by-default" ? "deny-by-default" : null,
@@ -177,6 +232,52 @@ function compactRecord(record) {
     risk: record?.risk === "low" ? "low" : null,
     state: record?.state === "validated-declared-boundary" ? "validated-declared-boundary" : null,
   };
+}
+
+function validateBundleCatalog(bundleCatalog, cards, expectedApplicationNames, expectedTopicNames, findings) {
+  const bundles = array(bundleCatalog.bundles);
+  const applicationBundles = bundles.filter((bundle) => bundle?.family === "application");
+  const topicBundles = bundles.filter((bundle) => bundle?.family === "topic");
+  const marketplaceCardByName = new Map(cards.map((card) => [safePluginId(card?.name), card]));
+  const marketplaceBundleCardNames = new Set();
+  const applicationBundleBySourceName = new Map();
+  const applicationMemberNames = [];
+  const topicMemberNames = [];
+  const allMemberNames = [];
+
+  ensure(new Set(bundles.map((bundle) => safePluginId(bundle?.id))).size === bundles.length, findings, "bundle-ids-not-unique");
+
+  for (const bundle of bundles) {
+    const id = safePluginId(bundle?.id);
+    const memberNames = array(bundle?.memberNames).map(safePluginId).filter(Boolean);
+    const card = marketplaceCardByName.get(id);
+    ensure(Boolean(id), findings, "bundle-id-invalid");
+    ensure(bundle?.family === "application" || bundle?.family === "topic", findings, "bundle-family-invalid", id);
+    ensure(bundle?.sourcePath === `./plugins/seis-bundles/${id}`, findings, "bundle-source-path-invalid", id);
+    ensure(bundle?.memberCount === memberNames.length && memberNames.length > 0 && memberNames.length <= 15, findings, "bundle-member-count-invalid", id);
+    ensure(memberNames.length === array(bundle?.memberNames).length && new Set(memberNames).size === memberNames.length, findings, "bundle-member-names-invalid", id);
+    ensure(Boolean(card), findings, "bundle-marketplace-card-missing", id);
+    ensure(card?.source?.source === "local" && card?.source?.path === bundle?.sourcePath, findings, "bundle-marketplace-source-invalid", id);
+    ensure(card?.policy?.installation === "AVAILABLE" && card?.policy?.authentication === "ON_INSTALL", findings, "bundle-marketplace-policy-invalid", id);
+    if (id && card) marketplaceBundleCardNames.add(id);
+    allMemberNames.push(...memberNames);
+    if (bundle?.family === "application") {
+      applicationMemberNames.push(...memberNames);
+      for (const memberName of memberNames) {
+        ensure(!applicationBundleBySourceName.has(memberName), findings, "application-source-multiple-bundle-memberships", memberName);
+        if (!applicationBundleBySourceName.has(memberName)) applicationBundleBySourceName.set(memberName, id);
+      }
+    } else if (bundle?.family === "topic") {
+      topicMemberNames.push(...memberNames);
+    }
+  }
+
+  ensure(new Set(allMemberNames).size === allMemberNames.length, findings, "bundle-member-duplicated-across-catalog");
+  ensure(sameStringSet(applicationMemberNames, expectedApplicationNames), findings, "application-bundle-membership-incomplete");
+  ensure(sameStringSet(topicMemberNames, expectedTopicNames), findings, "topic-bundle-membership-incomplete");
+  ensure(applicationBundleBySourceName.size === expectedApplicationNames.length, findings, "application-bundle-membership-count-stale");
+
+  return { bundles, applicationBundles, topicBundles, marketplaceBundleCardNames, applicationBundleBySourceName };
 }
 
 function loadContracts(repoRoot) {
@@ -254,7 +355,7 @@ function invalidInput(reason) {
 
 function permissionBoundary() {
   return {
-    read: ["fixed public SEIS Repo marketplace, source inventory, and MCP permission ledger"],
+    read: ["fixed public SEIS Repo marketplace, curated bundle catalog, source inventory, and MCP permission ledger"],
     write: [],
     network: [],
     secrets: [],
@@ -263,6 +364,10 @@ function permissionBoundary() {
 
 function array(value) {
   return Array.isArray(value) ? value : [];
+}
+
+function names(value) {
+  return array(value).map((item) => safePluginId(item?.name)).filter(Boolean).sort();
 }
 
 function sameStringSet(actual, expected) {

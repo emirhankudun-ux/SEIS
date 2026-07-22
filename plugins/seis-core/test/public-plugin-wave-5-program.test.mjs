@@ -10,7 +10,7 @@ const repositoryRoot = path.resolve(testDirectory, "../../..");
 const programPath = path.join(repositoryRoot, "content/development/seis-public-plugin-wave-5-program.json");
 const generatorPath = path.join(repositoryRoot, "scripts/create-seis-public-plugin-wave-5-program.mjs");
 
-test("tracks Wave 5 after the completed second public-only delivery tranche", () => {
+test("tracks Wave 5 after the completed fourth public-only delivery tranche", () => {
   const result = spawnSync(process.execPath, [generatorPath, "--check"], {
     cwd: repositoryRoot,
     encoding: "utf8",
@@ -30,24 +30,36 @@ test("tracks Wave 5 after the completed second public-only delivery tranche", ()
   assert.equal(program.activationGate.status, "implemented-repository-local");
   assert.equal(program.activationGate.implementationStarted, true);
   assert.equal(program.activationGate.candidatePackageExists, true);
-  assert.equal(program.activationGate.candidatePublicCardExists, true);
+  assert.equal(program.activationGate.candidateDirectPublicCardExists, false);
+  assert.equal(typeof program.activationGate.candidateBundleId, "string");
+  assert.equal(program.activationGate.candidateBundleCardExists, true);
   assert.equal(program.activationGate.publicReleaseApproved, false);
-  assert.equal(program.steps.filter((step) => step.status === "completed").length, 40);
-  assert.deepEqual(program.steps.filter((step) => step.status === "in-progress").map((step) => step.number), [41]);
-  assert.equal(program.steps.filter((step) => step.status === "planned").length, 59);
-  assert.equal(program.progress.completedStepCount, 40);
-  assert.equal(program.progress.plannedStepCount, 59);
-  assert.deepEqual(program.progress.inProgressStepNumbers, [41]);
-  assert.equal(program.progress.completedRoundCount, 2);
-  assert.equal(program.progress.nextStepNumber, 41);
+  assert.equal(program.steps.filter((step) => step.status === "completed").length, 80);
+  assert.deepEqual(program.steps.filter((step) => step.status === "in-progress").map((step) => step.number), [81]);
+  assert.equal(program.steps.filter((step) => step.status === "planned").length, 19);
+  assert.equal(program.progress.completedStepCount, 80);
+  assert.equal(program.progress.plannedStepCount, 19);
+  assert.deepEqual(program.progress.inProgressStepNumbers, [81]);
+  assert.equal(program.progress.completedRoundCount, 4);
+  assert.equal(program.progress.nextStepNumber, 81);
   assert.equal(program.progress.firstDeliveryTranche.totalSteps, 30);
   assert.equal(program.progress.firstDeliveryTranche.status, "completed-repository-local");
   assert.equal(program.progress.secondDeliveryTranche.stepRange, "21-40");
   assert.equal(program.progress.secondDeliveryTranche.status, "completed-repository-local");
+  assert.equal(program.progress.thirdDeliveryTranche.stepRange, "41-60");
+  assert.equal(program.progress.thirdDeliveryTranche.status, "completed-repository-local");
+  assert.equal(program.progress.fourthDeliveryTranche.stepRange, "61-80");
+  assert.equal(program.progress.fourthDeliveryTranche.status, "completed-repository-local");
   assert.equal(program.rounds[0].status, "completed");
   assert.equal(program.rounds[1].status, "completed");
-  assert.equal(program.rounds[2].status, "in-progress");
+  assert.equal(program.rounds[2].status, "completed");
+  assert.equal(program.rounds[3].status, "completed");
+  assert.equal(program.rounds[4].status, "in-progress");
   assert.equal(program.checks.fixedRegistrySafetyCoverage, true);
+  assert.equal(program.checks.outputBounds, true);
+  assert.equal(program.checks.round3Checkpoint, true);
+  assert.equal(program.checks.consolidationInventory, true);
+  assert.equal(program.evidence.consolidation, "content/development/seis-public-plugin-consolidation.json");
   assert.ok(Object.values(program.checks).every(Boolean));
   assert.equal(program.publicBoundary.marketplaceName, "seis-repo");
   assert.equal(program.publicBoundary.personalMarketplaceRead, false);

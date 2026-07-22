@@ -41,7 +41,7 @@ function buildRecord() {
   assert(audit.errorCount === 0, "generated plugin evidence must not conceal input errors");
 
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: EVIDENCE_INDEX_ID,
     goalId: "SEIS-GOAL-021",
     backlogId: "SEIS-BL-021",
@@ -53,6 +53,8 @@ function buildRecord() {
       status: decision.status,
       selectedCapability: decision.decision.selectedCapability,
       priorCatalogState: decision.decision.priorCatalogState,
+      historicalWave1Snapshot: decision.historicalWave1Snapshot,
+      currentMarketplaceProjection: decision.currentMarketplaceProjection,
     },
     plugin: {
       name: EVIDENCE_INDEX_ID,
@@ -64,6 +66,9 @@ function buildRecord() {
       implementationState: sourceEntry.implementationState,
       publicAudience: decision.publicBoundary.publicAudience,
       publicMarketplace: decision.publicBoundary.publicMarketplace,
+      currentMarketplacePresentation: decision.implementation.currentMarketplacePresentation,
+      currentBundleId: decision.implementation.currentBundleId,
+      directMarketplaceCardRequired: decision.implementation.directMarketplaceCardRequired,
     },
     inputs: {
       waveEvidenceIndex: "content/development/seis-public-plugin-wave-1-evidence-index.json",
@@ -94,13 +99,17 @@ function buildRecord() {
 
 function validateRecord(record, release) {
   assert(record.id === EVIDENCE_INDEX_ID, "record id is invalid");
+  assert(record.schemaVersion === 2, "record schema version is invalid");
   assert(record.goalId === "SEIS-GOAL-021" && record.backlogId === "SEIS-BL-021", "goal linkage is invalid");
   assert(record.plugin?.marketplaceName === "seis-repo" && record.plugin?.marketplaceDisplayName === "SEIS Repo", "marketplace identity is invalid");
   assert(record.plugin?.releaseLabel === release.label && record.plugin?.releaseSemver === release.semver, "release metadata is invalid");
   assert(record.status === "completed-public-evidence-index", "evidence record status is invalid");
   assert(record.plugin?.implementationState === "functional-local-demo", "implementation state is invalid");
   assert(record.plugin?.publicAudience === "everyone" && record.plugin?.publicMarketplace === true, "public distribution contract is invalid");
-  assert(record.summary?.publicCardCount === record.summary?.expectedCardCount, "public marketplace evidence is inconsistent");
+  assert(record.summary?.historicalWave1PublicCardCount === 377 && record.summary?.historicalWave1ApplicationPluginCount === 71, "historical Wave 1 summary is invalid");
+  assert(record.summary?.publicCardCount === 34 && record.summary?.bundleCardCount === 33 && record.summary?.applicationPluginCount === 75, "current curated marketplace summary is invalid");
+  assert(record.summary?.selectedCapabilityBundleId === record.plugin?.currentBundleId && record.summary?.selectedCapabilityDirectCardRequired === false, "selected-capability bundle summary is invalid");
+  assert(record.plugin?.currentMarketplacePresentation === "retained-source-through-bundle-card" && record.plugin?.directMarketplaceCardRequired === false, "current marketplace presentation is invalid");
   assert(Array.isArray(record.summary?.recordedAttentionContractIds), "recorded attention summary is invalid");
   assert(record.safety?.write?.length === 0 && record.safety?.network?.length === 0 && record.safety?.secrets?.length === 0, "safety permissions must be empty");
   assert(record.safety?.publicReleaseAllowed === false && record.safety?.rawInputValuesReturned === false, "release and raw-input boundary is invalid");

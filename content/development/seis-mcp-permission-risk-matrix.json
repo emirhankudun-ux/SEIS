@@ -1,20 +1,24 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-mcp-permission-risk-matrix",
   "goalId": "SEIS-GOAL-021",
-  "generatedAt": "2026-07-20",
+  "generatedAt": "2026-07-22",
   "status": "active-public-seis-repo-deny-by-default",
-  "purpose": "Keep the declared local stdio MCP envelope for every public SEIS Repo app package observable and deterministic without starting servers, granting permissions, or treating a metadata check as release approval.",
+  "purpose": "Keep the declared local stdio MCP envelope for all 75 retained SEIS Repo app source capabilities observable and deterministic while proving exact-one curated bundle distribution without starting servers, granting permissions, or treating a metadata check as release approval.",
   "plugin": {
     "name": "seis-mcp-permission",
     "displayName": "SEIS MCP Permission Boundary",
     "marketplaceName": "seis-repo",
     "sourcePath": "plugins/seis-core/seis-mcp-permission",
     "publicAudience": "everyone",
-    "publicMarketplace": true
+    "marketplaceCard": false,
+    "distributionBundleId": "seis-application-bundle-03",
+    "publicDistribution": "optional-curated-bundle"
   },
   "scope": {
     "marketplacePath": ".agents/plugins/marketplace.json",
+    "publicFamilyPath": "content/development/seis-public-plugin-family.json",
+    "bundleCatalogPath": "content/development/seis-public-plugin-bundle-catalog.json",
     "sourceManifestPath": "apps/seis-core/data/seis-core-plugin-sources.json",
     "releaseTrainPath": "content/development/seis-core-plugin-release-train.json",
     "sourceRoot": "plugins/seis-core",
@@ -50,11 +54,17 @@
     ]
   },
   "counts": {
-    "marketplaceCardCount": 381,
+    "marketplaceCardCount": 34,
     "canonicalOrchestratorCount": 1,
-    "migratedRootPluginCount": 5,
-    "applicationPluginCount": 75,
-    "topicPluginCount": 300,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityCount": 380,
+    "retainedRootSourceCapabilityCount": 5,
+    "applicationSourceCapabilityCount": 75,
+    "topicSourceCapabilityCount": 300,
+    "directApplicationMarketplaceCardCount": 0,
+    "applicationBundleMembershipCount": 75,
     "applicationMcpServerCount": 75,
     "localStdioServerCount": 75,
     "remoteServerCount": 0,
@@ -67,7 +77,8 @@
   "records": [
     {
       "name": "seis-a11y-regression",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-a11y-regression",
       "transport": "local-stdio",
       "serverName": "seis-a11y-regression",
@@ -86,7 +97,8 @@
     },
     {
       "name": "seis-action-pin-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-action-pin-audit",
       "transport": "local-stdio",
       "serverName": "seis-action-pin-audit",
@@ -105,7 +117,8 @@
     },
     {
       "name": "seis-agent-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-agent-audit",
       "transport": "local-stdio",
       "serverName": "seis-agent-audit",
@@ -124,7 +137,8 @@
     },
     {
       "name": "seis-agent-contract-validator",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-agent-contract-validator",
       "transport": "local-stdio",
       "serverName": "seis-agent-contract-validator",
@@ -143,7 +157,8 @@
     },
     {
       "name": "seis-apple-native-readiness",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-apple-native-readiness",
       "transport": "local-stdio",
       "serverName": "seis-apple-native-readiness",
@@ -162,7 +177,8 @@
     },
     {
       "name": "seis-approval-gate-review",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-approval-gate-review",
       "transport": "local-stdio",
       "serverName": "seis-approval-gate-review",
@@ -181,7 +197,8 @@
     },
     {
       "name": "seis-architecture-drift",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-architecture-drift",
       "transport": "local-stdio",
       "serverName": "seis-architecture-drift",
@@ -200,7 +217,8 @@
     },
     {
       "name": "seis-artifact-attestation",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-artifact-attestation",
       "transport": "local-stdio",
       "serverName": "seis-artifact-attestation",
@@ -219,7 +237,8 @@
     },
     {
       "name": "seis-branch-protection-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-branch-protection-audit",
       "transport": "local-stdio",
       "serverName": "seis-branch-protection-audit",
@@ -238,7 +257,8 @@
     },
     {
       "name": "seis-canonical-registry-validator",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-canonical-registry-validator",
       "transport": "local-stdio",
       "serverName": "seis-canonical-registry-validator",
@@ -257,7 +277,8 @@
     },
     {
       "name": "seis-changelog-validator",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-changelog-validator",
       "transport": "local-stdio",
       "serverName": "seis-changelog-validator",
@@ -276,7 +297,8 @@
     },
     {
       "name": "seis-codeowners-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-codeowners-audit",
       "transport": "local-stdio",
       "serverName": "seis-codeowners-audit",
@@ -295,7 +317,8 @@
     },
     {
       "name": "seis-community-health",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-community-health",
       "transport": "local-stdio",
       "serverName": "seis-community-health",
@@ -314,7 +337,8 @@
     },
     {
       "name": "seis-context-efficiency",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-context-efficiency",
       "transport": "local-stdio",
       "serverName": "seis-context-efficiency",
@@ -333,7 +357,8 @@
     },
     {
       "name": "seis-contract-compatibility",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-contract-compatibility",
       "transport": "local-stdio",
       "serverName": "seis-contract-compatibility",
@@ -352,7 +377,8 @@
     },
     {
       "name": "seis-contributor-map",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-contributor-map",
       "transport": "local-stdio",
       "serverName": "seis-contributor-map",
@@ -371,7 +397,8 @@
     },
     {
       "name": "seis-cost-latency-budget",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-cost-latency-budget",
       "transport": "local-stdio",
       "serverName": "seis-cost-latency-budget",
@@ -390,7 +417,8 @@
     },
     {
       "name": "seis-data-retention-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-data-retention-audit",
       "transport": "local-stdio",
       "serverName": "seis-data-retention-audit",
@@ -409,7 +437,8 @@
     },
     {
       "name": "seis-dependency-freshness",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-dependency-freshness",
       "transport": "local-stdio",
       "serverName": "seis-dependency-freshness",
@@ -428,7 +457,8 @@
     },
     {
       "name": "seis-design-token-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-design-token-audit",
       "transport": "local-stdio",
       "serverName": "seis-design-token-audit",
@@ -447,7 +477,8 @@
     },
     {
       "name": "seis-doc-indexer",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-doc-indexer",
       "transport": "local-stdio",
       "serverName": "seis-doc-indexer",
@@ -466,7 +497,8 @@
     },
     {
       "name": "seis-docs-freshness",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-docs-freshness",
       "transport": "local-stdio",
       "serverName": "seis-docs-freshness",
@@ -485,7 +517,8 @@
     },
     {
       "name": "seis-dora-metrics",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-dora-metrics",
       "transport": "local-stdio",
       "serverName": "seis-dora-metrics",
@@ -504,7 +537,8 @@
     },
     {
       "name": "seis-download-anomaly",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-download-anomaly",
       "transport": "local-stdio",
       "serverName": "seis-download-anomaly",
@@ -523,7 +557,8 @@
     },
     {
       "name": "seis-evidence-index",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-evidence-index",
       "transport": "local-stdio",
       "serverName": "seis-evidence-index",
@@ -542,7 +577,8 @@
     },
     {
       "name": "seis-focus-navigation-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-focus-navigation-audit",
       "transport": "local-stdio",
       "serverName": "seis-focus-navigation-audit",
@@ -561,7 +597,8 @@
     },
     {
       "name": "seis-github-metrics-collector",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-github-metrics-collector",
       "transport": "local-stdio",
       "serverName": "seis-github-metrics-collector",
@@ -580,7 +617,8 @@
     },
     {
       "name": "seis-goal-dependency-map",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-04",
       "sourcePath": "plugins/seis-core/seis-goal-dependency-map",
       "transport": "local-stdio",
       "serverName": "seis-goal-dependency-map",
@@ -599,7 +637,8 @@
     },
     {
       "name": "seis-goal-integrity",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-goal-integrity",
       "transport": "local-stdio",
       "serverName": "seis-goal-integrity",
@@ -618,7 +657,8 @@
     },
     {
       "name": "seis-issue-triage",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-issue-triage",
       "transport": "local-stdio",
       "serverName": "seis-issue-triage",
@@ -637,7 +677,8 @@
     },
     {
       "name": "seis-license-compatibility",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-license-compatibility",
       "transport": "local-stdio",
       "serverName": "seis-license-compatibility",
@@ -656,7 +697,8 @@
     },
     {
       "name": "seis-localization-coverage",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-localization-coverage",
       "transport": "local-stdio",
       "serverName": "seis-localization-coverage",
@@ -675,7 +717,8 @@
     },
     {
       "name": "seis-maintainer-risk",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-maintainer-risk",
       "transport": "local-stdio",
       "serverName": "seis-maintainer-risk",
@@ -694,7 +737,8 @@
     },
     {
       "name": "seis-marketplace-integrity",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-marketplace-integrity",
       "transport": "local-stdio",
       "serverName": "seis-marketplace-integrity",
@@ -713,7 +757,8 @@
     },
     {
       "name": "seis-mcp-inventory",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-mcp-inventory",
       "transport": "local-stdio",
       "serverName": "seis-mcp-inventory",
@@ -732,7 +777,8 @@
     },
     {
       "name": "seis-mcp-permission",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-mcp-permission",
       "transport": "local-stdio",
       "serverName": "seis-mcp-permission",
@@ -751,7 +797,8 @@
     },
     {
       "name": "seis-migration-guide-check",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-migration-guide-check",
       "transport": "local-stdio",
       "serverName": "seis-migration-guide-check",
@@ -770,7 +817,8 @@
     },
     {
       "name": "seis-model-fallback",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-model-fallback",
       "transport": "local-stdio",
       "serverName": "seis-model-fallback",
@@ -789,7 +837,8 @@
     },
     {
       "name": "seis-offline-mode-check",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-offline-mode-check",
       "transport": "local-stdio",
       "serverName": "seis-offline-mode-check",
@@ -808,7 +857,8 @@
     },
     {
       "name": "seis-package-adoption",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-package-adoption",
       "transport": "local-stdio",
       "serverName": "seis-package-adoption",
@@ -827,7 +877,8 @@
     },
     {
       "name": "seis-performance-budget",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-performance-budget",
       "transport": "local-stdio",
       "serverName": "seis-performance-budget",
@@ -846,7 +897,8 @@
     },
     {
       "name": "seis-plugin-capability-coverage",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-plugin-capability-coverage",
       "transport": "local-stdio",
       "serverName": "seis-plugin-capability-coverage",
@@ -865,7 +917,8 @@
     },
     {
       "name": "seis-plugin-discovery",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-plugin-discovery",
       "transport": "local-stdio",
       "serverName": "seis-plugin-discovery",
@@ -884,7 +937,8 @@
     },
     {
       "name": "seis-plugin-migration",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-plugin-migration",
       "transport": "local-stdio",
       "serverName": "seis-plugin-migration",
@@ -903,7 +957,8 @@
     },
     {
       "name": "seis-pr-cycle-time",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-pr-cycle-time",
       "transport": "local-stdio",
       "serverName": "seis-pr-cycle-time",
@@ -922,7 +977,8 @@
     },
     {
       "name": "seis-project-manifest-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-project-manifest-audit",
       "transport": "local-stdio",
       "serverName": "seis-project-manifest-audit",
@@ -941,7 +997,8 @@
     },
     {
       "name": "seis-prompt-injection-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-prompt-injection-audit",
       "transport": "local-stdio",
       "serverName": "seis-prompt-injection-audit",
@@ -960,7 +1017,8 @@
     },
     {
       "name": "seis-provider-health",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-provider-health",
       "transport": "local-stdio",
       "serverName": "seis-provider-health",
@@ -979,7 +1037,8 @@
     },
     {
       "name": "seis-public-distribution-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-public-distribution-audit",
       "transport": "local-stdio",
       "serverName": "seis-public-distribution-audit",
@@ -998,7 +1057,8 @@
     },
     {
       "name": "seis-public-install-evidence",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-public-install-evidence",
       "transport": "local-stdio",
       "serverName": "seis-public-install-evidence",
@@ -1017,7 +1077,8 @@
     },
     {
       "name": "seis-public-install-state",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-public-install-state",
       "transport": "local-stdio",
       "serverName": "seis-public-install-state",
@@ -1036,7 +1097,8 @@
     },
     {
       "name": "seis-public-runtime-status",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-05",
       "sourcePath": "plugins/seis-core/seis-public-runtime-status",
       "transport": "local-stdio",
       "serverName": "seis-public-runtime-status",
@@ -1055,7 +1117,8 @@
     },
     {
       "name": "seis-public-safe-scan",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-public-safe-scan",
       "transport": "local-stdio",
       "serverName": "seis-public-safe-scan",
@@ -1074,7 +1137,8 @@
     },
     {
       "name": "seis-rag-citation-coverage",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-rag-citation-coverage",
       "transport": "local-stdio",
       "serverName": "seis-rag-citation-coverage",
@@ -1093,7 +1157,8 @@
     },
     {
       "name": "seis-release-cadence",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-release-cadence",
       "transport": "local-stdio",
       "serverName": "seis-release-cadence",
@@ -1112,7 +1177,8 @@
     },
     {
       "name": "seis-release-readiness",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-release-readiness",
       "transport": "local-stdio",
       "serverName": "seis-release-readiness",
@@ -1131,7 +1197,8 @@
     },
     {
       "name": "seis-repository-health",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-repository-health",
       "transport": "local-stdio",
       "serverName": "seis-repository-health",
@@ -1150,7 +1217,8 @@
     },
     {
       "name": "seis-repository-scorecard",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-repository-scorecard",
       "transport": "local-stdio",
       "serverName": "seis-repository-scorecard",
@@ -1169,7 +1237,8 @@
     },
     {
       "name": "seis-rollback-readiness",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-rollback-readiness",
       "transport": "local-stdio",
       "serverName": "seis-rollback-readiness",
@@ -1188,7 +1257,8 @@
     },
     {
       "name": "seis-route-explainer",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-route-explainer",
       "transport": "local-stdio",
       "serverName": "seis-route-explainer",
@@ -1207,7 +1277,8 @@
     },
     {
       "name": "seis-sbom-generator",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-sbom-generator",
       "transport": "local-stdio",
       "serverName": "seis-sbom-generator",
@@ -1226,7 +1297,8 @@
     },
     {
       "name": "seis-secret-boundary-scan",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-secret-boundary-scan",
       "transport": "local-stdio",
       "serverName": "seis-secret-boundary-scan",
@@ -1245,7 +1317,8 @@
     },
     {
       "name": "seis-semver-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-semver-audit",
       "transport": "local-stdio",
       "serverName": "seis-semver-audit",
@@ -1264,7 +1337,8 @@
     },
     {
       "name": "seis-source-provenance",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-source-provenance",
       "transport": "local-stdio",
       "serverName": "seis-source-provenance",
@@ -1283,7 +1357,8 @@
     },
     {
       "name": "seis-swift-concurrency-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
       "transport": "local-stdio",
       "serverName": "seis-swift-concurrency-audit",
@@ -1302,7 +1377,8 @@
     },
     {
       "name": "seis-swift-package-topology",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-swift-package-topology",
       "transport": "local-stdio",
       "serverName": "seis-swift-package-topology",
@@ -1321,7 +1397,8 @@
     },
     {
       "name": "seis-technology-ontology",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-01",
       "sourcePath": "plugins/seis-core/seis-technology-ontology",
       "transport": "local-stdio",
       "serverName": "seis-technology-ontology",
@@ -1340,7 +1417,8 @@
     },
     {
       "name": "seis-test-flakiness",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-test-flakiness",
       "transport": "local-stdio",
       "serverName": "seis-test-flakiness",
@@ -1359,7 +1437,8 @@
     },
     {
       "name": "seis-tool-permission-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-tool-permission-audit",
       "transport": "local-stdio",
       "serverName": "seis-tool-permission-audit",
@@ -1378,7 +1457,8 @@
     },
     {
       "name": "seis-trusted-marketplace",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-trusted-marketplace",
       "transport": "local-stdio",
       "serverName": "seis-trusted-marketplace",
@@ -1397,7 +1477,8 @@
     },
     {
       "name": "seis-ui-state-contract-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-02",
       "sourcePath": "plugins/seis-core/seis-ui-state-contract-audit",
       "transport": "local-stdio",
       "serverName": "seis-ui-state-contract-audit",
@@ -1416,7 +1497,8 @@
     },
     {
       "name": "seis-vulnerability-triage",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-vulnerability-triage",
       "transport": "local-stdio",
       "serverName": "seis-vulnerability-triage",
@@ -1435,7 +1517,8 @@
     },
     {
       "name": "seis-workflow-linter",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-workflow-linter",
       "transport": "local-stdio",
       "serverName": "seis-workflow-linter",
@@ -1454,7 +1537,8 @@
     },
     {
       "name": "seis-workflow-permission-audit",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-03",
       "sourcePath": "plugins/seis-core/seis-workflow-permission-audit",
       "transport": "local-stdio",
       "serverName": "seis-workflow-permission-audit",
@@ -1473,7 +1557,8 @@
     },
     {
       "name": "seis-workspace-inspector",
-      "marketplaceCard": true,
+      "marketplaceCard": false,
+      "distributionBundleId": "seis-application-bundle-06",
       "sourcePath": "plugins/seis-core/seis-workspace-inspector",
       "transport": "local-stdio",
       "serverName": "seis-workspace-inspector",
@@ -1495,6 +1580,7 @@
     "reads": [
       ".agents/plugins/marketplace.json",
       "content/development/seis-public-plugin-family.json",
+      "content/development/seis-public-plugin-bundle-catalog.json",
       "apps/seis-core/data/seis-core-plugin-sources.json",
       "content/development/seis-core-plugin-release-train.json",
       "plugins/seis-core/*/.codex-plugin/plugin.json",
@@ -1509,7 +1595,8 @@
     "publicReleaseAllowed": false
   },
   "limitations": [
-    "This ledger validates declared public package metadata only; it does not start or connect to an MCP server.",
+    "This ledger validates retained source-package metadata and curated distribution membership only; it does not start or connect to an MCP server.",
+    "Retained source capabilities are not direct marketplace cards and are not automatically installed when a bundle card is selected.",
     "An empty declared permission set is not proof of current Codex enablement, external safety, authorization, or release approval.",
     "Remote endpoints, provider credentials, mutable tool calls, and external writes remain outside this plugin boundary."
   ]

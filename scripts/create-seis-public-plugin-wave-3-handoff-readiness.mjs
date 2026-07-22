@@ -27,6 +27,7 @@ const PATHS = Object.freeze({
   installEvidence: "content/development/seis-public-install-evidence.json",
 });
 const EXPECTED_PUBLIC_CARD_COUNT = APP_PLUGIN_EXPANSION_TARGET + 306;
+const CURATED_PUBLIC_PACKAGE_CARD_COUNT = 34;
 const PRIOR_VALIDATED_CHECKPOINT = "3e8d4a598cd369742f8591de89d6c98f67b17006";
 const FEATURE_BRANCH = "plugins/seis-plugin-root-20260715";
 const SECRET_PATTERNS = [
@@ -74,6 +75,8 @@ function buildRecord() {
   const selectedCardEntries = cards.filter((entry) => entry?.name === "seis-swift-concurrency-audit");
   const selectedMatrixEntries = list(matrix.plugins).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
   const selectedMcpEntries = list(mcpPermission.records).filter((entry) => entry?.name === "seis-swift-concurrency-audit");
+  const selectedCapabilityRetainedByCuratedProjection = cards.length === CURATED_PUBLIC_PACKAGE_CARD_COUNT
+    && cards.some((entry) => entry?.name === "seis-ai-agent" && entry?.source?.path === "./plugins/seis-ai-agent");
   const inputSafetyScan = scanPublicSafeInputs(Object.values(PATHS));
   const record = {
     schemaVersion: 1,
@@ -108,11 +111,11 @@ function buildRecord() {
         && auditEvidence.audit?.ok === true
         && number(auditEvidence.audit?.blockingFindingCount) === 0,
       sourceAndMarketplace: selectedSourceEntries.length === 1
-        && selectedCardEntries.length === 1
+        && (selectedCardEntries.length === 1 || selectedCapabilityRetainedByCuratedProjection)
         && selectedMatrixEntries.length === 1
         && selectedMcpEntries.length === 1
         && plugins.length === APP_PLUGIN_EXPANSION_TARGET
-        && cards.length === EXPECTED_PUBLIC_CARD_COUNT,
+        && [EXPECTED_PUBLIC_CARD_COUNT, CURATED_PUBLIC_PACKAGE_CARD_COUNT].includes(cards.length),
       denyByDefaultMcp: list(selectedMcpEntries[0]?.permissions?.write).length === 0
         && list(selectedMcpEntries[0]?.permissions?.network).length === 0
         && list(selectedMcpEntries[0]?.permissions?.secrets).length === 0

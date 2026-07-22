@@ -10,9 +10,27 @@ const CHECK_MODE = process.argv.includes("--check");
 const OUTPUT_PATH = "content/development/seis-public-plugin-wave-3-capability-decision.json";
 const SOURCE_MANIFEST_PATH = "apps/seis-core/data/seis-core-plugin-sources.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
+const BUNDLE_CATALOG_PATH = "content/development/seis-public-plugin-bundle-catalog.json";
 const WAVE_2_HANDOFF_PATH = "content/development/seis-public-plugin-wave-2-handoff.json";
 const WAVE_3_PROGRAM_PATH = "content/development/seis-public-plugin-wave-3-program.json";
 const CANDIDATE_ID = "seis-swift-concurrency-audit";
+const DISTRIBUTION_BUNDLE_ID = "seis-application-bundle-06";
+const CURRENT_DISTRIBUTION = Object.freeze({
+  publicCardCount: 34,
+  canonicalCardCount: 1,
+  bundleCardCount: 33,
+  applicationBundleCardCount: 6,
+  topicBundleCardCount: 27,
+  rootSourceModuleCount: 5,
+  applicationSourcePackageCount: 75,
+  topicSourcePackageCount: 300,
+  retainedSourcePackageCount: 380,
+});
+const HISTORICAL_WAVE_3_DISTRIBUTION = Object.freeze({
+  applicationSourcePackageCount: 73,
+  directApplicationCardCount: 73,
+  marketplaceCardCount: 379,
+});
 const SOURCE_ROOTS = Object.freeze([
   "packages/seis_platform_swift/Sources/SeisPlatformKit",
   "packages/seis_platform_swift/Sources/SeisAppleNativeShell",
@@ -54,30 +72,46 @@ if (CHECK_MODE) {
 function buildRecord() {
   const sourceManifest = readJson(SOURCE_MANIFEST_PATH);
   const marketplace = readJson(MARKETPLACE_PATH);
+  const bundleCatalog = readJson(BUNDLE_CATALOG_PATH);
   const wave2Handoff = readJson(WAVE_2_HANDOFF_PATH);
   const wave3Program = readJson(WAVE_3_PROGRAM_PATH);
   const sourceEntries = list(sourceManifest.plugins);
   const marketplaceEntries = list(marketplace.plugins);
   const sourceCandidate = sourceEntries.find((entry) => entry?.name === CANDIDATE_ID) || null;
   const marketplaceCandidate = marketplaceEntries.find((entry) => entry?.name === CANDIDATE_ID) || null;
+  const bundleMemberships = list(bundleCatalog.bundles).filter((bundle) => list(bundle?.memberNames).includes(CANDIDATE_ID));
+  const distributionBundle = bundleMemberships.length === 1 ? bundleMemberships[0] : null;
+  const distributionBundleCard = marketplaceEntries.find((entry) => entry?.name === distributionBundle?.id) || null;
+  const currentMarketplaceProjection = buildCurrentMarketplaceProjection({
+    sourceManifest,
+    marketplace,
+    bundleCatalog,
+    sourceCandidate,
+    marketplaceCandidate,
+    distributionBundle,
+    distributionBundleCard,
+    bundleMembershipCount: bundleMemberships.length,
+  });
   const sourceSnapshot = collectSourceSnapshot();
 
   const record = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-plugin-wave-3-capability-decision",
     goalId: "SEIS-GOAL-021",
     backlogId: "SEIS-BL-021",
     generatedAt: "2026-07-21",
     status: "approved-public-local-implementation",
     wave: 3,
-    purpose: "Record the one non-duplicative, bounded, public-only Swift concurrency audit package and SEIS Repo card now implemented through repository-local evidence. This remains static-only and does not claim an external installation, provider, deployment, native runtime, or public release.",
+    purpose: "Preserve the historical Wave 3 Swift concurrency audit implementation decision while proving the capability remains a retained source package discoverable through exactly one current curated SEIS Repo bundle. This remains static-only and does not claim an external installation, provider, deployment, native runtime, or public release.",
     decision: {
       selectedCapability: CANDIDATE_ID,
       displayName: "SEIS Swift Concurrency Audit",
       implementationStarted: true,
-      additionalPublicCardAdded: true,
+      historicalAdditionalDirectCardAddedAtExecution: true,
+      historicalMarketplaceSnapshot: true,
+      currentDistributionMode: "retained-source-capability-in-curated-bundle",
       selectionReason: "The existing public Apple Native Readiness package verifies declared Swift Package, source/test-presence, and platform-strategy evidence, but deliberately does not inspect concurrency annotations or static risk signals. A focused concurrency audit can provide a distinct, bounded review of checked-in Swift source markers without compiling, running, or claiming concurrency correctness.",
-      implementationGate: "The Wave 3 program is active because a focused package contract, deny-by-default runtime, deterministic fixtures, structural validation, and the public SEIS Repo card now exist. Full repository-local regression, provenance, lifecycle, fresh-task, and handoff evidence remain required before any Wave 3 completion or release claim.",
+      implementationGate: "The Wave 3 program was activated after a focused package contract, deny-by-default runtime, deterministic fixtures, structural validation, and a direct SEIS Repo card existed. The retained source capability is now presented through one curated bundle card; this record does not convert either state into a release claim.",
       overlapReview: [
         {
           plugin: "seis-apple-native-readiness",
@@ -118,15 +152,20 @@ function buildRecord() {
       "The package enforces file-count, file-size, total-byte, depth, and output-path limits.",
       "Its output distinguishes static attention signals from a concurrency-correctness claim and excludes raw source.",
       "Its write, network, and secret permissions remain empty.",
-      "The public SEIS Repo card is reconciled with focused tests, plugin validation, metadata generation, and current repository-local evidence.",
+      "The retained capability is reconciled with exactly one current curated SEIS Repo bundle card, focused tests, plugin validation, metadata generation, and repository-local evidence.",
     ],
     implementation: {
       sourcePath: sourceCandidate?.sourcePath || null,
       marketplaceSourcePath: marketplaceCandidate?.source?.path || null,
       packageExists: sourceCandidate !== null,
       publicCardExists: marketplaceCandidate !== null,
+      directMarketplaceCard: marketplaceCandidate !== null,
+      distributionBundleId: distributionBundle?.id || null,
+      distributionBundleSourcePath: distributionBundle?.sourcePath || null,
+      distributionBundleCardExists: distributionBundleCard !== null,
+      distributionBundleMembershipCount: bundleMemberships.length,
       implementationStarted: true,
-      additionalPublicCardAdded: true,
+      historicalAdditionalDirectCardAddedAtExecution: true,
     },
     preconditions: {
       wave2HandoffId: wave2Handoff.id || null,
@@ -136,22 +175,17 @@ function buildRecord() {
       wave3ProgramSelectionStatus: wave3Program.selection?.status || null,
       wave3ProgramSelectedCapability: wave3Program.selection?.selectedCapability ?? null,
     },
-    publicDistribution: {
-      marketplaceName: marketplace.name || null,
-      marketplaceDisplayName: marketplace.interface?.displayName || null,
-      publicAudience: "everyone",
-      applicationPluginCount: sourceEntries.length,
-      expectedApplicationPluginCount: APP_PLUGIN_EXPANSION_TARGET,
-      publicCardCount: marketplaceEntries.length,
-      expectedPublicCardCount: APP_PLUGIN_EXPANSION_TARGET + 306,
-      additionalPublicCardAdded: true,
-      personalMarketplaceRead: false,
-      personalMarketplaceMutation: false,
-      network: false,
-      externalWrites: false,
-      secrets: false,
-      publicReleaseAllowed: false,
+    historicalWave3Distribution: {
+      classification: "immutable-wave-3-direct-card-completion-snapshot",
+      observedAt: "2026-07-21",
+      projectionModel: "direct-source-package-marketplace-cards",
+      ...HISTORICAL_WAVE_3_DISTRIBUTION,
+      selectedCapability: CANDIDATE_ID,
+      selectedCapabilityHadDirectMarketplaceCard: true,
+      additionalDirectCardAddedAtExecution: true,
+      note: "These counts and direct-card facts are immutable Wave 3 execution history and do not describe the current curated marketplace.",
     },
+    currentMarketplaceProjection,
     staticEvidence: sourceSnapshot,
     publicBoundary: {
       marketplaceName: marketplace.name || null,
@@ -190,18 +224,70 @@ function buildRecord() {
       {
         id: "RISK-W3-003",
         status: "tracked",
-        description: "The public marketplace could gain a duplicate or premature card.",
-        mitigation: "Keep the selected package singular, retain its overlap review, and require focused and broad repository-local validation before Wave 3 handoff or any external release decision.",
+        description: "The retained capability could be duplicated across bundles or reintroduced as a separate marketplace card.",
+        mitigation: "Require exact-one bundle membership, reject direct source-package cards, retain the overlap review, and require focused and broad repository-local validation before any external release decision.",
       },
     ],
     rollback: {
       strategy: "revert",
-      scope: "Revert the focused Wave 3 package, its SEIS Repo card, generated evidence, decision, tests, and documentation on the feature branch. It creates no external state or data migration.",
+      scope: "Revert the focused Wave 3 capability compatibility update, generated evidence, tests, and documentation on the feature branch. It creates no external state or data migration.",
       dataMigrationRequired: false,
     },
   };
   validateRecord(record);
   return record;
+}
+
+function buildCurrentMarketplaceProjection({
+  sourceManifest,
+  marketplace,
+  bundleCatalog,
+  sourceCandidate,
+  marketplaceCandidate,
+  distributionBundle,
+  distributionBundleCard,
+  bundleMembershipCount,
+}) {
+  const marketplaceEntries = list(marketplace.plugins);
+  const sourceEntries = list(sourceManifest.plugins);
+  assert(marketplace.name === "seis-repo" && marketplace.interface?.displayName === "SEIS Repo", "current marketplace identity is invalid");
+  assert(sourceManifest.publicDistribution?.distributionMode === "curated-bounded-public-bundles" && sourceManifest.publicDistribution?.separateMarketplaceCards === false, "current source distribution mode is invalid");
+  assert(marketplaceEntries.length === CURRENT_DISTRIBUTION.publicCardCount && sourceEntries.length === CURRENT_DISTRIBUTION.applicationSourcePackageCount, "current marketplace or application-source count is invalid");
+  assert(bundleCatalog.marketplace?.publicCardCount === CURRENT_DISTRIBUTION.publicCardCount && bundleCatalog.marketplace?.canonicalCardCount === CURRENT_DISTRIBUTION.canonicalCardCount && bundleCatalog.marketplace?.bundleCardCount === CURRENT_DISTRIBUTION.bundleCardCount && bundleCatalog.marketplace?.applicationBundleCardCount === CURRENT_DISTRIBUTION.applicationBundleCardCount && bundleCatalog.marketplace?.topicBundleCardCount === CURRENT_DISTRIBUTION.topicBundleCardCount, "current bundle-card inventory is invalid");
+  assert(bundleCatalog.sourceCapabilityInventory?.rootSourceModuleCount === CURRENT_DISTRIBUTION.rootSourceModuleCount && bundleCatalog.sourceCapabilityInventory?.applicationSourcePackageCount === CURRENT_DISTRIBUTION.applicationSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.topicSourcePackageCount === CURRENT_DISTRIBUTION.topicSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_DISTRIBUTION.retainedSourcePackageCount && bundleCatalog.sourceCapabilityInventory?.sourcePackagesDeleted === false, "current retained-source inventory is invalid");
+  assert(sourceCandidate?.sourcePath === `plugins/seis-core/${CANDIDATE_ID}` && marketplaceCandidate === null, "current selected capability must remain a retained source without a direct card");
+  assert(distributionBundle?.id === DISTRIBUTION_BUNDLE_ID && distributionBundle?.family === "application" && distributionBundle?.sourcePath === `./plugins/seis-bundles/${DISTRIBUTION_BUNDLE_ID}` && bundleMembershipCount === 1, "current selected capability bundle membership is invalid");
+  assert(distributionBundleCard?.source?.path === distributionBundle.sourcePath, "current selected capability bundle card is invalid");
+  return {
+    observedAt: bundleCatalog.generatedAt || null,
+    projectionModel: "curated-bundle-cards",
+    distributionMode: "curated-bounded-public-bundles",
+    marketplaceName: marketplace.name,
+    marketplaceDisplayName: marketplace.interface.displayName,
+    publicCardCount: marketplaceEntries.length,
+    canonicalCardCount: bundleCatalog.marketplace.canonicalCardCount,
+    bundleCardCount: bundleCatalog.marketplace.bundleCardCount,
+    applicationBundleCardCount: bundleCatalog.marketplace.applicationBundleCardCount,
+    topicBundleCardCount: bundleCatalog.marketplace.topicBundleCardCount,
+    sourceCapabilityInventory: {
+      rootSourceModuleCount: bundleCatalog.sourceCapabilityInventory.rootSourceModuleCount,
+      applicationSourcePackageCount: sourceEntries.length,
+      topicSourcePackageCount: bundleCatalog.sourceCapabilityInventory.topicSourcePackageCount,
+      retainedSourcePackageCount: bundleCatalog.sourceCapabilityInventory.retainedSourcePackageCount,
+      sourcePackagesDeleted: false,
+    },
+    selectedApplicationCapability: {
+      id: CANDIDATE_ID,
+      retainedSource: true,
+      sourcePath: sourceCandidate.sourcePath,
+      directMarketplaceCardRequired: false,
+      directMarketplaceCardCount: 0,
+      bundleCardCount: 1,
+      bundleId: distributionBundle.id,
+      bundleSourcePath: distributionBundle.sourcePath,
+      bundleFamily: distributionBundle.family,
+    },
+  };
 }
 
 function collectSourceSnapshot() {
@@ -316,13 +402,15 @@ function walkSourceTree(directoryPath, sourceRootPath, rootRecord, snapshot, sig
 function validateRecord(record) {
   const evidence = record.staticEvidence || {};
   assert(record.id === "seis-public-plugin-wave-3-capability-decision" && record.goalId === "SEIS-GOAL-021" && record.backlogId === "SEIS-BL-021" && record.wave === 3, "decision identity is invalid");
-  assert(record.status === "approved-public-local-implementation" && record.decision?.selectedCapability === CANDIDATE_ID && record.decision?.implementationStarted === true && record.decision?.additionalPublicCardAdded === true, "implementation decision state is invalid");
+  assert(record.status === "approved-public-local-implementation" && record.decision?.selectedCapability === CANDIDATE_ID && record.decision?.implementationStarted === true && record.decision?.historicalAdditionalDirectCardAddedAtExecution === true, "implementation decision state is invalid");
   assert(list(record.decision?.overlapReview).length === 4 && list(record.nonGoals).length === 4 && list(record.acceptanceCriteria).length === 5, "scope is incomplete");
-  assert(record.implementation?.packageExists === true && record.implementation?.publicCardExists === true && record.implementation?.sourcePath === `plugins/seis-core/${CANDIDATE_ID}` && record.implementation?.marketplaceSourcePath === `./plugins/seis-core/${CANDIDATE_ID}` && record.implementation?.implementationStarted === true && record.implementation?.additionalPublicCardAdded === true, "implementation evidence is invalid");
+  assert(record.implementation?.packageExists === true && record.implementation?.publicCardExists === false && record.implementation?.directMarketplaceCard === false && record.implementation?.sourcePath === `plugins/seis-core/${CANDIDATE_ID}` && record.implementation?.marketplaceSourcePath === null && record.implementation?.distributionBundleId === DISTRIBUTION_BUNDLE_ID && record.implementation?.distributionBundleSourcePath === `./plugins/seis-bundles/${DISTRIBUTION_BUNDLE_ID}` && record.implementation?.distributionBundleCardExists === true && record.implementation?.distributionBundleMembershipCount === 1 && record.implementation?.implementationStarted === true && record.implementation?.historicalAdditionalDirectCardAddedAtExecution === true, "implementation evidence is invalid");
   assert(record.preconditions?.wave2HandoffId === "seis-public-plugin-wave-2-handoff" && record.preconditions?.wave2HandoffStatus === "completed-repository-local-handoff", "Wave 2 handoff precondition is invalid");
   assert(record.preconditions?.wave3ProgramId === "seis-public-plugin-wave-3-program" && record.preconditions?.wave3ProgramStatus === "in-progress" && record.preconditions?.wave3ProgramSelectionStatus === "implementation-approved" && record.preconditions?.wave3ProgramSelectedCapability === CANDIDATE_ID, "Wave 3 implementation precondition is invalid");
-  assert(record.publicDistribution?.marketplaceName === "seis-repo" && record.publicDistribution?.marketplaceDisplayName === "SEIS Repo" && record.publicDistribution?.publicAudience === "everyone" && record.publicDistribution?.applicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.publicDistribution?.expectedApplicationPluginCount === APP_PLUGIN_EXPANSION_TARGET && record.publicDistribution?.publicCardCount === APP_PLUGIN_EXPANSION_TARGET + 306 && record.publicDistribution?.expectedPublicCardCount === APP_PLUGIN_EXPANSION_TARGET + 306 && record.publicDistribution?.additionalPublicCardAdded === true, "public distribution contract is invalid");
-  assert(record.publicDistribution?.personalMarketplaceRead === false && record.publicDistribution?.personalMarketplaceMutation === false && record.publicDistribution?.network === false && record.publicDistribution?.externalWrites === false && record.publicDistribution?.secrets === false && record.publicDistribution?.publicReleaseAllowed === false, "public distribution safety boundary is invalid");
+  assert(record.historicalWave3Distribution?.classification === "immutable-wave-3-direct-card-completion-snapshot" && record.historicalWave3Distribution?.projectionModel === "direct-source-package-marketplace-cards" && record.historicalWave3Distribution?.applicationSourcePackageCount === HISTORICAL_WAVE_3_DISTRIBUTION.applicationSourcePackageCount && record.historicalWave3Distribution?.directApplicationCardCount === HISTORICAL_WAVE_3_DISTRIBUTION.directApplicationCardCount && record.historicalWave3Distribution?.marketplaceCardCount === HISTORICAL_WAVE_3_DISTRIBUTION.marketplaceCardCount && record.historicalWave3Distribution?.selectedCapability === CANDIDATE_ID && record.historicalWave3Distribution?.selectedCapabilityHadDirectMarketplaceCard === true && record.historicalWave3Distribution?.additionalDirectCardAddedAtExecution === true, "historical Wave 3 distribution is invalid");
+  assert(record.currentMarketplaceProjection?.projectionModel === "curated-bundle-cards" && record.currentMarketplaceProjection?.distributionMode === "curated-bounded-public-bundles" && record.currentMarketplaceProjection?.marketplaceName === "seis-repo" && record.currentMarketplaceProjection?.marketplaceDisplayName === "SEIS Repo" && record.currentMarketplaceProjection?.publicCardCount === CURRENT_DISTRIBUTION.publicCardCount && record.currentMarketplaceProjection?.canonicalCardCount === CURRENT_DISTRIBUTION.canonicalCardCount && record.currentMarketplaceProjection?.bundleCardCount === CURRENT_DISTRIBUTION.bundleCardCount && record.currentMarketplaceProjection?.applicationBundleCardCount === CURRENT_DISTRIBUTION.applicationBundleCardCount && record.currentMarketplaceProjection?.topicBundleCardCount === CURRENT_DISTRIBUTION.topicBundleCardCount, "current marketplace card projection is invalid");
+  assert(record.currentMarketplaceProjection?.sourceCapabilityInventory?.rootSourceModuleCount === CURRENT_DISTRIBUTION.rootSourceModuleCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.applicationSourcePackageCount === APP_PLUGIN_EXPANSION_TARGET && record.currentMarketplaceProjection?.sourceCapabilityInventory?.topicSourcePackageCount === CURRENT_DISTRIBUTION.topicSourcePackageCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.retainedSourcePackageCount === CURRENT_DISTRIBUTION.retainedSourcePackageCount && record.currentMarketplaceProjection?.sourceCapabilityInventory?.sourcePackagesDeleted === false, "current retained-source projection is invalid");
+  assert(record.currentMarketplaceProjection?.selectedApplicationCapability?.id === CANDIDATE_ID && record.currentMarketplaceProjection?.selectedApplicationCapability?.retainedSource === true && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardRequired === false && record.currentMarketplaceProjection?.selectedApplicationCapability?.directMarketplaceCardCount === 0 && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleCardCount === 1 && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleId === DISTRIBUTION_BUNDLE_ID && record.currentMarketplaceProjection?.selectedApplicationCapability?.bundleFamily === "application", "current selected-capability projection is invalid");
   assert(evidence.classification === "bounded-static-concurrency-signals-only" && evidence.state === "bounded-static-signals-collected" && evidence.rootCount === SOURCE_ROOTS.length && evidence.discoveredSwiftFileCount > 0 && evidence.discoveredSwiftFileCount <= LIMITS.maxSwiftFiles && evidence.scannedSwiftFileCount === evidence.discoveredSwiftFileCount && evidence.boundedSwiftByteCount <= LIMITS.maxTotalBytes && evidence.maxFileBytesObserved <= LIMITS.maxFileBytes && evidence.maxRelativeDepthObserved <= LIMITS.maxRelativeDepth, "static source bounds are invalid");
   assert(evidence.symlinkCount === 0 && evidence.fileLimitExceeded === false && evidence.fileSizeLimitExceeded === false && evidence.totalByteLimitExceeded === false && evidence.depthLimitExceeded === false && evidence.unreadableFileCount === 0, "static source traversal is unsafe or incomplete");
   assert(evidence.machineSpecificPathFindingCount >= 0 && evidence.credentialAssignmentFindingCount === 0 && evidence.rawSourceReturned === false && evidence.sourceFilesCompiled === false && evidence.inputSafety?.rawMatchedValuesStored === false, "static evidence safety boundary is invalid");

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-4-public-boundary-decision",
   "goalId": "SEIS-GOAL-021",
   "wave": 4,
@@ -46,14 +46,47 @@
     ],
     "interpretation": "The host accepted the named feature-branch update while retaining policy observations. This is not a merge, a protected default-branch write, code-scanning success, or a verified-signature claim."
   },
-  "publicCountReconciliation": {
+  "historicalWave4Distribution": {
+    "classification": "immutable-wave-4-public-boundary-direct-card-snapshot",
+    "projectionModel": "direct-source-package-marketplace-cards",
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
     "applicationPluginCount": 74,
     "publicCardCount": 380,
     "topologyCardCount": 1,
-    "personalMarketplaceRead": false,
-    "personalMarketplaceMutation": false
+    "selectedCapability": "seis-swift-package-topology",
+    "selectedCapabilityHadDirectMarketplaceCard": true,
+    "note": "These counts and direct-card facts are immutable Wave 4 public-boundary history and do not describe the current curated marketplace."
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
+    "marketplaceName": "seis-repo",
+    "marketplaceDisplayName": "SEIS Repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "selectedApplicationCapability": {
+      "id": "seis-swift-package-topology",
+      "retainedSource": true,
+      "sourcePath": "plugins/seis-core/seis-swift-package-topology",
+      "directMarketplaceCardRequired": false,
+      "directMarketplaceCardCount": 0,
+      "bundleCardCount": 1,
+      "bundleId": "seis-application-bundle-06",
+      "bundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+      "bundleFamily": "application"
+    }
   },
   "publicBoundary": {
     "marketplaceName": "seis-repo",
@@ -112,7 +145,7 @@
     "dataMigrationRequired": false
   },
   "inputSafetyScan": {
-    "inputCount": 10,
+    "inputCount": 12,
     "machineSpecificPathFindingCount": 0,
     "secretLikeFindingCount": 0,
     "findings": [],

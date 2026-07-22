@@ -11,6 +11,9 @@ const entrypoint = path.join(pluginRoot, "seis-public-install-state", "scripts",
 const installState = JSON.parse(readFileSync(path.join(repoRoot, "content", "development", "seis-public-install-state.json"), "utf8"));
 
 test("SEIS Public Install State separates public source availability from installation proof", () => {
+  assert.equal(installState.schemaVersion, 2);
+  assert.equal(installState.plugin.distributionMode, "bundled-source-capability");
+  assert.equal(installState.plugin.marketplaceCardName, "seis-application-bundle-05");
   const result = runCli(["--validate"]);
   assert.equal(result.state, "ready");
   assert.equal(result.ok, true);
@@ -18,10 +21,25 @@ test("SEIS Public Install State separates public source availability from instal
   assert.equal(result.marketplaceName, "seis-repo");
   assert.equal(result.marketplaceDisplayName, "SEIS Repo");
   assert.equal(result.publicCards.count, installState.publicCards.count);
-  assert.equal(result.publicCards.applicationPluginCount, installState.publicCards.applicationPluginCount);
+  assert.equal(result.publicCards.count, 34);
+  assert.equal(result.publicCards.canonicalOrchestratorCount, 1);
+  assert.equal(result.publicCards.bundleCardCount, 33);
+  assert.equal(result.publicCards.applicationBundleCardCount, 6);
+  assert.equal(result.publicCards.topicBundleCardCount, 27);
+  assert.deepEqual(result.sourceCapabilities, {
+    count: 380,
+    migratedRootCount: 5,
+    applicationCount: 75,
+    topicCount: 300,
+    separateMarketplaceCards: false
+  });
   assert.equal(result.publicCards.sourceAvailability, "public-repository-source-available");
   assert.equal(result.readiness.publicReleaseAllowed, false);
-  assert.equal(result.evidence.repoLocalArtifactStage.verified, true);
+  assert.equal(result.evidence.historicalRepoLocalArtifactStage.verified, true);
+  assert.equal(result.evidence.historicalRepoLocalArtifactStage.historicalSnapshot, true);
+  assert.equal(result.evidence.historicalRepoLocalArtifactStage.capturedMarketplaceCardCount, 381);
+  assert.equal(result.evidence.historicalRepoLocalArtifactStage.currentMarketplaceCardCount, 34);
+  assert.equal(result.evidence.historicalRepoLocalArtifactStage.matchesCurrentMarketplaceProjection, false);
   assert.deepEqual(result.permissions.write, []);
   assert.deepEqual(result.permissions.network, []);
   assert.deepEqual(result.permissions.secrets, []);
@@ -51,6 +69,8 @@ test("SEIS Public Install State exposes bounded MCP tools without installation o
   assert.equal(status?.status, "ready");
   assert.equal(status?.marketplace?.marketplaceName, "seis-repo");
   assert.equal(status?.marketplace?.publicCardCount, installState.publicCards.count);
+  assert.equal(status?.marketplace?.bundleCardCount, 33);
+  assert.equal(status?.marketplace?.sourceCapabilityCount, 380);
   assert.equal(status?.installsPackages, false);
 
   const validation = responses.find((response) => response.id === 4)?.result;

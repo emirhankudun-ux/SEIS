@@ -1,19 +1,21 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-plugin-wave-3-capability-decision",
   "goalId": "SEIS-GOAL-021",
   "backlogId": "SEIS-BL-021",
   "generatedAt": "2026-07-21",
   "status": "approved-public-local-implementation",
   "wave": 3,
-  "purpose": "Record the one non-duplicative, bounded, public-only Swift concurrency audit package and SEIS Repo card now implemented through repository-local evidence. This remains static-only and does not claim an external installation, provider, deployment, native runtime, or public release.",
+  "purpose": "Preserve the historical Wave 3 Swift concurrency audit implementation decision while proving the capability remains a retained source package discoverable through exactly one current curated SEIS Repo bundle. This remains static-only and does not claim an external installation, provider, deployment, native runtime, or public release.",
   "decision": {
     "selectedCapability": "seis-swift-concurrency-audit",
     "displayName": "SEIS Swift Concurrency Audit",
     "implementationStarted": true,
-    "additionalPublicCardAdded": true,
+    "historicalAdditionalDirectCardAddedAtExecution": true,
+    "historicalMarketplaceSnapshot": true,
+    "currentDistributionMode": "retained-source-capability-in-curated-bundle",
     "selectionReason": "The existing public Apple Native Readiness package verifies declared Swift Package, source/test-presence, and platform-strategy evidence, but deliberately does not inspect concurrency annotations or static risk signals. A focused concurrency audit can provide a distinct, bounded review of checked-in Swift source markers without compiling, running, or claiming concurrency correctness.",
-    "implementationGate": "The Wave 3 program is active because a focused package contract, deny-by-default runtime, deterministic fixtures, structural validation, and the public SEIS Repo card now exist. Full repository-local regression, provenance, lifecycle, fresh-task, and handoff evidence remain required before any Wave 3 completion or release claim.",
+    "implementationGate": "The Wave 3 program was activated after a focused package contract, deny-by-default runtime, deterministic fixtures, structural validation, and a direct SEIS Repo card existed. The retained source capability is now presented through one curated bundle card; this record does not convert either state into a release claim.",
     "overlapReview": [
       {
         "plugin": "seis-apple-native-readiness",
@@ -59,15 +61,20 @@
     "The package enforces file-count, file-size, total-byte, depth, and output-path limits.",
     "Its output distinguishes static attention signals from a concurrency-correctness claim and excludes raw source.",
     "Its write, network, and secret permissions remain empty.",
-    "The public SEIS Repo card is reconciled with focused tests, plugin validation, metadata generation, and current repository-local evidence."
+    "The retained capability is reconciled with exactly one current curated SEIS Repo bundle card, focused tests, plugin validation, metadata generation, and repository-local evidence."
   ],
   "implementation": {
     "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
-    "marketplaceSourcePath": "./plugins/seis-core/seis-swift-concurrency-audit",
+    "marketplaceSourcePath": null,
     "packageExists": true,
-    "publicCardExists": true,
+    "publicCardExists": false,
+    "directMarketplaceCard": false,
+    "distributionBundleId": "seis-application-bundle-06",
+    "distributionBundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+    "distributionBundleCardExists": true,
+    "distributionBundleMembershipCount": 1,
     "implementationStarted": true,
-    "additionalPublicCardAdded": true
+    "historicalAdditionalDirectCardAddedAtExecution": true
   },
   "preconditions": {
     "wave2HandoffId": "seis-public-plugin-wave-2-handoff",
@@ -77,21 +84,47 @@
     "wave3ProgramSelectionStatus": "implementation-approved",
     "wave3ProgramSelectedCapability": "seis-swift-concurrency-audit"
   },
-  "publicDistribution": {
+  "historicalWave3Distribution": {
+    "classification": "immutable-wave-3-direct-card-completion-snapshot",
+    "observedAt": "2026-07-21",
+    "projectionModel": "direct-source-package-marketplace-cards",
+    "applicationSourcePackageCount": 73,
+    "directApplicationCardCount": 73,
+    "marketplaceCardCount": 379,
+    "selectedCapability": "seis-swift-concurrency-audit",
+    "selectedCapabilityHadDirectMarketplaceCard": true,
+    "additionalDirectCardAddedAtExecution": true,
+    "note": "These counts and direct-card facts are immutable Wave 3 execution history and do not describe the current curated marketplace."
+  },
+  "currentMarketplaceProjection": {
+    "observedAt": "2026-07-22",
+    "projectionModel": "curated-bundle-cards",
+    "distributionMode": "curated-bounded-public-bundles",
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "publicAudience": "everyone",
-    "applicationPluginCount": 75,
-    "expectedApplicationPluginCount": 75,
-    "publicCardCount": 381,
-    "expectedPublicCardCount": 381,
-    "additionalPublicCardAdded": true,
-    "personalMarketplaceRead": false,
-    "personalMarketplaceMutation": false,
-    "network": false,
-    "externalWrites": false,
-    "secrets": false,
-    "publicReleaseAllowed": false
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
+    "sourceCapabilityInventory": {
+      "rootSourceModuleCount": 5,
+      "applicationSourcePackageCount": 75,
+      "topicSourcePackageCount": 300,
+      "retainedSourcePackageCount": 380,
+      "sourcePackagesDeleted": false
+    },
+    "selectedApplicationCapability": {
+      "id": "seis-swift-concurrency-audit",
+      "retainedSource": true,
+      "sourcePath": "plugins/seis-core/seis-swift-concurrency-audit",
+      "directMarketplaceCardRequired": false,
+      "directMarketplaceCardCount": 0,
+      "bundleCardCount": 1,
+      "bundleId": "seis-application-bundle-06",
+      "bundleSourcePath": "./plugins/seis-bundles/seis-application-bundle-06",
+      "bundleFamily": "application"
+    }
   },
   "staticEvidence": {
     "classification": "bounded-static-concurrency-signals-only",
@@ -251,13 +284,13 @@
     {
       "id": "RISK-W3-003",
       "status": "tracked",
-      "description": "The public marketplace could gain a duplicate or premature card.",
-      "mitigation": "Keep the selected package singular, retain its overlap review, and require focused and broad repository-local validation before Wave 3 handoff or any external release decision."
+      "description": "The retained capability could be duplicated across bundles or reintroduced as a separate marketplace card.",
+      "mitigation": "Require exact-one bundle membership, reject direct source-package cards, retain the overlap review, and require focused and broad repository-local validation before any external release decision."
     }
   ],
   "rollback": {
     "strategy": "revert",
-    "scope": "Revert the focused Wave 3 package, its SEIS Repo card, generated evidence, decision, tests, and documentation on the feature branch. It creates no external state or data migration.",
+    "scope": "Revert the focused Wave 3 capability compatibility update, generated evidence, tests, and documentation on the feature branch. It creates no external state or data migration.",
     "dataMigrationRequired": false
   }
 }

@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-application-bundle-05",
+  "family": "application",
+  "journeyId": "developer-engineering",
+  "journeyLabel": "Developer Engineering",
+  "journeyPart": 2,
+  "journeyPartCount": 3,
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-bundle",
+  "maturity": "prototype",
+  "memberCount": 14,
+  "category": "Developer",
+  "categoryLabels": [
+    "Developer"
+  ],
+  "members": [
+    {
+      "name": "seis-issue-triage",
+      "displayName": "Seis Issue Triage",
+      "sourcePath": "./plugins/seis-core/seis-issue-triage",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-marketplace-integrity",
+      "displayName": "SEIS Marketplace Integrity",
+      "sourcePath": "./plugins/seis-core/seis-marketplace-integrity",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-migration-guide-check",
+      "displayName": "SEIS Migration Guide Check",
+      "sourcePath": "./plugins/seis-core/seis-migration-guide-check",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-offline-mode-check",
+      "displayName": "SEIS Offline Mode Check",
+      "sourcePath": "./plugins/seis-core/seis-offline-mode-check",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-performance-budget",
+      "displayName": "SEIS Performance Budget",
+      "sourcePath": "./plugins/seis-core/seis-performance-budget",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-plugin-capability-coverage",
+      "displayName": "SEIS Plugin Capability Coverage",
+      "sourcePath": "./plugins/seis-core/seis-plugin-capability-coverage",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-plugin-discovery",
+      "displayName": "SEIS Plugin Discovery",
+      "sourcePath": "./plugins/seis-core/seis-plugin-discovery",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-plugin-migration",
+      "displayName": "Seis Plugin Migration",
+      "sourcePath": "./plugins/seis-core/seis-plugin-migration",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-pr-cycle-time",
+      "displayName": "Seis Pr Cycle Time",
+      "sourcePath": "./plugins/seis-core/seis-pr-cycle-time",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-prompt-injection-audit",
+      "displayName": "SEIS Prompt Injection Audit",
+      "sourcePath": "./plugins/seis-core/seis-prompt-injection-audit",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-public-distribution-audit",
+      "displayName": "SEIS Public Distribution Audit",
+      "sourcePath": "./plugins/seis-core/seis-public-distribution-audit",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-public-install-evidence",
+      "displayName": "SEIS Public Install Evidence",
+      "sourcePath": "./plugins/seis-core/seis-public-install-evidence",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-public-install-state",
+      "displayName": "SEIS Public Install State",
+      "sourcePath": "./plugins/seis-core/seis-public-install-state",
+      "category": "Developer"
+    },
+    {
+      "name": "seis-public-runtime-status",
+      "displayName": "SEIS Public Runtime Status",
+      "sourcePath": "./plugins/seis-core/seis-public-runtime-status",
+      "category": "Developer"
+    }
+  ],
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "installationPolicy": {
+    "defaultInstall": false,
+    "optionalSelectionBundle": true,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "sourcePackagesDeleted": false
+  },
+  "permissions": {
+    "read": [
+      "bundle profile",
+      "bounded member manifest presence"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "qualityCommands": [
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-public-plugin-family",
+    "npm run check:seis-repo-marketplace"
+  ],
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticMerge": false,
+    "sourceDeletion": false
+  }
+}

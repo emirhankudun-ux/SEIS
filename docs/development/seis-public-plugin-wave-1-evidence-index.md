@@ -4,15 +4,22 @@
 record for Wave 1 of `SEIS-GOAL-021`. It reconciles the public `SEIS Repo`
 marketplace, app-owned package count, release train, public-install evidence,
 MCP permission boundary, UI evidence, Round 4 capability decision, and
-public-release gate in one bounded view.
+public-release gate in one bounded view. Schema version 2 separates the
+immutable Wave 1 handoff snapshot from current marketplace revalidation.
 
 ## What it proves
 
-- The repository marketplace remains `seis-repo` / `SEIS Repo` with 377 public
-  cards: one canonical orchestrator, five migrated root packages, 71 app-owned
-  packages, and 300 topic packages.
-- The 71 app-owned packages agree with the current app release label and
-  semver.
+- The historical Wave 1 handoff remains exactly 377 direct marketplace cards
+  and 71 app-owned packages. The selected `seis-evidence-index` capability had
+  one direct card in that immutable snapshot.
+- The current curated projection is 34 cards: one canonical SEIS-Agent card,
+  6 application bundles, and 27 topic bundles. It retains 380 repository
+  sources: 5 root modules, 75 app-owned packages, and 300 topic packages.
+- The selected `seis-evidence-index` source remains present and resolves
+  through exactly one current card, `seis-application-bundle-04`; a direct
+  source card is neither required nor present in the curated projection.
+- The current 75 app-owned source packages agree with the active app release
+  label and semver.
 - The declared MCP ledger remains deny-by-default: write, network, and secret
   permissions are empty and public release remains disallowed.
 - The Command Center static UI-state contract is ready; the separately tracked
@@ -33,6 +40,7 @@ public-release gate in one bounded view.
     npm run automation:seis-public-plugin-wave-1-evidence-index
     npm run check:seis-public-plugin-wave-1-evidence-index
     npm run check:seis-public-plugin-wave-1-capability-decision
+    npm run check:seis-public-plugin-bundles
     npm run check:seis-evidence-index
     npm run check:seis-repo-marketplace
 

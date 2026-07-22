@@ -37,6 +37,9 @@
   "publicRepositoryAvailable": true,
   "publicAudience": "everyone",
   "publicMarketplace": true,
+  "marketplaceDiscoverable": true,
+  "marketplaceCard": false,
+  "marketplaceBundleId": "seis-application-bundle-05",
   "liveRuntimeStatus": "local-demo-or-auth-gated",
   "provenance": "Created from the SEIS master prompt plugin portfolio for SEIS-GOAL-021."
 }

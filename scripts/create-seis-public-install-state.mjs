@@ -5,7 +5,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
-const GENERATED_AT = "2026-07-20";
+const GENERATED_AT = "2026-07-22";
 const OUTPUT_PATH = "content/development/seis-public-install-state.json";
 const MARKETPLACE_PATH = ".agents/plugins/marketplace.json";
 const FAMILY_PATH = "content/development/seis-public-plugin-family.json";
@@ -38,28 +38,62 @@ function buildState() {
   const independentEvidence = independentEvidencePath ? readOptionalJson(independentEvidencePath) : null;
   const cards = array(marketplace.plugins);
   const canonicalCards = array(family.publicPlugins);
-  const rootCards = array(family.migratedRootPlugins);
-  const applicationCards = array(family.applicationPlugins);
-  const topicCards = array(family.topicPlugins);
-  const expectedCardCount = canonicalCards.length + rootCards.length + applicationCards.length + topicCards.length;
-  const installStateCard = cards.find((card) => card?.name === "seis-public-install-state");
+  const bundleCards = array(family.bundlePackages);
+  const applicationBundleCards = bundleCards.filter((bundle) => bundle?.family === "application");
+  const topicBundleCards = bundleCards.filter((bundle) => bundle?.family === "topic");
+  const rootCapabilities = array(family.migratedRootPlugins);
+  const applicationCapabilities = array(family.applicationPlugins);
+  const topicCapabilities = array(family.topicPlugins);
+  const expectedCardCount = canonicalCards.length + bundleCards.length;
+  const expectedSourceCapabilityCount = rootCapabilities.length + applicationCapabilities.length + topicCapabilities.length;
+  const installStateBundle = findCapabilityBundle(bundleCards, "seis-public-install-state");
+  const installStateCard = cards.find((card) => card?.name === installStateBundle?.id);
+  const artifactStage = externalProof.repoLocalArtifactStaging || {};
+  const historicalArtifactCardCount = artifactStage.historicalPreConsolidationSnapshot?.marketplaceCardCount
+    ?? artifactStage.marketplaceEntryCount
+    ?? null;
+  const historicalCanonicalCardCount = artifactStage.canonicalMarketplaceCardCount
+    ?? artifactStage.canonicalOrchestratorCount
+    ?? null;
+  const historicalRootSourceCapabilityCount = artifactStage.migratedRootSourceCapabilityCount
+    ?? artifactStage.migratedRootPluginCount
+    ?? null;
+  const historicalApplicationSourceCapabilityCount = artifactStage.applicationSourceCapabilityCount
+    ?? artifactStage.applicationPluginCount
+    ?? null;
+  const historicalTopicSourceCapabilityCount = artifactStage.topicSourceCapabilityCount
+    ?? artifactStage.topicPluginCount
+    ?? null;
+  const historicalSourceCapabilityCount = Number(historicalRootSourceCapabilityCount || 0)
+    + Number(historicalApplicationSourceCapabilityCount || 0)
+    + Number(historicalTopicSourceCapabilityCount || 0);
 
   assert(marketplace.name === "seis-repo", "marketplace must be seis-repo");
   assert(marketplace.interface?.displayName === "SEIS Repo", "marketplace display name must be SEIS Repo");
   assert(cards.length === expectedCardCount, "marketplace card count must match the public plugin family");
+  assert(cardsMatchProjection(cards, family.marketplace?.entries), "marketplace cards must match the curated family projection");
   assert(family.marketplace?.publicPluginCount === expectedCardCount, "public plugin family card count must match the marketplace");
   assert(family.marketplace?.canonicalOrchestratorCount === canonicalCards.length, "canonical card count must match the public plugin family");
-  assert(family.marketplace?.migratedRootPluginCount === rootCards.length, "root card count must match the public plugin family");
-  assert(family.marketplace?.applicationPluginCount === applicationCards.length, "application card count must match the public plugin family");
-  assert(family.marketplace?.topicPluginCount === topicCards.length, "topic card count must match the public plugin family");
+  assert(family.marketplace?.bundlePluginCount === bundleCards.length, "bundle card count must match the public plugin family");
+  assert(family.marketplace?.applicationBundlePluginCount === applicationBundleCards.length, "application bundle card count must match the public plugin family");
+  assert(family.marketplace?.topicBundlePluginCount === topicBundleCards.length, "topic bundle card count must match the public plugin family");
+  assert(family.marketplace?.migratedRootPluginCount === rootCapabilities.length, "root source capability count must match the public plugin family");
+  assert(family.marketplace?.applicationPluginCount === applicationCapabilities.length, "application source capability count must match the public plugin family");
+  assert(family.marketplace?.topicPluginCount === topicCapabilities.length, "topic source capability count must match the public plugin family");
+  assert(family.marketplace?.sourceCapabilityCount === expectedSourceCapabilityCount, "source capability count must match the public plugin family");
   assert(cardsHavePublicSource(cards), "every marketplace card must retain a bounded public repository source");
-  assert(Boolean(installStateCard), "marketplace must include seis-public-install-state");
-  assert(installStateCard?.source?.path === "./plugins/seis-core/seis-public-install-state", "install-state card source path is invalid");
+  assert(Boolean(installStateBundle), "install-state source capability must be covered by a bundle");
+  assert(Boolean(installStateCard), "marketplace must include the install-state capability bundle");
+  assert(installStateCard?.source?.path === installStateBundle?.sourcePath, "install-state bundle card source path is invalid");
   assert(installStateCard?.policy?.installation === "AVAILABLE", "install-state card must be available");
   assert(installStateCard?.policy?.authentication === "ON_INSTALL", "install-state card authentication is invalid");
-  assert(externalProof.repoLocalArtifactStaging?.ok === true, "repo-local clean artifact staging must be recorded as successful");
-  assert(externalProof.repoLocalArtifactStaging?.marketplaceEntryCount === expectedCardCount, "artifact stage card count must match the marketplace");
-  assert(externalProof.repoLocalArtifactStaging?.applicationPluginCount === applicationCards.length, "artifact stage application count must match the marketplace");
+  assert(artifactStage.ok === true, "repo-local clean artifact staging must be recorded as successful");
+  assert(historicalCanonicalCardCount === canonicalCards.length, "historical artifact stage canonical count must match the retained source snapshot");
+  assert(historicalRootSourceCapabilityCount === rootCapabilities.length, "historical artifact stage root source count must match the retained source inventory");
+  assert(historicalApplicationSourceCapabilityCount === applicationCapabilities.length, "historical artifact stage application source count must match the retained source inventory");
+  assert(historicalTopicSourceCapabilityCount === topicCapabilities.length, "historical artifact stage topic source count must match the retained source inventory");
+  assert(historicalSourceCapabilityCount === expectedSourceCapabilityCount, "historical artifact stage source capability count must match the retained source inventory");
+  assert(historicalArtifactCardCount === canonicalCards.length + historicalSourceCapabilityCount, "historical artifact stage must retain its pre-bundle card projection");
   assert(externalProof.publicReleaseAllowed === false, "artifact staging must not claim public release approval");
   assert(independentContract.status === "active-evidence-intake-contract", "independent runner evidence contract must remain active");
   assert(independentContract.publicReleaseAllowed === false, "independent runner evidence contract must not claim public release approval");
@@ -70,7 +104,7 @@ function buildState() {
   const sourceAvailable = cardsHavePublicSource(cards);
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-public-install-state",
     goalId: "SEIS-GOAL-021",
     generatedAt: GENERATED_AT,
@@ -84,6 +118,9 @@ function buildState() {
       displayName: "SEIS Public Install State",
       marketplaceName: "seis-repo",
       sourcePath: "plugins/seis-core/seis-public-install-state",
+      distributionMode: "bundled-source-capability",
+      marketplaceCardName: installStateBundle.id,
+      marketplaceCardSourcePath: installStateBundle.sourcePath,
       publicAudience: "everyone",
       publicMarketplace: true
     },
@@ -92,28 +129,40 @@ function buildState() {
       marketplaceDisplayName: marketplace.interface?.displayName,
       count: cards.length,
       canonicalOrchestratorCount: canonicalCards.length,
-      migratedRootPluginCount: rootCards.length,
-      applicationPluginCount: applicationCards.length,
-      topicPluginCount: topicCards.length,
+      bundleCardCount: bundleCards.length,
+      applicationBundleCardCount: applicationBundleCards.length,
+      topicBundleCardCount: topicBundleCards.length,
       sourceAvailability: sourceAvailable ? "public-repository-source-available" : "attention",
       installationPolicy: "AVAILABLE",
       authenticationPolicy: "ON_INSTALL",
       externalInstallationProven: independentInstallationVerified
+    },
+    sourceCapabilities: {
+      count: expectedSourceCapabilityCount,
+      migratedRootCount: rootCapabilities.length,
+      applicationCount: applicationCapabilities.length,
+      topicCount: topicCapabilities.length,
+      separateMarketplaceCards: false,
+      retentionMode: "repository-source-capabilities-behind-curated-cards"
     },
     canonicalDefaultInstall: {
       installId: family.defaultInstall?.installId || "seis-ai-agent@seis-repo",
       mode: family.defaultInstall?.mode || "single-public-plugin",
       sourceAvailability: "public-repository-source-available",
       independentInstallationProven: independentInstallationVerified,
-      note: "The canonical default install remains separate from source visibility for every direct SEIS Repo card."
+      note: "The canonical default install remains distinct from the 33 optional curated bundle cards and their retained source capabilities."
     },
     evidence: {
-      repoLocalArtifactStage: {
+      historicalRepoLocalArtifactStage: {
         status: externalProof.status,
         verified: externalProof.repoLocalArtifactStaging?.ok === true,
-        marketplaceEntryCount: externalProof.repoLocalArtifactStaging?.marketplaceEntryCount ?? null,
+        historicalSnapshot: true,
+        capturedMarketplaceCardCount: historicalArtifactCardCount,
+        capturedSourceCapabilityCount: historicalSourceCapabilityCount,
+        currentMarketplaceCardCount: expectedCardCount,
+        matchesCurrentMarketplaceProjection: historicalArtifactCardCount === expectedCardCount,
         stageDeletedAfterValidation: externalProof.repoLocalArtifactStaging?.stageDeletedAfterValidation === true,
-        scope: "repo-local-clean-artifact-staging"
+        scope: "historical-pre-bundle-repo-local-clean-artifact-staging"
       },
       freshTaskReload: {
         status: freshTaskStatus,
@@ -130,7 +179,8 @@ function buildState() {
     },
     readiness: {
       repositorySourceAvailable: sourceAvailable,
-      localArtifactStageVerified: externalProof.repoLocalArtifactStaging?.ok === true,
+      currentMarketplaceProjectionVerified: cardsMatchProjection(cards, family.marketplace?.entries),
+      historicalSourceArtifactStageVerified: externalProof.repoLocalArtifactStaging?.ok === true,
       freshTaskReloadRecorded: freshTaskStatus === "recorded-local-fresh-task-evidence",
       independentInstallationVerified,
       humanReleaseApprovalRecorded: false,
@@ -142,11 +192,11 @@ function buildState() {
     stateModel: [
       {
         id: "public-source-available",
-        meaning: "A bounded SEIS Repo card and repository source package are visible to everyone."
+        meaning: "The bounded curated SEIS Repo cards and their retained repository source capabilities are visible to everyone."
       },
       {
-        id: "locally-artifact-validated",
-        meaning: "A disposable local stage validated declared package artifacts without using a public marketplace installation."
+        id: "historical-source-artifact-validated",
+        meaning: "The preserved pre-bundle disposable stage validated the canonical package and retained source capabilities without proving the current curated bundle projection."
       },
       {
         id: "independently-installed",
@@ -190,6 +240,17 @@ function cardsHavePublicSource(cards) {
     && card.policy?.installation === "AVAILABLE"
     && card.policy?.authentication === "ON_INSTALL"
   );
+}
+
+function cardsMatchProjection(cards, entries) {
+  const projection = array(entries);
+  if (cards.length !== projection.length) return false;
+  const expected = new Map(projection.map((entry) => [text(entry?.name), text(entry?.sourcePath)]));
+  return expected.size === projection.length && cards.every((card) => expected.get(text(card?.name)) === text(card?.source?.path));
+}
+
+function findCapabilityBundle(bundles, capabilityName) {
+  return bundles.find((bundle) => array(bundle?.members).some((member) => text(member?.name) === capabilityName)) || null;
 }
 
 function assert(condition, message) {

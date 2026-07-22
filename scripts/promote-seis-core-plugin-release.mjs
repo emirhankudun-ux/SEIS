@@ -71,6 +71,10 @@ if (requiresLargeCodeEvidence && apply && (measuredCodeLines === null || measure
   throw new Error(`Large-code evidence must report at least ${largeCodeChangeThreshold} changed code lines; received ${measuredCodeLines ?? "none"}.`);
 }
 const plugins = listPlugins();
+const bundleCatalog = readJson("content/development/seis-public-plugin-bundle-catalog.json");
+const applicationBundleCardCount = Array.isArray(bundleCatalog?.bundles)
+  ? bundleCatalog.bundles.filter((bundle) => bundle?.family === "application").length
+  : 0;
 
 if (plugins.length !== APP_PLUGIN_EXPANSION_TARGET) {
   throw new Error(`Expected ${APP_PLUGIN_EXPANSION_TARGET} app-owned plugins, found ${plugins.length}.`);
@@ -316,7 +320,7 @@ function updateIntegrationManifest(parsed) {
       section.applicationOwnedPluginCount = plugins.length;
     }
     if (Object.prototype.hasOwnProperty.call(section, "applicationPluginMarketplaceEntryCount")) {
-      section.applicationPluginMarketplaceEntryCount = plugins.length;
+      section.applicationPluginMarketplaceEntryCount = applicationBundleCardCount;
     }
   }
   if (manifest.applicationIntegration) {
@@ -328,7 +332,7 @@ function updateIntegrationManifest(parsed) {
     manifest.applicationIntegration.pluginReleaseMicroUnits = parsed.microUnits;
     manifest.applicationIntegration.pluginReleaseMicroUnits = parsed.microUnits;
     manifest.applicationIntegration.pluginSourceCount = plugins.length;
-    manifest.applicationIntegration.pluginMarketplaceEntryCount = plugins.length;
+    manifest.applicationIntegration.pluginMarketplaceEntryCount = applicationBundleCardCount;
   }
   if (typeof manifest.completionRule === "string") {
     manifest.completionRule = manifest.completionRule.replace(

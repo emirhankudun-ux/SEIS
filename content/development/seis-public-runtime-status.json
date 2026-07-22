@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-public-runtime-status",
   "goalId": "SEIS-GOAL-021",
-  "generatedAt": "2026-07-20",
+  "generatedAt": "2026-07-22",
   "status": "public-seis-repo-runtime-cache-observation",
   "decision": "runtime-cache-observation-is-not-release-or-activation-proof",
   "purpose": "Compare declared public SEIS Repo card versions with bounded local cache manifests while keeping cache presence, Codex enablement, independent installation proof, and release approval visibly separate.",
@@ -11,20 +11,31 @@
     "displayName": "SEIS Public Runtime Status",
     "marketplaceName": "seis-repo",
     "sourcePath": "plugins/seis-core/seis-public-runtime-status",
+    "distributionMode": "bundled-source-capability",
+    "marketplaceCardName": "seis-application-bundle-05",
+    "marketplaceCardSourcePath": "./plugins/seis-bundles/seis-application-bundle-05",
     "publicAudience": "everyone",
     "publicMarketplace": true
   },
   "publicCards": {
     "marketplaceName": "seis-repo",
     "marketplaceDisplayName": "SEIS Repo",
-    "count": 381,
+    "count": 34,
     "canonicalOrchestratorCount": 1,
-    "migratedRootPluginCount": 5,
-    "applicationPluginCount": 75,
-    "topicPluginCount": 300,
+    "bundleCardCount": 33,
+    "applicationBundleCardCount": 6,
+    "topicBundleCardCount": 27,
     "sourceAvailability": "public-repository-source-available",
     "installationPolicy": "AVAILABLE",
     "authenticationPolicy": "ON_INSTALL"
+  },
+  "sourceCapabilities": {
+    "count": 380,
+    "migratedRootCount": 5,
+    "applicationCount": 75,
+    "topicCount": 300,
+    "separateMarketplaceCards": false,
+    "retentionMode": "repository-source-capabilities-behind-curated-cards"
   },
   "observationBoundary": {
     "cacheScope": "bounded-seis-repo-cache-manifests-only",

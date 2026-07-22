@@ -10,8 +10,12 @@ const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".
 const repoRoot = path.resolve(pluginRoot, "../..");
 const entrypoint = path.join(pluginRoot, "seis-public-runtime-status", "scripts", "seis-public-runtime-status-mcp-server.mjs");
 const runtimeStatus = JSON.parse(readFileSync(path.join(repoRoot, "content", "development", "seis-public-runtime-status.json"), "utf8"));
+const marketplace = JSON.parse(readFileSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json"), "utf8"));
 
 test("SEIS Public Runtime Status validates public card and observation boundaries", () => {
+  assert.equal(runtimeStatus.schemaVersion, 2);
+  assert.equal(runtimeStatus.plugin.distributionMode, "bundled-source-capability");
+  assert.equal(runtimeStatus.plugin.marketplaceCardName, "seis-application-bundle-05");
   const result = runCli(["--validate"]);
   assert.equal(result.state, "ready");
   assert.equal(result.ok, true);
@@ -19,7 +23,18 @@ test("SEIS Public Runtime Status validates public card and observation boundarie
   assert.equal(result.marketplaceName, "seis-repo");
   assert.equal(result.marketplaceDisplayName, "SEIS Repo");
   assert.equal(result.publicCards.count, runtimeStatus.publicCards.count);
-  assert.equal(result.publicCards.applicationPluginCount, runtimeStatus.publicCards.applicationPluginCount);
+  assert.equal(result.publicCards.count, 34);
+  assert.equal(result.publicCards.canonicalOrchestratorCount, 1);
+  assert.equal(result.publicCards.bundleCardCount, 33);
+  assert.equal(result.publicCards.applicationBundleCardCount, 6);
+  assert.equal(result.publicCards.topicBundleCardCount, 27);
+  assert.deepEqual(result.sourceCapabilities, {
+    count: 380,
+    migratedRootCount: 5,
+    applicationCount: 75,
+    topicCount: 300,
+    separateMarketplaceCards: false
+  });
   assert.equal(result.observationBoundary.cacheRecordIsInstallationProof, false);
   assert.equal(result.observationBoundary.cacheRecordIsEnablementProof, false);
   assert.equal(result.observationBoundary.publicReleaseAllowed, false);
@@ -32,10 +47,13 @@ test("SEIS Public Runtime Status validates public card and observation boundarie
 test("SEIS Public Runtime Status compares current, stale, invalid, missing, and undeclared cache records", () => {
   const cacheRoot = mkdtempSync(path.join(os.tmpdir(), "seis-public-runtime-status-"));
   try {
-    const currentVersion = sourceVersion("seis-public-runtime-status");
-    writeCacheManifest(cacheRoot, "seis-public-runtime-status", currentVersion);
-    writeCacheManifest(cacheRoot, "seis-public-install-state", "0.0.0");
-    writeCacheManifest(cacheRoot, "seis-public-distribution-audit", "broken", "{not-json");
+    const currentName = "seis-application-bundle-05";
+    const staleName = "seis-application-bundle-01";
+    const invalidName = "seis-application-bundle-02";
+    const currentVersion = sourceVersion(currentName);
+    writeCacheManifest(cacheRoot, currentName, currentVersion);
+    writeCacheManifest(cacheRoot, staleName, "0.0.0");
+    writeCacheManifest(cacheRoot, invalidName, "broken", "{not-json");
     writeCacheManifest(cacheRoot, "retired-seis-package", "1.0.0");
 
     const result = runCli(["--runtime"], { SEIS_PUBLIC_RUNTIME_CACHE_ROOT: cacheRoot });
@@ -43,6 +61,8 @@ test("SEIS Public Runtime Status compares current, stale, invalid, missing, and 
     assert.equal(result.ok, true);
     assert.equal(result.runtimeObserved, true);
     assert.equal(result.cacheRootDetected, true);
+    assert.equal(result.sourceCapabilities.count, 380);
+    assert.equal(result.sourceCapabilities.separateMarketplaceCards, false);
     assert.equal(result.cacheRecordCount, 4);
     assert.equal(result.declaredCacheRecordCount, 3);
     assert.equal(result.currentCacheRecordCount, 1);
@@ -53,9 +73,9 @@ test("SEIS Public Runtime Status compares current, stale, invalid, missing, and 
     assert.equal(result.observationBoundary.cacheRecordIsInstallationProof, false);
     assert.equal(result.observationBoundary.cacheRecordIsEnablementProof, false);
     assert.equal(result.observationBoundary.publicReleaseAllowed, false);
-    assert.equal(result.records.find((record) => record.name === "seis-public-runtime-status")?.cacheState, "current");
-    assert.equal(result.records.find((record) => record.name === "seis-public-install-state")?.cacheState, "stale");
-    assert.equal(result.records.find((record) => record.name === "seis-public-distribution-audit")?.cacheState, "invalid");
+    assert.equal(result.records.find((record) => record.name === currentName)?.cacheState, "current");
+    assert.equal(result.records.find((record) => record.name === staleName)?.cacheState, "stale");
+    assert.equal(result.records.find((record) => record.name === invalidName)?.cacheState, "invalid");
     assert.equal(JSON.stringify(result).includes(cacheRoot), false);
     assert.equal(JSON.stringify(result).includes("retired-seis-package"), false);
   } finally {
@@ -87,6 +107,7 @@ test("SEIS Public Runtime Status exposes bounded MCP tools without writes", () =
     const runtime = responses.find((response) => response.id === 3)?.result;
     assert.equal(runtime?.state, "ready");
     assert.equal(runtime?.runtimeObserved, true);
+    assert.equal(runtime?.sourceCapabilities?.count, 380);
     assert.equal(runtime?.missingCacheRecordCount, runtimeStatus.publicCards.count);
     assert.deepEqual(runtime?.permissions?.write, []);
     assert.deepEqual(runtime?.permissions?.network, []);
@@ -104,7 +125,9 @@ test("SEIS Public Runtime Status exposes bounded MCP tools without writes", () =
 });
 
 function sourceVersion(name) {
-  const manifestPath = path.join(repoRoot, "plugins", "seis-core", name, ".codex-plugin", "plugin.json");
+  const card = marketplace.plugins.find((item) => item?.name === name);
+  assert.ok(card, `missing marketplace card: ${name}`);
+  const manifestPath = path.resolve(repoRoot, card.source.path, ".codex-plugin", "plugin.json");
   return JSON.parse(readFileSync(manifestPath, "utf8")).version;
 }
 

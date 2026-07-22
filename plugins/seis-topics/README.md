@@ -1,8 +1,8 @@
 # SEIS Topic Plugins
 
-The SEIS repository publishes 300 objective-derived topic plugins directly in the `seis-repo` marketplace.
+The SEIS repository retains 300 objective-derived topic source packages and exposes them through 27 bounded optional cards in the `seis-repo` marketplace.
 
-These packages are public, MIT-licensed, available to everyone, and implemented as local read-only demo lanes. The canonical SEIS-Agent remains the default orchestration install; topic cards are independently discoverable repository packages.
+These packages are public, MIT-licensed, available to everyone, and implemented as local read-only demo lanes. The canonical SEIS-Agent remains the default orchestration install; each topic source maps to exactly one optional bundle and is not a separate card.
 
 ## Source of truth
 

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "seis-topic-desktop-android",
   "displayName": "Android",
   "category": "Desktop",
@@ -14,6 +14,9 @@
   "status": "public-repository-preview",
   "maturity": "prototype",
   "publicMarketplace": true,
+  "marketplaceDiscoverable": true,
+  "marketplaceCard": false,
+  "marketplaceBundleId": "seis-topic-bundle-16",
   "publicAudience": "everyone",
   "license": "MIT",
   "liveRuntimeStatus": "local-demo-only",

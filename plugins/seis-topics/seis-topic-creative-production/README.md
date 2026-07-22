@@ -1,12 +1,12 @@
 # Creative Production — SEIS Topic Plugin
 
-This is an objective-derived public SEIS topic package for the **Creative Production** family. It is published directly from the SEIS repository marketplace as `seis-topic-creative-production@seis-repo`.
+This is an objective-derived retained SEIS topic source package for the **Creative Production** family. It is discoverable through the optional `seis-topic-bundle-08@seis-repo` card and is not a direct marketplace card.
 
 The package gives Codex a bounded **Creative Production** context lane: deterministic status, repository-shape evidence, and planning boundaries. It does not call external providers, read secrets, use the network, or write files.
 
 ## Package boundary
 
-- `.codex-plugin/plugin.json` defines the public plugin card.
+- `.codex-plugin/plugin.json` defines the retained source-package identity.
 - `.mcp.json` exposes the local MCP server.
 - `skills/seis-topic-creative-production/SKILL.md` defines the topic workflow.
 - `assets/topic-profile.json` records source, audience, license, maturity, and permissions.

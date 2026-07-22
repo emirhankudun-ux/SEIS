@@ -34,22 +34,27 @@ export function readApplicationPluginSurface(repoRoot, options = {}) {
   ensure(catalog.distribution?.sourceAvailableInRepository === true, "catalog does not mark source as repo-available", failures);
   ensure(catalog.distribution?.publicRepositoryAvailable === true, "catalog does not mark source as public-repository available", failures);
   ensure(catalog.distribution?.publicAudience === "everyone", "catalog public audience is not everyone", failures);
-  ensure(catalog.distribution?.distributionScope === "direct-repository-source", "catalog distribution scope is not direct-repository-source", failures);
+  ensure(catalog.distribution?.distributionScope === "curated-bounded-public-bundles", "catalog distribution scope is not curated-bounded-public-bundles", failures);
   ensure(catalog.distribution?.installSurface === APPLICATION_PLUGIN_INSTALL_SURFACE, "catalog install surface is not repo-source-app", failures);
-  ensure(catalog.distribution?.publicMarketplace === true, "catalog must mark app plugins as public marketplace entries", failures);
+  ensure(catalog.distribution?.publicMarketplace === true, "catalog must mark app capabilities as discoverable through the public marketplace", failures);
   ensure(catalog.distribution?.marketplaceName === "seis-repo", "catalog marketplace must be seis-repo", failures);
-  ensure(catalog.distribution?.marketplaceEntryCount === sourceIds.length, "catalog marketplace count must match app source count", failures);
+  ensure(catalog.distribution?.marketplaceEntryCount === 6, "catalog must expose six application bundle cards", failures);
+  ensure(catalog.distribution?.marketplaceCardCount === 34, "catalog total marketplace card count is stale", failures);
+  ensure(catalog.distribution?.sourceCapabilityCount === sourceIds.length, "catalog source capability count must match app sources", failures);
+  ensure(catalog.distribution?.separateMarketplaceCards === false, "catalog must not expose separate cards for app source packages", failures);
   ensure(catalog.distribution?.coreSourceOwner === false, "catalog must keep core out of app source ownership", failures);
   ensure(unifiedSuite.applicationDistribution?.applicationId === "seis-core", "unified suite application id is not seis-core", failures);
   ensure(unifiedSuite.applicationDistribution?.sourceRoot === "plugins/seis-core", "unified suite app source root is stale", failures);
   ensure(unifiedSuite.applicationDistribution?.sourceAvailableInRepository === true, "unified suite does not mark app source as repo-available", failures);
   ensure(unifiedSuite.applicationDistribution?.publicRepositoryAvailable === true, "unified suite does not mark app source as public-repository available", failures);
   ensure(unifiedSuite.applicationDistribution?.publicAudience === "everyone", "unified suite public audience is not everyone", failures);
-  ensure(unifiedSuite.applicationDistribution?.publicDistribution === "direct-repository-source", "unified suite distribution is not direct-repository-source", failures);
+  ensure(unifiedSuite.applicationDistribution?.publicDistribution === "curated-bounded-public-bundles", "unified suite distribution is not curated-bounded-public-bundles", failures);
   ensure(unifiedSuite.applicationDistribution?.installSurface === APPLICATION_PLUGIN_INSTALL_SURFACE, "unified suite install surface is not repo-source-app", failures);
-  ensure(unifiedSuite.applicationDistribution?.publicMarketplace === true, "unified suite must mark app plugins as public marketplace entries", failures);
+  ensure(unifiedSuite.applicationDistribution?.publicMarketplace === true, "unified suite must mark app capabilities as discoverable through the public marketplace", failures);
   ensure(unifiedSuite.applicationDistribution?.marketplaceName === "seis-repo", "unified suite marketplace must be seis-repo", failures);
-  ensure(unifiedSuite.applicationDistribution?.marketplaceEntryCount === sourceIds.length, "unified suite marketplace count must match app source count", failures);
+  ensure(unifiedSuite.applicationDistribution?.marketplaceEntryCount === 6, "unified suite must expose six application bundle cards", failures);
+  ensure(unifiedSuite.applicationDistribution?.marketplaceCardCount === 34, "unified suite total marketplace card count is stale", failures);
+  ensure(unifiedSuite.applicationDistribution?.pluginCount === sourceIds.length, "unified suite source capability count must match app sources", failures);
   ensure(unifiedSuite.applicationDistribution?.coreSourceOwner === false, "unified suite must keep core out of app source ownership", failures);
   ensure(sourceManifest.releaseTrainVersion === currentRelease.label, "source manifest release label is stale", failures);
   ensure(catalog.release?.label === currentRelease.label, "catalog release label is stale", failures);
@@ -86,11 +91,14 @@ export function readApplicationPluginSurface(repoRoot, options = {}) {
       sourceAvailableInRepository: true,
       publicRepositoryAvailable: true,
       publicAudience: "everyone",
-      distributionScope: "direct-repository-source",
+      distributionScope: "curated-bounded-public-bundles",
       coreSourceOwner: false,
       marketplaceName: "seis-repo",
       publicMarketplace: true,
       marketplaceEntryCount: unifiedSuite.applicationDistribution?.marketplaceEntryCount ?? null,
+      marketplaceCardCount: unifiedSuite.applicationDistribution?.marketplaceCardCount ?? null,
+      sourceCapabilityCount: sourceIds.length,
+      separateMarketplaceCards: false,
       defaultPermissions: { write: [], network: [], secrets: [] },
       execution: "task-scoped-local-demo-only",
       publicReleaseAllowed: false,

@@ -12,6 +12,7 @@ const outputPath = "apps/seis-core/data/seis-core-plugin-sources.json";
 const releaseTrainPath = "content/development/seis-core-plugin-release-train.json";
 const registryPath = "content/development/seis-ai-core-plugin-registry.json";
 const coveragePath = "content/development/seis-ai-core-personal-plugin-coverage.json";
+const bundleCatalogPath = "content/development/seis-public-plugin-bundle-catalog.json";
 
 const record = checkMode
   ? readJson(outputPath)
@@ -30,6 +31,11 @@ if (checkMode) {
 function buildRecord() {
   const absoluteRoot = path.join(root, ...sourceRoot.split("/"));
   const releaseTrain = readJson(releaseTrainPath);
+  const bundleCatalog = readJson(bundleCatalogPath);
+  const applicationBundles = Array.isArray(bundleCatalog?.bundles)
+    ? bundleCatalog.bundles.filter((bundle) => bundle?.family === "application")
+    : [];
+  const applicationBundleByMember = buildApplicationBundleMap(applicationBundles);
   const plugins = listPluginNames(absoluteRoot).map((name) => {
     const pluginRoot = path.join(absoluteRoot, name);
     const manifest = readJson(path.join(pluginRoot, ".codex-plugin", "plugin.json"));
@@ -46,11 +52,14 @@ function buildRecord() {
       entrypoint: profile.entrypoint || null,
       status: profile.status || "review-required",
       implementationState: profile.implementationState || "manifest-only",
+      marketplaceDiscoverable: profile.marketplaceDiscoverable === true,
+      marketplaceCard: profile.marketplaceCard === true,
+      marketplaceBundleId: profile.marketplaceBundleId || applicationBundleByMember.get(name) || null,
     };
   });
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: "seis-core-plugin-sources",
     generatedAt: "2026-07-15",
     goalId: "SEIS-GOAL-021",
@@ -95,8 +104,15 @@ function buildRecord() {
       audience: "everyone",
       directRepoSource: true,
       publicMarketplace: true,
-      marketplaceEntryCount: plugins.length,
-      separateMarketplaceCards: true,
+      marketplaceDiscoverable: true,
+      marketplaceCard: false,
+      distributionMode: "curated-bounded-public-bundles",
+      marketplaceEntryCount: applicationBundles.length,
+      marketplaceCardCount: bundleCatalog?.marketplace?.publicCardCount ?? null,
+      sourceCapabilityCount: plugins.length,
+      separateMarketplaceCards: false,
+      sourcePackagesRetained: true,
+      bundleIds: applicationBundles.map((bundle) => bundle.id),
       liveExternalCapabilities: "approval-gated",
     },
     activationPolicy: {
@@ -180,9 +196,15 @@ function validateRecord(record) {
   if (record?.application?.publicRepositoryAvailable !== true) failures.push("app manifest must mark app plugins as public-repository available");
   if (record?.publicDistribution?.directRepoSource !== true) failures.push("app manifest must mark direct repo source distribution");
   if (record?.publicDistribution?.marketplaceName !== "seis-repo") failures.push("app manifest must identify the public seis-repo marketplace");
-  if (record?.publicDistribution?.publicMarketplace !== true) failures.push("app manifest must mark app packages as public marketplace entries");
-  if (record?.publicDistribution?.marketplaceEntryCount !== record?.pluginCount) failures.push("app manifest marketplace count must match app plugin count");
-  if (record?.publicDistribution?.separateMarketplaceCards !== true) failures.push("app manifest must expose one public repo marketplace card per app package");
+  if (record?.publicDistribution?.publicMarketplace !== true || record?.publicDistribution?.marketplaceDiscoverable !== true) failures.push("app manifest must mark app sources as discoverable through the public marketplace");
+  if (record?.publicDistribution?.marketplaceCard !== false) failures.push("app source inventory must not represent retained sources as direct cards");
+  if (record?.publicDistribution?.distributionMode !== "curated-bounded-public-bundles") failures.push("app manifest must identify curated bounded bundle distribution");
+  if (record?.publicDistribution?.marketplaceEntryCount !== 6) failures.push("app manifest must expose six curated application bundle cards");
+  if (record?.publicDistribution?.marketplaceCardCount !== 34) failures.push("app manifest total marketplace card count is stale");
+  if (record?.publicDistribution?.sourceCapabilityCount !== record?.pluginCount) failures.push("app manifest source capability count must match app plugin count");
+  if (record?.publicDistribution?.separateMarketplaceCards !== false) failures.push("app manifest must not expose one marketplace card per source package");
+  if (record?.publicDistribution?.sourcePackagesRetained !== true) failures.push("app manifest must retain all application source packages");
+  if (!Array.isArray(record?.publicDistribution?.bundleIds) || record.publicDistribution.bundleIds.length !== 6 || new Set(record.publicDistribution.bundleIds).size !== 6) failures.push("app manifest application bundle ids are incomplete");
   if (record?.activationPolicy?.defaultPermissions?.write?.length !== 0) failures.push("app plugin writes must be empty by default");
   if (record?.activationPolicy?.defaultPermissions?.network?.length !== 0) failures.push("app plugin network permissions must be empty by default");
   if (record?.activationPolicy?.defaultPermissions?.secrets?.length !== 0) failures.push("app plugin secret permissions must be empty by default");
@@ -194,6 +216,8 @@ function validateRecord(record) {
     if (plugin.releaseRevision !== currentRelease.revision) failures.push(`${plugin.name}: release revision is stale`);
     if ((plugin.releaseMicroUnits ?? null) !== (currentRelease.microUnits ?? null)) failures.push(`${plugin.name}: release micro units are stale`);
     if (!plugin.sourcePath?.startsWith(`${sourceRoot}/`) || plugin.sourcePath.includes("..")) failures.push(`${plugin.name}: source path escapes app root`);
+    if (plugin.marketplaceDiscoverable !== true || plugin.marketplaceCard !== false) failures.push(`${plugin.name}: source marketplace semantics are ambiguous`);
+    if (!record.publicDistribution.bundleIds.includes(plugin.marketplaceBundleId)) failures.push(`${plugin.name}: source bundle mapping is invalid`);
   }
   const serialized = JSON.stringify(record);
   if (/\/Users\/|\/home\/|[A-Za-z]:\\/.test(serialized)) failures.push("app manifest must not store machine-specific paths");
@@ -211,6 +235,18 @@ function listPluginNames(directory) {
     .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(directory, entry.name, ".codex-plugin", "plugin.json")))
     .map((entry) => entry.name)
     .sort();
+}
+
+function buildApplicationBundleMap(bundles) {
+  const mapping = new Map();
+  for (const bundle of bundles) {
+    for (const name of bundle.memberNames || []) {
+      if (mapping.has(name)) throw new Error(`SEIS app source manifest: duplicate bundle member ${name}`);
+      mapping.set(name, bundle.id);
+    }
+  }
+  if (bundles.length !== 6 || mapping.size !== APP_PLUGIN_EXPANSION_TARGET) throw new Error("SEIS app source manifest: application bundle coverage is incomplete");
+  return mapping;
 }
 
 function readJson(file) {
