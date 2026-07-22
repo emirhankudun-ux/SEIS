@@ -28,6 +28,15 @@
     "bundleMembersAutoInstalled": false,
     "bundleMembersRemainRepositorySources": true
   },
+  "selectionGuide": {
+    "id": "seis-public-plugin-selection-guide",
+    "contentPath": "content/development/seis-public-plugin-selection-guide.json",
+    "agentAssetPath": "plugins/seis-ai-agent/assets/public-bundle-selection-guide.json",
+    "documentationPath": "docs/roadmap/SEIS_PUBLIC_PLUGIN_SELECTION_GUIDE.md",
+    "starterPathCount": 6,
+    "journeyCount": 19,
+    "maximumOptionalBundleSelectionsPerTask": 1
+  },
   "bundles": [
     {
       "id": "seis-application-bundle-01",

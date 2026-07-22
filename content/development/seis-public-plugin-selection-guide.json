@@ -1,0 +1,553 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-public-plugin-selection-guide",
+  "goalId": "SEIS-GOAL-0024",
+  "generatedAt": "2026-07-22",
+  "status": "repository-local-public-selection-guide",
+  "maturity": "prototype",
+  "purpose": "Help a public SEIS user start with SEIS-Agent and select one bounded optional bundle only when it directly matches a task; this guide is not an installer and does not grant external access.",
+  "canonicalInstall": "seis-ai-agent@seis-repo",
+  "marketplace": {
+    "name": "seis-repo",
+    "publicCardCount": 34,
+    "canonicalCardCount": 1,
+    "optionalBundleCardCount": 33,
+    "maximumBundleSize": 15
+  },
+  "selectionBoundary": {
+    "defaultInstall": "seis-ai-agent@seis-repo",
+    "maximumOptionalBundleSelectionsPerTask": 1,
+    "bulkInstallAllowed": false,
+    "bundleMembersAutoInstalled": false,
+    "sourcePackagesRetained": true,
+    "continuationPolicy": "Continue with a later bundle only after the current task is separately scoped and reviewed."
+  },
+  "defaultWorkflow": [
+    "Install or open SEIS-Agent as the canonical public starting point.",
+    "Choose one starter path or one matching journey.",
+    "Use only its initial optional bundle for the current scoped task.",
+    "Keep source packages retained in the repository and require explicit approval for writes, deployment, credentials, or publication."
+  ],
+  "starterPaths": [
+    {
+      "journeyId": "ai-data",
+      "journeyLabel": "AI and Data",
+      "intent": "AI, models, data, knowledge, context, and route planning.",
+      "initialBundle": {
+        "id": "seis-application-bundle-01",
+        "displayName": "SEIS Application: AI and Data",
+        "installId": "seis-application-bundle-01@seis-repo",
+        "memberCount": 14,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      }
+    },
+    {
+      "journeyId": "product-design-operations",
+      "journeyLabel": "Product Design and Operations",
+      "intent": "Product design, accessibility, governance, and delivery operations.",
+      "initialBundle": {
+        "id": "seis-application-bundle-02",
+        "displayName": "SEIS Application: Product Design and Operations",
+        "installId": "seis-application-bundle-02@seis-repo",
+        "memberCount": 9,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      }
+    },
+    {
+      "journeyId": "security",
+      "journeyLabel": "Security",
+      "intent": "Security posture, supply-chain checks, permissions, and public safety.",
+      "initialBundle": {
+        "id": "seis-application-bundle-03",
+        "displayName": "SEIS Application: Security",
+        "installId": "seis-application-bundle-03@seis-repo",
+        "memberCount": 11,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      }
+    },
+    {
+      "journeyId": "developer-engineering",
+      "journeyLabel": "Developer Engineering",
+      "intent": "Implementation, tests, release readiness, repository health, and developer workflow.",
+      "initialBundle": {
+        "id": "seis-application-bundle-04",
+        "displayName": "SEIS Application: Developer Engineering 01 of 03",
+        "installId": "seis-application-bundle-04@seis-repo",
+        "memberCount": 14,
+        "journeyPart": 1,
+        "journeyPartCount": 3
+      }
+    },
+    {
+      "journeyId": "creative-production",
+      "journeyLabel": "Creative Production",
+      "intent": "Creative production, media, and bounded design-related topic work.",
+      "initialBundle": {
+        "id": "seis-topic-bundle-08",
+        "displayName": "SEIS Topic: Creative Production 01 of 02",
+        "installId": "seis-topic-bundle-08@seis-repo",
+        "memberCount": 9,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      }
+    },
+    {
+      "journeyId": "software-engineering",
+      "journeyLabel": "Software Engineering",
+      "intent": "Software-engineering topics when a focused technical learning or planning lane is needed.",
+      "initialBundle": {
+        "id": "seis-topic-bundle-25",
+        "displayName": "SEIS Topic: Software Engineering 01 of 03",
+        "installId": "seis-topic-bundle-25@seis-repo",
+        "memberCount": 15,
+        "journeyPart": 1,
+        "journeyPartCount": 3
+      }
+    }
+  ],
+  "journeys": [
+    {
+      "id": "ai-data",
+      "label": "AI and Data",
+      "family": "application",
+      "bundleCount": 1,
+      "sourceCapabilityCount": 14,
+      "initialBundle": {
+        "id": "seis-application-bundle-01",
+        "displayName": "SEIS Application: AI and Data",
+        "installId": "seis-application-bundle-01@seis-repo",
+        "memberCount": 14,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      },
+      "continuationBundleIds": [],
+      "bundleIds": [
+        "seis-application-bundle-01"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "product-design-operations",
+      "label": "Product Design and Operations",
+      "family": "application",
+      "bundleCount": 1,
+      "sourceCapabilityCount": 9,
+      "initialBundle": {
+        "id": "seis-application-bundle-02",
+        "displayName": "SEIS Application: Product Design and Operations",
+        "installId": "seis-application-bundle-02@seis-repo",
+        "memberCount": 9,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      },
+      "continuationBundleIds": [],
+      "bundleIds": [
+        "seis-application-bundle-02"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "family": "application",
+      "bundleCount": 1,
+      "sourceCapabilityCount": 11,
+      "initialBundle": {
+        "id": "seis-application-bundle-03",
+        "displayName": "SEIS Application: Security",
+        "installId": "seis-application-bundle-03@seis-repo",
+        "memberCount": 11,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      },
+      "continuationBundleIds": [],
+      "bundleIds": [
+        "seis-application-bundle-03"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "developer-engineering",
+      "label": "Developer Engineering",
+      "family": "application",
+      "bundleCount": 3,
+      "sourceCapabilityCount": 41,
+      "initialBundle": {
+        "id": "seis-application-bundle-04",
+        "displayName": "SEIS Application: Developer Engineering 01 of 03",
+        "installId": "seis-application-bundle-04@seis-repo",
+        "memberCount": 14,
+        "journeyPart": 1,
+        "journeyPartCount": 3
+      },
+      "continuationBundleIds": [
+        "seis-application-bundle-05",
+        "seis-application-bundle-06"
+      ],
+      "bundleIds": [
+        "seis-application-bundle-04",
+        "seis-application-bundle-05",
+        "seis-application-bundle-06"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "artificial-intelligence",
+      "label": "Artificial Intelligence",
+      "family": "topic",
+      "bundleCount": 3,
+      "sourceCapabilityCount": 35,
+      "initialBundle": {
+        "id": "seis-topic-bundle-01",
+        "displayName": "SEIS Topic: Artificial Intelligence 01 of 03",
+        "installId": "seis-topic-bundle-01@seis-repo",
+        "memberCount": 12,
+        "journeyPart": 1,
+        "journeyPartCount": 3
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-02",
+        "seis-topic-bundle-03"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-01",
+        "seis-topic-bundle-02",
+        "seis-topic-bundle-03"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "automation",
+      "label": "Automation",
+      "family": "topic",
+      "bundleCount": 2,
+      "sourceCapabilityCount": 17,
+      "initialBundle": {
+        "id": "seis-topic-bundle-04",
+        "displayName": "SEIS Topic: Automation 01 of 02",
+        "installId": "seis-topic-bundle-04@seis-repo",
+        "memberCount": 9,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-05"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-04",
+        "seis-topic-bundle-05"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "cloud-computing",
+      "label": "Cloud Computing",
+      "family": "topic",
+      "bundleCount": 2,
+      "sourceCapabilityCount": 25,
+      "initialBundle": {
+        "id": "seis-topic-bundle-06",
+        "displayName": "SEIS Topic: Cloud Computing 01 of 02",
+        "installId": "seis-topic-bundle-06@seis-repo",
+        "memberCount": 13,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-07"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-06",
+        "seis-topic-bundle-07"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "creative-production",
+      "label": "Creative Production",
+      "family": "topic",
+      "bundleCount": 2,
+      "sourceCapabilityCount": 17,
+      "initialBundle": {
+        "id": "seis-topic-bundle-08",
+        "displayName": "SEIS Topic: Creative Production 01 of 02",
+        "installId": "seis-topic-bundle-08@seis-repo",
+        "memberCount": 9,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-09"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-08",
+        "seis-topic-bundle-09"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "cybersecurity",
+      "label": "Cybersecurity",
+      "family": "topic",
+      "bundleCount": 2,
+      "sourceCapabilityCount": 21,
+      "initialBundle": {
+        "id": "seis-topic-bundle-10",
+        "displayName": "SEIS Topic: Cybersecurity 01 of 02",
+        "installId": "seis-topic-bundle-10@seis-repo",
+        "memberCount": 11,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-11"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-10",
+        "seis-topic-bundle-11"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "data",
+      "label": "Data",
+      "family": "topic",
+      "bundleCount": 2,
+      "sourceCapabilityCount": 20,
+      "initialBundle": {
+        "id": "seis-topic-bundle-12",
+        "displayName": "SEIS Topic: Data 01 of 02",
+        "installId": "seis-topic-bundle-12@seis-repo",
+        "memberCount": 10,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-13"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-12",
+        "seis-topic-bundle-13"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "design",
+      "label": "Design",
+      "family": "topic",
+      "bundleCount": 2,
+      "sourceCapabilityCount": 21,
+      "initialBundle": {
+        "id": "seis-topic-bundle-14",
+        "displayName": "SEIS Topic: Design 01 of 02",
+        "installId": "seis-topic-bundle-14@seis-repo",
+        "memberCount": 11,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-15"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-14",
+        "seis-topic-bundle-15"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "desktop",
+      "label": "Desktop",
+      "family": "topic",
+      "bundleCount": 1,
+      "sourceCapabilityCount": 11,
+      "initialBundle": {
+        "id": "seis-topic-bundle-16",
+        "displayName": "SEIS Topic: Desktop",
+        "installId": "seis-topic-bundle-16@seis-repo",
+        "memberCount": 11,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      },
+      "continuationBundleIds": [],
+      "bundleIds": [
+        "seis-topic-bundle-16"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "eleni-neferi",
+      "label": "ELENI-NEFERI",
+      "family": "topic",
+      "bundleCount": 1,
+      "sourceCapabilityCount": 15,
+      "initialBundle": {
+        "id": "seis-topic-bundle-17",
+        "displayName": "SEIS Topic: ELENI-NEFERI",
+        "installId": "seis-topic-bundle-17@seis-repo",
+        "memberCount": 15,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      },
+      "continuationBundleIds": [],
+      "bundleIds": [
+        "seis-topic-bundle-17"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "graphics",
+      "label": "Graphics",
+      "family": "topic",
+      "bundleCount": 1,
+      "sourceCapabilityCount": 13,
+      "initialBundle": {
+        "id": "seis-topic-bundle-18",
+        "displayName": "SEIS Topic: Graphics",
+        "installId": "seis-topic-bundle-18@seis-repo",
+        "memberCount": 13,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      },
+      "continuationBundleIds": [],
+      "bundleIds": [
+        "seis-topic-bundle-18"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "knowledge",
+      "label": "Knowledge",
+      "family": "topic",
+      "bundleCount": 2,
+      "sourceCapabilityCount": 25,
+      "initialBundle": {
+        "id": "seis-topic-bundle-19",
+        "displayName": "SEIS Topic: Knowledge 01 of 02",
+        "installId": "seis-topic-bundle-19@seis-repo",
+        "memberCount": 13,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-20"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-19",
+        "seis-topic-bundle-20"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "pantechnoepistemonoesis",
+      "label": "PANTECHNOEPISTEMONOESIS",
+      "family": "topic",
+      "bundleCount": 1,
+      "sourceCapabilityCount": 6,
+      "initialBundle": {
+        "id": "seis-topic-bundle-21",
+        "displayName": "SEIS Topic: PANTECHNOEPISTEMONOESIS",
+        "installId": "seis-topic-bundle-21@seis-repo",
+        "memberCount": 6,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      },
+      "continuationBundleIds": [],
+      "bundleIds": [
+        "seis-topic-bundle-21"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "project-management",
+      "label": "Project Management",
+      "family": "topic",
+      "bundleCount": 2,
+      "sourceCapabilityCount": 17,
+      "initialBundle": {
+        "id": "seis-topic-bundle-22",
+        "displayName": "SEIS Topic: Project Management 01 of 02",
+        "installId": "seis-topic-bundle-22@seis-repo",
+        "memberCount": 9,
+        "journeyPart": 1,
+        "journeyPartCount": 2
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-23"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-22",
+        "seis-topic-bundle-23"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "seis",
+      "label": "SEIS",
+      "family": "topic",
+      "bundleCount": 1,
+      "sourceCapabilityCount": 13,
+      "initialBundle": {
+        "id": "seis-topic-bundle-24",
+        "displayName": "SEIS Topic: SEIS",
+        "installId": "seis-topic-bundle-24@seis-repo",
+        "memberCount": 13,
+        "journeyPart": 1,
+        "journeyPartCount": 1
+      },
+      "continuationBundleIds": [],
+      "bundleIds": [
+        "seis-topic-bundle-24"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    },
+    {
+      "id": "software-engineering",
+      "label": "Software Engineering",
+      "family": "topic",
+      "bundleCount": 3,
+      "sourceCapabilityCount": 44,
+      "initialBundle": {
+        "id": "seis-topic-bundle-25",
+        "displayName": "SEIS Topic: Software Engineering 01 of 03",
+        "installId": "seis-topic-bundle-25@seis-repo",
+        "memberCount": 15,
+        "journeyPart": 1,
+        "journeyPartCount": 3
+      },
+      "continuationBundleIds": [
+        "seis-topic-bundle-26",
+        "seis-topic-bundle-27"
+      ],
+      "bundleIds": [
+        "seis-topic-bundle-25",
+        "seis-topic-bundle-26",
+        "seis-topic-bundle-27"
+      ],
+      "selectionInstruction": "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task."
+    }
+  ],
+  "permissions": {
+    "read": [
+      "selection guide",
+      "bounded bundle catalog"
+    ],
+    "write": [],
+    "network": [],
+    "secrets": []
+  },
+  "externalClaims": {
+    "providerConnectivity": false,
+    "deployment": false,
+    "publicRelease": false,
+    "automaticInstallation": false,
+    "automaticSourceDeletion": false
+  },
+  "rollback": {
+    "strategy": "revert",
+    "scope": "Revert the generated selection guide with its catalog and SEIS-Agent asset; optional bundle packages and retained sources remain intact.",
+    "dataMigrationRequired": false
+  }
+}

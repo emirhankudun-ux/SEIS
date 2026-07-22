@@ -1,7 +1,7 @@
 # SEIS-Agent
 
-SEIS-Agent 0.3.0 is the unified orchestration plugin and the only public
-installation surface for the SEIS repository. It
+SEIS-Agent 0.3.0 is the unified orchestration plugin and the canonical default
+public entry point for the SEIS repository. It
 combines `seis-governance`, `seis`, `seis-cloud`, `seis-code`, `seis-design`,
 `seis-data`, `seis-security`, `seis-research`, `seis-automation`, and
 `seis-product` into one long-running agent direction across memory, context,
@@ -17,6 +17,20 @@ preserved `@personal` compatibility aliases. Website, app
 packaging, live authentication, and deployment surfaces happen only after an
 explicit release decision.
 
+## Choose a public bundle without overload
+
+Start with `seis-ai-agent@seis-repo`. The public `seis-repo` marketplace keeps
+one canonical SEIS-Agent card and 33 optional, bounded selection bundles rather
+than exposing 380 retained source capabilities as separate cards. For one
+scoped task, select at most one optional bundle; each has no more than 15 source
+capabilities, never bulk-installs members, and leaves its source packages in the
+repository.
+
+Use the local read-only MCP tools `seis_public_bundle_guide` and
+`seis_public_bundle_recommend` to see six starter paths, all 19 journeys, and
+the first optional bundle for a chosen journey. The guide is a decision aid, not
+an installer, provider connection, deployment, or write action.
+
 ## Install
 
 ```bash
@@ -26,14 +40,17 @@ npm run install:seis-ai-agent
 The repo preserves `seis`, `seis-cloud`, `seis-code`, `seis-design`,
 `seis-data`, `seis-security`, `seis-research`, `seis-automation`, and
 `seis-product` as source modules. Their skills, lane profiles, and validation
-contracts are embedded in this public package; they do not have separate public
-marketplace entries or install commands.
+contracts are embedded in this public package; they do not have direct
+standalone marketplace entries or install commands. Optional public bundle cards
+are curated task selections, not replacements for those retained source modules.
 
 ## MCP Tools
 
 - `seis_ai_agent_status`
 - `seis_ai_agent_plan`
 - `seis_agent_lanes`
+- `seis_public_bundle_guide`
+- `seis_public_bundle_recommend`
 - `seis_hub_status`
 - `seis_hub_plan`
 - `seis_cloud_status`

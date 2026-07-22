@@ -17,15 +17,46 @@ const ROOT = process.cwd();
 const CHECK_MODE = process.argv.includes("--check");
 const FAMILY_PATH = "content/development/seis-public-plugin-family.json";
 const CATALOG_PATH = "content/development/seis-public-plugin-bundle-catalog.json";
+const SELECTION_GUIDE_PATH = "content/development/seis-public-plugin-selection-guide.json";
+const SELECTION_GUIDE_ASSET_PATH = "plugins/seis-ai-agent/assets/public-bundle-selection-guide.json";
+const SELECTION_GUIDE_DOCUMENT_PATH = "docs/roadmap/SEIS_PUBLIC_PLUGIN_SELECTION_GUIDE.md";
 const GENERATED_AT = "2026-07-22";
 const BUNDLE_VERSION = "0.1.0";
 const MAX_GENERATOR_INPUT_BYTES = 16 * 1024 * 1024;
 const MAX_GENERATED_FILE_BYTES = 2 * 1024 * 1024;
+const STARTER_PATHS = Object.freeze([
+  Object.freeze({
+    journeyId: "ai-data",
+    intent: "AI, models, data, knowledge, context, and route planning.",
+  }),
+  Object.freeze({
+    journeyId: "product-design-operations",
+    intent: "Product design, accessibility, governance, and delivery operations.",
+  }),
+  Object.freeze({
+    journeyId: "security",
+    intent: "Security posture, supply-chain checks, permissions, and public safety.",
+  }),
+  Object.freeze({
+    journeyId: "developer-engineering",
+    intent: "Implementation, tests, release readiness, repository health, and developer workflow.",
+  }),
+  Object.freeze({
+    journeyId: "creative-production",
+    intent: "Creative production, media, and bounded design-related topic work.",
+  }),
+  Object.freeze({
+    journeyId: "software-engineering",
+    intent: "Software-engineering topics when a focused technical learning or planning lane is needed.",
+  }),
+]);
 let writeSequence = 0;
 
 const family = readJson(FAMILY_PATH);
 const bundles = Array.isArray(family?.bundlePackages) ? family.bundlePackages : [];
 validateBundleFamily(family, bundles);
+const selectionGuide = buildSelectionGuide(family, bundles);
+validateSelectionGuide(selectionGuide, family, bundles);
 
 const catalog = {
   schemaVersion: 1,
@@ -56,6 +87,15 @@ const catalog = {
     bulkInstallRequired: false,
     bundleMembersAutoInstalled: false,
     bundleMembersRemainRepositorySources: true,
+  },
+  selectionGuide: {
+    id: selectionGuide.id,
+    contentPath: SELECTION_GUIDE_PATH,
+    agentAssetPath: SELECTION_GUIDE_ASSET_PATH,
+    documentationPath: SELECTION_GUIDE_DOCUMENT_PATH,
+    starterPathCount: selectionGuide.starterPaths.length,
+    journeyCount: selectionGuide.journeys.length,
+    maximumOptionalBundleSelectionsPerTask: selectionGuide.selectionBoundary.maximumOptionalBundleSelectionsPerTask,
   },
   bundles: bundles.map((bundle) => ({
     id: bundle.id,
@@ -97,6 +137,9 @@ const catalog = {
 
 const outputs = [
   [CATALOG_PATH, `${JSON.stringify(catalog, null, 2)}\n`],
+  [SELECTION_GUIDE_PATH, `${JSON.stringify(selectionGuide, null, 2)}\n`],
+  [SELECTION_GUIDE_ASSET_PATH, `${JSON.stringify(selectionGuide, null, 2)}\n`],
+  [SELECTION_GUIDE_DOCUMENT_PATH, selectionGuideMarkdown(selectionGuide)],
   ...bundles.flatMap((bundle) => bundleOutputs(bundle)),
 ];
 const expectedBundleFiles = outputs
@@ -160,6 +203,185 @@ function validateBundleFamily(publicFamily, candidateBundles) {
   assert(topics.flatMap((bundle) => bundle.members).length === publicFamily.topicPlugins.length, "topic bundles must cover every topic source package");
   assertSameSet(application.flatMap((bundle) => bundle.members.map((member) => member.name)), publicFamily.applicationPlugins.map((plugin) => plugin.name), "application bundle coverage");
   assertSameSet(topics.flatMap((bundle) => bundle.members.map((member) => member.name)), publicFamily.topicPlugins.map((plugin) => plugin.name), "topic bundle coverage");
+}
+
+function buildSelectionGuide(publicFamily, candidateBundles) {
+  const journeysById = new Map();
+  for (const bundle of candidateBundles) {
+    const current = journeysById.get(bundle.journeyId) || [];
+    current.push(bundle);
+    journeysById.set(bundle.journeyId, current);
+  }
+  const journeys = [...journeysById.values()].map((journeyBundles) => {
+    const ordered = [...journeyBundles].sort((left, right) => left.journeyPart - right.journeyPart);
+    const first = ordered[0];
+    return {
+      id: first.journeyId,
+      label: first.journeyLabel,
+      family: first.family,
+      bundleCount: ordered.length,
+      sourceCapabilityCount: ordered.reduce((total, bundle) => total + bundle.memberCount, 0),
+      initialBundle: selectionBundleReference(first),
+      continuationBundleIds: ordered.slice(1).map((bundle) => bundle.id),
+      bundleIds: ordered.map((bundle) => bundle.id),
+      selectionInstruction: "Start with the initial bundle. Select another continuation bundle only for a later, separately scoped task.",
+    };
+  });
+  const journeyById = new Map(journeys.map((journey) => [journey.id, journey]));
+  const starterPaths = STARTER_PATHS.map((starter) => {
+    const journey = journeyById.get(starter.journeyId);
+    if (!journey) throw new Error(`SEIS public bundle packages: missing starter journey: ${starter.journeyId}`);
+    return {
+      journeyId: journey.id,
+      journeyLabel: journey.label,
+      intent: starter.intent,
+      initialBundle: journey.initialBundle,
+    };
+  });
+  return {
+    schemaVersion: 1,
+    id: "seis-public-plugin-selection-guide",
+    goalId: "SEIS-GOAL-0024",
+    generatedAt: GENERATED_AT,
+    status: "repository-local-public-selection-guide",
+    maturity: "prototype",
+    purpose: "Help a public SEIS user start with SEIS-Agent and select one bounded optional bundle only when it directly matches a task; this guide is not an installer and does not grant external access.",
+    canonicalInstall: "seis-ai-agent@seis-repo",
+    marketplace: {
+      name: "seis-repo",
+      publicCardCount: publicFamily.marketplace.publicPluginCount,
+      canonicalCardCount: publicFamily.publicPlugins.length,
+      optionalBundleCardCount: candidateBundles.length,
+      maximumBundleSize: SEIS_PUBLIC_BUNDLE_SIZE,
+    },
+    selectionBoundary: {
+      defaultInstall: "seis-ai-agent@seis-repo",
+      maximumOptionalBundleSelectionsPerTask: 1,
+      bulkInstallAllowed: false,
+      bundleMembersAutoInstalled: false,
+      sourcePackagesRetained: true,
+      continuationPolicy: "Continue with a later bundle only after the current task is separately scoped and reviewed.",
+    },
+    defaultWorkflow: [
+      "Install or open SEIS-Agent as the canonical public starting point.",
+      "Choose one starter path or one matching journey.",
+      "Use only its initial optional bundle for the current scoped task.",
+      "Keep source packages retained in the repository and require explicit approval for writes, deployment, credentials, or publication.",
+    ],
+    starterPaths,
+    journeys,
+    permissions: {
+      read: ["selection guide", "bounded bundle catalog"],
+      write: [],
+      network: [],
+      secrets: [],
+    },
+    externalClaims: {
+      providerConnectivity: false,
+      deployment: false,
+      publicRelease: false,
+      automaticInstallation: false,
+      automaticSourceDeletion: false,
+    },
+    rollback: {
+      strategy: "revert",
+      scope: "Revert the generated selection guide with its catalog and SEIS-Agent asset; optional bundle packages and retained sources remain intact.",
+      dataMigrationRequired: false,
+    },
+  };
+}
+
+function selectionBundleReference(bundle) {
+  return {
+    id: bundle.id,
+    displayName: bundle.displayName,
+    installId: `${bundle.id}@seis-repo`,
+    memberCount: bundle.memberCount,
+    journeyPart: bundle.journeyPart,
+    journeyPartCount: bundle.journeyPartCount,
+  };
+}
+
+function validateSelectionGuide(guide, publicFamily, candidateBundles) {
+  assert(guide?.id === "seis-public-plugin-selection-guide", "selection guide identifier is invalid");
+  assert(guide?.canonicalInstall === "seis-ai-agent@seis-repo", "selection guide must keep SEIS-Agent canonical");
+  assert(guide?.marketplace?.publicCardCount === publicFamily.marketplace.publicPluginCount, "selection guide card count is inconsistent");
+  assert(guide?.marketplace?.canonicalCardCount === publicFamily.publicPlugins.length, "selection guide canonical card count is inconsistent");
+  assert(guide?.marketplace?.optionalBundleCardCount === candidateBundles.length, "selection guide optional bundle count is inconsistent");
+  assert(guide?.marketplace?.maximumBundleSize === SEIS_PUBLIC_BUNDLE_SIZE, "selection guide bundle size is inconsistent");
+  assert(guide?.selectionBoundary?.maximumOptionalBundleSelectionsPerTask === 1, "selection guide must select at most one optional bundle per task");
+  assert(guide?.selectionBoundary?.bulkInstallAllowed === false, "selection guide must reject bulk install");
+  assert(guide?.selectionBoundary?.bundleMembersAutoInstalled === false, "selection guide must not auto-install bundle members");
+  assert(guide?.selectionBoundary?.sourcePackagesRetained === true, "selection guide must retain source packages");
+  assert(Array.isArray(guide?.journeys) && guide.journeys.length === 19, "selection guide must expose the nineteen curated journeys");
+  assert(Array.isArray(guide?.starterPaths) && guide.starterPaths.length === STARTER_PATHS.length, "selection guide starter paths are inconsistent");
+  const knownBundleIds = new Set(candidateBundles.map((bundle) => bundle.id));
+  const guideBundleIds = guide.journeys.flatMap((journey) => journey?.bundleIds || []);
+  assert(guideBundleIds.length === candidateBundles.length, "selection guide must cover every optional bundle exactly once");
+  assert(new Set(guideBundleIds).size === candidateBundles.length && guideBundleIds.every((id) => knownBundleIds.has(id)), "selection guide bundle coverage is not exact-once");
+  for (const journey of guide.journeys) {
+    const expected = candidateBundles
+      .filter((bundle) => bundle.journeyId === journey.id)
+      .sort((left, right) => left.journeyPart - right.journeyPart);
+    assert(expected.length === journey.bundleCount && expected.length > 0, `selection guide journey bundle count is inconsistent: ${journey?.id || "unknown"}`);
+    assert(journey.family === expected[0].family && journey.label === expected[0].journeyLabel, `selection guide journey metadata is inconsistent: ${journey.id}`);
+    assert(journey.sourceCapabilityCount === expected.reduce((total, bundle) => total + bundle.memberCount, 0), `selection guide source count is inconsistent: ${journey.id}`);
+    assert(journey.initialBundle?.id === expected[0].id && journey.initialBundle?.installId === `${expected[0].id}@seis-repo`, `selection guide initial bundle is inconsistent: ${journey.id}`);
+    assert(journey.initialBundle?.memberCount === expected[0].memberCount && journey.initialBundle?.journeyPart === 1 && journey.initialBundle?.journeyPartCount === expected[0].journeyPartCount, `selection guide initial bundle boundary is inconsistent: ${journey.id}`);
+    assert(Array.isArray(journey.continuationBundleIds) && journey.continuationBundleIds.length === expected.length - 1, `selection guide continuation count is inconsistent: ${journey.id}`);
+    assert(journey.bundleIds.every((id, index) => id === expected[index].id), `selection guide bundle order is inconsistent: ${journey.id}`);
+  }
+  for (const starter of guide.starterPaths) {
+    const journey = guide.journeys.find((candidate) => candidate.id === starter?.journeyId);
+    assert(Boolean(journey), `selection guide starter journey is unknown: ${starter?.journeyId || "unknown"}`);
+    assert(starter.journeyLabel === journey.label && starter.initialBundle?.id === journey.initialBundle.id, `selection guide starter path is inconsistent: ${starter.journeyId}`);
+  }
+}
+
+function selectionGuideMarkdown(guide) {
+  return [
+    "# SEIS Public Plugin Selection Guide",
+    "",
+    `Generated: ${guide.generatedAt}`,
+    "",
+    "## Purpose",
+    "",
+    "Use this guide to choose a public SEIS Repo capability without browsing hundreds of source packages. It is a local, read-only decision guide, not an installer or a claim of provider, deployment, network, or write access.",
+    "",
+    "## Start here",
+    "",
+    `1. Start with \`${guide.canonicalInstall}\`, the canonical public SEIS entry point.`,
+    `2. Pick one of the ${guide.starterPaths.length} starter paths below, or the closest of ${guide.journeys.length} journeys.`,
+    `3. Select at most one optional bundle for the current task; every bundle contains no more than ${guide.marketplace.maximumBundleSize} retained source capabilities.`,
+    "4. Treat a continuation bundle as a later, separately scoped task rather than a bulk installation.",
+    "",
+    "## Fast starter paths",
+    "",
+    "| Need | Start with | Optional bundle | Size |",
+    "| --- | --- | --- | ---: |",
+    ...guide.starterPaths.map((starter) => `| ${starter.intent} | ${starter.journeyLabel} | \`${starter.initialBundle.installId}\` | ${starter.initialBundle.memberCount} |`),
+    "",
+    "## All journeys",
+    "",
+    "| Journey | Family | First optional bundle | Later bundles | Source capabilities |",
+    "| --- | --- | --- | --- | ---: |",
+    ...guide.journeys.map((journey) => `| ${journey.label} | ${journey.family} | \`${journey.initialBundle.installId}\` | ${journey.continuationBundleIds.length === 0 ? "None" : journey.continuationBundleIds.map((id) => `\`${id}@seis-repo\``).join(", ")} | ${journey.sourceCapabilityCount} |`),
+    "",
+    "## Safety boundary",
+    "",
+    "- Do not bulk-install bundles or auto-install their members.",
+    "- Retained source packages stay in the public repository; this guide does not delete or merge them.",
+    "- Writes, deployment, credentials, external publishing, and destructive actions require explicit human approval.",
+    "",
+    "## Validation",
+    "",
+    "```bash",
+    "npm run check:seis-public-plugin-bundles",
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-repo-marketplace",
+    "```",
+    "",
+  ].join("\n");
 }
 
 function bundleOutputs(bundle) {

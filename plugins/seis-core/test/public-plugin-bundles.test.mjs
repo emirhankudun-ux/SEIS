@@ -16,8 +16,12 @@ const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(testDirectory, "../../..");
 const familyPath = path.join(repositoryRoot, "content/development/seis-public-plugin-family.json");
 const catalogPath = path.join(repositoryRoot, "content/development/seis-public-plugin-bundle-catalog.json");
+const selectionGuidePath = path.join(repositoryRoot, "content/development/seis-public-plugin-selection-guide.json");
+const agentSelectionGuidePath = path.join(repositoryRoot, "plugins/seis-ai-agent/assets/public-bundle-selection-guide.json");
 const marketplacePath = path.join(repositoryRoot, ".agents/plugins/marketplace.json");
 const unifiedSuitePath = path.join(repositoryRoot, "plugins/seis-ai-agent/assets/unified-suite.json");
+const agentRoot = path.join(repositoryRoot, "plugins/seis-ai-agent");
+const agentRuntimePath = path.join(agentRoot, "scripts/seis-ai-agent-mcp-server.mjs");
 const bundleRoot = path.join(repositoryRoot, "plugins/seis-bundles/seis-application-bundle-01");
 const runtimePath = path.join(bundleRoot, "scripts/seis-bundle-mcp-server.mjs");
 
@@ -140,6 +144,68 @@ test("keeps family and bundle generators fresh", () => {
   }
 });
 
+test("generates a bounded public selection guide without adding marketplace cards", () => {
+  const catalog = readJson(catalogPath);
+  const guide = readJson(selectionGuidePath);
+  const agentGuide = readJson(agentSelectionGuidePath);
+  const bundleIds = catalog.bundles.map((bundle) => bundle.id);
+  const guideBundleIds = guide.journeys.flatMap((journey) => journey.bundleIds);
+
+  assert.equal(guide.id, "seis-public-plugin-selection-guide");
+  assert.equal(guide.canonicalInstall, "seis-ai-agent@seis-repo");
+  assert.equal(guide.marketplace.publicCardCount, 34);
+  assert.equal(guide.marketplace.canonicalCardCount, 1);
+  assert.equal(guide.marketplace.optionalBundleCardCount, 33);
+  assert.equal(guide.marketplace.maximumBundleSize, SEIS_PUBLIC_BUNDLE_SIZE);
+  assert.equal(guide.selectionBoundary.maximumOptionalBundleSelectionsPerTask, 1);
+  assert.equal(guide.selectionBoundary.bulkInstallAllowed, false);
+  assert.equal(guide.selectionBoundary.bundleMembersAutoInstalled, false);
+  assert.equal(guide.selectionBoundary.sourcePackagesRetained, true);
+  assert.equal(guide.starterPaths.length, 6);
+  assert.equal(guide.journeys.length, 19);
+  assert.equal(new Set(guide.journeys.map((journey) => journey.id)).size, 19);
+  assert.equal(guideBundleIds.length, 33);
+  assert.equal(new Set(guideBundleIds).size, 33);
+  assert.deepEqual([...guideBundleIds].sort(), [...bundleIds].sort());
+  assert.equal(guide.journeys.reduce((total, journey) => total + journey.sourceCapabilityCount, 0), 375);
+  assert.deepEqual(agentGuide, guide);
+
+  for (const journey of guide.journeys) {
+    assert.equal(journey.initialBundle.id, journey.bundleIds[0], `${journey.id}: first bundle`);
+    assert.equal(journey.initialBundle.installId, `${journey.initialBundle.id}@seis-repo`, `${journey.id}: install identity`);
+    assert.equal(journey.initialBundle.journeyPart, 1, `${journey.id}: initial part`);
+    assert.ok(journey.initialBundle.memberCount > 0 && journey.initialBundle.memberCount <= SEIS_PUBLIC_BUNDLE_SIZE, `${journey.id}: bundle size`);
+    assert.equal(journey.continuationBundleIds.length, journey.bundleIds.length - 1, `${journey.id}: continuation count`);
+  }
+  for (const starter of guide.starterPaths) {
+    const journey = guide.journeys.find((candidate) => candidate.id === starter.journeyId);
+    assert.ok(journey, `${starter.journeyId}: known starter journey`);
+    assert.equal(starter.initialBundle.id, journey.initialBundle.id, `${starter.journeyId}: starter bundle`);
+  }
+});
+
+test("SEIS-Agent rejects a tampered public bundle selection guide", (context) => {
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), "seis-agent-guide-"));
+  context.after(() => fs.rmSync(temporaryRoot, { recursive: true, force: true }));
+  fs.cpSync(agentRoot, temporaryRoot, { recursive: true });
+  const guidePath = path.join(temporaryRoot, "assets/public-bundle-selection-guide.json");
+  const guide = readJson(guidePath);
+  guide.starterPaths[0].initialBundle.id = "seis-topic-bundle-01";
+  fs.writeFileSync(guidePath, `${JSON.stringify(guide, null, 2)}\n`, "utf8");
+
+  const result = runAgentRuntime(frame({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "tools/call",
+    params: { name: "seis_public_bundle_guide", arguments: {} },
+  }), temporaryRoot);
+  assert.equal(result.status, 0, result.stderr);
+  const responses = parseFrames(result.stdout);
+  assert.equal(responses.length, 1);
+  assert.equal(responses[0].error.code, -32603);
+  assert.match(responses[0].error.message, /unavailable or unsafe/i);
+});
+
 test("generated MCP runtime serves bounded read-only tools", () => {
   const runtimeSource = fs.readFileSync(runtimePath, "utf8");
   for (const required of [
@@ -247,6 +313,20 @@ function runRuntime(input, pluginRoot = bundleRoot) {
     env: {
       PATH: process.env.PATH || "",
       SEIS_PUBLIC_BUNDLE_ROOT: pluginRoot,
+      SEIS_ROOT: repositoryRoot,
+    },
+  });
+}
+
+function runAgentRuntime(input, pluginRoot = agentRoot) {
+  return spawnSync(process.execPath, [agentRuntimePath], {
+    cwd: repositoryRoot,
+    input,
+    encoding: "utf8",
+    timeout: 5000,
+    env: {
+      PATH: process.env.PATH || "",
+      SEIS_AI_AGENT_PLUGIN_ROOT: pluginRoot,
       SEIS_ROOT: repositoryRoot,
     },
   });

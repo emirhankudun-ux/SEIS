@@ -9,6 +9,7 @@ const AGENT = {
   identity: "SEIS-Agent",
   profilePath: "assets/agent-profile.json",
   unifiedSuitePath: "assets/unified-suite.json",
+  publicBundleSelectionGuidePath: "assets/public-bundle-selection-guide.json",
   skillPath: "skills/seis-ai-agent/SKILL.md",
 };
 
@@ -209,6 +210,13 @@ const LANES = [
 ];
 
 const PUBLIC_MARKETPLACE_PLUGIN = "seis-ai-agent";
+const CURATED_MARKETPLACE = Object.freeze({
+  publicCardCount: 34,
+  canonicalCardCount: 1,
+  optionalBundleCardCount: 33,
+  maximumBundleSize: 15,
+});
+const JOURNEY_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,64}$/;
 const EMBEDDED_SOURCE_MODULES = [
   "seis-ai-agent",
   "seis",
@@ -247,6 +255,23 @@ const tools = [
     description: "List every embedded SEIS-Agent lane and its skill/profile readiness inside the single plugin.",
     inputSchema: { type: "object", properties: {} },
   },
+  {
+    name: "seis_public_bundle_guide",
+    description: "Show the bounded public SEIS starter paths and journey map without installing packages or accessing external services.",
+    inputSchema: { type: "object", additionalProperties: false, properties: {} },
+  },
+  {
+    name: "seis_public_bundle_recommend",
+    description: "Recommend the one initial optional SEIS bundle for a known public journey; no bundle is installed automatically.",
+    inputSchema: {
+      type: "object",
+      additionalProperties: false,
+      required: ["journeyId"],
+      properties: {
+        journeyId: { type: "string", pattern: "^[a-z0-9][a-z0-9-]{0,64}$", description: "A journey id returned by seis_public_bundle_guide." },
+      },
+    },
+  },
   ...LANES.flatMap((lane) => [
     {
       name: lane.statusTool,
@@ -280,6 +305,136 @@ function repoRoot() {
   return candidates.find((candidate) => fs.existsSync(path.join(candidate, "package.json"))) || null;
 }
 
+function plainObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    && (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null);
+}
+
+function validBundleReference(value) {
+  return plainObject(value)
+    && typeof value.id === "string"
+    && /^seis-(application|topic)-bundle-\d{2}$/.test(value.id)
+    && typeof value.displayName === "string"
+    && value.displayName.length > 0
+    && value.installId === `${value.id}@seis-repo`
+    && Number.isInteger(value.memberCount)
+    && value.memberCount > 0
+    && value.memberCount <= CURATED_MARKETPLACE.maximumBundleSize
+    && Number.isInteger(value.journeyPart)
+    && Number.isInteger(value.journeyPartCount)
+    && value.journeyPart > 0
+    && value.journeyPart <= value.journeyPartCount;
+}
+
+function validSelectionGuide(value) {
+  if (!plainObject(value)
+    || value.schemaVersion !== 1
+    || value.id !== "seis-public-plugin-selection-guide"
+    || value.canonicalInstall !== "seis-ai-agent@seis-repo"
+    || !plainObject(value.marketplace)
+    || value.marketplace.publicCardCount !== CURATED_MARKETPLACE.publicCardCount
+    || value.marketplace.canonicalCardCount !== CURATED_MARKETPLACE.canonicalCardCount
+    || value.marketplace.optionalBundleCardCount !== CURATED_MARKETPLACE.optionalBundleCardCount
+    || value.marketplace.maximumBundleSize !== CURATED_MARKETPLACE.maximumBundleSize
+    || !plainObject(value.selectionBoundary)
+    || value.selectionBoundary.maximumOptionalBundleSelectionsPerTask !== 1
+    || value.selectionBoundary.bulkInstallAllowed !== false
+    || value.selectionBoundary.bundleMembersAutoInstalled !== false
+    || value.selectionBoundary.sourcePackagesRetained !== true
+    || !Array.isArray(value.defaultWorkflow)
+    || value.defaultWorkflow.length !== 4
+    || !Array.isArray(value.starterPaths)
+    || value.starterPaths.length !== 6
+    || !Array.isArray(value.journeys)
+    || value.journeys.length !== 19) return false;
+  const journeysById = new Map();
+  const bundleIds = new Set();
+  for (const journey of value.journeys) {
+    if (!plainObject(journey)
+      || typeof journey.id !== "string"
+      || !JOURNEY_ID_PATTERN.test(journey.id)
+      || journeysById.has(journey.id)
+      || typeof journey.label !== "string"
+      || journey.label.length === 0
+      || !["application", "topic"].includes(journey.family)
+      || !Number.isInteger(journey.bundleCount)
+      || journey.bundleCount <= 0
+      || !Number.isInteger(journey.sourceCapabilityCount)
+      || journey.sourceCapabilityCount <= 0
+      || !validBundleReference(journey.initialBundle)
+      || !Array.isArray(journey.continuationBundleIds)
+      || !Array.isArray(journey.bundleIds)
+      || journey.bundleIds.length !== journey.bundleCount
+      || journey.bundleIds[0] !== journey.initialBundle.id
+      || journey.initialBundle.journeyPart !== 1
+      || journey.initialBundle.journeyPartCount !== journey.bundleCount
+      || (journey.family === "application" && !journey.initialBundle.id.startsWith("seis-application-bundle-"))
+      || (journey.family === "topic" && !journey.initialBundle.id.startsWith("seis-topic-bundle-"))
+      || journey.continuationBundleIds.length !== journey.bundleCount - 1
+      || !journey.bundleIds.every((id) => typeof id === "string" && /^seis-(application|topic)-bundle-\d{2}$/.test(id))
+      || !journey.continuationBundleIds.every((id, index) => id === journey.bundleIds[index + 1])) return false;
+    journeysById.set(journey.id, journey);
+    for (const id of journey.bundleIds) {
+      if (bundleIds.has(id)) return false;
+      bundleIds.add(id);
+    }
+  }
+  if (bundleIds.size !== CURATED_MARKETPLACE.optionalBundleCardCount) return false;
+  const starterIds = new Set();
+  for (const starter of value.starterPaths) {
+    const journey = journeysById.get(starter?.journeyId);
+    if (!plainObject(starter)
+      || typeof starter.journeyId !== "string"
+      || !journey
+      || starterIds.has(starter.journeyId)
+      || starter.journeyLabel !== journey.label
+      || typeof starter.intent !== "string"
+      || starter.intent.length === 0
+      || !validBundleReference(starter.initialBundle)
+      || starter.initialBundle.id !== journey.initialBundle.id
+      || starter.initialBundle.installId !== journey.initialBundle.installId) return false;
+    starterIds.add(starter.journeyId);
+  }
+  return true;
+}
+
+function publicBundleSelectionGuide() {
+  const guide = readJson(path.join(pluginRoot(), AGENT.publicBundleSelectionGuidePath));
+  return validSelectionGuide(guide) ? guide : null;
+}
+
+function curatedMarketplaceStatus(marketplace) {
+  const entries = Array.isArray(marketplace?.plugins) ? marketplace.plugins : [];
+  const canonicalEntries = entries.filter((entry) => entry?.name === PUBLIC_MARKETPLACE_PLUGIN);
+  const bundleEntries = entries.filter((entry) => entry?.source?.path?.startsWith("./plugins/seis-bundles/"));
+  const unknownEntries = entries.filter((entry) => entry?.name !== PUBLIC_MARKETPLACE_PLUGIN && !bundleEntries.includes(entry));
+  const bundleIds = bundleEntries.map((entry) => entry?.name);
+  const canonicalReady = canonicalEntries.length === CURATED_MARKETPLACE.canonicalCardCount
+    && canonicalEntries[0]?.source?.path === `./plugins/${PUBLIC_MARKETPLACE_PLUGIN}`
+    && canonicalEntries[0]?.policy?.installation === "AVAILABLE"
+    && canonicalEntries[0]?.policy?.authentication === "ON_INSTALL";
+  const bundlesReady = bundleEntries.length === CURATED_MARKETPLACE.optionalBundleCardCount
+    && bundleIds.every((id) => typeof id === "string" && /^seis-(application|topic)-bundle-\d{2}$/.test(id))
+    && new Set(bundleIds).size === bundleIds.length
+    && bundleEntries.every((entry) => entry?.source?.path === `./plugins/seis-bundles/${entry.name}`
+      && entry?.policy?.installation === "AVAILABLE"
+      && entry?.policy?.authentication === "ON_INSTALL");
+  const ready = entries.length === CURATED_MARKETPLACE.publicCardCount
+    && canonicalReady
+    && bundlesReady
+    && unknownEntries.length === 0;
+  return {
+    status: ready ? "ready" : "partial",
+    publicCardCount: entries.length,
+    canonicalCardCount: canonicalEntries.length,
+    optionalBundleCardCount: bundleEntries.length,
+    unknownCardCount: unknownEntries.length,
+    defaultInstall: "seis-ai-agent@seis-repo",
+    maximumOptionalBundleSelectionsPerTask: 1,
+    bulkInstallAllowed: false,
+  };
+}
+
 function status() {
   const root = pluginRoot();
   const repo = repoRoot();
@@ -288,6 +443,8 @@ function status() {
   const unifiedSuite = readJson(path.join(root, AGENT.unifiedSuitePath));
   const identities = repo ? readJson(path.join(repo, "data", "seis-operating-identities.json")) : null;
   const marketplace = repo ? readJson(path.join(repo, ".agents", "plugins", "marketplace.json")) : null;
+  const selectionGuide = publicBundleSelectionGuide();
+  const curatedMarketplace = curatedMarketplaceStatus(marketplace);
   const laneReadiness = Object.fromEntries(LANES.map((lane) => [lane.id, laneStatus(lane).status === "ready"]));
   const readiness = {
     profile: Boolean(profile),
@@ -302,11 +459,8 @@ function status() {
         unifiedSuite?.publicDistribution?.embeddedModuleCount >= EMBEDDED_SOURCE_MODULES.length
     ),
     operatingIdentities: Boolean((identities?.identities || []).find((item) => item.name === AGENT.identity)),
-    marketplace: Boolean(
-      marketplace?.plugins?.length === 1 &&
-        marketplace.plugins?.[0]?.name === PUBLIC_MARKETPLACE_PLUGIN &&
-        marketplace.plugins?.[0]?.source?.path === `./plugins/${PUBLIC_MARKETPLACE_PLUGIN}`
-    ),
+    marketplace: curatedMarketplace.status === "ready",
+    publicBundleSelectionGuide: Boolean(selectionGuide),
     installer: repo ? fs.existsSync(path.join(repo, "scripts", "install-seis-ai-agent.mjs")) : false,
     embeddedLanes: Object.values(laneReadiness).every(Boolean),
   };
@@ -320,6 +474,16 @@ function status() {
     repoRoot: repo,
     readiness,
     laneReadiness,
+    curatedMarketplace,
+    publicBundleSelectionGuide: selectionGuide
+      ? {
+          status: selectionGuide.status,
+          starterPathCount: selectionGuide.starterPaths.length,
+          journeyCount: selectionGuide.journeys.length,
+          maximumOptionalBundleSelectionsPerTask: selectionGuide.selectionBoundary.maximumOptionalBundleSelectionsPerTask,
+          bulkInstallAllowed: selectionGuide.selectionBoundary.bulkInstallAllowed,
+        }
+      : null,
     profile,
     unifiedSuite: unifiedSuite
       ? {
@@ -365,6 +529,60 @@ function lanesStatus() {
     identity: AGENT.identity,
     laneCount: lanes.length,
     lanes,
+  };
+}
+
+function publicBundleGuide() {
+  const guide = publicBundleSelectionGuide();
+  if (!guide) return { error: { code: -32603, message: "Public bundle selection guide is unavailable or unsafe." } };
+  return {
+    status: "ready",
+    agent: AGENT.id,
+    canonicalInstall: guide.canonicalInstall,
+    marketplace: guide.marketplace,
+    selectionBoundary: guide.selectionBoundary,
+    defaultWorkflow: guide.defaultWorkflow,
+    starterPaths: guide.starterPaths,
+    journeys: guide.journeys,
+    permissions: guide.permissions,
+  };
+}
+
+function publicBundleRecommendation(input) {
+  const journeyId = typeof input?.journeyId === "string" ? input.journeyId.trim() : "";
+  if (!JOURNEY_ID_PATTERN.test(journeyId)) {
+    return { error: { code: -32602, message: "Invalid params: journeyId must be a known public selection journey." } };
+  }
+  const guide = publicBundleSelectionGuide();
+  if (!guide) return { error: { code: -32603, message: "Public bundle selection guide is unavailable or unsafe." } };
+  const journey = guide.journeys.find((candidate) => candidate.id === journeyId);
+  if (!journey) {
+    return { error: { code: -32602, message: "Invalid params: journeyId must be a known public selection journey." } };
+  }
+  return {
+    status: "ready",
+    agent: AGENT.id,
+    canonicalInstall: guide.canonicalInstall,
+    journey: {
+      id: journey.id,
+      label: journey.label,
+      family: journey.family,
+      sourceCapabilityCount: journey.sourceCapabilityCount,
+    },
+    recommendedOptionalBundle: journey.initialBundle,
+    continuationBundleIds: journey.continuationBundleIds,
+    selectionBoundary: {
+      maximumOptionalBundleSelectionsPerTask: guide.selectionBoundary.maximumOptionalBundleSelectionsPerTask,
+      bulkInstallAllowed: guide.selectionBoundary.bulkInstallAllowed,
+      bundleMembersAutoInstalled: guide.selectionBoundary.bundleMembersAutoInstalled,
+      sourcePackagesRetained: guide.selectionBoundary.sourcePackagesRetained,
+    },
+    nextSteps: [
+      "Start with SEIS-Agent as the canonical public entry point.",
+      `Use ${journey.initialBundle.installId} only if this journey directly matches the current task.`,
+      "Do not bulk-install bundles or members; scope a later continuation bundle as a separate task.",
+      "Require explicit human approval for writes, deployment, credentials, destructive actions, or publication.",
+    ],
   };
 }
 
@@ -443,6 +661,10 @@ function handle(message) {
         ? plan(args)
         : name === "seis_agent_lanes"
           ? lanesStatus()
+          : name === "seis_public_bundle_guide"
+            ? publicBundleGuide()
+            : name === "seis_public_bundle_recommend"
+              ? publicBundleRecommendation(args)
           : lane?.statusTool === name
             ? laneStatus(lane)
             : lane?.planTool === name

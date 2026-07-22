@@ -12,6 +12,7 @@ const required = [
   "plugins/seis-ai-agent/.codex-plugin/plugin.json",
   "plugins/seis-ai-agent/.mcp.json",
   "plugins/seis-ai-agent/assets/agent-profile.json",
+  "plugins/seis-ai-agent/assets/public-bundle-selection-guide.json",
   "plugins/seis-ai-agent/assets/lanes/seis-cloud.json",
   "plugins/seis-ai-agent/assets/lanes/seis-code.json",
   "plugins/seis-ai-agent/assets/lanes/seis-governance.json",
@@ -58,6 +59,7 @@ const required = [
   "content/development/seis-public-plugin-independent-runner-evidence-contract.json",
   "content/development/seis-public-plugin-family.json",
   "content/development/seis-public-plugin-bundle-catalog.json",
+  "content/development/seis-public-plugin-selection-guide.json",
   "plugins/seis-ai-agent/assets/unified-suite.json",
   "reports/seis-public-plugin-lifecycle.md",
   "reports/seis-public-plugin-fresh-task-proof.md",
@@ -67,6 +69,7 @@ const required = [
   "reports/seis-plugin-canonicalization.md",
   "reports/seis-public-plugin-independent-runner-evidence-contract.md",
   "docs/platform/seis-ai-agent.md",
+  "docs/roadmap/SEIS_PUBLIC_PLUGIN_SELECTION_GUIDE.md",
   "install/seis-ai-agent/install.sh",
   "install/seis-ai-agent/install.ps1",
   ".agents/plugins/marketplace.json",
@@ -83,6 +86,8 @@ const mcp = readJson("plugins/seis-ai-agent/.mcp.json");
 const marketplace = readJson(".agents/plugins/marketplace.json");
 const publicFamily = readJson("content/development/seis-public-plugin-family.json");
 const bundleCatalog = readJson("content/development/seis-public-plugin-bundle-catalog.json");
+const selectionGuide = readJson("content/development/seis-public-plugin-selection-guide.json");
+const agentSelectionGuide = readJson("plugins/seis-ai-agent/assets/public-bundle-selection-guide.json");
 const identities = readJson("data/seis-operating-identities.json");
 const packageJson = readJson("package.json");
 const publicCards = marketplace?.plugins || [];
@@ -90,7 +95,9 @@ const publicBundleEntries = publicCards.filter((plugin) => plugin?.source?.path?
 ensure(manifest?.name === "seis-ai-agent", "manifest name must be seis-ai-agent");
 ensure(manifest?.mcpServers === "./.mcp.json", "manifest must reference ./.mcp.json");
 ensure(manifest?.interface?.capabilities?.includes("Unified SEIS orchestration"), "manifest must expose unified orchestration");
+ensure(manifest?.interface?.capabilities?.includes("Curated public bundle selection guide"), "manifest must expose curated bundle selection guidance");
 ensure(manifest?.interface?.displayName === "SEIS-Agent", "manifest display name must be SEIS-Agent");
+ensure(Array.isArray(manifest?.interface?.defaultPrompt) && manifest.interface.defaultPrompt.length <= 3, "manifest must keep at most three user-facing default prompts");
 ensure(manifest?.interface?.capabilities?.includes("Memory and context governance"), "manifest must expose memory and context governance");
 ensure(manifest?.interface?.capabilities?.includes("SEIS Security threat, secret, and release-risk review"), "manifest must expose SEIS Security capability");
 ensure(manifest?.interface?.capabilities?.includes("SEIS Research evidence and source evaluation"), "manifest must expose SEIS Research capability");
@@ -140,6 +147,10 @@ ensure(canonicalCard?.source?.path === "./plugins/seis-ai-agent", "marketplace m
 ensure(canonicalCard?.policy?.installation === "AVAILABLE" && canonicalCard?.policy?.authentication === "ON_INSTALL", "canonical SEIS-Agent card policy is invalid");
 ensure(bundleCatalog?.marketplace?.publicCardCount === publicCards.length && bundleCatalog?.marketplace?.bundleCardCount === publicBundleEntries.length, "bundle catalog must match the marketplace card projection");
 ensure(bundleCatalog?.sourceCapabilityInventory?.applicationSourcePackageCount === APP_PLUGIN_EXPANSION_TARGET && bundleCatalog?.sourceCapabilityInventory?.topicSourcePackageCount === TOPIC_PLUGIN_TARGET && bundleCatalog?.sourceCapabilityInventory?.retainedSourcePackageCount === 380 && bundleCatalog?.sourceCapabilityInventory?.sourcePackagesDeleted === false, "bundle catalog source retention is invalid");
+ensure(bundleCatalog?.selectionGuide?.contentPath === "content/development/seis-public-plugin-selection-guide.json", "bundle catalog must point to the generated selection guide");
+ensure(bundleCatalog?.selectionGuide?.agentAssetPath === "plugins/seis-ai-agent/assets/public-bundle-selection-guide.json", "bundle catalog must point SEIS-Agent to the selection guide");
+ensure(bundleCatalog?.selectionGuide?.starterPathCount === 6 && bundleCatalog?.selectionGuide?.journeyCount === 19 && bundleCatalog?.selectionGuide?.maximumOptionalBundleSelectionsPerTask === 1, "bundle catalog selection guide summary is invalid");
+validateSelectionGuide(selectionGuide, agentSelectionGuide, bundleCatalog);
 for (const entry of publicBundleEntries) {
   ensure(entry?.policy?.installation === "AVAILABLE", `marketplace bundle ${entry?.name || "unknown"} must be AVAILABLE`);
   ensure(entry?.policy?.authentication === "ON_INSTALL", `marketplace bundle ${entry?.name || "unknown"} must authenticate ON_INSTALL`);
@@ -211,9 +222,13 @@ contains("docs/platform/seis-ai-agent.md", "npm run cloud:migration:audit", "pla
 contains("docs/platform/seis-ai-agent.md", "local-to-cloud-ssh-playbook.md", "platform doc must reference local-to-cloud SSH playbook");
 contains("docs/platform/seis-ai-agent.md", "server-upload-runbook.md", "platform doc must reference server upload runbook");
 contains("docs/platform/seis-ai-agent.md", "server-target-selection.md", "platform doc must reference server target selection playbook");
+contains("docs/platform/seis-ai-agent.md", "Public selection guide", "platform doc must explain the public selection guide");
+contains("docs/platform/seis-ai-agent.md", "seis_public_bundle_recommend", "platform doc must name the bounded recommendation tool");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_ai_agent_status", "MCP server must expose status tool");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "SEIS-Data: memory, context systems", "MCP server must route memory/context through SEIS-Data");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_agent_lanes", "MCP server must expose embedded lane inventory");
+contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_public_bundle_guide", "MCP server must expose the public bundle guide");
+contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_public_bundle_recommend", "MCP server must expose bounded public bundle recommendation");
 for (const tool of ["seis_hub_status", "seis_hub_plan", "seis_governance_status", "seis_governance_plan", "seis_cloud_status", "seis_cloud_plan", "seis_code_status", "seis_code_plan", "seis_design_status", "seis_design_plan", "seis_data_status", "seis_data_plan", "seis_security_status", "seis_security_plan", "seis_research_status", "seis_research_plan", "seis_automation_status", "seis_automation_plan", "seis_product_status", "seis_product_plan"]) {
   contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", tool, `MCP server must expose ${tool}`);
 }
@@ -225,6 +240,34 @@ console.log("SEIS-AI Agent check passed.");
 function ensure(condition, message) { if (!condition) failures.push(message); }
 function readJson(file) { try { return JSON.parse(fs.readFileSync(path.join(root, file), "utf8")); } catch { failures.push(`invalid JSON: ${file}`); return null; } }
 function contains(file, token, message) { if (fs.existsSync(path.join(root, file))) ensure(fs.readFileSync(path.join(root, file), "utf8").includes(token), message); }
+function validateSelectionGuide(guide, agentGuide, catalog) {
+  ensure(guide?.schemaVersion === 1 && guide?.id === "seis-public-plugin-selection-guide", "selection guide identity is invalid");
+  ensure(guide?.canonicalInstall === "seis-ai-agent@seis-repo", "selection guide must keep SEIS-Agent canonical");
+  ensure(guide?.marketplace?.name === "seis-repo" && guide?.marketplace?.publicCardCount === 34 && guide?.marketplace?.canonicalCardCount === 1 && guide?.marketplace?.optionalBundleCardCount === 33 && guide?.marketplace?.maximumBundleSize === 15, "selection guide marketplace boundary is invalid");
+  ensure(guide?.selectionBoundary?.defaultInstall === "seis-ai-agent@seis-repo" && guide?.selectionBoundary?.maximumOptionalBundleSelectionsPerTask === 1 && guide?.selectionBoundary?.bulkInstallAllowed === false && guide?.selectionBoundary?.bundleMembersAutoInstalled === false && guide?.selectionBoundary?.sourcePackagesRetained === true, "selection guide installation boundary is invalid");
+  ensure(JSON.stringify(agentGuide) === JSON.stringify(guide), "SEIS-Agent selection guide asset must match the generated source guide");
+  const journeys = Array.isArray(guide?.journeys) ? guide.journeys : [];
+  const starters = Array.isArray(guide?.starterPaths) ? guide.starterPaths : [];
+  const catalogBundles = Array.isArray(catalog?.bundles) ? catalog.bundles : [];
+  const catalogBundleIds = catalogBundles.map((bundle) => bundle?.id);
+  const guideBundleIds = journeys.flatMap((journey) => Array.isArray(journey?.bundleIds) ? journey.bundleIds : []);
+  ensure(journeys.length === 19 && new Set(journeys.map((journey) => journey?.id)).size === 19, "selection guide must expose nineteen unique journeys");
+  ensure(starters.length === 6 && new Set(starters.map((starter) => starter?.journeyId)).size === 6, "selection guide must expose six unique starter paths");
+  ensure(guideBundleIds.length === 33 && new Set(guideBundleIds).size === 33, "selection guide must cover each optional bundle exactly once");
+  ensure(guideBundleIds.every((id) => catalogBundleIds.includes(id)) && catalogBundleIds.every((id) => guideBundleIds.includes(id)), "selection guide must match the bundle catalog exactly");
+  ensure(journeys.reduce((total, journey) => total + (journey?.sourceCapabilityCount || 0), 0) === 375, "selection guide must cover all 375 bundled source packages");
+  for (const journey of journeys) {
+    const initial = journey?.initialBundle;
+    ensure(typeof journey?.id === "string" && typeof journey?.label === "string" && ["application", "topic"].includes(journey?.family), "selection guide journey metadata is invalid");
+    ensure(Array.isArray(journey?.bundleIds) && journey.bundleIds.length === journey?.bundleCount && journey.bundleIds[0] === initial?.id, `selection guide initial bundle is invalid: ${journey?.id || "unknown"}`);
+    ensure(initial?.installId === `${initial?.id}@seis-repo` && initial?.memberCount > 0 && initial?.memberCount <= 15 && initial?.journeyPart === 1, `selection guide initial bundle boundary is invalid: ${journey?.id || "unknown"}`);
+    ensure(Array.isArray(journey?.continuationBundleIds) && journey.continuationBundleIds.length === journey.bundleIds.length - 1 && journey.continuationBundleIds.every((id, index) => id === journey.bundleIds[index + 1]), `selection guide continuation boundary is invalid: ${journey?.id || "unknown"}`);
+  }
+  for (const starter of starters) {
+    const journey = journeys.find((candidate) => candidate?.id === starter?.journeyId);
+    ensure(Boolean(journey) && starter?.journeyLabel === journey?.label && starter?.initialBundle?.id === journey?.initialBundle?.id, `selection guide starter path is invalid: ${starter?.journeyId || "unknown"}`);
+  }
+}
 function validateInstallerPlan(extraArgs) {
   const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", ...extraArgs], { cwd: root, encoding: "utf8", timeout: 5000 });
   if (result.error) {
@@ -305,6 +348,9 @@ function validateMcpSmoke() {
     frame({ jsonrpc: "2.0", id: 8, method: "tools/call", params: { name: "seis_research_plan", arguments: { request: "Research official integration requirements." } } }),
     frame({ jsonrpc: "2.0", id: 9, method: "tools/call", params: { name: "seis_automation_plan", arguments: { request: "Plan a repeatable validation workflow." } } }),
     frame({ jsonrpc: "2.0", id: 10, method: "tools/call", params: { name: "seis_product_plan", arguments: { request: "Scope a launch readiness slice." } } }),
+    frame({ jsonrpc: "2.0", id: 11, method: "tools/call", params: { name: "seis_public_bundle_guide", arguments: {} } }),
+    frame({ jsonrpc: "2.0", id: 12, method: "tools/call", params: { name: "seis_public_bundle_recommend", arguments: { journeyId: "developer-engineering" } } }),
+    frame({ jsonrpc: "2.0", id: 13, method: "tools/call", params: { name: "seis_public_bundle_recommend", arguments: { journeyId: "../unsafe" } } }),
   ].join("");
   const result = spawnSync("node", [server], { cwd: root, input, timeout: 5000 });
   if (result.error) {
@@ -318,10 +364,11 @@ function validateMcpSmoke() {
   const responses = parseResponses(result.stdout);
   const tools = responses.find((response) => response.id === 2)?.result?.tools || [];
   ensure(tools.some((tool) => tool.name === "seis_ai_agent_status"), "MCP tools/list must include status");
-  for (const tool of ["seis_agent_lanes", "seis_governance_status", "seis_governance_plan", "seis_cloud_status", "seis_cloud_plan", "seis_code_status", "seis_design_status", "seis_data_status", "seis_data_plan", "seis_security_status", "seis_security_plan", "seis_research_status", "seis_research_plan", "seis_automation_status", "seis_automation_plan", "seis_product_status", "seis_product_plan"]) {
+  for (const tool of ["seis_agent_lanes", "seis_public_bundle_guide", "seis_public_bundle_recommend", "seis_governance_status", "seis_governance_plan", "seis_cloud_status", "seis_cloud_plan", "seis_code_status", "seis_design_status", "seis_data_status", "seis_data_plan", "seis_security_status", "seis_security_plan", "seis_research_status", "seis_research_plan", "seis_automation_status", "seis_automation_plan", "seis_product_status", "seis_product_plan"]) {
     ensure(tools.some((record) => record.name === tool), `MCP tools/list must include ${tool}`);
   }
   ensure(responses.find((response) => response.id === 3)?.result?.identity === "SEIS-Agent", "MCP status must report SEIS-Agent identity");
+  ensure(responses.find((response) => response.id === 3)?.result?.status === "ready", "MCP status must recognize the curated 34-card marketplace as ready");
   const plan = responses.find((response) => response.id === 4)?.result;
   ensure(plan?.lanes?.some((lane) => String(lane).includes("SEIS-Data: memory, context systems")), "MCP plan must route memory/context through SEIS-Data");
   const lanes = responses.find((response) => response.id === 5)?.result;
@@ -332,4 +379,9 @@ function validateMcpSmoke() {
   ensure(responses.find((response) => response.id === 8)?.result?.lane === "seis-research", "MCP research plan must route through embedded SEIS Research lane");
   ensure(responses.find((response) => response.id === 9)?.result?.lane === "seis-automation", "MCP automation plan must route through embedded SEIS Automation lane");
   ensure(responses.find((response) => response.id === 10)?.result?.lane === "seis-product", "MCP product plan must route through embedded SEIS Product lane");
+  const guide = responses.find((response) => response.id === 11)?.result;
+  ensure(guide?.status === "ready" && guide?.canonicalInstall === "seis-ai-agent@seis-repo" && guide?.starterPaths?.length === 6 && guide?.journeys?.length === 19, "MCP public bundle guide must expose the bounded selection surface");
+  const recommendation = responses.find((response) => response.id === 12)?.result;
+  ensure(recommendation?.status === "ready" && recommendation?.recommendedOptionalBundle?.id === "seis-application-bundle-04" && recommendation?.selectionBoundary?.maximumOptionalBundleSelectionsPerTask === 1 && recommendation?.selectionBoundary?.bulkInstallAllowed === false, "MCP bundle recommendation must return one bounded initial bundle");
+  ensure(responses.find((response) => response.id === 13)?.error?.code === -32602, "MCP bundle recommendation must reject invalid journey input");
 }

@@ -49,6 +49,7 @@ scope:
     - apps/seis-core/data/seis-core-plugin-catalog.json
     - content/development/seis-public-plugin-family.json
     - content/development/seis-public-plugin-bundle-catalog.json
+    - content/development/seis-public-plugin-selection-guide.json
     - content/development/seis-public-plugin-consolidation.json
     - content/development/seis-project-manifest-audit.json
     - content/development/seis-mcp-permission-risk-matrix.json
@@ -56,12 +57,18 @@ scope:
     - content/development/seis-public-install-evidence.json
     - content/development/seis-public-runtime-status.json
     - plugins/seis-bundles
+    - plugins/seis-ai-agent/.codex-plugin/plugin.json
+    - plugins/seis-ai-agent/assets/public-bundle-selection-guide.json
+    - plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs
+    - plugins/seis-ai-agent/README.md
+    - plugins/seis-ai-agent/skills/seis-ai-agent/SKILL.md
     - plugins/seis-core/runtime/plugin-catalog.mjs
     - plugins/seis-core/runtime/plugin-surface.mjs
     - scripts/create-seis-public-plugin-family.mjs
     - scripts/create-seis-public-plugin-bundles.mjs
     - scripts/create-seis-public-plugin-consolidation.mjs
     - scripts/check-seis-agent-plugin-integration.mjs
+    - scripts/check-seis-ai-agent.mjs
     - scripts/check-seis-personal-plugin-marketplace-migration.mjs
     - scripts/check-seis-specialist-plugins.mjs
     - scripts/create-seis-mcp-permission.mjs
@@ -70,6 +77,8 @@ scope:
     - plugins/seis-core/test/public-plugin-bundles.test.mjs
     - plugins/seis-core/test/public-plugin-consolidation.test.mjs
     - docs/roadmap/SEIS_PUBLIC_PLUGIN_CONSOLIDATION.md
+    - docs/roadmap/SEIS_PUBLIC_PLUGIN_SELECTION_GUIDE.md
+    - docs/platform/seis-ai-agent.md
 
 canonical_owner_repo: SEIS-plugin-root-20260715
 
@@ -97,6 +106,8 @@ requirements:
   - reject undeclared files, directories, links, and cross-family duplicate members
   - validate runtime profiles against immutable generated bundle metadata
   - generate marketplace and bundle artifacts from reviewed source data
+  - generate a public selection guide with a canonical default, six fast starter paths, and all curated journeys without adding marketplace cards
+  - recommend only one initial optional bundle for a known journey and fail closed on tampered guide data or unknown journey input
   - keep marketplace card counts separate from retained source capability counts in every current contract
   - preserve historical wave snapshots while labeling them as historical rather than current distribution proof
 
@@ -118,6 +129,8 @@ acceptance_criteria:
   - source packages remain present and no source directory is deleted
   - focused generation, freshness, marketplace, integration, and test checks pass
   - current project, catalog, install-state, permission, Apple/Swift, and continuity evidence consistently reports 34 cards and 380 retained source capabilities
+  - the selection guide covers all 33 optional bundles exactly once across 19 journeys and keeps six distinct starter paths
+  - the canonical SEIS-Agent MCP reports the curated 34-card marketplace as ready and recommends at most one initial optional bundle without installation or external access
 
 definition_of_ready:
   - the canonical plugin-root repository and branch are known
@@ -146,6 +159,7 @@ validation:
     - node --test plugins/seis-core/test/public-plugin-consolidation.test.mjs
     - npm run check:seis-repo-marketplace
     - npm run check:seis-agent-plugin-integration
+    - npm run check:seis-ai-agent
     - npm run check:seis-core-plugin-catalog
     - npm run check:seis-core-mcp-permission
     - git diff --check
@@ -213,6 +227,15 @@ risks:
     trigger: A current validator derives marketplace readiness from a historical 377-to-381 card count.
     contingency: Reject the current projection, restore the last validated artifact, and migrate the consumer before regeneration.
     status: active
+  - id: RISK-0024-006
+    description: A bounded marketplace can still overwhelm users if the initial journey selection is unclear or a recommendation permits multi-bundle installation.
+    likelihood: medium
+    impact: medium
+    owner: documentation
+    mitigation: Keep SEIS-Agent as the canonical default, present six starter paths and 19 generated journeys, recommend one initial bundle only, and reject unknown or tampered guide data.
+    trigger: A user-facing guide, MCP response, or manifest permits multiple automatic bundle selections or exposes a raw source-card catalog.
+    contingency: Revert the guide projection, preserve the 34-card marketplace, and restore the last validated one-bundle-at-a-time workflow.
+    status: active
 
 rollback:
   strategy: revert
@@ -244,8 +267,10 @@ outputs:
   - bounded capability bundle packages
   - exact-once coverage validation
   - security-hardened local MCP runtime template
+  - canonical SEIS-Agent public bundle selection guide and bounded recommendation tools
   - implementation and rollback documentation
 
 notes:
   - Local implementation and validation are complete enough for review; public release and independent external-runner proof remain separate gates.
   - GitHub issue, pull request, publication, and release actions require current human approval.
+  - The 2026-07-22 usability increment adds six starter paths, 19 generated journeys, and a one-bundle-at-a-time SEIS-Agent recommendation boundary without expanding the 34-card marketplace.

@@ -1,7 +1,7 @@
 {
   "name": "seis-ai-agent",
   "version": "0.3.0+codex.20260712",
-  "description": "Versioned unified SEIS-AI Agent that installs as one default public SEIS surface and orchestrates every embedded governance, cloud, code, design, data, security, research, automation, and product lane.",
+  "description": "Versioned unified SEIS-Agent: the default public SEIS entry point with bounded optional bundle guidance across governance, cloud, code, design, data, security, research, automation, and product lanes.",
   "author": {
     "name": "emirhankudun-ux",
     "url": "https://github.com/emirhankudun-ux"
@@ -28,13 +28,14 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "SEIS-Agent",
-    "shortDescription": "The one public SEIS plugin that coordinates every embedded module.",
-    "longDescription": "SEIS-Agent 0.3.0 is the only public SEIS install surface. It embeds SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product as internal source modules while preserving legacy local installations without publishing duplicate public plugin cards.",
+    "shortDescription": "Default public SEIS entry point with one-bundle-at-a-time guidance.",
+    "longDescription": "SEIS-Agent is the canonical public SEIS starting point. It coordinates SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, Security, Research, Automation, and Product lanes, and it helps users choose at most one optional bounded SEIS Repo bundle for a scoped task without bulk installation or external access.",
     "developerName": "emirhankudun-ux",
     "category": "Developer Tools",
     "capabilities": [
       "Unified SEIS orchestration",
       "Single default unified plugin installation",
+      "Curated public bundle selection guide",
       "SEIS governance readiness",
       "Memory and context governance",
       "SEIS Cloud deployment planning",
@@ -53,11 +54,9 @@
     ],
     "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
     "defaultPrompt": [
-      "Use SEIS-AI Agent to route this work across cloud, code, design, and data.",
-      "Use SEIS-AI Agent to route security, research, automation, and product work to the right embedded lane.",
-      "Plan the next SEIS-AI Agent milestone without publishing prematurely.",
-      "Prepare a cross-platform terminal install path for this SEIS capability.",
-      "Shape the cinematic website and product experience roadmap for SEIS-AI Agent."
+      "Show the six SEIS public starter paths and choose one optional bundle for this task.",
+      "Route this SEIS work across cloud, code, design, data, security, research, automation, and product.",
+      "Plan the next SEIS-Agent milestone without publishing or bulk-installing packages."
     ],
     "brandColor": "#111827"
   }
