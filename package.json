@@ -80,6 +80,8 @@
     "check:plugin-environment-sources": "node scripts/sync-plugin-environment-sources.cjs --check",
     "check:seis-ai-core-plugin-registry": "node scripts/create-seis-ai-core-plugin-registry.mjs --check",
     "check:seis-ai-personal-plugin-coverage": "node scripts/create-seis-ai-personal-plugin-coverage.mjs --check",
+    "check:seis-public-marketplace-local-cleanup": "node --test plugins/seis-core/test/public-marketplace-local-cleanup.test.mjs",
+    "plan:seis-public-marketplace-local-cleanup": "node scripts/manage-seis-public-marketplace-switch.mjs --plan",
     "check:seis-core-plugin-sources": "node scripts/check-seis-ai-core-plugin-sources.mjs && node scripts/create-seis-core-plugin-sources.mjs --check",
     "check:seis-core-plugin-public-repository": "node scripts/promote-seis-core-plugin-public-repository.mjs --check",
     "check:seis-core-plugin-release": "node scripts/check-seis-core-plugin-release.mjs",
