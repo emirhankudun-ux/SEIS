@@ -1,1 +1,9 @@
 4a959973a7aa997d82d2ee206c162d2db6e8774d:apps/web/test/scripts.test.js:generic-api-key:479
+
+# Lexical token-frequency histogram entry ({"token": ..., "count": 1}), not a credential.
+# Reachable only from the unmerged branch plugins/seis-plugin-root-20260715; never on main.
+ea431d4945be64a4816c76145adb659499e27424:content/development/seis-plugin-capability-coverage.json:generic-api-key:198
+
+# Synthetic string in a throwaway script a test writes to a temp dir, not a credential.
+# Reachable only from the unmerged branch codex/ai-core-capability-contract-20260710; never on main.
+1fb903574b4eba947ac6fea59715f267ef6e5507:packages/seis-ai/test/personal-lane-cycle.test.mjs:generic-api-key:57
