@@ -6,6 +6,9 @@ import { tmpdir } from "node:os";
 
 import {
   i18nStatus,
+  copyDictionaryStatus,
+  extractObjectLiteral,
+  parseDictionary,
   i18nGet,
   i18nSearch,
   contractCheck,
@@ -123,6 +126,176 @@ describe("i18nStatus", () => {
     const r = i18nStatus(webRoot);
     assert.equal(r.ok, false);
     assert.ok(r.referencedMissing.includes("nav.home"));
+  });
+});
+
+describe("i18nStatus — vacuity flag", () => {
+  afterEach(teardown);
+
+  it("does not flag vacuity when the page carries data-i18n bindings", () => {
+    setup({ "translations.json": minTranslations, "index.html": minHtml, "script.js": minScript });
+    const r = i18nStatus(webRoot);
+    assert.equal(r.vacuousReferenceCheck, false);
+    assert.equal(r.vacuousReason, null);
+    assert.ok(r.referencedCount > 0);
+  });
+
+  it("flags vacuity when nothing references translations.json", () => {
+    setup({
+      "translations.json": minTranslations,
+      "index.html": minHtml.replace(/ data-i18n="[^"]*"/g, ""),
+      "script.js": minScript,
+    });
+    const r = i18nStatus(webRoot);
+    assert.equal(r.referencedCount, 0);
+    assert.equal(r.vacuousReferenceCheck, true);
+    assert.match(r.vacuousReason, /not wired to the page/);
+    // Parity still holds on its own merit, so the check itself is not failed
+    // by vacuity — it is only marked as proving less than it appears to.
+    assert.equal(r.ok, true);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* copy dictionary                                                     */
+/* ------------------------------------------------------------------ */
+
+const copyScript = `
+"use strict";
+function q(sel) { return document.querySelector(sel); }
+function qa(sel) { return document.querySelectorAll(sel); }
+var title = q("#hero-title");
+var nav = q("#main-nav");
+var links = qa(".nav-link");
+
+const COPY = {
+  en: {
+    heroTitle: "Title",
+    navHome: "Home",
+    copied: "Copied"
+  },
+  tr: {
+    heroTitle: "Başlık",
+    navHome: "Ana Sayfa",
+    copied: "Kopyalandı"
+  }
+};
+
+const PROOF = {
+  en: { desktop: { title: "Desktop", body: "Body" } },
+  tr: { desktop: { title: "Masaüstü", body: "Gövde" } }
+};
+
+showToast(COPY[state.lang].copied);
+document.querySelectorAll("[data-copy-key]").forEach(function (node) {
+  const key = node.getAttribute("data-copy-key");
+  if (COPY[nextLang][key]) node.textContent = COPY[nextLang][key];
+});
+`;
+
+const copyHtml = minHtml
+  .replace('data-i18n="hero.title"', 'data-copy-key="heroTitle"')
+  .replace('data-i18n="nav.home"', 'data-copy-key="navHome"');
+
+describe("extractObjectLiteral", () => {
+  it("returns null for a name that is not declared", () => {
+    assert.equal(extractObjectLiteral("const A = { a: 1 };", "MISSING"), null);
+  });
+
+  it("is not ended early by a brace inside a string value", () => {
+    const src = 'const D = { en: { a: "closing } brace" }, tr: { a: "x" } };';
+    const literal = extractObjectLiteral(src, "D");
+    assert.ok(literal.includes("tr:"), "literal was truncated at the brace in the string");
+    assert.deepEqual(parseDictionary(src, "D"), {
+      en: { a: "closing } brace" },
+      tr: { a: "x" },
+    });
+  });
+
+  it("is not ended early by a brace inside a comment", () => {
+    const src = 'const D = {\n  // a stray } here\n  en: { a: "x" }\n};';
+    assert.deepEqual(parseDictionary(src, "D"), { en: { a: "x" } });
+  });
+
+  it("does not match a name that is only a suffix of another identifier", () => {
+    const src = 'const MYCOPY = { en: { a: 1 } };';
+    assert.equal(extractObjectLiteral(src, "COPY"), null);
+  });
+});
+
+describe("copyDictionaryStatus", () => {
+  afterEach(teardown);
+
+  it("passes when every locale agrees and all data-copy-keys resolve", () => {
+    setup({ "index.html": copyHtml, "script.js": copyScript });
+    const r = copyDictionaryStatus(webRoot);
+    assert.equal(r.ok, true);
+    assert.equal(r.applicable, true);
+    assert.equal(r.referencedCount, 2);
+    assert.deepEqual(r.referencedMissing, []);
+
+    const copy = r.dictionaries.find((d) => d.name === "COPY");
+    assert.deepEqual(copy.locales, ["en", "tr"]);
+    assert.equal(copy.keyCount, 3);
+  });
+
+  it("flattens a nested dictionary to dotted leaf paths", () => {
+    setup({ "index.html": copyHtml, "script.js": copyScript });
+    const proof = copyDictionaryStatus(webRoot).dictionaries.find((d) => d.name === "PROOF");
+    assert.deepEqual(proof.keys, ["desktop.body", "desktop.title"]);
+  });
+
+  it("fails when a key exists in one locale only", () => {
+    setup({
+      "index.html": copyHtml,
+      "script.js": copyScript.replace('    heroTitle: "Title",', '    heroTitle: "Title",\n    onlyEn: "orphan",'),
+    });
+    const r = copyDictionaryStatus(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.dictionaries.find((d) => d.name === "COPY").missingByLocale.tr.includes("onlyEn"));
+  });
+
+  it("fails on a value that is empty in any single locale", () => {
+    setup({
+      "index.html": copyHtml,
+      "script.js": copyScript.replace('navHome: "Ana Sayfa"', 'navHome: ""'),
+    });
+    const r = copyDictionaryStatus(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.dictionaries.find((d) => d.name === "COPY").emptyValues.includes("tr.navHome"));
+  });
+
+  it("fails on a data-copy-key with no dictionary entry", () => {
+    setup({
+      "index.html": copyHtml.replace('data-copy-key="navHome"', 'data-copy-key="noSuchKey"'),
+      "script.js": copyScript,
+    });
+    const r = copyDictionaryStatus(webRoot);
+    assert.equal(r.ok, false);
+    assert.deepEqual(r.referencedMissing, ["noSuchKey"]);
+  });
+
+  it("fails when the page binds data-copy-key but script.js has no COPY dictionary", () => {
+    setup({ "index.html": copyHtml, "script.js": minScript });
+    const r = copyDictionaryStatus(webRoot);
+    assert.equal(r.ok, false);
+    assert.equal(r.missingRequiredDictionary, true);
+    assert.equal(r.applicable, true);
+  });
+
+  it("reports itself as not applicable when the site uses neither binding nor dictionary", () => {
+    setup({ "index.html": minHtml, "script.js": minScript });
+    const r = copyDictionaryStatus(webRoot);
+    assert.equal(r.applicable, false);
+    assert.equal(r.ok, true);
+  });
+
+  it("treats a key reached only through JS member access as used, not dead", () => {
+    setup({ "index.html": copyHtml, "script.js": copyScript });
+    const r = copyDictionaryStatus(webRoot);
+    // `copied` never appears in the HTML — only as COPY[state.lang].copied.
+    assert.ok(!r.unreferenced.includes("copied"));
+    assert.equal(r.dynamicLookup, true);
   });
 });
 
