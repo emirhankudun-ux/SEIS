@@ -155,7 +155,8 @@ window.SEIS_COCKPIT_STATUS = {
     "lane": "docs/research",
     "notes": [
       "notes/2026-06-12-backend-state-reference.md",
-      "notes/2026-06-13-auth-jwt-reference.md"
+      "notes/2026-06-13-auth-jwt-reference.md",
+      "notes/2026-08-26-error-tracking-reference.md"
     ]
   },
   "workspace": {

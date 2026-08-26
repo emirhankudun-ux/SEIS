@@ -24,3 +24,4 @@ itself always lands here.
 | --- | --- |
 | [`notes/2026-06-12-backend-state-reference.md`](./notes/2026-06-12-backend-state-reference.md) | `docs/decisions/backend-state-decision-record.md` |
 | [`notes/2026-06-13-auth-jwt-reference.md`](./notes/2026-06-13-auth-jwt-reference.md) | `docs/decisions/auth-jwt-decision-record.md` |
+| [`notes/2026-08-26-error-tracking-reference.md`](./notes/2026-08-26-error-tracking-reference.md) | `docs/decisions/error-tracking-decision-record.md` |

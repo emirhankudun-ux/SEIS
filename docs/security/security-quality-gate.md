@@ -40,7 +40,10 @@ No deployment until all conditions hold:
   guarded by `npm run check:secret-scan`. Deployable surface clean; the one
   generated third-party bundle is allowlisted with a documented reason.
 - [ ] Runtime error tracking is chosen and configured (Sentry route per the
-  workbench security row).
+  workbench security row). Choice decided in
+  `docs/decisions/error-tracking-decision-record.md`; configuration is still
+  deferred until a deploy target is chosen and Convex is provisioned, so
+  this condition stays unmet.
 - [ ] A rollback contract exists for the deployed surface.
 
 Auth posture for the eventual deployed surface is decided in
@@ -73,3 +76,8 @@ allowed set (`enforced`, `open`, `blocked`).
   generated `github-code-bundle.txt` are upstream third-party test fixtures
   and were allowlisted with a documented reason. `deployment` stays blocked
   on error-tracking and rollback conditions.
+- 2026-08-26: Error-tracking *choice* decided (Sentry) —
+  `docs/decisions/error-tracking-decision-record.md`. Configuration is not
+  done (no deploy target chosen, Convex not provisioned), so the condition
+  stays unmet and `deployment` stays blocked on error-tracking configuration
+  and the rollback contract.

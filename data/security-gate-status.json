@@ -25,7 +25,7 @@
       "gate_id": "deployment",
       "label": "Deployment",
       "state": "blocked",
-      "guard": "Secret scan recorded and clean (data/secret-scan-results.json); still blocked on error-tracking choice and rollback contract"
+      "guard": "Secret scan recorded and clean (data/secret-scan-results.json); error-tracking choice decided (docs/decisions/error-tracking-decision-record.md) but not configured; still blocked on error-tracking configuration and rollback contract"
     },
     {
       "gate_id": "automation_expansion",
