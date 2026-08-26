@@ -17,27 +17,32 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 1921
+Inspected files: 2663
 
 ## Provider Matrix
 
 | Provider | Category | Status | Expected env vars | Locations | Frontend direct | Backend side | Decision | Recommended action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Anthropic Claude | cloud model provider | Live but Unverified | ANTHROPIC_API_KEY | 5837 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Anthropic Claude | cloud model provider | Frontend Direct Call | ANTHROPIC_API_KEY | 5849 | yes | yes | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| AWS Bedrock | cloud model platform | Unknown | AWS_REGION, AWS_PROFILE | 1 | no | no | Retain | Review manually before enabling. |
 | Cloudflare Workers AI | cloud model platform | Live but Unverified | CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN | 6 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| Cohere | cloud model provider | Unknown | COHERE_API_KEY | 20 | no | no | Retain | Review manually before enabling. |
-| DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 120 | no | no | Retain | Review manually before enabling. |
-| Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 108 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| Groq | cloud model provider | Unknown | GROQ_API_KEY | 4 | no | no | Retain | Review manually before enabling. |
-| Hugging Face | model hosting provider | Unknown | HF_TOKEN | 2 | no | no | Retain | Review manually before enabling. |
-| Mistral | cloud model provider | Unknown | MISTRAL_API_KEY | 8 | no | no | Retain | Review manually before enabling. |
-| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 1063 | no | no | Retain | Review manually before enabling. |
-| Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 322 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 58 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 76 | no | no | Retain | Review manually before enabling. |
+| Cohere | cloud model provider | Frontend Direct Call | COHERE_API_KEY | 29 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 137 | no | no | Retain | Review manually before enabling. |
+| Google Gemini | cloud model provider | Frontend Direct Call | GEMINI_API_KEY | 115 | yes | yes | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Google Vertex AI | cloud model platform | Unknown | GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION, GOOGLE_APPLICATION_CREDENTIALS | 53 | no | no | Retain | Review manually before enabling. |
+| Groq | cloud model provider | Frontend Direct Call | GROQ_API_KEY | 8 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Hugging Face | model hosting provider | Frontend Direct Call | HF_TOKEN | 7 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Luma | media provider | Unknown | LUMA_API_KEY | 8 | no | no | Retain | Review manually before enabling. |
+| Mistral | cloud model provider | Frontend Direct Call | MISTRAL_API_KEY | 28 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 2259 | no | no | Retain | Review manually before enabling. |
+| Ollama | local model provider | Frontend Direct Call | OLLAMA_BASE_URL, OLLAMA_HOST | 433 | yes | yes | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| OpenAI | cloud model provider | Frontend Direct Call | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 86 | yes | yes | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| OpenRouter | model gateway | Frontend Direct Call | OPENROUTER_API_KEY | 13 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Perplexity | cloud model provider | Frontend Direct Call | PERPLEXITY_API_KEY | 78 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | Portkey | model gateway | Unknown | PORTKEY_API_KEY | 2 | no | no | Retain | Review manually before enabling. |
-| Runway | media provider | Unknown | RUNWAY_API_KEY | 336 | no | no | Retain | Review manually before enabling. |
-| Together AI | cloud model provider | Unknown | TOGETHER_API_KEY | 102 | no | no | Retain | Review manually before enabling. |
+| Replicate | media/model provider | Frontend Direct Call | REPLICATE_API_TOKEN | 7 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Runway | media provider | Unknown | RUNWAY_API_KEY | 431 | no | no | Retain | Review manually before enabling. |
+| Together AI | cloud model provider | Frontend Direct Call | TOGETHER_API_KEY | 112 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | Vercel AI SDK | abstraction layer | Unknown | none detected | 15 | no | no | Retain | Review manually before enabling. |
 
 ## Secret-Exposure Findings
@@ -66,6 +71,11 @@ No secret-like values were reported by this static scan.
 | CLOUDFLARE_API_TOKEN | SEIST/scripts/create-connector-activation-report.cjs | 49 | repository |
 | VERCEL_TOKEN | SEIST/scripts/create-connector-activation-report.cjs | 49 | repository |
 | NETLIFY_AUTH_TOKEN | SEIST/scripts/create-connector-activation-report.cjs | 49 | repository |
+| GITHUB_TOKEN | apps/seis-core/test/seis-cloud-ssh-center-static.test.js | 119 | repository |
+| GITHUB_TOKEN | apps/seis-core/test/seis-design-studio-center-static.test.js | 60 | repository |
+| GITHUB_TOKEN | apps/seis-core/test/seis-files-terminal-center-static.test.js | 61 | repository |
+| GITHUB_TOKEN | apps/seis-core/test/seis-search-center-static.test.js | 85 | repository |
+| GITHUB_TOKEN | apps/seis-core/test/seis-store-music-center-static.test.js | 66 | repository |
 | GITHUB_TOKEN | deploy/cloud-environment.json | 22 | deployment-config |
 | CLOUDFLARE_API_TOKEN | deploy/cloud-environment.json | 31 | deployment-config |
 | VERCEL_TOKEN | deploy/cloud-environment.json | 40 | deployment-config |
@@ -88,7 +98,18 @@ No secret-like values were reported by this static scan.
 
 ## Frontend Direct-Call Findings
 
-No frontend direct model-provider endpoint or secret-variable path was detected by this scan.
+- Anthropic Claude: review 5849 location(s).
+- Cohere: review 29 location(s).
+- Google Gemini: review 115 location(s).
+- Groq: review 8 location(s).
+- Hugging Face: review 7 location(s).
+- Mistral: review 28 location(s).
+- Ollama: review 433 location(s).
+- OpenAI: review 86 location(s).
+- OpenRouter: review 13 location(s).
+- Perplexity: review 78 location(s).
+- Replicate: review 7 location(s).
+- Together AI: review 112 location(s).
 
 ## Real Live Integrations
 
@@ -131,21 +152,26 @@ or GitHub mutation.
 
 These references do not prove enabled live features or required API keys.
 
-- Anthropic Claude: ANTHROPIC_API_KEY (Live but Unverified)
+- Anthropic Claude: ANTHROPIC_API_KEY (Frontend Direct Call)
+- AWS Bedrock: AWS_REGION, AWS_PROFILE (Unknown)
 - Cloudflare Workers AI: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN (Live but Unverified)
-- Cohere: COHERE_API_KEY (Unknown)
+- Cohere: COHERE_API_KEY (Frontend Direct Call)
 - DeepSeek: DEEPSEEK_API_KEY (Unknown)
-- Google Gemini: GEMINI_API_KEY (Live but Unverified)
-- Groq: GROQ_API_KEY (Unknown)
-- Hugging Face: HF_TOKEN (Unknown)
-- Mistral: MISTRAL_API_KEY (Unknown)
+- Google Gemini: GEMINI_API_KEY (Frontend Direct Call)
+- Google Vertex AI: GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION, GOOGLE_APPLICATION_CREDENTIALS (Unknown)
+- Groq: GROQ_API_KEY (Frontend Direct Call)
+- Hugging Face: HF_TOKEN (Frontend Direct Call)
+- Luma: LUMA_API_KEY (Unknown)
+- Mistral: MISTRAL_API_KEY (Frontend Direct Call)
 - NVIDIA NIM: NVIDIA_API_KEY (Unknown)
-- Ollama: OLLAMA_BASE_URL, OLLAMA_HOST (Live but Unverified)
-- OpenAI: OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID (Live but Unverified)
-- Perplexity: PERPLEXITY_API_KEY (Unknown)
+- Ollama: OLLAMA_BASE_URL, OLLAMA_HOST (Frontend Direct Call)
+- OpenAI: OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID (Frontend Direct Call)
+- OpenRouter: OPENROUTER_API_KEY (Frontend Direct Call)
+- Perplexity: PERPLEXITY_API_KEY (Frontend Direct Call)
 - Portkey: PORTKEY_API_KEY (Unknown)
+- Replicate: REPLICATE_API_TOKEN (Frontend Direct Call)
 - Runway: RUNWAY_API_KEY (Unknown)
-- Together AI: TOGETHER_API_KEY (Unknown)
+- Together AI: TOGETHER_API_KEY (Frontend Direct Call)
 - Vercel AI SDK: no key variable detected (Unknown)
 
 ### No-Key Providers
