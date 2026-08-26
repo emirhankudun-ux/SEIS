@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "id": "seis-full-technology-registry",
+  "goalId": "SEIS-GOAL-021",
+  "mode": "registry-first-local-demo",
+  "status": "prototype",
+  "summary": {
+    "domainCount": 16,
+    "implementationClasses": ["native-core", "native-tool", "adapter", "plugin", "research"],
+    "maturityStates": ["concept", "research", "prototype", "experimental", "alpha", "beta", "stable", "lts", "legacy", "deprecated"]
+  },
+  "domains": [
+    {"id":"intelligence","name":"Intelligence","capabilities":["ai-core","model-router","agent-runtime","rag","memory","evaluation"]},
+    {"id":"software","name":"Software","capabilities":["code-studio","debugging","build-system","test-lab","architecture","api-engineering"]},
+    {"id":"creation","name":"Creation","capabilities":["graphic-design","ui-ux","3d-creation","materials","animation","procedural-content"]},
+    {"id":"reality","name":"Reality","capabilities":["rendering","physics","world-streaming","simulation","digital-twin","xr"]},
+    {"id":"game","name":"Game","capabilities":["gameplay-framework","level-editor","game-ai","networking","save-replay","automated-playtest"]},
+    {"id":"digital-life","name":"Digital Life","capabilities":["digital-human","digital-creature","anatomy","groom","motion","character-continuity"]},
+    {"id":"cinema-audio","name":"Cinema & Audio","capabilities":["virtual-production","editing","vfx","color","audio","music"]},
+    {"id":"data-knowledge","name":"Data & Knowledge","capabilities":["sqlite","data-lineage","knowledge-graph","search","datasets","visualization"]},
+    {"id":"science-math","name":"Science & Mathematics","capabilities":["numerical-computing","statistics","optimization","physics","scientific-visualization","research"]},
+    {"id":"engineering-manufacturing","name":"Engineering & Manufacturing","capabilities":["cad-bim","manufacturing","energy","automotive","aerospace","industrial-digital-twin"]},
+    {"id":"robotics-autonomy","name":"Robotics & Autonomous Systems","capabilities":["ros2","slam","sensor-fusion","motion-planning","humanoid","autonomous-vehicles"]},
+    {"id":"hardware-electronics","name":"Hardware & Electronics","capabilities":["embedded","fpga","hdl","electronics","compute-architecture","device-lab"]},
+    {"id":"cloud-distributed","name":"Cloud & Distributed Systems","capabilities":["containers","kubernetes","iac","ci-cd","distributed-compute","observability"]},
+    {"id":"security-privacy","name":"Security & Privacy","capabilities":["threat-modeling","secret-boundary","supply-chain","permissions","privacy","incident-response"]},
+    {"id":"platform","name":"Platform, Mobile, Web & XR","capabilities":["macos","windows","linux","ios-ipados","android","web-xr"]},
+    {"id":"governance-research","name":"Governance, Research & Operations","capabilities":["goal-tracking","evidence","risk","validation","roadmap","technology-atlas"]}
+  ],
+  "universalFrameworks": [
+    "universal-inspector",
+    "universal-graph",
+    "universal-timeline",
+    "universal-viewport",
+    "universal-diff",
+    "universal-history",
+    "universal-search",
+    "universal-permission-graph",
+    "universal-transaction-system",
+    "universal-recovery",
+    "universal-coordinate-system",
+    "universal-time-system",
+    "universal-units-system",
+    "universal-digital-twin-contract"
+  ],
+  "coreSystems": [
+    "seis-cube",
+    "seis-brain",
+    "seis-atlas",
+    "seis-forge",
+    "seis-nexus",
+    "seis-proof",
+    "seis-reality",
+    "seis-game-engine",
+    "seis-3d-engine",
+    "seis-digital-human",
+    "seis-workbench-composer"
+  ],
+  "safetyBoundary": {
+    "defaultNetwork": "deny",
+    "defaultWrite": "deny",
+    "externalMutationRequiresApproval": true,
+    "credentialsInRegistry": false,
+    "demoClaimsMustBeExplicit": true
+  }
+}
