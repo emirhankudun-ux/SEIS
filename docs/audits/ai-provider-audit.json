@@ -50177,6 +50177,14 @@
           "surface": "documentation"
         },
         {
+          "path": "docs/security/security-baseline.md",
+          "line": 27,
+          "matchTypes": [
+            "model:mistral"
+          ],
+          "surface": "documentation"
+        },
+        {
           "path": "reports/seis-model-scaling/seis-language-model-training-curriculum.json",
           "line": 175,
           "matchTypes": [
@@ -70614,6 +70622,14 @@
           "surface": "documentation"
         },
         {
+          "path": "docs/security/security-baseline.md",
+          "line": 27,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "documentation"
+        },
+        {
           "path": "docs/testing/lightweight-checks.md",
           "line": 28,
           "matchTypes": [
@@ -72678,6 +72694,14 @@
           "surface": "documentation"
         },
         {
+          "path": "docs/security/security-baseline.md",
+          "line": 27,
+          "matchTypes": [
+            "model:openrouter"
+          ],
+          "surface": "documentation"
+        },
+        {
           "path": "scripts/check-seis-provider-registry-demo.mjs",
           "line": 35,
           "matchTypes": [
@@ -73472,6 +73496,14 @@
           "line": 14,
           "matchTypes": [
             "env:REPLICATE_API_TOKEN",
+            "model:replicate"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "docs/security/security-baseline.md",
+          "line": 27,
+          "matchTypes": [
             "model:replicate"
           ],
           "surface": "documentation"
@@ -77689,6 +77721,14 @@
         {
           "path": "docs/roadmap/seis-plugin-ecosystem-10-year-stewardship.md",
           "line": 10,
+          "matchTypes": [
+            "model:together"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "docs/security/security-baseline.md",
+          "line": 27,
           "matchTypes": [
             "model:together"
           ],

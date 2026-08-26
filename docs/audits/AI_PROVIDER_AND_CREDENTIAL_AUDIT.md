@@ -33,16 +33,16 @@ Inspected files: 2663
 | Groq | cloud model provider | Frontend Direct Call | GROQ_API_KEY | 8 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | Hugging Face | model hosting provider | Frontend Direct Call | HF_TOKEN | 7 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | Luma | media provider | Unknown | LUMA_API_KEY | 8 | no | no | Retain | Review manually before enabling. |
-| Mistral | cloud model provider | Frontend Direct Call | MISTRAL_API_KEY | 28 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Mistral | cloud model provider | Frontend Direct Call | MISTRAL_API_KEY | 29 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 2259 | no | no | Retain | Review manually before enabling. |
-| Ollama | local model provider | Frontend Direct Call | OLLAMA_BASE_URL, OLLAMA_HOST | 433 | yes | yes | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Ollama | local model provider | Frontend Direct Call | OLLAMA_BASE_URL, OLLAMA_HOST | 434 | yes | yes | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | OpenAI | cloud model provider | Frontend Direct Call | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 86 | yes | yes | Refactor | Move any live provider call behind a backend gateway before enabling. |
-| OpenRouter | model gateway | Frontend Direct Call | OPENROUTER_API_KEY | 13 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| OpenRouter | model gateway | Frontend Direct Call | OPENROUTER_API_KEY | 14 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | Perplexity | cloud model provider | Frontend Direct Call | PERPLEXITY_API_KEY | 78 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | Portkey | model gateway | Unknown | PORTKEY_API_KEY | 2 | no | no | Retain | Review manually before enabling. |
-| Replicate | media/model provider | Frontend Direct Call | REPLICATE_API_TOKEN | 7 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Replicate | media/model provider | Frontend Direct Call | REPLICATE_API_TOKEN | 8 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | Runway | media provider | Unknown | RUNWAY_API_KEY | 431 | no | no | Retain | Review manually before enabling. |
-| Together AI | cloud model provider | Frontend Direct Call | TOGETHER_API_KEY | 112 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
+| Together AI | cloud model provider | Frontend Direct Call | TOGETHER_API_KEY | 113 | yes | no | Refactor | Move any live provider call behind a backend gateway before enabling. |
 | Vercel AI SDK | abstraction layer | Unknown | none detected | 15 | no | no | Retain | Review manually before enabling. |
 
 ## Secret-Exposure Findings
@@ -103,13 +103,13 @@ No secret-like values were reported by this static scan.
 - Google Gemini: review 115 location(s).
 - Groq: review 8 location(s).
 - Hugging Face: review 7 location(s).
-- Mistral: review 28 location(s).
-- Ollama: review 433 location(s).
+- Mistral: review 29 location(s).
+- Ollama: review 434 location(s).
 - OpenAI: review 86 location(s).
-- OpenRouter: review 13 location(s).
+- OpenRouter: review 14 location(s).
 - Perplexity: review 78 location(s).
-- Replicate: review 7 location(s).
-- Together AI: review 112 location(s).
+- Replicate: review 8 location(s).
+- Together AI: review 113 location(s).
 
 ## Real Live Integrations
 
