@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "id": "seis-workbench-composer",
+  "goalId": "SEIS-GOAL-021",
+  "status": "prototype",
+  "mode": "deterministic-local-demo",
+  "purpose": "Compose a focused workspace from canonical SEIS capabilities instead of exposing thousands of tools at once.",
+  "presets": [
+    {
+      "id": "shader-debug",
+      "intent": "debug shader",
+      "tools": ["code-editor", "shader-graph", "material-preview", "gpu-profiler", "universal-inspector"]
+    },
+    {
+      "id": "digital-human",
+      "intent": "work on digital human",
+      "tools": ["3d-viewport", "anatomy-inspector", "groom-editor", "rig-editor", "animation-editor", "voice-inspector", "performance-profiler"]
+    },
+    {
+      "id": "game-scene-optimize",
+      "intent": "optimize game scene",
+      "tools": ["world-editor", "frame-graph", "cpu-profiler", "gpu-profiler", "asset-residency", "physics-debugger", "ai-debugger", "benchmark-view"]
+    },
+    {
+      "id": "robot-debug",
+      "intent": "debug robot",
+      "tools": ["3d-viewport", "sensor-view", "ros-graph", "code-editor", "telemetry-view", "simulation-view"]
+    },
+    {
+      "id": "poster-design",
+      "intent": "design poster",
+      "tools": ["canvas", "layers", "typography", "color-system", "asset-browser", "export-inspector"]
+    }
+  ],
+  "rules": {
+    "source": "canonical-capability-registry",
+    "maxVisiblePrimaryTools": 10,
+    "preserveUserLayout": true,
+    "autoExecuteTools": false,
+    "externalActionsRequireApproval": true,
+    "fallback": "show capability search and explicit unavailable states"
+  }
+}
