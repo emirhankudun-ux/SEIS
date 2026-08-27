@@ -126,5 +126,11 @@ jobs:
       - name: Run Full Technology native tests
         run: swift test --package-path packages/seis_platform_swift --filter SeisFullTechnology
 
+      - name: Run Universal Workspace tests
+        run: swift test --package-path packages/seis_platform_swift --filter SeisUniversalWorkspaceTests
+
       - name: Build native Full Technology app
         run: swift build --package-path packages/seis_platform_swift --product SeisFullTechnologyMac
+
+      - name: Build Apple native shell
+        run: swift build --package-path packages/seis_platform_swift --product SeisAppleNativeShell
