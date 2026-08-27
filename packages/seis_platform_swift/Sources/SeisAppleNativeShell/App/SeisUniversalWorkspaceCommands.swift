@@ -7,6 +7,7 @@ struct SeisUniversalWorkspaceCommandActions {
     let navigateBack: () -> Void
     let navigateForward: () -> Void
     let clearSelection: () -> Void
+    let focusSearch: () -> Void
     let openCommandPalette: () -> Void
 }
 
@@ -40,6 +41,12 @@ struct SeisUniversalWorkspaceCommands: Commands {
             .disabled(actions?.canNavigateForward != true)
 
             Divider()
+
+            Button("Find in Workspace") {
+                actions?.focusSearch()
+            }
+            .keyboardShortcut("f", modifiers: [.command])
+            .disabled(actions == nil)
 
             Button("Open Command Palette") {
                 actions?.openCommandPalette()
