@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0a0b0d" />
-  <meta name="description" content="SEIS Full Technology Center: a registry-backed browser-local explorer for technology domains, tools, engine foundations and focused workbenches." />
+  <meta name="description" content="SEIS Full Technology Center: a registry-backed browser-local explorer for technology domains, tools, engine foundations, Cube navigation and focused workbenches." />
   <title>SEIS Full Technology Center</title>
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="stylesheet" href="full-technology-center.css" />
@@ -15,6 +15,7 @@
     <aside class="rail" aria-label="Technology navigation">
       <a class="mark" href="index.html" aria-label="Back to SEIS Command Center"><span aria-hidden="true">◆</span></a>
       <button class="rail-button is-active" type="button" data-section="atlas" aria-label="Technology Atlas"><span aria-hidden="true">◎</span></button>
+      <button class="rail-button" type="button" data-section="cube" aria-label="Cube Navigator"><span aria-hidden="true">⬡</span></button>
       <button class="rail-button" type="button" data-section="workbenches" aria-label="Workbench Composer"><span aria-hidden="true">◇</span></button>
       <button class="rail-button" type="button" data-section="engines" aria-label="Engine Foundation"><span aria-hidden="true">△</span></button>
       <button class="rail-button" type="button" data-section="evidence" aria-label="Evidence Boundary"><span aria-hidden="true">□</span></button>
@@ -43,6 +44,19 @@
         <div><span>Runtime claims</span><strong id="stat-runtime">0</strong></div>
       </section>
 
+      <section class="active-workbench-panel" id="active-workbench-panel" hidden aria-labelledby="active-workbench-title">
+        <div class="active-workbench-heading">
+          <p class="eyebrow">ACTIVE WORKBENCH</p>
+          <h2 id="active-workbench-title">No active workbench</h2>
+          <p id="workbench-status" aria-live="polite">Choose a source-backed preset. Loading a Workbench never executes its tools.</p>
+        </div>
+        <div class="active-workbench-actions">
+          <button class="ghost-action" id="export-snapshot" type="button">Export review snapshot</button>
+          <button class="ghost-action" id="close-workbench" type="button">Close Workbench</button>
+        </div>
+        <div class="active-workbench-tools" id="active-workbench-tools" aria-label="Active Workbench tools"></div>
+      </section>
+
       <div class="content-layout">
         <section class="content-column" aria-live="polite">
           <div class="section-intro">
@@ -57,6 +71,20 @@
           <section class="surface is-active" data-surface="atlas" aria-labelledby="atlas-title">
             <h3 id="atlas-title" class="sr-only">Technology Atlas</h3>
             <div class="domain-list" id="domain-list"></div>
+          </section>
+
+          <section class="surface" data-surface="cube" aria-labelledby="cube-title">
+            <h3 id="cube-title" class="sr-only">Cube Navigator</h3>
+            <div class="cube-layout">
+              <div class="cube-navigator" id="cube-navigator" role="group" aria-label="Cube face navigator" tabindex="0"></div>
+              <aside class="cube-detail" aria-labelledby="cube-face-title">
+                <p class="eyebrow">ACTIVE FACE</p>
+                <h3 id="cube-face-title">Intelligence</h3>
+                <p id="cube-face-summary">Select a face to inspect the domains projected onto it.</p>
+                <div class="cube-domain-list" id="cube-domain-list"></div>
+                <p class="cube-keyboard-note">Keyboard: Left/Right changes face. Enter opens a domain in the Atlas.</p>
+              </aside>
+            </div>
           </section>
 
           <section class="surface" data-surface="workbenches" aria-labelledby="workbenches-title">
@@ -78,8 +106,9 @@
         <aside class="inspector" aria-labelledby="inspector-title">
           <p class="eyebrow">INSPECTOR</p>
           <h2 id="inspector-title">Select a record</h2>
-          <p id="inspector-summary">Choose a domain, tool, workbench or engine family to inspect its current source-backed state.</p>
+          <p id="inspector-summary">Choose a domain, tool, workbench, Cube face or engine family to inspect its current source-backed state.</p>
           <dl class="inspector-data" id="inspector-data"></dl>
+          <div class="inspector-actions" id="inspector-actions"></div>
           <div class="truth-note">
             <strong>Truth boundary</strong>
             <p>Contract validation is not runtime validation. Provider, plugin, cross-platform build and engine parity claims remain unavailable until evidence exists.</p>
