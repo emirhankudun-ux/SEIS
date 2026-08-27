@@ -14,6 +14,8 @@ const registry = readJson('content/development/seis-full-technology-registry.jso
 const engines = readJson('content/development/seis-engine-capability-registry.json');
 const cube = readJson('content/development/seis-cube-runtime-contract.json');
 const composer = readJson('content/development/seis-workbench-composer.json');
+const catalog = readJson('content/development/seis-technology-tool-catalog.json');
+const toolSchema = readJson('schemas/seis-technology-tool.schema.json');
 
 assert(registry.id === 'seis-full-technology-registry', 'registry ID must be canonical');
 assert(registry.summary?.domainCount === 16, 'registry must declare 16 domains');
@@ -25,6 +27,7 @@ assert(registry.safetyBoundary?.defaultWrite === 'deny', 'writes must default de
 assert(registry.safetyBoundary?.credentialsInRegistry === false, 'credentials cannot live in registry');
 
 const domainIds = new Set(registry.domains.map((domain) => domain.id));
+const domainCapabilityMap = new Map(registry.domains.map((domain) => [domain.id, new Set(domain.capabilities)]));
 assert(domainIds.size === 16, 'domain IDs must be unique');
 for (const domain of registry.domains) {
   assert(Array.isArray(domain.capabilities) && domain.capabilities.length === 6, `${domain.id} must expose six first-wave capabilities`);
@@ -55,6 +58,28 @@ for (const preset of composer.presets ?? []) {
   for (const domain of preset.domains ?? []) assert(domainIds.has(domain), `${preset.id} references unknown domain ${domain}`);
 }
 
+assert(toolSchema.title === 'SEIS Technology Tool Record', 'tool schema identity must stay stable');
+assert(catalog.id === 'seis-technology-tool-catalog', 'tool catalog ID must stay stable');
+assert(catalog.toolCount === 48, 'first-wave tool catalog must declare 48 tools');
+assert(catalog.tools?.length === 48, 'first-wave tool catalog must contain 48 tools');
+const toolIds = new Set(catalog.tools.map((tool) => tool.id));
+assert(toolIds.size === 48, 'tool IDs must be unique');
+
+const allowedImplementationClasses = new Set(registry.summary.implementationClasses);
+const allowedMaturity = new Set(registry.summary.maturityStates);
+const toolCountsByDomain = new Map();
+for (const tool of catalog.tools ?? []) {
+  assert(domainIds.has(tool.domain), `${tool.id} references unknown domain ${tool.domain}`);
+  assert(domainCapabilityMap.get(tool.domain)?.has(tool.capability), `${tool.id} references capability ${tool.capability} outside domain ${tool.domain}`);
+  assert(allowedImplementationClasses.has(tool.implementationClass), `${tool.id} has invalid implementation class`);
+  assert(allowedMaturity.has(tool.maturity), `${tool.id} has invalid maturity`);
+  assert(tool.permissions?.externalWrite === false, `${tool.id} cannot enable external writes in the first-wave catalog`);
+  assert(tool.permissions?.secrets !== 'approval-required', `${tool.id} cannot require secrets in the first-wave catalog`);
+  assert(tool.validationState !== 'runtime-validated', `${tool.id} cannot claim runtime validation without runtime evidence`);
+  toolCountsByDomain.set(tool.domain, (toolCountsByDomain.get(tool.domain) ?? 0) + 1);
+}
+for (const domain of domainIds) assert(toolCountsByDomain.get(domain) === 3, `${domain} must expose exactly three first-wave tools`);
+
 if (!process.exitCode) {
-  console.log(`PASS: SEIS Full Technology foundation validated (${registry.domains.length} domains, ${composer.presets.length} workbenches, ${engines.engines.length} engine families).`);
+  console.log(`PASS: SEIS Full Technology foundation validated (${registry.domains.length} domains, ${catalog.tools.length} tools, ${composer.presets.length} workbenches, ${engines.engines.length} engine families).`);
 }
