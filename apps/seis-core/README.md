@@ -88,7 +88,7 @@ apps/seis-core/
 
 ## Operating Model
 
-The Command Center owns orchestration visibility, goal status, repository health, security posture, architecture evidence and agent handoffs. The Full Technology Center is a subordinate, browser-local inspection surface: it reads canonical technology records, composes bounded Workbenches, and returns review evidence without mutating Command Center state or activating tools.
+The Command Center owns orchestration visibility, goal status, repository health, security posture, architecture evidence and agent handoffs. Its **Operations Readiness** model keeps release, CI, Security, Rollback and Handoff evidence in the `review-before-release` state until the canonical gates pass. The Full Technology Center is a subordinate, browser-local inspection surface: it reads canonical technology records, composes bounded Workbenches, and returns review evidence without mutating Command Center state or activating tools.
 
 ### 10-lane SEIS router
 
