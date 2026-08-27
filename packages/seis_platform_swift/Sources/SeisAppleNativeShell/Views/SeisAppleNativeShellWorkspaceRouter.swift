@@ -223,29 +223,78 @@ private struct SeisAppleNativeTechnologyCenterView: View {
 private struct SeisAppleUniversalWorkspaceView: View {
     let repositoryPath: String
     @State private var store = SeisFullTechnologyNativeStore()
-    @State private var selection: SeisUniversalSelection?
+    @State private var workspaceState: SeisUniversalWorkspaceState?
+    @State private var isCommandPalettePresented = false
+    @State private var commandQuery = ""
 
     var body: some View {
-        HSplitView {
+        workspaceLayout
+            .task { loadIfNeeded() }
+            .sheet(isPresented: $isCommandPalettePresented) {
+                commandPalette
+            }
+            .background {
+                Button("Open Commands") {
+                    isCommandPalettePresented = true
+                }
+                .keyboardShortcut("k", modifiers: .command)
+                .frame(width: 0, height: 0)
+                .opacity(0)
+            }
+    }
+
+    @ViewBuilder
+    private var workspaceLayout: some View {
+        switch workspaceState?.inspectorDock ?? .trailing {
+        case .leading:
+            HSplitView {
+                inspector
+                    .frame(minWidth: 300, idealWidth: 360, maxWidth: 460)
+                viewport
+                    .frame(minWidth: 520, idealWidth: 760)
+            }
+        case .trailing:
+            HSplitView {
+                viewport
+                    .frame(minWidth: 520, idealWidth: 760)
+                inspector
+                    .frame(minWidth: 300, idealWidth: 360, maxWidth: 460)
+            }
+        case .hidden:
             viewport
-                .frame(minWidth: 520, idealWidth: 760)
-            inspector
-                .frame(minWidth: 300, idealWidth: 360, maxWidth: 460)
         }
-        .task { loadIfNeeded() }
     }
 
     private var viewport: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
+            HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
                     Label("Universal Viewport", systemImage: "rectangle.inset.filled")
                         .font(.title2.weight(.semibold))
-                    Text("Registry-backed selection surface · no renderer claim")
+                    Text("Document graph · registry-backed · no renderer claim")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+
                 Spacer()
+
+                Button {
+                    isCommandPalettePresented = true
+                } label: {
+                    Label("Commands", systemImage: "command")
+                }
+                .buttonStyle(.bordered)
+                .help("Open Command Palette (⌘K)")
+
+                if workspaceState?.inspectorDock == .hidden {
+                    Button {
+                        apply(commandID: "inspector.trailing")
+                    } label: {
+                        Label("Inspector", systemImage: "sidebar.right")
+                    }
+                    .buttonStyle(.bordered)
+                }
+
                 Label("Local only", systemImage: "network.slash")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -257,7 +306,7 @@ private struct SeisAppleUniversalWorkspaceView: View {
             Group {
                 switch store.phase {
                 case .idle, .loading:
-                    ProgressView("Loading viewport model…")
+                    ProgressView("Loading workspace document…")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 case .failed:
                     SeisAppleWorkspaceEmptyState(
@@ -265,75 +314,110 @@ private struct SeisAppleUniversalWorkspaceView: View {
                         systemImage: "exclamationmark.triangle",
                         description: store.failure?.detail ?? "The canonical registry could not be loaded."
                     )
-                case .loaded(let explorer):
-                    ScrollView {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 250), spacing: 12)], spacing: 12) {
-                            ForEach(explorer.catalog.registry.domains, id: \.id) { domain in
-                                domainCard(domain)
+                case .loaded:
+                    if let document = workspaceState?.document {
+                        ScrollView {
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 250), spacing: 12)], spacing: 12) {
+                                ForEach(document.rootNodeIDs, id: \.self) { nodeID in
+                                    if let node = document.node(id: nodeID) {
+                                        domainCard(node, document: document)
+                                    }
+                                }
                             }
+                            .padding(16)
                         }
-                        .padding(16)
+                    } else {
+                        SeisAppleWorkspaceEmptyState(
+                            title: "Workspace document unavailable",
+                            systemImage: "doc.questionmark",
+                            description: "The validated registry loaded, but the local document graph was not created."
+                        )
                     }
                 }
             }
         }
     }
 
-    private func domainCard(_ domain: SeisFullTechnologyDomain) -> some View {
+    private func domainCard(
+        _ node: SeisUniversalWorkspaceNode,
+        document: SeisUniversalWorkspaceDocument
+    ) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Button {
-                selection = SeisUniversalSelection(
-                    kind: .domain,
-                    id: domain.id,
-                    title: domain.name,
-                    subtitle: "Technology domain",
-                    metadata: [
-                        "capabilityCount": String(domain.capabilities.count),
-                        "network": "deny",
-                        "externalWrite": "false"
-                    ]
-                )
+                select(nodeID: node.id)
             } label: {
                 HStack {
                     Image(systemName: "square.stack.3d.up")
-                    Text(domain.name)
+                    Text(node.selection.title)
                         .font(.headline)
                     Spacer()
+                    if workspaceState?.selectionGraph.selectedNodeID == node.id {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
             .buttonStyle(.plain)
 
             FlowLayout(spacing: 6) {
-                ForEach(domain.capabilities, id: \.self) { capability in
-                    Button(capability) {
-                        selection = SeisUniversalSelection(
-                            kind: .capability,
-                            id: capability,
-                            title: capability,
-                            subtitle: domain.name,
-                            metadata: [
-                                "domain": domain.id,
-                                "network": "deny",
-                                "externalWrite": "false"
-                            ]
-                        )
+                ForEach(node.childIDs, id: \.self) { childID in
+                    if let child = document.node(id: childID) {
+                        Button(child.selection.title) {
+                            select(nodeID: child.id)
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
                 }
             }
         }
         .padding(14)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+        .overlay {
+            if workspaceState?.selectionGraph.selectedNodeID == node.id {
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(.secondary, lineWidth: 1)
+            }
+        }
     }
 
     private var inspector: some View {
-        let presentation = SeisUniversalInspectorPresentation(selection: selection)
+        let presentation = SeisUniversalInspectorPresentation(
+            selection: workspaceState?.selectionGraph.selectedSelection
+        )
 
         return ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Label("Universal Inspector", systemImage: "sidebar.right")
-                    .font(.title2.weight(.semibold))
+                HStack(spacing: 8) {
+                    Label("Universal Inspector", systemImage: inspectorSymbolName)
+                        .font(.title2.weight(.semibold))
+
+                    Spacer()
+
+                    Button {
+                        apply(commandID: "inspector.leading")
+                    } label: {
+                        Image(systemName: "sidebar.left")
+                    }
+                    .buttonStyle(.borderless)
+                    .help("Dock Inspector Left")
+
+                    Button {
+                        apply(commandID: "inspector.trailing")
+                    } label: {
+                        Image(systemName: "sidebar.right")
+                    }
+                    .buttonStyle(.borderless)
+                    .help("Dock Inspector Right")
+
+                    Button {
+                        apply(commandID: "inspector.hidden")
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .buttonStyle(.borderless)
+                    .help("Hide Inspector")
+                }
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(presentation.title)
@@ -373,9 +457,103 @@ private struct SeisAppleUniversalWorkspaceView: View {
         }
     }
 
+    private var inspectorSymbolName: String {
+        workspaceState?.inspectorDock == .leading ? "sidebar.left" : "sidebar.right"
+    }
+
+    private var commandPalette: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 10) {
+                Image(systemName: "command")
+                    .foregroundStyle(.secondary)
+                TextField("Search commands", text: $commandQuery)
+                    .textFieldStyle(.plain)
+                    .font(.title3)
+                Text("⌘K")
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+            }
+            .padding(16)
+
+            Divider()
+
+            if let state = workspaceState {
+                let commands = SeisUniversalCommandPalette(document: state.document)
+                    .commands(matching: commandQuery)
+
+                if commands.isEmpty {
+                    SeisAppleWorkspaceEmptyState(
+                        title: "No matching commands",
+                        systemImage: "magnifyingglass",
+                        description: "Try a domain, capability, or inspector command."
+                    )
+                } else {
+                    List(commands) { command in
+                        Button {
+                            apply(commandID: command.id)
+                            commandQuery = ""
+                            isCommandPalettePresented = false
+                        } label: {
+                            HStack(spacing: 12) {
+                                Image(systemName: command.id.hasPrefix("inspector.") ? "sidebar.right" : "scope")
+                                    .frame(width: 20)
+                                    .foregroundStyle(.secondary)
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(command.title)
+                                        .font(.headline)
+                                    Text(command.subtitle)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                            }
+                            .padding(.vertical, 4)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            } else {
+                SeisAppleWorkspaceEmptyState(
+                    title: "Commands unavailable",
+                    systemImage: "command",
+                    description: "Load the local workspace document before issuing navigation commands."
+                )
+            }
+
+            Divider()
+
+            HStack {
+                Label("Read-only command surface", systemImage: "lock.shield")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text("No tool execution · no external mutation")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(12)
+        }
+        .frame(minWidth: 560, minHeight: 430)
+    }
+
     private func loadIfNeeded() {
         guard case .idle = store.phase else { return }
         store.load(startingAt: URL(fileURLWithPath: repositoryPath, isDirectory: true))
+        if let explorer = store.explorerState {
+            workspaceState = SeisUniversalWorkspaceState(
+                document: SeisUniversalWorkspaceDocument(catalog: explorer.catalog)
+            )
+        }
+    }
+
+    private func select(nodeID: String) {
+        apply(commandID: "select:\(nodeID)")
+    }
+
+    private func apply(commandID: String) {
+        guard var state = workspaceState else { return }
+        guard state.apply(commandID: commandID) else { return }
+        workspaceState = state
     }
 }
 
