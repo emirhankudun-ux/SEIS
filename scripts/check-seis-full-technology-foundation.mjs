@@ -2,7 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root = process.cwd();
-const readJson = (p) => JSON.parse(fs.readFileSync(path.join(root, p), 'utf8'));
+const resolve = (p) => path.join(root, p);
+const readJson = (p) => JSON.parse(fs.readFileSync(resolve(p), 'utf8'));
 const assert = (condition, message) => {
   if (!condition) {
     console.error(`FAIL: ${message}`);
@@ -16,6 +17,7 @@ const cube = readJson('content/development/seis-cube-runtime-contract.json');
 const composer = readJson('content/development/seis-workbench-composer.json');
 const catalog = readJson('content/development/seis-technology-tool-catalog.json');
 const commandCenter = readJson('content/development/seis-full-technology-command-center.json');
+const acceptance = readJson('content/development/seis-full-technology-demo-acceptance.json');
 const toolSchema = readJson('schemas/seis-technology-tool.schema.json');
 
 assert(registry.id === 'seis-full-technology-registry', 'registry ID must be canonical');
@@ -78,15 +80,45 @@ for (const tool of catalog.tools ?? []) {
 }
 for (const domain of domainIds) assert(toolCountsByDomain.get(domain) === 3, `${domain} must expose exactly three first-wave tools`);
 
+assert(commandCenter.version === 2, 'Command Center projection must use the implemented experience contract');
+assert(commandCenter.status === 'browser-local-prototype', 'Command Center maturity must remain browser-local prototype');
 assert(commandCenter.summary?.domainCount === registry.domains.length, 'Command Center domain count must come from registry');
 assert(commandCenter.summary?.capabilityCount === registry.summary.capabilityCount, 'Command Center capability count must match registry');
 assert(commandCenter.summary?.toolCount === catalog.tools.length, 'Command Center tool count must match catalog');
 assert(commandCenter.summary?.engineFamilyCount === engines.engines.length, 'Command Center engine count must match engine registry');
 assert(commandCenter.summary?.workbenchCount === composer.presets.length, 'Command Center workbench count must match composer');
-assert(commandCenter.summary?.verifiedRuntimeClaims === 0, 'prototype projection cannot claim verified runtime behavior');
+assert(commandCenter.summary?.cubeFaceCount === 6, 'Command Center must expose the six-face Cube projection');
+assert(commandCenter.summary?.browserLocalExperienceCount === 5, 'Command Center must record five validated browser-local experiences');
+assert(commandCenter.summary?.verifiedRuntimeClaims === 0, 'prototype projection cannot claim verified engine runtime behavior');
+assert(commandCenter.summary?.offlineMode === 'same-origin-cache-fallback', 'offline mode must remain scoped and explicit');
+assert(commandCenter.truthBoundary?.browserLocalInteractionValidated === true, 'browser-local interaction must be explicitly validated');
+assert(commandCenter.truthBoundary?.engineRuntimeValidated === false, 'engine runtime must remain unvalidated');
 assert(commandCenter.truthBoundary?.runtimeMetricsFabricated === false, 'runtime metrics must never be fabricated');
+assert(commandCenter.truthBoundary?.offlineCacheStoresCredentials === false, 'offline cache must not store credentials');
 assert(commandCenter.experienceRules?.preferListsTablesInspectorsOverCards === true, 'Command Center must avoid generic card-dashboard sprawl');
+assert(commandCenter.experienceRules?.autoExecuteTools === false, 'Command Center cannot auto-execute Workbench tools');
+for (const evidencePath of commandCenter.evidenceSources ?? []) {
+  assert(fs.existsSync(resolve(evidencePath)), `missing Command Center evidence source: ${evidencePath}`);
+}
+
+assert(acceptance.id === 'seis-full-technology-demo-acceptance', 'demo acceptance ID must be stable');
+assert(acceptance.status === 'validated-browser-local-prototype', 'demo acceptance must describe the verified scope precisely');
+assert(acceptance.canonicalGoalBinding === 'unresolved', 'demo acceptance cannot fabricate the canonical Goal binding');
+assert(Array.isArray(acceptance.acceptedCapabilities) && acceptance.acceptedCapabilities.length >= 10, 'demo acceptance needs the complete browser-local capability set');
+assert(acceptance.acceptedCapabilities.every((item) => item.status === 'validated'), 'accepted capabilities must all be validator-backed');
+assert(Array.isArray(acceptance.blockedCapabilities) && acceptance.blockedCapabilities.length >= 6, 'blocked native and release capabilities must remain visible');
+assert(acceptance.blockedCapabilities.every((item) => item.status === 'blocked' && item.reason), 'blocked capabilities require explicit reasons');
+assert(acceptance.securityBoundary?.externalWrites === false, 'demo acceptance cannot authorize external writes');
+assert(acceptance.securityBoundary?.providerCalls === false, 'demo acceptance cannot claim provider calls');
+assert(acceptance.securityBoundary?.credentialsRead === false, 'demo acceptance cannot claim credential reads');
+assert(acceptance.securityBoundary?.crossOriginCaching === false, 'offline cache cannot cross origin boundaries');
+assert(acceptance.securityBoundary?.nonGetCaching === false, 'offline cache cannot cache write methods');
+assert(acceptance.releaseBoundary?.mergeAuthorized === false, 'demo acceptance cannot authorize merge');
+assert(acceptance.releaseBoundary?.deploymentAuthorized === false, 'demo acceptance cannot authorize deployment');
+for (const item of acceptance.acceptedCapabilities ?? []) {
+  for (const evidencePath of item.evidence ?? []) assert(fs.existsSync(resolve(evidencePath)), `${item.id} references missing evidence: ${evidencePath}`);
+}
 
 if (!process.exitCode) {
-  console.log(`PASS: SEIS Full Technology foundation validated (${registry.domains.length} domains, ${catalog.tools.length} tools, ${composer.presets.length} workbenches, ${engines.engines.length} engine families).`);
+  console.log(`PASS: SEIS Full Technology experience validated (${registry.domains.length} domains, ${catalog.tools.length} tools, ${composer.presets.length} workbenches, ${engines.engines.length} engine families, ${acceptance.acceptedCapabilities.length} accepted browser-local capabilities).`);
 }
