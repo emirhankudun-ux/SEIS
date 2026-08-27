@@ -4,6 +4,8 @@ import { supportedLocales } from "../apps/web/src/i18n/locales.js";
 
 const root = "dist/seis-static";
 const failures = [];
+let referencesResolved = 0;
+let routesInspected = 0;
 
 for (const file of [
   "index.html",
@@ -56,6 +58,12 @@ for (const locale of supportedLocales) {
 
 failures.push(...checkLocalReferences(join(root, "index.html")));
 
+// The pass message has to report the work done, not just the verdict. "passed
+// for 7 locale routes" was printed verbatim by the version of this check that
+// verified nothing, so an identical line in a CI log proves nothing to whoever
+// reads it. Naming the reference count makes a vacuous run visible on sight.
+const referenceSummary = `${referencesResolved} local reference(s) across ${routesInspected} html file(s)`;
+
 const drawingDir = join(root, "public/media/drawings");
 if (!existsSync(drawingDir)) {
   failures.push("missing static drawing directory");
@@ -87,6 +95,7 @@ function checkLocalReferences(htmlPath) {
   const packageRoot = resolve(root);
   const problems = [];
   let checked = 0;
+  routesInspected += 1;
 
   for (const match of readFileSync(htmlPath, "utf8").matchAll(/\b(?:href|src)="([^"]*)"/g)) {
     const reference = match[1];
@@ -96,6 +105,7 @@ function checkLocalReferences(htmlPath) {
     if (targetPath === "") continue;
 
     checked += 1;
+    referencesResolved += 1;
     const resolved = resolve(baseDir, targetPath);
     const insidePackage = relative(packageRoot, resolved);
     if (insidePackage.startsWith("..") || isAbsolute(insidePackage)) {
@@ -122,4 +132,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`SEIS static build check passed for ${supportedLocales.length} locale routes.`);
+console.log(`SEIS static build check passed for ${supportedLocales.length} locale routes; verified ${referenceSummary}.`);
