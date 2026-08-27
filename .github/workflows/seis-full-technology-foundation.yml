@@ -13,6 +13,7 @@ on:
       - 'content/development/seis-workbench-composer.json'
       - 'content/development/seis-technology-tool-catalog.json'
       - 'content/development/seis-full-technology-command-center.json'
+      - 'content/development/seis-full-technology-demo-acceptance.json'
       - 'schemas/seis-technology-tool.schema.json'
       - 'scripts/check-seis-full-technology-foundation.mjs'
       - 'test/seis-full-technology-foundation.test.mjs'
@@ -26,6 +27,7 @@ on:
       - 'apps/seis-core/test/full-technology-experience.test.js'
       - 'apps/seis-core/test/full-technology-runtime.test.js'
       - 'apps/seis-core/test/full-technology-offline.test.js'
+      - 'docs/platform/seis-full-technology-foundation.md'
       - '.github/workflows/seis-full-technology-foundation.yml'
   pull_request:
     paths:
@@ -35,6 +37,7 @@ on:
       - 'content/development/seis-workbench-composer.json'
       - 'content/development/seis-technology-tool-catalog.json'
       - 'content/development/seis-full-technology-command-center.json'
+      - 'content/development/seis-full-technology-demo-acceptance.json'
       - 'schemas/seis-technology-tool.schema.json'
       - 'scripts/check-seis-full-technology-foundation.mjs'
       - 'test/seis-full-technology-foundation.test.mjs'
@@ -48,6 +51,7 @@ on:
       - 'apps/seis-core/test/full-technology-experience.test.js'
       - 'apps/seis-core/test/full-technology-runtime.test.js'
       - 'apps/seis-core/test/full-technology-offline.test.js'
+      - 'docs/platform/seis-full-technology-foundation.md'
       - '.github/workflows/seis-full-technology-foundation.yml'
 
 permissions:
@@ -69,7 +73,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Validate contracts
+      - name: Validate contracts and acceptance
         run: node scripts/check-seis-full-technology-foundation.mjs
 
       - name: Run foundation contract tests
