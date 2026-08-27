@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - feature/seis-full-technology-foundation
+      - feature/seis-full-technology-experience
+      - feature/seis-full-technology-experience-red
     paths:
       - 'content/development/seis-full-technology-registry.json'
       - 'content/development/seis-engine-capability-registry.json'
@@ -17,7 +19,9 @@ on:
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-center.css'
+      - 'apps/seis-core/manifest.webmanifest'
       - 'apps/seis-core/test/full-technology-center.test.js'
+      - 'apps/seis-core/test/full-technology-experience.test.js'
       - '.github/workflows/seis-full-technology-foundation.yml'
   pull_request:
     paths:
@@ -33,7 +37,9 @@ on:
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-center.css'
+      - 'apps/seis-core/manifest.webmanifest'
       - 'apps/seis-core/test/full-technology-center.test.js'
+      - 'apps/seis-core/test/full-technology-experience.test.js'
       - '.github/workflows/seis-full-technology-foundation.yml'
 
 permissions:
@@ -62,4 +68,4 @@ jobs:
         run: node --test test/seis-full-technology-foundation.test.mjs
 
       - name: Run browser-local surface tests
-        run: node --test apps/seis-core/test/full-technology-center.test.js
+        run: node --test apps/seis-core/test/full-technology-center.test.js apps/seis-core/test/full-technology-experience.test.js
