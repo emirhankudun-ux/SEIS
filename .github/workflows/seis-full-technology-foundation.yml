@@ -21,6 +21,7 @@ on:
       - 'test/seis-universal-workspace-search-contract.test.mjs'
       - 'test/seis-universal-workspace-tabs-contract.test.mjs'
       - 'test/seis-universal-workspace-selection-shelf-contract.test.mjs'
+      - 'test/seis-universal-workspace-focused-pin-contract.test.mjs'
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-runtime.js'
@@ -54,6 +55,7 @@ on:
       - 'test/seis-universal-workspace-search-contract.test.mjs'
       - 'test/seis-universal-workspace-tabs-contract.test.mjs'
       - 'test/seis-universal-workspace-selection-shelf-contract.test.mjs'
+      - 'test/seis-universal-workspace-focused-pin-contract.test.mjs'
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-runtime.js'
@@ -113,6 +115,9 @@ jobs:
 
       - name: Run Universal Workspace selection shelf contract
         run: node --test test/seis-universal-workspace-selection-shelf-contract.test.mjs
+
+      - name: Run Universal Workspace focused pin contract
+        run: node --test test/seis-universal-workspace-focused-pin-contract.test.mjs
 
       - name: Run deterministic runtime tests
         run: node --test apps/seis-core/test/full-technology-runtime.test.js
