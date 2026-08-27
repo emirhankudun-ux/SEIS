@@ -41,6 +41,23 @@ public extension SeisUniversalCommandPalette {
         ]
     }
 
+    var workspaceSearchCommands: [SeisUniversalCommand] {
+        [
+            SeisUniversalCommand(
+                id: "search.focus",
+                title: "Find in Workspace",
+                subtitle: "Focus the local Universal Workspace filter.",
+                searchTerms: ["find workspace", "search workspace", "filter workspace", "command f"]
+            ),
+            SeisUniversalCommand(
+                id: "search.clear",
+                title: "Clear Workspace Filter",
+                subtitle: "Clear the active local Universal Workspace filter.",
+                searchTerms: ["clear workspace filter", "reset search", "show all workspace"]
+            )
+        ]
+    }
+
     var workspaceNavigationCommands: [SeisUniversalCommand] {
         [
             SeisUniversalCommand(
@@ -77,7 +94,7 @@ public extension SeisUniversalCommandPalette {
     }
 
     func workspaceCommands(matching query: String) -> [SeisUniversalCommand] {
-        let commands = workspaceHistoryCommands + workspaceNavigationCommands + allCommands
+        let commands = workspaceHistoryCommands + workspaceSearchCommands + workspaceNavigationCommands + allCommands
         let tokens = query
             .lowercased()
             .split(whereSeparator: \.isWhitespace)
