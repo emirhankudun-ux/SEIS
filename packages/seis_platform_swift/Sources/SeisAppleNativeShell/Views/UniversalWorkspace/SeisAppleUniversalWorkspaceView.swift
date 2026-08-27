@@ -289,6 +289,19 @@ struct SeisAppleUniversalWorkspaceView: View {
             .background(.quaternary.opacity(0.7), in: RoundedRectangle(cornerRadius: 8))
             .help("Find in Workspace (⌘F)")
 
+            if let focusedNodeID = state.selectionGraph.focusedNodeID {
+                let isPinned = selectionShelf?.isPinned(nodeID: focusedNodeID) ?? false
+                Button {
+                    toggleFocusedSelectionPin()
+                } label: {
+                    Image(systemName: isPinned ? "pin.slash" : "pin.fill")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .help(isPinned ? "Unpin focused selection" : "Pin focused selection")
+                .accessibilityLabel(isPinned ? "Unpin focused selection" : "Pin focused selection")
+            }
+
             HStack(spacing: 4) {
                 Button {
                     applyWorkspaceCommand(commandID: "navigation.back")
@@ -606,6 +619,11 @@ struct SeisAppleUniversalWorkspaceView: View {
               shelf.togglePin(nodeID: nodeID)
         else { return }
         selectionShelf = shelf
+    }
+
+    private func toggleFocusedSelectionPin() {
+        guard let focusedNodeID = workspaceSession?.state.selectionGraph.focusedNodeID else { return }
+        togglePinnedSelection(nodeID: focusedNodeID)
     }
 
     private func openWorkspaceTab() {
