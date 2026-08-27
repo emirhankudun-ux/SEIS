@@ -136,6 +136,65 @@ change; doing either alone regresses the other.
 
 ---
 
+## Follow-on census: dangling references across the whole package
+
+The gate ships covering the root `index.html` plus the 7 locale routes — 8 files,
+160 references. The published package contains **475** HTML files. Applying the
+same resolution rule to all of them turns up **194 dangling references in 10
+files**, none of which any check sees today.
+
+### Fixed in this pass
+
+| File | Reference | Cause |
+|---|---|---|
+| `language-matrix.html` | `../content/development/seis-programming-language-purpose-matrix.json` | wrong depth — the file exists; from the package root the path is `./content/…`. The user-facing "View JSON contract" button 404'd. |
+| `seis-conversation-hub.html` | `../docs/ai/seis-conversation-hub.md` | wrong depth **and** `docs/ai` was not among the doc directories `build-static.mjs` copied. Fixed both; the "Read contract" button now resolves. |
+
+### Not fixed — the asset was never committed
+
+- **`wow-pages/imported/*/index.html` — 190 refs across 7 gallery pages.** Each
+  emits `<img src="png/NN_name.png">`, and the tree contains **zero** `.png`
+  files: the imported packages landed with their `html/`, `assets/css` and
+  `assets/js` committed but their `png/` directories missing. Two facts a
+  maintainer needs before deciding:
+  - **Every** missing PNG has a sibling `html/NN_name.html` that *does* exist
+    (checked: 30 of 30 in Part 4). The content is present as HTML, not as
+    screenshots.
+  - Nothing outside `wow-pages/` links to these gallery indexes. They are
+    orphaned but still copied into every published package.
+
+  So the options are real ones — commit the PNGs, repoint the gallery at the
+  `html/` siblings, or stop packaging the galleries — and picking among them is
+  a content decision, not a mechanical fix. Rewriting 190 `<img>` tags in
+  imported vendor artifacts on my own judgement would be the wrong call.
+
+- **`universal-language-selector.html`** references `./universal-language-selector.css`
+  and `./universal-language-selector.js`; **neither exists anywhere in the repo**,
+  and they are the page's only styling and scripting. The page is inert. It is
+  linked from one place.
+
+- **`god-mode-command-center.html`** references `./god-mode-command-center.js`,
+  which does not exist (its `.css` does). Nothing links to this page.
+
+### Deliberately *not* counted as a defect
+
+`desktop.js` names 24 of the same missing PNGs, but it never renders them as
+`<img>`: `renderReferencePreview()` emits an accessible `role="img"` placeholder
+reading "Preview unavailable — Supplied PNG is not present in this checkout"
+with the path in a `<code>`. That is already the honest handling, so nothing was
+changed there. The ad-hoc probe also flagged `./${app.route}` in
+`seis-demo-app-launcher.html`; that string is inside a JS template literal in a
+`<script>` block, not a real attribute — a false positive of the probe, not of
+the shipped gate.
+
+### Why the gate was not widened to all 475 files
+
+It would go red immediately on the 194 references above, and a gate that fails
+on `main` for reasons its own change set cannot fix is not a gate anyone keeps.
+Widening it belongs in the same change that resolves the missing assets.
+
+---
+
 ## Verification run for this pass
 
 ```
