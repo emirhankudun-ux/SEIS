@@ -243,6 +243,74 @@ final class SeisUniversalWorkspaceTests: XCTestCase {
         XCTAssertFalse(inspector.allowsMutation)
     }
 
+    func testVisibleNodeOrderIncludesChildrenOnlyForExpandedDomains() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+
+        XCTAssertEqual(document.visibleNodeIDs(expandedNodeIDs: []), ["domain:graphics"])
+        XCTAssertEqual(
+            document.visibleNodeIDs(expandedNodeIDs: ["domain:graphics"]),
+            [
+                "domain:graphics",
+                "capability:graphics:renderer",
+                "capability:graphics:scene-graph"
+            ]
+        )
+        XCTAssertEqual(document.visibleNodeIDs(expandedNodeIDs: ["missing"]), ["domain:graphics"])
+    }
+
+    func testKeyboardFocusMovesThroughVisibleNodesWithoutWrapping() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+        var state = SeisUniversalWorkspaceState(document: document)
+        XCTAssertTrue(state.setExpanded(nodeID: "domain:graphics", isExpanded: true))
+
+        XCTAssertTrue(state.moveFocus(.next))
+        XCTAssertEqual(state.selectionGraph.focusedNodeID, "domain:graphics")
+        XCTAssertTrue(state.moveFocus(.next))
+        XCTAssertEqual(state.selectionGraph.focusedNodeID, "capability:graphics:renderer")
+        XCTAssertTrue(state.moveFocus(.next))
+        XCTAssertEqual(state.selectionGraph.focusedNodeID, "capability:graphics:scene-graph")
+        XCTAssertFalse(state.moveFocus(.next))
+        XCTAssertEqual(state.selectionGraph.focusedNodeID, "capability:graphics:scene-graph")
+
+        XCTAssertTrue(state.moveFocus(.previous))
+        XCTAssertEqual(state.selectionGraph.focusedNodeID, "capability:graphics:renderer")
+        XCTAssertTrue(state.moveFocus(.previous))
+        XCTAssertEqual(state.selectionGraph.focusedNodeID, "domain:graphics")
+        XCTAssertFalse(state.moveFocus(.previous))
+    }
+
+    func testKeyboardFocusReplacesMultiSelectionAndClearIsIdempotent() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+        var state = SeisUniversalWorkspaceState(document: document)
+        XCTAssertTrue(state.setExpanded(nodeID: "domain:graphics", isExpanded: true))
+        XCTAssertTrue(state.selectionGraph.select(nodeID: "domain:graphics", mode: .replace))
+        XCTAssertTrue(state.selectionGraph.select(nodeID: "capability:graphics:renderer", mode: .additive))
+
+        XCTAssertTrue(state.moveFocus(.next))
+        XCTAssertEqual(state.selectionGraph.selectedNodeIDs, ["capability:graphics:scene-graph"])
+        XCTAssertEqual(state.selectionGraph.focusedNodeID, "capability:graphics:scene-graph")
+
+        XCTAssertTrue(state.clearSelection())
+        XCTAssertTrue(state.selectionGraph.selectedNodeIDs.isEmpty)
+        XCTAssertNil(state.selectionGraph.focusedNodeID)
+        XCTAssertFalse(state.clearSelection())
+    }
+
+    func testFocusedDomainExpansionAndCollapseRejectLeafNodes() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+        var state = SeisUniversalWorkspaceState(document: document)
+
+        XCTAssertTrue(state.selectionGraph.select(nodeID: "domain:graphics"))
+        XCTAssertTrue(state.setFocusedNodeExpanded(true))
+        XCTAssertEqual(state.expandedNodeIDs, ["domain:graphics"])
+        XCTAssertTrue(state.setFocusedNodeExpanded(false))
+        XCTAssertTrue(state.expandedNodeIDs.isEmpty)
+
+        XCTAssertTrue(state.selectionGraph.select(nodeID: "capability:graphics:renderer"))
+        XCTAssertFalse(state.setFocusedNodeExpanded(true))
+        XCTAssertTrue(state.expandedNodeIDs.isEmpty)
+    }
+
     private func makeCatalog() throws -> SeisFullTechnologyCatalog {
         let domains = [
             SeisFullTechnologyDomain(
