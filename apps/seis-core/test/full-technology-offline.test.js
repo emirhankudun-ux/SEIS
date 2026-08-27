@@ -38,3 +38,11 @@ test('service worker caches the app shell and canonical Full Technology records'
   assert.match(worker, /caches\.delete/);
   assert.doesNotMatch(worker, /https:\/\//);
 });
+
+test('offline navigation is limited to the Full Technology route', async () => {
+  const worker = await read('apps/seis-core/full-technology-service-worker.js');
+
+  assert.match(worker, /FULL_TECHNOLOGY_URL/);
+  assert.match(worker, /request\.mode === 'navigate' && url\.toString\(\) === FULL_TECHNOLOGY_URL/);
+  assert.doesNotMatch(worker, /\|\| request\.mode === 'navigate'/);
+});
