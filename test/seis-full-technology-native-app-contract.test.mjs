@@ -14,7 +14,9 @@ const paths = {
   model: 'packages/seis_platform_swift/Sources/SeisFullTechnologyMac/Models/SeisFullTechnologyMacViewModel.swift',
   rootView: 'packages/seis_platform_swift/Sources/SeisFullTechnologyMac/Views/SeisFullTechnologyRootView.swift',
   sidebar: 'packages/seis_platform_swift/Sources/SeisFullTechnologyMac/Views/SeisFullTechnologySidebarView.swift',
-  detail: 'packages/seis_platform_swift/Sources/SeisFullTechnologyMac/Views/SeisFullTechnologyDetailView.swift'
+  detail: 'packages/seis_platform_swift/Sources/SeisFullTechnologyMac/Views/SeisFullTechnologyDetailView.swift',
+  universalWorkspace: 'packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/UniversalWorkspace/SeisAppleUniversalWorkspaceView.swift',
+  universalPalette: 'packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/UniversalWorkspace/SeisUniversalCommandPaletteView.swift'
 };
 
 test('Swift package declares a bounded native Full Technology executable', async () => {
@@ -30,7 +32,7 @@ test('Swift package declares a bounded native Full Technology executable', async
 });
 
 test('native Full Technology target exposes the required app surfaces', async () => {
-  for (const path of Object.values(paths).slice(1)) {
+  for (const path of Object.values(paths).slice(1, 6)) {
     assert.equal(
       existsSync(`${repositoryRoot}/${path}`),
       true,
@@ -85,6 +87,33 @@ test('native Full Technology target exposes the required app surfaces', async ()
   ]) {
     assert.doesNotMatch(
       nativeSource,
+      new RegExp(forbidden.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    );
+  }
+});
+
+test('Universal Workspace exposes keyboard-first navigation through the shared command dispatcher', async () => {
+  const [workspace, palette] = await Promise.all([
+    read(paths.universalWorkspace),
+    read(paths.universalPalette)
+  ]);
+
+  assert.match(workspace, /\.onMoveCommand\(/);
+  assert.match(workspace, /\.onExitCommand\s*\{/);
+  assert.match(workspace, /applyWorkspaceCommand\(commandID:/);
+  assert.match(workspace, /selection\.next/);
+  assert.match(workspace, /selection\.previous/);
+  assert.match(workspace, /hierarchy\.expand-focused/);
+  assert.match(workspace, /hierarchy\.collapse-focused/);
+  assert.match(workspace, /selection\.clear/);
+
+  assert.match(palette, /workspaceCommands\(matching:/);
+  assert.match(palette, /selection\./);
+
+  const universalSource = `${workspace}\n${palette}`;
+  for (const forbidden of ['URLSession', 'Process(', 'NSWorkspace.shared.open']) {
+    assert.doesNotMatch(
+      universalSource,
       new RegExp(forbidden.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     );
   }
