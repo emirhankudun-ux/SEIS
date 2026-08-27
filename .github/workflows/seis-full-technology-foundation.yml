@@ -19,11 +19,13 @@ on:
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-runtime.js'
+      - 'apps/seis-core/full-technology-service-worker.js'
       - 'apps/seis-core/full-technology-center.css'
       - 'apps/seis-core/manifest.webmanifest'
       - 'apps/seis-core/test/full-technology-center.test.js'
       - 'apps/seis-core/test/full-technology-experience.test.js'
       - 'apps/seis-core/test/full-technology-runtime.test.js'
+      - 'apps/seis-core/test/full-technology-offline.test.js'
       - '.github/workflows/seis-full-technology-foundation.yml'
   pull_request:
     paths:
@@ -39,11 +41,13 @@ on:
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-runtime.js'
+      - 'apps/seis-core/full-technology-service-worker.js'
       - 'apps/seis-core/full-technology-center.css'
       - 'apps/seis-core/manifest.webmanifest'
       - 'apps/seis-core/test/full-technology-center.test.js'
       - 'apps/seis-core/test/full-technology-experience.test.js'
       - 'apps/seis-core/test/full-technology-runtime.test.js'
+      - 'apps/seis-core/test/full-technology-offline.test.js'
       - '.github/workflows/seis-full-technology-foundation.yml'
 
 permissions:
@@ -76,3 +80,6 @@ jobs:
 
       - name: Run browser-local surface tests
         run: node --test apps/seis-core/test/full-technology-center.test.js apps/seis-core/test/full-technology-experience.test.js
+
+      - name: Run offline-first boundary tests
+        run: node --test apps/seis-core/test/full-technology-offline.test.js
