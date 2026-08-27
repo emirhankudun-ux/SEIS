@@ -16,6 +16,14 @@
       ]
     },
     {
+      "id": "repository-root-http-route",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/test/full-technology-http-smoke.test.js",
+        "apps/seis-core/README.md"
+      ]
+    },
+    {
       "id": "technology-atlas",
       "status": "validated",
       "evidence": [
@@ -130,14 +138,16 @@
     "node --test test/seis-full-technology-foundation.test.mjs",
     "node --test apps/seis-core/test/full-technology-runtime.test.js",
     "node --test apps/seis-core/test/full-technology-center.test.js apps/seis-core/test/full-technology-experience.test.js",
-    "node --test apps/seis-core/test/full-technology-offline.test.js"
+    "node --test apps/seis-core/test/full-technology-offline.test.js",
+    "node --test apps/seis-core/test/full-technology-http-smoke.test.js"
   ],
   "securityBoundary": {
     "externalWrites": false,
     "providerCalls": false,
     "credentialsRead": false,
     "crossOriginCaching": false,
-    "nonGetCaching": false
+    "nonGetCaching": false,
+    "httpSmokeTraversalRejected": true
   },
   "releaseBoundary": {
     "mergeAuthorized": false,
