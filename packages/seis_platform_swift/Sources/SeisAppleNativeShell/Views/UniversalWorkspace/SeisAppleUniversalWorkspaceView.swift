@@ -6,8 +6,11 @@ struct SeisAppleUniversalWorkspaceView: View {
 
     @State private var store = SeisFullTechnologyNativeStore()
     @State private var workspaceSession: SeisUniversalWorkspaceSession?
+    @State private var workspaceSearchState: SeisUniversalWorkspaceSearchState?
+    @State private var searchQuery = ""
     @State private var isCommandPalettePresented = false
     @State private var commandQuery = ""
+    @FocusState private var isSearchFocused: Bool
     @SceneStorage("seis.universal-workspace.snapshot.v2") private var sceneSnapshotJSON = ""
 
     var body: some View {
@@ -15,7 +18,11 @@ struct SeisAppleUniversalWorkspaceView: View {
             .task { loadIfNeeded() }
             .onMoveCommand(perform: handleMoveCommand)
             .onExitCommand {
-                applyWorkspaceCommand(commandID: "selection.clear")
+                if searchQuery.isEmpty {
+                    applyWorkspaceCommand(commandID: "selection.clear")
+                } else {
+                    updateSearchQuery("")
+                }
             }
             .focusedSceneValue(
                 \.seisUniversalWorkspaceCommandActions,
@@ -78,6 +85,7 @@ struct SeisAppleUniversalWorkspaceView: View {
     private func hierarchy(_ state: SeisUniversalWorkspaceState) -> some View {
         SeisUniversalHierarchyView(
             document: state.document,
+            projection: searchProjection(for: state),
             selectedNodeIDs: state.selectionGraph.selectedNodeIDs,
             focusedNodeID: state.selectionGraph.focusedNodeID,
             expandedNodeIDs: state.expandedNodeIDs,
@@ -96,6 +104,7 @@ struct SeisAppleUniversalWorkspaceView: View {
 
     private func viewport(_ session: SeisUniversalWorkspaceSession) -> some View {
         let state = session.state
+        let projection = searchProjection(for: state)
 
         return VStack(alignment: .leading, spacing: 0) {
             viewportHeader(session)
@@ -108,15 +117,27 @@ struct SeisAppleUniversalWorkspaceView: View {
             }
             Divider()
 
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 250), spacing: 12)], spacing: 12) {
-                    ForEach(state.document.rootNodeIDs, id: \.self) { nodeID in
-                        if let node = state.document.node(id: nodeID) {
-                            domainCard(node, state: state)
+            if projection.isFiltering && projection.rootNodeIDs.isEmpty {
+                SeisUniversalWorkspaceEmptyState(
+                    title: "No workspace matches",
+                    systemImage: "line.3.horizontal.decrease.circle",
+                    description: "Adjust the filter to restore matching domains and capabilities."
+                )
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 250), spacing: 12)], spacing: 12) {
+                        ForEach(projection.rootNodeIDs, id: \.self) { nodeID in
+                            if let node = state.document.node(id: nodeID) {
+                                domainCard(
+                                    node,
+                                    visibleChildNodeIDs: projection.childNodeIDs(for: nodeID),
+                                    state: state
+                                )
+                            }
                         }
                     }
+                    .padding(16)
                 }
-                .padding(16)
             }
         }
         .accessibilityElement(children: .contain)
@@ -125,6 +146,7 @@ struct SeisAppleUniversalWorkspaceView: View {
 
     private func viewportHeader(_ session: SeisUniversalWorkspaceSession) -> some View {
         let state = session.state
+        let isFocusedSelectionHidden = isFocusedSelectionHiddenByFilter(state)
 
         return HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
@@ -133,9 +155,41 @@ struct SeisAppleUniversalWorkspaceView: View {
                 Text("Document graph · registry-backed · no renderer claim")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                if isFocusedSelectionHidden {
+                    Label("Current selection is hidden by filter", systemImage: "eye.slash")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .accessibilityLabel("Current selection is hidden by the workspace filter")
+                }
             }
 
             Spacer()
+
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(.secondary)
+                TextField("Filter workspace", text: $searchQuery)
+                    .textFieldStyle(.plain)
+                    .focused($isSearchFocused)
+                    .onChange(of: searchQuery) { newValue in
+                        updateSearchProjection(newValue)
+                    }
+                if !searchQuery.isEmpty {
+                    Button {
+                        updateSearchQuery("")
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.secondary)
+                    .accessibilityLabel("Clear workspace filter")
+                }
+            }
+            .padding(.horizontal, 9)
+            .padding(.vertical, 6)
+            .frame(width: 230)
+            .background(.quaternary.opacity(0.7), in: RoundedRectangle(cornerRadius: 8))
+            .help("Find in Workspace (⌘F)")
 
             HStack(spacing: 4) {
                 Button {
@@ -194,6 +248,7 @@ struct SeisAppleUniversalWorkspaceView: View {
 
     private func domainCard(
         _ node: SeisUniversalWorkspaceNode,
+        visibleChildNodeIDs: [String],
         state: SeisUniversalWorkspaceState
     ) -> some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -214,7 +269,7 @@ struct SeisAppleUniversalWorkspaceView: View {
             .buttonStyle(.plain)
 
             FlowLayout(spacing: 6) {
-                ForEach(node.childIDs, id: \.self) { childID in
+                ForEach(visibleChildNodeIDs, id: \.self) { childID in
                     if let child = state.document.node(id: childID) {
                         Button(child.selection.title) {
                             select(nodeID: child.id, mode: .replace)
@@ -270,6 +325,9 @@ struct SeisAppleUniversalWorkspaceView: View {
             clearSelection: {
                 applyWorkspaceCommand(commandID: "selection.clear")
             },
+            focusSearch: {
+                isSearchFocused = true
+            },
             openCommandPalette: {
                 isCommandPalettePresented = true
             }
@@ -291,6 +349,11 @@ struct SeisAppleUniversalWorkspaceView: View {
         }
 
         workspaceSession = SeisUniversalWorkspaceSession(state: state)
+        workspaceSearchState = SeisUniversalWorkspaceSearchState(
+            document: document,
+            expandedNodeIDs: state.expandedNodeIDs
+        )
+        updateSearchProjection(searchQuery)
     }
 
     private var restoredSnapshot: SeisUniversalWorkspaceSceneSnapshot? {
@@ -299,6 +362,40 @@ struct SeisAppleUniversalWorkspaceView: View {
         else { return nil }
 
         return try? JSONDecoder().decode(SeisUniversalWorkspaceSceneSnapshot.self, from: data)
+    }
+
+    private func searchProjection(for state: SeisUniversalWorkspaceState) -> SeisUniversalHierarchyProjection {
+        workspaceSearchState?.projection
+            ?? state.document.hierarchyProjection(
+                expandedNodeIDs: state.expandedNodeIDs,
+                query: searchQuery
+            )
+    }
+
+    private func isFocusedSelectionHiddenByFilter(_ state: SeisUniversalWorkspaceState) -> Bool {
+        guard workspaceSearchState?.isFiltering == true,
+              let focusedNodeID = state.selectionGraph.focusedNodeID
+        else {
+            return false
+        }
+
+        return workspaceSearchState?.contains(nodeID: focusedNodeID) == false
+    }
+
+    private func updateSearchQuery(_ query: String) {
+        searchQuery = query
+        updateSearchProjection(query)
+    }
+
+    private func updateSearchProjection(_ query: String) {
+        guard let state = workspaceSession?.state else { return }
+        var searchState = workspaceSearchState
+            ?? SeisUniversalWorkspaceSearchState(
+                document: state.document,
+                expandedNodeIDs: state.expandedNodeIDs
+            )
+        searchState.updateQuery(query, expandedNodeIDs: state.expandedNodeIDs)
+        workspaceSearchState = searchState
     }
 
     private func select(nodeID: String, mode: SeisUniversalSelectionMode) {
@@ -336,6 +433,7 @@ struct SeisAppleUniversalWorkspaceView: View {
 
     private func commit(_ session: SeisUniversalWorkspaceSession) {
         workspaceSession = session
+        updateSearchProjection(searchQuery)
         persist(session.state.snapshot)
     }
 
