@@ -29,6 +29,9 @@ on:
       - 'apps/seis-core/test/full-technology-runtime.test.js'
       - 'apps/seis-core/test/full-technology-offline.test.js'
       - 'apps/seis-core/test/full-technology-http-smoke.test.js'
+      - 'packages/seis_platform_swift/Package.swift'
+      - 'packages/seis_platform_swift/Sources/**'
+      - 'packages/seis_platform_swift/Tests/**'
       - 'docs/platform/seis-full-technology-foundation.md'
       - '.github/workflows/seis-full-technology-foundation.yml'
   pull_request:
@@ -55,6 +58,9 @@ on:
       - 'apps/seis-core/test/full-technology-runtime.test.js'
       - 'apps/seis-core/test/full-technology-offline.test.js'
       - 'apps/seis-core/test/full-technology-http-smoke.test.js'
+      - 'packages/seis_platform_swift/Package.swift'
+      - 'packages/seis_platform_swift/Sources/**'
+      - 'packages/seis_platform_swift/Tests/**'
       - 'docs/platform/seis-full-technology-foundation.md'
       - '.github/workflows/seis-full-technology-foundation.yml'
 
@@ -94,3 +100,19 @@ jobs:
 
       - name: Run repository-root HTTP smoke
         run: node --test apps/seis-core/test/full-technology-http-smoke.test.js
+
+  native-contracts:
+    name: Validate native Swift contracts
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Record Swift toolchain
+        run: swift --version
+
+      - name: Run Full Technology native contract tests
+        run: swift test --package-path packages/seis_platform_swift --filter SeisFullTechnologyContractsTests
