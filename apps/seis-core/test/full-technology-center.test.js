@@ -1,14 +1,19 @@
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
+import { readFile } from 'node:fs/promises';
+import test from 'node:test';
+import assert from 'node:assert/strict';
 
-const html = fs.readFileSync('apps/seis-core/full-technology.html', 'utf8');
-const js = fs.readFileSync('apps/seis-core/full-technology-center.js', 'utf8');
-const css = fs.readFileSync('apps/seis-core/full-technology-center.css', 'utf8');
-const registry = JSON.parse(fs.readFileSync('content/development/seis-full-technology-registry.json', 'utf8'));
-const catalog = JSON.parse(fs.readFileSync('content/development/seis-technology-tool-catalog.json', 'utf8'));
-const composer = JSON.parse(fs.readFileSync('content/development/seis-workbench-composer.json', 'utf8'));
-const commandCenter = JSON.parse(fs.readFileSync('content/development/seis-full-technology-command-center.json', 'utf8'));
+const root = new URL('../', import.meta.url);
+const repoRoot = new URL('../../../', import.meta.url);
+
+const [html, js, css, registry, catalog, composer, commandCenter] = await Promise.all([
+  readFile(new URL('full-technology.html', root), 'utf8'),
+  readFile(new URL('full-technology-center.js', root), 'utf8'),
+  readFile(new URL('full-technology-center.css', root), 'utf8'),
+  readFile(new URL('content/development/seis-full-technology-registry.json', repoRoot), 'utf8').then(JSON.parse),
+  readFile(new URL('content/development/seis-technology-tool-catalog.json', repoRoot), 'utf8').then(JSON.parse),
+  readFile(new URL('content/development/seis-workbench-composer.json', repoRoot), 'utf8').then(JSON.parse),
+  readFile(new URL('content/development/seis-full-technology-command-center.json', repoRoot), 'utf8').then(JSON.parse)
+]);
 
 test('Full Technology Center exposes accessible primary structure', () => {
   assert.match(html, /<main id="main"/);
@@ -31,7 +36,7 @@ test('Full Technology Center loads canonical repository records rather than hard
 });
 
 test('browser controller fails visibly instead of fabricating fallback state', () => {
-  assert.match(js, /Full Technology data unavailable|error-state/);
+  assert.match(js, /error-state/);
   assert.match(js, /throw new Error\('Command Center projection is stale/);
   assert.doesNotMatch(js, /https:\/\//);
 });
