@@ -149,6 +149,7 @@ test('Apple native shell wires bounded workspace history through focused command
   assert.match(commands, /CommandMenu\("Workspace"\)/);
   assert.match(commands, /keyboardShortcut\("\[", modifiers: \[\.command\]\)/);
   assert.match(commands, /keyboardShortcut\("\]", modifiers: \[\.command\]\)/);
+  assert.match(commands, /keyboardShortcut\("f", modifiers: \[\.command\]\)/);
   assert.match(commands, /actions\?\.canNavigateBack/);
   assert.match(commands, /actions\?\.canNavigateForward/);
 
@@ -156,12 +157,18 @@ test('Apple native shell wires bounded workspace history through focused command
   assert.match(workspace, /\.focusedSceneValue\(/);
   assert.match(workspace, /navigation\.back/);
   assert.match(workspace, /navigation\.forward/);
+  assert.match(workspace, /visibleNodeIDs/);
 
   assert.match(session, /historyLimit: Int = 50/);
   assert.match(session, /func navigateBack\(\)/);
   assert.match(session, /func navigateForward\(\)/);
   assert.match(session, /forwardHistory\.removeAll/);
-  assert.match(session, /func applyWorkspaceCommand\(commandID: String\)/);
+  assert.match(
+    session,
+    /func applyWorkspaceCommand\(\s*commandID: String,\s*visibleNodeIDs: \[String\]\? = nil\s*\) -> Bool/s
+  );
+  assert.match(session, /moveFocus\(\.next, within: visibleNodeIDs\)/);
+  assert.match(session, /moveFocus\(\.previous, within: visibleNodeIDs\)/);
   assert.match(session, /return state\.apply\(commandID: commandID\)/);
 
   const workspaceSource = [commands, workspace, session].join('\n');
