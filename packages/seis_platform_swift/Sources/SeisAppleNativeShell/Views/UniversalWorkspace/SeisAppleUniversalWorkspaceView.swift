@@ -7,6 +7,7 @@ struct SeisAppleUniversalWorkspaceView: View {
     @State private var store = SeisFullTechnologyNativeStore()
     @State private var workspaceTabs: SeisUniversalWorkspaceTabs?
     @State private var workspaceSearchState: SeisUniversalWorkspaceSearchState?
+    @State private var selectionShelf: SeisUniversalWorkspaceSelectionShelf?
     @State private var searchQuery = ""
     @State private var isCommandPalettePresented = false
     @State private var commandQuery = ""
@@ -156,15 +157,39 @@ struct SeisAppleUniversalWorkspaceView: View {
     }
 
     private func hierarchy(_ state: SeisUniversalWorkspaceState) -> some View {
-        SeisUniversalHierarchyView(
-            document: state.document,
-            projection: searchProjection(for: state),
-            selectedNodeIDs: state.selectionGraph.selectedNodeIDs,
-            focusedNodeID: state.selectionGraph.focusedNodeID,
-            expandedNodeIDs: state.expandedNodeIDs,
-            onSelect: select(nodeID:mode:),
-            onExpansionChange: setExpanded(nodeID:isExpanded:)
-        )
+        VStack(spacing: 0) {
+            selectionShelfView
+            if hasSelectionShelfContent {
+                Divider()
+            }
+            SeisUniversalHierarchyView(
+                document: state.document,
+                projection: searchProjection(for: state),
+                selectedNodeIDs: state.selectionGraph.selectedNodeIDs,
+                focusedNodeID: state.selectionGraph.focusedNodeID,
+                expandedNodeIDs: state.expandedNodeIDs,
+                onSelect: select(nodeID:mode:),
+                onExpansionChange: setExpanded(nodeID:isExpanded:)
+            )
+        }
+    }
+
+    @ViewBuilder
+    private var selectionShelfView: some View {
+        if let shelf = selectionShelf {
+            SeisUniversalSelectionShelfView(
+                shelf: shelf,
+                onSelect: { nodeID in
+                    select(nodeID: nodeID, mode: .replace)
+                },
+                onTogglePin: togglePinnedSelection(nodeID:)
+            )
+        }
+    }
+
+    private var hasSelectionShelfContent: Bool {
+        guard let shelf = selectionShelf else { return false }
+        return !shelf.pinnedNodeIDs.isEmpty || !shelf.recentNodeIDs.isEmpty
     }
 
     private func inspector(_ state: SeisUniversalWorkspaceState) -> some View {
@@ -442,6 +467,7 @@ struct SeisAppleUniversalWorkspaceView: View {
             tabs: [initialTab],
             activeTabID: initialTab.id
         )
+        selectionShelf = SeisUniversalWorkspaceSelectionShelf(document: document)
         synchronizeFromActiveTab()
     }
 
@@ -558,8 +584,28 @@ struct SeisAppleUniversalWorkspaceView: View {
             return true
         }) else { return }
         workspaceTabs = tabs
+        recordShelfSelection(from: session)
         updateSearchProjection(searchQuery)
         persist(session.state.snapshot)
+    }
+
+    private func recordShelfSelection(from session: SeisUniversalWorkspaceSession) {
+        guard let focusedNodeID = session.state.selectionGraph.focusedNodeID else { return }
+        recordShelfSelection(nodeID: focusedNodeID)
+    }
+
+    private func recordShelfSelection(nodeID: String) {
+        guard var shelf = selectionShelf,
+              shelf.recordSelection(nodeID: nodeID)
+        else { return }
+        selectionShelf = shelf
+    }
+
+    private func togglePinnedSelection(nodeID: String) {
+        guard var shelf = selectionShelf,
+              shelf.togglePin(nodeID: nodeID)
+        else { return }
+        selectionShelf = shelf
     }
 
     private func openWorkspaceTab() {
