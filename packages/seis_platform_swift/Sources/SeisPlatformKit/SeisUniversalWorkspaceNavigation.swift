@@ -95,12 +95,23 @@ public extension SeisUniversalCommandPalette {
 
     func workspaceCommands(matching query: String) -> [SeisUniversalCommand] {
         let commands = workspaceHistoryCommands + workspaceSearchCommands + workspaceNavigationCommands + allCommands
-        let tokens = query
+        let normalizedQuery = query
+            .trimmingCharacters(in: .whitespacesAndNewlines)
             .lowercased()
+
+        guard !normalizedQuery.isEmpty else { return commands }
+
+        let exactMatches = commands.filter { command in
+            command.title.lowercased() == normalizedQuery
+                || command.searchTerms.contains { $0.lowercased() == normalizedQuery }
+        }
+        if !exactMatches.isEmpty {
+            return exactMatches
+        }
+
+        let tokens = normalizedQuery
             .split(whereSeparator: \.isWhitespace)
             .map(String.init)
-
-        guard !tokens.isEmpty else { return commands }
 
         return commands.filter { command in
             let corpus = ([command.id, command.title, command.subtitle] + command.searchTerms)
