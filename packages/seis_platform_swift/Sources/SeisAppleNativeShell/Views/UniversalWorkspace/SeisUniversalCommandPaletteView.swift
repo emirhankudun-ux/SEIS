@@ -76,7 +76,7 @@ struct SeisUniversalCommandPaletteView: View {
                 .foregroundStyle(.secondary)
             Text("No matching commands")
                 .font(.headline)
-            Text("Try a selection, domain, capability, hierarchy, or inspector command.")
+            Text("Try a search, selection, domain, capability, hierarchy, or inspector command.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -86,9 +86,11 @@ struct SeisUniversalCommandPaletteView: View {
     }
 
     private func symbolName(for commandID: String) -> String {
+        if commandID.hasPrefix("search.") { return "magnifyingglass" }
         if commandID.hasPrefix("selection.") { return "scope" }
         if commandID.hasPrefix("inspector.") { return "sidebar.right" }
         if commandID.hasPrefix("hierarchy.") { return "list.bullet.indent" }
+        if commandID.hasPrefix("navigation.") { return "arrow.left.arrow.right" }
         return "circle.grid.2x2"
     }
 }
