@@ -23,6 +23,14 @@ test('Full Technology Center exposes accessible primary structure', () => {
   assert.match(html, /role="alert"/);
 });
 
+test('rail exposes active section state to assistive technology', () => {
+  assert.match(html, /data-section="atlas"[^>]*aria-pressed="true"/);
+  for (const section of ['cube', 'workbenches', 'engines', 'evidence']) {
+    assert.match(html, new RegExp(`data-section="${section}"[^>]*aria-pressed="false"`));
+  }
+  assert.match(js, /setAttribute\('aria-pressed', String\(button\.dataset\.section === state\.section\)\)/);
+});
+
 test('Full Technology Center loads canonical repository records rather than hard-coded metric counts', () => {
   assert.match(js, /seis-full-technology-registry\.json/);
   assert.match(js, /seis-technology-tool-catalog\.json/);
