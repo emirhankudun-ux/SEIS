@@ -1,0 +1,60 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const root = process.cwd();
+const readJson = (p) => JSON.parse(fs.readFileSync(path.join(root, p), 'utf8'));
+const assert = (condition, message) => {
+  if (!condition) {
+    console.error(`FAIL: ${message}`);
+    process.exitCode = 1;
+  }
+};
+
+const registry = readJson('content/development/seis-full-technology-registry.json');
+const engines = readJson('content/development/seis-engine-capability-registry.json');
+const cube = readJson('content/development/seis-cube-runtime-contract.json');
+const composer = readJson('content/development/seis-workbench-composer.json');
+
+assert(registry.id === 'seis-full-technology-registry', 'registry ID must be canonical');
+assert(registry.summary?.domainCount === 16, 'registry must declare 16 domains');
+assert(registry.domains?.length === 16, 'registry must contain 16 domains');
+assert(registry.summary?.capabilityCount === 96, 'registry must declare 96 first-wave capabilities');
+assert(registry.canonicalGoalBinding?.status === 'unresolved', 'missing canonical SEIS-GOAL-021 must remain unresolved');
+assert(registry.safetyBoundary?.defaultNetwork === 'deny', 'network must default deny');
+assert(registry.safetyBoundary?.defaultWrite === 'deny', 'writes must default deny');
+assert(registry.safetyBoundary?.credentialsInRegistry === false, 'credentials cannot live in registry');
+
+const domainIds = new Set(registry.domains.map((domain) => domain.id));
+assert(domainIds.size === 16, 'domain IDs must be unique');
+for (const domain of registry.domains) {
+  assert(Array.isArray(domain.capabilities) && domain.capabilities.length === 6, `${domain.id} must expose six first-wave capabilities`);
+}
+
+const expectedEngines = ['seis-game-engine', 'seis-reality-engine', 'seis-3d-engine', 'seis-digital-human'];
+const engineIds = new Set(engines.engines?.map((engine) => engine.id));
+for (const id of expectedEngines) assert(engineIds.has(id), `missing engine record: ${id}`);
+for (const engine of engines.engines ?? []) {
+  assert(Array.isArray(engine.capabilities) && engine.capabilities.length >= 15, `${engine.id} needs a substantial capability contract`);
+}
+assert(engines.safety?.proprietaryCopying === 'forbidden', 'proprietary implementation copying must be forbidden');
+
+assert(cube.truthBoundary?.rendererMayInferRuntimeTruth === false, 'Cube renderer cannot infer runtime truth');
+assert(cube.truthBoundary?.canonicalSourceRequiredForVerifiedState === true, 'verified Cube state needs canonical evidence');
+assert(cube.accessibility?.keyboardTraversal === 'required', 'Cube keyboard traversal is required');
+assert(cube.accessibility?.screenReaderTree === 'required', 'Cube screen-reader tree is required');
+assert(cube.performance?.pauseWhenHidden === true, 'Cube must pause when hidden');
+
+assert(composer.mode === 'deterministic-local-demo', 'Workbench Composer must remain deterministic local demo');
+assert(Array.isArray(composer.presets) && composer.presets.length >= 12, 'Workbench Composer must have at least 12 focused presets');
+assert(composer.rules?.maxVisiblePrimaryTools <= 10, 'Workbench must cap visible primary tools');
+assert(composer.rules?.autoExecuteTools === false, 'Workbench cannot auto-execute tools');
+assert(composer.rules?.permissionsResolvedBeforeToolActivation === true, 'permissions must resolve before activation');
+for (const preset of composer.presets ?? []) {
+  assert(preset.tools.length >= composer.rules.minimumPrimaryTools, `${preset.id} has too few tools`);
+  assert(preset.tools.length <= composer.rules.maxVisiblePrimaryTools, `${preset.id} exposes too many tools`);
+  for (const domain of preset.domains ?? []) assert(domainIds.has(domain), `${preset.id} references unknown domain ${domain}`);
+}
+
+if (!process.exitCode) {
+  console.log(`PASS: SEIS Full Technology foundation validated (${registry.domains.length} domains, ${composer.presets.length} workbenches, ${engines.engines.length} engine families).`);
+}
