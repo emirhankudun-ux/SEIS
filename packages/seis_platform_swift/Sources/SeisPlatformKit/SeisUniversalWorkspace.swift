@@ -160,7 +160,7 @@ public struct SeisUniversalWorkspaceDocument: Equatable, Sendable {
             currentID = node.parentID
         }
 
-        return result.reversed()
+        return Array(result.reversed())
     }
 }
 
@@ -493,24 +493,33 @@ public struct SeisUniversalInspectorPresentation: Equatable, Sendable {
     public let allowsMutation: Bool
 
     public init(selection: SeisUniversalSelection?) {
-        guard let selection else {
+        if let selection {
+            let detail = Self.singleSelectionValues(selection)
+            self.title = detail.title
+            self.subtitle = detail.subtitle
+            self.sections = detail.sections
+            self.allowsMutation = false
+        } else {
             self.title = "Nothing selected"
             self.subtitle = "Select an item in the Universal Viewport to inspect it."
             self.sections = []
             self.allowsMutation = false
-            return
         }
-
-        self.init(singleSelection: selection)
     }
 
     public init(selections: [SeisUniversalSelection]) {
-        switch selections.count {
-        case 0:
-            self.init(selection: nil)
-        case 1:
-            self.init(singleSelection: selections[0])
-        default:
+        if selections.isEmpty {
+            self.title = "Nothing selected"
+            self.subtitle = "Select an item in the Universal Viewport to inspect it."
+            self.sections = []
+            self.allowsMutation = false
+        } else if selections.count == 1 {
+            let detail = Self.singleSelectionValues(selections[0])
+            self.title = detail.title
+            self.subtitle = detail.subtitle
+            self.sections = detail.sections
+            self.allowsMutation = false
+        } else {
             let kinds = Array(Set(selections.map { $0.kind.rawValue })).sorted().joined(separator: ", ")
             self.title = "\(selections.count) items selected"
             self.subtitle = "Universal Workspace selection"
@@ -533,11 +542,9 @@ public struct SeisUniversalInspectorPresentation: Equatable, Sendable {
         }
     }
 
-    private init(singleSelection selection: SeisUniversalSelection) {
-        self.title = selection.title
-        self.subtitle = selection.subtitle
-        self.allowsMutation = false
-
+    private static func singleSelectionValues(
+        _ selection: SeisUniversalSelection
+    ) -> (title: String, subtitle: String, sections: [SeisUniversalInspectorSection]) {
         let identityRows = [
             SeisUniversalInspectorRow(label: "Kind", value: selection.kind.rawValue),
             SeisUniversalInspectorRow(label: "Identifier", value: selection.id)
@@ -560,11 +567,15 @@ public struct SeisUniversalInspectorPresentation: Equatable, Sendable {
             }
         }
 
-        self.sections = [
-            SeisUniversalInspectorSection(title: "Identity", rows: identityRows),
-            SeisUniversalInspectorSection(title: "Metadata", rows: metadataRows),
-            SeisUniversalInspectorSection(title: "Safety", rows: safetyRows)
-        ]
+        return (
+            selection.title,
+            selection.subtitle,
+            [
+                SeisUniversalInspectorSection(title: "Identity", rows: identityRows),
+                SeisUniversalInspectorSection(title: "Metadata", rows: metadataRows),
+                SeisUniversalInspectorSection(title: "Safety", rows: safetyRows)
+            ]
+        )
     }
 
     private static func isSafetyKey(_ key: String) -> Bool {
