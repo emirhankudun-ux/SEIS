@@ -86,6 +86,44 @@ jobs:
           # low are reported but do not block).
           [ "$failed" -eq 0 ]
 
+      - name: Dependency Audit (Python)
+        if: always()
+        run: |
+          # npm is not the only dependency ecosystem here.
+          # server/cloud/ssh-ai-shell is a network-facing FastAPI/uvicorn/websockets
+          # service with install.sh and systemd units -- i.e. something meant to be
+          # deployed on a host -- and until now nothing scanned its dependencies at
+          # all. It was clean when this step was added (pip-audit: "No known
+          # vulnerabilities found"), which is exactly why it is a safe moment to
+          # start enforcing rather than a reason to skip it.
+          set -u
+          files="$(git ls-files '*requirements*.txt' | grep -vE '(^|/)node_modules/' || true)"
+          if [ -z "$files" ]; then
+            echo "No tracked requirements file; nothing to audit."
+            exit 0
+          fi
+          # Pinned so the tool itself is reproducible, matching how this workflow
+          # pins gitleaks and its actions.
+          python3 -m pip install --quiet --disable-pip-version-check pip-audit==2.10.1
+          failed=0
+          while IFS= read -r req; do
+            echo "::group::pip-audit — ${req}"
+            if python3 -m pip_audit -r "$req" --progress-spinner off; then
+              echo "✅ ${req}: no known vulnerabilities"
+            else
+              echo "🚨 ${req}: known vulnerabilities found"
+              failed=$((failed + 1))
+            fi
+            echo "::endgroup::"
+          done <<EOF
+          $files
+          EOF
+          # Known weakness this cannot fix: these requirements use unpinned '>='
+          # specifiers with no lockfile, so what actually installs drifts over
+          # time and this audit is only as reproducible as PyPI on the day it
+          # runs. Pinning them (or adding a lockfile) is the real follow-up.
+          [ "$failed" -eq 0 ]
+
   v14-compliance:
     name: V14 Compliance Check
     runs-on: ubuntu-latest
