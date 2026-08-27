@@ -11,6 +11,8 @@ final class SeisUniversalWorkspaceCommandNavigationTests: XCTestCase {
         XCTAssertEqual(palette.workspaceCommands(matching: "clear selection").map(\.id), ["selection.clear"])
         XCTAssertEqual(palette.workspaceCommands(matching: "expand focused").map(\.id), ["hierarchy.expand-focused"])
         XCTAssertEqual(palette.workspaceCommands(matching: "collapse focused").map(\.id), ["hierarchy.collapse-focused"])
+        XCTAssertEqual(palette.workspaceCommands(matching: "find workspace").map(\.id), ["search.focus"])
+        XCTAssertEqual(palette.workspaceCommands(matching: "clear workspace filter").map(\.id), ["search.clear"])
     }
 
     func testWorkspaceCommandDispatchUsesSameNavigationStateTransitions() throws {
