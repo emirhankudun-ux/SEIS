@@ -62,4 +62,118 @@ final class SeisUniversalWorkspaceTests: XCTestCase {
         XCTAssertFalse(values.contains("secret-value"))
         XCTAssertFalse(inspector.allowsMutation)
     }
+
+    func testWorkspaceDocumentBuildsDeterministicDomainCapabilityTree() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+
+        XCTAssertEqual(document.rootNodeIDs, ["domain:graphics"])
+        XCTAssertEqual(document.nodes.map(\.id), [
+            "domain:graphics",
+            "capability:graphics:renderer",
+            "capability:graphics:scene-graph"
+        ])
+
+        let domain = try XCTUnwrap(document.node(id: "domain:graphics"))
+        XCTAssertEqual(domain.parentID, nil)
+        XCTAssertEqual(domain.childIDs, [
+            "capability:graphics:renderer",
+            "capability:graphics:scene-graph"
+        ])
+
+        let renderer = try XCTUnwrap(document.node(id: "capability:graphics:renderer"))
+        XCTAssertEqual(renderer.parentID, "domain:graphics")
+        XCTAssertEqual(renderer.selection.kind, .capability)
+        XCTAssertEqual(renderer.selection.id, "renderer")
+        XCTAssertEqual(renderer.selection.metadata["domain"], "graphics")
+    }
+
+    func testSelectionGraphKeepsPreviousSelectionWhenUnknownNodeIsRequested() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+        var graph = SeisUniversalSelectionGraph(document: document)
+
+        XCTAssertTrue(graph.select(nodeID: "capability:graphics:renderer"))
+        XCTAssertEqual(graph.selectedNodeID, "capability:graphics:renderer")
+        XCTAssertEqual(graph.selectedSelection?.title, "renderer")
+
+        XCTAssertFalse(graph.select(nodeID: "missing-node"))
+        XCTAssertEqual(graph.selectedNodeID, "capability:graphics:renderer")
+    }
+
+    func testCommandPaletteFiltersNavigationAndInspectorCommandsDeterministically() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+        let palette = SeisUniversalCommandPalette(document: document)
+
+        XCTAssertEqual(
+            palette.commands(matching: "dock inspector left").map(\.id),
+            ["inspector.leading"]
+        )
+        XCTAssertEqual(
+            palette.commands(matching: "renderer").map(\.id),
+            ["select:capability:graphics:renderer"]
+        )
+        XCTAssertEqual(
+            palette.commands(matching: "").prefix(3).map(\.id),
+            ["inspector.trailing", "inspector.leading", "inspector.hidden"]
+        )
+    }
+
+    func testWorkspaceStateAppliesInspectorDockAndSelectionCommandsWithoutMutationCapability() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+        var state = SeisUniversalWorkspaceState(document: document)
+
+        XCTAssertEqual(state.inspectorDock, .trailing)
+        XCTAssertFalse(state.allowsExternalMutation)
+
+        XCTAssertTrue(state.apply(commandID: "inspector.leading"))
+        XCTAssertEqual(state.inspectorDock, .leading)
+
+        XCTAssertTrue(state.apply(commandID: "select:capability:graphics:scene-graph"))
+        XCTAssertEqual(state.selectionGraph.selectedSelection?.id, "scene-graph")
+
+        XCTAssertTrue(state.apply(commandID: "inspector.hidden"))
+        XCTAssertEqual(state.inspectorDock, .hidden)
+        XCTAssertFalse(state.allowsExternalMutation)
+    }
+
+    private func makeCatalog() throws -> SeisFullTechnologyCatalog {
+        let domains = [
+            SeisFullTechnologyDomain(
+                id: "graphics",
+                name: "Graphics & Reality",
+                capabilities: ["renderer", "scene-graph"]
+            )
+        ]
+
+        let registry = SeisFullTechnologyRegistry(
+            version: 1,
+            id: "test-registry",
+            requestedGoalID: "test-goal",
+            canonicalGoalBinding: SeisCanonicalGoalBinding(
+                status: .resolved,
+                reason: "test",
+                source: "unit-test"
+            ),
+            mode: "local",
+            status: "prototype",
+            summary: SeisFullTechnologySummary(
+                domainCount: 1,
+                capabilityCount: 2,
+                implementationClasses: ["native"],
+                maturityStates: ["prototype"]
+            ),
+            domains: domains,
+            universalFrameworks: [],
+            coreSystems: [],
+            safetyBoundary: SeisFullTechnologySafetyBoundary(
+                defaultNetwork: "deny",
+                defaultWrite: "deny",
+                externalMutationRequiresApproval: true,
+                credentialsInRegistry: false,
+                demoClaimsMustBeExplicit: true,
+                unverifiedCapabilitiesMustRemainUnavailableOrProposed: true
+            )
+        )
+
+        return try SeisFullTechnologyCatalog(validating: registry)
+    }
 }
