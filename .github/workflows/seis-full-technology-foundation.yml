@@ -18,10 +18,12 @@ on:
       - 'test/seis-full-technology-foundation.test.mjs'
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
+      - 'apps/seis-core/full-technology-runtime.js'
       - 'apps/seis-core/full-technology-center.css'
       - 'apps/seis-core/manifest.webmanifest'
       - 'apps/seis-core/test/full-technology-center.test.js'
       - 'apps/seis-core/test/full-technology-experience.test.js'
+      - 'apps/seis-core/test/full-technology-runtime.test.js'
       - '.github/workflows/seis-full-technology-foundation.yml'
   pull_request:
     paths:
@@ -36,10 +38,12 @@ on:
       - 'test/seis-full-technology-foundation.test.mjs'
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
+      - 'apps/seis-core/full-technology-runtime.js'
       - 'apps/seis-core/full-technology-center.css'
       - 'apps/seis-core/manifest.webmanifest'
       - 'apps/seis-core/test/full-technology-center.test.js'
       - 'apps/seis-core/test/full-technology-experience.test.js'
+      - 'apps/seis-core/test/full-technology-runtime.test.js'
       - '.github/workflows/seis-full-technology-foundation.yml'
 
 permissions:
@@ -66,6 +70,9 @@ jobs:
 
       - name: Run foundation contract tests
         run: node --test test/seis-full-technology-foundation.test.mjs
+
+      - name: Run deterministic runtime tests
+        run: node --test apps/seis-core/test/full-technology-runtime.test.js
 
       - name: Run browser-local surface tests
         run: node --test apps/seis-core/test/full-technology-center.test.js apps/seis-core/test/full-technology-experience.test.js
