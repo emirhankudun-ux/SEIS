@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0b0d" />
+  <meta name="description" content="SEIS Full Technology Center: a registry-backed browser-local explorer for technology domains, tools, engine foundations and focused workbenches." />
+  <title>SEIS Full Technology Center</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="stylesheet" href="full-technology-center.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="shell">
+    <aside class="rail" aria-label="Technology navigation">
+      <a class="mark" href="index.html" aria-label="Back to SEIS Command Center"><span aria-hidden="true">◆</span></a>
+      <button class="rail-button is-active" type="button" data-section="atlas" aria-label="Technology Atlas"><span aria-hidden="true">◎</span></button>
+      <button class="rail-button" type="button" data-section="workbenches" aria-label="Workbench Composer"><span aria-hidden="true">◇</span></button>
+      <button class="rail-button" type="button" data-section="engines" aria-label="Engine Foundation"><span aria-hidden="true">△</span></button>
+      <button class="rail-button" type="button" data-section="evidence" aria-label="Evidence Boundary"><span aria-hidden="true">□</span></button>
+    </aside>
+
+    <main id="main" class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SEIS / FULL TECHNOLOGY</p>
+          <h1>Technology Center</h1>
+        </div>
+        <div class="top-actions">
+          <label class="search" for="technology-search">
+            <span aria-hidden="true">⌕</span>
+            <input id="technology-search" type="search" placeholder="Search technology, capability or tool" autocomplete="off" />
+          </label>
+          <a class="ghost-button" href="index.html">Command Center</a>
+        </div>
+      </header>
+
+      <section class="status-strip" aria-label="Foundation status">
+        <div><span>Domains</span><strong id="stat-domains">—</strong></div>
+        <div><span>Capabilities</span><strong id="stat-capabilities">—</strong></div>
+        <div><span>Tools</span><strong id="stat-tools">—</strong></div>
+        <div><span>Workbenches</span><strong id="stat-workbenches">—</strong></div>
+        <div><span>Runtime claims</span><strong id="stat-runtime">0</strong></div>
+      </section>
+
+      <div class="content-layout">
+        <section class="content-column" aria-live="polite">
+          <div class="section-intro">
+            <div>
+              <p class="eyebrow" id="section-kicker">TECHNOLOGY ATLAS</p>
+              <h2 id="section-title">Find the right capability without tool sprawl.</h2>
+              <p id="section-summary">Registry-backed domains and first-wave tools. Proposed tools remain visibly proposed.</p>
+            </div>
+            <div class="filters" id="domain-filters" aria-label="Domain filters"></div>
+          </div>
+
+          <section class="surface is-active" data-surface="atlas" aria-labelledby="atlas-title">
+            <h3 id="atlas-title" class="sr-only">Technology Atlas</h3>
+            <div class="domain-list" id="domain-list"></div>
+          </section>
+
+          <section class="surface" data-surface="workbenches" aria-labelledby="workbenches-title">
+            <h3 id="workbenches-title" class="sr-only">Workbench Composer</h3>
+            <div class="workbench-list" id="workbench-list"></div>
+          </section>
+
+          <section class="surface" data-surface="engines" aria-labelledby="engines-title">
+            <h3 id="engines-title" class="sr-only">Engine Foundation</h3>
+            <div class="engine-list" id="engine-list"></div>
+          </section>
+
+          <section class="surface" data-surface="evidence" aria-labelledby="evidence-title">
+            <h3 id="evidence-title" class="sr-only">Evidence Boundary</h3>
+            <div class="evidence-list" id="evidence-list"></div>
+          </section>
+        </section>
+
+        <aside class="inspector" aria-labelledby="inspector-title">
+          <p class="eyebrow">INSPECTOR</p>
+          <h2 id="inspector-title">Select a record</h2>
+          <p id="inspector-summary">Choose a domain, tool, workbench or engine family to inspect its current source-backed state.</p>
+          <dl class="inspector-data" id="inspector-data"></dl>
+          <div class="truth-note">
+            <strong>Truth boundary</strong>
+            <p>Contract validation is not runtime validation. Provider, plugin, cross-platform build and engine parity claims remain unavailable until evidence exists.</p>
+          </div>
+        </aside>
+      </div>
+
+      <div class="error-state" id="error-state" hidden role="alert">
+        <strong>Full Technology data unavailable.</strong>
+        <p>Open this page from the repository root server so the canonical JSON records can be read. No fake fallback metrics are substituted.</p>
+      </div>
+    </main>
+  </div>
+  <script src="full-technology-center.js" defer></script>
+</body>
+</html>
