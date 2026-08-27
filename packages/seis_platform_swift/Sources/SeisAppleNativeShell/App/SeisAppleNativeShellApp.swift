@@ -157,6 +157,8 @@ struct SeisAppleNativeShellApp: App {
                 .keyboardShortcut("r", modifiers: [.command, .shift])
                 .help("Refresh all Apple diagnostics and runtime readiness snapshots.")
             }
+
+            SeisUniversalWorkspaceCommands()
         }
         #endif
         #if os(macOS)
