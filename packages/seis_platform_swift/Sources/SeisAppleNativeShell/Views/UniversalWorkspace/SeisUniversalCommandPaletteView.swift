@@ -66,7 +66,7 @@ struct SeisUniversalCommandPaletteView: View {
     }
 
     private var commands: [SeisUniversalCommand] {
-        SeisUniversalCommandPalette(document: document).commands(matching: query)
+        SeisUniversalCommandPalette(document: document).workspaceCommands(matching: query)
     }
 
     private var emptyState: some View {
@@ -76,7 +76,7 @@ struct SeisUniversalCommandPaletteView: View {
                 .foregroundStyle(.secondary)
             Text("No matching commands")
                 .font(.headline)
-            Text("Try a domain, capability, hierarchy, or inspector command.")
+            Text("Try a selection, domain, capability, hierarchy, or inspector command.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -86,8 +86,9 @@ struct SeisUniversalCommandPaletteView: View {
     }
 
     private func symbolName(for commandID: String) -> String {
+        if commandID.hasPrefix("selection.") { return "scope" }
         if commandID.hasPrefix("inspector.") { return "sidebar.right" }
         if commandID.hasPrefix("hierarchy.") { return "list.bullet.indent" }
-        return "scope"
+        return "circle.grid.2x2"
     }
 }
