@@ -115,8 +115,8 @@ jobs:
         run: git diff --check origin/${{ github.base_ref || 'main' }}...HEAD
 
   native-contracts:
-    name: Validate native Swift contracts
-    runs-on: macos-15
+    name: Validate native Swift contracts — Intel baseline
+    runs-on: macos-15-intel
     timeout-minutes: 12
     steps:
       - name: Checkout
@@ -132,7 +132,7 @@ jobs:
         run: swift test --package-path packages/seis_platform_swift --filter SeisFullTechnology
 
       - name: Run Universal Workspace tests
-        run: swift test --package-path packages/seis_platform_swift --filter SeisUniversalWorkspaceTests
+        run: swift test --package-path packages/seis_platform_swift --filter SeisUniversalWorkspace
 
       - name: Run complete Swift package test suite
         run: swift test --package-path packages/seis_platform_swift
