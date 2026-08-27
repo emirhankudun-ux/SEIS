@@ -14,6 +14,10 @@ on:
       - 'schemas/seis-technology-tool.schema.json'
       - 'scripts/check-seis-full-technology-foundation.mjs'
       - 'test/seis-full-technology-foundation.test.mjs'
+      - 'apps/seis-core/full-technology.html'
+      - 'apps/seis-core/full-technology-center.js'
+      - 'apps/seis-core/full-technology-center.css'
+      - 'apps/seis-core/test/full-technology-center.test.js'
       - '.github/workflows/seis-full-technology-foundation.yml'
   pull_request:
     paths:
@@ -26,6 +30,10 @@ on:
       - 'schemas/seis-technology-tool.schema.json'
       - 'scripts/check-seis-full-technology-foundation.mjs'
       - 'test/seis-full-technology-foundation.test.mjs'
+      - 'apps/seis-core/full-technology.html'
+      - 'apps/seis-core/full-technology-center.js'
+      - 'apps/seis-core/full-technology-center.css'
+      - 'apps/seis-core/test/full-technology-center.test.js'
       - '.github/workflows/seis-full-technology-foundation.yml'
 
 permissions:
@@ -50,5 +58,8 @@ jobs:
       - name: Validate contracts
         run: node scripts/check-seis-full-technology-foundation.mjs
 
-      - name: Run contract tests
+      - name: Run foundation contract tests
         run: node --test test/seis-full-technology-foundation.test.mjs
+
+      - name: Run browser-local surface tests
+        run: node --test apps/seis-core/test/full-technology-center.test.js
