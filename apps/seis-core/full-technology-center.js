@@ -405,6 +405,13 @@ function isTextInput(target) {
   return target instanceof HTMLElement && Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
 }
 
+function registerOfflineSupport() {
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    navigator.serviceWorker.register('./full-technology-service-worker.js', { scope: './' })
+      .catch((error) => console.warn('SEIS Full Technology offline support unavailable.', error));
+  }
+}
+
 function bindEvents() {
   document.addEventListener('click', (event) => {
     const sectionButton = event.target.closest('[data-section]');
@@ -477,6 +484,7 @@ function bindEvents() {
 }
 
 bindEvents();
+registerOfflineSupport();
 loadData().catch((error) => {
   console.error(error);
   $('#error-state').hidden = false;
