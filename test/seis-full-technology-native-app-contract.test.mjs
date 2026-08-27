@@ -15,8 +15,11 @@ const paths = {
   rootView: 'packages/seis_platform_swift/Sources/SeisFullTechnologyMac/Views/SeisFullTechnologyRootView.swift',
   sidebar: 'packages/seis_platform_swift/Sources/SeisFullTechnologyMac/Views/SeisFullTechnologySidebarView.swift',
   detail: 'packages/seis_platform_swift/Sources/SeisFullTechnologyMac/Views/SeisFullTechnologyDetailView.swift',
+  appleShellApp: 'packages/seis_platform_swift/Sources/SeisAppleNativeShell/App/SeisAppleNativeShellApp.swift',
+  workspaceCommands: 'packages/seis_platform_swift/Sources/SeisAppleNativeShell/App/SeisUniversalWorkspaceCommands.swift',
   universalWorkspace: 'packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/UniversalWorkspace/SeisAppleUniversalWorkspaceView.swift',
-  universalPalette: 'packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/UniversalWorkspace/SeisUniversalCommandPaletteView.swift'
+  universalPalette: 'packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/UniversalWorkspace/SeisUniversalCommandPaletteView.swift',
+  workspaceSession: 'packages/seis_platform_swift/Sources/SeisPlatformKit/SeisUniversalWorkspaceSession.swift'
 };
 
 test('Swift package declares a bounded native Full Technology executable', async () => {
@@ -114,6 +117,63 @@ test('Universal Workspace exposes keyboard-first navigation through the shared c
   for (const forbidden of ['URLSession', 'Process(', 'NSWorkspace.shared.open']) {
     assert.doesNotMatch(
       universalSource,
+      new RegExp(forbidden.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    );
+  }
+});
+
+test('Apple native shell wires bounded workspace history through focused commands', async () => {
+  for (const path of [
+    paths.appleShellApp,
+    paths.workspaceCommands,
+    paths.universalWorkspace,
+    paths.workspaceSession
+  ]) {
+    assert.equal(
+      existsSync(`${repositoryRoot}/${path}`),
+      true,
+      `missing native workspace file: ${path}`
+    );
+  }
+
+  const [appleShellApp, commands, workspace, session] = await Promise.all([
+    read(paths.appleShellApp),
+    read(paths.workspaceCommands),
+    read(paths.universalWorkspace),
+    read(paths.workspaceSession)
+  ]);
+
+  assert.match(appleShellApp, /SeisUniversalWorkspaceCommands\(\)/);
+
+  assert.match(commands, /FocusedValueKey/);
+  assert.match(commands, /CommandMenu\("Workspace"\)/);
+  assert.match(commands, /keyboardShortcut\("\[", modifiers: \[\.command\]\)/);
+  assert.match(commands, /keyboardShortcut\("\]", modifiers: \[\.command\]\)/);
+  assert.match(commands, /actions\?\.canNavigateBack/);
+  assert.match(commands, /actions\?\.canNavigateForward/);
+
+  assert.match(workspace, /SeisUniversalWorkspaceSession/);
+  assert.match(workspace, /\.focusedSceneValue\(/);
+  assert.match(workspace, /navigation\.back/);
+  assert.match(workspace, /navigation\.forward/);
+
+  assert.match(session, /historyLimit: Int = 50/);
+  assert.match(session, /func navigateBack\(\)/);
+  assert.match(session, /func navigateForward\(\)/);
+  assert.match(session, /forwardHistory\.removeAll/);
+  assert.match(session, /func applyWorkspaceCommand\(commandID: String\)/);
+  assert.match(session, /return state\.apply\(commandID: commandID\)/);
+
+  const workspaceSource = [commands, workspace, session].join('\n');
+  for (const forbidden of [
+    'URLSession',
+    'Process(',
+    'executeTool',
+    'runShell',
+    'allowsExternalMutation: true'
+  ]) {
+    assert.doesNotMatch(
+      workspaceSource,
       new RegExp(forbidden.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     );
   }
