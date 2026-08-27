@@ -86,7 +86,11 @@ apps/seis-core/
 - Architecture Center: system map, module relationships, dependency graph, technical debt register, and platform phases.
 - Knowledge: knowledge graph, relationship contracts, memory evidence, decision history, reusable patterns, and knowledge registry surfaces.
 
-## 10-lane SEIS router
+## Operating Model
+
+The Command Center owns orchestration visibility, goal status, repository health, security posture, architecture evidence and agent handoffs. The Full Technology Center is a subordinate, browser-local inspection surface: it reads canonical technology records, composes bounded Workbenches, and returns review evidence without mutating Command Center state or activating tools.
+
+### 10-lane SEIS router
 
 The existing Command Center preserves the 10-lane SEIS router contract and keeps it separate from the Full Technology Workbench Composer. The router continues to expose these governed lanes:
 
