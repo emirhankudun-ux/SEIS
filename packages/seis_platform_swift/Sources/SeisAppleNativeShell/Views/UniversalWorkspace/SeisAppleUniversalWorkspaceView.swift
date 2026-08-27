@@ -13,13 +13,17 @@ struct SeisAppleUniversalWorkspaceView: View {
     var body: some View {
         workspaceLayout
             .task { loadIfNeeded() }
+            .onMoveCommand(perform: handleMoveCommand)
+            .onExitCommand {
+                applyWorkspaceCommand(commandID: "selection.clear")
+            }
             .sheet(isPresented: $isCommandPalettePresented) {
                 if let state = workspaceState {
                     SeisUniversalCommandPaletteView(
                         document: state.document,
                         query: $commandQuery
                     ) { commandID in
-                        apply(commandID: commandID)
+                        applyWorkspaceCommand(commandID: commandID)
                         commandQuery = ""
                         isCommandPalettePresented = false
                     }
@@ -84,7 +88,7 @@ struct SeisAppleUniversalWorkspaceView: View {
         SeisUniversalInspectorView(
             selections: state.selectionGraph.selectedSelections,
             dock: state.inspectorDock,
-            onCommand: apply(commandID:)
+            onCommand: applyWorkspaceCommand(commandID:)
         )
     }
 
@@ -129,7 +133,7 @@ struct SeisAppleUniversalWorkspaceView: View {
 
             if !state.isHierarchyVisible {
                 Button {
-                    apply(commandID: "hierarchy.show")
+                    applyWorkspaceCommand(commandID: "hierarchy.show")
                 } label: {
                     Label("Hierarchy", systemImage: "sidebar.left")
                 }
@@ -146,7 +150,7 @@ struct SeisAppleUniversalWorkspaceView: View {
 
             if state.inspectorDock == .hidden {
                 Button {
-                    apply(commandID: "inspector.trailing")
+                    applyWorkspaceCommand(commandID: "inspector.trailing")
                 } label: {
                     Label("Inspector", systemImage: "sidebar.right")
                 }
@@ -258,9 +262,24 @@ struct SeisAppleUniversalWorkspaceView: View {
         commit(state)
     }
 
-    private func apply(commandID: String) {
+    private func handleMoveCommand(_ direction: MoveCommandDirection) {
+        switch direction {
+        case .down:
+            applyWorkspaceCommand(commandID: "selection.next")
+        case .up:
+            applyWorkspaceCommand(commandID: "selection.previous")
+        case .right:
+            applyWorkspaceCommand(commandID: "hierarchy.expand-focused")
+        case .left:
+            applyWorkspaceCommand(commandID: "hierarchy.collapse-focused")
+        @unknown default:
+            break
+        }
+    }
+
+    private func applyWorkspaceCommand(commandID: String) {
         guard var state = workspaceState else { return }
-        guard state.apply(commandID: commandID) else { return }
+        guard state.applyWorkspaceCommand(commandID: commandID) else { return }
         commit(state)
     }
 
