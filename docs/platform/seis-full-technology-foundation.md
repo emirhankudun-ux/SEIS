@@ -1,14 +1,88 @@
-# SEIS Full Technology Foundation
+# SEIS Full Technology Center
 
-Goal: `SEIS-GOAL-021` — Build SEIS AI Desktop Platform Fusion.
+Requested Goal: `SEIS-GOAL-021` — Build SEIS AI Desktop Platform Fusion.
 
-Status: prototype foundation.
+Canonical Goal binding: unresolved. The repository does not currently contain a canonical `SEIS-GOAL-021` record, so this slice preserves the requested identifier without fabricating ownership or lifecycle state.
 
-This document defines the first additive implementation slice for the SEIS Full Technology Edition. It does not claim that every listed capability is implemented, connected, production-ready, or cross-platform validated.
+Maturity: validated browser-local prototype.
 
-## Product rule
+## What this slice is
 
-SEIS is a technology operating environment, not a collection of disconnected applications. Thousands of capabilities must be discoverable through canonical registries and composed into focused workbenches.
+This is the first coherent, locally runnable Full Technology product slice inside the existing SEIS Command Center application family. It turns the earlier technology taxonomy into a source-backed browser interface with deterministic behavior and explicit evidence boundaries.
+
+The implemented route is:
+
+```text
+apps/seis-core/full-technology.html
+```
+
+The surface reads canonical JSON records from the repository and does not hard-code domain, capability, tool, engine or Workbench counts into the controller.
+
+## Implemented experience
+
+### Technology Atlas
+
+- Reads 16 top-level domains and 96 first-wave capabilities from the canonical Full Technology Registry.
+- Reads 48 first-wave tool records from the Tool Catalog.
+- Supports text search and domain filtering.
+- Exposes implementation class, maturity, permissions and validation state through a contextual inspector.
+- Keeps proposed tools distinct from contract-validated records.
+
+### Cube Navigator
+
+- Projects all 16 canonical domains onto six technology faces.
+- Covers every canonical domain exactly once.
+- Supports pointer and Left/Right keyboard navigation.
+- Opens a selected Cube domain in the Technology Atlas.
+- Uses an accessible HTML/CSS renderer rather than presenting decorative 3D as runtime evidence.
+- Preserves reduced-motion behavior.
+
+### Workbench Composer
+
+- Loads one of 12 source-backed Workbench presets.
+- Caps visible primary tools according to the canonical Composer rules.
+- Restores the active Workbench, Cube face, selected record and section from browser-local state.
+- Never executes a displayed tool automatically.
+- Requires a future capability adapter and permission resolution before any external action.
+
+### Review snapshot
+
+- Exports a local JSON review artifact.
+- Records canonical sources, selected Cube face, active Workbench and zero-execution truth.
+- Records zero tools executed, zero external writes, zero provider calls and zero credential reads.
+- Does not upload the artifact or publish it remotely.
+
+### Offline-first boundary
+
+- Registers a service worker only when service workers are supported and the page is not opened through `file:`.
+- Caches only same-origin `GET` requests.
+- Uses network-first with cache fallback for canonical JSON records.
+- Uses cache-first for the application shell.
+- Rejects cross-origin requests and does not intercept write methods.
+- Deletes stale Full Technology cache versions during activation.
+- Does not cache credentials or external provider responses.
+
+### PWA access
+
+`apps/seis-core/manifest.webmanifest` exposes Full Technology Center as an explicit application shortcut.
+
+## Architecture
+
+The browser controller is intentionally thin. Deterministic product rules live in:
+
+```text
+apps/seis-core/full-technology-runtime.js
+```
+
+The runtime provides:
+
+- canonical projection validation;
+- six-face Cube projection;
+- bounded Workbench composition;
+- persisted-state normalization;
+- deterministic review-snapshot creation.
+
+This keeps the browser UI separate from product truth and allows the same rules to be ported later into Swift and other platform adapters.
 
 ## Foundation layers
 
@@ -23,29 +97,21 @@ SEIS is a technology operating environment, not a collection of disconnected app
 9. `SEIS Cube` — architecture, runtime, security, evidence and history visualization.
 10. `SEIS Proof` — validation and evidence before completion claims.
 
-## Canonical technology domains
+## Canonical records
 
-The machine-readable source is `content/development/seis-full-technology-registry.json`. It currently defines 16 top-level domains spanning AI, software, creation, Reality, Game, Digital Life, cinema/audio, data/knowledge, science, engineering, robotics, hardware, cloud, security, platform targets and governance/research.
+- `content/development/seis-full-technology-registry.json`
+- `content/development/seis-technology-tool-catalog.json`
+- `content/development/seis-engine-capability-registry.json`
+- `content/development/seis-workbench-composer.json`
+- `content/development/seis-cube-runtime-contract.json`
+- `content/development/seis-full-technology-command-center.json`
+- `content/development/seis-full-technology-demo-acceptance.json`
 
-These are taxonomy domains, not implementation-complete product claims.
-
-## Workbench Composer
-
-`content/development/seis-workbench-composer.json` defines the first deterministic local-demo composition contract.
-
-Examples:
-
-- shader debugging → code, shader graph, material preview and GPU profiling;
-- Digital Human → viewport, anatomy, groom, rig, animation and performance;
-- game optimization → world, frame graph, CPU/GPU, asset residency, physics and AI;
-- robotics → scene, sensors, ROS graph, code, telemetry and simulation;
-- poster design → canvas, typography, color, assets and export inspection.
-
-The composer never executes a tool merely because it is displayed. External actions remain human-approval gated.
+Generated UI state and exported review snapshots are projections. They are not competing sources of truth.
 
 ## Implementation classes
 
-Every future capability should be classified as one of:
+Every capability must remain classified as one of:
 
 - Native Core
 - Native Tool
@@ -53,37 +119,73 @@ Every future capability should be classified as one of:
 - Plugin
 - Research
 
-Maturity must remain separate from implementation class. A registry entry marked `research` or `prototype` must not be presented as `stable`.
+Maturity is separate from implementation class. A registry entry marked `research`, `concept` or `prototype` must not be presented as stable runtime behavior.
 
-## Security boundary
+## Security and permission boundary
 
-Default network: deny.
+- Default network: deny.
+- Default write: deny.
+- No credentials belong in capability registries.
+- External mutation requires explicit approval.
+- The service worker ignores non-GET and cross-origin requests.
+- Workbench loading is local composition, not tool activation.
+- Review export is local-only.
+- Provider, plugin, MCP, SSH, deployment and publishing operations remain unavailable or approval-gated.
 
-Default write: deny.
+## Validation
 
-No credentials belong in capability registries.
-
-External mutation requires explicit approval.
-
-Demo and unavailable states must remain visible and must not be rewritten into live-connectivity claims.
-
-## Current validation
-
-The deterministic validator is:
+Run the complete focused validation package from the repository root:
 
 ```bash
-node scripts/check-seis-full-technology-registry.mjs
+node scripts/check-seis-full-technology-foundation.mjs
+node --test test/seis-full-technology-foundation.test.mjs
+node --test apps/seis-core/test/full-technology-runtime.test.js
+node --test apps/seis-core/test/full-technology-center.test.js apps/seis-core/test/full-technology-experience.test.js
+node --test apps/seis-core/test/full-technology-offline.test.js
 ```
 
-It validates Goal binding, the 16-domain contract, uniqueness, capability shape, shared frameworks, Workbench Composer presence and deny-by-default safety boundaries.
+The read-only GitHub Actions workflow is:
 
-## Next implementation slice
+```text
+.github/workflows/seis-full-technology-foundation.yml
+```
 
-1. Wire the registry checker into `package.json` after conflict review with open branches.
-2. Add a generated, read-only Command Center projection from the registry.
-3. Add schema validation for technology, capability and tool records.
-4. Add Cube node/edge contracts derived from canonical registry records.
-5. Expand Digital Human, Game and Reality capabilities as typed records rather than hard-coded UI cards.
-6. Run repository-wide quality/security tests before any merge proposal.
+It requests `contents: read`, uses SHA-pinned actions and executes the full focused validation package.
 
-No production deployment, provider activation, MCP activation, SSH execution, package publication, signing or external mutation is authorized by this foundation.
+## Accepted scope
+
+Machine-readable acceptance is recorded in:
+
+```text
+content/development/seis-full-technology-demo-acceptance.json
+```
+
+The accepted scope is limited to the registry-backed browser-local prototype. It includes Atlas, Cube, Workbench composition, local state, local review export, accessibility contracts, visible failure behavior and same-origin offline caching.
+
+## Explicitly not completed
+
+The following remain blocked and are not claimed by this slice:
+
+- a native AAA Game Engine runtime;
+- a native 3D modeling/rendering engine;
+- a MetaHuman-equivalent Digital Human implementation;
+- native macOS, Windows or Linux packages;
+- installer, code-signing or notarization artifacts;
+- live provider, plugin or MCP connectivity;
+- production deployment or release readiness.
+
+The engine registries are architecture and capability contracts. They are not evidence that those engines have been built.
+
+## Next safe implementation order
+
+1. Port deterministic Full Technology runtime contracts into a reusable Swift package.
+2. Add a native macOS inspection surface for the 16 domains, 48 tools, six Cube faces and 12 Workbenches.
+3. Define Universal Viewport and Universal Inspector typed contracts.
+4. Implement one bounded Digital Human inspection prototype using original SEIS assets only.
+5. Implement one small Game/Reality scene prototype with measured renderer and input evidence.
+6. Add current-platform build evidence before claiming a native application.
+7. Keep Windows and Linux as separate platform evidence tracks rather than inferred parity.
+
+## Rollback
+
+Before merge, close the draft pull request. After an approved merge, revert the scoped Full Technology commits. This slice has no database migration, external resource creation, secret rotation, deployment or irreversible operation.
