@@ -1,0 +1,48 @@
+name: SEIS Full Technology Foundation
+
+on:
+  push:
+    branches:
+      - feature/seis-full-technology-foundation
+    paths:
+      - 'content/development/seis-full-technology-registry.json'
+      - 'content/development/seis-engine-capability-registry.json'
+      - 'content/development/seis-cube-runtime-contract.json'
+      - 'content/development/seis-workbench-composer.json'
+      - 'scripts/check-seis-full-technology-foundation.mjs'
+      - 'test/seis-full-technology-foundation.test.mjs'
+      - '.github/workflows/seis-full-technology-foundation.yml'
+  pull_request:
+    paths:
+      - 'content/development/seis-full-technology-registry.json'
+      - 'content/development/seis-engine-capability-registry.json'
+      - 'content/development/seis-cube-runtime-contract.json'
+      - 'content/development/seis-workbench-composer.json'
+      - 'scripts/check-seis-full-technology-foundation.mjs'
+      - 'test/seis-full-technology-foundation.test.mjs'
+      - '.github/workflows/seis-full-technology-foundation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Full Technology contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate contracts
+        run: node scripts/check-seis-full-technology-foundation.mjs
+
+      - name: Run contract tests
+        run: node --test test/seis-full-technology-foundation.test.mjs
