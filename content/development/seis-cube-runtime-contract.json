@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "id": "seis-cube-runtime-contract",
+  "status": "prototype",
+  "purpose": "Project canonical SEIS records into an accessible Cube without allowing decorative rendering to invent product truth.",
+  "sceneContract": {
+    "requiredFields": ["mode", "activeFace", "coreHealth", "motionPolicy", "nodes", "edges", "rings"],
+    "modes": ["concept", "architecture", "runtime", "performance", "security", "permissions", "evidence", "history", "dependency", "provenance", "goal", "agent", "workflow", "repository", "technology"],
+    "healthStates": ["healthy", "degraded", "warning", "blocked", "failed", "unavailable", "unknown"],
+    "motionPolicies": ["full", "reduced", "static", "low-power"]
+  },
+  "nodeContract": {
+    "requiredFields": ["id", "type", "status", "source", "evidenceState"],
+    "types": ["core", "domain", "capability", "tool", "provider", "model", "agent", "workflow", "plugin", "mcp", "dataset", "asset", "repository", "goal", "risk", "validation"],
+    "evidenceStates": ["verified", "observed", "proposal", "unavailable", "blocked", "stale"]
+  },
+  "edgeContract": {
+    "requiredFields": ["source", "target", "relation", "status"],
+    "relations": ["owns", "depends-on", "implements", "extends", "routes-to", "validates", "observes", "secures", "stores", "retrieves", "generates", "renders", "approves", "blocks", "cites", "derives-from", "compatible-with", "restricted-by", "evaluated-by", "produces-evidence-for"]
+  },
+  "rendererAdapters": [
+    {"id":"svg","status":"planned","fallbackPriority":1},
+    {"id":"canvas2d","status":"planned","fallbackPriority":2},
+    {"id":"webgl","status":"planned","fallbackPriority":3},
+    {"id":"webgpu","status":"research","fallbackPriority":4},
+    {"id":"scenekit","status":"planned-apple-native","fallbackPriority":5},
+    {"id":"metal","status":"research-apple-native","fallbackPriority":6},
+    {"id":"accessible-tree","status":"required","fallbackPriority":0},
+    {"id":"static-image","status":"required","fallbackPriority":0}
+  ],
+  "interaction": ["select-face", "select-node", "inspect-relationship", "filter", "search", "zoom", "reset-camera", "keyboard-traversal", "touch-rotation", "copy-canonical-record-link"],
+  "performance": {
+    "lazyInitialization": true,
+    "pauseWhenHidden": true,
+    "boundedNodeCount": true,
+    "levelOfDetail": true,
+    "batteryAware": true,
+    "staticFallback": true
+  },
+  "accessibility": {
+    "keyboardTraversal": "required",
+    "screenReaderTree": "required",
+    "reducedMotion": "required",
+    "highContrast": "required",
+    "colorOnlyState": "forbidden"
+  },
+  "truthBoundary": {
+    "rendererMayInferRuntimeTruth": false,
+    "unverifiedNodesDefaultTo": "proposal",
+    "decorativeAnimationsCreateEvidence": false,
+    "canonicalSourceRequiredForVerifiedState": true
+  }
+}
