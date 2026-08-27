@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "id": "seis-full-technology-demo-acceptance",
+  "status": "validated-browser-local-prototype",
+  "requestedGoalId": "SEIS-GOAL-021",
+  "canonicalGoalBinding": "unresolved",
+  "maturity": "prototype",
+  "scope": "Registry-backed browser-local Technology Center vertical slice",
+  "acceptedCapabilities": [
+    {
+      "id": "canonical-registry-load",
+      "status": "validated",
+      "evidence": [
+        "scripts/check-seis-full-technology-foundation.mjs",
+        "apps/seis-core/test/full-technology-runtime.test.js"
+      ]
+    },
+    {
+      "id": "repository-root-http-route",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/test/full-technology-http-smoke.test.js",
+        "apps/seis-core/README.md"
+      ]
+    },
+    {
+      "id": "technology-atlas",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/full-technology.html",
+        "apps/seis-core/full-technology-center.js",
+        "apps/seis-core/test/full-technology-center.test.js"
+      ]
+    },
+    {
+      "id": "accessible-cube-navigator",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/full-technology-runtime.js",
+        "apps/seis-core/test/full-technology-experience.test.js",
+        "apps/seis-core/test/full-technology-runtime.test.js"
+      ]
+    },
+    {
+      "id": "bounded-workbench-composer",
+      "status": "validated",
+      "evidence": [
+        "content/development/seis-workbench-composer.json",
+        "apps/seis-core/full-technology-runtime.js",
+        "apps/seis-core/test/full-technology-runtime.test.js"
+      ]
+    },
+    {
+      "id": "local-state-restoration",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/full-technology-center.js",
+        "apps/seis-core/test/full-technology-experience.test.js"
+      ]
+    },
+    {
+      "id": "review-snapshot-export",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/full-technology-runtime.js",
+        "apps/seis-core/test/full-technology-runtime.test.js"
+      ]
+    },
+    {
+      "id": "same-origin-offline-cache",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/full-technology-service-worker.js",
+        "apps/seis-core/test/full-technology-offline.test.js"
+      ]
+    },
+    {
+      "id": "keyboard-and-reduced-motion",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/full-technology-center.js",
+        "apps/seis-core/full-technology-center.css",
+        "apps/seis-core/test/full-technology-experience.test.js"
+      ]
+    },
+    {
+      "id": "visible-data-load-failure",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/full-technology.html",
+        "apps/seis-core/full-technology-center.js",
+        "apps/seis-core/test/full-technology-center.test.js"
+      ]
+    },
+    {
+      "id": "zero-execution-truth",
+      "status": "validated",
+      "evidence": [
+        "apps/seis-core/full-technology-runtime.js",
+        "apps/seis-core/test/full-technology-runtime.test.js"
+      ]
+    }
+  ],
+  "blockedCapabilities": [
+    {
+      "id": "native-game-engine-runtime",
+      "status": "blocked",
+      "reason": "Only typed engine capability contracts exist; no native renderer, physics or gameplay runtime artifact has been built."
+    },
+    {
+      "id": "native-3d-engine-runtime",
+      "status": "blocked",
+      "reason": "3D authoring and rendering remain architecture contracts without a validated native runtime."
+    },
+    {
+      "id": "digital-human-runtime",
+      "status": "blocked",
+      "reason": "Digital Human is a governed capability contract, not a working MetaHuman-equivalent implementation."
+    },
+    {
+      "id": "macos-windows-linux-packages",
+      "status": "blocked",
+      "reason": "No native app, installer, signing, notarization or cross-platform package was built in this slice."
+    },
+    {
+      "id": "live-provider-plugin-mcp-connectivity",
+      "status": "blocked",
+      "reason": "No credentials, external authentication or live connector validation was performed."
+    },
+    {
+      "id": "production-readiness",
+      "status": "blocked",
+      "reason": "The accepted scope is a browser-local prototype and must not be labeled production-ready."
+    }
+  ],
+  "validationCommands": [
+    "node scripts/check-seis-full-technology-foundation.mjs",
+    "node --test test/seis-full-technology-foundation.test.mjs",
+    "node --test apps/seis-core/test/full-technology-runtime.test.js",
+    "node --test apps/seis-core/test/full-technology-center.test.js apps/seis-core/test/full-technology-experience.test.js",
+    "node --test apps/seis-core/test/full-technology-offline.test.js",
+    "node --test apps/seis-core/test/full-technology-http-smoke.test.js"
+  ],
+  "securityBoundary": {
+    "externalWrites": false,
+    "providerCalls": false,
+    "credentialsRead": false,
+    "crossOriginCaching": false,
+    "nonGetCaching": false,
+    "httpSmokeTraversalRejected": true
+  },
+  "releaseBoundary": {
+    "mergeAuthorized": false,
+    "deploymentAuthorized": false,
+    "packagePublicationAuthorized": false,
+    "recommendedState": "draft-pull-request"
+  },
+  "rollback": "Close the draft pull request or revert the scoped Full Technology commits; no database migration, external mutation or deployment exists."
+}
