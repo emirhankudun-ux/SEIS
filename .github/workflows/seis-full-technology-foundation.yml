@@ -18,6 +18,7 @@ on:
       - 'scripts/check-seis-full-technology-foundation.mjs'
       - 'test/seis-full-technology-foundation.test.mjs'
       - 'test/seis-full-technology-native-app-contract.test.mjs'
+      - 'test/seis-universal-workspace-search-contract.test.mjs'
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-runtime.js'
@@ -48,6 +49,7 @@ on:
       - 'scripts/check-seis-full-technology-foundation.mjs'
       - 'test/seis-full-technology-foundation.test.mjs'
       - 'test/seis-full-technology-native-app-contract.test.mjs'
+      - 'test/seis-universal-workspace-search-contract.test.mjs'
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-runtime.js'
@@ -99,6 +101,9 @@ jobs:
       - name: Run native app contract tests
         run: node --test test/seis-full-technology-native-app-contract.test.mjs
 
+      - name: Run Universal Workspace search contract
+        run: node --test test/seis-universal-workspace-search-contract.test.mjs
+
       - name: Run deterministic runtime tests
         run: node --test apps/seis-core/test/full-technology-runtime.test.js
 
@@ -115,8 +120,8 @@ jobs:
         run: git diff --check origin/${{ github.base_ref || 'main' }}...HEAD
 
   native-contracts:
-    name: Validate native Swift contracts — Intel baseline
-    runs-on: macos-15-intel
+    name: Validate native Swift contracts
+    runs-on: macos-15
     timeout-minutes: 12
     steps:
       - name: Checkout
@@ -125,8 +130,10 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Record Swift toolchain
-        run: swift --version
+      - name: Record Swift toolchain and architecture
+        run: |
+          swift --version
+          uname -m
 
       - name: Run Full Technology native tests
         run: swift test --package-path packages/seis_platform_swift --filter SeisFullTechnology
