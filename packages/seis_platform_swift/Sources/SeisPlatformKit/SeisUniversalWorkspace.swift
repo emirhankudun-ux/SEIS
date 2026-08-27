@@ -147,35 +147,102 @@ public struct SeisUniversalWorkspaceDocument: Equatable, Sendable {
     public func node(id: String) -> SeisUniversalWorkspaceNode? {
         nodesByID[id]
     }
+
+    public func breadcrumbNodeIDs(for nodeID: String) -> [String] {
+        guard nodesByID[nodeID] != nil else { return [] }
+
+        var result: [String] = []
+        var currentID: String? = nodeID
+        var visited: Set<String> = []
+
+        while let id = currentID, let node = nodesByID[id], visited.insert(id).inserted {
+            result.append(id)
+            currentID = node.parentID
+        }
+
+        return result.reversed()
+    }
+}
+
+public enum SeisUniversalSelectionMode: String, Codable, Sendable {
+    case replace
+    case additive
 }
 
 public struct SeisUniversalSelectionGraph: Equatable, Sendable {
     public let document: SeisUniversalWorkspaceDocument
-    public private(set) var selectedNodeID: String?
+    public private(set) var selectedNodeIDs: [String]
+    public private(set) var focusedNodeID: String?
 
     public init(document: SeisUniversalWorkspaceDocument, selectedNodeID: String? = nil) {
         self.document = document
         if let selectedNodeID, document.node(id: selectedNodeID) != nil {
-            self.selectedNodeID = selectedNodeID
+            self.selectedNodeIDs = [selectedNodeID]
+            self.focusedNodeID = selectedNodeID
         } else {
-            self.selectedNodeID = nil
+            self.selectedNodeIDs = []
+            self.focusedNodeID = nil
         }
     }
 
+    public init(
+        document: SeisUniversalWorkspaceDocument,
+        selectedNodeIDs: [String],
+        focusedNodeID: String?
+    ) {
+        self.document = document
+
+        var seen: Set<String> = []
+        let validIDs = selectedNodeIDs.filter { id in
+            document.node(id: id) != nil && seen.insert(id).inserted
+        }
+        self.selectedNodeIDs = validIDs
+
+        if let focusedNodeID, validIDs.contains(focusedNodeID) {
+            self.focusedNodeID = focusedNodeID
+        } else {
+            self.focusedNodeID = validIDs.last
+        }
+    }
+
+    public var selectedNodeID: String? {
+        focusedNodeID
+    }
+
     public var selectedSelection: SeisUniversalSelection? {
-        guard let selectedNodeID else { return nil }
-        return document.node(id: selectedNodeID)?.selection
+        guard let focusedNodeID else { return nil }
+        return document.node(id: focusedNodeID)?.selection
+    }
+
+    public var selectedSelections: [SeisUniversalSelection] {
+        selectedNodeIDs.compactMap { document.node(id: $0)?.selection }
     }
 
     @discardableResult
     public mutating func select(nodeID: String) -> Bool {
+        select(nodeID: nodeID, mode: .replace)
+    }
+
+    @discardableResult
+    public mutating func select(nodeID: String, mode: SeisUniversalSelectionMode) -> Bool {
         guard document.node(id: nodeID) != nil else { return false }
-        selectedNodeID = nodeID
+
+        switch mode {
+        case .replace:
+            selectedNodeIDs = [nodeID]
+        case .additive:
+            if !selectedNodeIDs.contains(nodeID) {
+                selectedNodeIDs.append(nodeID)
+            }
+        }
+
+        focusedNodeID = nodeID
         return true
     }
 
     public mutating func clearSelection() {
-        selectedNodeID = nil
+        selectedNodeIDs = []
+        focusedNodeID = nil
     }
 }
 
@@ -183,6 +250,28 @@ public enum SeisUniversalInspectorDock: String, CaseIterable, Codable, Equatable
     case trailing
     case leading
     case hidden
+}
+
+public struct SeisUniversalWorkspaceSceneSnapshot: Codable, Equatable, Sendable {
+    public let selectedNodeIDs: [String]
+    public let focusedNodeID: String?
+    public let expandedNodeIDs: [String]
+    public let inspectorDock: SeisUniversalInspectorDock
+    public let isHierarchyVisible: Bool
+
+    public init(
+        selectedNodeIDs: [String],
+        focusedNodeID: String?,
+        expandedNodeIDs: [String],
+        inspectorDock: SeisUniversalInspectorDock,
+        isHierarchyVisible: Bool
+    ) {
+        self.selectedNodeIDs = selectedNodeIDs
+        self.focusedNodeID = focusedNodeID
+        self.expandedNodeIDs = expandedNodeIDs
+        self.inspectorDock = inspectorDock
+        self.isHierarchyVisible = isHierarchyVisible
+    }
 }
 
 public struct SeisUniversalCommand: Equatable, Sendable, Identifiable {
@@ -233,6 +322,21 @@ public struct SeisUniversalCommandPalette: Equatable, Sendable {
             )
         ]
 
+        let hierarchyCommands = [
+            SeisUniversalCommand(
+                id: "hierarchy.show",
+                title: "Show Hierarchy",
+                subtitle: "Show the local document hierarchy.",
+                searchTerms: ["show hierarchy", "sidebar", "navigator"]
+            ),
+            SeisUniversalCommand(
+                id: "hierarchy.hide",
+                title: "Hide Hierarchy",
+                subtitle: "Hide the hierarchy without clearing selection.",
+                searchTerms: ["hide hierarchy", "sidebar", "navigator"]
+            )
+        ]
+
         let selectionCommands = document.nodes.map { node in
             SeisUniversalCommand(
                 id: "select:\(node.id)",
@@ -242,7 +346,7 @@ public struct SeisUniversalCommandPalette: Equatable, Sendable {
             )
         }
 
-        self.allCommands = inspectorCommands + selectionCommands
+        self.allCommands = inspectorCommands + hierarchyCommands + selectionCommands
     }
 
     public func commands(matching query: String) -> [SeisUniversalCommand] {
@@ -260,15 +364,35 @@ public struct SeisUniversalCommandPalette: Equatable, Sendable {
 }
 
 public struct SeisUniversalWorkspaceState: Equatable, Sendable {
-    public private(set) var selectionGraph: SeisUniversalSelectionGraph
+    public var selectionGraph: SeisUniversalSelectionGraph
     public private(set) var inspectorDock: SeisUniversalInspectorDock
+    public private(set) var isHierarchyVisible: Bool
+    public private(set) var expandedNodeIDs: [String]
 
     public init(
         document: SeisUniversalWorkspaceDocument,
-        inspectorDock: SeisUniversalInspectorDock = .trailing
+        inspectorDock: SeisUniversalInspectorDock = .trailing,
+        isHierarchyVisible: Bool = true,
+        expandedNodeIDs: [String] = []
     ) {
         self.selectionGraph = SeisUniversalSelectionGraph(document: document)
         self.inspectorDock = inspectorDock
+        self.isHierarchyVisible = isHierarchyVisible
+        self.expandedNodeIDs = Self.sanitizedNodeIDs(expandedNodeIDs, document: document)
+    }
+
+    public init(
+        document: SeisUniversalWorkspaceDocument,
+        restoring snapshot: SeisUniversalWorkspaceSceneSnapshot
+    ) {
+        self.selectionGraph = SeisUniversalSelectionGraph(
+            document: document,
+            selectedNodeIDs: snapshot.selectedNodeIDs,
+            focusedNodeID: snapshot.focusedNodeID
+        )
+        self.inspectorDock = snapshot.inspectorDock
+        self.isHierarchyVisible = snapshot.isHierarchyVisible
+        self.expandedNodeIDs = Self.sanitizedNodeIDs(snapshot.expandedNodeIDs, document: document)
     }
 
     public var document: SeisUniversalWorkspaceDocument {
@@ -276,6 +400,30 @@ public struct SeisUniversalWorkspaceState: Equatable, Sendable {
     }
 
     public var allowsExternalMutation: Bool { false }
+
+    public var snapshot: SeisUniversalWorkspaceSceneSnapshot {
+        SeisUniversalWorkspaceSceneSnapshot(
+            selectedNodeIDs: selectionGraph.selectedNodeIDs,
+            focusedNodeID: selectionGraph.focusedNodeID,
+            expandedNodeIDs: expandedNodeIDs,
+            inspectorDock: inspectorDock,
+            isHierarchyVisible: isHierarchyVisible
+        )
+    }
+
+    @discardableResult
+    public mutating func setExpanded(nodeID: String, isExpanded: Bool) -> Bool {
+        guard document.node(id: nodeID) != nil else { return false }
+
+        if isExpanded {
+            if !expandedNodeIDs.contains(nodeID) {
+                expandedNodeIDs.append(nodeID)
+            }
+        } else {
+            expandedNodeIDs.removeAll { $0 == nodeID }
+        }
+        return true
+    }
 
     @discardableResult
     public mutating func apply(commandID: String) -> Bool {
@@ -289,11 +437,27 @@ public struct SeisUniversalWorkspaceState: Equatable, Sendable {
         case "inspector.hidden":
             inspectorDock = .hidden
             return true
+        case "hierarchy.show":
+            isHierarchyVisible = true
+            return true
+        case "hierarchy.hide":
+            isHierarchyVisible = false
+            return true
         default:
             let prefix = "select:"
             guard commandID.hasPrefix(prefix) else { return false }
             let nodeID = String(commandID.dropFirst(prefix.count))
             return selectionGraph.select(nodeID: nodeID)
+        }
+    }
+
+    private static func sanitizedNodeIDs(
+        _ nodeIDs: [String],
+        document: SeisUniversalWorkspaceDocument
+    ) -> [String] {
+        var seen: Set<String> = []
+        return nodeIDs.filter { id in
+            document.node(id: id) != nil && seen.insert(id).inserted
         }
     }
 }
@@ -337,6 +501,39 @@ public struct SeisUniversalInspectorPresentation: Equatable, Sendable {
             return
         }
 
+        self.init(singleSelection: selection)
+    }
+
+    public init(selections: [SeisUniversalSelection]) {
+        switch selections.count {
+        case 0:
+            self.init(selection: nil)
+        case 1:
+            self.init(singleSelection: selections[0])
+        default:
+            let kinds = Array(Set(selections.map { $0.kind.rawValue })).sorted().joined(separator: ", ")
+            self.title = "\(selections.count) items selected"
+            self.subtitle = "Universal Workspace selection"
+            self.sections = [
+                SeisUniversalInspectorSection(
+                    title: "Identity",
+                    rows: [
+                        SeisUniversalInspectorRow(label: "Selection Count", value: String(selections.count)),
+                        SeisUniversalInspectorRow(label: "Kinds", value: kinds)
+                    ]
+                ),
+                SeisUniversalInspectorSection(
+                    title: "Safety",
+                    rows: [
+                        SeisUniversalInspectorRow(label: "Mutation", value: "disabled")
+                    ]
+                )
+            ]
+            self.allowsMutation = false
+        }
+    }
+
+    private init(singleSelection selection: SeisUniversalSelection) {
         self.title = selection.title
         self.subtitle = selection.subtitle
         self.allowsMutation = false
