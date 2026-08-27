@@ -36,7 +36,9 @@ struct SeisAppleUniversalWorkspaceView: View {
                     ) { commandID in
                         applyWorkspaceCommand(commandID: commandID)
                         commandQuery = ""
-                        isCommandPalettePresented = false
+                        if commandID != "search.focus" {
+                            isCommandPalettePresented = false
+                        }
                     }
                 } else {
                     SeisUniversalWorkspaceEmptyState(
@@ -326,7 +328,7 @@ struct SeisAppleUniversalWorkspaceView: View {
                 applyWorkspaceCommand(commandID: "selection.clear")
             },
             focusSearch: {
-                isSearchFocused = true
+                focusWorkspaceSearch()
             },
             openCommandPalette: {
                 isCommandPalettePresented = true
@@ -382,6 +384,13 @@ struct SeisAppleUniversalWorkspaceView: View {
         return workspaceSearchState?.contains(nodeID: focusedNodeID) == false
     }
 
+    private func focusWorkspaceSearch() {
+        isCommandPalettePresented = false
+        Task { @MainActor in
+            isSearchFocused = true
+        }
+    }
+
     private func updateSearchQuery(_ query: String) {
         searchQuery = query
         updateSearchProjection(query)
@@ -426,6 +435,17 @@ struct SeisAppleUniversalWorkspaceView: View {
     }
 
     private func applyWorkspaceCommand(commandID: String) {
+        switch commandID {
+        case "search.focus":
+            focusWorkspaceSearch()
+            return
+        case "search.clear":
+            updateSearchQuery("")
+            return
+        default:
+            break
+        }
+
         guard var session = workspaceSession else { return }
         let visibleNodeIDs = workspaceSearchState?.isFiltering == true
             ? workspaceSearchState?.visibleNodeIDs
