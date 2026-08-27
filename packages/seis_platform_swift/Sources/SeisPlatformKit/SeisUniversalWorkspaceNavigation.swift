@@ -97,7 +97,18 @@ public extension SeisUniversalCommandPalette {
 public extension SeisUniversalWorkspaceState {
     @discardableResult
     mutating func moveFocus(_ direction: SeisUniversalFocusDirection) -> Bool {
-        let visibleNodeIDs = document.visibleNodeIDs(expandedNodeIDs: expandedNodeIDs)
+        moveFocus(
+            direction,
+            within: document.visibleNodeIDs(expandedNodeIDs: expandedNodeIDs)
+        )
+    }
+
+    @discardableResult
+    mutating func moveFocus(
+        _ direction: SeisUniversalFocusDirection,
+        within candidateNodeIDs: [String]
+    ) -> Bool {
+        let visibleNodeIDs = candidateNodeIDs.filter { document.node(id: $0) != nil }
         guard !visibleNodeIDs.isEmpty else { return false }
 
         guard let focusedNodeID = selectionGraph.focusedNodeID,
