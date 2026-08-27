@@ -15,6 +15,7 @@ const engines = readJson('content/development/seis-engine-capability-registry.js
 const cube = readJson('content/development/seis-cube-runtime-contract.json');
 const composer = readJson('content/development/seis-workbench-composer.json');
 const catalog = readJson('content/development/seis-technology-tool-catalog.json');
+const commandCenter = readJson('content/development/seis-full-technology-command-center.json');
 const toolSchema = readJson('schemas/seis-technology-tool.schema.json');
 
 assert(registry.id === 'seis-full-technology-registry', 'registry ID must be canonical');
@@ -36,9 +37,7 @@ for (const domain of registry.domains) {
 const expectedEngines = ['seis-game-engine', 'seis-reality-engine', 'seis-3d-engine', 'seis-digital-human'];
 const engineIds = new Set(engines.engines?.map((engine) => engine.id));
 for (const id of expectedEngines) assert(engineIds.has(id), `missing engine record: ${id}`);
-for (const engine of engines.engines ?? []) {
-  assert(Array.isArray(engine.capabilities) && engine.capabilities.length >= 15, `${engine.id} needs a substantial capability contract`);
-}
+for (const engine of engines.engines ?? []) assert(Array.isArray(engine.capabilities) && engine.capabilities.length >= 15, `${engine.id} needs a substantial capability contract`);
 assert(engines.safety?.proprietaryCopying === 'forbidden', 'proprietary implementation copying must be forbidden');
 
 assert(cube.truthBoundary?.rendererMayInferRuntimeTruth === false, 'Cube renderer cannot infer runtime truth');
@@ -60,8 +59,7 @@ for (const preset of composer.presets ?? []) {
 
 assert(toolSchema.title === 'SEIS Technology Tool Record', 'tool schema identity must stay stable');
 assert(catalog.id === 'seis-technology-tool-catalog', 'tool catalog ID must stay stable');
-assert(catalog.toolCount === 48, 'first-wave tool catalog must declare 48 tools');
-assert(catalog.tools?.length === 48, 'first-wave tool catalog must contain 48 tools');
+assert(catalog.toolCount === 48 && catalog.tools?.length === 48, 'first-wave tool catalog must contain 48 tools');
 const toolIds = new Set(catalog.tools.map((tool) => tool.id));
 assert(toolIds.size === 48, 'tool IDs must be unique');
 
@@ -79,6 +77,15 @@ for (const tool of catalog.tools ?? []) {
   toolCountsByDomain.set(tool.domain, (toolCountsByDomain.get(tool.domain) ?? 0) + 1);
 }
 for (const domain of domainIds) assert(toolCountsByDomain.get(domain) === 3, `${domain} must expose exactly three first-wave tools`);
+
+assert(commandCenter.summary?.domainCount === registry.domains.length, 'Command Center domain count must come from registry');
+assert(commandCenter.summary?.capabilityCount === registry.summary.capabilityCount, 'Command Center capability count must match registry');
+assert(commandCenter.summary?.toolCount === catalog.tools.length, 'Command Center tool count must match catalog');
+assert(commandCenter.summary?.engineFamilyCount === engines.engines.length, 'Command Center engine count must match engine registry');
+assert(commandCenter.summary?.workbenchCount === composer.presets.length, 'Command Center workbench count must match composer');
+assert(commandCenter.summary?.verifiedRuntimeClaims === 0, 'prototype projection cannot claim verified runtime behavior');
+assert(commandCenter.truthBoundary?.runtimeMetricsFabricated === false, 'runtime metrics must never be fabricated');
+assert(commandCenter.experienceRules?.preferListsTablesInspectorsOverCards === true, 'Command Center must avoid generic card-dashboard sprawl');
 
 if (!process.exitCode) {
   console.log(`PASS: SEIS Full Technology foundation validated (${registry.domains.length} domains, ${catalog.tools.length} tools, ${composer.presets.length} workbenches, ${engines.engines.length} engine families).`);
