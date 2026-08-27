@@ -19,6 +19,10 @@ final class SeisUniversalWorkspaceSearchStateTests: XCTestCase {
         )
         XCTAssertTrue(state.contains(nodeID: "capability:graphics:scene-graph"))
         XCTAssertFalse(state.contains(nodeID: "capability:audio:audio-mixer"))
+        XCTAssertEqual(
+            state.visibleNodeIDs,
+            ["domain:graphics", "capability:graphics:scene-graph"]
+        )
     }
 
     func testClearingSearchRestoresExpansionDrivenProjection() throws {
@@ -37,6 +41,30 @@ final class SeisUniversalWorkspaceSearchStateTests: XCTestCase {
             ["capability:graphics:renderer", "capability:graphics:scene-graph"]
         )
         XCTAssertEqual(state.projection.childNodeIDs(for: "domain:audio"), [])
+        XCTAssertEqual(
+            state.visibleNodeIDs,
+            [
+                "domain:graphics",
+                "capability:graphics:renderer",
+                "capability:graphics:scene-graph",
+                "domain:audio"
+            ]
+        )
+    }
+
+    func testFilteredNavigationStaysInsideVisibleSearchProjection() throws {
+        let document = SeisUniversalWorkspaceDocument(catalog: try makeCatalog())
+        var search = SeisUniversalWorkspaceSearchState(document: document)
+        var workspace = SeisUniversalWorkspaceState(document: document)
+
+        search.updateQuery("scene graph", expandedNodeIDs: [])
+
+        XCTAssertTrue(workspace.moveFocus(.next, within: search.visibleNodeIDs))
+        XCTAssertEqual(workspace.selectionGraph.focusedNodeID, "domain:graphics")
+        XCTAssertTrue(workspace.moveFocus(.next, within: search.visibleNodeIDs))
+        XCTAssertEqual(workspace.selectionGraph.focusedNodeID, "capability:graphics:scene-graph")
+        XCTAssertFalse(workspace.moveFocus(.next, within: search.visibleNodeIDs))
+        XCTAssertEqual(workspace.selectionGraph.focusedNodeID, "capability:graphics:scene-graph")
     }
 
     func testSearchStateNeverIncludesSensitiveMetadataInMatching() throws {
