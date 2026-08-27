@@ -1,3 +1,12 @@
+import {
+  CUBE_FACES as cubeFaces,
+  buildCubeProjection,
+  composeWorkbench,
+  createReviewSnapshot,
+  normalizeExperienceState,
+  validateProjection
+} from './full-technology-runtime.js';
+
 const dataPaths = {
   registry: '../../content/development/seis-full-technology-registry.json',
   catalog: '../../content/development/seis-technology-tool-catalog.json',
@@ -50,51 +59,6 @@ const sectionMeta = {
   evidence: ['EVIDENCE BOUNDARY', 'Keep claims visibly separated by maturity.', 'Contract validation is useful evidence, but it is not runtime, packaging or production evidence.']
 };
 
-const cubeFaces = [
-  {
-    id: 'intelligence',
-    label: 'Intelligence',
-    signal: 'AI, agents and digital-life intelligence.',
-    accent: 'violet',
-    domains: ['intelligence', 'digital-life']
-  },
-  {
-    id: 'software',
-    label: 'Software',
-    signal: 'Code, platform and cross-device engineering.',
-    accent: 'blue',
-    domains: ['software', 'platform']
-  },
-  {
-    id: 'creation',
-    label: 'Creation',
-    signal: 'Design, 3D, cinema and audio production.',
-    accent: 'gold',
-    domains: ['creation', 'cinema-audio']
-  },
-  {
-    id: 'reality',
-    label: 'Reality',
-    signal: 'Game, world, rendering and simulation foundations.',
-    accent: 'cyan',
-    domains: ['reality', 'game']
-  },
-  {
-    id: 'infrastructure',
-    label: 'Infrastructure',
-    signal: 'Data, cloud, security and operational systems.',
-    accent: 'green',
-    domains: ['data-knowledge', 'cloud-distributed', 'security-privacy']
-  },
-  {
-    id: 'science',
-    label: 'Science & Future',
-    signal: 'Science, engineering, robotics, hardware and governance.',
-    accent: 'amber',
-    domains: ['science-math', 'engineering-manufacturing', 'robotics-autonomy', 'hardware-electronics', 'governance-research']
-  }
-];
-
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
@@ -125,20 +89,15 @@ async function loadData() {
 }
 
 function validateClientProjection() {
-  const { registry, catalog, composer, engines, commandCenter } = state.data;
-  const valid = registry.domains.length === commandCenter.summary.domainCount
-    && catalog.tools.length === commandCenter.summary.toolCount
-    && composer.presets.length === commandCenter.summary.workbenchCount
-    && engines.engines.length === commandCenter.summary.engineFamilyCount
-    && commandCenter.summary.verifiedRuntimeClaims === 0;
-  if (!valid) throw new Error('Command Center projection is stale or inconsistent with canonical records.');
+  try {
+    validateProjection(state.data);
+  } catch {
+    throw new Error('Command Center projection is stale or inconsistent with canonical records.');
+  }
 }
 
 function normalizeStoredState() {
-  if (!sectionMeta[state.section]) state.section = 'atlas';
-  if (!state.data.registry.domains.some((domain) => domain.id === state.domain)) state.domain = 'all';
-  if (!cubeFaces.some((face) => face.id === state.activeCubeFace)) state.activeCubeFace = cubeFaces[0].id;
-  if (!state.data.composer.presets.some((preset) => preset.id === state.activeWorkbenchId)) state.activeWorkbenchId = null;
+  Object.assign(state, normalizeExperienceState(state, state.data));
 }
 
 function matchesQuery(...values) {
@@ -160,12 +119,12 @@ function setSection(section) {
 }
 
 function renderStats() {
-  const { commandCenter } = state.data;
-  $('#stat-domains').textContent = commandCenter.summary.domainCount;
-  $('#stat-capabilities').textContent = commandCenter.summary.capabilityCount;
-  $('#stat-tools').textContent = commandCenter.summary.toolCount;
-  $('#stat-workbenches').textContent = commandCenter.summary.workbenchCount;
-  $('#stat-runtime').textContent = commandCenter.summary.verifiedRuntimeClaims;
+  const summary = validateProjection(state.data);
+  $('#stat-domains').textContent = summary.domainCount;
+  $('#stat-capabilities').textContent = summary.capabilityCount;
+  $('#stat-tools').textContent = summary.toolCount;
+  $('#stat-workbenches').textContent = summary.workbenchCount;
+  $('#stat-runtime').textContent = summary.verifiedRuntimeClaims;
 }
 
 function renderFilters() {
@@ -222,10 +181,10 @@ function renderAtlas() {
 }
 
 function renderCube() {
-  const activeFace = cubeFaces.find((face) => face.id === state.activeCubeFace) ?? cubeFaces[0];
-  const domainsById = new Map(state.data.registry.domains.map((domain) => [domain.id, domain]));
+  const projection = buildCubeProjection(state.data.registry, state.activeCubeFace);
+  const { activeFace, faces } = projection;
 
-  $('#cube-navigator').innerHTML = cubeFaces.map((face, index) => `
+  $('#cube-navigator').innerHTML = faces.map((face, index) => `
     <button
       class="cube-face cube-face-${escapeHtml(face.accent)} ${face.id === activeFace.id ? 'is-active' : ''}"
       type="button"
@@ -241,16 +200,12 @@ function renderCube() {
 
   $('#cube-face-title').textContent = activeFace.label;
   $('#cube-face-summary').textContent = activeFace.signal;
-  $('#cube-domain-list').innerHTML = activeFace.domains.map((domainId) => {
-    const domain = domainsById.get(domainId);
-    if (!domain) return '';
-    return `
-      <button class="cube-domain-button" type="button" data-cube-domain="${escapeHtml(domain.id)}">
-        <span><strong>${escapeHtml(domain.name)}</strong><small>${domain.capabilities.length} canonical capabilities</small></span>
-        <span aria-hidden="true">↗</span>
-      </button>
-    `;
-  }).join('');
+  $('#cube-domain-list').innerHTML = activeFace.domainRecords.map((domain) => `
+    <button class="cube-domain-button" type="button" data-cube-domain="${escapeHtml(domain.id)}">
+      <span><strong>${escapeHtml(domain.name)}</strong><small>${domain.capabilities.length} canonical capabilities</small></span>
+      <span aria-hidden="true">↗</span>
+    </button>
+  `).join('');
 }
 
 function selectCubeFace(faceId, focusFace = false) {
@@ -279,36 +234,50 @@ function renderWorkbenches() {
 }
 
 function launchWorkbench(id) {
-  const preset = state.data.composer.presets.find((item) => item.id === id);
-  if (!preset) return;
-  state.activeWorkbenchId = id;
-  state.selected = { recordType: 'workbench', id };
+  let workbench;
+  try {
+    workbench = composeWorkbench(state.data.composer, id);
+  } catch {
+    return;
+  }
+  state.activeWorkbenchId = workbench.id;
+  state.selected = { recordType: 'workbench', id: workbench.id };
   saveStoredState();
   renderActiveWorkbench();
   renderWorkbenches();
-  renderInspector('workbench', id);
+  renderInspector('workbench', workbench.id);
 }
 
 function closeWorkbench() {
   state.activeWorkbenchId = null;
+  if (state.selected?.recordType === 'workbench-tool') state.selected = null;
   saveStoredState();
   renderActiveWorkbench();
   if (state.section === 'workbenches') renderWorkbenches();
 }
 
+function getActiveWorkbench() {
+  if (!state.data || !state.activeWorkbenchId) return null;
+  try {
+    return composeWorkbench(state.data.composer, state.activeWorkbenchId);
+  } catch {
+    return null;
+  }
+}
+
 function renderActiveWorkbench() {
   const panel = $('#active-workbench-panel');
-  const preset = state.data?.composer.presets.find((item) => item.id === state.activeWorkbenchId);
-  if (!preset) {
+  const workbench = getActiveWorkbench();
+  if (!workbench) {
     panel.hidden = true;
     $('#active-workbench-tools').innerHTML = '';
     return;
   }
 
   panel.hidden = false;
-  $('#active-workbench-title').textContent = humanize(preset.id);
-  $('#workbench-status').textContent = `${preset.tools.length} tools loaded for local inspection. Zero tools executed; external actions still require approval.`;
-  $('#active-workbench-tools').innerHTML = preset.tools.map((tool) => `
+  $('#active-workbench-title').textContent = humanize(workbench.id);
+  $('#workbench-status').textContent = `${workbench.tools.length} tools loaded for local inspection. Zero tools executed; external actions still require approval.`;
+  $('#active-workbench-tools').innerHTML = workbench.tools.map((tool) => `
     <button class="workbench-tool" type="button" data-workbench-tool="${escapeHtml(tool)}">
       <span aria-hidden="true">◇</span>
       ${escapeHtml(humanize(tool))}
@@ -317,35 +286,12 @@ function renderActiveWorkbench() {
 }
 
 function exportReviewSnapshot() {
-  const preset = state.data?.composer.presets.find((item) => item.id === state.activeWorkbenchId) ?? null;
-  const snapshot = {
-    version: 1,
-    id: 'seis-full-technology-review-snapshot',
-    generatedAt: new Date().toISOString(),
-    mode: 'browser-local-review',
-    sources: state.data.commandCenter.sourceOfTruth,
-    summary: state.data.commandCenter.summary,
-    activeCubeFace: state.activeCubeFace,
-    activeWorkbench: preset ? {
-      id: preset.id,
-      intent: preset.intent,
-      domains: preset.domains,
-      tools: preset.tools
-    } : null,
-    selectedRecord: state.selected,
-    executionTruth: {
-      toolsExecuted: 0,
-      externalWrites: 0,
-      providerCalls: 0,
-      credentialsRead: 0
-    }
-  };
-
+  const snapshot = createReviewSnapshot({ data: state.data, state });
   const blob = new Blob([`${JSON.stringify(snapshot, null, 2)}\n`], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `seis-full-technology-review-${new Date().toISOString().slice(0, 10)}.json`;
+  link.download = `seis-full-technology-review-${snapshot.generatedAt.slice(0, 10)}.json`;
   document.body.append(link);
   link.click();
   link.remove();
@@ -418,8 +364,9 @@ function renderInspector(recordType, id) {
     summary = record?.signal;
     entries = [['Domains', record?.domains.map(humanize).join(', ')], ['Evidence', 'canonical domain projection'], ['Renderer', 'accessible HTML/CSS fallback'], ['Runtime truth', 'not inferred']];
   } else if (recordType === 'workbench-tool') {
-    record = { id, name: humanize(id) };
-    title = record.name;
+    const workbench = getActiveWorkbench();
+    record = workbench?.tools.includes(id) ? { id, name: humanize(id) } : null;
+    title = record?.name;
     summary = 'Tool slot loaded inside the active Workbench for inspection only.';
     entries = [['Execution', 'not performed'], ['External write', 'denied'], ['Activation', 'requires a future capability adapter and permission resolution']];
   }
