@@ -427,7 +427,13 @@ struct SeisAppleUniversalWorkspaceView: View {
 
     private func applyWorkspaceCommand(commandID: String) {
         guard var session = workspaceSession else { return }
-        guard session.applyWorkspaceCommand(commandID: commandID) else { return }
+        let visibleNodeIDs = workspaceSearchState?.isFiltering == true
+            ? workspaceSearchState?.visibleNodeIDs
+            : nil
+        guard session.applyWorkspaceCommand(
+            commandID: commandID,
+            visibleNodeIDs: visibleNodeIDs
+        ) else { return }
         commit(session)
     }
 
