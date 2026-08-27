@@ -248,7 +248,7 @@ public struct SeisUniversalCommandPalette: Equatable, Sendable {
     public func commands(matching query: String) -> [SeisUniversalCommand] {
         let tokens = query
             .lowercased()
-            .split(whereSeparator: \ .isWhitespace)
+            .split(whereSeparator: \.isWhitespace)
             .map(String.init)
 
         guard !tokens.isEmpty else { return allCommands }
