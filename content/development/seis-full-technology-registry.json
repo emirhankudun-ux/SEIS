@@ -1,11 +1,17 @@
 {
-  "version": 1,
+  "version": 2,
   "id": "seis-full-technology-registry",
-  "goalId": "SEIS-GOAL-021",
+  "requestedGoalId": "SEIS-GOAL-021",
+  "canonicalGoalBinding": {
+    "status": "unresolved",
+    "reason": "No canonical SEIS-GOAL-021 record is present in the repository at this revision. The requested ID is preserved as conversation intent only and must not be presented as a repository-backed goal until governance creates or maps it explicitly.",
+    "source": "docs/SEIS_GOAL_TRACKING.md"
+  },
   "mode": "registry-first-local-demo",
   "status": "prototype",
   "summary": {
     "domainCount": 16,
+    "capabilityCount": 96,
     "implementationClasses": ["native-core", "native-tool", "adapter", "plugin", "research"],
     "maturityStates": ["concept", "research", "prototype", "experimental", "alpha", "beta", "stable", "lts", "legacy", "deprecated"]
   },
@@ -31,16 +37,24 @@
     "universal-inspector",
     "universal-graph",
     "universal-timeline",
+    "universal-sequencer",
+    "universal-canvas",
     "universal-viewport",
     "universal-diff",
     "universal-history",
+    "universal-annotation",
+    "universal-task-binding",
     "universal-search",
+    "universal-command-palette",
     "universal-permission-graph",
     "universal-transaction-system",
     "universal-recovery",
     "universal-coordinate-system",
     "universal-time-system",
     "universal-units-system",
+    "universal-property-system",
+    "universal-expression-engine",
+    "universal-simulation-bus",
     "universal-digital-twin-contract"
   ],
   "coreSystems": [
@@ -49,6 +63,10 @@
     "seis-atlas",
     "seis-forge",
     "seis-nexus",
+    "seis-chronos",
+    "seis-prism",
+    "seis-pulse",
+    "seis-sentinel",
     "seis-proof",
     "seis-reality",
     "seis-game-engine",
@@ -61,6 +79,7 @@
     "defaultWrite": "deny",
     "externalMutationRequiresApproval": true,
     "credentialsInRegistry": false,
-    "demoClaimsMustBeExplicit": true
+    "demoClaimsMustBeExplicit": true,
+    "unverifiedCapabilitiesMustRemainUnavailableOrProposed": true
   }
 }
