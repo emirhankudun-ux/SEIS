@@ -23,10 +23,12 @@ on:
       - 'apps/seis-core/full-technology-service-worker.js'
       - 'apps/seis-core/full-technology-center.css'
       - 'apps/seis-core/manifest.webmanifest'
+      - 'apps/seis-core/README.md'
       - 'apps/seis-core/test/full-technology-center.test.js'
       - 'apps/seis-core/test/full-technology-experience.test.js'
       - 'apps/seis-core/test/full-technology-runtime.test.js'
       - 'apps/seis-core/test/full-technology-offline.test.js'
+      - 'apps/seis-core/test/full-technology-http-smoke.test.js'
       - 'docs/platform/seis-full-technology-foundation.md'
       - '.github/workflows/seis-full-technology-foundation.yml'
   pull_request:
@@ -47,10 +49,12 @@ on:
       - 'apps/seis-core/full-technology-service-worker.js'
       - 'apps/seis-core/full-technology-center.css'
       - 'apps/seis-core/manifest.webmanifest'
+      - 'apps/seis-core/README.md'
       - 'apps/seis-core/test/full-technology-center.test.js'
       - 'apps/seis-core/test/full-technology-experience.test.js'
       - 'apps/seis-core/test/full-technology-runtime.test.js'
       - 'apps/seis-core/test/full-technology-offline.test.js'
+      - 'apps/seis-core/test/full-technology-http-smoke.test.js'
       - 'docs/platform/seis-full-technology-foundation.md'
       - '.github/workflows/seis-full-technology-foundation.yml'
 
@@ -87,3 +91,6 @@ jobs:
 
       - name: Run offline-first boundary tests
         run: node --test apps/seis-core/test/full-technology-offline.test.js
+
+      - name: Run repository-root HTTP smoke
+        run: node --test apps/seis-core/test/full-technology-http-smoke.test.js
