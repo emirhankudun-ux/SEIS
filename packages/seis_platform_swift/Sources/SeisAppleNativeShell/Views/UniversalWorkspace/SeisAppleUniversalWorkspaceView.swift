@@ -5,7 +5,7 @@ struct SeisAppleUniversalWorkspaceView: View {
     let repositoryPath: String
 
     @State private var store = SeisFullTechnologyNativeStore()
-    @State private var workspaceState: SeisUniversalWorkspaceState?
+    @State private var workspaceSession: SeisUniversalWorkspaceSession?
     @State private var isCommandPalettePresented = false
     @State private var commandQuery = ""
     @SceneStorage("seis.universal-workspace.snapshot.v2") private var sceneSnapshotJSON = ""
@@ -17,10 +17,14 @@ struct SeisAppleUniversalWorkspaceView: View {
             .onExitCommand {
                 applyWorkspaceCommand(commandID: "selection.clear")
             }
+            .focusedSceneValue(
+                \.seisUniversalWorkspaceCommandActions,
+                focusedCommandActions
+            )
             .sheet(isPresented: $isCommandPalettePresented) {
-                if let state = workspaceState {
+                if let session = workspaceSession {
                     SeisUniversalCommandPaletteView(
-                        document: state.document,
+                        document: session.state.document,
                         query: $commandQuery
                     ) { commandID in
                         applyWorkspaceCommand(commandID: commandID)
@@ -36,40 +40,38 @@ struct SeisAppleUniversalWorkspaceView: View {
                     .frame(minWidth: 560, minHeight: 430)
                 }
             }
-            .background {
-                Button("Open Commands") {
-                    isCommandPalettePresented = true
-                }
-                .keyboardShortcut("k", modifiers: .command)
-                .frame(width: 0, height: 0)
-                .opacity(0)
-            }
     }
 
     @ViewBuilder
     private var workspaceLayout: some View {
-        if let state = workspaceState {
-            HSplitView {
-                if state.isHierarchyVisible {
-                    hierarchy(state)
-                        .frame(minWidth: 220, idealWidth: 280, maxWidth: 380)
-                }
-
-                if state.inspectorDock == .leading {
-                    inspector(state)
-                        .frame(minWidth: 300, idealWidth: 360, maxWidth: 460)
-                }
-
-                viewport(state)
-                    .frame(minWidth: 520, idealWidth: 760)
-
-                if state.inspectorDock == .trailing {
-                    inspector(state)
-                        .frame(minWidth: 300, idealWidth: 360, maxWidth: 460)
-                }
-            }
+        if let session = workspaceSession {
+            workspaceContent(session)
         } else {
             loadingSurface
+        }
+    }
+
+    private func workspaceContent(_ session: SeisUniversalWorkspaceSession) -> some View {
+        let state = session.state
+
+        return HSplitView {
+            if state.isHierarchyVisible {
+                hierarchy(state)
+                    .frame(minWidth: 220, idealWidth: 280, maxWidth: 380)
+            }
+
+            if state.inspectorDock == .leading {
+                inspector(state)
+                    .frame(minWidth: 300, idealWidth: 360, maxWidth: 460)
+            }
+
+            viewport(session)
+                .frame(minWidth: 520, idealWidth: 760)
+
+            if state.inspectorDock == .trailing {
+                inspector(state)
+                    .frame(minWidth: 300, idealWidth: 360, maxWidth: 460)
+            }
         }
     }
 
@@ -92,9 +94,11 @@ struct SeisAppleUniversalWorkspaceView: View {
         )
     }
 
-    private func viewport(_ state: SeisUniversalWorkspaceState) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            viewportHeader(state)
+    private func viewport(_ session: SeisUniversalWorkspaceSession) -> some View {
+        let state = session.state
+
+        return VStack(alignment: .leading, spacing: 0) {
+            viewportHeader(session)
             Divider()
             SeisUniversalBreadcrumbView(
                 document: state.document,
@@ -119,8 +123,10 @@ struct SeisAppleUniversalWorkspaceView: View {
         .accessibilityLabel("Universal Viewport")
     }
 
-    private func viewportHeader(_ state: SeisUniversalWorkspaceState) -> some View {
-        HStack(spacing: 12) {
+    private func viewportHeader(_ session: SeisUniversalWorkspaceSession) -> some View {
+        let state = session.state
+
+        return HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
                 Label("Universal Viewport", systemImage: "rectangle.inset.filled")
                     .font(.title2.weight(.semibold))
@@ -130,6 +136,28 @@ struct SeisAppleUniversalWorkspaceView: View {
             }
 
             Spacer()
+
+            HStack(spacing: 4) {
+                Button {
+                    applyWorkspaceCommand(commandID: "navigation.back")
+                } label: {
+                    Image(systemName: "chevron.backward")
+                }
+                .disabled(!session.canNavigateBack)
+                .help("Back (⌘[)")
+                .accessibilityLabel("Back through selection history")
+
+                Button {
+                    applyWorkspaceCommand(commandID: "navigation.forward")
+                } label: {
+                    Image(systemName: "chevron.forward")
+                }
+                .disabled(!session.canNavigateForward)
+                .help("Forward (⌘])")
+                .accessibilityLabel("Forward through selection history")
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
 
             if !state.isHierarchyVisible {
                 Button {
@@ -228,18 +256,41 @@ struct SeisAppleUniversalWorkspaceView: View {
         }
     }
 
+    private var focusedCommandActions: SeisUniversalWorkspaceCommandActions {
+        SeisUniversalWorkspaceCommandActions(
+            canNavigateBack: workspaceSession?.canNavigateBack ?? false,
+            canNavigateForward: workspaceSession?.canNavigateForward ?? false,
+            hasSelection: !(workspaceSession?.state.selectionGraph.selectedNodeIDs.isEmpty ?? true),
+            navigateBack: {
+                applyWorkspaceCommand(commandID: "navigation.back")
+            },
+            navigateForward: {
+                applyWorkspaceCommand(commandID: "navigation.forward")
+            },
+            clearSelection: {
+                applyWorkspaceCommand(commandID: "selection.clear")
+            },
+            openCommandPalette: {
+                isCommandPalettePresented = true
+            }
+        )
+    }
+
     private func loadIfNeeded() {
         guard case .idle = store.phase else { return }
         store.load(startingAt: URL(fileURLWithPath: repositoryPath, isDirectory: true))
 
         guard let explorer = store.explorerState else { return }
         let document = SeisUniversalWorkspaceDocument(catalog: explorer.catalog)
+        let state: SeisUniversalWorkspaceState
 
         if let snapshot = restoredSnapshot {
-            workspaceState = SeisUniversalWorkspaceState(document: document, restoring: snapshot)
+            state = SeisUniversalWorkspaceState(document: document, restoring: snapshot)
         } else {
-            workspaceState = SeisUniversalWorkspaceState(document: document)
+            state = SeisUniversalWorkspaceState(document: document)
         }
+
+        workspaceSession = SeisUniversalWorkspaceSession(state: state)
     }
 
     private var restoredSnapshot: SeisUniversalWorkspaceSceneSnapshot? {
@@ -251,15 +302,15 @@ struct SeisAppleUniversalWorkspaceView: View {
     }
 
     private func select(nodeID: String, mode: SeisUniversalSelectionMode) {
-        guard var state = workspaceState else { return }
-        guard state.selectionGraph.select(nodeID: nodeID, mode: mode) else { return }
-        commit(state)
+        guard var session = workspaceSession else { return }
+        guard session.select(nodeID: nodeID, mode: mode) else { return }
+        commit(session)
     }
 
     private func setExpanded(nodeID: String, isExpanded: Bool) {
-        guard var state = workspaceState else { return }
-        guard state.setExpanded(nodeID: nodeID, isExpanded: isExpanded) else { return }
-        commit(state)
+        guard var session = workspaceSession else { return }
+        guard session.setExpanded(nodeID: nodeID, isExpanded: isExpanded) else { return }
+        commit(session)
     }
 
     private func handleMoveCommand(_ direction: MoveCommandDirection) {
@@ -278,14 +329,14 @@ struct SeisAppleUniversalWorkspaceView: View {
     }
 
     private func applyWorkspaceCommand(commandID: String) {
-        guard var state = workspaceState else { return }
-        guard state.applyWorkspaceCommand(commandID: commandID) else { return }
-        commit(state)
+        guard var session = workspaceSession else { return }
+        guard session.applyWorkspaceCommand(commandID: commandID) else { return }
+        commit(session)
     }
 
-    private func commit(_ state: SeisUniversalWorkspaceState) {
-        workspaceState = state
-        persist(state.snapshot)
+    private func commit(_ session: SeisUniversalWorkspaceSession) {
+        workspaceSession = session
+        persist(session.state.snapshot)
     }
 
     private func persist(_ snapshot: SeisUniversalWorkspaceSceneSnapshot) {
