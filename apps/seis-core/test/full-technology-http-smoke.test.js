@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFile, stat } from 'node:fs/promises';
 
-const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url));
+const repositoryRoot = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)));
 
 const contentTypes = new Map([
   ['.html', 'text/html; charset=utf-8'],
@@ -95,7 +95,7 @@ test('repository-root HTTP route serves the complete Full Technology slice', asy
 
 test('repository-root smoke server rejects traversal paths', async () => {
   await withServer(async (origin) => {
-    const response = await fetch(`${origin}/%2e%2e/package.json`);
+    const response = await fetch(`${origin}/%2e%2e%2fpackage.json`);
     assert.equal(response.status, 404);
   });
 });
