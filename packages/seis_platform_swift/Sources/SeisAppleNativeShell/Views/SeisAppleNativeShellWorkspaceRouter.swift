@@ -1,0 +1,432 @@
+import SeisPlatformKit
+import SwiftUI
+
+struct SeisAppleNativeShellWorkspaceRouter: View {
+    @ObservedObject var demoShellState: SeisDemoNativeShellState
+    let repositoryPath: String
+    @Binding var activePanel: SeisAppleNativeShellPanel
+    @Binding var route: SeisAppleNativeShellRoute
+
+    var body: some View {
+        #if os(macOS)
+        VStack(spacing: 0) {
+            routeBar
+            Divider()
+            routeContent
+        }
+        #else
+        SeisAppleNativeShellZeroToDemoView(
+            demoShellState: demoShellState,
+            repositoryPath: repositoryPath,
+            activePanel: $activePanel
+        )
+        #endif
+    }
+
+    #if os(macOS)
+    private var routeBar: some View {
+        HStack(spacing: 10) {
+            Label("SEIS", systemImage: "cube.transparent")
+                .font(.headline)
+
+            Picker("Workspace", selection: $route) {
+                ForEach(SeisAppleNativeShellRoute.allCases, id: \.self) { item in
+                    Label(item.title, systemImage: item.symbolName)
+                        .tag(item)
+                }
+            }
+            .pickerStyle(.segmented)
+            .frame(maxWidth: 660)
+
+            Spacer()
+
+            Label("Read-only foundation", systemImage: "lock.shield")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(.bar)
+    }
+
+    @ViewBuilder
+    private var routeContent: some View {
+        switch route {
+        case .demo:
+            SeisAppleNativeShellZeroToDemoView(
+                demoShellState: demoShellState,
+                repositoryPath: repositoryPath,
+                activePanel: $activePanel
+            )
+            .onAppear { activePanel = .demo }
+
+        case .platform:
+            SeisAppleNativeShellZeroToDemoView(
+                demoShellState: demoShellState,
+                repositoryPath: repositoryPath,
+                activePanel: $activePanel
+            )
+            .onAppear { activePanel = .applePlatform }
+
+        case .technologyCenter:
+            SeisAppleNativeTechnologyCenterView(repositoryPath: repositoryPath)
+
+        case .universalWorkspace:
+            SeisAppleUniversalWorkspaceView(repositoryPath: repositoryPath)
+        }
+    }
+    #endif
+}
+
+#if os(macOS)
+private struct SeisAppleNativeTechnologyCenterView: View {
+    let repositoryPath: String
+    @State private var store = SeisFullTechnologyNativeStore()
+    @State private var query = ""
+
+    var body: some View {
+        NavigationSplitView {
+            VStack(spacing: 0) {
+                technologyHeader
+                Divider()
+                technologySidebar
+            }
+            .navigationSplitViewColumnWidth(min: 250, ideal: 300, max: 380)
+        } detail: {
+            technologyDetail
+        }
+        .searchable(text: $query, placement: .sidebar, prompt: "Search domains and capabilities")
+        .onChange(of: query) { newValue in
+            store.updateQuery(newValue)
+        }
+        .task { loadIfNeeded() }
+    }
+
+    private var technologyHeader: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label("Technology Center", systemImage: "cpu")
+                .font(.title3.weight(.semibold))
+            Text("Canonical registry · local · read-only")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+    }
+
+    @ViewBuilder
+    private var technologySidebar: some View {
+        switch store.phase {
+        case .idle, .loading:
+            ProgressView("Loading canonical registry…")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        case .failed:
+            failureView
+        case .loaded(let explorer):
+            if explorer.visibleDomains.isEmpty {
+                ContentUnavailableView(
+                    "No matching domains",
+                    systemImage: "magnifyingglass",
+                    description: Text("Clear or revise the search query.")
+                )
+            } else {
+                List(explorer.visibleDomains, id: \.id) { domain in
+                    Button {
+                        _ = store.selectDomain(id: domain.id)
+                    } label: {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(domain.name)
+                                .font(.headline)
+                            Text("\(domain.capabilities.count) capabilities")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var technologyDetail: some View {
+        if let domain = store.explorerState?.selectedDomain {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    Label(domain.name, systemImage: "square.stack.3d.up")
+                        .font(.largeTitle.weight(.semibold))
+                    Text(domain.id)
+                        .font(.caption.monospaced())
+                        .foregroundStyle(.secondary)
+
+                    Divider()
+
+                    Text("Capabilities")
+                        .font(.headline)
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 210), spacing: 10)], spacing: 10) {
+                        ForEach(domain.capabilities, id: \.self) { capability in
+                            HStack {
+                                Image(systemName: "circle.grid.2x2")
+                                Text(capability)
+                                    .font(.callout.monospaced())
+                                Spacer()
+                            }
+                            .padding(12)
+                            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+                        }
+                    }
+
+                    Label("Inspection only — no tool execution or external mutation.", systemImage: "lock.shield")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(24)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        } else {
+            ContentUnavailableView(
+                "Select a technology domain",
+                systemImage: "cpu",
+                description: Text("The canonical registry remains read-only.")
+            )
+        }
+    }
+
+    private var failureView: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.largeTitle)
+            Text(store.failure?.title ?? "Technology Center unavailable")
+                .font(.headline)
+            Text(store.failure?.detail ?? "The canonical registry could not be loaded.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            Button("Retry") { load() }
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func loadIfNeeded() {
+        if case .idle = store.phase {
+            load()
+        }
+    }
+
+    private func load() {
+        store.load(startingAt: URL(fileURLWithPath: repositoryPath, isDirectory: true))
+    }
+}
+
+private struct SeisAppleUniversalWorkspaceView: View {
+    let repositoryPath: String
+    @State private var store = SeisFullTechnologyNativeStore()
+    @State private var selection: SeisUniversalSelection?
+
+    var body: some View {
+        HSplitView {
+            viewport
+                .frame(minWidth: 520, idealWidth: 760)
+            inspector
+                .frame(minWidth: 300, idealWidth: 360, maxWidth: 460)
+        }
+        .task { loadIfNeeded() }
+    }
+
+    private var viewport: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Label("Universal Viewport", systemImage: "rectangle.inset.filled")
+                        .font(.title2.weight(.semibold))
+                    Text("Registry-backed selection surface · no renderer claim")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Label("Local only", systemImage: "network.slash")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(16)
+
+            Divider()
+
+            Group {
+                switch store.phase {
+                case .idle, .loading:
+                    ProgressView("Loading viewport model…")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .failed:
+                    ContentUnavailableView(
+                        "Viewport unavailable",
+                        systemImage: "exclamationmark.triangle",
+                        description: Text(store.failure?.detail ?? "The canonical registry could not be loaded.")
+                    )
+                case .loaded(let explorer):
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 250), spacing: 12)], spacing: 12) {
+                            ForEach(explorer.catalog.registry.domains, id: \.id) { domain in
+                                domainCard(domain)
+                            }
+                        }
+                        .padding(16)
+                    }
+                }
+            }
+        }
+    }
+
+    private func domainCard(_ domain: SeisFullTechnologyDomain) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Button {
+                selection = SeisUniversalSelection(
+                    kind: .domain,
+                    id: domain.id,
+                    title: domain.name,
+                    subtitle: "Technology domain",
+                    metadata: [
+                        "capabilityCount": String(domain.capabilities.count),
+                        "network": "deny",
+                        "externalWrite": "false"
+                    ]
+                )
+            } label: {
+                HStack {
+                    Image(systemName: "square.stack.3d.up")
+                    Text(domain.name)
+                        .font(.headline)
+                    Spacer()
+                }
+            }
+            .buttonStyle(.plain)
+
+            FlowLayout(spacing: 6) {
+                ForEach(domain.capabilities, id: \.self) { capability in
+                    Button(capability) {
+                        selection = SeisUniversalSelection(
+                            kind: .capability,
+                            id: capability,
+                            title: capability,
+                            subtitle: domain.name,
+                            metadata: [
+                                "domain": domain.id,
+                                "network": "deny",
+                                "externalWrite": "false"
+                            ]
+                        )
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
+            }
+        }
+        .padding(14)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+    }
+
+    private var inspector: some View {
+        let presentation = SeisUniversalInspectorPresentation(selection: selection)
+
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Label("Universal Inspector", systemImage: "sidebar.right")
+                    .font(.title2.weight(.semibold))
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(presentation.title)
+                        .font(.headline)
+                    Text(presentation.subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                ForEach(presentation.sections) { section in
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(section.title.uppercased())
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(.secondary)
+
+                        ForEach(section.rows) { row in
+                            HStack(alignment: .firstTextBaseline) {
+                                Text(row.label)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Text(row.value)
+                                    .font(.callout.monospaced())
+                                    .multilineTextAlignment(.trailing)
+                            }
+                        }
+                    }
+                    .padding(12)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+                }
+
+                Label("Mutation disabled", systemImage: "lock.fill")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private func loadIfNeeded() {
+        guard case .idle = store.phase else { return }
+        store.load(startingAt: URL(fileURLWithPath: repositoryPath, isDirectory: true))
+    }
+}
+
+private struct FlowLayout: Layout {
+    let spacing: CGFloat
+
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) -> CGSize {
+        let width = proposal.width ?? .infinity
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        var rowHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x > 0, x + size.width > width {
+                x = 0
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+
+        return CGSize(width: proposal.width ?? x, height: y + rowHeight)
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
+        var x = bounds.minX
+        var y = bounds.minY
+        var rowHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x > bounds.minX, x + size.width > bounds.maxX {
+                x = bounds.minX
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            subview.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+    }
+}
+#endif
