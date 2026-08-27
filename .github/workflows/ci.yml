@@ -160,3 +160,40 @@ jobs:
             reports/quality-governance-publish-report-summary.json
           if-no-files-found: warn
           retention-days: 14
+
+  static-package:
+    name: Static package routes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      # check:static-build validates the published static package, but it only
+      # ran inside pages.yml, which fires on push to main. Nothing built or
+      # verified that package on a pull request, so a route regression could
+      # only be discovered after it had already deployed -- which is how all
+      # seven locale routes came to ship with a 404 for their CSS and JS.
+      # This job runs the same two steps as the deploy job, without deploying.
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Use Node.js
+        # Matches the Node version pages.yml deploys with, so this job validates
+        # the same package the deploy would produce rather than a near approximation.
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static public cloud package
+        run: npm run build:static
+        env:
+          SEIS_SITE_URL: https://emirhankudun-ux.github.io/SEIS
+          SEIS_CLOUD_PROVIDER: github-pages
+
+      - name: Check static package
+        run: npm run check:static-build

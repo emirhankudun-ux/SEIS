@@ -19,6 +19,7 @@ copyDir("docs/polyglot", join(staticDir, "docs/polyglot"));
 copyDir("docs/server", join(staticDir, "docs/server"));
 copyDir("docs/strategy", join(staticDir, "docs/strategy"));
 copyDir("docs/governance", join(staticDir, "docs/governance"));
+copyDir("docs/ai", join(staticDir, "docs/ai"));
 copyDir("content", join(staticDir, "content"));
 copyDir("polyglot/contracts", join(staticDir, "contracts/polyglot"));
 copyFile("deploy/server-targets.json", join(staticDir, "_deploy/server-targets.json"));
@@ -109,16 +110,34 @@ function rewriteCaseStudyRoutes(targetDir) {
 }
 
 function rewriteForLocaleRoute(html, locale, direction, title) {
-  return html
+  return rewriteRelativeReferences(html)
     .replace(/<html lang="[^"]+"([^>]*)>/, `<html lang="${locale}" dir="${direction}"$1>`)
-    .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
-    .replaceAll('href="./favicon.svg"', 'href="../favicon.svg"')
-    .replaceAll('href="./manifest.webmanifest"', 'href="../manifest.webmanifest"')
-    .replaceAll('href="./public/', 'href="../public/')
-    .replaceAll('href="./assets/', 'href="../assets/')
-    .replaceAll('href="./src/', 'href="../src/')
-    .replaceAll('href="./docs/', 'href="../docs/')
-    .replaceAll('src="./src/', 'src="../src/');
+    .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`);
+}
+
+// A locale route lives one directory below the package root, so every relative
+// reference inside the copied index.html has to climb back up one level.
+//
+// This used to be a hand-maintained list of `./`-prefixed prefixes, and it
+// matched none of the paths index.html actually uses -- `style.css`,
+// `script.js`, `manifest.json`, `favicon.svg`, `icons/icon-512.png` and
+// `./desktop.html` all carry no `./public/`-style prefix. The result was that
+// all seven generated locale routes served raw unstyled HTML: their CSS, JS,
+// manifest, icon and every in-site link 404'd. Rewriting by shape instead of by
+// prefix cannot silently miss a path the page later starts using.
+function rewriteRelativeReferences(html) {
+  return html.replace(/\b(href|src)="([^"]*)"/g, (match, attribute, reference) => {
+    if (reference === "" || isNonRelativeReference(reference)) return match;
+    if (reference.startsWith("../")) return match;
+    return `${attribute}="../${reference.startsWith("./") ? reference.slice(2) : reference}"`;
+  });
+}
+
+// Scheme-qualified (https:, mailto:, data:), protocol-relative, root-relative,
+// fragment-only and query-only references already resolve correctly from a
+// subdirectory and must be left untouched.
+function isNonRelativeReference(reference) {
+  return /^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|\/\/|\/|#|\?)/.test(reference);
 }
 
 function writeSitemap(targetDir) {

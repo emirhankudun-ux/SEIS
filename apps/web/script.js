@@ -351,6 +351,8 @@
     }
   };
 
+  const LANG_STORAGE_KEY = "seis.site.lang.v1";
+
   const state = {
     lang: "en",
     reducedMotion: false,
@@ -382,10 +384,57 @@
     }, 2200);
   }
 
-  function applyLanguage(lang) {
+  // The static build publishes one route per locale (/tr/, /de/, ...), but this
+  // page renders only the two languages COPY actually contains. Resolution order
+  // mirrors src/scripts/i18n-system.js: explicit ?lang wins, then the route
+  // segment, then a stored preference, then the served <html lang>.
+  function resolveInitialLanguage() {
+    const fromQuery = new URLSearchParams(window.location.search).get("lang");
+    if (isSupportedLanguage(fromQuery)) {
+      return fromQuery;
+    }
+
+    const fromRoute = window.location.pathname.split("/").filter(Boolean).find(isSupportedLanguage);
+    if (isSupportedLanguage(fromRoute)) {
+      return fromRoute;
+    }
+
+    const stored = readStoredLanguage();
+    if (isSupportedLanguage(stored)) {
+      return stored;
+    }
+
+    const served = (document.documentElement.lang || "").slice(0, 2).toLowerCase();
+    return isSupportedLanguage(served) ? served : "en";
+  }
+
+  function isSupportedLanguage(value) {
+    return value === "en" || value === "tr";
+  }
+
+  function readStoredLanguage() {
+    try {
+      return window.localStorage.getItem(LANG_STORAGE_KEY);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function storeLanguage(lang) {
+    try {
+      window.localStorage.setItem(LANG_STORAGE_KEY, lang);
+    } catch (error) {
+      /* storage unavailable (private mode, blocked site data) -- non-fatal */
+    }
+  }
+
+  function applyLanguage(lang, persist) {
     const nextLang = lang === "tr" ? "tr" : "en";
     state.lang = nextLang;
     document.documentElement.lang = nextLang;
+    if (persist) {
+      storeLanguage(nextLang);
+    }
     document.querySelectorAll("[data-copy-key]").forEach(function (node) {
       const key = node.getAttribute("data-copy-key");
       if (COPY[nextLang][key]) {
@@ -631,7 +680,7 @@
     if (languageToggle) {
       languageToggle.addEventListener("click", function () {
         const nextLang = state.lang === "en" ? "tr" : "en";
-        applyLanguage(nextLang);
+        applyLanguage(nextLang, true);
         showToast(nextLang === "tr" ? COPY[state.lang].languageToTurkish : COPY[state.lang].languageToEnglish);
       });
     }
@@ -662,7 +711,7 @@
       motionToggle.setAttribute("aria-pressed", state.reducedMotion ? "true" : "false");
     }
     bindEvents();
-    applyLanguage("en");
+    applyLanguage(resolveInitialLanguage(), false);
     updateScrollState();
     setActiveNav();
     setupReveal();
