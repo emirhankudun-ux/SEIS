@@ -39,6 +39,7 @@ apps/seis-core/
     full-technology-experience.test.js
     full-technology-runtime.test.js
     full-technology-offline.test.js
+    full-technology-http-smoke.test.js
 ```
 
 ## Primary Product Surfaces
@@ -84,6 +85,23 @@ apps/seis-core/
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
 - Architecture Center: system map, module relationships, dependency graph, technical debt register, and platform phases.
 - Knowledge: knowledge graph, relationship contracts, memory evidence, decision history, reusable patterns, and knowledge registry surfaces.
+
+## 10-lane SEIS router
+
+The existing Command Center preserves the 10-lane SEIS router contract and keeps it separate from the Full Technology Workbench Composer. The router continues to expose these governed lanes:
+
+1. `seis`
+2. `seis-governance`
+3. `seis-cloud`
+4. `seis-code`
+5. `seis-design`
+6. `seis-data`
+7. `seis-security`
+8. `seis-research`
+9. `seis-automation`
+10. `seis-product`
+
+The generated route artifact remains `apps/seis-core/data/seis-router-routes.json`. Full Technology Workbenches organize local inspection tools; they do not replace routing, activate agents, or grant tool authority.
 
 ## Full Technology Truth Boundary
 
@@ -147,6 +165,7 @@ node --test test/seis-full-technology-foundation.test.mjs
 node --test apps/seis-core/test/full-technology-runtime.test.js
 node --test apps/seis-core/test/full-technology-center.test.js apps/seis-core/test/full-technology-experience.test.js
 node --test apps/seis-core/test/full-technology-offline.test.js
+node --test apps/seis-core/test/full-technology-http-smoke.test.js
 ```
 
 Existing Command Center router validation remains:
