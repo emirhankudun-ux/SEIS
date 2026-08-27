@@ -23,6 +23,60 @@ public extension SeisUniversalWorkspaceDocument {
     }
 }
 
+public extension SeisUniversalCommandPalette {
+    var workspaceNavigationCommands: [SeisUniversalCommand] {
+        [
+            SeisUniversalCommand(
+                id: "selection.next",
+                title: "Next Selection",
+                subtitle: "Move focus to the next visible workspace item.",
+                searchTerms: ["next selection", "next item", "move focus", "keyboard navigation"]
+            ),
+            SeisUniversalCommand(
+                id: "selection.previous",
+                title: "Previous Selection",
+                subtitle: "Move focus to the previous visible workspace item.",
+                searchTerms: ["previous selection", "previous item", "move focus", "keyboard navigation"]
+            ),
+            SeisUniversalCommand(
+                id: "selection.clear",
+                title: "Clear Selection",
+                subtitle: "Clear the current workspace selection.",
+                searchTerms: ["clear selection", "deselect", "escape"]
+            ),
+            SeisUniversalCommand(
+                id: "hierarchy.expand-focused",
+                title: "Expand Focused Item",
+                subtitle: "Expand the focused hierarchy item when it has children.",
+                searchTerms: ["expand focused", "expand hierarchy", "open children"]
+            ),
+            SeisUniversalCommand(
+                id: "hierarchy.collapse-focused",
+                title: "Collapse Focused Item",
+                subtitle: "Collapse the focused hierarchy item when it has children.",
+                searchTerms: ["collapse focused", "collapse hierarchy", "close children"]
+            )
+        ]
+    }
+
+    func workspaceCommands(matching query: String) -> [SeisUniversalCommand] {
+        let commands = workspaceNavigationCommands + allCommands
+        let tokens = query
+            .lowercased()
+            .split(whereSeparator: \.isWhitespace)
+            .map(String.init)
+
+        guard !tokens.isEmpty else { return commands }
+
+        return commands.filter { command in
+            let corpus = ([command.id, command.title, command.subtitle] + command.searchTerms)
+                .joined(separator: " ")
+                .lowercased()
+            return tokens.allSatisfy { token in corpus.contains(token) }
+        }
+    }
+}
+
 public extension SeisUniversalWorkspaceState {
     @discardableResult
     mutating func moveFocus(_ direction: SeisUniversalFocusDirection) -> Bool {
@@ -66,5 +120,23 @@ public extension SeisUniversalWorkspaceState {
         }
 
         return setExpanded(nodeID: focusedNodeID, isExpanded: isExpanded)
+    }
+
+    @discardableResult
+    mutating func applyWorkspaceCommand(commandID: String) -> Bool {
+        switch commandID {
+        case "selection.next":
+            return moveFocus(.next)
+        case "selection.previous":
+            return moveFocus(.previous)
+        case "selection.clear":
+            return clearSelection()
+        case "hierarchy.expand-focused":
+            return setFocusedNodeExpanded(true)
+        case "hierarchy.collapse-focused":
+            return setFocusedNodeExpanded(false)
+        default:
+            return apply(commandID: commandID)
+        }
     }
 }
