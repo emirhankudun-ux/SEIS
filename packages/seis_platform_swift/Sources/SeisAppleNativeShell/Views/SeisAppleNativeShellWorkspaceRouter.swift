@@ -124,10 +124,10 @@ private struct SeisAppleNativeTechnologyCenterView: View {
             failureView
         case .loaded(let explorer):
             if explorer.visibleDomains.isEmpty {
-                ContentUnavailableView(
-                    "No matching domains",
+                SeisAppleWorkspaceEmptyState(
+                    title: "No matching domains",
                     systemImage: "magnifyingglass",
-                    description: Text("Clear or revise the search query.")
+                    description: "Clear or revise the search query."
                 )
             } else {
                 List(explorer.visibleDomains, id: \.id) { domain in
@@ -185,10 +185,10 @@ private struct SeisAppleNativeTechnologyCenterView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         } else {
-            ContentUnavailableView(
-                "Select a technology domain",
+            SeisAppleWorkspaceEmptyState(
+                title: "Select a technology domain",
                 systemImage: "cpu",
-                description: Text("The canonical registry remains read-only.")
+                description: "The canonical registry remains read-only."
             )
         }
     }
@@ -260,10 +260,10 @@ private struct SeisAppleUniversalWorkspaceView: View {
                     ProgressView("Loading viewport model…")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 case .failed:
-                    ContentUnavailableView(
-                        "Viewport unavailable",
+                    SeisAppleWorkspaceEmptyState(
+                        title: "Viewport unavailable",
                         systemImage: "exclamationmark.triangle",
-                        description: Text(store.failure?.detail ?? "The canonical registry could not be loaded.")
+                        description: store.failure?.detail ?? "The canonical registry could not be loaded."
                     )
                 case .loaded(let explorer):
                     ScrollView {
@@ -376,6 +376,29 @@ private struct SeisAppleUniversalWorkspaceView: View {
     private func loadIfNeeded() {
         guard case .idle = store.phase else { return }
         store.load(startingAt: URL(fileURLWithPath: repositoryPath, isDirectory: true))
+    }
+}
+
+private struct SeisAppleWorkspaceEmptyState: View {
+    let title: String
+    let systemImage: String
+    let description: String
+
+    var body: some View {
+        VStack(spacing: 10) {
+            Image(systemName: systemImage)
+                .font(.largeTitle)
+                .foregroundStyle(.secondary)
+            Text(title)
+                .font(.headline)
+            Text(description)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: 420)
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
