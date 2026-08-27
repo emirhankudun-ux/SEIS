@@ -64,6 +64,10 @@ on:
       - 'docs/platform/seis-full-technology-foundation.md'
       - '.github/workflows/seis-full-technology-foundation.yml'
 
+concurrency:
+  group: seis-full-technology-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -114,5 +118,5 @@ jobs:
       - name: Record Swift toolchain
         run: swift --version
 
-      - name: Run Full Technology native contract tests
-        run: swift test --package-path packages/seis_platform_swift --filter SeisFullTechnologyContractsTests
+      - name: Run Full Technology native tests
+        run: swift test --package-path packages/seis_platform_swift --filter SeisFullTechnology
