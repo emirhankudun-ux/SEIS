@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "id": "seis-full-technology-command-center",
+  "status": "prototype",
+  "sourceOfTruth": [
+    "content/development/seis-full-technology-registry.json",
+    "content/development/seis-technology-tool-catalog.json",
+    "content/development/seis-engine-capability-registry.json",
+    "content/development/seis-workbench-composer.json",
+    "content/development/seis-cube-runtime-contract.json"
+  ],
+  "summary": {
+    "domainCount": 16,
+    "capabilityCount": 96,
+    "toolCount": 48,
+    "engineFamilyCount": 4,
+    "workbenchCount": 12,
+    "verifiedRuntimeClaims": 0,
+    "goalBinding": "requested-SEIS-GOAL-021-unresolved"
+  },
+  "primarySections": [
+    {"id":"technology-atlas","title":"Technology Atlas","view":"searchable-list","purpose":"Browse domains, capabilities and first-wave tools without card overload."},
+    {"id":"workbench-composer","title":"Workbench Composer","view":"intent-and-preset","purpose":"Turn intent into a focused set of tools with permissions resolved before activation."},
+    {"id":"engine-foundation","title":"Engine Foundation","view":"split-inspector","purpose":"Inspect Game, Reality, 3D and Digital Human contracts and maturity."},
+    {"id":"cube-runtime","title":"Cube Runtime","view":"graph-plus-accessible-tree","purpose":"Project source-backed states and relationships without inventing runtime truth."},
+    {"id":"evidence-boundary","title":"Evidence Boundary","view":"status-table","purpose":"Keep proposed, contract-validated and runtime-validated states visibly distinct."}
+  ],
+  "featuredWorkbenches": ["digital-human","game-scene-optimize","shader-debug","world-authoring","ai-evaluation","security-review"],
+  "experienceRules": {
+    "defaultDensity": "comfortable",
+    "primaryNavigation": "sidebar",
+    "toolSearch": "always-available",
+    "maxPrimaryActionsPerSurface": 5,
+    "preferListsTablesInspectorsOverCards": true,
+    "reducedMotion": true,
+    "keyboardFirst": true,
+    "colorOnlyStatus": false
+  },
+  "truthBoundary": {
+    "countsGeneratedFromSources": true,
+    "runtimeMetricsFabricated": false,
+    "providerConnectivityFabricated": false,
+    "pluginConnectivityFabricated": false,
+    "crossPlatformBuildFabricated": false
+  }
+}
