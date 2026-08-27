@@ -21,6 +21,12 @@ public struct SeisUniversalWorkspaceSearchState: Sendable {
         projection.isFiltering
     }
 
+    public var visibleNodeIDs: [String] {
+        projection.rootNodeIDs.flatMap { rootNodeID in
+            [rootNodeID] + projection.childNodeIDs(for: rootNodeID)
+        }
+    }
+
     public mutating func updateQuery(
         _ query: String,
         expandedNodeIDs: [String]
@@ -33,12 +39,6 @@ public struct SeisUniversalWorkspaceSearchState: Sendable {
     }
 
     public func contains(nodeID: String) -> Bool {
-        if projection.rootNodeIDs.contains(nodeID) {
-            return true
-        }
-
-        return projection.rootNodeIDs.contains { rootNodeID in
-            projection.childNodeIDs(for: rootNodeID).contains(nodeID)
-        }
+        visibleNodeIDs.contains(nodeID)
     }
 }
