@@ -67,6 +67,16 @@ public struct SeisUniversalWorkspaceSession: Equatable, Sendable {
     }
 
     @discardableResult
+    public mutating func moveFocus(
+        _ direction: SeisUniversalFocusDirection,
+        within visibleNodeIDs: [String]
+    ) -> Bool {
+        performSelectionChange { state in
+            state.moveFocus(direction, within: visibleNodeIDs)
+        }
+    }
+
+    @discardableResult
     public mutating func clearSelection() -> Bool {
         performSelectionChange { state in
             state.clearSelection()
@@ -112,15 +122,24 @@ public struct SeisUniversalWorkspaceSession: Equatable, Sendable {
     }
 
     @discardableResult
-    public mutating func applyWorkspaceCommand(commandID: String) -> Bool {
+    public mutating func applyWorkspaceCommand(
+        commandID: String,
+        visibleNodeIDs: [String]? = nil
+    ) -> Bool {
         switch commandID {
         case "navigation.back":
             return navigateBack()
         case "navigation.forward":
             return navigateForward()
         case "selection.next":
+            if let visibleNodeIDs {
+                return moveFocus(.next, within: visibleNodeIDs)
+            }
             return moveFocus(.next)
         case "selection.previous":
+            if let visibleNodeIDs {
+                return moveFocus(.previous, within: visibleNodeIDs)
+            }
             return moveFocus(.previous)
         case "selection.clear":
             return clearSelection()
