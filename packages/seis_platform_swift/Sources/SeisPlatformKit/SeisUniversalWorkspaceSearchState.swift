@@ -1,6 +1,6 @@
 import Foundation
 
-public struct SeisUniversalWorkspaceSearchState: Equatable, Sendable {
+public struct SeisUniversalWorkspaceSearchState: Sendable {
     public let document: SeisUniversalWorkspaceDocument
     public private(set) var query: String
     public private(set) var projection: SeisUniversalHierarchyProjection
