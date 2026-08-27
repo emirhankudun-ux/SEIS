@@ -116,17 +116,17 @@ Loading a Workbench means composing a local inspection surface. It does not acti
 
 ## Run
 
-Serve the directory so canonical JSON fetches and service-worker registration use an HTTP origin:
+The Full Technology Center reads canonical records outside `apps/seis-core`, so serve the **repository root**, not only the app directory:
 
 ```bash
-python3 -m http.server 4174 --directory apps/seis-core
+python3 -m http.server 4174 --directory .
 ```
 
 Open:
 
 ```text
-http://127.0.0.1:4174/
-http://127.0.0.1:4174/full-technology.html
+http://127.0.0.1:4174/apps/seis-core/
+http://127.0.0.1:4174/apps/seis-core/full-technology.html
 ```
 
 Opening through `file:` is intentionally unsupported for offline registration and canonical JSON loading.
