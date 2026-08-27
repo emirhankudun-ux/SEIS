@@ -5,13 +5,17 @@ struct SeisAppleUniversalWorkspaceView: View {
     let repositoryPath: String
 
     @State private var store = SeisFullTechnologyNativeStore()
-    @State private var workspaceSession: SeisUniversalWorkspaceSession?
+    @State private var workspaceTabs: SeisUniversalWorkspaceTabs?
     @State private var workspaceSearchState: SeisUniversalWorkspaceSearchState?
     @State private var searchQuery = ""
     @State private var isCommandPalettePresented = false
     @State private var commandQuery = ""
     @FocusState private var isSearchFocused: Bool
     @SceneStorage("seis.universal-workspace.snapshot.v2") private var sceneSnapshotJSON = ""
+
+    private var workspaceSession: SeisUniversalWorkspaceSession? {
+        workspaceTabs?.activeTab?.session
+    }
 
     var body: some View {
         workspaceLayout
@@ -54,10 +58,77 @@ struct SeisAppleUniversalWorkspaceView: View {
     @ViewBuilder
     private var workspaceLayout: some View {
         if let session = workspaceSession {
-            workspaceContent(session)
+            VStack(spacing: 0) {
+                workspaceTabStrip
+                Divider()
+                workspaceContent(session)
+            }
         } else {
             loadingSurface
         }
+    }
+
+    private var workspaceTabStrip: some View {
+        HStack(spacing: 8) {
+            if let tabs = workspaceTabs {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 4) {
+                        ForEach(tabs.tabs) { tab in
+                            HStack(spacing: 4) {
+                                Button {
+                                    activateWorkspaceTab(id: tab.id)
+                                } label: {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: tab.id == tabs.activeTabID ? "rectangle.fill" : "rectangle")
+                                            .font(.caption2)
+                                        Text(tab.title)
+                                            .lineLimit(1)
+                                            .frame(maxWidth: 180, alignment: .leading)
+                                    }
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 5)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel("Workspace tab \(tab.title)")
+
+                                if tabs.tabs.count > 1 {
+                                    Button {
+                                        closeWorkspaceTab(id: tab.id)
+                                    } label: {
+                                        Image(systemName: "xmark")
+                                            .font(.caption2)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .foregroundStyle(.secondary)
+                                    .accessibilityLabel("Close workspace tab \(tab.title)")
+                                }
+                            }
+                            .padding(.horizontal, 4)
+                            .background {
+                                if tab.id == tabs.activeTabID {
+                                    RoundedRectangle(cornerRadius: 7)
+                                        .fill(.quaternary)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(minLength: 4)
+
+            Button {
+                openWorkspaceTab()
+            } label: {
+                Image(systemName: "plus")
+            }
+            .buttonStyle(.plain)
+            .help("New Workspace Tab (⌘T)")
+            .accessibilityLabel("New workspace tab")
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(.bar)
     }
 
     private func workspaceContent(_ session: SeisUniversalWorkspaceSession) -> some View {
@@ -174,7 +245,7 @@ struct SeisAppleUniversalWorkspaceView: View {
                     .textFieldStyle(.plain)
                     .focused($isSearchFocused)
                     .onChange(of: searchQuery) { newValue in
-                        updateSearchProjection(newValue)
+                        storeSearchQuery(newValue)
                     }
                 if !searchQuery.isEmpty {
                     Button {
@@ -318,6 +389,7 @@ struct SeisAppleUniversalWorkspaceView: View {
             canNavigateBack: workspaceSession?.canNavigateBack ?? false,
             canNavigateForward: workspaceSession?.canNavigateForward ?? false,
             hasSelection: !(workspaceSession?.state.selectionGraph.selectedNodeIDs.isEmpty ?? true),
+            canCloseTab: (workspaceTabs?.tabs.count ?? 0) > 1,
             navigateBack: {
                 applyWorkspaceCommand(commandID: "navigation.back")
             },
@@ -332,6 +404,20 @@ struct SeisAppleUniversalWorkspaceView: View {
             },
             openCommandPalette: {
                 isCommandPalettePresented = true
+            },
+            newTab: {
+                openWorkspaceTab()
+            },
+            closeTab: {
+                if let activeTabID = workspaceTabs?.activeTabID {
+                    closeWorkspaceTab(id: activeTabID)
+                }
+            },
+            nextTab: {
+                activateNextWorkspaceTab()
+            },
+            previousTab: {
+                activatePreviousWorkspaceTab()
             }
         )
     }
@@ -350,12 +436,13 @@ struct SeisAppleUniversalWorkspaceView: View {
             state = SeisUniversalWorkspaceState(document: document)
         }
 
-        workspaceSession = SeisUniversalWorkspaceSession(state: state)
-        workspaceSearchState = SeisUniversalWorkspaceSearchState(
-            document: document,
-            expandedNodeIDs: state.expandedNodeIDs
+        let initialSession = SeisUniversalWorkspaceSession(state: state)
+        let initialTab = SeisUniversalWorkspaceTab(session: initialSession)
+        workspaceTabs = SeisUniversalWorkspaceTabs(
+            tabs: [initialTab],
+            activeTabID: initialTab.id
         )
-        updateSearchProjection(searchQuery)
+        synchronizeFromActiveTab()
     }
 
     private var restoredSnapshot: SeisUniversalWorkspaceSceneSnapshot? {
@@ -393,6 +480,13 @@ struct SeisAppleUniversalWorkspaceView: View {
 
     private func updateSearchQuery(_ query: String) {
         searchQuery = query
+        storeSearchQuery(query)
+    }
+
+    private func storeSearchQuery(_ query: String) {
+        guard var tabs = workspaceTabs else { return }
+        tabs.updateActiveSearchQuery(query)
+        workspaceTabs = tabs
         updateSearchProjection(query)
     }
 
@@ -458,9 +552,76 @@ struct SeisAppleUniversalWorkspaceView: View {
     }
 
     private func commit(_ session: SeisUniversalWorkspaceSession) {
-        workspaceSession = session
+        guard var tabs = workspaceTabs else { return }
+        guard tabs.updateActiveSession({ activeSession in
+            activeSession = session
+            return true
+        }) else { return }
+        workspaceTabs = tabs
         updateSearchProjection(searchQuery)
         persist(session.state.snapshot)
+    }
+
+    private func openWorkspaceTab() {
+        guard let document = workspaceSession?.state.document,
+              var tabs = workspaceTabs
+        else { return }
+
+        _ = tabs.openTab(document: document)
+        workspaceTabs = tabs
+        synchronizeFromActiveTab()
+    }
+
+    private func closeWorkspaceTab(id: String) {
+        guard var tabs = workspaceTabs,
+              tabs.closeTab(id: id)
+        else { return }
+
+        workspaceTabs = tabs
+        synchronizeFromActiveTab()
+    }
+
+    private func activateWorkspaceTab(id: String) {
+        guard var tabs = workspaceTabs,
+              tabs.activateTab(id: id)
+        else { return }
+
+        workspaceTabs = tabs
+        synchronizeFromActiveTab()
+    }
+
+    private func activateNextWorkspaceTab() {
+        guard var tabs = workspaceTabs,
+              tabs.activateNextTab()
+        else { return }
+
+        workspaceTabs = tabs
+        synchronizeFromActiveTab()
+    }
+
+    private func activatePreviousWorkspaceTab() {
+        guard var tabs = workspaceTabs,
+              tabs.activatePreviousTab()
+        else { return }
+
+        workspaceTabs = tabs
+        synchronizeFromActiveTab()
+    }
+
+    private func synchronizeFromActiveTab() {
+        guard let tab = workspaceTabs?.activeTab else {
+            workspaceSearchState = nil
+            searchQuery = ""
+            return
+        }
+
+        searchQuery = tab.searchQuery
+        workspaceSearchState = SeisUniversalWorkspaceSearchState(
+            document: tab.session.state.document,
+            expandedNodeIDs: tab.session.state.expandedNodeIDs
+        )
+        updateSearchProjection(tab.searchQuery)
+        persist(tab.session.state.snapshot)
     }
 
     private func persist(_ snapshot: SeisUniversalWorkspaceSceneSnapshot) {
