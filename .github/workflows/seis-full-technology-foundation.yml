@@ -17,6 +17,7 @@ on:
       - 'schemas/seis-technology-tool.schema.json'
       - 'scripts/check-seis-full-technology-foundation.mjs'
       - 'test/seis-full-technology-foundation.test.mjs'
+      - 'test/seis-full-technology-native-app-contract.test.mjs'
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-runtime.js'
@@ -46,6 +47,7 @@ on:
       - 'schemas/seis-technology-tool.schema.json'
       - 'scripts/check-seis-full-technology-foundation.mjs'
       - 'test/seis-full-technology-foundation.test.mjs'
+      - 'test/seis-full-technology-native-app-contract.test.mjs'
       - 'apps/seis-core/full-technology.html'
       - 'apps/seis-core/full-technology-center.js'
       - 'apps/seis-core/full-technology-runtime.js'
@@ -93,6 +95,9 @@ jobs:
       - name: Run foundation contract tests
         run: node --test test/seis-full-technology-foundation.test.mjs
 
+      - name: Run native app contract tests
+        run: node --test test/seis-full-technology-native-app-contract.test.mjs
+
       - name: Run deterministic runtime tests
         run: node --test apps/seis-core/test/full-technology-runtime.test.js
 
@@ -120,3 +125,6 @@ jobs:
 
       - name: Run Full Technology native tests
         run: swift test --package-path packages/seis_platform_swift --filter SeisFullTechnology
+
+      - name: Build native Full Technology app
+        run: swift build --package-path packages/seis_platform_swift --product SeisFullTechnologyMac
