@@ -4,6 +4,7 @@ import SwiftUI
 
 struct SeisUniversalHierarchyView: View {
     let document: SeisUniversalWorkspaceDocument
+    let projection: SeisUniversalHierarchyProjection
     let selectedNodeIDs: [String]
     let focusedNodeID: String?
     let expandedNodeIDs: [String]
@@ -14,13 +15,16 @@ struct SeisUniversalHierarchyView: View {
         VStack(spacing: 0) {
             header
             Divider()
-            List {
-                ForEach(document.rootNodeIDs, id: \.self) { rootID in
-                    if let node = document.node(id: rootID) {
-                        rootRow(node)
 
-                        if expandedNodeIDs.contains(rootID) {
-                            ForEach(node.childIDs, id: \.self) { childID in
+            if projection.isFiltering && projection.rootNodeIDs.isEmpty {
+                emptyFilterState
+            } else {
+                List {
+                    ForEach(projection.rootNodeIDs, id: \.self) { rootID in
+                        if let node = document.node(id: rootID) {
+                            rootRow(node)
+
+                            ForEach(projection.childNodeIDs(for: rootID), id: \.self) { childID in
                                 if let child = document.node(id: childID) {
                                     nodeRow(child, level: 1)
                                 }
@@ -28,8 +32,8 @@ struct SeisUniversalHierarchyView: View {
                         }
                     }
                 }
+                .listStyle(.sidebar)
             }
-            .listStyle(.sidebar)
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Universal Workspace Hierarchy")
@@ -40,7 +44,12 @@ struct SeisUniversalHierarchyView: View {
             Label("Hierarchy", systemImage: "list.bullet.indent")
                 .font(.headline)
             Spacer()
-            if !selectedNodeIDs.isEmpty {
+
+            if projection.isFiltering {
+                Text("\(projection.matchCount) matches")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else if !selectedNodeIDs.isEmpty {
                 Text("\(selectedNodeIDs.count) selected")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -50,18 +59,36 @@ struct SeisUniversalHierarchyView: View {
         .padding(.vertical, 10)
     }
 
+    private var emptyFilterState: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "line.3.horizontal.decrease.circle")
+                .font(.title2)
+                .foregroundStyle(.secondary)
+            Text("No hierarchy matches")
+                .font(.headline)
+            Text("Adjust the workspace filter to restore matching domains and capabilities.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .accessibilityElement(children: .combine)
+    }
+
     private func rootRow(_ node: SeisUniversalWorkspaceNode) -> some View {
         HStack(spacing: 4) {
             Button {
                 let isExpanded = expandedNodeIDs.contains(node.id)
                 onExpansionChange(node.id, !isExpanded)
             } label: {
-                Image(systemName: expandedNodeIDs.contains(node.id) ? "chevron.down" : "chevron.right")
+                Image(systemName: effectiveExpansionState(for: node.id) ? "chevron.down" : "chevron.right")
                     .font(.caption.weight(.semibold))
                     .frame(width: 16, height: 20)
             }
             .buttonStyle(.plain)
-            .help(expandedNodeIDs.contains(node.id) ? "Collapse" : "Expand")
+            .disabled(projection.isFiltering)
+            .help(projection.isFiltering ? "Filtering temporarily expands matching context" : (expandedNodeIDs.contains(node.id) ? "Collapse" : "Expand"))
 
             selectionButton(node, level: 0)
         }
@@ -107,6 +134,10 @@ struct SeisUniversalHierarchyView: View {
         .accessibilityLabel(node.selection.title)
         .accessibilityValue(selectedNodeIDs.contains(node.id) ? "Selected" : "Not selected")
         .help("Command-click to add to the current selection")
+    }
+
+    private func effectiveExpansionState(for nodeID: String) -> Bool {
+        projection.isFiltering || expandedNodeIDs.contains(nodeID)
     }
 
     private var currentSelectionMode: SeisUniversalSelectionMode {
