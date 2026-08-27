@@ -24,6 +24,23 @@ public extension SeisUniversalWorkspaceDocument {
 }
 
 public extension SeisUniversalCommandPalette {
+    var workspaceHistoryCommands: [SeisUniversalCommand] {
+        [
+            SeisUniversalCommand(
+                id: "navigation.back",
+                title: "Go Back",
+                subtitle: "Restore the previous Universal Workspace selection.",
+                searchTerms: ["go back", "back history", "previous selection history"]
+            ),
+            SeisUniversalCommand(
+                id: "navigation.forward",
+                title: "Go Forward",
+                subtitle: "Restore the next Universal Workspace selection.",
+                searchTerms: ["go forward", "forward history", "next selection history"]
+            )
+        ]
+    }
+
     var workspaceNavigationCommands: [SeisUniversalCommand] {
         [
             SeisUniversalCommand(
@@ -60,7 +77,7 @@ public extension SeisUniversalCommandPalette {
     }
 
     func workspaceCommands(matching query: String) -> [SeisUniversalCommand] {
-        let commands = workspaceNavigationCommands + allCommands
+        let commands = workspaceHistoryCommands + workspaceNavigationCommands + allCommands
         let tokens = query
             .lowercased()
             .split(whereSeparator: \.isWhitespace)
