@@ -20,6 +20,7 @@ const DATA_PATHS = [
 const toAbsolute = (path) => new URL(path, self.location.href).toString();
 const APP_SHELL_URLS = APP_SHELL_PATHS.map(toAbsolute);
 const DATA_URLS = DATA_PATHS.map(toAbsolute);
+const FULL_TECHNOLOGY_URL = toAbsolute('./full-technology.html');
 const PRECACHE_URLS = [...APP_SHELL_URLS, ...DATA_URLS];
 
 self.addEventListener('install', (event) => {
@@ -66,7 +67,7 @@ async function cacheFirst(request) {
     return response;
   } catch (error) {
     if (request.mode === 'navigate') {
-      const fallback = await cache.match(toAbsolute('./full-technology.html'));
+      const fallback = await cache.match(FULL_TECHNOLOGY_URL);
       if (fallback) return fallback;
     }
     throw error;
@@ -85,7 +86,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (APP_SHELL_URLS.includes(url.toString()) || request.mode === 'navigate') {
+  const isFullTechnologyNavigation = request.mode === 'navigate' && url.toString() === FULL_TECHNOLOGY_URL;
+  if (APP_SHELL_URLS.includes(url.toString()) || isFullTechnologyNavigation) {
     event.respondWith(cacheFirst(request));
   }
 });
