@@ -30,6 +30,10 @@
   "publicExport": {
     "enabled": true,
     "policy": "public-safe-curated-only",
+    "contractId": "ecosystem-module-export-v1",
+    "schemaVersion": 1,
+    "manifestPath": "content/ecosystem/public-module-export.json",
+    "schemaOwner": "unified-flagship",
     "forbidSecrets": true,
     "forbidPrivateClientData": true,
     "forbidUnverifiedCapabilityClaims": true
