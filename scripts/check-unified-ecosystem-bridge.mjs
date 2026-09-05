@@ -25,10 +25,19 @@ const requiredContracts = ['agent-runtime', 'intelligence-router', 'tool-and-mcp
 for (const contract of requiredContracts) {
   if (!data.sharedContracts?.includes(contract)) fail(`missing shared contract: ${contract}`);
 }
+if (new Set(data.sharedContracts ?? []).size !== requiredContracts.length) fail('shared contract lane inventory must remain exact');
 
 if (data.publicExport?.forbidSecrets !== true) fail('public export must forbid secrets');
 if (data.publicExport?.forbidPrivateClientData !== true) fail('public export must forbid private client data');
 if (data.publicExport?.forbidUnverifiedCapabilityClaims !== true) fail('public export must forbid unverified capability claims');
+
+if (data.projectProfile?.declared !== true) fail('project profile must be declared');
+if (data.projectProfile?.contractId !== 'ecosystem-project-profile-v1') fail('project profile contractId mismatch');
+if (data.projectProfile?.schemaVersion !== 1) fail('project profile schemaVersion must be 1');
+if (data.projectProfile?.manifestPath !== 'content/ecosystem/public-project-profile.json') fail('project profile manifestPath mismatch');
+if (data.projectProfile?.schemaOwner !== 'unified-flagship') fail('project profile schema owner mismatch');
+if (!fs.existsSync(data.projectProfile.manifestPath)) fail('project profile manifest is missing');
+if (data.status !== 'foundation-expanded') fail('bridge status must be foundation-expanded');
 
 const forbiddenKey = /(api[_-]?key|token|password|private[_-]?key|secret)/i;
 const scan = (value, trail = []) => {
@@ -41,4 +50,4 @@ const scan = (value, trail = []) => {
 };
 scan(data);
 
-console.log(`unified-ecosystem-bridge: ok (${data.project.id}, ${data.sharedContracts.length} shared contracts, ${data.peers.length} peers)`);
+console.log(`unified-ecosystem-bridge: ok (${data.project.id}, ${data.sharedContracts.length} shared contracts, ${data.peers.length} peers, project profile declared)`);
