@@ -38,6 +38,13 @@
     "forbidPrivateClientData": true,
     "forbidUnverifiedCapabilityClaims": true
   },
-  "status": "foundation",
-  "notes": "Defines interoperability only. It does not merge repositories, grant write authority, or claim live cross-repository execution."
+  "projectProfile": {
+    "declared": true,
+    "contractId": "ecosystem-project-profile-v1",
+    "schemaVersion": 1,
+    "manifestPath": "content/ecosystem/public-project-profile.json",
+    "schemaOwner": "unified-flagship"
+  },
+  "status": "foundation-expanded",
+  "notes": "Defines interoperability and a public-safe project profile only. It does not merge repositories, grant write authority, or claim live cross-repository execution."
 }
