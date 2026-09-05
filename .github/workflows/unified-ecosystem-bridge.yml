@@ -4,8 +4,12 @@ on:
   pull_request:
     paths:
       - 'content/ecosystem/unified-bridge.json'
+      - 'content/ecosystem/public-module-export.json'
       - 'scripts/check-unified-ecosystem-bridge.mjs'
+      - 'scripts/check-public-module-export.mjs'
+      - 'test/public-module-export.test.mjs'
       - 'docs/architecture/UNIFIED_ECOSYSTEM_BRIDGE.md'
+      - 'docs/architecture/ECOSYSTEM_MODULE_EXPORT.md'
       - '.github/workflows/unified-ecosystem-bridge.yml'
 
 permissions:
@@ -16,10 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
+      - run: node --test test/public-module-export.test.mjs
       - run: node scripts/check-unified-ecosystem-bridge.mjs
+      - run: node scripts/check-public-module-export.mjs
