@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "contractId": "ecosystem-module-export-v1",
+  "moduleId": "seis.platform-runtime",
+  "displayName": "SEIS Platform Runtime",
+  "projectId": "seis",
+  "role": "platform-runtime",
+  "source": {
+    "repository": "emirhankudun-ux/SEIS",
+    "paths": [
+      "content/ecosystem/unified-bridge.json"
+    ]
+  },
+  "target": {
+    "namespace": "platform",
+    "path": "platform/seis"
+  },
+  "boundary": {
+    "exportClass": "metadata-only",
+    "publicSafe": true,
+    "containsSecrets": false,
+    "containsPrivateData": false,
+    "containsClientData": false,
+    "runtimeAuthority": false,
+    "crossRepositoryWrite": false
+  },
+  "promotion": {
+    "state": "source-only",
+    "requiredGates": [
+      "source-provenance",
+      "license-review",
+      "secret-and-private-data-scan",
+      "dependency-and-supply-chain-review",
+      "duplicate-runtime-review",
+      "contract-compatibility",
+      "test-and-evidence-review",
+      "public-claim-review"
+    ]
+  },
+  "verification": {
+    "commands": [
+      "node scripts/check-unified-ecosystem-bridge.mjs",
+      "node scripts/check-public-module-export.mjs"
+    ],
+    "remoteEvidence": "not-recorded"
+  }
+}
