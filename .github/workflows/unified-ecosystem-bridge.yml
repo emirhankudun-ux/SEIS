@@ -5,11 +5,15 @@ on:
     paths:
       - 'content/ecosystem/unified-bridge.json'
       - 'content/ecosystem/public-module-export.json'
+      - 'content/ecosystem/public-project-profile.json'
       - 'scripts/check-unified-ecosystem-bridge.mjs'
       - 'scripts/check-public-module-export.mjs'
+      - 'scripts/check-public-project-profile.mjs'
       - 'test/public-module-export.test.mjs'
+      - 'test/public-project-profile.test.mjs'
       - 'docs/architecture/UNIFIED_ECOSYSTEM_BRIDGE.md'
       - 'docs/architecture/ECOSYSTEM_MODULE_EXPORT.md'
+      - 'docs/architecture/ECOSYSTEM_PROJECT_PROFILE.md'
       - '.github/workflows/unified-ecosystem-bridge.yml'
 
 permissions:
@@ -27,5 +31,7 @@ jobs:
         with:
           node-version: '24'
       - run: node --test test/public-module-export.test.mjs
+      - run: node --test test/public-project-profile.test.mjs
       - run: node scripts/check-unified-ecosystem-bridge.mjs
       - run: node scripts/check-public-module-export.mjs
+      - run: node scripts/check-public-project-profile.mjs
