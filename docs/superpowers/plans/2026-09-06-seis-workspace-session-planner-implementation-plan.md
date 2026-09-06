@@ -22,15 +22,15 @@
 
 - [x] Add the public-safe session fixture.
 - [x] Add tests for deterministic planning, ordering, blockers, cycles, timeboxes, stages, evidence, and authority boundaries.
-- [ ] Run the tests and confirm they fail because the planner module is absent.
+- [x] Run the hosted tests and confirm `ERR_MODULE_NOT_FOUND` for the absent planner module.
 
 ### Task 2: Planner implementation
 
-- [ ] Add the portable input schema.
-- [ ] Implement validation, graph ordering, checkpoints, blockers, recovery, and summary.
-- [ ] Add the read-only CLI and real-fixture checker.
+- [x] Add the portable input schema.
+- [x] Implement validation, graph ordering, checkpoints, blockers, recovery, and summary.
+- [x] Add the read-only CLI and real-fixture checker.
 
 ### Task 3: Documentation and verification
 
-- [ ] Add architecture documentation and SHA-pinned read-only CI.
-- [ ] Run focused and repository checks.
+- [x] Add architecture documentation and SHA-pinned read-only CI.
+- [ ] Confirm the focused workflow and stacked branch checks on GitHub.

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:seis:workspace-session-input-v1",
+  "title": "SEIS Workspace Session Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "contractId", "sessionId", "mode", "mission", "timeboxMinutes", "availableCapabilities", "tasks", "policy"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "contractId": {"const": "seis-workspace-session-input-v1"},
+    "sessionId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "mode": {"const": "local-planning"},
+    "mission": {"type": "object"},
+    "timeboxMinutes": {"type": "integer", "minimum": 15},
+    "availableCapabilities": {"type": "array", "uniqueItems": true},
+    "tasks": {"type": "array", "minItems": 2},
+    "policy": {"type": "object"}
+  }
+}
