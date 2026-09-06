@@ -15,10 +15,11 @@ ecosystem:
   role:
     - creative-engineering-operating-system
     - command-center
-    - ecosystem-coordinator
+    - sovereign-product-runtime
   related_projects:
     - eleni-neferi
     - pantechnoesis
+    - pantechnosyni
   canonical_owner_repo: seis
 
 platforms:
