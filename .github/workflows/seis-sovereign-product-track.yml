@@ -1,0 +1,31 @@
+name: SEIS Sovereign Product Track
+
+on:
+  pull_request:
+    paths:
+      - 'project.ecosystem.yaml'
+      - 'content/development/seis-sovereign-product-track.json'
+      - 'scripts/lib/seis-sovereign-product-track.mjs'
+      - 'scripts/check-seis-sovereign-product-track.mjs'
+      - 'scripts/seis-sovereign-track.mjs'
+      - 'test/seis-sovereign-product-track.test.mjs'
+      - 'docs/architecture/SEIS_SOVEREIGN_PRODUCT_TRACK.md'
+      - '.github/workflows/seis-sovereign-product-track.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: node --test test/seis-sovereign-product-track.test.mjs
+      - run: node scripts/check-seis-sovereign-product-track.mjs
+      - run: ruby scripts/validate-ecosystem-foundation.rb
