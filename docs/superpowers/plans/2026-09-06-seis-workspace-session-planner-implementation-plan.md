@@ -33,4 +33,4 @@
 ### Task 3: Documentation and verification
 
 - [x] Add architecture documentation and SHA-pinned read-only CI.
-- [ ] Confirm the focused workflow and stacked branch checks on GitHub.
+- [x] Confirm the focused workflow, SEIS System Gates, and Foundation Check on GitHub.
