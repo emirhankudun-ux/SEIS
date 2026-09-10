@@ -12,20 +12,20 @@
 - [x] Define local-first capability-aware model routing.
 - [x] Define full-request prompt cache identity.
 - [x] Define safe argv command parsing.
-- [ ] Confirm hosted tests fail because `maria_runtime` implementation is absent.
+- [x] Confirm hosted tests fail with `ModuleNotFoundError: No module named 'maria_runtime'` while the implementation is absent.
 
 ### Task 2 — Runtime contracts
 
-- [ ] Implement context engine.
-- [ ] Implement capability/tool registry and health states.
-- [ ] Implement permission engine.
-- [ ] Implement model registry/router.
-- [ ] Implement prompt cache v2.
-- [ ] Implement safe command policy.
+- [x] Implement context engine.
+- [x] Implement capability/tool registry and health states.
+- [x] Implement permission engine.
+- [x] Implement model registry/router.
+- [x] Implement prompt cache v2.
+- [x] Implement safe command policy.
 
 ### Task 3 — Product entry point and verification
 
-- [ ] Add thin `apps/maria-desktop/maria.py` launcher.
-- [ ] Add runtime checker and architecture documentation.
-- [ ] Add read-only GitHub Actions workflow.
+- [x] Add thin `apps/maria-desktop/maria.py` launcher.
+- [x] Add runtime checker and architecture documentation.
+- [x] Add read-only GitHub Actions workflow.
 - [ ] Confirm focused checks on hosted CI.
