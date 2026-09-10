@@ -14,6 +14,8 @@ from maria_runtime.registry import CapabilityRegistry, ToolSpec, ToolStatus
 from maria_runtime.routing import ModelRouter
 from maria_runtime.safety import CommandPolicy
 from maria_runtime.cache import PromptCache
+from maria_runtime.projects import ProjectRegistry, WorkMode, default_project_registry
+from maria_runtime.continuation import ContinuationResolver
 
 
 class MariaRuntimeV18Tests(unittest.TestCase):
@@ -177,6 +179,54 @@ class MariaRuntimeV18Tests(unittest.TestCase):
         ]:
             with self.assertRaises(ValueError):
                 policy.prepare(command)
+
+    def test_default_project_registry_understands_our_real_project_names_and_modes(self):
+        registry = default_project_registry()
+        deadly = registry.match("Maria, Deadly Evil'e devam et")
+        seis = registry.match("SEIS'e kaldığımız yerden devam et")
+        eleni = registry.match("Eleni Neferi brief ekranını geliştir")
+        pantechnosyni = registry.match("PANTECHNOSYNI atlasını aç")
+
+        self.assertEqual(deadly.id, "deadly-evil")
+        self.assertEqual(deadly.work_mode, WorkMode.GAME_DEV)
+        self.assertIn("unreal", deadly.preferred_capabilities)
+        self.assertEqual(seis.id, "seis")
+        self.assertEqual(seis.work_mode, WorkMode.ENGINEERING)
+        self.assertEqual(eleni.work_mode, WorkMode.CREATIVE)
+        self.assertEqual(pantechnosyni.work_mode, WorkMode.RESEARCH)
+
+    def test_continuation_resolver_builds_a_small_verified_resume_brief(self):
+        registry = default_project_registry()
+        context = ProjectContextEngine()
+        project = "Deadly Evil"
+        facts = {
+            "active_goal": "DE-006 Enemy AI",
+            "current_repo": "emirhankudun-ux/Deadly-Evil",
+            "current_branch": "feature/enemy-ai",
+            "current_application": "Unreal Engine",
+            "current_blocker": "Animation Blueprint reference",
+            "last_verification": "18/18 focused tests passed",
+            "next_safe_action": "Inspect Animation Blueprint references before mutation",
+        }
+        for key, value in facts.items():
+            context.put(ContextFact(
+                key=key,
+                value=value,
+                source="verified-workspace-state",
+                project=project,
+                confidence=1.0,
+                verified=True,
+                observed_at="2026-09-11T12:00:00+00:00",
+            ))
+
+        brief = ContinuationResolver(registry, context).resolve("Maria, Deadly Evil'e devam et")
+        self.assertEqual(brief.project_id, "deadly-evil")
+        self.assertEqual(brief.active_goal, "DE-006 Enemy AI")
+        self.assertEqual(brief.current_branch, "feature/enemy-ai")
+        self.assertEqual(brief.next_safe_action, "Inspect Animation Blueprint references before mutation")
+        self.assertEqual(brief.work_mode, WorkMode.GAME_DEV)
+        self.assertLessEqual(len(brief.preferred_agents), 5)
+        self.assertTrue(brief.ready_to_resume)
 
 
 if __name__ == "__main__":
