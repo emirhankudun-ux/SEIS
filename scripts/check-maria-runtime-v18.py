@@ -15,6 +15,8 @@ DOC = ROOT / "docs" / "architecture" / "MARIA_RUNTIME_V18.md"
 required = [
     PKG / "__init__.py",
     PKG / "context.py",
+    PKG / "continuation.py",
+    PKG / "projects.py",
     PKG / "registry.py",
     PKG / "permissions.py",
     PKG / "models.py",
@@ -68,4 +70,4 @@ if errors:
         print(f"- {error}")
     raise SystemExit(1)
 
-print("maria-runtime-v18: ok (modular, standard-library-only, no live execution)")
+print("maria-runtime-v18: ok (modular, project-aware, standard-library-only, no live execution)")

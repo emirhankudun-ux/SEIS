@@ -13,6 +13,8 @@ apps/maria-desktop/maria.py
         ↓
 packages/maria-runtime/python/maria_runtime/
         ├── context.py       provenance-aware project context
+        ├── projects.py      Emirhan's project profiles and work modes
+        ├── continuation.py  compact verified continuation briefs
         ├── registry.py      capability/tool registry and health
         ├── permissions.py   per-action authorization policy
         ├── models.py        model metadata registry
@@ -22,6 +24,25 @@ packages/maria-runtime/python/maria_runtime/
 ```
 
 This is intentionally smaller than the eventual MARIA product. It establishes the contracts that future voice, vision, agent, MCP, computer-control and desktop UI work must obey.
+
+## Personal project profiles
+
+The first runtime ships explicit routing profiles for the systems Emirhan actually works on:
+
+- **SEIS** → Engineering mode; AI, desktop, agent, MCP and Apple-platform work.
+- **Eleni-Neferi** → Creative mode; creative direction, branding, UI/UX and editorial work.
+- **Pantechnoepistemonoesis** → Research mode; evidence, evaluation and knowledge work.
+- **PANTECHNOSYNI** → Research mode; interdisciplinary synthesis, public knowledge and web.
+- **Deadly Evil** → Game Dev mode; Unreal, Blender, gameplay, enemy AI and QA.
+- **Portfolio** → Creative mode; web, branding, SEO and accessibility.
+
+These profiles are routing preferences rather than hidden authority. They can suggest a small specialist team and capability set, but actual actions still pass capability health and permission policy.
+
+## Natural continuation
+
+`ContinuationResolver` provides the foundation for requests such as “Maria, Deadly Evil'e devam et.” It resolves the project profile and retrieves only the compact state required to resume: active goal, repo, branch, application, blocker, last verification and next safe action. A session is marked `ready_to_resume` only when the goal, repo, branch and next action come from verified current context.
+
+This avoids replaying an entire chat transcript and prevents stale unverified memory from silently driving execution.
 
 ## Improvements over the v17 prototype
 
@@ -35,7 +56,7 @@ Approval is no longer derived only from an LLM-generated numeric risk level. The
 
 ### Project context and memory provenance
 
-Project facts carry source, project, confidence, verification state, observation time and fact type. Resolution gives current verified evidence priority over stale unverified memory. This supports the intended interaction: “Maria, Deadly Evil'e devam et” can eventually resolve the current goal, branch, app, blocker and next safe action without replaying an entire conversation transcript.
+Project facts carry source, project, confidence, verification state, observation time and fact type. Resolution gives current verified evidence priority over stale unverified memory. This supports the intended interaction: “Maria, Deadly Evil'e devam et” can resolve the current goal, branch, app, blocker and next safe action without replaying an entire conversation transcript.
 
 ### Capability routing
 
