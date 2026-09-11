@@ -109,6 +109,46 @@ class DurableCheckpointInvariantTests(unittest.TestCase):
         with self.assertRaises(CheckpointCorruptError):
             self.store.load("SEIS", "work-cancelled")
 
+    def test_save_rejects_impossible_state_attempt_and_failure_combinations(self):
+        malformed_steps = (
+            step("succeeded-zero", WorkStepState.SUCCEEDED, attempts=0),
+            step(
+                "succeeded-failure",
+                WorkStepState.SUCCEEDED,
+                attempts=1,
+                failure="unexpected",
+            ),
+            step(
+                "failed-zero",
+                WorkStepState.FAILED,
+                attempts=0,
+                failure="runner-failure",
+            ),
+            step("failed-missing", WorkStepState.FAILED, attempts=1),
+            step(
+                "blocked-attempted",
+                WorkStepState.BLOCKED,
+                attempts=1,
+                failure="dependency-failed",
+            ),
+            step("blocked-missing", WorkStepState.BLOCKED, attempts=0),
+            step("cancelled-missing", WorkStepState.CANCELLED, attempts=0),
+        )
+
+        for malformed in malformed_steps:
+            with self.subTest(step_id=malformed.step_id):
+                next_step_id = (
+                    malformed.step_id
+                    if malformed.state is WorkStepState.CANCELLED
+                    else None
+                )
+                with self.assertRaises(ValueError):
+                    self.store.save(
+                        "SEIS",
+                        f"work-{malformed.step_id}",
+                        checkpoint(malformed, next_step_id=next_step_id),
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()
