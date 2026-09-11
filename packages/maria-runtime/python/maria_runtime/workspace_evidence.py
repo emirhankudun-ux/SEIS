@@ -29,7 +29,10 @@ class WorkspaceEvidenceSnapshot:
     def __post_init__(self) -> None:
         if not isinstance(self.project, str) or not self.project.strip() or len(self.project) > 512:
             raise WorkspaceEvidenceError("invalid project")
-        if not isinstance(self.current_branch, str) or not self.current_branch.strip() or len(self.current_branch) > 512:
+        # Snapshots are public typed evidence and can be constructed without the
+        # filesystem source. Apply the same branch grammar here so direct typed
+        # construction cannot certify an identity capture() would reject.
+        if not GitWorkspaceEvidenceSource._safe_branch(self.current_branch):
             raise WorkspaceEvidenceError("invalid current branch")
         if not GitWorkspaceEvidenceSource._is_revision(self.repository_revision):
             raise WorkspaceEvidenceError("invalid repository revision")
@@ -204,8 +207,16 @@ class GitWorkspaceEvidenceSource:
         return ref_name, branch
 
     @staticmethod
-    def _safe_branch(branch: str) -> bool:
-        if not branch or len(branch) > 512 or branch.startswith("/") or branch.endswith("/"):
+    def _safe_branch(branch: object) -> bool:
+        if not isinstance(branch, str):
+            return False
+        if (
+            not branch
+            or len(branch) > 512
+            or branch == "@"
+            or branch.startswith("/")
+            or branch.endswith("/")
+        ):
             return False
         if "\\" in branch or ".." in branch or "@{" in branch or "//" in branch:
             return False
@@ -215,7 +226,8 @@ class GitWorkspaceEvidenceSource:
         if any(not part or part in {".", ".."} or part.startswith(".") for part in parts):
             return False
         return all(
-            ord(character) >= 32 and character not in {" ", "~", "^", ":", "?", "*", "["}
+            32 <= ord(character) < 127
+            and character not in {" ", "~", "^", ":", "?", "*", "["}
             for character in branch
         )
 
