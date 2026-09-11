@@ -37,6 +37,9 @@ class CurrentWorkspaceBranchContractTests(unittest.TestCase):
         ref_path.parent.mkdir(parents=True, exist_ok=True)
         ref_path.write_text(f"{REVISION}\n", encoding="ascii")
 
+    def ref_path(self, branch: str) -> Path:
+        return self.root / ".git" / "refs" / "heads" / branch
+
     def capture(self):
         return GitWorkspaceEvidenceSource().capture(
             self.root,
@@ -90,6 +93,37 @@ class CurrentWorkspaceBranchContractTests(unittest.TestCase):
     def test_valid_unicode_branch_remains_accepted(self):
         branch = "özellik/maria-doğrulama"
         self.write_branch(branch)
+        snapshot = self.capture()
+        self.assertEqual(snapshot.current_branch, branch)
+        self.assertEqual(snapshot.repository_revision, REVISION)
+
+    def test_symbolic_head_preserves_git_valid_trailing_unicode_whitespace(self):
+        # Git refname rules ban ASCII space/control bytes, not non-ASCII
+        # whitespace such as NBSP. HEAD line-ending removal must not normalize
+        # or silently retarget this valid branch identity.
+        branch = "feature/maria-unicode\u00a0"
+        WorkspaceEvidenceSnapshot(
+            project=PROJECT,
+            current_branch=branch,
+            repository_revision=REVISION,
+            observed_at=OBSERVED,
+        )
+        self.write_branch(branch)
+        snapshot = self.capture()
+        self.assertEqual(snapshot.current_branch, branch)
+        self.assertEqual(snapshot.repository_revision, REVISION)
+
+    def test_loose_ref_rejects_leading_ascii_whitespace_before_revision(self):
+        branch = "feature/maria-leading-space-ref"
+        self.write_branch(branch)
+        self.ref_path(branch).write_text(f" {REVISION}\n", encoding="ascii")
+        with self.assertRaises(WorkspaceEvidenceError):
+            self.capture()
+
+    def test_loose_ref_keeps_git_accepted_trailing_ascii_whitespace_behavior(self):
+        branch = "feature/maria-trailing-space-ref"
+        self.write_branch(branch)
+        self.ref_path(branch).write_text(f"{REVISION}   \n\n", encoding="ascii")
         snapshot = self.capture()
         self.assertEqual(snapshot.current_branch, branch)
         self.assertEqual(snapshot.repository_revision, REVISION)

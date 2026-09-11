@@ -146,9 +146,18 @@ class GitWorkspaceEvidenceSource:
             revision = self._resolve_packed_ref(git_dir, ref_name)
         else:
             try:
-                revision = self._read_regular_file(ref_path, self.MAX_REF_BYTES, encoding="ascii").strip()
+                raw_revision = self._read_regular_file(
+                    ref_path, self.MAX_REF_BYTES, encoding="ascii"
+                )
             except FileNotFoundError:
                 revision = self._resolve_packed_ref(git_dir, ref_name)
+            else:
+                # Git accepts trailing whitespace/blank lines in a loose ref,
+                # but a leading whitespace byte makes the object id invalid.
+                # Check before strip() so we do not certify metadata Git rejects.
+                if raw_revision[:1].isspace():
+                    raise WorkspaceEvidenceError("branch ref contains an invalid revision")
+                revision = raw_revision.strip()
         if not self._is_revision(revision):
             raise WorkspaceEvidenceError("branch ref contains an invalid revision")
         return revision.lower()
@@ -196,7 +205,18 @@ class GitWorkspaceEvidenceSource:
 
     @classmethod
     def _parse_symbolic_head(cls, raw: str) -> tuple[str, str]:
-        value = raw.strip()
+        # Git stores HEAD as one logical line. Remove only the metadata line
+        # ending; str.strip() would also remove Git-valid non-ASCII whitespace
+        # from the branch identity and could silently retarget the lookup.
+        if raw.endswith("\r\n"):
+            value = raw[:-2]
+        elif raw.endswith("\n"):
+            value = raw[:-1]
+        else:
+            value = raw
+        if "\n" in value or "\r" in value:
+            raise WorkspaceEvidenceError("workspace HEAD contains multiple lines")
+
         prefix = "ref: refs/heads/"
         if not value.startswith(prefix):
             raise WorkspaceEvidenceError("workspace HEAD is not a symbolic branch")
