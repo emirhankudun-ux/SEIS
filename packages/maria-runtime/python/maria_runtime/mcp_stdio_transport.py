@@ -227,6 +227,83 @@ class MCPStdioProcessTransport:
             stderr_bytes=self._stderr_bytes,
         )
 
+    def request(
+        self,
+        *,
+        method: str,
+        params: Mapping[str, Any],
+        request_id: str | int,
+        timeout_ms: int,
+        max_response_bytes: int,
+    ) -> Mapping[str, Any]:
+        """Issue one bounded, correlated request on an already-ready child.
+
+        There are deliberately no retries. A timeout shuts the child down so an
+        abandoned reader cannot race with a later request. For modern MCP, the
+        negotiated protocol/client metadata is injected by this transport and
+        cannot be overridden by caller-supplied protected metadata keys.
+        """
+
+        if not self.is_running:
+            raise RuntimeError("MCP stdio transport is not running")
+        if self._failure is not None:
+            raise RuntimeError("MCP stdio transport has unresolved failure evidence")
+        if not method.strip():
+            raise ValueError("MCP request method must be non-empty")
+        if not isinstance(params, Mapping):
+            raise TypeError("MCP request params must be a mapping")
+        if isinstance(request_id, str) and not request_id.strip():
+            raise ValueError("MCP request id must be non-empty")
+        if not isinstance(request_id, (str, int)) or isinstance(request_id, bool):
+            raise TypeError("MCP request id must be a string or integer")
+        if timeout_ms <= 0 or max_response_bytes <= 0:
+            raise ValueError("MCP request timeout and response bound must be positive")
+        if self._protocol_era is None or self._protocol_version is None:
+            raise RuntimeError("MCP stdio transport has not completed protocol negotiation")
+
+        request_params = dict(params)
+        if self._protocol_era == MCPProtocolEra.MODERN.value:
+            supplied_meta = request_params.get("_meta")
+            if supplied_meta is not None and not isinstance(supplied_meta, Mapping):
+                raise ValueError("MCP _meta must be an object")
+            merged_meta = dict(supplied_meta or {})
+            protected = self._negotiator.modern_request_meta(
+                protocol_version=self._protocol_version,
+            )
+            for key in protected:
+                if key in merged_meta:
+                    raise PermissionError("caller cannot override protected MCP protocol metadata")
+            merged_meta.update(protected)
+            request_params["_meta"] = merged_meta
+
+        request = {
+            "jsonrpc": "2.0",
+            "id": request_id,
+            "method": method,
+            "params": request_params,
+        }
+        absolute_stdout_budget = self._stdout_bytes + max_response_bytes
+        try:
+            response = self._exchange(
+                request,
+                timeout_ms=timeout_ms,
+                max_stdout_bytes=absolute_stdout_budget,
+            )
+        except (MCPStdioFrameError, ValueError, OSError):
+            self._failure = "request-transport-failure"
+            self.shutdown()
+            raise RuntimeError("MCP request failed at bounded transport boundary") from None
+        except Exception:
+            self._failure = "request-transport-failure"
+            self.shutdown()
+            raise RuntimeError("MCP request failed at bounded transport boundary") from None
+
+        if response is None:
+            self._failure = "request-timeout"
+            self.shutdown()
+            raise TimeoutError("MCP request exceeded bounded response timeout")
+        return response
+
     def shutdown(self) -> MCPStdioTransportSnapshot:
         process = self._process
         if process is None:
@@ -305,7 +382,7 @@ class MCPStdioProcessTransport:
             if message.get("id") == request_id:
                 return message
             unmatched += 1
-        raise ValueError("too many unmatched MCP frames during startup")
+        raise ValueError("too many unmatched MCP frames during correlated exchange")
 
     def _write_message(self, message: Mapping[str, Any]) -> None:
         process = self._process
