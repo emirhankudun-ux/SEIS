@@ -66,7 +66,9 @@ class RecoveryDashboardBuilder:
         corruption, file-count and caller-limit validation. Inspection then adds
         current-context reconciliation. A record removed by a concurrent trusted
         cleanup between discovery and inspection is omitted rather than surfaced
-        as resumable evidence.
+        as resumable evidence. Visibility is reapplied to the inspected state:
+        a record may also have completed since discovery. This is not an atomic
+        transaction across files or a guarantee of freshness after return.
         """
 
         catalog = self.store.discover(
@@ -78,6 +80,8 @@ class RecoveryDashboardBuilder:
         for entry in catalog:
             view = self.inspector.inspect(entry.project_id, entry.work_id)
             if view.disposition is RecoveryCandidateDisposition.NOT_FOUND:
+                continue
+            if view.disposition is RecoveryCandidateDisposition.COMPLETE and not include_complete:
                 continue
             rows.append(view)
 
