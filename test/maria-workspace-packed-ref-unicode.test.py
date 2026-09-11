@@ -59,6 +59,13 @@ class WorkspacePackedRefUnicodeTests(unittest.TestCase):
         self.assertEqual(snapshot.repository_revision, REVISION)
         self.assertFalse(snapshot.execution_authorized)
 
+    def test_decomposed_ref_name_round_trips_without_normalization(self) -> None:
+        branch = "feature/cafe\u0301"
+        snapshot = self.capture_packed(branch)
+        self.assertEqual(snapshot.current_branch, branch)
+        self.assertEqual(snapshot.current_branch.encode("utf-8"), branch.encode("utf-8"))
+        self.assertFalse(snapshot.execution_authorized)
+
     def test_canonically_equivalent_ref_names_remain_distinct_identities(self) -> None:
         # Git ref identity is byte/scalar exact. NFC/NFD spellings are distinct
         # refs even though some native string equality operations consider them
