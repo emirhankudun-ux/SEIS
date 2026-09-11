@@ -3,9 +3,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 import json
+import math
 import os
 from pathlib import Path
 import re
+import stat
 import tempfile
 import time
 from typing import Any
@@ -53,6 +55,12 @@ class DurableWorkCheckpointStore:
     resume work, replay tools, restore files, cache permissions, or authorize an
     external action. A recovery candidate must be re-planned and freshly
     authorized by the normal routing/execution path.
+
+    The configured checkpoint root and each project directory must be ordinary
+    directories, not symbolic links. Persisted checkpoint files are opened
+    without following the final path symlink where the host supports
+    ``O_NOFOLLOW``. This keeps recovery evidence within the configured storage
+    boundary instead of silently trusting filesystem aliases.
     """
 
     SCHEMA_VERSION = 1
@@ -98,6 +106,51 @@ class DurableWorkCheckpointStore:
             raise ValueError(f"invalid {field_name}")
         return value
 
+    @staticmethod
+    def _is_symlink(path: Path) -> bool:
+        try:
+            return path.is_symlink()
+        except OSError:
+            return False
+
+    def _prepare_project_parent(self, project: str) -> Path:
+        if self._is_symlink(self.root):
+            raise ValueError("checkpoint root must not be a symlink")
+        try:
+            self.root.mkdir(parents=True, exist_ok=True)
+        except OSError as exc:
+            raise ValueError("checkpoint root cannot be created") from exc
+        if self._is_symlink(self.root) or not self.root.is_dir():
+            raise ValueError("checkpoint root must be an ordinary directory")
+
+        parent = self.root / project
+        if self._is_symlink(parent):
+            raise ValueError("checkpoint project directory must not be a symlink")
+        try:
+            parent.mkdir(mode=0o700, exist_ok=True)
+        except OSError as exc:
+            raise ValueError("checkpoint project directory cannot be created") from exc
+        if self._is_symlink(parent) or not parent.is_dir():
+            raise ValueError("checkpoint project directory must be an ordinary directory")
+        return parent
+
+    def _existing_project_parent(self, project: str) -> Path | None:
+        if self._is_symlink(self.root):
+            raise CheckpointCorruptError("checkpoint root is a symlink")
+        if not self.root.exists():
+            return None
+        if not self.root.is_dir():
+            raise CheckpointCorruptError("checkpoint root is not a directory")
+
+        parent = self.root / project
+        if self._is_symlink(parent):
+            raise CheckpointCorruptError("checkpoint project directory is a symlink")
+        if not parent.exists():
+            return None
+        if not parent.is_dir():
+            raise CheckpointCorruptError("checkpoint project path is not a directory")
+        return parent
+
     def path_for(
         self,
         project_id: str,
@@ -107,9 +160,7 @@ class DurableWorkCheckpointStore:
     ) -> Path:
         project = self._validated_id(project_id, field_name="project_id")
         work = self._validated_id(work_id, field_name="work_id")
-        parent = self.root / project
-        if create_parent:
-            parent.mkdir(parents=True, exist_ok=True)
+        parent = self._prepare_project_parent(project) if create_parent else self.root / project
         return parent / f"{work}.json"
 
     def save(self, project_id: str, work_id: str, checkpoint: WorkPlanCheckpoint) -> Path:
@@ -131,16 +182,18 @@ class DurableWorkCheckpointStore:
             ensure_ascii=True,
             sort_keys=True,
             separators=(",", ":"),
+            allow_nan=False,
         ).encode("utf-8")
         if len(encoded) > self.max_bytes:
             raise ValueError("checkpoint exceeds maximum persisted size")
 
-        path = self.path_for(project, work, create_parent=True)
+        parent = self._prepare_project_parent(project)
+        path = parent / f"{work}.json"
         temp_path: Path | None = None
         try:
             with tempfile.NamedTemporaryFile(
                 mode="wb",
-                dir=path.parent,
+                dir=parent,
                 prefix=f".{work}.",
                 suffix=".tmp",
                 delete=False,
@@ -151,7 +204,7 @@ class DurableWorkCheckpointStore:
                 os.fsync(handle.fileno())
             os.replace(temp_path, path)
             temp_path = None
-            self._fsync_directory(path.parent)
+            self._fsync_directory(parent)
         finally:
             if temp_path is not None:
                 try:
@@ -163,28 +216,63 @@ class DurableWorkCheckpointStore:
     def load(self, project_id: str, work_id: str) -> WorkPlanCheckpoint | None:
         project = self._validated_id(project_id, field_name="project_id")
         work = self._validated_id(work_id, field_name="work_id")
-        path = self.path_for(project, work)
-        if not path.exists():
+        parent = self._existing_project_parent(project)
+        if parent is None:
             return None
-        if not path.is_file():
-            raise CheckpointCorruptError("checkpoint path is not a regular file")
-        try:
-            size = path.stat().st_size
-        except OSError as exc:
-            raise CheckpointCorruptError("checkpoint metadata cannot be read") from exc
-        if size <= 0 or size > self.max_bytes:
-            raise CheckpointCorruptError("checkpoint size is outside trusted bounds")
+        path = parent / f"{work}.json"
 
         try:
-            raw = path.read_bytes()
+            metadata = path.lstat()
+        except FileNotFoundError:
+            return None
+        except OSError as exc:
+            raise CheckpointCorruptError("checkpoint metadata cannot be read") from exc
+        if stat.S_ISLNK(metadata.st_mode):
+            raise CheckpointCorruptError("checkpoint path must not be a symlink")
+        if not stat.S_ISREG(metadata.st_mode):
+            raise CheckpointCorruptError("checkpoint path is not a regular file")
+        if metadata.st_size <= 0 or metadata.st_size > self.max_bytes:
+            raise CheckpointCorruptError("checkpoint size is outside trusted bounds")
+
+        flags = os.O_RDONLY
+        if hasattr(os, "O_NOFOLLOW"):
+            flags |= os.O_NOFOLLOW
+        try:
+            fd = os.open(path, flags)
+        except OSError as exc:
+            raise CheckpointCorruptError("checkpoint cannot be opened safely") from exc
+        try:
+            opened = os.fstat(fd)
+            if not stat.S_ISREG(opened.st_mode):
+                raise CheckpointCorruptError("checkpoint handle is not a regular file")
+            if opened.st_size <= 0 or opened.st_size > self.max_bytes:
+                raise CheckpointCorruptError("checkpoint size is outside trusted bounds")
+            chunks: list[bytes] = []
+            remaining = self.max_bytes + 1
+            while remaining > 0:
+                chunk = os.read(fd, min(64 * 1024, remaining))
+                if not chunk:
+                    break
+                chunks.append(chunk)
+                remaining -= len(chunk)
+            raw = b"".join(chunks)
         except OSError as exc:
             raise CheckpointCorruptError("checkpoint cannot be read") from exc
+        finally:
+            os.close(fd)
         if len(raw) > self.max_bytes:
             raise CheckpointCorruptError("checkpoint exceeds maximum persisted size")
+
+        def reject_non_finite_constant(_: str) -> None:
+            raise ValueError("non-finite JSON constant")
+
         try:
-            payload = json.loads(raw.decode("utf-8"))
-        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-            raise CheckpointCorruptError("checkpoint is not valid UTF-8 JSON") from exc
+            payload = json.loads(
+                raw.decode("utf-8"),
+                parse_constant=reject_non_finite_constant,
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+            raise CheckpointCorruptError("checkpoint is not strict UTF-8 JSON") from exc
 
         if not isinstance(payload, dict) or set(payload) != self._ROOT_FIELDS:
             raise CheckpointCorruptError("checkpoint envelope schema mismatch")
@@ -193,11 +281,13 @@ class DurableWorkCheckpointStore:
         if payload.get("project_id") != project or payload.get("work_id") != work:
             raise CheckpointCorruptError("checkpoint identity mismatch")
         saved_at = payload.get("saved_at")
-        if (
-            isinstance(saved_at, bool)
-            or not isinstance(saved_at, (int, float))
-            or saved_at <= 0
-        ):
+        if isinstance(saved_at, bool) or not isinstance(saved_at, (int, float)):
+            raise CheckpointCorruptError("invalid checkpoint timestamp")
+        try:
+            timestamp_is_finite = math.isfinite(saved_at)
+        except (OverflowError, TypeError, ValueError):
+            timestamp_is_finite = False
+        if not timestamp_is_finite or saved_at <= 0:
             raise CheckpointCorruptError("invalid checkpoint timestamp")
 
         checkpoint_data = payload.get("checkpoint")
