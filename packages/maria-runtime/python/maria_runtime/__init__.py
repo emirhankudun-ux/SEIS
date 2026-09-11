@@ -92,6 +92,11 @@ from .work_recovery import (
     RecoveryCatalogEntry,
     RecoveryDisposition,
 )
+from .recovery_candidate import (
+    RecoveryCandidateDisposition,
+    RecoveryCandidateInspector,
+    RecoveryCandidateView,
+)
 from .work_routing import MultiStepWorkRouter, WorkRoutePlan, WorkRouteStep, WorkStepRequest
 
 __all__ = [
@@ -114,8 +119,9 @@ __all__ = [
     "OllamaModelWorkAdapter", "PermissionDecision", "PermissionEngine", "ProbeHealthSummary", "ProbeObservation",
     "ProbeOutcome", "ProjectContextEngine", "ProjectContextRetriever", "ProjectProfile", "ProjectRegistry", "PromptCache",
     "ProviderRegistry", "ProviderSpec", "ProviderStatus", "RecoveryAnchor", "RecoveryAssessment", "RecoveryCatalogEntry",
-    "RecoveryDisposition", "RecoveryReconciler", "RecoveryReconciliationAssessment", "RecoveryReconciliationDisposition",
-    "RouteDecision", "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus", "TextNormalizer", "ToolSpec", "ToolStatus",
+    "RecoveryCandidateDisposition", "RecoveryCandidateInspector", "RecoveryCandidateView", "RecoveryDisposition",
+    "RecoveryReconciler", "RecoveryReconciliationAssessment", "RecoveryReconciliationDisposition", "RouteDecision",
+    "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus", "TextNormalizer", "ToolSpec", "ToolStatus",
     "UnifiedCapabilityRouter", "WorkMode", "WorkPlanCheckpoint", "WorkPlanExecutionResult", "WorkPlanExecutor",
     "WorkRoutePlan", "WorkRouteStep", "WorkStepExecutionEvidence", "WorkStepExecutionPolicy", "WorkStepExecutionResult",
     "WorkStepRequest", "WorkStepRunResult", "WorkStepRunner", "WorkStepState", "default_project_registry",
