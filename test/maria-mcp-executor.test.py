@@ -26,7 +26,7 @@ class _FakeTransport:
         self.response = response or {
             "jsonrpc": "2.0",
             "id": "invoke-1",
-            "result": {"actors": 12},
+            "result": {"actors": 12, "raw_marker": "RAW_TOOL_RESULT_123"},
         }
         self.calls = []
 
@@ -78,14 +78,17 @@ class MCPInvocationExecutorTests(unittest.TestCase):
         )
 
         self.assertTrue(result.success)
-        self.assertEqual(result.result, {"actors": 12})
+        self.assertEqual(
+            result.result,
+            {"actors": 12, "raw_marker": "RAW_TOOL_RESULT_123"},
+        )
         self.assertEqual(len(transport.calls), 1)
         self.assertEqual(transport.calls[0]["method"], "unreal.inspect_actors")
         self.assertEqual(result.evidence.tool_name, "mcp:unreal")
         self.assertEqual(result.evidence.action_class, ActionClass.READ)
         self.assertTrue(result.evidence.permission_allowed)
         self.assertEqual(result.evidence.failure, None)
-        self.assertNotIn("actors", repr(result.evidence))
+        self.assertNotIn("RAW_TOOL_RESULT_123", repr(result.evidence))
 
     def test_rejects_not_ready_or_permission_inconsistent_plan_before_transport_call(self):
         for plan in (
