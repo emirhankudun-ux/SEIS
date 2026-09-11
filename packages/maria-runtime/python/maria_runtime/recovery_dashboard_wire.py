@@ -17,7 +17,7 @@ class RecoveryDashboardWireRow:
     project_id: str
     work_id: str
     disposition: str
-    schema_version: int | None
+    schema_version: int
     next_step_id: str | None
     drift_fields: tuple[str, ...]
     missing_context: tuple[str, ...]
@@ -151,6 +151,7 @@ class RecoveryDashboardWireCodec:
             raise RecoveryDashboardWireError("dashboard contains an invalid row")
         if not isinstance(row.disposition, RecoveryCandidateDisposition):
             raise RecoveryDashboardWireError("unknown dashboard row disposition")
+        schema_version = cls._durable_schema_version(row.schema_version)
         for field_name in ("drift_fields", "missing_context"):
             values = getattr(row, field_name)
             if not isinstance(values, tuple) or len(values) > cls.MAX_FIELD_NAMES:
@@ -159,7 +160,7 @@ class RecoveryDashboardWireCodec:
             "project_id": row.project_id,
             "work_id": row.work_id,
             "disposition": row.disposition.value,
-            "schema_version": row.schema_version,
+            "schema_version": schema_version,
             "next_step_id": row.next_step_id,
             "drift_fields": list(row.drift_fields),
             "missing_context": list(row.missing_context),
@@ -264,14 +265,7 @@ class RecoveryDashboardWireCodec:
         if not isinstance(disposition, str) or disposition not in cls._DASHBOARD_DISPOSITIONS:
             raise RecoveryDashboardWireError("unknown dashboard row disposition")
 
-        schema_version = value.get("schema_version")
-        if schema_version is not None and (
-            isinstance(schema_version, bool)
-            or not isinstance(schema_version, int)
-            or schema_version <= 0
-            or schema_version > cls.MAX_NATIVE_INTEGER
-        ):
-            raise RecoveryDashboardWireError("invalid durable schema version")
+        schema_version = cls._durable_schema_version(value.get("schema_version"))
         next_step_id = value.get("next_step_id")
         if next_step_id is not None:
             next_step_id = cls._bounded_string(next_step_id, "next_step_id")
@@ -287,6 +281,17 @@ class RecoveryDashboardWireCodec:
             drift_fields=drift_fields,
             missing_context=missing_context,
         )
+
+    @classmethod
+    def _durable_schema_version(cls, value: Any) -> int:
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, int)
+            or value <= 0
+            or value > cls.MAX_NATIVE_INTEGER
+        ):
+            raise RecoveryDashboardWireError("invalid durable schema version")
+        return value
 
     @classmethod
     def _bounded_string(cls, value: Any, field_name: str) -> str:
