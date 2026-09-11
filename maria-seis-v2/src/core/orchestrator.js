@@ -1,14 +1,14 @@
 import { classifyIntent } from './router.js';
 import { evaluatePermission } from './permissions.js';
-import { verifyPrototype } from './verification.js';
+import { verifyPrototype, verifyLiveReceipt } from './verification.js';
 import { selectProviders } from './providerRouter.js';
 import { eventBus } from './eventBus.js';
 import { MockRuntimeAdapter } from '../adapters/runtime.js';
 import { executionJournal } from './executionJournal.js';
 let sequence = 0;
 
-/** Injectable for contract tests. Only the simulator is executable in this release. */
-export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = eventBus, timeoutMs = 10000, journal = executionJournal } = {}) {
+/** Runtime is dependency-injected. The shipped app uses only the simulator; trusted hosts may inject an explicit live runtime. */
+export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = eventBus, timeoutMs = 10000, journal = executionJournal, providerRegistry = null } = {}) {
   if (!Number.isFinite(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) throw new TypeError('Invalid timeoutMs');
   const writeJournal = entry => { try { journal?.append?.(entry); } catch { bus.emit('JOURNAL_FAILED',{runId:entry?.runId ?? null}); } };
   return async function run(command, projectId, hooks = {}, policy = {}, options = {}) {
@@ -33,10 +33,11 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
       bus.emit(permission.approval ? 'APPROVAL_REQUIRED' : 'ACTION_BLOCKED', {plan,permission});
       const out={status:permission.approval ? 'approval' : 'blocked',plan,permission,reason:permission.reason}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,verifiedExternalAction:false,evidence:[]}); return out;
     }
-    if (mode === 'live' || runtime?.mode !== 'simulation' || typeof runtime?.execute !== 'function') {
-      const out={status:'unavailable',plan,reason:'Gerçek yürütme adaptörü bağlı değil. Simülasyona sessizce geçilmedi.'}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,verifiedExternalAction:false,evidence:[]}); return out;
+    const runtimeCompatible = (mode === 'simulation' && runtime?.mode === 'simulation') || (mode === 'live' && runtime?.mode === 'live');
+    if (!runtimeCompatible || typeof runtime?.execute !== 'function') {
+      const out={status:'unavailable',plan,reason:'İstenen yürütme modu için uygun adaptör bağlı değil. Simülasyona sessizce geçilmedi.'}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,verifiedExternalAction:false,evidence:[]}); return out;
     }
-    const selectedProviders = Object.freeze(selectProviders(plan, {...policy,executionMode:mode}));
+    const selectedProviders = Object.freeze(selectProviders(plan, {...policy,executionMode:mode}, providerRegistry ?? undefined));
     if (!selectedProviders.length) { const out={status:'unavailable',plan,reason:'Kullanılabilir bir yürütücü yok.'}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,verifiedExternalAction:false,evidence:[]}); return out; }
     bus.emit('PROVIDERS_SELECTED', {plan,selectedProviders}); notify('onProviders', selectedProviders);
     const controller = new AbortController();
@@ -57,9 +58,10 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
       });
       const result = await Promise.race([execution,cancellation]);
       if (controller.signal.aborted) throw new Error('execution stopped');
-      const verification = verifyPrototype(result, plan);
-      bus.emit('SIMULATION_FINISHED', {plan,verification});
-      const out={status:verification.contractVerified ? 'simulated' : 'unverified',plan,selectedProviders,result,verification}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,provider:selectedProviders[0]?.id ?? null,verifiedExternalAction:false,evidence:verification.evidence ?? []}); return out;
+      const verification = mode === 'live' ? verifyLiveReceipt(result, plan) : verifyPrototype(result, plan);
+      bus.emit(mode === 'live' ? 'LIVE_EXECUTION_FINISHED' : 'SIMULATION_FINISHED', {plan,verification});
+      const status = mode === 'live' ? (verification.verified ? 'verified' : 'unverified') : (verification.contractVerified ? 'simulated' : 'unverified');
+      const out={status,plan,selectedProviders,result,verification}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,provider:selectedProviders[0]?.id ?? null,verifiedExternalAction:verification.verifiedExternalAction === true,evidence:verification.evidence ?? []}); return out;
     } catch {
       const status = timedOut ? 'timed-out' : controller.signal.aborted ? 'cancelled' : 'error';
       const reason = { 'timed-out':'İşlem süre sınırında durduruldu.', cancelled:'İşlem iptal edildi.', error:'Yürütücü başarısız oldu; sonuç doğrulanmadı.' }[status];
