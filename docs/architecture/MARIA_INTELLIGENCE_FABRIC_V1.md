@@ -2,13 +2,17 @@
 
 ## Status
 
-Foundation slice. Provider metadata, verified model-discovery conversion, bounded/provenance-bound local runtime discovery for LM Studio and Ollama, immutable local-runtime status snapshots, redacted local health evidence, evidence-backed model route explanations, safe MCP import preview, trust/approval MCP gateway evaluation, unified cognition/execution capability routing, and a per-call MCP permission guard are implemented. No cloud-provider execution, local-model inference, runtime auto-launch, MCP process execution, or external mutation is enabled by this document or its companion runtime modules.
+Active draft foundation on `feature/maria-intelligence-fabric-v1`.
+
+The branch now implements verified provider/model discovery metadata, bounded local-runtime discovery for LM Studio and Ollama, evidence-backed model routing, repository federation foundations, redacted MCP config import, trust/approval evaluation, bounded MCP process supervision, MCP protocol negotiation/framing, a bounded local stdio transport, one-shot environment resolution, and a permission-gated short-lived single-use MCP invocation path.
+
+Nothing in this branch automatically calls a real external MCP method, installs packages, resolves cloud credentials, performs model inference/downloads, mutates GitHub/Unreal/Blender, automates GUIs, deploys, publishes, bills, or creates uncontrolled background agents.
 
 ## Purpose
 
-MARIA is the human-facing intelligence of SEIS. The Intelligence Fabric is the provider and integration boundary that lets MARIA reason about multiple AI providers, local runtimes, and MCP integrations without hard-wiring the product to one vendor or pretending an integration is usable before it has been verified.
+MARIA is the human-facing intelligence of SEIS. The Intelligence Fabric is the provider + tool boundary that lets MARIA combine multiple AI providers and integrations without hard-wiring the product to one vendor or treating discovery as execution authority.
 
-The initial logical provider families are:
+Initial logical provider families are:
 
 - OpenAI
 - Codex
@@ -19,7 +23,7 @@ The initial logical provider families are:
 - Ollama
 - LM Studio
 
-These entries are routing metadata, not authenticated connections and not model-version claims. Every default provider starts in `discovery-required` state.
+Provider entries are routing metadata, not authenticated connections or permanent model rankings.
 
 ## Architecture boundary
 
@@ -29,195 +33,183 @@ MARIA
   +-- Project Context / Continuation
   |
   +-- Intelligence Fabric
-  |     +-- Provider Registry (metadata only)
-  |     +-- Local Runtime Probe (bounded localhost metadata only)
-  |     +-- Local Discovery Coordinator (provenance + health gate)
-  |     +-- Local Runtime Status Snapshot (immutable/redacted UI boundary)
-  |     +-- Local Runtime Discovery Parsers (verified response -> redacted facts)
-  |     +-- Provider Discovery Adapter (verified redacted facts -> ModelSpec)
-  |     +-- Model Registry / Router (verified model facts)
-  |     +-- Model Route Decision (evidence-backed route explanation)
-  |     +-- MCP Config Import Preview (redacted, disabled)
-  |     +-- MCP Gateway (trust/schema/provenance/approval evaluation)
-  |     +-- Capability Registry (verified tools)
-  |     +-- Unified Capability Router (cognition vs real execution boundary)
-  |     +-- MCP Invocation Guard (fresh per-call permission check)
+  |     +-- Provider Registry
+  |     +-- Provider Discovery Adapter
+  |     +-- Local Runtime Probe
+  |     +-- Local Discovery Coordinator
+  |     +-- Local Health Evidence Ledger
+  |     +-- Local Runtime Status Snapshot
+  |     +-- Model Registry / Router / Route Explanation
+  |     |
+  |     +-- MCP Config Import Preview
+  |     +-- MCP Gateway (trust + server approval)
+  |     +-- Capability Registry / Unified Capability Router
+  |     +-- MCP Environment Resolver (one-shot lease)
+  |     +-- MCP Process Supervisor
+  |     +-- MCP Protocol Negotiator + Stdio Frame Codec
+  |     +-- MCP Stdio Process Transport
+  |     +-- MCP Invocation Guard
+  |     +-- MCP Invocation Executor
   |
   +-- Permission Engine (per action)
-  +-- Verification / Evidence
+  +-- Verification / Redacted Evidence
 ```
 
-Provider metadata answers: "Which provider families could satisfy this class of work?"
+The core rule is simple: **observation, routing, approval, process launch, and external execution are separate trust domains.** Passing one boundary never implicitly grants the next.
 
-Discovery facts answer: "What has the current environment actually verified about a concrete model endpoint?"
+## Provider and model discovery
 
-Model metadata answers: "Which concrete discovered model is currently usable, with what context, reliability, latency, cost, locality, capability facts, and evidence provenance?"
+`ProviderRegistry` exposes stable provider identities, broad routing capabilities, locality, and explicit connection state. It performs no network calls and does not select a permanent winner.
 
-The router must choose from verified model facts. The default provider catalog must never be interpreted as a permanent ranking or a claim that a remote account is connected.
+`ProviderDiscoveryAdapter` converts already-redacted verified discovery facts into routable `ModelSpec` values. It fails closed:
 
-## Provider registry rules
+1. unknown providers are rejected;
+2. unverified facts remain discovery-only;
+3. unreachable endpoints are unavailable;
+4. reachable cloud endpoints without confirmed auth are `auth-required`;
+5. only verified reachable auth-ready facts become routable models;
+6. local models retain local privacy metadata;
+7. credentials, tokens, headers, prompts, and raw discovery payloads have no field in routing metadata.
 
-`ProviderRegistry` is intentionally small and deterministic:
+## Local runtime discovery
 
-- provider IDs are stable internal identifiers;
-- capability labels are broad routing intents;
-- local runtimes are explicitly marked local;
-- connection state is explicit;
-- secret values are not represented by the provider metadata schema;
-- public manifests are safe for UI/debug display;
-- the registry does not perform network calls;
-- the registry does not select a permanent winner.
+`LocalRuntimeProbe` permits only bounded metadata access to already-running LM Studio and Ollama services on literal loopback. It does not accept arbitrary hosts, redirects, credentials, unbounded responses, runtime launch, model download, or inference.
 
-A discovery adapter may derive another state only from verified environment evidence. The registry's default catalog remains discovery-first rather than pretending that a provider is connected.
+`LMStudioV1DiscoverySource` consumes LM Studio's native model metadata and only advertises capabilities explicitly exposed by the runtime.
 
-## Provider discovery rules
+`OllamaTagsDiscoverySource` produces inventory candidates; `OllamaShowDiscoverySource` enriches a named model using explicit Ollama metadata. Coding, vision, reasoning, or tool-use capabilities are never inferred from model names.
 
-`ProviderDiscoveryAdapter` is a side-effect-free conversion boundary. It does not probe a network, launch a local runtime, resolve secrets, or mutate provider configuration.
+`LocalDiscoveryCoordinator` binds inventory, show-probes, health evidence, provenance, and minimum evidence thresholds. A model is withheld from routing until discovery/parsing/health evidence is mature enough to support the claim.
 
-A separate discovery source must collect a redacted `ModelDiscoveryFact`. The adapter then applies fail-closed rules:
+`LocalRuntimeSnapshotBuilder` exposes frozen redacted UI-safe status facts. `ModelRouter.explain_select()` returns inspectable route evidence without leaking provider payloads or credentials.
 
-1. unknown provider IDs are rejected;
-2. unverified facts stay `discovery-required` and cannot create an available model;
-3. verified but unreachable endpoints become `unavailable`;
-4. verified reachable cloud endpoints without confirmed authentication become `auth-required`;
-5. only verified, reachable, authentication-ready facts become routable `ModelSpec` records;
-6. local discovered models are marked with local privacy metadata;
-7. only routing metadata is accepted: credentials, tokens, headers, and secret values have no field in the discovery schema;
-8. optional evidence provenance is normalized into an evidence source identifier plus a positive sample count, never a raw payload or secret-bearing log.
+## MCP import and gateway
 
-This separates *observation* from *routing*. A discovery source may inspect a local or cloud runtime, but it must return redacted facts before the central runtime can use them.
+`MCPConfigImporter` creates a disabled review preview. It validates server shape, command/args, transport and environment keys, retains only environment **key names**, discards imported values, identifies secret-like keys, and flags shell-wrapper/manual-review launchers.
 
-## Local runtime discovery and orchestration
+`MCPGateway` then consumes separately obtained redacted health/schema/provenance facts. A server remains disabled until trust conditions pass and explicit server enablement is recorded. Every discovered method preserves its own `ActionClass` for the `PermissionEngine`.
 
-`LocalRuntimeProbe` provides a bounded HTTP metadata path for already-running LM Studio and Ollama services on literal `127.0.0.1`. It cannot accept arbitrary hosts, URLs, methods, headers, credentials, redirects, or unbounded response sizes and never launches a runtime.
+There are therefore independent approval boundaries:
 
-`LMStudioV1DiscoverySource` consumes the native `GET /api/v1/models` response shape. It only emits LLM facts, requires an explicit positive `max_context_length`, and derives only capabilities exposed by LM Studio itself (`vision`, tool-use, reasoning) plus the generic `chat` capability. Embedding models are ignored by this routing slice rather than misclassified as chat models.
+1. server trust/enablement;
+2. process-launch policy;
+3. per-action permission;
+4. fresh invocation authorization.
 
-`OllamaTagsDiscoverySource` consumes `GET /api/tags` and produces non-routable `LocalModelCandidate` inventory records. `OllamaShowDiscoverySource` consumes a successful `POST /api/show` response for a named model, requires Ollama-reported capability strings, and extracts context only from explicit `*.context_length` metadata. It does not infer coding, vision, reasoning, or tool capability from a model name, family, parameter count, or quantization.
+Server approval is never blanket mutation authority.
 
-`LocalDiscoveryCoordinator` binds these pieces together:
+## Unified capability routing
 
-1. an Ollama inventory refresh revokes the previous in-memory inventory first;
-2. the new inventory becomes current only after the bounded tags probe and parser both succeed;
-3. automatic show probes may target only names from that current inventory;
-4. a name outside the inventory requires an explicit user-selection boundary;
-5. transport failures are recorded through typed, redacted failure categories rather than raw exception text;
-6. provider-specific payload parsing must succeed before an HTTP 200 observation is counted as a health success;
-7. `ModelDiscoveryFact` is withheld until the health ledger reaches its minimum evidence threshold;
-8. once the threshold is reached, observed reliability, the bounded sample count, and a normalized evidence-source identifier are attached to the model fact for downstream routing;
-9. `status_snapshot()` exposes current inventory and probe state through frozen redacted dataclasses without handing presentation code the mutable ledger or raw transport evidence.
+`UnifiedCapabilityRouter` keeps cognition and execution separate.
 
-This prevents HTTP reachability, inventory presence, a single successful response, or model-name heuristics from being mistaken for durable capability/reliability evidence.
+- Cognitive work is routed through verified model metadata and `ModelRouter`.
+- Real external execution is routed only through verified `ToolSpec` capabilities.
 
-See `docs/architecture/MARIA_LOCAL_RUNTIME_PROBES.md` for the detailed local trust boundary.
+A language model cannot satisfy an execution request simply because it advertises a similarly named capability. Project support constraints also remain explicit.
 
-## Local runtime status snapshot
+## MCP process supervision
 
-`LocalRuntimeSnapshotBuilder` creates a deterministic point-in-time presentation contract from the bounded health ledger plus the current Ollama inventory. It performs no I/O and cannot launch or mutate a runtime.
+`MCPProcessSupervisor` accepts only reviewed descriptors and approved gateway evaluations under an explicit `MCPProcessPolicy`.
 
-Each known probe is represented by `RuntimeProbeStatus` with only normalized aggregate fields: provider, probe name, state, sample/success/failure counts, reliability when mature, median successful latency, and the latest normalized outcome.
+The supervisor enforces:
 
-States are deliberately conservative:
+- exact executable allowlists;
+- exact provenance allowlists;
+- PATH lookup disabled by default;
+- dynamic package-manager launchers disabled by default;
+- startup/output/argument bounds;
+- bounded attempt budget;
+- circuit breaker with explicit reset approval;
+- normalized lifecycle evidence without raw stdout/stderr/exception text.
 
-- `unknown`: no evidence exists;
-- `warming`: the latest observation succeeded but the reliability threshold is not yet mature;
-- `ready`: the latest observation succeeded and the configured reliability threshold is mature;
-- `degraded`: the latest observation failed, even if older evidence still yields a historical reliability value.
+Environment-bearing descriptors are blocked until an exact matching resolved environment lease is supplied.
 
-The snapshot intentionally omits raw response bodies, response sizes, headers, prompts, model output, exception text, and credentials. It is the intended boundary for a future SwiftUI Integration Center rather than direct UI access to runtime internals.
+## Secret and environment boundary
 
-## Evidence-backed model route explanations
+Imported MCP environment values are never trusted or retained. `MCPEnvironmentResolver` resolves only the key names declared by the reviewed descriptor and only after the MCP server is approved.
 
-`ModelRouter.explain_select()` preserves the existing deterministic selection behavior while returning a frozen `ModelRouteDecision` suitable for UI/debug display.
+The resolver returns an `MCPResolvedEnvironmentLease`:
 
-A route decision includes the selected model, sorted required capabilities, context estimate, the final candidate pool, whether sensitive-work local bias was applied, the computed score, and the normalized evidence sample count/source carried by the selected model when available.
+- scoped to one MCP server;
+- containing exactly the reviewed key set;
+- redacted in `repr`/lifecycle evidence;
+- materializable only once;
+- marked consumed after materialization;
+- rejected when reused, mismatched, missing, or supplied for undeclared keys.
 
-`ModelRouter.select()` remains backward-compatible and returns only the selected `ModelSpec` by delegating to the explained route.
+The current implementation defines a generic `MCPSecretSource` protocol. A future macOS adapter should resolve values from Keychain or an equivalent OS credential store. The repository does not contain secret values.
 
-This makes routing inspectable without exposing hidden prompts, raw provider payloads, credentials, or mutable health-ledger state.
+Python cannot guarantee physical zeroization of immutable strings, so the runtime deliberately claims **minimal retention**, not cryptographic zeroization.
 
-## MCP import rules
+## Bounded stdio transport
 
-`MCPConfigImporter` accepts MCP JSON and creates a review preview. It deliberately does not execute or install anything.
+`MCPStdioProcessTransport` executes only an already-reviewed absolute executable/argv launch plan with `shell=False`, binary pipes, closed inherited file descriptors, and bounded startup/output behavior.
 
-The importer:
+Direct non-empty environment injection into the transport is rejected. The child environment defaults to `{}`. When a reviewed launch plan carries an environment lease, the transport materializes it exactly once immediately before spawning the child. Environment values are never copied into transport snapshots or retained evidence.
 
-1. validates the root and `mcpServers` shapes;
-2. validates command, argument, environment-key, and transport types;
-3. retains environment variable names but drops all environment values;
-4. identifies secret-like environment keys for secure resolution later;
-5. flags shell-wrapper launchers for manual review;
-6. exposes each imported server as a disabled discovery-only `ToolSpec`;
-7. leaves health, authentication, version, and capability discovery unresolved.
+The transport negotiates MCP protocol state, performs bounded correlated JSON-RPC exchange, drains stderr without retaining content, and shuts down through explicit wait → terminate → kill escalation. Timeouts fail closed; no replacement child or retry is launched automatically.
 
-This means importing a configuration cannot silently create execution authority.
+## Invocation freshness and replay resistance
 
-## MCP gateway rules
+`MCPInvocationGuard` performs a fresh `PermissionEngine` check for every MCP method/target. It returns an `MCPInvocationPlan` only for the exact discovered capability and includes an in-memory lifecycle identity:
 
-`MCPGateway` consumes a redacted `MCPDiscoveryFact`; it does not start a process or call a tool. Discovery sources remain separate from trust decisions.
+- high-entropy `plan_id`;
+- monotonic issue time;
+- monotonic expiry;
+- default lifetime 30 seconds;
+- hard maximum lifetime 300 seconds.
 
-The gateway fails closed:
+`MCPInvocationExecutor` independently validates the plan, transport/server identity, child health, lifecycle timestamps, request ID, timeout, and response bound.
 
-- descriptor/discovery server-name mismatches are rejected;
-- shell-wrapper/manual-review descriptors cannot be enabled by an approval flag alone;
-- unverified discovery remains disabled;
-- unreachable servers become unavailable;
-- invalid or empty schemas become incompatible;
-- unverified provenance remains disabled;
-- duplicate discovered capabilities are rejected;
-- a fully verified server is still disabled until explicit enablement approval is recorded;
-- after enablement, every discovered method retains its own `ActionClass` mapping for the `PermissionEngine` to evaluate again at call time.
+Immediately before transport execution it atomically claims the plan. The same plan cannot be replayed. Success, transport failure, JSON-RPC error, or malformed response all consume the authorization attempt. Any retry requires a fresh permission decision and new plan.
 
-There are therefore two distinct approval boundaries: **server enablement** and **per-action execution**. Enabling a server never grants blanket mutation authority.
+Consumed identifiers are retained only until their short expiry and then pruned, bounding replay-state memory.
 
-## Unified capability routing rules
+## Evidence rules
 
-`UnifiedCapabilityRouter` deliberately separates cognition from external execution instead of treating every matching capability label as interchangeable.
+Retainable execution evidence may include only normalized lifecycle facts such as:
 
-For cognition requests, the router delegates to `ModelRouter` and therefore preserves verified model availability, context fit, reliability, cost/latency scoring, and local-first privacy behavior for sensitive work.
+- tool identity;
+- capability/method;
+- action class;
+- permission allowed state;
+- request ID;
+- success/failure category;
+- response byte count;
+- duration;
+- numeric JSON-RPC error code when available.
 
-For execution requests, the router delegates only to `CapabilityRegistry`. A model is never allowed to satisfy an execution request merely because it advertises the same capability string. This prevents a language model from being mistaken for authority to inspect or mutate a real external system.
+It must not persist:
 
-Execution routes also preserve project support constraints. A tool approved for `Deadly Evil` does not silently become a valid route for another project unless that support is explicitly declared.
+- request parameters;
+- permission targets;
+- raw tool results;
+- secret values;
+- server error messages/data;
+- stdout/stderr content;
+- exception text;
+- hidden prompts or model output.
 
-## Per-call MCP invocation guard
+## Current safety boundary
 
-`MCPInvocationGuard` is the final pure policy boundary before a future executor. It still does not start a process or perform an MCP call.
+This branch now contains a real bounded local stdio process transport and a real permission-gated invocation executor, but **nothing invokes them automatically** and tests use injected/fake processes/transports. No real external MCP method is called by the test suite.
 
-For every planned invocation it requires:
+Still deliberately excluded:
 
-1. the MCP tool to already be `AVAILABLE` from the trust/enablement gateway;
-2. the requested capability to exist in the exact discovered method permission map;
-3. a fresh `PermissionEngine` evaluation for the concrete target;
-4. fresh explicit approval when the action class requires it.
-
-Low-risk read actions may be ready without extra approval. `MODIFY`, `EXTERNAL`, `DESTRUCTIVE`, `FINANCIAL`, and `PRIVACY_SENSITIVE` actions remain blocked until that specific call is explicitly approved. Prior server enablement does not count as per-call approval.
-
-Unknown methods fail closed and cannot be invoked through an enabled server.
-
-## Secret boundary
-
-Secret values must not be committed to repository configuration or returned in public manifests. Future live adapters should resolve credentials through an external secure secret store (for macOS, Keychain is the preferred native direction) and pass only the minimum required credential material to a provider process or request.
-
-The current MCP importer intentionally discards environment values even when they are present in imported JSON. Provider discovery similarly accepts only an `auth_present` boolean rather than credential material. Local metadata probes send no authentication headers.
-
-## Why broader live execution remains disabled
-
-The local runtime slice now has a bounded metadata probe, provenance-bound orchestration, typed failure evidence, a minimum-reliability gate, immutable UI-safe status snapshots, and inspectable routing evidence, but it intentionally stops before inference, model loading, runtime launch, downloads, or arbitrary provider traffic.
-
-Likewise, a healthy MCP descriptor plus discovery evidence still does not itself provide a bounded process supervisor, credential resolver, retry/circuit-breaker runtime, transport framing, timeout policy, output-size limits, or verified executor.
-
-The foundation can determine which observed local models are safe to expose to routing metadata, explain why a model was selected, expose runtime health without raw evidence leakage, determine whether an MCP server is eligible for explicit enablement, classify discovered method permissions, determine whether a specific call is currently permitted, and distinguish cognitive model routing from real external execution. It intentionally stops before granting new execution authority.
+- automatic package installation;
+- arbitrary executable launch;
+- cloud-provider authentication/execution;
+- automatic model loading/download/inference;
+- real GitHub/Unreal/Blender mutations;
+- GUI automation;
+- deployment/publication/billing;
+- uncontrolled autonomous background agents.
 
 ## Next slices
 
-1. Bounded MCP process supervisor with executable/provenance allowlists, health/schema evidence, retries/circuit breakers, timeouts, output limits, and lifecycle evidence.
-2. MCP executor that can only consume a ready `MCPInvocationPlan`, re-checks runtime health, and records invocation evidence.
-3. Verified capability enrichment for local models where runtime metadata is insufficient, without model-name heuristics.
-4. Multi-step work routing that can compose a cognitive model route with one or more permission-gated tool routes without collapsing the two trust domains.
-5. SwiftUI Integration Center for provider/MCP/runtime status, import preview, approvals, health evidence, and route explanations.
-6. Cloud provider discovery/auth adapters that preserve the same redacted evidence model and never expose credential material to routing metadata.
-
-## Non-goals of v1
-
-This slice does not include cloud provider API calls, OAuth, model downloads, automatic runtime launch, model inference, MCP process launch, plugin installation, filesystem mutation, Git mutation, Unreal/Blender mutation, GUI automation, deployment, publication, billing actions, or uncontrolled background agents.
+1. OS-native secret-source adapter contract and macOS Keychain integration without secret-bearing logs.
+2. Verified local-model capability enrichment where runtime metadata is insufficient, without model-name heuristics.
+3. Multi-step work routing that composes model reasoning with one or more permission-gated tool routes without collapsing trust domains.
+4. SwiftUI Integration Center for provider/MCP/runtime status, imports, approvals, health evidence, route explanations, and secure secret-state indicators.
+5. Cloud provider discovery/auth adapters preserving the same redacted evidence model.
+6. End-to-end integration tests using a purpose-built harmless local MCP fixture before any real project integration is enabled.
