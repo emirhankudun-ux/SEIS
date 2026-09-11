@@ -8,12 +8,14 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
 
+from maria_runtime.fabric_router import CapabilityRequest, RouteKind, UnifiedCapabilityRouter
 from maria_runtime.mcp_config import MCPConfigImporter
 from maria_runtime.mcp_gateway import MCPDiscoveryFact, MCPGateway, MCPMethodFact
+from maria_runtime.models import ModelRegistry, ModelSpec
 from maria_runtime.permissions import ActionClass
 from maria_runtime.provider_discovery import ModelDiscoveryFact, ProviderDiscoveryAdapter
 from maria_runtime.providers import ProviderStatus, default_provider_registry
-from maria_runtime.registry import ToolStatus
+from maria_runtime.registry import CapabilityRegistry, ToolSpec, ToolStatus
 
 
 class MariaIntelligenceFabricTests(unittest.TestCase):
@@ -239,6 +241,85 @@ class MariaIntelligenceFabricTests(unittest.TestCase):
         self.assertFalse(evaluation.ready_for_approval)
         self.assertIn("manual-review", evaluation.blockers)
         self.assertIn("provenance-unverified", evaluation.blockers)
+
+    def test_unified_router_uses_verified_tool_for_execution_and_never_falls_back_to_model(self):
+        tools = CapabilityRegistry((
+            ToolSpec(
+                name="mcp:unreal",
+                capabilities=("unreal.inspect_actors",),
+                method_rank=2,
+                reliability=0.97,
+                latency_ms=80,
+                cost=0.0,
+                status=ToolStatus.AVAILABLE,
+                supported_projects=("Deadly Evil",),
+            ),
+        ))
+        models = ModelRegistry((
+            ModelSpec(
+                name="cloud-generalist",
+                provider="openai",
+                local=False,
+                capabilities=("unreal.inspect_actors", "reasoning"),
+                context_size=128000,
+                reliability=0.99,
+                latency_ms=500,
+                input_cost_per_million=1.0,
+                output_cost_per_million=4.0,
+            ),
+        ))
+        router = UnifiedCapabilityRouter(models=models, tools=tools)
+
+        decision = router.route(CapabilityRequest(
+            capability="unreal.inspect_actors",
+            execution_required=True,
+            project="Deadly Evil",
+        ))
+        self.assertEqual(decision.kind, RouteKind.TOOL)
+        self.assertEqual(decision.target_name, "mcp:unreal")
+
+        with self.assertRaises(LookupError):
+            router.route(CapabilityRequest(
+                capability="unreal.inspect_actors",
+                execution_required=True,
+                project="Portfolio",
+            ))
+
+    def test_unified_router_uses_model_router_for_cognition_and_preserves_local_privacy_bias(self):
+        tools = CapabilityRegistry()
+        models = ModelRegistry((
+            ModelSpec(
+                name="qwen-local",
+                provider="ollama",
+                local=True,
+                capabilities=("coding", "reasoning"),
+                context_size=32768,
+                reliability=0.84,
+                latency_ms=350,
+                input_cost_per_million=0.0,
+                output_cost_per_million=0.0,
+            ),
+            ModelSpec(
+                name="cloud-strong",
+                provider="openai",
+                local=False,
+                capabilities=("coding", "reasoning"),
+                context_size=200000,
+                reliability=0.98,
+                latency_ms=650,
+                input_cost_per_million=2.0,
+                output_cost_per_million=8.0,
+            ),
+        ))
+        router = UnifiedCapabilityRouter(models=models, tools=tools)
+
+        decision = router.route(CapabilityRequest(
+            capability="coding",
+            sensitive=True,
+            estimated_context_tokens=8000,
+        ))
+        self.assertEqual(decision.kind, RouteKind.MODEL)
+        self.assertEqual(decision.target_name, "qwen-local")
 
 
 if __name__ == "__main__":
