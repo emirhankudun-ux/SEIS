@@ -37,6 +37,7 @@ from .mcp_executor import (
     MCPInvocationTransport,
 )
 from .mcp_invocation import MCPInvocationGuard, MCPInvocationPlan
+from .mcp_keychain import MCPKeychainSecretSource
 from .mcp_protocol import (
     MCP_LEGACY_PROTOCOL_VERSION,
     MCP_MODERN_PROTOCOL_VERSION,
@@ -99,6 +100,7 @@ __all__ = [
     "MCPInvocationPlan",
     "MCPInvocationResult",
     "MCPInvocationTransport",
+    "MCPKeychainSecretSource",
     "MCP_LEGACY_PROTOCOL_VERSION",
     "MCP_MODERN_PROTOCOL_VERSION",
     "MCPProcessLaunchPlan",
