@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Mapping, Protocol
+from typing import Any, Callable, Mapping, Protocol
 
 from .fabric_router import RouteKind
 from .work_routing import WorkRoutePlan, WorkRouteStep
@@ -12,6 +12,7 @@ class WorkStepState(str, Enum):
     SUCCEEDED = "succeeded"
     FAILED = "failed"
     BLOCKED = "blocked"
+    CANCELLED = "cancelled"
 
 
 @dataclass(frozen=True)
@@ -128,6 +129,25 @@ class WorkStepExecutionResult:
 
 
 @dataclass(frozen=True)
+class WorkPlanCheckpoint:
+    """Redacted resumability summary containing evidence only.
+
+    The checkpoint intentionally contains no transient step result, prompt,
+    dependency payload, tool parameter, permission target, credential, or raw
+    provider/tool output. It is safe to surface to UI/status layers as an
+    in-memory summary; durable resume payload persistence is a separate concern.
+    """
+
+    steps: tuple[WorkStepExecutionEvidence, ...]
+    complete: bool
+    succeeded_steps: int
+    failed_steps: int
+    blocked_steps: int
+    cancelled_steps: int
+    next_step_id: str | None = None
+
+
+@dataclass(frozen=True)
 class WorkPlanExecutionResult:
     steps: tuple[WorkStepExecutionResult, ...]
     succeeded: bool
@@ -138,13 +158,41 @@ class WorkPlanExecutionResult:
                 return step
         return None
 
+    @property
+    def cancelled(self) -> bool:
+        return any(
+            step.evidence.state is WorkStepState.CANCELLED
+            for step in self.steps
+        )
+
+    def checkpoint(self) -> WorkPlanCheckpoint:
+        evidence = tuple(step.evidence for step in self.steps)
+        succeeded_steps = sum(item.state is WorkStepState.SUCCEEDED for item in evidence)
+        failed_steps = sum(item.state is WorkStepState.FAILED for item in evidence)
+        blocked_steps = sum(item.state is WorkStepState.BLOCKED for item in evidence)
+        cancelled_steps = sum(item.state is WorkStepState.CANCELLED for item in evidence)
+        next_step_id = next(
+            (item.step_id for item in evidence if item.state is WorkStepState.CANCELLED),
+            None,
+        )
+        return WorkPlanCheckpoint(
+            steps=evidence,
+            complete=cancelled_steps == 0,
+            succeeded_steps=succeeded_steps,
+            failed_steps=failed_steps,
+            blocked_steps=blocked_steps,
+            cancelled_steps=cancelled_steps,
+            next_step_id=next_step_id,
+        )
+
 
 class WorkPlanExecutor:
     """Execute a pre-routed bounded plan without weakening trust boundaries.
 
     ``MultiStepWorkRouter`` decides *where* a step may go. This class only
     orchestrates the already-routed plan: dependency gating, bounded attempts,
-    normalized evidence, and explicit idempotency policy for retries.
+    cancellation checkpoints, normalized evidence, and explicit idempotency
+    policy for retries.
 
     External authorization remains per-attempt and belongs inside the supplied
     tool runner. No permission decision, MCP invocation plan, secret, or raw
@@ -177,9 +225,12 @@ class WorkPlanExecutor:
         plan: WorkRoutePlan,
         *,
         policies: Mapping[str, WorkStepExecutionPolicy] | None = None,
+        cancel_requested: Callable[[], bool] | None = None,
     ) -> WorkPlanExecutionResult:
         if not isinstance(plan, WorkRoutePlan):
             raise TypeError("plan must be WorkRoutePlan")
+        if cancel_requested is not None and not callable(cancel_requested):
+            raise TypeError("cancel_requested must be callable when present")
 
         normalized_policies = dict(policies or {})
         self._preflight(plan, normalized_policies)
@@ -187,7 +238,17 @@ class WorkPlanExecutor:
         results_by_id: dict[str, WorkStepExecutionResult] = {}
         ordered_results: list[WorkStepExecutionResult] = []
 
-        for step in plan.steps:
+        for index, step in enumerate(plan.steps):
+            cancelled, cancellation_failure = self._cancellation_state(cancel_requested)
+            if cancelled:
+                self._append_cancelled_tail(
+                    plan.steps[index:],
+                    ordered_results=ordered_results,
+                    results_by_id=results_by_id,
+                    failure=cancellation_failure,
+                )
+                break
+
             failed_dependency = any(
                 results_by_id[dependency].evidence.state is not WorkStepState.SUCCEEDED
                 for dependency in step.depends_on
@@ -223,13 +284,23 @@ class WorkPlanExecutor:
                 runner=runner,
                 dependency_results=dependency_results,
                 policy=policy,
+                cancel_requested=cancel_requested,
             )
             results_by_id[step.step_id] = result
             ordered_results.append(result)
 
+            if result.evidence.state is WorkStepState.CANCELLED:
+                self._append_cancelled_tail(
+                    plan.steps[index + 1 :],
+                    ordered_results=ordered_results,
+                    results_by_id=results_by_id,
+                    failure=result.evidence.failure,
+                )
+                break
+
         return WorkPlanExecutionResult(
             steps=tuple(ordered_results),
-            succeeded=all(
+            succeeded=bool(ordered_results) and all(
                 item.evidence.state is WorkStepState.SUCCEEDED
                 for item in ordered_results
             ),
@@ -295,18 +366,73 @@ class WorkPlanExecutor:
                 )
 
     @staticmethod
+    def _cancellation_state(
+        cancel_requested: Callable[[], bool] | None,
+    ) -> tuple[bool, str | None]:
+        if cancel_requested is None:
+            return False, None
+        try:
+            requested = cancel_requested()
+        except Exception:
+            return True, "cancellation-source-failure"
+        if not isinstance(requested, bool):
+            return True, "cancellation-source-invalid"
+        if requested:
+            return True, "cancelled"
+        return False, None
+
+    @staticmethod
+    def _append_cancelled_tail(
+        steps: tuple[WorkRouteStep, ...],
+        *,
+        ordered_results: list[WorkStepExecutionResult],
+        results_by_id: dict[str, WorkStepExecutionResult],
+        failure: str | None,
+    ) -> None:
+        normalized_failure = failure or "cancelled"
+        for step in steps:
+            result = WorkStepExecutionResult(
+                evidence=WorkStepExecutionEvidence(
+                    step_id=step.step_id,
+                    route_kind=step.route.kind,
+                    target_name=step.route.target_name,
+                    state=WorkStepState.CANCELLED,
+                    attempts=0,
+                    depends_on=step.depends_on,
+                    failure=normalized_failure,
+                ),
+            )
+            ordered_results.append(result)
+            results_by_id[step.step_id] = result
+
+    @classmethod
     def _run_step(
+        cls,
         step: WorkRouteStep,
         *,
         runner: WorkStepRunner,
         dependency_results: Mapping[str, Any],
         policy: WorkStepExecutionPolicy,
+        cancel_requested: Callable[[], bool] | None,
     ) -> WorkStepExecutionResult:
         final: WorkStepRunResult | None = None
         attempts = 0
 
         for attempt in range(1, policy.max_attempts + 1):
-            attempts = attempt
+            cancelled, cancellation_failure = cls._cancellation_state(cancel_requested)
+            if cancelled:
+                return WorkStepExecutionResult(
+                    evidence=WorkStepExecutionEvidence(
+                        step_id=step.step_id,
+                        route_kind=step.route.kind,
+                        target_name=step.route.target_name,
+                        state=WorkStepState.CANCELLED,
+                        attempts=attempts,
+                        depends_on=step.depends_on,
+                        failure=cancellation_failure or "cancelled",
+                    ),
+                )
+
             try:
                 candidate = runner.run(
                     step,
@@ -321,6 +447,7 @@ class WorkPlanExecutor:
                     "runner-failure",
                     retryable=False,
                 )
+            attempts = attempt
 
             if not isinstance(candidate, WorkStepRunResult):
                 candidate = WorkStepRunResult.failure(
