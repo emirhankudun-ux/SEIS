@@ -113,6 +113,26 @@ class RecoveryInputBoundaryTests(unittest.TestCase):
         with self.assertRaises(RecoveryNativeBridgeError):
             RecoveryNativeBridgeAdapter().adapt(replace(original, rows=(row,)))
 
+    def test_durable_schema_version_must_fit_native_signed_integer(self):
+        native_max = (1 << 63) - 1
+        for value in (native_max + 1, 1 << 100):
+            with self.subTest(path="decode", value=value):
+                payload = self.payload()
+                payload["rows"][0]["schema_version"] = value
+                with self.assertRaises(RecoveryDashboardWireError):
+                    self.codec.decode(json.dumps(payload).encode())
+
+            with self.subTest(path="encode", value=value):
+                row = replace(self.source.rows[0], schema_version=value)
+                with self.assertRaises(RecoveryDashboardWireError):
+                    self.codec.encode(replace(self.source, rows=(row,)))
+
+            with self.subTest(path="typed-native", value=value):
+                original = self.codec.decode(self.codec.encode(self.source))
+                row = replace(original.rows[0], schema_version=value)
+                with self.assertRaises(RecoveryNativeBridgeError):
+                    RecoveryNativeBridgeAdapter().adapt(replace(original, rows=(row,)))
+
     def test_valid_supplementary_and_combining_unicode_still_round_trips(self):
         for value in ("iş-\U0001f680", "e\u0301", "\u00e9"):
             with self.subTest(value=value):
