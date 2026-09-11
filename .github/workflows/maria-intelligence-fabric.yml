@@ -16,6 +16,7 @@ on:
       - 'test/fixtures/mcp_fixture_server.py'
       - 'test/maria-work-routing.test.py'
       - 'test/maria-work-execution.test.py'
+      - 'test/maria-work-cancellation.test.py'
       - 'test/maria-mcp-process-supervisor.test.py'
       - 'test/maria-mcp-process-path-policy.test.py'
       - 'test/maria-mcp-protocol-negotiation.test.py'
@@ -60,6 +61,7 @@ jobs:
       - run: python3 test/maria-mcp-e2e-fixture.test.py
       - run: python3 test/maria-work-routing.test.py
       - run: python3 test/maria-work-execution.test.py
+      - run: python3 test/maria-work-cancellation.test.py
       - run: python3 test/maria-mcp-process-supervisor.test.py
       - run: python3 test/maria-mcp-process-path-policy.test.py
       - run: python3 test/maria-mcp-protocol-negotiation.test.py
