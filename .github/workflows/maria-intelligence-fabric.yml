@@ -8,6 +8,7 @@ on:
       - 'test/maria-mcp-invocation-guard.test.py'
       - 'test/maria-local-runtime-discovery.test.py'
       - 'test/maria-local-runtime-health.test.py'
+      - 'test/maria-local-discovery-coordinator.test.py'
       - 'docs/architecture/MARIA_INTELLIGENCE_FABRIC_V1.md'
       - 'docs/architecture/MARIA_LOCAL_RUNTIME_PROBES.md'
       - '.github/workflows/maria-intelligence-fabric.yml'
@@ -30,4 +31,5 @@ jobs:
       - run: python3 test/maria-mcp-invocation-guard.test.py
       - run: python3 test/maria-local-runtime-discovery.test.py
       - run: python3 test/maria-local-runtime-health.test.py
+      - run: python3 test/maria-local-discovery-coordinator.test.py
       - run: python3 test/maria-runtime-v18.test.py
