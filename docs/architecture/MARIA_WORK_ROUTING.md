@@ -4,7 +4,7 @@ Status: implemented bounded planning + execution boundary on `feature/maria-inte
 
 ## Purpose
 
-MARIA needs to decompose one request into cognition and tool steps without confusing model competence with external authority. `MultiStepWorkRouter` creates a deterministic, side-effect-free route plan. `WorkPlanExecutor` then executes that already-routed plan through explicitly supplied bounded model/tool runners while preserving dependency, retry, permission, context-budget, and evidence boundaries.
+MARIA needs to decompose one request into cognition and tool steps without confusing model competence with external authority. `MultiStepWorkRouter` creates a deterministic, side-effect-free route plan. `WorkPlanExecutor` then executes that already-routed plan through explicitly supplied bounded model/tool runners while preserving dependency, retry, cancellation, permission, context-budget, and evidence boundaries.
 
 The central rule remains: **thinking and external execution are different authorities**.
 
@@ -29,6 +29,8 @@ WorkPlanExecutor preflight
        ├── bounded attempt budget
        └── retry/idempotency contracts
        ↓
+cancellation check before step / retry attempt
+       ↓
 per-step runner
        ├── model step → ModelWorkStepRunner
        |                   ├── route/model/capability revalidation
@@ -38,6 +40,8 @@ per-step runner
                             ├── live approval provider per attempt when needed
                             ├── fresh MCPInvocationGuard.plan()
                             └── single-use MCPInvocationExecutor
+       ↓
+redacted WorkPlanCheckpoint
 ```
 
 ## Planning invariants
@@ -70,6 +74,23 @@ Before invoking any runner it validates:
 - the total configured attempt budget remains bounded.
 
 A failed or blocked dependency blocks every dependent step without invoking that step's runner. This prevents a later tool call or model step from running on missing or invalid upstream evidence.
+
+## Cooperative cancellation and checkpoints
+
+`WorkPlanExecutor.execute()` accepts an optional in-memory `cancel_requested` callback. It is checked before each step and again before every retry attempt.
+
+Cancellation is fail-closed:
+
+- `True` marks the current and remaining work `CANCELLED` without starting a new attempt;
+- callback exceptions become normalized `cancellation-source-failure` evidence without retaining exception text;
+- non-boolean callback output becomes `cancellation-source-invalid`;
+- already completed successful steps remain successful;
+- cancellation between retries preserves the number of already completed attempts and prevents the next attempt;
+- cancellation is distinct from dependency failure and does not masquerade as `BLOCKED`.
+
+`WorkPlanExecutionResult.checkpoint()` returns a `WorkPlanCheckpoint` that contains only `WorkStepExecutionEvidence`, state counts, completion state, and the first cancelled step as `next_step_id`. It deliberately excludes transient model/tool results, prompts, parameters, dependency payloads, secrets, permission targets, and raw exceptions.
+
+This is a redacted **status/checkpoint summary**, not crash-resumable raw-state persistence. A future durable-resume design must define safe rehydration separately rather than serializing transient work payloads.
 
 ## Retry and idempotency policy
 
@@ -117,7 +138,7 @@ The runner performs no provider discovery, credential lookup, runtime launch, mo
 
 ## Result and evidence boundary
 
-`WorkStepRunResult` is transient and may carry the in-memory result needed by dependent steps.
+`WorkStepRunResult` and `WorkStepExecutionResult` may carry transient in-memory results needed by dependent steps, but their result payloads are excluded from `repr` to prevent routine logging/diagnostics from exposing model or tool output.
 
 `WorkStepExecutionEvidence` is the retainable record and deliberately excludes:
 
@@ -151,13 +172,13 @@ This slice does not:
 - automatically retry non-idempotent tool operations;
 - persist raw intermediate results;
 - execute uncontrolled background work;
-- provide crash-resumable durable checkpoints yet;
+- provide crash-resumable durable work-payload persistence;
 - automatically configure or authenticate cloud/local provider adapters;
 - automatically load/download models.
 
 ## Next safe layers
 
-1. Add in-memory cancellation plus redacted checkpoint summaries so a longer plan can stop safely between attempts/steps without persisting raw payloads.
-2. Add explicit provider adapter implementations behind `ModelWorkAdapter`, beginning with already-verified local runtimes and preserving timeout/context/evidence boundaries.
-3. Surface provider/MCP/runtime/work-plan status, blockers, approvals, route explanations, and Keychain state in the existing macOS/SwiftUI architecture after its current app boundaries are confirmed.
-4. Add carefully selected real MCP integration pilots only after the same fresh-per-attempt authorization, live-approval, and idempotency contracts remain green.
+1. Add explicit provider adapter implementations behind `ModelWorkAdapter`, beginning with already-verified local runtimes and preserving timeout/context/evidence boundaries.
+2. Surface provider/MCP/runtime/work-plan status, cancellation, blockers, approvals, route explanations, Keychain state, and redacted checkpoints in the existing macOS/SwiftUI architecture after its current app boundaries are confirmed.
+3. Define a durable resume manifest only for data that can be reconstructed safely; never persist raw transient prompts/results merely to resume a plan.
+4. Add carefully selected real MCP integration pilots only after the same fresh-per-attempt authorization, live-approval, cancellation, redaction, and idempotency contracts remain green.
