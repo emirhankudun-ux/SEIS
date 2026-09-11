@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'packages/maria-runtime/**'
+      - 'test/maria-local-model-adapter.test.py'
       - 'test/maria-intelligence-fabric.test.py'
       - 'test/maria-mcp-invocation-guard.test.py'
       - 'test/maria-mcp-executor.test.py'
@@ -29,6 +30,7 @@ on:
       - 'test/maria-local-discovery-coordinator.test.py'
       - 'test/maria-local-routing-integration.test.py'
       - 'test/maria-local-runtime-status.test.py'
+      - 'docs/architecture/MARIA_LOCAL_MODEL_INFERENCE.md'
       - 'docs/architecture/MARIA_INTELLIGENCE_FABRIC_V1.md'
       - 'docs/architecture/MARIA_LOCAL_RUNTIME_PROBES.md'
       - 'docs/architecture/MARIA_MCP_PROCESS_SUPERVISOR.md'
@@ -51,6 +53,7 @@ jobs:
       - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
         with:
           python-version: '3.12'
+      - run: python3 test/maria-local-model-adapter.test.py
       - run: python3 test/maria-intelligence-fabric.test.py
       - run: python3 test/maria-mcp-invocation-guard.test.py
       - run: python3 test/maria-mcp-executor.test.py
