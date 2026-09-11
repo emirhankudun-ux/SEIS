@@ -24,7 +24,10 @@ class MCPDiscoveryFact:
     """Redacted evidence collected by an MCP discovery source.
 
     This object carries health/schema/provenance facts only. It never contains
-    credentials and does not launch a process by itself.
+    credentials and does not launch a process by itself. `provenance_id` is an
+    optional normalized identifier (for example a reviewed digest or package
+    identity) that later execution boundaries can exact-match against an
+    allowlist without retaining raw discovery payloads.
     """
 
     server_name: str
@@ -36,6 +39,7 @@ class MCPDiscoveryFact:
     reliability: float
     latency_ms: int
     methods: tuple[MCPMethodFact, ...]
+    provenance_id: str = ""
 
     def __post_init__(self) -> None:
         if not self.server_name.strip() or not self.version.strip():
@@ -44,6 +48,8 @@ class MCPDiscoveryFact:
             raise ValueError("reliability must be between 0 and 1")
         if self.latency_ms < 0:
             raise ValueError("latency cannot be negative")
+        if self.provenance_id and not self.provenance_id.strip():
+            raise ValueError("provenance_id cannot be whitespace-only")
 
 
 @dataclass(frozen=True)
@@ -52,6 +58,7 @@ class MCPGatewayEvaluation:
     permission_map: dict[str, ActionClass]
     ready_for_approval: bool
     blockers: tuple[str, ...]
+    provenance_id: str = ""
 
 
 class MCPGateway:
@@ -136,4 +143,5 @@ class MCPGateway:
             permission_map=permission_map,
             ready_for_approval=ready_for_approval,
             blockers=tuple(blockers),
+            provenance_id=fact.provenance_id if fact.provenance_verified else "",
         )
