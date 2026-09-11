@@ -95,18 +95,16 @@ struct SeisMariaRecoveryView: View {
         importTask?.cancel()
         let token = state.beginImport()
         importTask = Task { @MainActor in
-            let result = await Task.detached(priority: .userInitiated) {
-                () -> Result<SeisMariaRecoverySnapshot, SeisMariaRecoveryError> in
-                let scoped = url.startAccessingSecurityScopedResource()
-                defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-                do {
-                    return .success(try SeisMariaRecoveryFileReader.read(url))
-                } catch let error as SeisMariaRecoveryError {
-                    return .failure(error)
-                } catch {
-                    return .failure(.unreadableFile)
-                }
-            }.value
+            let result: Result<SeisMariaRecoverySnapshot, SeisMariaRecoveryError>
+            do {
+                result = .success(try await SeisMariaRecoveryFileReader.readForImport(url))
+            } catch is CancellationError {
+                return
+            } catch let error as SeisMariaRecoveryError {
+                result = .failure(error)
+            } catch {
+                result = .failure(.unreadableFile)
+            }
             guard !Task.isCancelled else { return }
             state.finishImport(token: token, result: result)
         }

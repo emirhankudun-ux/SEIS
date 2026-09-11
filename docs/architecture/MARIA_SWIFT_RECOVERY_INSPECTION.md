@@ -52,6 +52,18 @@ The file reader exists only for an explicitly selected local snapshot. It:
 
 `O_NOFOLLOW` protects only the final path component. This helper is not a filesystem sandbox and must not be described as one.
 
+### Cooperative import cancellation
+
+`read(_:)` checks task cancellation before opening a file, after acquiring the file descriptor, around each bounded read, and before/after decoding. Existing synchronous callers remain supported, but calls made from a cancelled task now throw `CancellationError` instead of continuing to read. The descriptor is closed through `defer` on both success and failure.
+
+`readForImport(_:)` is the native UI entry point. It performs the synchronous file work in one structured child task, not an independent detached task. Cancelling the importing task therefore reaches the child. The task group joins the child before returning, so its cleanup completes before the awaiting caller finishes. On Apple platforms, the child balances successful `startAccessingSecurityScopedResource()` calls with `stopAccessingSecurityScopedResource()` in `defer`; it neither persists the URL nor broadens access beyond the selected file. The synchronous `read(_:)` API still leaves any security scope to its caller.
+
+A cancellation check after the child returns also rejects late success from an uncooperative synchronous operation. The UI treats `CancellationError` as cancellation, not as malformed input. Its existing request-identity guard remains in place: task cancellation saves work, while request identity independently prevents stale presentation updates. Clearing or closing the window still only clears in-memory state and requests cancellation; it does not delete the selected file or wait on the main actor for I/O.
+
+Cancellation is **cooperative**, not an operating-system I/O deadline. Neither `O_NONBLOCK` nor task cancellation guarantees immediate interruption of an already-blocked regular-file read or file-provider operation. An in-flight system call may finish before the next cancellation check; the structured caller awaits resource cleanup. No hard wall-clock guarantee, automatic retry or automatic repair is introduced.
+
+The internal operation overload exists solely to make cancellation races reproducible in tests. It is not a public callback, tool-execution or permission-grant API.
+
 ### `SeisMariaRecoveryImportState`
 
 Import state distinguishes:
@@ -71,7 +83,7 @@ The macOS shell exposes an on-demand `MARIA · Oturum kayıtları` window. The w
 
 - is opened explicitly from the existing SEIS menu;
 - uses the system file importer for JSON selection;
-- starts security-scoped access only for the selected URL when available;
+- delegates selected-URL security-scoped access to the async file-reader entry point;
 - reads and validates away from the main actor;
 - shows project, bounded aggregate counts and public-safe recovery rows;
 - uses Turkish presentation labels while retaining stable machine dispositions in the model;
@@ -113,6 +125,12 @@ The focused hosted workflow is `.github/workflows/maria-swift-recovery.yml`. On 
 
 Focused tests cover strict JSON/schema handling, Python presentation parity, authorization rejection, counter and row invariants, Unicode identity behavior, byte bounds, explicit-file read-only behavior, symlink/directory/FIFO rejection and stale import-completion handling.
 
+`SeisMariaRecoveryCancellationTests` exercises pre-cancelled reads, cancellation before a missing-file open, ordinary sync/async read-only imports, parent-to-child cancellation, child cleanup, late-success rejection, typed error propagation and off-main execution. Race tests use an explicit start signal and bounded gate rather than timing sleeps.
+
+The original two regressions were observed both in a Git-blob-verified Linux extraction and on the unchanged macOS PR checkout (MARIA Swift Recovery run `34592421655`). The native shell built and the other Swift tests passed; the cancellation tests returned a snapshot or `unreadableFile` instead of `CancellationError`.
+
+Local targeted mutation checks confirmed that replacing the structured child with a detached task, or removing the post-result cancellation check, breaks the corresponding regression test. These are fault-injection checks, not a claim of exhaustive mutation coverage or independent review. The focused Linux extraction does not replace the full hosted macOS build/test lane.
+
 Repository-wide MARIA Learning Fabric, SEIS System Gates and Foundation Check remain independent regression gates.
 
 ## Failure handling
@@ -124,6 +142,8 @@ The UI never repairs or rewrites an invalid snapshot. The user may clear the pre
 ## Rollback
 
 The slice is additive and isolated in the stacked recovery branch. Rolling it back means reverting the Swift recovery files, tests, focused workflow and shell window integration; it requires no external resource cleanup.
+
+The cancellation-only follow-up can be reverted independently by restoring the file reader and view import implementation and removing its focused tests/documentation. It makes no persisted schema or data changes.
 
 ## Next safe boundary
 
