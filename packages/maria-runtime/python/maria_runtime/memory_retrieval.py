@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 import re
-from typing import Iterable, Optional
+from typing import Iterable
 
 from .context import ContextFact, ProjectContextEngine
 
@@ -115,9 +115,9 @@ class ContextSearchHit:
 class ProjectContextRetriever:
     """BM25 retrieval over provenance-aware context facts.
 
-    Retrieval is project-scoped and can be restricted to verified facts. It does
-    not mutate context, promote evidence, or override ProjectContextEngine's
-    conservative resolution policy.
+    By default only the context engine's resolved fact for each project/key is
+    searchable. Full historical retrieval is explicit. Retrieval never mutates
+    context, promotes evidence, or overrides the engine's resolution policy.
     """
 
     def __init__(self, context: ProjectContextEngine) -> None:
@@ -130,15 +130,28 @@ class ProjectContextRetriever:
         project: str,
         top_k: int = 5,
         verified_only: bool = False,
+        include_history: bool = False,
     ) -> list[ContextSearchHit]:
         if not project.strip():
             raise ValueError("project must be non-empty")
         if top_k <= 0:
             raise ValueError("top_k must be positive")
+        if not isinstance(verified_only, bool) or not isinstance(include_history, bool):
+            raise TypeError("retrieval flags must be bool")
         if not TextNormalizer.tokenize(query):
             return []
 
-        facts = [fact for fact in self.context.history(project=project)]
+        history = self.context.history(project=project)
+        if include_history:
+            facts = history
+        else:
+            keys = sorted({fact.key for fact in history})
+            facts = []
+            for key in keys:
+                resolved = self.context.get(key, project=project)
+                if resolved is not None:
+                    facts.append(resolved)
+
         if verified_only:
             facts = [fact for fact in facts if fact.verified]
         if not facts:
