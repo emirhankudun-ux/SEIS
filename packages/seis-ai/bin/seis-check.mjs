@@ -27,6 +27,38 @@ function printReport(report) {
   if (report.i18n.emptyEverywhere.length) {
     console.log(`        empty in every locale: ${report.i18n.emptyEverywhere.join(", ")}`);
   }
+  if (report.i18n.vacuousReferenceCheck) {
+    console.log(`        WARN: ${report.i18n.vacuousReason}`);
+  }
+
+  if (!report.copy.applicable) {
+    console.log(`[PASS] copy      (no data-copy-key bindings and no COPY dictionary — n/a)`);
+  } else {
+  const copyDicts = report.copy.dictionaries
+    .filter((d) => d.found)
+    .map((d) => `${d.name}:${d.keyCount}×${d.locales.length}`)
+    .join(" ");
+  console.log(`[${mark(report.copy.ok)}] copy      ${copyDicts}, ${report.copy.referencedCount} referenced`);
+  if (report.copy.missingRequiredDictionary) {
+    console.log(`        ${report.copy.referencedCount} data-copy-key binding(s) but no COPY dictionary in script.js`);
+  }
+  for (const d of report.copy.dictionaries) {
+    if (!d.found) continue;
+    for (const [locale, keys] of Object.entries(d.missingByLocale)) {
+      console.log(`        ${d.name} missing in ${locale}: ${keys.join(", ")}`);
+    }
+    for (const entry of d.emptyValues) {
+      console.log(`        ${d.name} empty value: ${entry}`);
+    }
+  }
+  for (const key of report.copy.referencedMissing) {
+    console.log(`        data-copy-key with no COPY entry: ${key}`);
+  }
+  if (report.copy.unreferenced.length) {
+    const note = report.copy.dynamicLookup ? " (dynamic COPY[..][..] lookup present)" : "";
+    console.log(`        info: ${report.copy.unreferenced.length} copy key(s) unused statically${note}`);
+  }
+  }
 
   console.log(`[${mark(report.seo.ok)}] seo       ${report.seo.checks.length - report.seo.failed.length}/${report.seo.checks.length} checks`);
   for (const id of report.seo.failed) {

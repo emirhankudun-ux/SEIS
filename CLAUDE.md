@@ -33,12 +33,15 @@ packages/
 ## MCP server (auto-loaded)
 
 `.mcp.json` registers `packages/seis-ai/bin/seis-mcp.mjs` as the `seis` MCP server.
-In any Claude Code session it exposes **16 tools**, **3 prompts**, and **2 resources**:
+In any Claude Code session it exposes **36 tools**, **3 prompts**, and **31 resources**
+— the exact list is pinned by `packages/seis-ai/test/mcp-smoke.test.mjs`, which is
+the authority if this table drifts. The web-audit subset:
 
 | Tool | What it checks |
 |------|---------------|
-| `run_all_checks` | Full audit in one call (8 sections) |
-| `i18n_status` | 5-locale key parity |
+| `run_all_checks` | Full audit in one call (9 sections) |
+| `i18n_status` | 5-locale key parity in `translations.json` |
+| `copy_dictionary_status` | Key parity for the `COPY`/`PROOF` dictionaries the page renders from |
 | `i18n_get` | All locale values for a key |
 | `i18n_search` | Substring search across keys + values |
 | `i18n_add_key` | Atomically add a key to all 5 locales |
@@ -91,16 +94,44 @@ npm run seis:test
 renamed in `index.html` without updating `script.js` (or vice versa) silently breaks
 the site. **Always run `seis:check` after editing either file.**
 
-### i18n system
-- 5 locales: `tr` (default), `en`, `fr`, `it`, `de`
-- All keys in `apps/web/translations.json` — flat object per locale
-- HTML: `data-i18n="key"`, `data-i18n-placeholder="key"`, `data-i18n-aria-label="key"`
-- JS: `getT("key", lang)`
-- **Never add a key to only one locale.** Use `i18n_add_key` MCP tool or `i18nAddKey()`.
+### i18n — two layers, and only one of them is live
+
+There are two independent translation systems in this repo. Know which one you
+are editing before you touch either.
+
+**Layer A — `translations.json` (5 locales, 217 dotted keys).**
+`tr` (default), `en`, `fr`, `it`, `de`; flat object per locale. Bound via
+`data-i18n="key"` / `data-i18n-placeholder` / `data-i18n-aria-label` in HTML and
+`getT("key", lang)` in JS. Audited by `i18n_status`, `i18n_unreferenced`, the Lua
+`data-i18n` attribute audit, the jq parity audit, and the Ruby/R stats tools.
+
+**`index.html` currently contains zero `data-i18n` attributes and zero `getT()`
+calls.** Nothing loads `translations.json` — the only reference to it anywhere is
+the service worker PRECACHE list. `i18n_status` therefore reports
+`0 referenced` and prints a `WARN`: its parity and empty-value halves still do
+real work on the file, but its referenced-key half cannot fail and proves
+nothing. Do not read a green `i18n` line as "the site's translations are fine".
+
+**Layer B — the `COPY` and `PROOF` dictionaries inside `script.js` (2 locales).**
+`en` and `tr` only. Bound via `data-copy-key="key"` in HTML (138 bindings) and
+`COPY[lang].key` in JS. **This is what the page actually renders.** Its keyspace
+is camelCase and has zero overlap with `translations.json`. Audited by
+`copy_dictionary_status`, which fails on locale disagreement, on a value empty in
+any locale, and on a `data-copy-key` with no dictionary entry.
+
+Rules:
+- **Never add a key to only one locale**, in either layer. For layer A use the
+  `i18n_add_key` MCP tool or `i18nAddKey()`; for layer B add to `en` and `tr`
+  together and run `seis:check`.
+- Adding a `data-copy-key` to the HTML without a matching `COPY` entry now fails
+  the audit rather than silently rendering untranslated fallback text.
+- Reconciling the two layers (migrating layer B onto `translations.json`, or
+  retiring the unused file and its three-locale surplus) is an open
+  architectural decision, not a cleanup — it is deliberately not done here.
 
 ### After any edit to `index.html`, `script.js`, `style.css`, or `translations.json`
 ```bash
-npm run seis:check   # must pass all 5 checks before committing
+npm run seis:check   # must pass all 9 checks before committing
 ```
 
 ---
@@ -169,7 +200,7 @@ the JS suite cannot. One command runs them all:
 | Bash | `seis_shell_audit.sh` | bash -n syntax check + shebang + `set -u` guard on all repo shell scripts |
 | bc | `seis_budget_check.bc` + `.sh` | Arbitrary-precision asset budget math (HTML/CSS/JS/media KB vs. thresholds) |
 | Bun | `seis_js_quality_audit.ts` | JS production quality: no eval, document.write, unsafe innerHTML, console.log, TODO |
-| Lua | `seis_i18n_attr_audit.lua` | All `data-i18n*` HTML attribute keys verified against tr locale (Lua 5.4, zero deps) |
+| Lua | `seis_i18n_attr_audit.lua` | All `data-i18n*` HTML attribute keys verified against tr locale (Lua 5.4, zero deps) — **inert on `index.html`, which has no `data-i18n` attributes; see the i18n section above** |
 | Tcl | `seis_meta_tags_check.tcl` | 12-point SEO/social meta-tag completeness: title, description, OG, Twitter Card |
 | R | `seis_translation_stats.R` | Statistical analysis of string length ratios across 5 locales (flags ≥3× overflow risk) |
 | Haskell | `seis_css_unit_audit.hs` | CSS dimension unit histogram + font-size px check (only root/body/html px accepted) |

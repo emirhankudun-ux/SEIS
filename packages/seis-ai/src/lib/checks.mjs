@@ -1,4 +1,5 @@
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
+import { runInNewContext } from "node:vm";
 import path from "node:path";
 
 function readWebFile(webRoot, name) {
@@ -69,15 +70,247 @@ export function i18nStatus(webRoot) {
     referencedMissing.length === 0 &&
     emptyEverywhere.length === 0;
 
+  // referencedMissing can only be non-empty if something was referenced at all.
+  // When the scanner finds nothing, that half of the gate proves nothing — and
+  // a gate that cannot fail must not look like one that passed. The parity and
+  // empty-value halves are unaffected and still stand on their own.
+  const vacuousReferenceCheck = referenced.length === 0;
+
   return {
     ok,
     locales,
     keyCount: allKeys.length,
     referencedCount: referenced.length,
+    vacuousReferenceCheck,
+    vacuousReason: vacuousReferenceCheck
+      ? "no data-i18n* attribute or getT(\"...\") call found in index.html/script.js — " +
+        "translations.json is not wired to the page, so the referenced-key half of " +
+        "this check is inert. See copyDictionaryStatus for the dictionary the page " +
+        "actually renders from."
+      : null,
     missingByLocale,
     referencedMissing,
     emptyEverywhere,
     unreferenced,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* copy dictionary (the i18n layer the page actually renders from)     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Extract a top-level `const <name> = { ... }` object literal from JS source by
+ * brace matching, skipping over string and comment content so that a brace
+ * inside a translated sentence cannot end the block early.
+ * Returns the literal text including its outer braces, or null if not found.
+ */
+export function extractObjectLiteral(source, name) {
+  const declaration = new RegExp(`\\bconst\\s+${name}\\s*=\\s*\\{`).exec(source);
+  if (!declaration) return null;
+
+  const start = declaration.index + declaration[0].length - 1;
+  let depth = 0;
+  let inString = null;
+  let inLineComment = false;
+  let inBlockComment = false;
+
+  for (let i = start; i < source.length; i += 1) {
+    const ch = source[i];
+    const next = source[i + 1];
+
+    if (inLineComment) {
+      if (ch === "\n") inLineComment = false;
+      continue;
+    }
+    if (inBlockComment) {
+      if (ch === "*" && next === "/") {
+        inBlockComment = false;
+        i += 1;
+      }
+      continue;
+    }
+    if (inString) {
+      if (ch === "\\") {
+        i += 1;
+      } else if (ch === inString) {
+        inString = null;
+      }
+      continue;
+    }
+
+    if (ch === "/" && next === "/") {
+      inLineComment = true;
+      i += 1;
+      continue;
+    }
+    if (ch === "/" && next === "*") {
+      inBlockComment = true;
+      i += 1;
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") {
+      inString = ch;
+      continue;
+    }
+    if (ch === "{") depth += 1;
+    if (ch === "}") {
+      depth -= 1;
+      if (depth === 0) return source.slice(start, i + 1);
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Flatten a nested dictionary to dotted leaf paths, so PROOF's
+ * `desktop: { title, body, href, label }` is comparable across locales the same
+ * way COPY's flat keys are.
+ */
+function flattenLeaves(value, prefix = "", out = new Map()) {
+  for (const [key, child] of Object.entries(value)) {
+    const dotted = prefix ? `${prefix}.${key}` : key;
+    if (child && typeof child === "object" && !Array.isArray(child)) {
+      flattenLeaves(child, dotted, out);
+    } else {
+      out.set(dotted, child);
+    }
+  }
+  return out;
+}
+
+/**
+ * Parse a named dictionary out of script.js into a plain object.
+ *
+ * The literal is evaluated rather than hand-parsed: it is first-party source
+ * from the repository under audit, already executed verbatim by the page
+ * itself, and a bespoke JS-literal parser would be a much larger correctness
+ * risk than the evaluation is. The extraction above guarantees only a single
+ * object literal is passed, and it is evaluated with no globals in scope.
+ *
+ * The result is structured-cloned back into this realm so callers get ordinary
+ * same-realm objects — a raw vm result carries the other realm's prototypes and
+ * fails `instanceof` and deepStrictEqual in surprising ways. The clone also
+ * throws on anything that is not plain data, which is the right outcome for a
+ * dictionary that should only ever hold strings.
+ */
+export function parseDictionary(source, name) {
+  const literal = extractObjectLiteral(source, name);
+  if (!literal) return null;
+  const evaluated = runInNewContext(`(${literal})`, Object.create(null), { timeout: 1000 });
+  return structuredClone(evaluated);
+}
+
+/**
+ * Audit the dictionaries `script.js` renders from.
+ *
+ * Fails when: locales disagree on keys, a `data-copy-key` in index.html has no
+ * entry in every locale, or a value is empty in any locale. Unlike
+ * translations.json — where a key may be intentionally blank in some locales —
+ * these dictionaries drive visible UI text, so any blank is a hole.
+ */
+export function copyDictionaryStatus(webRoot, dictionaryNames = ["COPY", "PROOF"]) {
+  const html = readWebFile(webRoot, "index.html");
+  const js = readWebFile(webRoot, "script.js");
+
+  const referenced = uniqueSorted(
+    [...html.matchAll(/data-copy-key="([^"]+)"/g)].map((m) => m[1])
+  );
+
+  const dictionaries = [];
+  for (const name of dictionaryNames) {
+    const parsed = parseDictionary(js, name);
+    if (!parsed) {
+      dictionaries.push({
+        name,
+        found: false,
+        locales: [],
+        keyCount: 0,
+        keys: [],
+        missingByLocale: {},
+        emptyValues: [],
+      });
+      continue;
+    }
+
+    const locales = Object.keys(parsed);
+    const leavesByLocale = Object.fromEntries(
+      locales.map((locale) => [locale, flattenLeaves(parsed[locale])])
+    );
+    const allKeys = uniqueSorted(locales.flatMap((l) => [...leavesByLocale[l].keys()]));
+
+    const missingByLocale = {};
+    for (const locale of locales) {
+      const missing = allKeys.filter((k) => !leavesByLocale[locale].has(k));
+      if (missing.length) missingByLocale[locale] = missing;
+    }
+
+    const emptyValues = [];
+    for (const locale of locales) {
+      for (const key of allKeys) {
+        if (!leavesByLocale[locale].has(key)) continue;
+        if (String(leavesByLocale[locale].get(key) ?? "").trim() === "") {
+          emptyValues.push(`${locale}.${key}`);
+        }
+      }
+    }
+
+    dictionaries.push({
+      name,
+      found: true,
+      locales,
+      keyCount: allKeys.length,
+      keys: allKeys,
+      missingByLocale,
+      emptyValues,
+    });
+  }
+
+  const copy = dictionaries.find((d) => d.name === "COPY");
+  const copyKeys = copy?.found ? new Set(copy.keys) : new Set();
+
+  // A data-copy-key with no COPY entry renders as whatever static text the
+  // element shipped with and never translates — silent, so worth failing on.
+  const referencedMissing = copy?.found ? referenced.filter((k) => !copyKeys.has(k)) : [];
+
+  // Keys reached from JS as COPY[<expr>].someKey. COPY[a][b] is fully dynamic
+  // and cannot be resolved statically, so unused is advisory, never a failure.
+  const jsReferenced = uniqueSorted(
+    [...js.matchAll(/COPY\[[^\]]+\]\.([A-Za-z0-9_$]+)/g)].map((m) => m[1])
+  );
+  const dynamicLookup = /COPY\[[^\]]+\]\[/.test(js);
+  const unreferenced = copy?.found
+    ? copy.keys.filter((k) => !referenced.includes(k) && !jsReferenced.includes(k))
+    : [];
+
+  // A site that does not use this mechanism at all is not a failing site — but
+  // it must not report a silent PASS either, or this gate becomes as inert as
+  // the one it exists to complement. `applicable` says which case it is.
+  const applicable = referenced.length > 0 || dictionaries.some((d) => d.found);
+
+  // COPY is only required once something references it. PROOF and any other
+  // named dictionary is optional: audited when present, skipped when not.
+  const missingRequiredDictionary = referenced.length > 0 && !copy?.found;
+
+  const ok =
+    !missingRequiredDictionary &&
+    dictionaries
+      .filter((d) => d.found)
+      .every(
+        (d) => Object.keys(d.missingByLocale).length === 0 && d.emptyValues.length === 0
+      ) &&
+    referencedMissing.length === 0;
+
+  return {
+    ok,
+    applicable,
+    missingRequiredDictionary,
+    dictionaries,
+    referencedCount: referenced.length,
+    referencedMissing,
+    unreferenced,
+    dynamicLookup,
   };
 }
 
@@ -612,6 +845,7 @@ export function siteConfig(webRoot) {
 
 export function runAllChecks(webRoot) {
   const i18n = i18nStatus(webRoot);
+  const copy = copyDictionaryStatus(webRoot);
   const seo = seoAudit(webRoot);
   const contract = contractCheck(webRoot);
   const drawings = drawingsCatalog(webRoot);
@@ -620,8 +854,18 @@ export function runAllChecks(webRoot) {
   const a11y = a11yAudit(webRoot);
   const security = securityAudit(webRoot);
   return {
-    ok: i18n.ok && seo.ok && contract.ok && drawings.ok && style.ok && perf.ok && a11y.ok && security.ok,
+    ok:
+      i18n.ok &&
+      copy.ok &&
+      seo.ok &&
+      contract.ok &&
+      drawings.ok &&
+      style.ok &&
+      perf.ok &&
+      a11y.ok &&
+      security.ok,
     i18n,
+    copy,
     seo,
     contract,
     drawings,
