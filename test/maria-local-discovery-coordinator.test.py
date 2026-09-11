@@ -107,6 +107,69 @@ class LocalDiscoveryCoordinatorTests(unittest.TestCase):
         self.assertEqual(len(requests), 1)
         self.assertTrue(requests[0].url.endswith("/api/show"))
 
+    def test_default_health_threshold_keeps_model_non_routable_until_enough_evidence(self):
+        ticks = iter([1.0, 1.001, 2.0, 2.001, 3.0, 3.001])
+
+        def transport(_request):
+            return LocalProbeResponse(
+                200,
+                "application/json",
+                b'{"capabilities":["completion"],"model_info":{"custom.context_length":32768}}',
+            )
+
+        coordinator = LocalDiscoveryCoordinator(
+            probe=LocalRuntimeProbe(transport=transport, clock=lambda: next(ticks)),
+            health=LocalHealthEvidenceLedger(),
+        )
+
+        for _ in range(2):
+            with self.assertRaises(LookupError):
+                coordinator.discover_ollama_model(
+                    "custom:latest",
+                    explicit_user_selection=True,
+                )
+
+        fact = coordinator.discover_ollama_model(
+            "custom:latest",
+            explicit_user_selection=True,
+        )
+        self.assertEqual(fact.reliability, 1.0)
+
+    def test_failed_inventory_refresh_revokes_previous_inventory(self):
+        calls = 0
+        ticks = iter([1.0, 1.001, 2.0, 2.001])
+
+        def transport(_request):
+            nonlocal calls
+            calls += 1
+            if calls == 1:
+                return LocalProbeResponse(
+                    200,
+                    "application/json",
+                    (
+                        b'{"models":[{"name":"qwen3:14b","model":"qwen3:14b",'
+                        b'"modified_at":"2026-09-11T00:00:00Z","size":1,'
+                        b'"digest":"sha256:qwen"}]}'
+                    ),
+                )
+            return LocalProbeResponse(503, "application/json", b"{}")
+
+        coordinator = LocalDiscoveryCoordinator(
+            probe=LocalRuntimeProbe(transport=transport, clock=lambda: next(ticks)),
+            health=LocalHealthEvidenceLedger(minimum_reliability_samples=1),
+        )
+
+        coordinator.refresh_ollama_inventory()
+        self.assertEqual(len(coordinator.current_ollama_inventory()), 1)
+
+        with self.assertRaises(RuntimeError):
+            coordinator.refresh_ollama_inventory()
+        self.assertEqual(coordinator.current_ollama_inventory(), ())
+
+        with self.assertRaises(PermissionError):
+            coordinator.discover_ollama_model("qwen3:14b")
+        self.assertEqual(calls, 2)
+
     def test_probe_failure_kind_is_recorded_without_raw_error_payload(self):
         def transport(_request):
             return LocalProbeResponse(503, "application/json", b'{"error":"secret-ish detail"}')
