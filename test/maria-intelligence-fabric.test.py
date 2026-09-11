@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
 
 from maria_runtime.mcp_config import MCPConfigImporter
+from maria_runtime.mcp_gateway import MCPDiscoveryFact, MCPGateway, MCPMethodFact
+from maria_runtime.permissions import ActionClass
 from maria_runtime.provider_discovery import ModelDiscoveryFact, ProviderDiscoveryAdapter
 from maria_runtime.providers import ProviderStatus, default_provider_registry
 from maria_runtime.registry import ToolStatus
@@ -179,6 +181,64 @@ class MariaIntelligenceFabricTests(unittest.TestCase):
             importer.preview_json('{"mcpServers":{"broken":{"args":["x"]}}}')
         with self.assertRaises(ValueError):
             importer.preview_json('{"mcpServers":[]}')
+
+    def test_mcp_gateway_keeps_verified_server_disabled_until_explicit_approval(self):
+        server = MCPConfigImporter().preview_json(json.dumps({
+            "mcpServers": {
+                "unreal": {"command": "npx", "args": ["-y", "unreal-mcp"]}
+            }
+        })).servers[0]
+        fact = MCPDiscoveryFact(
+            server_name="unreal",
+            version="2.4.0",
+            verified=True,
+            reachable=True,
+            schema_valid=True,
+            provenance_verified=True,
+            reliability=0.96,
+            latency_ms=90,
+            methods=(
+                MCPMethodFact("unreal.inspect_actors", ActionClass.READ),
+                MCPMethodFact("unreal.import_asset", ActionClass.MODIFY),
+            ),
+        )
+
+        gateway = MCPGateway()
+        pending = gateway.evaluate(server, fact)
+        self.assertEqual(pending.tool.status, ToolStatus.DISABLED)
+        self.assertTrue(pending.ready_for_approval)
+        self.assertIn("approval-required", pending.blockers)
+        self.assertEqual(pending.permission_map["unreal.inspect_actors"], ActionClass.READ)
+        self.assertEqual(pending.permission_map["unreal.import_asset"], ActionClass.MODIFY)
+
+        approved = gateway.evaluate(server, fact, approved=True)
+        self.assertEqual(approved.tool.status, ToolStatus.AVAILABLE)
+        self.assertFalse(approved.ready_for_approval)
+        self.assertEqual(approved.tool.version, "2.4.0")
+
+    def test_mcp_gateway_cannot_approve_untrusted_or_manual_review_server(self):
+        server = MCPConfigImporter().preview_json(json.dumps({
+            "mcpServers": {
+                "unsafe": {"command": "bash", "args": ["-lc", "echo test"]}
+            }
+        })).servers[0]
+        fact = MCPDiscoveryFact(
+            server_name="unsafe",
+            version="1.0.0",
+            verified=True,
+            reachable=True,
+            schema_valid=True,
+            provenance_verified=False,
+            reliability=0.90,
+            latency_ms=100,
+            methods=(MCPMethodFact("unsafe.read", ActionClass.READ),),
+        )
+
+        evaluation = MCPGateway().evaluate(server, fact, approved=True)
+        self.assertEqual(evaluation.tool.status, ToolStatus.DISABLED)
+        self.assertFalse(evaluation.ready_for_approval)
+        self.assertIn("manual-review", evaluation.blockers)
+        self.assertIn("provenance-unverified", evaluation.blockers)
 
 
 if __name__ == "__main__":
