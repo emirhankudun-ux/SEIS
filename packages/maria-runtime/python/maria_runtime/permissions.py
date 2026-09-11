@@ -54,6 +54,7 @@ class PermissionDecision:
     requires_approval: bool
     reason: str
     reversible: Optional[bool]
+    target_evidence: Optional[ResolvedTargetEvidence] = None
 
 
 class PermissionEngine:
@@ -105,6 +106,7 @@ class PermissionEngine:
                 requires_approval=True,
                 reason=f"{action_class.value} action requires explicit owner approval",
                 reversible=reversible,
+                target_evidence=target_evidence,
             )
 
         if requires and not self._target_evidence_is_fresh_and_exact(target, target_evidence):
@@ -115,6 +117,7 @@ class PermissionEngine:
                 requires_approval=True,
                 reason="approved action requires fresh verified target evidence",
                 reversible=reversible,
+                target_evidence=target_evidence,
             )
 
         return PermissionDecision(
@@ -124,6 +127,7 @@ class PermissionEngine:
             requires_approval=requires,
             reason="explicit approval recorded" if requires else "policy allows low-risk action",
             reversible=reversible,
+            target_evidence=target_evidence,
         )
 
     def _target_evidence_is_fresh_and_exact(
