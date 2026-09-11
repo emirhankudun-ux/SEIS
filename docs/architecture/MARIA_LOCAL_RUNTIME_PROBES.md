@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented as a bounded discovery, provenance-binding, and redacted health-evidence slice for MARIA Intelligence Fabric v1.
+Implemented as a bounded discovery, provenance-binding, capability-normalization, and redacted health-evidence slice for MARIA Intelligence Fabric v1.
 
 The local runtime layer can inspect already-running LM Studio and Ollama services on the local machine. It does **not** start, install, download, authenticate to, perform inference through, or mutate a runtime.
 
@@ -36,7 +36,7 @@ The built-in HTTP transport reads at most `max_response_bytes + 1`, which lets t
 
 ## Typed failure evidence
 
-`LocalProbeError` now carries a bounded `LocalProbeFailureKind` instead of forcing callers to interpret exception text. Supported kinds are:
+`LocalProbeError` carries a bounded `LocalProbeFailureKind` instead of forcing callers to interpret exception text. Supported kinds are:
 
 - timeout;
 - transport error;
@@ -60,9 +60,20 @@ The Ollama show request body contains exactly one user-derived field: the normal
 
 The tags parser rejects duplicate model names, missing identity metadata, non-positive sizes, and mismatched `name` / `model` identifiers. This prevents inventory data from silently becoming ambiguous capability evidence.
 
-## LM Studio request policy
+Ollama `/api/show` native capability labels are normalized through an explicit allowlisted map before they become SEIS routing authority. Unknown labels remain discovery evidence but are not promoted to routable capabilities, and no model-name or family-name heuristic is used.
+
+## LM Studio request and capability policy
 
 The LM Studio models request is a body-free GET with only an `Accept: application/json` header. It is intended for local model metadata discovery, not inference.
+
+LM Studio v1 explicitly reports both `llm` and `embedding` model types from `/api/v1/models`. `LMStudioV1DiscoverySource` now treats those provider-declared types separately:
+
+- an `llm` receives the canonical `chat` route plus only the explicitly reported `vision`, `trained_for_tool_use`, and public `reasoning` capabilities;
+- an `embedding` receives only the canonical `embedding` route;
+- an unknown future model type is ignored rather than guessed into a route;
+- publisher, display name, architecture, parameter count, and model key text never create capabilities.
+
+The endpoint's `max_context_length` remains required for either supported model type. Embedding models do not inherit chat, coding, reasoning, vision, or tool-use authority from their names or from LLM-only metadata.
 
 `LocalDiscoveryCoordinator.discover_lm_studio_models()` validates the runtime payload before recording a successful health sample and only returns model facts after the configured minimum reliability evidence exists.
 
@@ -108,8 +119,10 @@ LocalDiscoveryCoordinator
         │                evidence-backed reliability
         │
         ├── LM Studio models parser
-        │       ↓
-        │   ModelDiscoveryFact
+        │       ├── llm → explicit LLM capabilities
+        │       └── embedding → embedding only
+        │                       ↓
+        │                ModelDiscoveryFact
         │
         └── Ollama tags parser
                 ↓
@@ -132,7 +145,7 @@ ModelSpec
 ModelRouter / UnifiedCapabilityRouter
 ```
 
-This separation prevents HTTP reachability or inventory presence from being mistaken for model capability. The show/models parsers still require explicit runtime-reported context/capability metadata, and routing still requires verified discovery facts with sufficient reliability evidence.
+This separation prevents HTTP reachability, inventory presence, or a suggestive model name from being mistaken for capability. LLM routes require explicit runtime metadata, embedding routes require LM Studio's explicit embedding model type, and routing still requires verified discovery facts with sufficient reliability evidence.
 
 ## Security non-goals
 
@@ -151,21 +164,15 @@ This slice does not:
 
 ## Verification
 
-The focused test suite verifies fixed loopback targets, request method/body/header minimality, timeout and size propagation, latency measurement, malformed/oversized/redirect/non-success failure behavior, port validation, model-name validation, typed failure categories, Ollama inventory parsing, duplicate/incomplete candidate rejection, the non-routable candidate boundary, current-inventory provenance, stale-inventory revocation, explicit user-selection override, bounded health history, minimum-evidence routing gates, and redacted observation schemas.
+The focused test suite verifies fixed loopback targets, request method/body/header minimality, timeout and size propagation, latency measurement, malformed/oversized/redirect/non-success failure behavior, port validation, model-name validation, typed failure categories, Ollama inventory parsing, duplicate/incomplete candidate rejection, the non-routable candidate boundary, current-inventory provenance, stale-inventory revocation, explicit user-selection override, bounded health history, minimum-evidence routing gates, redacted observation schemas, native-to-canonical Ollama capability normalization, and LM Studio embedding-only routing without model-name heuristics.
 
-Four test-first cycles cover this local-runtime slice:
-
-1. the hosted MARIA Intelligence Fabric workflow failed because `maria_runtime.local_probe` did not exist, then passed after the bounded probe implementation was added;
-2. the hosted workflow failed because `LocalModelCandidate` / `OllamaTagsDiscoverySource` did not exist, then passed after inventory parsing and `probe_ollama_tags()` were added;
-3. the hosted workflow failed because `maria_runtime.local_health` did not exist, then passed after the bounded redacted health ledger was implemented;
-4. the hosted workflow failed because `maria_runtime.local_coordinator` did not exist, then passed after provenance-bound coordination and typed health integration were implemented.
+The LM Studio embedding regression specifically covers a deliberately misleading model key containing `vision`, `coder`, and `chat`: the verified `type: embedding` record remains `embedding`-only and can be selected only for the canonical embedding capability.
 
 ## Next safe slice
 
-The next highest-value local-runtime step is to expose this verified state to the rest of MARIA without expanding authority:
+The next highest-value local-runtime step should expand observability before execution authority:
 
-1. add an immutable local-runtime status snapshot suitable for the future SwiftUI Integration Center;
-2. feed verified coordinator facts through `ProviderDiscoveryAdapter` and the existing model router in an end-to-end contract test;
-3. preserve route explanations showing provider, locality, capability evidence, reliability sample count, and why a model remained non-routable;
-4. keep inference, model loading, runtime launch, downloads, and credential handling as separately permissioned future capabilities;
-5. in parallel, begin the bounded MCP process-supervisor slice behind the already-existing MCP trust and per-call permission gates.
+1. wire `LocalRuntimeStatusSnapshot` plus route explanations into the read-only SwiftUI Integration Center;
+2. surface whether a fact came from LM Studio LLM metadata, LM Studio embedding type, or Ollama show capability normalization without exposing raw payloads;
+3. keep model loading/download and inference adapters behind separate explicit contracts and permission boundaries;
+4. add execution readiness evidence only when the concrete LM Studio/Ollama adapter semantics are defined, instead of equating model inventory with execution authority.
