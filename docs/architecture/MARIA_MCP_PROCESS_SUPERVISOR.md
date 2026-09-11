@@ -2,7 +2,7 @@
 
 ## Status
 
-Bounded supervisor-core slice for the MARIA × SEIS Intelligence Fabric. The policy, lifecycle, redacted evidence, attempt budget, and circuit-breaker contracts are implemented. A concrete subprocess transport, environment/secret resolver, MCP stdio framing loop, and MCP method executor are still deliberately absent.
+Bounded supervisor-core + protocol-negotiation slice for the MARIA × SEIS Intelligence Fabric. The process policy, lifecycle, redacted evidence, attempt budget, circuit-breaker contracts, and MCP protocol-era planner are implemented. A concrete subprocess transport, environment/secret resolver, MCP stdio framing loop, and MCP method executor are still deliberately absent.
 
 ## Purpose
 
@@ -37,10 +37,35 @@ exact provenance allowlist
 argument/output/time bounds
 attempt budget + circuit breaker
         ↓
+protocol-era negotiation plan
+        ↓
 injected process transport
 ```
 
 A later per-method invocation still requires `MCPInvocationGuard` and a fresh `PermissionEngine` decision. Process approval is therefore not tool-call approval.
+
+## MCP protocol-era negotiation
+
+The transport boundary must not assume that every MCP server starts with `initialize`.
+
+MCP `2026-07-28` is the modern stateless era. For stdio compatibility, a client that supports both modern and legacy servers should first issue `server/discover` with the preferred modern protocol version in the request `_meta` envelope. A valid discovery result keeps the connection in the modern era. A modern protocol-version error can advertise another supported modern version. Ordinary probe errors or a bounded probe timeout may fall back to the legacy initialize lifecycle.
+
+`MCPProtocolNegotiator` now models this without launching a process:
+
+- preferred modern revision: `2026-07-28`;
+- preferred legacy revision: `2025-11-25`;
+- default discovery timeout: 5 seconds;
+- modern discovery request includes protocol version, client identity, and client capabilities in `_meta`;
+- a confirmed modern server with no mutually supported modern version fails closed instead of silently downgrading;
+- timeout or an ordinary legacy-style JSON-RPC error may fall back to the latest configured legacy version;
+- legacy `initialize` requests are generated separately and do not reuse the modern `_meta` envelope.
+
+The server's self-reported identity is treated as display/debug metadata only. It is not used as a trust or provenance signal.
+
+Protocol references used for this contract:
+
+- https://modelcontextprotocol.io/specification/draft/server/discover
+- https://modelcontextprotocol.io/specification/draft/basic/transports/stdio
 
 ## Fail-closed launch rules
 
@@ -59,6 +84,8 @@ The supervisor refuses to touch its transport when any of these conditions apply
 - the circuit breaker is open.
 
 Dynamic package-manager launchers such as `npx`, `pnpx`, `bunx`, `uvx`, and `pipx` are disabled by default even if their executable name appears in the command allowlist. This avoids silently downloading or executing package-manager-selected code. A future higher-level policy may opt in only after provenance and package-resolution rules are defined.
+
+PATH lookup is also disabled by default. A descriptor such as `node server.mjs` is blocked unless a higher-level reviewed policy explicitly permits PATH resolution; the normal safe route uses an exact absolute executable path such as `/usr/bin/node` plus provenance checks.
 
 ## Redacted lifecycle evidence
 
@@ -87,6 +114,8 @@ Every launch plan carries explicit:
 
 A transport adapter is expected to enforce these during process I/O. The supervisor independently rejects returned evidence that exceeds the declared policy, so an adapter cannot report an over-limit launch as healthy.
 
+The upcoming stdio adapter must also enforce newline-delimited JSON-RPC framing and reject an over-limit frame before buffering unbounded output.
+
 ## Circuit breaker
 
 The supervisor tracks a bounded attempt count and consecutive failures. When `circuit_failure_threshold` is reached it enters `circuit-open` and refuses further transport activity.
@@ -104,14 +133,14 @@ This implementation does **not**:
 - install packages;
 - permit shell wrappers;
 - download MCP packages;
-- implement MCP JSON-RPC framing;
-- perform `initialize`, `tools/list`, or tool calls;
+- implement the live MCP JSON-RPC framing loop;
+- execute `server/discover`, `initialize`, `tools/list`, or tool calls;
 - persist raw process logs;
 - auto-reset circuits;
 - run in the background;
 - mutate Unreal, Blender, Git, files, cloud resources, or external services.
 
-Those capabilities require separate reviewed adapters and permissions.
+The new protocol layer only builds and validates negotiation decisions; it does not gain process or tool execution authority.
 
 ## Verification
 
@@ -123,8 +152,19 @@ Those capabilities require separate reviewed adapters and permissions.
 4. schema/output-limit failure normalization without raw-output retention;
 5. circuit opening after bounded failures plus explicit reset approval.
 
-The test was introduced before the module and produced the expected hosted `ModuleNotFoundError`; the implementation then turned the same CI gate green without weakening the test.
+`test/maria-mcp-process-path-policy.test.py` separately proves that bare PATH-resolved executable names are denied by default.
+
+`test/maria-mcp-protocol-negotiation.test.py` covers:
+
+1. current `server/discover` request metadata for MCP `2026-07-28`;
+2. modern discovery success without legacy fallback;
+3. modern version-error negotiation without `initialize` downgrade;
+4. timeout/ordinary error fallback to the `2025-11-25` legacy lifecycle;
+5. fail-closed behavior when a confirmed modern server has no mutually supported modern version;
+6. explicit legacy `initialize` request construction.
+
+The protocol test was introduced before `maria_runtime.mcp_protocol` and produced the expected hosted failure. The implementation then turned the same CI gate green without weakening the test.
 
 ## Next safe slice
 
-Add a concrete local stdio transport with no shell, no redirects/network side effects, bounded process I/O, explicit child termination, and MCP `initialize`/schema discovery only. Keep tool invocation separate until the executor can consume a ready `MCPInvocationPlan`, re-check process health, apply per-call permission, and record redacted invocation evidence.
+Add a concrete local stdio transport with `shell=False`, exact reviewed executable paths, bounded newline-delimited JSON-RPC frames, explicit child shutdown/termination, and the `MCPProtocolNegotiator` as its lifecycle planner. The adapter should probe `server/discover` first and only use the legacy `initialize` lifecycle when the negotiation decision explicitly selects it. Keep `tools/call` separate until the executor can consume a ready `MCPInvocationPlan`, re-check process health, apply per-call permission, and record redacted invocation evidence.
