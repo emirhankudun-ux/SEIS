@@ -58,7 +58,13 @@ LATE_SUCCESS_CHECK = '''            // Even a synchronous API that ignores cance
 
 def run_check(swift: str, package: Path, label: str, *, failure_test: str | None = None) -> None:
     selector = failure_test or "SeisMariaRecovery(Cancellation|AsyncReader)Tests"
-    command = [swift, "test", "--package-path", str(package), "--disable-xctest", "--filter", selector]
+    # Distinct build directories prevent a restored source file from reusing a
+    # mutant object when rapid rewrites collide with incremental-build metadata.
+    command = [
+        swift, "test", "--package-path", str(package),
+        "--scratch-path", str(package / f".build-{label}"),
+        "--disable-xctest", "--filter", selector,
+    ]
     try:
         result = subprocess.run(command, capture_output=True, text=True, timeout=120, check=False)
     except subprocess.TimeoutExpired as exc:
@@ -70,7 +76,11 @@ def run_check(swift: str, package: Path, label: str, *, failure_test: str | None
     else:
         # A compiler/environment failure does not prove regression sensitivity.
         expected_issue = f"Test {failure_test}() recorded an issue"
-        passed = result.returncode != 0 and expected_issue in output
+        completed_failure = re.search(
+            r"Test run with 1 test(?: in \d+ suites?)? failed[^\n]*\bwith 1 issue\.",
+            output,
+        )
+        passed = result.returncode == 1 and expected_issue in output and completed_failure is not None
     if not passed:
         tail = "\n".join(output.splitlines()[-35:])
         raise RuntimeError(f"{label}: unexpected verification result ({result.returncode})\n{tail}")

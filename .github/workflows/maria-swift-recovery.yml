@@ -9,6 +9,7 @@ on:
       - 'test/fixtures/maria-recovery-swift-v1.json'
       - '.github/workflows/maria-swift-recovery.yml'
       - 'scripts/check-maria-swift-cancellation-mutations.py'
+      - 'test/maria-swift-cancellation-checker.test.py'
 
 permissions:
   contents: read
@@ -42,7 +43,9 @@ jobs:
           --sanitize=thread --disable-xctest
           --filter 'SeisMariaRecovery(Cancellation|AsyncReader)Tests'
       - name: Verify cancellation regression sensitivity without mutating checkout
-        run: python3 scripts/check-maria-swift-cancellation-mutations.py
+        run: |
+          python3 test/maria-swift-cancellation-checker.test.py
+          python3 scripts/check-maria-swift-cancellation-mutations.py
       - name: Retain synthetic recovery render evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
