@@ -1,0 +1,15 @@
+{
+  "version": "4.0.0-alpha.4",
+  "repository": "emirhankudun-ux/SEIS",
+  "branch": "maria-seis-v4-platform",
+  "baselineCommit": "e5146077ef3f54d57c8eb140ed5ec6e9d25cf85e",
+  "packagePath": "maria-seis-v2",
+  "verification": {
+    "nodeTests": "71/71 passed",
+    "browserOffline": "17/17 passed",
+    "httpBrowser": "blocked by environment policy in prior checks",
+    "providerSupervisor": "contract verified; no live provider connected",
+    "liveAdapters": "not verified"
+  },
+  "notes": "GitHub branch is canonical. This manifest intentionally avoids a self-referential final commit hash and per-file hashes that become stale when the manifest itself changes."
+}

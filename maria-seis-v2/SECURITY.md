@@ -1,4 +1,4 @@
-# Security scope — 4.0.0-alpha.2
+# Security scope — 4.0.0-alpha.4
 
 This package is a local web simulation, not a security-reviewed native agent. No model API, microphone capture, screen capture, filesystem writes, shell commands or MCP execution is implemented.
 
@@ -9,6 +9,7 @@ This package is a local web simulation, not a security-reviewed native agent. No
 - Run receipts must match the expected intent, project and run identity.
 - Observer failures are isolated; raw errors are not exposed in diagnostics.
 - Third-party manifests are metadata, not a sandbox or trust guarantee.
+- Provider health probes are bounded, capability discovery cannot exceed the provider definition, stale health becomes unroutable, and raw adapter exceptions are not surfaced.
 - Browser-side flags and regexes must never be the authorization boundary for future real tools.
 
 Do not put secrets in browser storage, source, public issues or test fixtures. Do not enable real adapters merely by setting a capability flag. A future trusted host needs scoped credentials, origin validation, explicit side-effect authorization, request/response validation, audit redaction and independent verification. Timeout of an orchestrator cannot guarantee cancellation of an external operation; side effects must be reconciled.
