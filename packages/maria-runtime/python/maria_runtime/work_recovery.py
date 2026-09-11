@@ -530,6 +530,26 @@ class DurableWorkCheckpointStore:
                 fail("checkpoint dependency must reference an earlier step")
             if step.failure is not None and cls._SAFE_FAILURE_RE.fullmatch(step.failure) is None:
                 fail("failure category is not a bounded safe identifier")
+            if step.state not in states:
+                fail("invalid checkpoint step state")
+            if step.state is WorkStepState.SUCCEEDED:
+                if step.attempts < 1:
+                    fail("succeeded step requires at least one attempt")
+                if step.failure is not None:
+                    fail("succeeded step cannot carry failure evidence")
+            elif step.state is WorkStepState.FAILED:
+                if step.attempts < 1:
+                    fail("failed step requires at least one attempt")
+                if step.failure is None:
+                    fail("failed step requires failure evidence")
+            elif step.state is WorkStepState.BLOCKED:
+                if step.attempts != 0:
+                    fail("blocked step cannot have execution attempts")
+                if step.failure is None:
+                    fail("blocked step requires failure evidence")
+            elif step.state is WorkStepState.CANCELLED:
+                if step.failure is None:
+                    fail("cancelled step requires failure evidence")
             if first_cancelled_step_id is None and step.state is WorkStepState.CANCELLED:
                 first_cancelled_step_id = step.step_id
             states[step.state] += 1
