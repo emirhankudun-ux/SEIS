@@ -20,7 +20,7 @@ export function verifyLiveReceipt(result, expected = {}) {
   const checks=[
     {id:'runtime-result',pass:result?.ok===true,evidence:result?.ok===true?'runtime:ok':'runtime:not-ok'},
     {id:'live-runtime',pass:result?.runtime==='host-runtime-v1' && result?.mode==='live',evidence:`mode:${result?.mode==='live'?'live':'unknown'}`},
-    {id:'provider-attributed',pass:typeof result?.providerId==='string' && !!result.providerId,evidence:`provider:${typeof result?.providerId==='string'&&result.providerId?'attributed':'missing'}`},
+    {id:'provider-matched',pass:!!expected.providerId && result?.providerId===expected.providerId,evidence:`provider:${!!expected.providerId&&result?.providerId===expected.providerId?'matched':'unmatched'}`},
     {id:'intent-preserved',pass:!!expected.intent && result?.intent===expected.intent,evidence:`intent:${!!expected.intent&&result?.intent===expected.intent?'matched':'unmatched'}`},
     {id:'run-matched',pass:!!expected.runId && result?.runId===expected.runId,evidence:`run:${!!expected.runId&&result?.runId===expected.runId?'matched':'unmatched'}`},
     {id:'project-matched',pass:!!expected.projectId && result?.projectId===expected.projectId,evidence:`project:${!!expected.projectId&&result?.projectId===expected.projectId?'matched':'unmatched'}`},
