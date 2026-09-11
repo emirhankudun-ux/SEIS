@@ -41,6 +41,9 @@ class RecoverySaveContractTests(unittest.TestCase):
         self.original_bytes = self.path.read_bytes()
 
     def assert_rejected_without_write(self, checkpoint):
+        # Reset only this synthetic fixture: a previous RED subcase must not
+        # contaminate the evidence for a different invalid input.
+        self.path.write_bytes(self.original_bytes)
         with self.assertRaises(ValueError):
             self.store.save("SEIS", "existing", checkpoint)
         self.assertEqual(self.path.read_bytes(), self.original_bytes)
