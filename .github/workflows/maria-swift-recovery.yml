@@ -31,5 +31,14 @@ jobs:
         run: python3 test/maria-swift-recovery-parity.test.py
       - name: Build existing native shell
         run: swift build --package-path packages/seis_platform_swift --product SeisAppleNativeShell
-      - name: Test existing Swift package
+      - name: Test existing Swift package and render recovery views
+        env:
+          MARIA_UI_EVIDENCE_DIR: ${{ runner.temp }}/maria-recovery-render
         run: swift test --package-path packages/seis_platform_swift
+      - name: Retain synthetic recovery render evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: maria-recovery-render
+          path: ${{ runner.temp }}/maria-recovery-render/*.png
+          if-no-files-found: error
+          retention-days: 7

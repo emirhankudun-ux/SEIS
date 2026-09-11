@@ -22,6 +22,10 @@ let package = Package(
                 .copy("Resources/seis-demo-contract.json"),
             ]
         ),
-        .testTarget(name: "SeisPlatformKitTests", dependencies: ["SeisPlatformKit"])
+        .testTarget(name: "SeisPlatformKitTests", dependencies: ["SeisPlatformKit"]),
+        .testTarget(
+            name: "SeisMariaRecoveryUITests",
+            dependencies: ["SeisPlatformKit", "SeisAppleNativeShell"]
+        )
     ]
 )
