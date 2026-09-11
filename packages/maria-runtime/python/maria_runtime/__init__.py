@@ -70,6 +70,12 @@ from .recovery_reconciliation import (
     RecoveryReconciliationAssessment,
     RecoveryReconciliationDisposition,
 )
+from .recovery_candidate import (
+    RecoveryCandidateDisposition,
+    RecoveryCandidateInspector,
+    RecoveryCandidateView,
+)
+from .recovery_dashboard import RecoveryDashboardBuilder, RecoveryDashboardSnapshot
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouteDecision, ModelRouter
 from .safety import CommandPolicy
@@ -91,11 +97,6 @@ from .work_recovery import (
     RecoveryAssessment,
     RecoveryCatalogEntry,
     RecoveryDisposition,
-)
-from .recovery_candidate import (
-    RecoveryCandidateDisposition,
-    RecoveryCandidateInspector,
-    RecoveryCandidateView,
 )
 from .work_routing import MultiStepWorkRouter, WorkRoutePlan, WorkRouteStep, WorkStepRequest
 
@@ -119,11 +120,11 @@ __all__ = [
     "OllamaModelWorkAdapter", "PermissionDecision", "PermissionEngine", "ProbeHealthSummary", "ProbeObservation",
     "ProbeOutcome", "ProjectContextEngine", "ProjectContextRetriever", "ProjectProfile", "ProjectRegistry", "PromptCache",
     "ProviderRegistry", "ProviderSpec", "ProviderStatus", "RecoveryAnchor", "RecoveryAssessment", "RecoveryCatalogEntry",
-    "RecoveryCandidateDisposition", "RecoveryCandidateInspector", "RecoveryCandidateView", "RecoveryDisposition",
-    "RecoveryReconciler", "RecoveryReconciliationAssessment", "RecoveryReconciliationDisposition", "RouteDecision",
-    "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus", "TextNormalizer", "ToolSpec", "ToolStatus",
-    "UnifiedCapabilityRouter", "WorkMode", "WorkPlanCheckpoint", "WorkPlanExecutionResult", "WorkPlanExecutor",
-    "WorkRoutePlan", "WorkRouteStep", "WorkStepExecutionEvidence", "WorkStepExecutionPolicy", "WorkStepExecutionResult",
-    "WorkStepRequest", "WorkStepRunResult", "WorkStepRunner", "WorkStepState", "default_project_registry",
-    "default_provider_registry",
+    "RecoveryCandidateDisposition", "RecoveryCandidateInspector", "RecoveryCandidateView", "RecoveryDashboardBuilder",
+    "RecoveryDashboardSnapshot", "RecoveryDisposition", "RecoveryReconciler", "RecoveryReconciliationAssessment",
+    "RecoveryReconciliationDisposition", "RouteDecision", "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus",
+    "TextNormalizer", "ToolSpec", "ToolStatus", "UnifiedCapabilityRouter", "WorkMode", "WorkPlanCheckpoint",
+    "WorkPlanExecutionResult", "WorkPlanExecutor", "WorkRoutePlan", "WorkRouteStep", "WorkStepExecutionEvidence",
+    "WorkStepExecutionPolicy", "WorkStepExecutionResult", "WorkStepRequest", "WorkStepRunResult", "WorkStepRunner",
+    "WorkStepState", "default_project_registry", "default_provider_registry",
 ]
