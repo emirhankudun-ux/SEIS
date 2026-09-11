@@ -95,3 +95,119 @@ test('external cancellation returns cancelled without marking provider healthy',
   assert.equal(result.status,'cancelled');
   assert.equal(supervisor.routingSnapshot()[0].healthVerified,false);
 });
+
+test('a cancelled joined probe waiter does not cancel another caller or receive its result', async () => {
+  let calls=0;
+  let release;
+  const gate=new Promise(resolve=>{release=resolve;});
+  const supervisor=createProviderSupervisor({definitions:[localDefinition()],probeTimeoutMs:1000});
+  supervisor.registerAdapter('local',{probe:async()=>{calls++; await gate; return {ok:true,capabilities:['reasoning']};}});
+  const first=supervisor.probe('local');
+  const controller=new AbortController();
+  const second=supervisor.probe('local',{signal:controller.signal});
+  controller.abort();
+  release();
+  const [a,b]=await Promise.all([first,second]);
+  assert.equal(calls,1);
+  assert.equal(a.status,'ready');
+  assert.deepEqual(b,{status:'cancelled',reason:'probe-cancelled'});
+  assert.equal(supervisor.routingSnapshot()[0].healthVerified,true);
+});
+
+test('cancelling the first waiter does not abort a shared probe while another waiter remains', async () => {
+  let calls=0;
+  let release;
+  const gate=new Promise(resolve=>{release=resolve;});
+  const supervisor=createProviderSupervisor({definitions:[localDefinition()],probeTimeoutMs:1000});
+  supervisor.registerAdapter('local',{probe:async({signal})=>{
+    calls++;
+    await Promise.race([gate,new Promise((_,reject)=>signal.addEventListener('abort',()=>reject(new Error('cancelled')),{once:true}))]);
+    return {ok:true,capabilities:['reasoning']};
+  }});
+  const controller=new AbortController();
+  const first=supervisor.probe('local',{signal:controller.signal});
+  const second=supervisor.probe('local');
+  controller.abort();
+  release();
+  const [a,b]=await Promise.all([first,second]);
+  assert.equal(calls,1);
+  assert.deepEqual(a,{status:'cancelled',reason:'probe-cancelled'});
+  assert.equal(b.status,'ready');
+  assert.equal(supervisor.routingSnapshot()[0].healthVerified,true);
+});
+
+test('pre-aborted probe is cancelled before adapter invocation', async () => {
+  let calls=0;
+  const supervisor=createProviderSupervisor({definitions:[localDefinition()]});
+  supervisor.registerAdapter('local',{probe:async()=>{calls++; return {ok:true,capabilities:['reasoning']};}});
+  const controller=new AbortController();
+  controller.abort();
+  const result=await supervisor.probe('local',{signal:controller.signal});
+  assert.deepEqual(result,{status:'cancelled',reason:'probe-cancelled'});
+  assert.equal(calls,0);
+  assert.equal(supervisor.routingSnapshot()[0].healthVerified,false);
+});
+
+test('all joined waiters cancelling aborts the shared adapter probe and leaves health unverified', async () => {
+  let aborts=0;
+  const supervisor=createProviderSupervisor({definitions:[localDefinition()],probeTimeoutMs:1000});
+  supervisor.registerAdapter('local',{probe:({signal})=>new Promise((_,reject)=>{
+    signal.addEventListener('abort',()=>{aborts++;reject(new Error('cancelled'));},{once:true});
+  })});
+  const firstController=new AbortController();
+  const secondController=new AbortController();
+  const first=supervisor.probe('local',{signal:firstController.signal});
+  const second=supervisor.probe('local',{signal:secondController.signal});
+  await Promise.resolve();
+  firstController.abort();
+  secondController.abort();
+  const [a,b]=await Promise.all([first,second]);
+  assert.deepEqual(a,{status:'cancelled',reason:'probe-cancelled'});
+  assert.deepEqual(b,{status:'cancelled',reason:'probe-cancelled'});
+  assert.equal(aborts,1);
+  assert.equal(supervisor.routingSnapshot()[0].healthVerified,false);
+});
+
+test('malformed cancellation signal fails closed before adapter invocation', async () => {
+  let calls=0;
+  const supervisor=createProviderSupervisor({definitions:[localDefinition()]});
+  supervisor.registerAdapter('local',{probe:async()=>{calls++; return {ok:true,capabilities:['reasoning']};}});
+  await assert.rejects(supervisor.probe('local',{signal:{aborted:false}}),/Invalid provider abort signal/);
+  assert.equal(calls,0);
+});
+
+test('throwing cancellation listener registration fails closed before shared probe starts', async () => {
+  let calls=0;
+  const supervisor=createProviderSupervisor({definitions:[localDefinition()],probeTimeoutMs:1000});
+  supervisor.registerAdapter('local',{probe:async()=>{calls++; return {ok:true,capabilities:['reasoning']};}});
+  const hostileSignal={
+    aborted:false,
+    addEventListener(){throw new Error('listener-registration-failed');},
+    removeEventListener(){}
+  };
+  await assert.rejects(supervisor.probe('local',{signal:hostileSignal}),/listener-registration-failed/);
+  await new Promise(resolve=>setTimeout(resolve,0));
+  assert.equal(calls,0);
+  assert.equal(supervisor.routingSnapshot()[0].healthVerified,false);
+});
+
+test('throwing cancellation listener cleanup cannot strand a cancelled waiter', async () => {
+  let abortHandler;
+  const supervisor=createProviderSupervisor({definitions:[localDefinition()],probeTimeoutMs:1000});
+  supervisor.registerAdapter('local',{probe:()=>new Promise(()=>{})});
+  const hostileSignal={
+    aborted:false,
+    addEventListener(type,handler){ if(type==='abort') abortHandler=handler; },
+    removeEventListener(){throw new Error('listener-cleanup-failed');}
+  };
+  const pending=supervisor.probe('local',{signal:hostileSignal});
+  await Promise.resolve();
+  hostileSignal.aborted=true;
+  abortHandler();
+  const result=await Promise.race([
+    pending,
+    new Promise(resolve=>setTimeout(()=>resolve({status:'hung'}),30))
+  ]);
+  assert.deepEqual(result,{status:'cancelled',reason:'probe-cancelled'});
+  assert.equal(supervisor.routingSnapshot()[0].healthVerified,false);
+});

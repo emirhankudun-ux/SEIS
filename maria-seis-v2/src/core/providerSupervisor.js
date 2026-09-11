@@ -60,7 +60,10 @@ export function createProviderSupervisor({definitions=[],probeTimeoutMs=3000,hea
     });
     try {
       const result=await Promise.race([
-        Promise.resolve().then(()=>adapter.probe({signal:controller.signal,provider:Object.freeze(clone(definition))})),
+        Promise.resolve().then(()=>{
+          if (controller.signal.aborted) throw new Error('probe-stopped');
+          return adapter.probe({signal:controller.signal,provider:Object.freeze(clone(definition))});
+        }),
         timeout,cancellation
       ]);
       if (controller.signal.aborted) throw new Error('probe-stopped');
@@ -105,6 +108,70 @@ export function createProviderSupervisor({definitions=[],probeTimeoutMs=3000,hea
     });
   }
 
+  const cancelledResult=()=>({status:'cancelled',reason:'probe-cancelled'});
+  const normalizeSignal=signal=>{
+    if (signal===undefined || signal===null) return null;
+    if (typeof signal!=='object' || typeof signal.aborted!=='boolean'
+      || typeof signal.addEventListener!=='function' || typeof signal.removeEventListener!=='function') {
+      throw new TypeError('Invalid provider abort signal');
+    }
+    return signal;
+  };
+  const attachWaiter=(entry,signal)=>{
+    if (signal?.aborted) return Promise.resolve(cancelledResult());
+    entry.waiters+=1;
+    return new Promise((resolve,reject)=>{
+      let done=false;
+      const release=()=>{ entry.waiters=Math.max(0,entry.waiters-1); };
+      const removeAbortListener=()=>{
+        if (!signal) return;
+        try { signal.removeEventListener('abort',onAbort); } catch {}
+      };
+      const settle=result=>{
+        if (done) return;
+        done=true;
+        removeAbortListener();
+        release();
+        resolve(result);
+      };
+      const onAbort=()=>{
+        if (done) return;
+        done=true;
+        removeAbortListener();
+        release();
+        const cancelled=cancelledResult();
+        if (entry.waiters===0 && !entry.settled) {
+          entry.controller.abort();
+          entry.task.then(()=>resolve(cancelled),()=>resolve(cancelled));
+        } else resolve(cancelled);
+      };
+      if (signal) {
+        try { signal.addEventListener('abort',onAbort,{once:true}); }
+        catch (error) {
+          done=true;
+          release();
+          if (entry.waiters===0 && !entry.settled) entry.controller.abort();
+          reject(error);
+          return;
+        }
+      }
+      entry.task.then(settle,()=>settle({status:'failed',reason:'probe-failed'}));
+    });
+  };
+  const getOrStartProbe=id=>{
+    const existing=inFlight.get(id);
+    if (existing) return existing;
+    const controller=new AbortController();
+    const entry={controller,task:null,waiters:0,settled:false};
+    const task=runProbe(id,{signal:controller.signal});
+    entry.task=task.finally(()=>{
+      entry.settled=true;
+      if (inFlight.get(id)===entry) inFlight.delete(id);
+    });
+    inFlight.set(id,entry);
+    return entry;
+  };
+
   return Object.freeze({
     registerAdapter(id,adapter,{replace=false}={}) {
       requireDefinition(id);
@@ -123,11 +190,11 @@ export function createProviderSupervisor({definitions=[],probeTimeoutMs=3000,hea
     },
     probe(id,options={}) {
       requireDefinition(id);
-      if (inFlight.has(id)) return inFlight.get(id);
-      const task=runProbe(id,options);
-      const tracked=task.finally(()=>{if(inFlight.get(id)===tracked)inFlight.delete(id);});
-      inFlight.set(id,tracked);
-      return tracked;
+      let signal;
+      try { signal=normalizeSignal(options?.signal); }
+      catch (error) { return Promise.reject(error); }
+      if (signal?.aborted) return Promise.resolve(cancelledResult());
+      return attachWaiter(getOrStartProbe(id),signal);
     },
     get(id) { return routingRecord(id); },
     routingSnapshot() { return [...source.keys()].map(routingRecord); }
