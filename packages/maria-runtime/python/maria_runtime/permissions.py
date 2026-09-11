@@ -48,8 +48,12 @@ class PermissionEngine:
         approved: bool = False,
         reversible: Optional[bool] = None,
     ) -> PermissionDecision:
-        if not target.strip():
-            raise ValueError("permission target must be non-empty")
+        if type(target) is not str:
+            raise TypeError("permission target must be str")
+        if not target or target != target.strip():
+            raise ValueError("permission target must be an exact non-empty identity")
+        if any(ord(character) < 0x20 or ord(character) == 0x7F for character in target):
+            raise ValueError("permission target must not contain control characters")
         if not isinstance(action_class, ActionClass):
             action_class = ActionClass(action_class)
         if type(approved) is not bool:
