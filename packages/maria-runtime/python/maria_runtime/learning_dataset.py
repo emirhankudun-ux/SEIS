@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from enum import Enum
 import hashlib
 import json
+import math
 
 from .learning_fabric import (
     LearningAdmissionPolicy,
@@ -26,6 +27,26 @@ class DatasetSplit(str, Enum):
     TRAIN = "train"
     VALIDATION = "validation"
     TEST = "test"
+
+
+def _validate_project(project: object) -> None:
+    if (
+        type(project) is not str
+        or not 1 <= len(project) <= 512
+        or project != project.strip()
+        or "*" in project
+        or any(ord(char) < 32 or ord(char) == 127 for char in project)
+    ):
+        raise ValueError("invalid dataset project identifier")
+
+
+def _validate_timestamp(now: object) -> None:
+    try:
+        valid = type(now) in (int, float) and now > 0 and math.isfinite(now)
+    except OverflowError:
+        valid = False
+    if not valid:
+        raise ValueError("dataset planning time must be a finite positive Unix timestamp")
 
 
 @dataclass(frozen=True, repr=False)
@@ -115,6 +136,8 @@ class DatasetPlanner:
             raise TypeError("target must be a ModelIdentity")
         if support is not None and type(support) is not TrainingSupport:
             raise TypeError("support must be a TrainingSupport or None")
+        _validate_project(project)
+        _validate_timestamp(now)
         if not candidates:
             return DatasetPlanDecision(False, "candidate-required")
         for candidate in candidates:
