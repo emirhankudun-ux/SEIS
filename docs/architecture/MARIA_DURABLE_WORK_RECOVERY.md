@@ -45,7 +45,7 @@ Reads are fail-closed. The loader checks:
 - symbolic-link aliases on the project directory and checkpoint file;
 - regular-file status and maximum byte size before JSON parsing;
 - a no-follow final file open on hosts that provide `O_NOFOLLOW`;
-- strict UTF-8 JSON validity, including rejection of `NaN`, `Infinity`, and `-Infinity`;
+- strict UTF-8 JSON validity, including rejection of duplicate object keys and `NaN`, `Infinity`, and `-Infinity`;
 - finite positive save timestamps;
 - exact envelope/body/step schemas;
 - schema version and identity match;
@@ -81,6 +81,6 @@ The archived MARIA/SEIS Python intake contained a useful crash-recovery prototyp
 
 Focused contract: `test/maria-work-checkpoint-recovery.test.py`.
 
-The original contract was committed before the durable-store implementation and hosted CI first failed because `maria_runtime.work_recovery` did not exist. The storage-hardening follow-up was also test-first: hosted MARIA regression CI failed on the new non-finite/symlink requirements before the implementation was changed.
+The original contract was committed before the durable-store implementation and hosted CI first failed because `maria_runtime.work_recovery` did not exist. The storage-hardening follow-up was also test-first: hosted MARIA regression CI failed on the new non-finite/symlink requirements before the implementation was changed. A second focused red/green cycle then proved that duplicate JSON object keys were accepted before strict object-pair parsing was added.
 
-The hardened contract covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, non-finite timestamp rejection, symbolic-link rejection, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.
+The hardened contract covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, duplicate-key rejection, non-finite timestamp rejection, symbolic-link rejection, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.
