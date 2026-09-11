@@ -1,15 +1,25 @@
 {
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.8",
   "repository": "emirhankudun-ux/SEIS",
   "branch": "maria-seis-v4-platform",
-  "baselineCommit": "e5146077ef3f54d57c8eb140ed5ec6e9d25cf85e",
+  "baseCommit": "28ba01d3a730d78e7ea62624df881cad82af4ca4",
   "packagePath": "maria-seis-v2",
+  "scope": "web simulation plus real local read-only MCP subprocess check",
   "verification": {
-    "nodeTests": "71/71 passed",
-    "browserOffline": "17/17 passed",
-    "httpBrowser": "blocked by environment policy in prior checks",
-    "providerSupervisor": "contract verified; no live provider connected",
-    "liveAdapters": "not verified"
+    "nodeTests": {
+      "passed": 152,
+      "failed": 0
+    },
+    "browserOffline": {
+      "passed": 17,
+      "viewports": 7
+    },
+    "httpBrowser": "blocked by environment policy; not verified",
+    "realMcp": "included reference server over OS pipes; package.json SHA-256 checked independently; child closed",
+    "externalModels": "not tested against a real model process",
+    "nativePlatforms": "not verified"
   },
-  "notes": "GitHub branch is canonical. This manifest intentionally avoids a self-referential final commit hash and per-file hashes that become stale when the manifest itself changes."
+  "notes": "This is a standalone package distribution, not a full repository export. Archive checksums are in CHECKSUMS.sha256. Local verification does not certify repository-wide CI/security or third-party interoperability.",
+  "initialBaseCommit": "7146f65f5a53459b76074c50a93b513381b23040",
+  "publicationParent": "97c230ab245da35f1238b4353244ead1b03bc53e"
 }

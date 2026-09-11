@@ -1,66 +1,46 @@
-# MARIA × SEIS — 4.0.0-alpha.7
+# MARIA × SEIS — 4.0.0-alpha.8
 
-A modular **web simulation and trusted-host adapter foundation** for the MARIA personal-intelligence experience. This is an engineering alpha, not a finished desktop operator. The existing SEIS Apple-first / Swift-first direction is unchanged.
+A premium web simulation plus a **real, narrowly scoped local MCP host check**. This is an engineering alpha, not a finished desktop operator. The SEIS Apple-first / Swift-first product direction is unchanged; this Node host is a small integration reference, not a replacement native architecture.
 
-## Alpha.7 MCP lifecycle and live-receipt hardening
+## Run the real local check
 
-This checkpoint makes the MCP client contract current and fail-closed across both modern and legacy protocol eras while tightening live execution identity:
-
-- defaults to MCP `2026-07-28` discovery through `server/discover`;
-- stamps modern requests with protocol/client capability metadata;
-- falls back to the legacy initialize lifecycle only when discovery is unsupported;
-- sends the required `notifications/initialized` notification for legacy sessions;
-- validates negotiated protocol versions instead of accepting arbitrary downgrade responses;
-- rejects malformed `tools/list` results;
-- requires a valid `CallToolResult` shape before a tool response can be marked successful;
-- preserves discovered-tool-only execution, host-side auth forwarding and cancellation;
-- includes the negotiated MCP protocol in attributable execution evidence;
-- binds live verification to the provider actually selected by the router;
-- preserves adapter-supplied provider/run/project/intent receipt identity instead of rewriting stale or mismatched receipts into valid-looking results;
-- makes the OpenAI-compatible local adapter emit request-bound identity for strict end-to-end verification.
-
-The browser UI still starts in simulation mode. No real external MCP server, local model process, OpenAI endpoint, macOS automation bridge, Unreal instance or Blender instance is claimed connected by this package.
-
-## Existing platform foundation
-
-- provider lifecycle state machine with verified health metadata;
-- provider supervisor with bounded probes, capability anti-escalation, health TTL, cancellation and probe deduplication;
-- allowlisted preference persistence for project/mode/routing choices only;
-- Plugin Host v2 with API-version checks, declared capability checks, explicit permission grants, crash isolation and bounded invocation timeout;
-- bounded execution journal with secret-key redaction and truthful terminal outcomes;
-- versioned host-adapter API (`connect`, `health`, `execute`, `disconnect`);
-- dependency-injected `LiveRuntimeAdapter` plus strict attributed live-receipt verification;
-- OpenAI-compatible local-model adapter contract with model discovery, completion transport, timeout and cancellation;
-- MCP tool discovery and execution contract with modern/legacy lifecycle negotiation.
-
-## Run
-
-Use Node.js 22 or newer for tests and Python 3 for local serving. No runtime npm dependencies or API keys are required.
+Use Node.js 22 or newer. No npm installation, model download, account, API key or runtime dependency is required for this command.
 
 ```sh
 npm test
+npm run mcp:check
+```
+
+Run these commands inside this package (`maria-seis-v2/` on GitHub). `mcp:check` starts the included MCP server in a separate Node process, negotiates protocol 2025-06-18, discovers `package.inspect`, authorizes that exact operation, and reads this package's `package.json`. The parent independently compares its bytes and SHA-256. It prints a JSON report and exits with status zero only when verification and child-process cleanup both succeed.
+
+This is real subprocess communication and real read-only filesystem inspection, **not an injected HTTP response**. It is not validation of a third-party MCP server, an LM Studio/Ollama installation, or macOS/Unreal/Blender control. No arbitrary CLI arguments, shell commands, user-selected file paths or network endpoints are accepted by the check.
+
+## Preview the interface
+
+```sh
 npm run dev
 ```
 
-Then open `http://127.0.0.1:4173`. The development server binds only to loopback.
+The existing Python 3 development server binds to `http://127.0.0.1:4173`. The browser remains explicitly in simulation mode. Running the host check does not silently turn on live browser controls. Do not expose this development server to the public internet.
 
-## Test
+## What changed
 
-```sh
-npm test
-python3 tests/browser_smoke.py --offline --output ./qa-artifacts
-```
+- Bounded Node stdio transport with JSON-RPC framing, response correlation, cancellation, timeouts, crash handling and process cleanup.
+- Modern 2026-07-28 discovery/per-request metadata retained from the concurrent update, with explicit legacy version pinning, initialized notification, bounded atomic discovery and host authorization. The reference CLI pins 2025-06-18.
+- Host authorization defaults to deny. A discovered tool is not automatically authorized.
+- Malformed/empty results fail closed. Transport success and independently verified outcomes remain distinct.
+- Old discovery replies cannot replace newer discovery state; disconnect invalidates pending results.
+- Known host credential values are redacted from returned MCP data. Child environment does not inherit the parent's secrets.
+- Local-model receipts now preserve their provider, run, project and intent identity. Local-model network tests still use injected responses.
 
-Fresh local verification for alpha.7: **98/98 Node tests** and **17/17 offline Chromium acceptance checks**. These local-model and MCP tests use deterministic injected transports; they verify protocol behavior, attribution and fail-closed boundaries, not a real remote MCP server, real local model process or external side effect.
+Existing provider supervision, preferences, plugin contracts, journal, source-of-truth resolver and simulation UI are preserved. A plugin contract is not an OS sandbox, and a health check is not task completion.
 
-## Execution truth
+## Verification and limits
 
-The default `runCommand` instance uses only the simulator. Live execution is possible only through explicit dependency injection of a live runtime and a verified provider registry. There is no silent fallback from live mode to simulation.
+The alpha.8 local package passed **152 Node tests** and **17 offline Chromium acceptance checks**. The included reference MCP server was launched and checked through real OS pipes and real files. Desktop and mobile screenshots show the actual rendered simulation UI.
 
-`verifyPrototype` validates only the simulator contract. `verifyLiveReceipt` requires host-runtime identity, an exact routed-provider match, matching run/project/intent identity, explicit external verification evidence and a verified receipt before returning `verified`.
+HTTP browser navigation was attempted but blocked by the execution environment (`ERR_BLOCKED_BY_ADMINISTRATOR`); it is not reported as passing. macOS/Windows native execution, cloud providers, real local-model inference, third-party MCP interoperability and deployment are not verified here.
 
-Keep provider behavior behind trusted-host adapters. Do not convert a catalog flag into a connection, execute arbitrary plugins, or place credentials in the browser. MCP discovery is capability discovery, not authorization; consequential tool calls still require the surrounding permission policy.
+See [the alpha.8 verification record](docs/ALPHA8-MCP-STDIO.md), [architecture](ARCHITECTURE.md), [security](SECURITY.md) and [roadmap](docs/ROADMAP.md). Historical verification documents describe their named releases, not the current one. GitHub CI is a separate gate; local checks do not imply repository-wide security readiness.
 
-See [architecture](ARCHITECTURE.md), [security](SECURITY.md), [roadmap](docs/ROADMAP.md), and [alpha.7 verification](docs/ALPHA7-VERIFICATION.md).
-
-MIT license. No deployment or production readiness is claimed by this package.
+The Creative & Advertising Agency layer remains after core platform acceptance. ChatGPT app connections and credentials are not imported by this code. MIT license.
