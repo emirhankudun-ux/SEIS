@@ -38,6 +38,7 @@ from .mcp_protocol import (
     MCPProtocolNegotiator,
     MCPProtocolProbe,
 )
+from .mcp_stdio import MCPStdioFrameCodec, MCPStdioFrameError, MCPStdioFrameFailure
 from .mcp_supervisor import (
     MCPProcessLaunchPlan,
     MCPProcessPolicy,
@@ -88,6 +89,9 @@ __all__ = [
     "MCPProtocolNegotiator",
     "MCPProtocolProbe",
     "MCPServerDescriptor",
+    "MCPStdioFrameCodec",
+    "MCPStdioFrameError",
+    "MCPStdioFrameFailure",
     "ModelRegistry",
     "ModelRouteDecision",
     "ModelRouter",
