@@ -72,6 +72,11 @@ from .mcp_supervisor import (
     MCPProcessSupervisor,
     MCPProcessTransport,
 )
+from .mcp_work_runner import (
+    MCPWorkInvocationExecutor,
+    MCPWorkStepBinding,
+    MCPWorkStepRunner,
+)
 from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
 from .projects import ProjectProfile, ProjectRegistry, WorkMode, default_project_registry
@@ -79,6 +84,16 @@ from .providers import ProviderRegistry, ProviderSpec, ProviderStatus, default_p
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouteDecision, ModelRouter
 from .safety import CommandPolicy
+from .work_execution import (
+    WorkPlanExecutionResult,
+    WorkPlanExecutor,
+    WorkStepExecutionEvidence,
+    WorkStepExecutionPolicy,
+    WorkStepExecutionResult,
+    WorkStepRunResult,
+    WorkStepRunner,
+    WorkStepState,
+)
 from .work_routing import (
     MultiStepWorkRouter,
     WorkRoutePlan,
@@ -136,6 +151,9 @@ __all__ = [
     "MCPStdioProcessTransport",
     "MCPStdioShutdownState",
     "MCPStdioTransportSnapshot",
+    "MCPWorkInvocationExecutor",
+    "MCPWorkStepBinding",
+    "MCPWorkStepRunner",
     "ModelRegistry",
     "ModelRouteDecision",
     "ModelRouter",
@@ -161,9 +179,17 @@ __all__ = [
     "ToolStatus",
     "UnifiedCapabilityRouter",
     "WorkMode",
+    "WorkPlanExecutionResult",
+    "WorkPlanExecutor",
     "WorkRoutePlan",
     "WorkRouteStep",
+    "WorkStepExecutionEvidence",
+    "WorkStepExecutionPolicy",
+    "WorkStepExecutionResult",
     "WorkStepRequest",
+    "WorkStepRunResult",
+    "WorkStepRunner",
+    "WorkStepState",
     "default_project_registry",
     "default_provider_registry",
 ]
