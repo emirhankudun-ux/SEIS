@@ -5,6 +5,7 @@ import { selectProviders } from './providerRouter.js';
 import { eventBus } from './eventBus.js';
 import { MockRuntimeAdapter } from '../adapters/runtime.js';
 import { executionJournal } from './executionJournal.js';
+import { assertSynchronousJournalResult } from './journalContract.js';
 let sequence = 0;
 
 /** Runtime is dependency-injected. The shipped app uses only the simulator; trusted hosts may inject an explicit live runtime. */
@@ -14,7 +15,7 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
     try {
       const writer=typeof journal?.[method]==='function' ? journal[method].bind(journal) : journal?.append?.bind(journal);
       if (!writer) throw new Error('journal unavailable');
-      writer(entry); return true;
+      assertSynchronousJournalResult(writer(entry)); return true;
     } catch { bus.emit('JOURNAL_FAILED',{runId:entry?.runId ?? null,phase:method}); return false; }
   };
   return async function run(command, projectId, hooks = {}, policy = {}, options = {}) {
@@ -74,17 +75,18 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
       const verification = mode === 'live'
         ? verifyLiveReceipt(result, {...plan,providerId:selectedProviders[0]?.id})
         : verifyPrototype(result, plan);
-      bus.emit(mode === 'live' ? 'LIVE_EXECUTION_FINISHED' : 'SIMULATION_FINISHED', {plan,verification});
-      const status = mode === 'live' ? (verification.verified ? 'verified' : 'unverified') : (verification.contractVerified ? 'simulated' : 'unverified');
-      const terminal={runId:plan.runId,status,executionMode:mode,provider:providerId,verifiedExternalAction:verification.verifiedExternalAction === true,evidence:verification.evidence ?? []};
+      const verifiedStatus = mode === 'live' ? (verification.verified ? 'verified' : 'unverified') : (verification.contractVerified ? 'simulated' : 'unverified');
+      const terminal={runId:plan.runId,status:verifiedStatus,executionMode:mode,provider:providerId,verifiedExternalAction:verification.verifiedExternalAction === true,evidence:verification.evidence ?? []};
       const auditRecorded=writeJournal(terminal,'complete');
-      if (mode==='live' && !auditRecorded) return {status:'unverified',plan,selectedProviders,result,verification,auditRecorded:false,reason:'Canlı sonuç doğrulandı ancak denetim günlüğü tamamlanamadı; sonuç yeniden uzlaştırılmalı.'};
+      const status=mode==='live' && !auditRecorded ? 'unverified' : verifiedStatus;
+      bus.emit(mode === 'live' ? 'LIVE_EXECUTION_FINISHED' : 'SIMULATION_FINISHED', {plan,verification,status,auditRecorded});
+      if (mode==='live' && !auditRecorded) return {status,plan,selectedProviders,result,verification,auditRecorded:false,reason:'Canlı sonuç için denetim günlüğü tamamlanamadı; sonuç yeniden uzlaştırılmalı.'};
       return {status,plan,selectedProviders,result,verification,auditRecorded};
     } catch {
       const status = timedOut ? 'timed-out' : controller.signal.aborted ? 'cancelled' : 'error';
       const reason = { 'timed-out':'İşlem süre sınırında durduruldu.', cancelled:'İşlem iptal edildi.', error:'Yürütücü başarısız oldu; sonuç doğrulanmadı.' }[status];
-      bus.emit('EXECUTION_STOPPED', {runId:plan.runId,status});
       const auditRecorded=writeJournal({runId:plan.runId,status,executionMode:mode,provider:providerId,verifiedExternalAction:false,evidence:[]},'complete');
+      bus.emit('EXECUTION_STOPPED', {runId:plan.runId,status,auditRecorded});
       return {status,plan,reason,auditRecorded};
     } finally {
       settled = true;

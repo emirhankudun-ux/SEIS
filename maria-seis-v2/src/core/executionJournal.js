@@ -1,3 +1,5 @@
+import { assertSynchronousJournalResult } from './journalContract.js';
+
 const SECRET_KEY=/(token|secret|password|api[-_]?key|authorization|credential)/i;
 
 function redact(value,key='') {
@@ -92,7 +94,7 @@ export function createPersistentExecutionJournal({storage,limit=200,clock=()=>ne
   if (typeof clock!=='function') throw new TypeError('Invalid journal clock');
   let parsed=[];
   try {
-    const raw=storage.read();
+    const raw=assertSynchronousJournalResult(storage.read());
     if (raw!==null && raw!==undefined && raw!=='') {
       const value=JSON.parse(raw);
       if (!Array.isArray(value)) throw new Error('not-array');
@@ -101,7 +103,7 @@ export function createPersistentExecutionJournal({storage,limit=200,clock=()=>ne
   } catch { throw new Error('journal-storage-corrupt'); }
   const entries=boundEntries(parsed,limit);
   const persist=next=>{
-    try { storage.write(JSON.stringify(next)); }
+    try { assertSynchronousJournalResult(storage.write(JSON.stringify(next))); }
     catch { throw new Error('journal-persist-failed'); }
   };
   return lifecycleApi({entries,limit,clock,persist});
