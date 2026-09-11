@@ -25,17 +25,38 @@ export function createPluginHost({apiVersion='2',timeoutMs=3000}={}) {
       if (!entry.manifest.capabilities.includes(capability)) return {status:'denied',reason:'capability-not-declared'};
       const granted=new Set(Array.isArray(context?.grantedPermissions) ? context.grantedPermissions : []);
       if (entry.manifest.permissions.some(permission=>!granted.has(permission))) return {status:'denied',reason:'permission-not-granted'};
+      const externalSignal=context?.signal;
+      if (externalSignal !== undefined && (!externalSignal || typeof externalSignal.aborted!=='boolean' || typeof externalSignal.addEventListener!=='function' || typeof externalSignal.removeEventListener!=='function')) {
+        return {status:'failed',reason:'invalid-cancellation-signal'};
+      }
+      if (externalSignal?.aborted) return {status:'cancelled',reason:'plugin-cancelled'};
+      const controller=new AbortController();
       let timer;
+      let rejectInterruption;
+      const interruption=new Promise((_,reject)=>{ rejectInterruption=reject; });
+      const interrupt=reason=>{
+        if (controller.signal.aborted) return;
+        rejectInterruption(new Error(reason));
+        controller.abort(reason);
+      };
+      const cancel=()=>interrupt('plugin-cancelled');
+      externalSignal?.addEventListener('abort',cancel,{once:true});
+      timer=setTimeout(()=>interrupt('plugin-timeout'),timeoutMs);
       try {
-        entry.instance ??= await entry.factory(Object.freeze({permissions:Object.freeze([...entry.manifest.permissions]),apiVersion}));
+        const factoryContext=Object.freeze({permissions:Object.freeze([...entry.manifest.permissions]),apiVersion,signal:controller.signal});
+        if (!entry.instance) entry.instance=await Promise.race([Promise.resolve().then(()=>entry.factory(factoryContext)),interruption]);
         const fn=entry.instance?.[capability];
         if (typeof fn!=='function') return {status:'unavailable',reason:'capability-not-implemented'};
-        const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('plugin-timeout')),timeoutMs);});
-        const value=await Promise.race([Promise.resolve().then(()=>fn(structuredClone(input),Object.freeze({...context}))),timeout]);
+        const invokeContext=Object.freeze({...context,grantedPermissions:Object.freeze([...granted]),signal:controller.signal});
+        const value=await Promise.race([Promise.resolve().then(()=>fn(structuredClone(input),invokeContext)),interruption]);
         return {status:'ok',value};
       } catch (error) {
+        if (error?.message==='plugin-cancelled') return {status:'cancelled',reason:'plugin-cancelled'};
         return {status:'failed',reason:error?.message==='plugin-timeout'?'plugin-timeout':'plugin-crashed'};
-      } finally { if (timer) clearTimeout(timer); }
+      } finally {
+        if (timer) clearTimeout(timer);
+        externalSignal?.removeEventListener('abort',cancel);
+      }
     }
   });
 }
