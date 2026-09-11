@@ -66,6 +66,24 @@ class MariaPermissionAuditEnvelopeTests(unittest.TestCase):
         first["targetEvidence"]["source"] = "mutated"
         self.assertEqual(permission_decision_audit_envelope(decision), expected)
 
+    def test_envelope_uses_six_digit_fractional_precision_when_microseconds_exist(self):
+        evidence = ResolvedTargetEvidence(
+            target=self.target,
+            source="github-adapter:repository-resolution",
+            observed_at=self.now - timedelta(seconds=5) + timedelta(microseconds=123456),
+            verified=True,
+        )
+        decision = self.engine.evaluate(
+            ActionClass.MODIFY,
+            target=self.target,
+            approved=True,
+            reversible=False,
+            target_evidence=evidence,
+        )
+
+        envelope = permission_decision_audit_envelope(decision)
+        self.assertEqual(envelope["targetEvidence"]["observedAt"], "2026-09-11T19:59:55.123456Z")
+
     def test_denied_and_no_evidence_decisions_preserve_decision_semantics(self):
         denied = self.engine.evaluate(
             ActionClass.MODIFY,
@@ -115,6 +133,10 @@ class MariaPermissionAuditEnvelopeTests(unittest.TestCase):
         self.assertEqual(
             evidence_object["required"],
             ["target", "source", "observedAt", "verified"],
+        )
+        self.assertEqual(
+            evidence_object["properties"]["observedAt"]["pattern"],
+            r"^(?!0000)[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](?:\.[0-9]{6})?Z$",
         )
         self.assertEqual(schema["x-seis-authority"], "descriptive-only")
         self.assertEqual(schema["x-seis-persistence"], "host-classified")
