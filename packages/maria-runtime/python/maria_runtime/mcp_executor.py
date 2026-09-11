@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import json
 import math
 import threading
@@ -53,8 +53,12 @@ class MCPInvocationEvidence:
 @dataclass(frozen=True)
 class MCPInvocationResult:
     success: bool
-    result: Any | None
-    evidence: MCPInvocationEvidence
+    result: Any | None = field(default=None, repr=False)
+    evidence: MCPInvocationEvidence | None = None
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.evidence, MCPInvocationEvidence):
+            raise TypeError("evidence must be MCPInvocationEvidence")
 
 
 class MCPInvocationExecutor:
