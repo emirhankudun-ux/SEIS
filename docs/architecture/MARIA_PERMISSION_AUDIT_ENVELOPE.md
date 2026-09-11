@@ -10,6 +10,8 @@ The current Python MARIA Runtime v18 permission boundary and the existing JavaSc
 
 The envelope contains the evaluated action class, exact permission target, allow/deny result, approval requirement, policy reason, reversibility metadata and the exact resolved-target evidence snapshot when one was supplied. Evidence timestamps are normalized to canonical UTC with a `Z` suffix so hosts do not have to compare locale-specific renderings.
 
+Because `PermissionDecision` is a public dataclass and can be constructed directly, the serializer also performs a structural canonicality check before emitting cross-runtime data. It rejects wrong action-class types, ambiguous target/reason strings, non-boolean decision flags, invalid reversibility metadata and foreign evidence objects. This is shape validation only; it does not re-run permission policy, refresh evidence or turn a direct record into execution authority.
+
 `packages/maria-runtime/js/permissionAuditEnvelope.js` is the first cross-runtime consumer. It validates the exact v1 shape, rejects unknown fields and action classes, rejects accessor-backed records, rejects non-canonical timestamps and returns an isolated frozen copy. It does not re-authorize a denied record or infer authority from `allowed: true`.
 
 ## Existing journal reconciliation
