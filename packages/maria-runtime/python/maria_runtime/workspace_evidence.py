@@ -226,7 +226,8 @@ class GitWorkspaceEvidenceSource:
         if any(not part or part in {".", ".."} or part.startswith(".") for part in parts):
             return False
         return all(
-            32 <= ord(character) < 127
+            ord(character) >= 32
+            and ord(character) != 127
             and character not in {" ", "~", "^", ":", "?", "*", "["}
             for character in branch
         )

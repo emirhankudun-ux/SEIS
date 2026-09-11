@@ -35,7 +35,8 @@ The reader is fail-closed and applies the following limits before accepting evid
 - `HEAD` and loose ref payloads are capped at 4 KiB;
 - `packed-refs` is capped at 256 KiB;
 - final files are opened with `O_NOFOLLOW` where supported and handles are revalidated with `fstat`;
-- branch references are restricted to a conservative symbolic `refs/heads/...` form that rejects traversal, empty components, control characters and Git-dangerous patterns;
+- branch references are restricted to a conservative symbolic `refs/heads/...` form that rejects traversal, empty components, control characters, ASCII DEL, single `@`, and Git-dangerous patterns while preserving otherwise-valid non-ASCII branch identities;
+- direct `WorkspaceEvidenceSnapshot` construction applies the same branch-identity predicate as filesystem capture, so typed evidence cannot bypass the source boundary;
 - repository revisions must be 40- or 64-character hexadecimal object identifiers;
 - duplicate matching identities in `packed-refs` are rejected rather than resolved heuristically.
 
@@ -86,12 +87,14 @@ A second test-first hardening checkpoint, `f55d7b88479579b77a057b8355a905210a94a
 
 The minimal fix at `a33b04c7c7bb5a2a9ca8efc9d1360fa698f5f5e7` validates the loose-ref parent chain before reading and validates timestamp shape before constructing context evidence. It also retains duplicate packed-ref, final symlink and SHA-256-object-id tests.
 
-Final PR-head CI remains the acceptance source; documentation-only follow-up commits must not be called fully verified until their own triggered checks finish.
+The branch-identity contract was then specified at `3442d449063e19113980ec4f9b127f53bc606be1`. Hosted `MARIA Learning Fabric` run `34608696251` went red with five expected failures: direct typed snapshots admitted traversal/single-`@`/DEL identities, while filesystem capture admitted single `@` and DEL. The first implementation aligned typed snapshots with `_safe_branch` and rejected those missing cases.
+
+A follow-up regression test intentionally exercised a valid Unicode branch identity. Run `34609148899` showed the first DEL fix was too broad because an ASCII-only upper bound also rejected all non-ASCII branch characters. The follow-up fix narrows that rule to reject characters below ASCII space plus DEL (`0x7f`) while retaining the existing forbidden-character and ref-pattern checks. Final PR-head CI remains the acceptance source; no prior green run substitutes for the current head.
 
 ## Rollback
 
-The change is isolated on `feature/maria-current-workspace-evidence-v1`. Rollback means reverting or closing this focused draft branch/PR. Do not delete user repositories, `.git` metadata or durable recovery checkpoints to roll back this code.
+The feature remains isolated on `feature/maria-current-workspace-evidence-v1`, with branch-identity corrections kept in focused stacked review commits. Rollback means reverting the relevant focused commits or closing the follow-up PR. Do not delete user repositories, `.git` metadata or durable recovery checkpoints to roll back this code.
 
 ## Next safe step
 
-After this contract is fully green and reviewed, connect the snapshot to the existing read-only native recovery presentation through an explicit host-selected workspace action. Preserve file-only mode, show source/freshness state visibly, and keep every execution/resume capability outside the presentation contract.
+After the workspace-evidence stack is fully green and reviewed, connect the snapshot to the existing read-only native recovery presentation through an explicit host-selected workspace action. Preserve file-only mode, show source/freshness state visibly, and keep every execution/resume capability outside the presentation contract.
