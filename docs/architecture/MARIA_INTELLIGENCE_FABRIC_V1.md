@@ -2,7 +2,7 @@
 
 ## Status
 
-Foundation slice. Metadata and safe import preview only. No live provider or MCP execution is enabled by this document or its companion runtime modules.
+Foundation slice. Provider metadata, verified model-discovery conversion, and safe MCP import preview are implemented. No live provider or MCP execution is enabled by this document or its companion runtime modules.
 
 ## Purpose
 
@@ -30,6 +30,7 @@ MARIA
   |
   +-- Intelligence Fabric
   |     +-- Provider Registry (metadata only)
+  |     +-- Provider Discovery Adapter (verified redacted facts -> ModelSpec)
   |     +-- Model Registry / Router (verified model facts)
   |     +-- MCP Config Import Preview (redacted, disabled)
   |     +-- Capability Registry (verified tools)
@@ -39,6 +40,8 @@ MARIA
 ```
 
 Provider metadata answers: "Which provider families could satisfy this class of work?"
+
+Discovery facts answer: "What has the current environment actually verified about a concrete model endpoint?"
 
 Model metadata answers: "Which concrete discovered model is currently usable, with what context, reliability, latency, cost, locality, and capability facts?"
 
@@ -57,7 +60,23 @@ The router must choose from verified model facts. The default provider catalog m
 - the registry does not perform network calls;
 - the registry does not select a permanent winner.
 
-A later discovery adapter may promote an entry from `discovery-required` to another state only after it has verified the real environment.
+A discovery adapter may derive another state only from verified environment evidence. The registry's default catalog remains discovery-first rather than pretending that a provider is connected.
+
+## Provider discovery rules
+
+`ProviderDiscoveryAdapter` is a side-effect-free conversion boundary. It does not probe a network, launch a local runtime, resolve secrets, or mutate provider configuration.
+
+A separate discovery source must collect a redacted `ModelDiscoveryFact`. The adapter then applies fail-closed rules:
+
+1. unknown provider IDs are rejected;
+2. unverified facts stay `discovery-required` and cannot create an available model;
+3. verified but unreachable endpoints become `unavailable`;
+4. verified reachable cloud endpoints without confirmed authentication become `auth-required`;
+5. only verified, reachable, authentication-ready facts become routable `ModelSpec` records;
+6. local discovered models are marked with local privacy metadata;
+7. only routing metadata is accepted: credentials, tokens, headers, and secret values have no field in the discovery schema.
+
+This separates *observation* from *routing*. A later adapter may inspect Ollama, LM Studio, a cloud provider SDK, or another source, but it must return redacted facts before the central runtime can use them.
 
 ## MCP import rules
 
@@ -79,7 +98,7 @@ This means importing a configuration cannot silently create execution authority.
 
 Secret values must not be committed to repository configuration or returned in public manifests. Future live adapters should resolve credentials through an external secure secret store (for macOS, Keychain is the preferred native direction) and pass only the minimum required credential material to a provider process or request.
 
-The current importer intentionally discards environment values even when they are present in imported JSON.
+The current MCP importer intentionally discards environment values even when they are present in imported JSON. Provider discovery similarly accepts only an `auth_present` boolean rather than credential material.
 
 ## Why MCP servers remain disabled
 
@@ -98,7 +117,7 @@ Therefore imported servers become disabled discovery records until a later gatew
 
 ## Next slices
 
-1. Provider Discovery adapters that populate verified `ModelSpec` records without exposing credentials.
+1. Provider-specific discovery sources for Ollama, LM Studio, and selected cloud providers that emit redacted `ModelDiscoveryFact` records.
 2. MCP Gateway v2 with process health, schema discovery, retries, circuit breakers, provenance, and per-call permissions.
 3. Unified capability routing that combines model requirements with verified tool requirements.
 4. Project-aware policy profiles for SEIS, Deadly Evil, Eleni-Neferi, Pantechnoepistemonoesis, PANTECHNOSYNI, and Portfolio.
@@ -106,4 +125,4 @@ Therefore imported servers become disabled discovery records until a later gatew
 
 ## Non-goals of v1
 
-This slice does not include provider API calls, OAuth, model downloads, MCP process launch, plugin installation, filesystem mutation, Git mutation, Unreal/Blender mutation, GUI automation, deployment, publication, billing actions, or background agents.
+This slice does not include provider API calls, OAuth, model downloads, MCP process launch, plugin installation, filesystem mutation, Git mutation, Unreal/Blender mutation, GUI automation, deployment, publication, billing actions, or uncontrolled background agents.
