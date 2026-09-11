@@ -53,6 +53,9 @@ class RecoveryDashboardWireCodec:
     MAX_ROWS = 256
     MAX_ID_LENGTH = 512
     MAX_FIELD_NAMES = 16
+    # Supported native Apple clients decode JSON integers into signed 64-bit Int.
+    # Keep the Python wire contract inside that shared representable range.
+    MAX_NATIVE_INTEGER = (1 << 63) - 1
 
     _ROOT_FIELDS = {
         "schema_version",
@@ -266,6 +269,7 @@ class RecoveryDashboardWireCodec:
             isinstance(schema_version, bool)
             or not isinstance(schema_version, int)
             or schema_version <= 0
+            or schema_version > cls.MAX_NATIVE_INTEGER
         ):
             raise RecoveryDashboardWireError("invalid durable schema version")
         next_step_id = value.get("next_step_id")
