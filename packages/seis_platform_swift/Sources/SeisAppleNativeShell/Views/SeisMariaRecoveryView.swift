@@ -11,6 +11,10 @@ struct SeisMariaRecoveryView: View {
     @State private var showsImporter = false
     @State private var importTask: Task<Void, Never>?
 
+    init(initialState: SeisMariaRecoveryImportState = SeisMariaRecoveryImportState()) {
+        _state = State(initialValue: initialState)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 6) {
