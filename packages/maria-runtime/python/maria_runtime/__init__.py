@@ -1,9 +1,9 @@
 """MARIA × SEIS runtime foundation.
 
 This package exposes policy, routing, provider metadata, safe integration
-contracts, explicit bounded local-model inference adapters, and redacted
-readiness snapshots. Live external execution remains capability-discovered,
-permission-gated, and opt-in.
+contracts, explicit bounded local-model inference adapters, redacted readiness
+snapshots, and deterministic project-scoped context retrieval. Live external
+execution remains capability-discovered, permission-gated, and opt-in.
 """
 
 from .cache import PromptCache
@@ -58,6 +58,7 @@ from .mcp_supervisor import (
     MCPProcessTransport,
 )
 from .mcp_work_runner import MCPWorkInvocationExecutor, MCPWorkStepBinding, MCPWorkStepRunner
+from .memory_retrieval import BM25Index, BM25SearchHit, ContextSearchHit, ProjectContextRetriever, TextNormalizer
 from .model_work_runner import ModelAdapterResult, ModelWorkAdapter, ModelWorkInput, ModelWorkStepBinding, ModelWorkStepRunner
 from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
@@ -80,15 +81,15 @@ from .work_execution import (
 from .work_routing import MultiStepWorkRouter, WorkRoutePlan, WorkRouteStep, WorkStepRequest
 
 __all__ = [
-    "ActionClass", "CapabilityRegistry", "CapabilityRequest", "CommandPolicy", "ContextFact",
-    "ContinuationBrief", "ContinuationResolver", "LMStudioModelWorkAdapter", "LocalDiscoveryCoordinator",
-    "LocalHealthEvidenceLedger", "LocalModelLimits", "LocalModelReadinessBuilder", "LocalModelReadinessRecord",
-    "LocalModelReadinessState", "LocalModelRequest", "LocalModelResponse", "LocalModelTransport",
-    "LocalProbeError", "LocalProbeFailureKind", "LocalProbeRequest", "LocalProbeResponse", "LocalProbeResult",
-    "LocalRuntimeProbe", "LocalRuntimeSnapshotBuilder", "LocalRuntimeStatusSnapshot", "LoopbackModelHTTPTransport",
-    "MCPConfigImporter", "MCPEnvironmentResolver", "MCPImportPreview", "MCPInvocationEvidence",
-    "MCPInvocationExecutor", "MCPInvocationGuard", "MCPInvocationPlan", "MCPInvocationResult",
-    "MCPInvocationTransport", "MCPKeychainSecretSource", "MCP_LEGACY_PROTOCOL_VERSION",
+    "ActionClass", "BM25Index", "BM25SearchHit", "CapabilityRegistry", "CapabilityRequest", "CommandPolicy",
+    "ContextFact", "ContextSearchHit", "ContinuationBrief", "ContinuationResolver", "LMStudioModelWorkAdapter",
+    "LocalDiscoveryCoordinator", "LocalHealthEvidenceLedger", "LocalModelLimits", "LocalModelReadinessBuilder",
+    "LocalModelReadinessRecord", "LocalModelReadinessState", "LocalModelRequest", "LocalModelResponse",
+    "LocalModelTransport", "LocalProbeError", "LocalProbeFailureKind", "LocalProbeRequest", "LocalProbeResponse",
+    "LocalProbeResult", "LocalRuntimeProbe", "LocalRuntimeSnapshotBuilder", "LocalRuntimeStatusSnapshot",
+    "LoopbackModelHTTPTransport", "MCPConfigImporter", "MCPEnvironmentResolver", "MCPImportPreview",
+    "MCPInvocationEvidence", "MCPInvocationExecutor", "MCPInvocationGuard", "MCPInvocationPlan",
+    "MCPInvocationResult", "MCPInvocationTransport", "MCPKeychainSecretSource", "MCP_LEGACY_PROTOCOL_VERSION",
     "MCP_MODERN_PROTOCOL_VERSION", "MCPProcessLaunchPlan", "MCPProcessPolicy", "MCPProcessSnapshot",
     "MCPProcessStartResult", "MCPProcessState", "MCPProcessSupervisor", "MCPProcessTransport",
     "MCPProtocolDecision", "MCPProtocolEra", "MCPProtocolNegotiator", "MCPProtocolProbe",
@@ -98,10 +99,11 @@ __all__ = [
     "ModelAdapterResult", "ModelRegistry", "ModelRouteDecision", "ModelRouter", "ModelSpec", "ModelWorkAdapter",
     "ModelWorkInput", "ModelWorkStepBinding", "ModelWorkStepRunner", "MultiStepWorkRouter",
     "OllamaModelWorkAdapter", "PermissionDecision", "PermissionEngine", "ProbeHealthSummary",
-    "ProbeObservation", "ProbeOutcome", "ProjectContextEngine", "ProjectProfile", "ProjectRegistry",
-    "PromptCache", "ProviderRegistry", "ProviderSpec", "ProviderStatus", "RouteDecision", "RouteKind",
-    "RuntimeProbeState", "RuntimeProbeStatus", "ToolSpec", "ToolStatus", "UnifiedCapabilityRouter", "WorkMode",
-    "WorkPlanCheckpoint", "WorkPlanExecutionResult", "WorkPlanExecutor", "WorkRoutePlan", "WorkRouteStep",
-    "WorkStepExecutionEvidence", "WorkStepExecutionPolicy", "WorkStepExecutionResult", "WorkStepRequest",
-    "WorkStepRunResult", "WorkStepRunner", "WorkStepState", "default_project_registry", "default_provider_registry",
+    "ProbeObservation", "ProbeOutcome", "ProjectContextEngine", "ProjectContextRetriever", "ProjectProfile",
+    "ProjectRegistry", "PromptCache", "ProviderRegistry", "ProviderSpec", "ProviderStatus", "RouteDecision",
+    "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus", "TextNormalizer", "ToolSpec", "ToolStatus",
+    "UnifiedCapabilityRouter", "WorkMode", "WorkPlanCheckpoint", "WorkPlanExecutionResult", "WorkPlanExecutor",
+    "WorkRoutePlan", "WorkRouteStep", "WorkStepExecutionEvidence", "WorkStepExecutionPolicy",
+    "WorkStepExecutionResult", "WorkStepRequest", "WorkStepRunResult", "WorkStepRunner", "WorkStepState",
+    "default_project_registry", "default_provider_registry",
 ]
