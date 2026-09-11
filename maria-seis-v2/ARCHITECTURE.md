@@ -1,53 +1,61 @@
-# MARIA × SEIS — bounded web simulation
+# MARIA × SEIS — bounded web simulation and host-adapter contracts
 
-MARIA owns interaction and truthful result presentation. This web package explores SEIS contracts without replacing the repository's Apple-native direction. Native execution, voice, models, memory and MCP still require separate implementations.
+MARIA owns interaction and truthful result presentation. This web package explores SEIS contracts without replacing the repository's Apple-native direction. Native execution, voice, models, durable memory and MCP still require concrete implementations.
 
 ## Execution boundary
 
-`validate input → immutable plan → permission → observers → simulator selection → bounded execution → response-contract check → truthful UI`
+Default browser path:
 
-`createOrchestrator` permits dependency injection for contract tests. The shipped release only executes a simulator. `executionMode:'live'` returns `unavailable`; it never silently falls back to a mock. A timeout/cancellation is not completion. Late progress after settlement is ignored. A future external adapter must implement host-side cancellation and reconcile actual side effects; Promise.race alone cannot stop a remote tool.
+`validate input → immutable plan → permission → provider selection → simulator → response-contract check → truthful UI`
+
+Trusted-host live path:
+
+`validate input → immutable plan → permission → fresh provider readiness → injected live runtime → host adapter execute → attributed receipt → live verification → truthful result`
+
+`createOrchestrator` permits dependency injection. The shipped default instance uses only the simulator. `executionMode:'live'` never silently falls back to a mock. A timeout/cancellation is not completion. Late progress after settlement is ignored. External adapters must implement host-side cancellation/reconciliation because Promise.race alone cannot stop a remote side effect.
 
 ## Authorization
 
-Unrecognized risk fails closed. Project changes require an explicit write policy with safe mode disabled; the UI grants no such write policy. High-impact operations remain blocked pending approval and have no executable approval path in the demo. Dismissing a notice is not consent. Text classification is advisory, not a security boundary.
+Unrecognized risk fails closed. Project changes require an explicit write policy with safe mode disabled. High-impact operations remain approval-gated. Dismissing a notice is not consent. Text classification is advisory, not a security boundary.
 
-Plans and provider selections cannot be changed by UI observers. Event subscribers receive independent snapshots. Subscriber failures are isolated and diagnostics are bounded and do not include raw exception messages.
+Plans and provider selections cannot be changed by UI observers. Event subscribers receive isolated payloads. Subscriber failures are bounded and normalized.
 
 ## Capability truth
 
-Provider eligibility requires implemented, connected and health-verified flags plus full capability coverage. These metadata fields are not proof by themselves and must eventually be maintained by a trusted host. Every external shipped provider is unconfigured or disabled. Only the local simulator is active. Catalog roles are not spawned agents; session state is not durable memory.
+Provider eligibility requires implemented, connected and health-verified state plus capability coverage. Catalog presence is never connectivity. `createProviderSupervisor` maintains bounded probe evidence with TTL and capability anti-escalation. `createHostAdapterManager` owns a versioned `connect → health → execute → disconnect` contract for an actual trusted host adapter. A provider must be ready before execute and only verified capabilities may be invoked.
+
+The two layers are intentionally separate: **readiness is not execution permission, and execution is not outcome verification**.
 
 ## Verification
 
-`verifyPrototype` checks the simulator identity, result, intent, project, run identity and reported side-effect boundary. `contractVerified` only covers that contract. `verified` is always false in this simulator: it does not verify builds, apps, model answers or real tools. Evidence reports unknown or reported effects rather than inventing `side-effects:none`.
+`verifyPrototype` checks only the simulator identity, result, intent, project, run identity and side-effect boundary. Its `verified` field remains false.
+
+`verifyLiveReceipt` checks a live host receipt. It requires:
+
+- runtime identity `host-runtime-v1` and mode `live`;
+- selected provider attribution;
+- matching intent, run ID and project ID;
+- explicit `outcomeVerified:true`;
+- non-empty external evidence.
+
+Only when every check passes may the orchestrator return `verified` and journal `verifiedExternalAction:true`.
 
 ## Source of truth
 
-Fact resolution excludes desired user instructions and rejects unverified claims labeled as runtime facts. Equal-priority differing values return an explicit conflict with preserved candidates. Instruction selection is opt-in and does not override security or authorization. This utility is not yet a durable knowledge store.
+Fact resolution excludes desired user instructions and rejects unverified runtime claims. Equal-priority differing values return an explicit conflict with preserved candidates. Instruction selection is opt-in and does not override security or authorization.
 
 ## Plugin boundary
 
-The SDK validates identity, version shape, unique capability names, risk and callable factories. Capability arrays are defensively copied and frozen. A valid manifest neither authorizes execution nor isolates arbitrary JavaScript. No third-party plugin loader is shipped.
+Plugin Host v2 validates API compatibility, identity, unique capability names, requested permissions and risk. Invocation requires all manifest permissions to be explicitly granted and is bounded by a timeout. Plugin exceptions are normalized. A valid manifest is not a sandbox or execution grant.
 
+## Persistence and audit
 
-## Alpha.3 runtime contracts
+`src/core/persistence.js` stores only an allowlist of non-secret UI/routing preferences. Tokens, credentials, prompts and arbitrary memory are excluded.
 
-### Provider lifecycle
-`src/core/providerLifecycle.js` owns explicit provider transitions and health evidence. Catalog presence is not connectivity. `ready` is only meaningful when the caller supplies verified health evidence.
+`src/core/executionJournal.js` stores a bounded in-memory audit trail. Secret-shaped fields are redacted. Simulation evidence can never become an external-success claim.
 
-### Safe preference persistence
-`src/core/persistence.js` persists only an allowlist of non-secret UI/routing preferences. Credentials, tokens, prompts, arbitrary memory and execution evidence are excluded.
+## Alpha.4 provider supervision + live runtime contract
 
-### Plugin Host v2
-`src/plugins/host.js` validates API compatibility, declared capabilities and requested permissions. Invocation requires all manifest permissions to be explicitly granted and is bounded by a host timeout. Plugin exceptions are normalized instead of escaping into the application.
+`src/core/providerSupervisor.js` handles time-bounded readiness probes, health expiry, cancellation and deduplication. `src/adapters/hostAdapter.js` defines the trusted-host adapter API and enforces health/capability readiness before execute. `src/adapters/liveRuntime.js` bridges the selected ready provider into orchestration through dependency injection.
 
-### Execution journal
-`src/core/executionJournal.js` stores a bounded in-memory audit trail. The orchestrator records terminal outcomes and never converts simulation evidence into an external-success claim. Secret-shaped keys are redacted before storage.
-
-
-## Alpha.4 provider supervision
-
-`src/core/providerSupervisor.js` is the readiness boundary for future external providers. A catalog entry alone remains inert. A provider becomes routable only after a registered adapter returns a successful bounded probe with capabilities that are a subset of the provider's declared contract. Probe failures, cancellation and timeouts clear health evidence; raw adapter exceptions are normalized.
-
-Health evidence is time-bounded. `routingSnapshot()` marks expired health as degraded/unconnected, so a once-healthy provider cannot remain eligible forever. Concurrent probes for the same provider are deduplicated to avoid racing health state. This supervisor does **not** execute model/tool actions and does not relax the orchestrator's alpha live-execution block.
+No concrete OpenAI/local-model/MCP/macOS/Unreal/Blender transport is configured by the shipped browser app. The architecture is ready for one verified end-to-end adapter without claiming that integration exists today.
