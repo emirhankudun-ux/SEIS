@@ -21,11 +21,39 @@ function syncVerdict(fn, context) {
     return value === true;
   } catch { return false; }
 }
+const mimePattern = /^[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]{0,126}\/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]{0,126}(?:;[^\r\n]{1,128})?$/;
+const base64Pattern = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+const boundedString = (value, min, max) => typeof value === 'string' && value.length >= min && value.length <= max;
+const validMime = value => boundedString(value, 3, 384) && mimePattern.test(value);
+const validBase64 = value => boundedString(value, 1, 1048576) && value.length % 4 === 0 && base64Pattern.test(value);
+const validUri = value => boundedString(value, 1, 4096) && !/[\u0000-\u0020\u007f]/.test(value);
+function validContentBlock(content) {
+  if (!object(content) || typeof content.type !== 'string') return false;
+  if (content.type === 'text') return typeof content.text === 'string';
+  if (content.type === 'image') return validBase64(content.data) && validMime(content.mimeType) && content.mimeType.startsWith('image/');
+  if (content.type === 'audio') return validBase64(content.data) && validMime(content.mimeType) && content.mimeType.startsWith('audio/');
+  if (content.type === 'resource_link') {
+    return validUri(content.uri) && boundedString(content.name, 1, 512)
+      && (content.title === undefined || boundedString(content.title, 0, 2048))
+      && (content.description === undefined || boundedString(content.description, 0, 16384))
+      && (content.mimeType === undefined || validMime(content.mimeType))
+      && (content.size === undefined || Number.isSafeInteger(content.size) && content.size >= 0);
+  }
+  if (content.type === 'resource') {
+    const resource = content.resource;
+    if (!object(resource) || !validUri(resource.uri)
+      || resource.mimeType !== undefined && !validMime(resource.mimeType)) return false;
+    const hasText = typeof resource.text === 'string';
+    const hasBlob = typeof resource.blob === 'string';
+    return hasText !== hasBlob && (!hasBlob || validBase64(resource.blob));
+  }
+  return false;
+}
 function validResult(result) {
   return object(result) && (result.isError === undefined || typeof result.isError === 'boolean')
     && Array.isArray(result.content) && result.content.length <= 64
     && (result.content.length > 0 || object(result.structuredContent))
-    && result.content.every(c => object(c) && c.type === 'text' && typeof c.text === 'string')
+    && result.content.every(validContentBlock)
     && (result.structuredContent === undefined || object(result.structuredContent));
 }
 
