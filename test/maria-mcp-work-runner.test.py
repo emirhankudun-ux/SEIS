@@ -156,7 +156,6 @@ class MCPWorkStepRunnerTests(unittest.TestCase):
                     evaluation=self._evaluation(action_class=ActionClass.MODIFY),
                     target="SEIS:fixture",
                     params_factory=lambda _dependencies: {},
-                    approved=False,
                     reversible=True,
                 )
             },
@@ -173,6 +172,60 @@ class MCPWorkStepRunnerTests(unittest.TestCase):
         self.assertFalse(result.retryable)
         self.assertEqual(result.failure_category, "permission-denied")
         self.assertEqual(executor.calls, [])
+
+    def test_high_risk_retry_rechecks_live_approval_instead_of_reusing_first_approval(self):
+        approvals = iter((True, False))
+        approval_attempts = []
+        nonces = iter(("modify-plan-one", "modify-plan-two"))
+
+        def approval_provider(attempt):
+            approval_attempts.append(attempt)
+            return next(approvals)
+
+        guard = MCPInvocationGuard(
+            PermissionEngine(),
+            clock=lambda: 10.0,
+            nonce_factory=lambda: next(nonces),
+        )
+        executor = _SequenceExecutor((
+            _InvocationResult(False, None, _Evidence("transport-failure")),
+        ))
+        runner = MCPWorkStepRunner(
+            guard=guard,
+            executor=executor,
+            bindings={
+                "inspect": MCPWorkStepBinding(
+                    evaluation=self._evaluation(action_class=ActionClass.MODIFY),
+                    target="SEIS:fixture",
+                    params_factory=lambda _dependencies: {"operation": "safe-test"},
+                    approval_provider=approval_provider,
+                    reversible=True,
+                    idempotency_parameter="request_key",
+                )
+            },
+        )
+
+        first = runner.run(
+            self._step(),
+            dependency_results={},
+            attempt=1,
+            idempotency_key="stable-modify-key",
+        )
+        second = runner.run(
+            self._step(),
+            dependency_results={},
+            attempt=2,
+            idempotency_key="stable-modify-key",
+        )
+
+        self.assertFalse(first.succeeded)
+        self.assertTrue(first.retryable)
+        self.assertEqual(first.failure_category, "transport-failure")
+        self.assertFalse(second.succeeded)
+        self.assertFalse(second.retryable)
+        self.assertEqual(second.failure_category, "permission-denied")
+        self.assertEqual(approval_attempts, [1, 2])
+        self.assertEqual(len(executor.calls), 1)
 
     def test_retry_key_must_be_injected_into_tool_params_or_retry_fails_closed(self):
         executor = _SequenceExecutor(())
