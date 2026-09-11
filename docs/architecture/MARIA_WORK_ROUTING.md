@@ -4,7 +4,7 @@ Status: implemented bounded planning + execution boundary on `feature/maria-inte
 
 ## Purpose
 
-MARIA needs to decompose one request into cognition and tool steps without confusing model competence with external authority. `MultiStepWorkRouter` creates a deterministic, side-effect-free route plan. `WorkPlanExecutor` can then execute that already-routed plan through explicitly supplied model/tool runners while preserving dependency, retry, permission, and evidence boundaries.
+MARIA needs to decompose one request into cognition and tool steps without confusing model competence with external authority. `MultiStepWorkRouter` creates a deterministic, side-effect-free route plan. `WorkPlanExecutor` then executes that already-routed plan through explicitly supplied bounded model/tool runners while preserving dependency, retry, permission, context-budget, and evidence boundaries.
 
 The central rule remains: **thinking and external execution are different authorities**.
 
@@ -30,12 +30,14 @@ WorkPlanExecutor preflight
        └── retry/idempotency contracts
        ↓
 per-step runner
-       ├── model step → explicit model runner
+       ├── model step → ModelWorkStepRunner
+       |                   ├── route/model/capability revalidation
+       |                   ├── context + output token bounds
+       |                   └── explicit provider adapter
        └── MCP tool step → MCPWorkStepRunner
-                            ↓
-                       fresh MCPInvocationGuard.plan()
-                            ↓
-                       single-use MCPInvocationExecutor
+                            ├── live approval provider per attempt when needed
+                            ├── fresh MCPInvocationGuard.plan()
+                            └── single-use MCPInvocationExecutor
 ```
 
 ## Planning invariants
@@ -67,33 +69,51 @@ Before invoking any runner it validates:
 - each step has at most 3 attempts;
 - the total configured attempt budget remains bounded.
 
-A failed or blocked dependency blocks every dependent step without invoking that step's runner. This prevents a later tool call from running on missing or invalid upstream evidence.
+A failed or blocked dependency blocks every dependent step without invoking that step's runner. This prevents a later tool call or model step from running on missing or invalid upstream evidence.
 
 ## Retry and idempotency policy
 
 Retries are opt-in rather than automatic.
 
-- Model steps may retry only when the runner explicitly marks the failure retryable and the step policy allows another attempt.
+- Model steps may retry only when the bounded model adapter returns one of the explicitly recognized transient failure categories and the step policy allows another attempt.
 - Tool steps with more than one attempt require `idempotent=True` and a stable `idempotency_key` during preflight.
 - For MCP work, `MCPWorkStepRunner` adds a second enforcement layer: the idempotency key must be explicitly bound to a concrete MCP method parameter. If no parameter binding exists, retry fails closed before invocation.
 - Only a normalized MCP transport failure is retryable by the MCP runner. JSON-RPC/application failures are not automatically retried.
 
 This prevents a timeout from silently becoming a duplicated repository, file, Unreal, Blender, deployment, or other external mutation.
 
-## Fresh MCP authorization per attempt
+## Fresh MCP authorization and approval per attempt
 
-`MCPWorkStepRunner` deliberately does **not** accept a pre-built `MCPInvocationPlan`.
+`MCPWorkStepRunner` deliberately does **not** accept a pre-built `MCPInvocationPlan` and does not store a durable high-risk approval bit.
 
 Every `run()` call:
 
-1. validates the routed tool identity and capability against the approved MCP gateway evaluation;
+1. validates the routed tool identity and capability against the reviewed MCP gateway evaluation;
 2. builds invocation parameters for that attempt;
 3. injects the stable idempotency key only when an explicit tool-parameter binding exists;
-4. calls `MCPInvocationGuard.plan()` again for a fresh permission decision and short-lived plan;
-5. creates a fresh correlated request ID;
-6. passes the plan to `MCPInvocationExecutor`, which independently validates plan freshness, single-use state, server identity, live transport health, response correlation, and byte bounds.
+4. re-reads an optional live `approval_provider` for the current attempt; absence, provider failure, invalid output, or a withdrawn approval fails closed for approval-required actions;
+5. calls `MCPInvocationGuard.plan()` again for a fresh permission decision and short-lived plan;
+6. creates a fresh correlated request ID;
+7. passes the plan to `MCPInvocationExecutor`, which independently validates plan freshness, single-use state, server identity, health, request correlation, and byte bounds.
 
-A permission denial is normalized before the executor is called. A consumed or stale invocation plan cannot be reused by the work orchestrator because the orchestrator never stores one.
+A permission denial is normalized before the executor is called. A consumed or stale invocation plan cannot be reused by the work orchestrator because the orchestrator never stores one. A retry also cannot inherit an approval from a previous attempt.
+
+## Bounded model cognition per attempt
+
+`ModelWorkStepRunner` is the corresponding concrete cognition boundary. It accepts only MODEL routes and one explicit `ModelWorkStepBinding` for the already-selected model.
+
+Before invoking the provider adapter it revalidates:
+
+- routed model identity;
+- model availability;
+- canonical required capability;
+- declared input-context estimate;
+- binding output-token limit;
+- total estimated input + output budget against the model context window.
+
+The provider adapter receives a transient `ModelWorkInput` and explicit timeout/output bounds. After invocation, reported output-token and total context usage are checked again. Adapter exceptions are normalized without retaining exception text, and arbitrary provider-declared retryability cannot bypass the fixed transient-failure allowlist.
+
+The runner performs no provider discovery, credential lookup, runtime launch, model download, or network setup by itself; those remain explicit adapter responsibilities under their own trust boundaries.
 
 ## Result and evidence boundary
 
@@ -112,11 +132,13 @@ A permission denial is normalized before the executor is called. A consumed or s
 
 Retainable evidence contains only normalized execution facts such as step ID, route kind, selected target identity, state, attempt count, dependency IDs, and a normalized failure category.
 
-## Current MCP work binding
+## Current work bindings
 
-`MCPWorkStepBinding` carries runtime policy metadata and a parameter factory rather than precomputed parameters. Permission targets and parameter-factory internals are excluded from its representation. It binds one routed work step to one already-reviewed `MCPGatewayEvaluation` and can optionally define the concrete parameter name used for an idempotency key.
+`MCPWorkStepBinding` carries runtime policy metadata, a parameter factory, an optional per-attempt approval provider, and optional concrete idempotency-parameter name rather than precomputed parameters or a cached approval. Sensitive factories/targets are excluded from representation.
 
-This is an orchestration boundary, not an autonomous integration registry. Real GitHub, Unreal, Blender, deployment, billing, destructive, or other high-impact actions are still subject to their existing server approval, process policy, live health, and per-action permission boundaries.
+`ModelWorkStepBinding` carries the verified `ModelSpec`, an explicit provider adapter, a hidden input factory, and bounded timeout/output settings. Prompt/input payloads and model outputs remain transient and hidden from retained evidence.
+
+These are orchestration boundaries, not autonomous integration/provider registries. Real GitHub, Unreal, Blender, deployment, billing, destructive, cloud-provider, or other high-impact actions remain subject to their existing trust, process, health, credential, and per-action permission boundaries.
 
 ## Current exclusions
 
@@ -125,16 +147,17 @@ This slice does not:
 - auto-create or approve work plans;
 - install or start arbitrary MCP packages;
 - bypass per-action permission checks;
-- cache authorization across retries;
+- cache authorization or high-risk approval across retries;
 - automatically retry non-idempotent tool operations;
 - persist raw intermediate results;
 - execute uncontrolled background work;
 - provide crash-resumable durable checkpoints yet;
-- provide a concrete cloud/local model inference runner yet.
+- automatically configure or authenticate cloud/local provider adapters;
+- automatically load/download models.
 
 ## Next safe layers
 
-1. Add an explicit bounded model-step runner that consumes the selected `ModelSpec`, enforces context/output limits, and records redacted provider evidence.
-2. Add in-memory cancellation plus checkpoint summaries so a longer plan can stop safely between steps without persisting raw payloads.
-3. Surface work-plan status, blockers, approvals, and route explanations in the SwiftUI Integration Center.
-4. Add carefully selected real MCP integration pilots only after the same fresh-per-attempt authorization and idempotency contracts remain green.
+1. Add in-memory cancellation plus redacted checkpoint summaries so a longer plan can stop safely between attempts/steps without persisting raw payloads.
+2. Add explicit provider adapter implementations behind `ModelWorkAdapter`, beginning with already-verified local runtimes and preserving timeout/context/evidence boundaries.
+3. Surface provider/MCP/runtime/work-plan status, blockers, approvals, route explanations, and Keychain state in the existing macOS/SwiftUI architecture after its current app boundaries are confirmed.
+4. Add carefully selected real MCP integration pilots only after the same fresh-per-attempt authorization, live-approval, and idempotency contracts remain green.
