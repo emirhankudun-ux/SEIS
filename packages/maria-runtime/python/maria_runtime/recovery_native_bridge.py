@@ -163,13 +163,14 @@ class RecoveryNativeBridgeAdapter:
             raise RecoveryNativeBridgeError("recovery native row project does not match snapshot")
         work_id = cls._bounded_string(row.work_id, "work_id")
         disposition = row.disposition
-        if disposition not in cls._LABELS:
+        if not isinstance(disposition, str) or disposition not in cls._LABELS:
             raise RecoveryNativeBridgeError("unsupported recovery native disposition")
         schema_version = row.schema_version
         if (
             isinstance(schema_version, bool)
             or not isinstance(schema_version, int)
             or schema_version <= 0
+            or schema_version > RecoveryDashboardWireCodec.MAX_NATIVE_INTEGER
         ):
             raise RecoveryNativeBridgeError("invalid durable recovery schema version")
 
@@ -222,6 +223,9 @@ class RecoveryNativeBridgeAdapter:
             or not value.strip()
             or len(value) > RecoveryDashboardWireCodec.MAX_ID_LENGTH
         ):
+            raise RecoveryNativeBridgeError(f"invalid {field_name}")
+        # Typed wire records can be constructed without going through the codec.
+        if any(0xD800 <= ord(character) <= 0xDFFF for character in value):
             raise RecoveryNativeBridgeError(f"invalid {field_name}")
         return value
 

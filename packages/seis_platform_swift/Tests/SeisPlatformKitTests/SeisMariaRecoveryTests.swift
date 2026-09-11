@@ -67,6 +67,27 @@ struct SeisMariaRecoveryTests {
         }
     }
 
+    @Test func durableSchemaVersionFitsSignedNativeIntegerRange() throws {
+        let raw = String(decoding: try wire(), as: UTF8.self)
+        let marker = "\"schema_version\":2"
+        #expect(raw.contains(marker))
+
+        let maximum = raw.replacingOccurrences(
+            of: marker,
+            with: "\"schema_version\":\(Int.max)"
+        )
+        let snapshot = try SeisMariaRecoveryDecoder.decode(Data(maximum.utf8))
+        #expect(snapshot.rows.allSatisfy { $0.durableSchemaVersion == Int.max })
+
+        let overflow = raw.replacingOccurrences(
+            of: marker,
+            with: "\"schema_version\":9223372036854775808"
+        )
+        #expect(throws: SeisMariaRecoveryError.self) {
+            try SeisMariaRecoveryDecoder.decode(Data(overflow.utf8))
+        }
+    }
+
     @Test func rejectsDuplicateKeysIncludingEscapedAliases() throws {
         let raw = String(decoding: try wire(), as: UTF8.self)
         for replacement in [

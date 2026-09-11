@@ -17,7 +17,7 @@ class RecoveryDashboardWireRow:
     project_id: str
     work_id: str
     disposition: str
-    schema_version: int | None
+    schema_version: int
     next_step_id: str | None
     drift_fields: tuple[str, ...]
     missing_context: tuple[str, ...]
@@ -53,6 +53,9 @@ class RecoveryDashboardWireCodec:
     MAX_ROWS = 256
     MAX_ID_LENGTH = 512
     MAX_FIELD_NAMES = 16
+    # Supported native Apple clients decode JSON integers into signed 64-bit Int.
+    # Keep the Python wire contract inside that shared representable range.
+    MAX_NATIVE_INTEGER = (1 << 63) - 1
 
     _ROOT_FIELDS = {
         "schema_version",
@@ -86,6 +89,10 @@ class RecoveryDashboardWireCodec:
     def encode(self, snapshot: RecoveryDashboardSnapshot) -> bytes:
         if not isinstance(snapshot, RecoveryDashboardSnapshot):
             raise TypeError("snapshot must be RecoveryDashboardSnapshot")
+        # Dataclass annotations do not validate runtime values. Check the
+        # bounded collection before iterating or allocating its payload.
+        if not isinstance(snapshot.rows, tuple) or len(snapshot.rows) > self.MAX_ROWS:
+            raise RecoveryDashboardWireError("dashboard rows are outside trusted bounds")
         payload = {
             "schema_version": self.SCHEMA_VERSION,
             "project_id": snapshot.project_id,
@@ -134,7 +141,7 @@ class RecoveryDashboardWireCodec:
                 parse_constant=reject_non_finite,
                 object_pairs_hook=reject_duplicate_keys,
             )
-        except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+        except (UnicodeDecodeError, json.JSONDecodeError, ValueError, RecursionError) as exc:
             raise RecoveryDashboardWireError("dashboard wire payload is not strict UTF-8 JSON") from exc
         return self._payload_to_snapshot(payload)
 
@@ -142,11 +149,18 @@ class RecoveryDashboardWireCodec:
     def _row_to_payload(cls, row: RecoveryCandidateView) -> dict[str, Any]:
         if not isinstance(row, RecoveryCandidateView):
             raise RecoveryDashboardWireError("dashboard contains an invalid row")
+        if not isinstance(row.disposition, RecoveryCandidateDisposition):
+            raise RecoveryDashboardWireError("unknown dashboard row disposition")
+        schema_version = cls._durable_schema_version(row.schema_version)
+        for field_name in ("drift_fields", "missing_context"):
+            values = getattr(row, field_name)
+            if not isinstance(values, tuple) or len(values) > cls.MAX_FIELD_NAMES:
+                raise RecoveryDashboardWireError(f"invalid {field_name}")
         return {
             "project_id": row.project_id,
             "work_id": row.work_id,
             "disposition": row.disposition.value,
-            "schema_version": row.schema_version,
+            "schema_version": schema_version,
             "next_step_id": row.next_step_id,
             "drift_fields": list(row.drift_fields),
             "missing_context": list(row.missing_context),
@@ -248,16 +262,10 @@ class RecoveryDashboardWireCodec:
             raise RecoveryDashboardWireError("dashboard row project does not match envelope")
         work_id = cls._bounded_string(value.get("work_id"), "work_id")
         disposition = value.get("disposition")
-        if disposition not in cls._DASHBOARD_DISPOSITIONS:
+        if not isinstance(disposition, str) or disposition not in cls._DASHBOARD_DISPOSITIONS:
             raise RecoveryDashboardWireError("unknown dashboard row disposition")
 
-        schema_version = value.get("schema_version")
-        if schema_version is not None and (
-            isinstance(schema_version, bool)
-            or not isinstance(schema_version, int)
-            or schema_version <= 0
-        ):
-            raise RecoveryDashboardWireError("invalid durable schema version")
+        schema_version = cls._durable_schema_version(value.get("schema_version"))
         next_step_id = value.get("next_step_id")
         if next_step_id is not None:
             next_step_id = cls._bounded_string(next_step_id, "next_step_id")
@@ -275,8 +283,23 @@ class RecoveryDashboardWireCodec:
         )
 
     @classmethod
+    def _durable_schema_version(cls, value: Any) -> int:
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, int)
+            or value <= 0
+            or value > cls.MAX_NATIVE_INTEGER
+        ):
+            raise RecoveryDashboardWireError("invalid durable schema version")
+        return value
+
+    @classmethod
     def _bounded_string(cls, value: Any, field_name: str) -> str:
         if not isinstance(value, str) or not value.strip() or len(value) > cls.MAX_ID_LENGTH:
+            raise RecoveryDashboardWireError(f"invalid {field_name}")
+        # Python can retain lone JSON surrogate escapes; native Swift strings
+        # cannot. Reject rather than silently replace or normalize identity.
+        if any(0xD800 <= ord(character) <= 0xDFFF for character in value):
             raise RecoveryDashboardWireError(f"invalid {field_name}")
         return value
 
