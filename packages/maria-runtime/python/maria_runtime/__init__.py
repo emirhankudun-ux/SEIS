@@ -82,6 +82,13 @@ from .recovery_dashboard_wire import (
     RecoveryDashboardWireRow,
     RecoveryDashboardWireSnapshot,
 )
+from .recovery_native_bridge import (
+    RecoveryNativeBridgeAdapter,
+    RecoveryNativeBridgeError,
+    RecoveryNativeRow,
+    RecoveryNativeSeverity,
+    RecoveryNativeSnapshot,
+)
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouteDecision, ModelRouter
 from .safety import CommandPolicy
@@ -128,10 +135,11 @@ __all__ = [
     "ProviderRegistry", "ProviderSpec", "ProviderStatus", "RecoveryAnchor", "RecoveryAssessment", "RecoveryCatalogEntry",
     "RecoveryCandidateDisposition", "RecoveryCandidateInspector", "RecoveryCandidateView", "RecoveryDashboardBuilder",
     "RecoveryDashboardSnapshot", "RecoveryDashboardWireCodec", "RecoveryDashboardWireError", "RecoveryDashboardWireRow",
-    "RecoveryDashboardWireSnapshot", "RecoveryDisposition", "RecoveryReconciler", "RecoveryReconciliationAssessment",
-    "RecoveryReconciliationDisposition", "RouteDecision", "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus",
-    "TextNormalizer", "ToolSpec", "ToolStatus", "UnifiedCapabilityRouter", "WorkMode", "WorkPlanCheckpoint",
-    "WorkPlanExecutionResult", "WorkPlanExecutor", "WorkRoutePlan", "WorkRouteStep", "WorkStepExecutionEvidence",
-    "WorkStepExecutionPolicy", "WorkStepExecutionResult", "WorkStepRequest", "WorkStepRunResult", "WorkStepRunner",
-    "WorkStepState", "default_project_registry", "default_provider_registry",
+    "RecoveryDashboardWireSnapshot", "RecoveryDisposition", "RecoveryNativeBridgeAdapter", "RecoveryNativeBridgeError",
+    "RecoveryNativeRow", "RecoveryNativeSeverity", "RecoveryNativeSnapshot", "RecoveryReconciler",
+    "RecoveryReconciliationAssessment", "RecoveryReconciliationDisposition", "RouteDecision", "RouteKind",
+    "RuntimeProbeState", "RuntimeProbeStatus", "TextNormalizer", "ToolSpec", "ToolStatus", "UnifiedCapabilityRouter",
+    "WorkMode", "WorkPlanCheckpoint", "WorkPlanExecutionResult", "WorkPlanExecutor", "WorkRoutePlan", "WorkRouteStep",
+    "WorkStepExecutionEvidence", "WorkStepExecutionPolicy", "WorkStepExecutionResult", "WorkStepRequest",
+    "WorkStepRunResult", "WorkStepRunner", "WorkStepState", "default_project_registry", "default_provider_registry",
 ]
