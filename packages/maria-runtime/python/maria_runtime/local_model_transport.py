@@ -48,12 +48,12 @@ class LocalModelRequest:
 
 @dataclass(frozen=True)
 class LocalModelResponse:
-    """Untrusted transient transport output; the adapter validates every field."""
+    """Untrusted transient transport output; keep every raw field out of repr."""
 
-    status_code: int
+    status_code: int = field(repr=False)
     content_type: str = field(repr=False)
     body: bytes = field(repr=False)
-    redirected: bool = False
+    redirected: bool = field(default=False, repr=False)
 
 
 LocalModelTransport = Callable[[LocalModelRequest], LocalModelResponse]
@@ -69,8 +69,11 @@ class LoopbackModelHTTPTransport:
     """
 
     def __call__(self, request: LocalModelRequest) -> LocalModelResponse:
-        if not isinstance(request, LocalModelRequest):
-            raise TypeError("local model transport requires LocalModelRequest")
+        # An exact type check prevents a subclass from overriding the derived
+        # provider path and turning this fixed-endpoint transport into an
+        # arbitrary local HTTP client.
+        if type(request) is not LocalModelRequest:
+            raise TypeError("local model transport requires exact LocalModelRequest")
         # Revalidate at the I/O boundary, not only at request construction.
         request.__post_init__()
         seconds = request.timeout_ms / 1000.0
