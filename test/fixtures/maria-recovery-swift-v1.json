@@ -1,0 +1,11 @@
+{
+  "fixture_version": 1,
+  "wire": "{\"aligned_replan_required\":1,\"anchor_missing\":1,\"complete\":1,\"drift_detected\":1,\"evidence_required\":1,\"execution_authorized\":false,\"project_id\":\"SEIS\",\"replan_required\":4,\"rows\":[{\"disposition\":\"anchor-missing\",\"drift_fields\":[],\"execution_authorized\":false,\"missing_context\":[],\"next_step_id\":\"verify\",\"project_id\":\"SEIS\",\"schema_version\":2,\"work_id\":\"work-001\"},{\"disposition\":\"evidence-required\",\"drift_fields\":[],\"execution_authorized\":false,\"missing_context\":[\"current_branch\"],\"next_step_id\":\"verify\",\"project_id\":\"SEIS\",\"schema_version\":2,\"work_id\":\"work-002\"},{\"disposition\":\"drift-detected\",\"drift_fields\":[\"repository_revision\"],\"execution_authorized\":false,\"missing_context\":[],\"next_step_id\":\"verify\",\"project_id\":\"SEIS\",\"schema_version\":2,\"work_id\":\"work-003\"},{\"disposition\":\"aligned-replan-required\",\"drift_fields\":[],\"execution_authorized\":false,\"missing_context\":[],\"next_step_id\":\"verify\",\"project_id\":\"SEIS\",\"schema_version\":2,\"work_id\":\"work-004\"},{\"disposition\":\"complete\",\"drift_fields\":[],\"execution_authorized\":false,\"missing_context\":[],\"next_step_id\":null,\"project_id\":\"SEIS\",\"schema_version\":2,\"work_id\":\"work-005\"}],\"schema_version\":1,\"total_candidates\":5}",
+  "expected": [
+    {"work_id":"work-001","status_label":"Recovery anchor missing","severity":"warning","detail_fields":[],"replan_required":true},
+    {"work_id":"work-002","status_label":"Current evidence required","severity":"warning","detail_fields":["current_branch"],"replan_required":true},
+    {"work_id":"work-003","status_label":"Context drift detected","severity":"critical","detail_fields":["repository_revision"],"replan_required":true},
+    {"work_id":"work-004","status_label":"Aligned; re-plan required","severity":"info","detail_fields":[],"replan_required":true},
+    {"work_id":"work-005","status_label":"Complete","severity":"success","detail_fields":[],"replan_required":false}
+  ]
+}
