@@ -79,4 +79,57 @@ struct SeisMariaWorkspaceEvidenceHeadLineEndingTests {
             }
         }
     }
+
+    @Test func crlfHeadCannotRepairAnInvalidFinalBranchCharacter() throws {
+        try withWorkspace { root in
+            for (invalid, shorter) in [
+                ("feature/maria.", "feature/maria"),
+                ("feature/maria?", "feature/maria"),
+                ("feature/maria:", "feature/maria"),
+                ("feature/maria*", "feature/maria"),
+                ("feature/maria[", "feature/maria"),
+                ("feature/maria\\", "feature/maria"),
+                ("feature/maria ", "feature/maria"),
+                ("feature/maria\u{007f}", "feature/maria"),
+                ("feature/maria.lock", "feature/maria.loc"),
+            ] {
+                try writeRef(shorter, revision: otherRevision, at: root)
+                for ending in ["\n", "\r\n"] {
+                    #expect(throws: SeisMariaWorkspaceEvidenceError.invalidCurrentBranch) {
+                        try capture(root, head: "ref: refs/heads/\(invalid)\(ending)")
+                    }
+                }
+            }
+        }
+    }
+
+    @Test func crlfHeadResolvesPackedRefWithoutChangingMetadata() throws {
+        try withWorkspace { root in
+            let git = root.appendingPathComponent(".git", isDirectory: true)
+            try FileManager.default.createDirectory(at: git, withIntermediateDirectories: true)
+            let branch = "feature/maria"
+            let headURL = git.appendingPathComponent("HEAD")
+            let packedURL = git.appendingPathComponent("packed-refs")
+            let headBytes = Data("ref: refs/heads/\(branch)\r\n".utf8)
+            let packedBytes = Data((
+                "# pack-refs with: peeled fully-peeled sorted \n" +
+                "\(otherRevision) refs/heads/feature/mari\n" +
+                "\(selectedRevision) refs/heads/\(branch)\n"
+            ).utf8)
+            try headBytes.write(to: headURL)
+            try packedBytes.write(to: packedURL)
+            let entries = try FileManager.default.contentsOfDirectory(atPath: git.path).sorted()
+
+            let snapshot = try SeisMariaWorkspaceEvidenceSource.capture(
+                root, project: "SEIS", observedAt: observedAt
+            )
+
+            #expect(snapshot.currentBranch.unicodeScalars.elementsEqual(branch.unicodeScalars))
+            #expect(snapshot.repositoryRevision == selectedRevision)
+            #expect(!snapshot.executionAuthorized)
+            #expect(try Data(contentsOf: headURL) == headBytes)
+            #expect(try Data(contentsOf: packedURL) == packedBytes)
+            #expect(try FileManager.default.contentsOfDirectory(atPath: git.path).sorted() == entries)
+        }
+    }
 }
