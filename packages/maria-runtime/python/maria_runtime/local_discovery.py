@@ -7,6 +7,31 @@ from typing import Any
 from .provider_discovery import ModelDiscoveryFact
 
 
+_OLLAMA_ROUTING_CAPABILITY_MAP: dict[str, str] = {
+    "completion": "chat",
+    "embedding": "embedding",
+    "insert": "fill-in-middle",
+    "thinking": "reasoning",
+    "tools": "tool-use",
+    "vision": "vision",
+}
+
+
+def _ollama_routing_capabilities(declared: tuple[str, ...]) -> tuple[str, ...]:
+    """Map only explicit Ollama declarations into SEIS routing capabilities.
+
+    Unknown provider-native labels are deliberately omitted from routing while
+    remaining present in the discovery fact's native ``capabilities`` evidence.
+    No model-name, family-name, parameter-size, or publisher heuristics are used.
+    """
+
+    return tuple(sorted({
+        canonical
+        for native in declared
+        if (canonical := _OLLAMA_ROUTING_CAPABILITY_MAP.get(native)) is not None
+    }))
+
+
 @dataclass(frozen=True)
 class LocalModelCandidate:
     """A local model identity discovered before capability verification.
@@ -168,10 +193,14 @@ class OllamaShowDiscoverySource:
         if any(not isinstance(item, str) or not item.strip() for item in declared):
             raise ValueError("Ollama capabilities must be non-empty strings")
 
+        native_capabilities = tuple(sorted(set(declared)))
+        routing_capabilities = _ollama_routing_capabilities(native_capabilities)
+
         return ModelDiscoveryFact(
             provider_id="ollama",
             name=model_name,
-            capabilities=tuple(sorted(set(declared))),
+            capabilities=native_capabilities,
+            routing_capabilities=routing_capabilities,
             context_size=max(context_lengths),
             reliability=reliability,
             latency_ms=latency_ms,
