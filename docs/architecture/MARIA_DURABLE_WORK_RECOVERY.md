@@ -61,6 +61,24 @@ A corrupt or incompatible checkpoint raises `CheckpointCorruptError`; it is neve
 
 The symlink checks protect against pre-existing filesystem aliases and the final checkpoint-file open is no-follow where the operating system supports it. This store is **not** a hostile multi-user filesystem sandbox: the configured recovery root must remain private to the trusted SEIS/MARIA host account. A principal that can concurrently replace directories inside that root already has filesystem authority outside this checkpoint contract.
 
+## Recovery discovery
+
+`discover(project_id)` provides a bounded, read-only catalog of durable recovery evidence after restart.
+
+By default it returns only checkpoints that require re-planning. Completed records remain hidden unless `include_complete=True` is explicitly requested. Results are ordered deterministically by work identifier, contain only project/work identity plus advisory recovery state, and expose `execution_authorized=False` just like `RecoveryAssessment`.
+
+Discovery is deliberately fail-closed:
+
+- only direct `*.json` checkpoint candidates are considered;
+- each filename must encode a valid work identifier;
+- every candidate is reloaded through the same strict checkpoint parser and filesystem checks;
+- the project directory has a fixed trusted candidate-file ceiling;
+- the caller supplies a bounded result `limit`;
+- exceeding that result limit raises instead of returning a partial catalog;
+- unrelated non-JSON files are ignored and no cleanup is performed.
+
+If a trusted concurrent cleanup removes a candidate between directory enumeration and loading, that vanished record is skipped because absence is not resumable evidence. Discovery never repairs, deletes, rewrites, resumes, or executes a checkpoint.
+
 ## Recovery semantics
 
 `assess()` is advisory only:
@@ -69,7 +87,7 @@ The symlink checks protect against pre-existing filesystem aliases and the final
 - `COMPLETE`: the persisted work checkpoint is complete;
 - `REPLAN_REQUIRED`: the checkpoint is incomplete/cancelled and identifies the next cancelled step.
 
-`RecoveryAssessment.execution_authorized` is always `False`.
+`RecoveryAssessment.execution_authorized` and `RecoveryCatalogEntry.execution_authorized` are always `False`.
 
 A recovery candidate therefore **must not** directly replay an old model/tool call. MARIA must re-plan from current repository/context state and use the existing routing, permission, MCP, and per-attempt authorization paths again.
 
@@ -83,4 +101,6 @@ Focused contract: `test/maria-work-checkpoint-recovery.test.py`.
 
 The original contract was committed before the durable-store implementation and hosted CI first failed because `maria_runtime.work_recovery` did not exist. The storage-hardening follow-up was also test-first: hosted MARIA regression CI failed on the new non-finite/symlink requirements before the implementation was changed. A second focused red/green cycle then proved that duplicate JSON object keys were accepted before strict object-pair parsing was added.
 
-The hardened contract covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, duplicate-key rejection, non-finite timestamp rejection, symbolic-link rejection, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.
+Recovery discovery followed the same pattern: the catalog contract was committed first and hosted MARIA regression CI failed while `discover()` was absent. The bounded read-only implementation was then added without weakening the persistence or authorization boundary.
+
+The complete contract covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, duplicate-key rejection, non-finite timestamp rejection, symbolic-link rejection, bounded deterministic catalog discovery, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.
