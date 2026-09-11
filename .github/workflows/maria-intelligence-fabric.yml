@@ -33,6 +33,7 @@ on:
       - 'test/maria-local-routing-integration.test.py'
       - 'test/maria-local-runtime-status.test.py'
       - 'docs/architecture/MARIA_LOCAL_MODEL_INFERENCE.md'
+      - 'docs/architecture/MARIA_LOCAL_MODEL_READINESS.md'
       - 'docs/architecture/MARIA_INTELLIGENCE_FABRIC_V1.md'
       - 'docs/architecture/MARIA_LOCAL_RUNTIME_PROBES.md'
       - 'docs/architecture/MARIA_MCP_PROCESS_SUPERVISOR.md'
