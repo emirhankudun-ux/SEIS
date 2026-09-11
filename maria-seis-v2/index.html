@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0a0c0f" />
+  <meta name="description" content="MARIA × SEIS — Personal Intelligence Operating System prototype." />
+  <title>MARIA × SEIS — Personal Intelligence OS</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <button class="brand" id="brandButton" type="button" aria-label="Maria ana görünüm">
+        <span class="brand-mark">M</span>
+        <span><strong>MARIA <em>× SEIS</em></strong><small>Personal Intelligence Operating System</small></span>
+      </button>
+      <div class="top-actions">
+        <button class="project-switch" id="projectSwitch" type="button" aria-expanded="false" aria-controls="projectMenu"><span class="live-dot"></span><span id="projectLabel">Deadly Evil</span><span>⌄</span></button>
+        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Ayarlar">⋯</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar left-sidebar">
+        <section>
+          <p class="kicker">SYSTEM</p>
+          <div id="systemList" class="stack"></div>
+        </section>
+        <section>
+          <p class="kicker">PROJECTS</p>
+          <div id="projectList" class="stack"></div>
+        </section>
+        <section>
+          <p class="kicker">MODES</p>
+          <div id="modeList" class="stack"></div>
+        </section>
+        <div class="sidebar-foot"><span><i class="privacy-dot"></i>Local-first</span><small>v4.0 alpha.2</small></div>
+      </aside>
+
+      <section class="main-panel" id="mainPanel">
+        <div class="hero-copy">
+          <p>ACTIVE CONTEXT · <span id="contextText">DEADLY EVIL</span></p>
+          <h1 id="headline">Buradayım, Emirhan.</h1>
+          <div id="assistantText" class="assistant-text" role="status" aria-live="polite">Bu sürüm simülasyon modunda; harici uygulamalara bağlı değil.</div>
+        </div>
+
+        <div class="orb-zone">
+          <div class="orb-ring ring-outer"></div>
+          <div class="orb-ring ring-mid"></div>
+          <button id="orb" class="orb" type="button" aria-label="Ses bağlantısı durumunu göster"><span>M</span></button>
+          <div id="stateText" class="state-text">READY</div>
+        </div>
+
+        <div class="command-area">
+          <div class="command-box">
+            <button id="visionBtn" class="command-icon" type="button" aria-label="Vision">◉</button>
+            <input id="commandInput" aria-label="Maria için komut" maxlength="4000" placeholder="Maria'ya bir şey söyle…" autocomplete="off" />
+            <button id="micBtn" class="command-icon" type="button" aria-label="Mikrofon">⌁</button>
+            <button id="sendBtn" class="send-btn" type="button" aria-label="Gönder">→</button>
+          </div>
+          <div id="quickActions" class="quick-actions"></div>
+        </div>
+      </section>
+
+      <aside class="sidebar right-sidebar">
+        <div class="activity-heading"><div><p class="kicker">SIMULATION ACTIVITY</p><h2>SEIS Orchestration</h2></div><span class="live-chip"><i></i>Demo</span></div>
+        <article class="activity-card">
+          <div class="activity-meta"><span id="activityAgent">MARIA</span><span id="activityTime">demo</span></div>
+          <h3 id="activityTitle">Simülasyon hazır</h3>
+          <p id="activityBody">Gerçek araç bağlantısı yok.</p>
+          <div class="progress"><span id="progressBar"></span></div>
+          <div class="activity-result"><i id="resultDot"></i><span id="activityResult">Ready</span></div>
+        </article>
+
+        <div class="panel-row"><p class="kicker">ROLE CATALOG</p><button id="expandAgents" class="text-btn" type="button">View all</button></div>
+        <div id="agentList" class="agent-list"></div>
+
+        <div class="health-card">
+          <div class="panel-row"><p class="kicker">CAPABILITY FABRIC</p><span id="healthScore">0 bağlı</span></div>
+          <div id="capabilityGrid" class="capability-grid"></div>
+        </div>
+
+        <button id="approvalCard" class="approval-card hidden" type="button"><strong>Approval required</strong><span id="approvalText">High-impact action waiting.</span><b>İsteği kapat · çalıştırılmaz →</b></button>
+      </aside>
+    </div>
+
+    <footer class="statusbar"><span><i class="footer-dot"></i><b id="footerState">Demo · harici bağlantı yok</b></span><span id="routeText">Yalnızca yerel simülatör</span><span>Privacy <b>Local-first</b></span></footer>
+  </main>
+
+  <div id="projectMenu" class="popover hidden" role="group" aria-label="Proje seçimi"></div>
+  <div id="settingsSheet" class="sheet hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="sheet-panel">
+      <div class="sheet-title"><div><p class="kicker">SYSTEM POLICY</p><h2 id="settingsTitle">Maria Settings</h2></div><button id="closeSettings" class="icon-btn" aria-label="Ayarları kapat">×</button></div>
+      <div id="settingsList"></div>
+      <div class="integration-section"><p class="kicker">PROVIDERS & CONNECTORS</p><div id="providerList" class="provider-list"></div></div>
+      <div class="sheet-note">Bu sürümde model, MCP, mikrofon, ekran ve dosya adaptörleri bağlı değildir. Simülasyon kontrolü gerçek görevin tamamlandığını göstermez. ChatGPT bağlantıları bu uygulamaya otomatik aktarılmaz.</div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
