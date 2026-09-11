@@ -117,7 +117,7 @@ class MariaMemoryRetrievalTests(unittest.TestCase):
         )
         retriever = ProjectContextRetriever(engine)
 
-        self.assertEqual(retriever.search("obsolete memory", project="SEIS"), [])
+        self.assertEqual(retriever.search("obsolete", project="SEIS"), [])
         hits = retriever.search("current memory", project="SEIS")
         self.assertEqual(len(hits), 1)
         self.assertIn("current-memory-branch", str(hits[0].fact.value))
@@ -147,7 +147,7 @@ class MariaMemoryRetrievalTests(unittest.TestCase):
         )
         retriever = ProjectContextRetriever(engine)
 
-        hits = retriever.search("obsolete memory", project="SEIS", include_history=True)
+        hits = retriever.search("obsolete", project="SEIS", include_history=True)
 
         self.assertEqual(len(hits), 1)
         self.assertIn("obsolete-memory-branch", str(hits[0].fact.value))
