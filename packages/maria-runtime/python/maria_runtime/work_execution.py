@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Mapping, Protocol
 
@@ -49,7 +49,7 @@ class WorkStepRunResult:
     """Transient runner result; payloads are not copied into retained evidence."""
 
     succeeded: bool
-    result: Any | None = None
+    result: Any | None = field(default=None, repr=False)
     failure_category: str | None = None
     retryable: bool = False
 
@@ -124,7 +124,7 @@ class WorkStepExecutionEvidence:
 @dataclass(frozen=True)
 class WorkStepExecutionResult:
     evidence: WorkStepExecutionEvidence
-    result: Any | None = None
+    result: Any | None = field(default=None, repr=False)
 
 
 @dataclass(frozen=True)
