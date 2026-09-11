@@ -4,9 +4,9 @@
 
 Active draft foundation on `feature/maria-intelligence-fabric-v1`.
 
-The branch now implements verified provider/model discovery metadata, bounded local-runtime discovery for LM Studio and Ollama, evidence-backed model routing, repository federation foundations, redacted MCP config import, trust/approval evaluation, bounded MCP process supervision, MCP protocol negotiation/framing, a bounded local stdio transport, one-shot environment resolution, and a permission-gated short-lived single-use MCP invocation path.
+The branch now implements verified provider/model discovery metadata, bounded local-runtime discovery for LM Studio and Ollama, evidence-backed model routing, repository federation foundations, redacted MCP config import, trust/approval evaluation, bounded MCP process supervision, MCP protocol negotiation/framing, a bounded local stdio transport, one-shot environment resolution, a read-only macOS Keychain secret source, a permission-gated short-lived single-use MCP invocation path, and bounded multi-step cognition/tool route planning.
 
-Nothing in this branch automatically calls a real external MCP method, installs packages, resolves cloud credentials, performs model inference/downloads, mutates GitHub/Unreal/Blender, automates GUIs, deploys, publishes, bills, or creates uncontrolled background agents.
+Nothing in this branch automatically calls a real external project MCP method, installs packages, resolves cloud credentials, performs model inference/downloads, mutates GitHub/Unreal/Blender, automates GUIs, deploys, publishes, bills, or creates uncontrolled background agents.
 
 ## Purpose
 
@@ -40,11 +40,13 @@ MARIA
   |     +-- Local Health Evidence Ledger
   |     +-- Local Runtime Status Snapshot
   |     +-- Model Registry / Router / Route Explanation
+  |     +-- Unified Capability Router
+  |     +-- Multi-Step Work Router (planning only)
   |     |
   |     +-- MCP Config Import Preview
   |     +-- MCP Gateway (trust + server approval)
-  |     +-- Capability Registry / Unified Capability Router
   |     +-- MCP Environment Resolver (one-shot lease)
+  |     +-- macOS Keychain Secret Source (read-only)
   |     +-- MCP Process Supervisor
   |     +-- MCP Protocol Negotiator + Stdio Frame Codec
   |     +-- MCP Stdio Process Transport
@@ -83,22 +85,7 @@ The core rule is simple: **observation, routing, approval, process launch, and e
 
 `LocalRuntimeSnapshotBuilder` exposes frozen redacted UI-safe status facts. `ModelRouter.explain_select()` returns inspectable route evidence without leaking provider payloads or credentials.
 
-## MCP import and gateway
-
-`MCPConfigImporter` creates a disabled review preview. It validates server shape, command/args, transport and environment keys, retains only environment **key names**, discards imported values, identifies secret-like keys, and flags shell-wrapper/manual-review launchers.
-
-`MCPGateway` then consumes separately obtained redacted health/schema/provenance facts. A server remains disabled until trust conditions pass and explicit server enablement is recorded. Every discovered method preserves its own `ActionClass` for the `PermissionEngine`.
-
-There are therefore independent approval boundaries:
-
-1. server trust/enablement;
-2. process-launch policy;
-3. per-action permission;
-4. fresh invocation authorization.
-
-Server approval is never blanket mutation authority.
-
-## Unified capability routing
+## Capability and work routing
 
 `UnifiedCapabilityRouter` keeps cognition and execution separate.
 
@@ -106,6 +93,25 @@ Server approval is never blanket mutation authority.
 - Real external execution is routed only through verified `ToolSpec` capabilities.
 
 A language model cannot satisfy an execution request simply because it advertises a similarly named capability. Project support constraints also remain explicit.
+
+`MultiStepWorkRouter` builds on this boundary and can route a bounded dependency graph without executing it. It validates unique step IDs, dependency existence, cycles, maximum plan size, and project constraints; then produces a deterministic topological `WorkRoutePlan`.
+
+This allows MARIA to represent a future workflow such as reasoning → repository inspection → reasoning → approved modification while preserving a hard distinction between a model's competence and a tool's external authority. See `docs/architecture/MARIA_WORK_ROUTING.md`.
+
+## MCP import and gateway
+
+`MCPConfigImporter` creates a disabled review preview. It validates server shape, command/args, transport and environment keys, retains only environment **key names**, discards imported values, identifies secret-like keys, and flags shell-wrapper/manual-review launchers.
+
+`MCPGateway` consumes separately obtained redacted health/schema/provenance facts. A server remains disabled until trust conditions pass and explicit server enablement is recorded. Every discovered method preserves its own `ActionClass` for the `PermissionEngine`.
+
+Independent approval boundaries are therefore maintained for:
+
+1. server trust/enablement;
+2. process-launch policy;
+3. per-action permission;
+4. fresh invocation authorization.
+
+Server approval is never blanket mutation authority.
 
 ## MCP process supervision
 
@@ -124,7 +130,7 @@ The supervisor enforces:
 
 Environment-bearing descriptors are blocked until an exact matching resolved environment lease is supplied.
 
-## Secret and environment boundary
+## Secret, Keychain, and environment boundary
 
 Imported MCP environment values are never trusted or retained. `MCPEnvironmentResolver` resolves only the key names declared by the reviewed descriptor and only after the MCP server is approved.
 
@@ -137,7 +143,9 @@ The resolver returns an `MCPResolvedEnvironmentLease`:
 - marked consumed after materialization;
 - rejected when reused, mismatched, missing, or supplied for undeclared keys.
 
-The current implementation defines a generic `MCPSecretSource` protocol. A future macOS adapter should resolve values from Keychain or an equivalent OS credential store. The repository does not contain secret values.
+`MCPKeychainSecretSource` is the first OS-native source implementation for macOS. It is read-only and looks up one generic-password item through the absolute `/usr/bin/security` binary using `shell=False`, an empty child environment, explicit timeout and secret-size bounds, and normalized failures that never echo stdout/stderr or runner exception text. Service names are scoped as `SEIS.MCP.<server>` and the account name is the exact reviewed environment key.
+
+The adapter does not create, update, delete, rotate, or enumerate Keychain items. Provisioning remains a separate explicit action outside this branch.
 
 Python cannot guarantee physical zeroization of immutable strings, so the runtime deliberately claims **minimal retention**, not cryptographic zeroization.
 
@@ -165,6 +173,12 @@ Immediately before transport execution it atomically claims the plan. The same p
 
 Consumed identifiers are retained only until their short expiry and then pruned, bounding replay-state memory.
 
+## Harmless end-to-end fixture
+
+The test suite now includes `test/fixtures/mcp_fixture_server.py`, a purpose-built local process that performs no filesystem, network, environment, subprocess, repository, or external-service mutation. It implements only modern protocol discovery and a read-only `fixture.echo` method.
+
+`test/maria-mcp-e2e-fixture.test.py` launches that real local child through the same supervisor and bounded stdio transport used by the runtime, then creates a fresh permission plan and executes one correlated call through `MCPInvocationExecutor`. This verifies the complete policy → launch → protocol → permission → single-use invocation path without touching any real project integration.
+
 ## Evidence rules
 
 Retainable execution evidence may include only normalized lifecycle facts such as:
@@ -179,20 +193,11 @@ Retainable execution evidence may include only normalized lifecycle facts such a
 - duration;
 - numeric JSON-RPC error code when available.
 
-It must not persist:
-
-- request parameters;
-- permission targets;
-- raw tool results;
-- secret values;
-- server error messages/data;
-- stdout/stderr content;
-- exception text;
-- hidden prompts or model output.
+It must not persist request parameters, permission targets, raw tool results, secret values, server error messages/data, stdout/stderr content, exception text, hidden prompts, or model output.
 
 ## Current safety boundary
 
-This branch now contains a real bounded local stdio process transport and a real permission-gated invocation executor, but **nothing invokes them automatically** and tests use injected/fake processes/transports. No real external MCP method is called by the test suite.
+The branch contains a real bounded local stdio process transport and permission-gated invocation executor. The harmless repository fixture is intentionally executed in CI, but **no real external/project MCP method is called automatically or by the tests**.
 
 Still deliberately excluded:
 
@@ -207,9 +212,9 @@ Still deliberately excluded:
 
 ## Next slices
 
-1. OS-native secret-source adapter contract and macOS Keychain integration without secret-bearing logs.
-2. Verified local-model capability enrichment where runtime metadata is insufficient, without model-name heuristics.
-3. Multi-step work routing that composes model reasoning with one or more permission-gated tool routes without collapsing trust domains.
-4. SwiftUI Integration Center for provider/MCP/runtime status, imports, approvals, health evidence, route explanations, and secure secret-state indicators.
-5. Cloud provider discovery/auth adapters preserving the same redacted evidence model.
-6. End-to-end integration tests using a purpose-built harmless local MCP fixture before any real project integration is enabled.
+1. Verified local-model capability enrichment where runtime metadata is insufficient, without model-name heuristics.
+2. Execution orchestration for `WorkRoutePlan` with step evidence, dependency failure propagation, fresh permission checks, and explicit retry/idempotency contracts.
+3. SwiftUI Integration Center for provider/MCP/runtime status, imports, approvals, health evidence, route explanations, Keychain state, and work-plan visibility.
+4. Cloud provider discovery/auth adapters preserving the same redacted evidence model.
+5. Explicit user/admin provisioning UX for Keychain-backed integration secrets without storing secret values in repository configuration.
+6. Carefully selected real MCP integration pilots after fixture-backed trust and permission contracts remain green.
