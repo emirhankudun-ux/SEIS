@@ -10,6 +10,7 @@ from .local_discovery import (
 )
 from .local_health import LocalHealthEvidenceLedger, ProbeObservation, ProbeOutcome
 from .local_probe import LocalProbeError, LocalProbeFailureKind, LocalProbeResult, LocalRuntimeProbe
+from .local_status import LocalRuntimeSnapshotBuilder, LocalRuntimeStatusSnapshot
 from .provider_discovery import ModelDiscoveryFact
 
 
@@ -46,6 +47,13 @@ class LocalDiscoveryCoordinator:
 
     def current_ollama_inventory(self) -> tuple[LocalModelCandidate, ...]:
         return tuple(sorted(self._ollama_inventory.values(), key=lambda item: item.name))
+
+    def status_snapshot(self) -> LocalRuntimeStatusSnapshot:
+        """Return a frozen, redacted point-in-time view for presentation layers."""
+
+        return LocalRuntimeSnapshotBuilder(self._health).build(
+            ollama_inventory=self.current_ollama_inventory(),
+        )
 
     def refresh_ollama_inventory(self) -> tuple[LocalModelCandidate, ...]:
         # A failed refresh must not leave an older inventory implicitly trusted as
