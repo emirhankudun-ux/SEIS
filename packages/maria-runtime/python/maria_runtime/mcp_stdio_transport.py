@@ -44,13 +44,16 @@ class MCPStdioProcessTransport:
     The supervisor remains responsible for deciding *whether* a descriptor may
     launch. This transport only executes the exact argv from that plan. It never
     invokes a shell, never performs PATH lookup itself, never installs packages,
-    never resolves credentials, and defaults to an empty child environment.
+    and never accepts direct credential/environment injection. Reviewed
+    environment values may enter only through a one-shot lease attached to the
+    launch plan and are materialized immediately before spawning the child.
 
     Startup performs the modern ``server/discover`` probe first. A normal JSON-
     RPC method error may fall back to legacy ``initialize`` on the same child.
     A transport-level read timeout fails closed instead of starting a second
     reader or silently spawning another child outside the supervisor attempt
-    budget. Raw stdout/stderr are never retained in snapshots or exceptions.
+    budget. Raw stdout/stderr and environment values are never retained in
+    snapshots or exceptions.
     """
 
     def __init__(
@@ -73,11 +76,14 @@ class MCPStdioProcessTransport:
         ):
             if value <= 0:
                 raise ValueError(f"{name} must be positive")
+        if environment:
+            raise ValueError(
+                "direct MCP environment injection is disabled; use a reviewed environment lease"
+            )
 
         self._negotiator = negotiator
         self._codec = codec or MCPStdioFrameCodec()
         self._process_factory = process_factory
-        self._environment = dict(environment or {})
         self._shutdown_timeout_ms = shutdown_timeout_ms
         self._terminate_timeout_ms = terminate_timeout_ms
         self._kill_timeout_ms = kill_timeout_ms
@@ -124,6 +130,22 @@ class MCPStdioProcessTransport:
         started_at = time.monotonic()
 
         try:
+            child_environment = (
+                plan.environment_lease.materialize_once(server_name=plan.server_name)
+                if plan.environment_lease is not None
+                else {}
+            )
+        except Exception:
+            self._failure = "environment-resolution-failed"
+            self._shutdown_state = MCPStdioShutdownState.FAILED
+            return self._result(
+                started=False,
+                ready=False,
+                schema_valid=False,
+                started_at=started_at,
+            )
+
+        try:
             process = self._process_factory(
                 plan.argv,
                 stdin=subprocess.PIPE,
@@ -131,7 +153,7 @@ class MCPStdioProcessTransport:
                 stderr=subprocess.PIPE,
                 shell=False,
                 close_fds=True,
-                env=dict(self._environment),
+                env=child_environment,
                 text=False,
                 bufsize=0,
             )
