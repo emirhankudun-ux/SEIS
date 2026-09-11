@@ -45,6 +45,11 @@ from .mcp_protocol import (
     MCPProtocolNegotiator,
     MCPProtocolProbe,
 )
+from .mcp_secrets import (
+    MCPEnvironmentResolver,
+    MCPResolvedEnvironmentLease,
+    MCPSecretSource,
+)
 from .mcp_stdio import MCPStdioFrameCodec, MCPStdioFrameError, MCPStdioFrameFailure
 from .mcp_stdio_transport import (
     MCPStdioProcessTransport,
@@ -86,6 +91,7 @@ __all__ = [
     "LocalRuntimeSnapshotBuilder",
     "LocalRuntimeStatusSnapshot",
     "MCPConfigImporter",
+    "MCPEnvironmentResolver",
     "MCPImportPreview",
     "MCPInvocationEvidence",
     "MCPInvocationExecutor",
@@ -106,6 +112,8 @@ __all__ = [
     "MCPProtocolEra",
     "MCPProtocolNegotiator",
     "MCPProtocolProbe",
+    "MCPResolvedEnvironmentLease",
+    "MCPSecretSource",
     "MCPServerDescriptor",
     "MCPStdioFrameCodec",
     "MCPStdioFrameError",
