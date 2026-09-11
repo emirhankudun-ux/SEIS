@@ -25,24 +25,30 @@ struct SeisMariaRecoveryRenderTests {
         invalid.finishImport(token: invalidToken, result: .failure(.invalidJSON))
         let states = [("unloaded", SeisMariaRecoveryImportState()), ("loaded", loaded), ("invalid", invalid)]
         for (name, state) in states {
-            for (appearance, scheme) in [("light", ColorScheme.light), ("dark", ColorScheme.dark)] {
+            for (appearanceName, appearance) in [("light", NSAppearance.Name.aqua), ("dark", NSAppearance.Name.darkAqua)] {
                 let view = SeisMariaRecoveryView(initialState: state)
                     .frame(width: 660, height: 640)
-                    .background(scheme == .dark ? Color.black : Color.white)
-                    .environment(\.colorScheme, scheme)
-                let renderer = ImageRenderer(content: view)
-                renderer.scale = 1
-                let image = try #require(renderer.cgImage)
-                #expect(image.width == 660)
-                #expect(image.height == 640)
+                let bitmap = try render(view, appearance: appearance)
                 if let directory = ProcessInfo.processInfo.environment["MARIA_UI_EVIDENCE_DIR"] {
                     let destination = URL(fileURLWithPath: directory, isDirectory: true)
                     try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
-                    let png = try #require(NSBitmapImageRep(cgImage: image).representation(using: .png, properties: [:]))
-                    try png.write(to: destination.appendingPathComponent("recovery-\(name)-\(appearance).png"))
+                    let png = try #require(bitmap.representation(using: .png, properties: [:]))
+                    try png.write(to: destination.appendingPathComponent("recovery-\(name)-\(appearanceName).png"))
                 }
             }
         }
+    }
+
+    private func render<V: View>(_ view: V, appearance: NSAppearance.Name) throws -> NSBitmapImageRep {
+        let hosting = NSHostingView(rootView: view)
+        hosting.frame = NSRect(x: 0, y: 0, width: 660, height: 640)
+        hosting.appearance = NSAppearance(named: appearance)
+        hosting.layoutSubtreeIfNeeded()
+        let bitmap = try #require(hosting.bitmapImageRepForCachingDisplay(in: hosting.bounds))
+        hosting.cacheDisplay(in: hosting.bounds, to: bitmap)
+        #expect(bitmap.pixelsWide > 0)
+        #expect(bitmap.pixelsHigh > 0)
+        return bitmap
     }
 }
 #endif
