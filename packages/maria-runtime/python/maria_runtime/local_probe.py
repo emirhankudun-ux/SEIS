@@ -99,6 +99,7 @@ class LocalRuntimeProbe:
     """
 
     _LM_STUDIO_PATH = "/api/v1/models"
+    _OLLAMA_TAGS_PATH = "/api/tags"
     _OLLAMA_SHOW_PATH = "/api/show"
     _MAX_MODEL_NAME_CHARS = 512
 
@@ -130,6 +131,15 @@ class LocalRuntimeProbe:
         return self._probe(
             provider_id="lm-studio",
             url=f"http://127.0.0.1:{self._lm_studio_port}{self._LM_STUDIO_PATH}",
+            method="GET",
+            headers=(("Accept", "application/json"),),
+            body=None,
+        )
+
+    def probe_ollama_tags(self) -> LocalProbeResult:
+        return self._probe(
+            provider_id="ollama",
+            url=f"http://127.0.0.1:{self._ollama_port}{self._OLLAMA_TAGS_PATH}",
             method="GET",
             headers=(("Accept", "application/json"),),
             body=None,
