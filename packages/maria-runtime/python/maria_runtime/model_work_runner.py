@@ -145,10 +145,29 @@ class ModelWorkStepRunner:
     context/output budget before invoking that adapter.
     """
 
-    _RETAINABLE_FAILURES = frozenset(
+    # These categories are the public, bounded diagnostic vocabulary accepted
+    # from model adapters. Unknown provider text is collapsed to provider-failure.
+    _RETAINABLE_FAILURES = frozenset((
+        "temporarily-unavailable",
+        "transport-failure",
+        "rate-limited",
+        "timeout",
+        "authentication-required",
+        "invalid-model-input",
+        "invalid-response",
+        "model-mismatch",
+        "request-too-large",
+        "response-too-large",
+        "output-budget-exceeded",
+        "context-budget-exceeded",
+        "incomplete-output",
+        "unsupported-output",
+        "policy-rejected",
+        "provider-failure",
+    ))
+    _RETRYABLE_FAILURES = frozenset(
         ("temporarily-unavailable", "transport-failure", "rate-limited", "timeout")
     )
-    _RETRYABLE_FAILURES = _RETAINABLE_FAILURES
 
     def __init__(self, *, bindings: Mapping[str, ModelWorkStepBinding]) -> None:
         if any(not isinstance(step_id, str) or not step_id.strip() for step_id in bindings):
