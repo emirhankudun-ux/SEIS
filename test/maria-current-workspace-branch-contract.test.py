@@ -73,6 +73,13 @@ class CurrentWorkspaceBranchContractTests(unittest.TestCase):
         self.assertEqual(snapshot.repository_revision, REVISION)
         self.assertFalse(snapshot.execution_authorized)
 
+    def test_valid_unicode_branch_remains_accepted(self):
+        branch = "özellik/maria-doğrulama"
+        self.write_branch(branch)
+        snapshot = self.capture()
+        self.assertEqual(snapshot.current_branch, branch)
+        self.assertEqual(snapshot.repository_revision, REVISION)
+
 
 if __name__ == "__main__":
     unittest.main()
