@@ -1,0 +1,9 @@
+{
+  "name":"maria-seis-personal-intelligence-os",
+  "version":"4.0.0-alpha.1",
+  "private":false,
+  "type":"module",
+  "description":"MARIA × SEIS — modular, local-first personal intelligence operating system foundation.",
+  "scripts":{"dev":"python3 -m http.server 4173","test":"node tests/smoke.mjs && node tests/core.mjs && node tests/platform.mjs"},
+  "license":"MIT"
+}
