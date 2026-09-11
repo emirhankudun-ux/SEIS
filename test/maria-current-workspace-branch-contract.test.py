@@ -65,6 +65,20 @@ class CurrentWorkspaceBranchContractTests(unittest.TestCase):
         with self.assertRaises(WorkspaceEvidenceError):
             self.capture()
 
+    def test_every_ref_component_rejects_lock_suffix(self):
+        branch = "release.lock/hotfix"
+        with self.assertRaises(WorkspaceEvidenceError):
+            WorkspaceEvidenceSnapshot(
+                project=PROJECT,
+                current_branch=branch,
+                repository_revision=REVISION,
+                observed_at=OBSERVED,
+            )
+
+        self.write_branch(branch)
+        with self.assertRaises(WorkspaceEvidenceError):
+            self.capture()
+
     def test_valid_hierarchical_branch_remains_accepted(self):
         branch = "feature/maria-workspace-branch-identity-v1"
         self.write_branch(branch)

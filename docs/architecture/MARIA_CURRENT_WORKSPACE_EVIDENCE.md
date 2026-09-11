@@ -35,10 +35,12 @@ The reader is fail-closed and applies the following limits before accepting evid
 - `HEAD` and loose ref payloads are capped at 4 KiB;
 - `packed-refs` is capped at 256 KiB;
 - final files are opened with `O_NOFOLLOW` where supported and handles are revalidated with `fstat`;
-- branch references are restricted to a conservative symbolic `refs/heads/...` form that rejects traversal, empty components, control characters, ASCII DEL, single `@`, and Git-dangerous patterns while preserving otherwise-valid non-ASCII branch identities;
+- branch references are restricted to a conservative symbolic `refs/heads/...` form that rejects traversal, empty components, control characters, ASCII DEL, single `@`, Git-dangerous patterns, and a `.lock` suffix on **every** slash-separated ref component while preserving otherwise-valid non-ASCII branch identities;
 - direct `WorkspaceEvidenceSnapshot` construction applies the same branch-identity predicate as filesystem capture, so typed evidence cannot bypass the source boundary;
 - repository revisions must be 40- or 64-character hexadecimal object identifiers;
 - duplicate matching identities in `packed-refs` are rejected rather than resolved heuristically.
+
+The `.lock` rule is component-scoped rather than whole-branch-only. For example, `release.lock/hotfix` is invalid even though the complete branch string does not end in `.lock`. This mirrors Git's refname contract and prevents the evidence layer from certifying an identity Git itself reserves for lock-file semantics.
 
 The storage path is still expected to belong to the trusted SEIS/MARIA host account. These checks reduce accidental aliasing and stale-path mistakes; they are not a hostile multi-user filesystem sandbox and cannot eliminate every directory-replacement race by another principal with filesystem authority.
 
@@ -89,7 +91,11 @@ The minimal fix at `a33b04c7c7bb5a2a9ca8efc9d1360fa698f5f5e7` validates the loos
 
 The branch-identity contract was then specified at `3442d449063e19113980ec4f9b127f53bc606be1`. Hosted `MARIA Learning Fabric` run `34608696251` went red with five expected failures: direct typed snapshots admitted traversal/single-`@`/DEL identities, while filesystem capture admitted single `@` and DEL. The first implementation aligned typed snapshots with `_safe_branch` and rejected those missing cases.
 
-A follow-up regression test intentionally exercised a valid Unicode branch identity. Run `34609148899` showed the first DEL fix was too broad because an ASCII-only upper bound also rejected all non-ASCII branch characters. The follow-up fix narrows that rule to reject characters below ASCII space plus DEL (`0x7f`) while retaining the existing forbidden-character and ref-pattern checks. Final PR-head CI remains the acceptance source; no prior green run substitutes for the current head.
+A follow-up regression test intentionally exercised a valid Unicode branch identity. Run `34609148899` showed the first DEL fix was too broad because an ASCII-only upper bound also rejected all non-ASCII branch characters. The follow-up fix narrows that rule to reject characters below ASCII space plus DEL (`0x7f`) while retaining the existing forbidden-character and ref-pattern checks.
+
+A further branch-component regression was specified first at `94f02f3666f5efcf0c772ce01a9890c2cf50523b`. `MARIA Learning Fabric` run `34611023871` failed because `release.lock/hotfix` was accepted: the predicate checked `.lock` only at the end of the complete branch string. The minimal implementation at `eafd6d78568a54da8d342e15950c8f28090628b0` applies the suffix rule to every slash-separated component. Run `34611225451` then passed the six branch-contract tests and the full MARIA regression sweep without narrowing valid Unicode identities.
+
+Final PR-head CI remains the acceptance source; no prior green run substitutes for the current head.
 
 ## Rollback
 
