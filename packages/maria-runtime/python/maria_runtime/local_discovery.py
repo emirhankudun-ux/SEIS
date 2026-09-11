@@ -70,30 +70,38 @@ class LMStudioV1DiscoverySource:
         for item in models:
             if not isinstance(item, Mapping):
                 raise ValueError("LM Studio model entry must be an object")
-            if item.get("type") != "llm":
+
+            model_type = item.get("type")
+            if model_type not in {"llm", "embedding"}:
                 continue
 
             name = item.get("key")
             context_size = item.get("max_context_length")
             if not isinstance(name, str) or not name.strip():
-                raise ValueError("LM Studio LLM entry requires a non-empty key")
+                raise ValueError("LM Studio model entry requires a non-empty key")
             if not isinstance(context_size, int) or context_size <= 0:
-                raise ValueError("LM Studio LLM entry requires max_context_length")
+                raise ValueError("LM Studio model entry requires max_context_length")
 
-            capabilities = {"chat"}
-            declared = item.get("capabilities")
-            if declared is not None:
-                if not isinstance(declared, Mapping):
-                    raise ValueError("LM Studio capabilities must be an object")
-                if declared.get("vision") is True:
-                    capabilities.add("vision")
-                if declared.get("trained_for_tool_use") is True:
-                    capabilities.add("tool-use")
-                reasoning = declared.get("reasoning")
-                if reasoning is not None:
-                    if not isinstance(reasoning, Mapping):
-                        raise ValueError("LM Studio reasoning capability must be an object")
-                    capabilities.add("reasoning")
+            if model_type == "embedding":
+                # `/api/v1/models` exposes embedding identity through the explicit
+                # model type and omits the LLM-only capabilities object. Do not
+                # infer chat/reasoning/tool abilities from the model name.
+                capabilities = {"embedding"}
+            else:
+                capabilities = {"chat"}
+                declared = item.get("capabilities")
+                if declared is not None:
+                    if not isinstance(declared, Mapping):
+                        raise ValueError("LM Studio capabilities must be an object")
+                    if declared.get("vision") is True:
+                        capabilities.add("vision")
+                    if declared.get("trained_for_tool_use") is True:
+                        capabilities.add("tool-use")
+                    reasoning = declared.get("reasoning")
+                    if reasoning is not None:
+                        if not isinstance(reasoning, Mapping):
+                            raise ValueError("LM Studio reasoning capability must be an object")
+                        capabilities.add("reasoning")
 
             facts.append(ModelDiscoveryFact(
                 provider_id="lm-studio",
