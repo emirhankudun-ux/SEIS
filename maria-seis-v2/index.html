@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0d10" />
+  <title>MARIA × SEIS — Personal Intelligence OS</title>
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <main class="app-shell" aria-label="MARIA × SEIS arayüzü">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-mark" aria-hidden="true">M</div>
+        <div>
+          <div class="brand">MARIA <span>× SEIS</span></div>
+          <div class="subtitle">Personal Intelligence Operating System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="context-pill" id="contextPill" type="button" aria-label="Aktif bağlamı değiştir">
+          <span class="dot"></span>
+          <span id="contextLabel">Deadly Evil</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6.8 8 3.2 3.3L13.2 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Ayarlar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.3A3.7 3.7 0 1 0 12 15.7 3.7 3.7 0 0 0 12 8.3Zm8.1 4.7-.02-2-2.1-.7a6.7 6.7 0 0 0-.55-1.33l1-2-1.42-1.4-1.98 1a6.8 6.8 0 0 0-1.33-.56L13 2.9h-2l-.7 2.1c-.47.15-.91.34-1.33.56l-2-1-1.4 1.41 1 1.99c-.22.42-.4.86-.56 1.33l-2.1.7v2l2.1.7c.15.47.34.91.56 1.33l-1 2 1.41 1.4 1.99-1c.42.22.86.4 1.33.56l.7 2.1h2l.7-2.1c.47-.15.91-.34 1.33-.56l2 1 1.4-1.41-1-1.99c.22-.42.4-.86.56-1.33l2.1-.7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <aside class="rail left-rail" aria-label="Sistem durumları">
+        <div class="rail-section">
+          <p class="section-label">SYSTEM</p>
+          <button class="status-row active" data-status="healthy" type="button"><span>Voice</span><span class="status healthy">Ready</span></button>
+          <button class="status-row" data-status="healthy" type="button"><span>Vision</span><span class="status healthy">Ready</span></button>
+          <button class="status-row" data-status="healthy" type="button"><span>Memory</span><span class="status healthy">Synced</span></button>
+          <button class="status-row" data-status="degraded" type="button"><span>MCP</span><span class="status degraded">7 / 8</span></button>
+        </div>
+
+        <div class="rail-section">
+          <p class="section-label">PROJECTS</p>
+          <button class="project-row active" data-project="Deadly Evil" type="button"><span class="project-index">01</span><span>Deadly Evil</span></button>
+          <button class="project-row" data-project="SEIS" type="button"><span class="project-index">02</span><span>SEIS Core</span></button>
+          <button class="project-row" data-project="Portfolio" type="button"><span class="project-index">03</span><span>Portfolio</span></button>
+        </div>
+
+        <div class="rail-footer">
+          <div class="privacy-line"><span class="privacy-dot"></span><span>Local-first routing enabled</span></div>
+          <span>v2.0 prototype</span>
+        </div>
+      </aside>
+
+      <section class="core-panel" aria-label="Maria ana arayüzü">
+        <div class="ambient-copy">
+          <div class="eyeline">ACTIVE CONTEXT · <span id="activeContext">DEADLY EVIL</span></div>
+          <h1 id="headline">Buradayım, Emirhan.</h1>
+          <p id="subline">Ne yapmak istediğini söyle. Gerisini SEIS doğru sisteme yönlendirsin.</p>
+        </div>
+
+        <div class="orb-stage" aria-live="polite">
+          <div class="orb halo-3"></div>
+          <div class="orb halo-2"></div>
+          <div class="orb halo-1"></div>
+          <button class="orb-core" id="orbButton" type="button" aria-label="Maria ses modunu aç">
+            <span class="orb-glow"></span>
+            <span class="orb-letter">M</span>
+          </button>
+          <div class="state-label" id="stateLabel">READY</div>
+        </div>
+
+        <div class="command-dock">
+          <div class="command-box">
+            <button class="mini-btn" id="visionBtn" type="button" aria-label="Vision modu">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12s3.2-5.4 9.2-5.4 9.2 5.4 9.2 5.4-3.2 5.4-9.2 5.4S2.8 12 2.8 12Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+            <input id="commandInput" aria-label="Maria komutu" autocomplete="off" placeholder="Maria'ya bir şey söyle…" />
+            <button class="mini-btn mic" id="micBtn" type="button" aria-label="Mikrofon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <button class="send-btn" id="sendBtn" type="button" aria-label="Komutu gönder">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="suggestions" aria-label="Önerilen komutlar">
+            <button type="button" data-prompt="Son Deadly Evil build durumunu kontrol et">Son build</button>
+            <button type="button" data-prompt="Enemy AI regression testlerini çalıştır">AI testleri</button>
+            <button type="button" data-prompt="MCP sağlık durumunu kontrol et">MCP health</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="rail right-rail" aria-label="Aktivite ve agentlar">
+        <div class="activity-head">
+          <div>
+            <p class="section-label">LIVE ACTIVITY</p>
+            <h2>SEIS Orchestration</h2>
+          </div>
+          <span class="live-indicator"><span></span>Live</span>
+        </div>
+
+        <div class="activity-card primary" id="activityCard">
+          <div class="activity-meta"><span id="activityAgent">Verification Agent</span><span id="activityTime">now</span></div>
+          <h3 id="activityTitle">Enemy AI regression</h3>
+          <p id="activityText">12 senaryonun doğrulama sonuçları hazır.</p>
+          <div class="progress"><span id="progressBar" style="width:100%"></span></div>
+          <div class="activity-result"><span class="result-dot"></span><span id="activityResult">12 / 12 passed</span></div>
+        </div>
+
+        <div class="agent-list">
+          <div class="agent-row"><span class="agent-icon">GD</span><div><strong>Game Director</strong><span>Idle · Ready</span></div><span class="agent-state ready"></span></div>
+          <div class="agent-row"><span class="agent-icon">UE</span><div><strong>Unreal Engineer</strong><span>Connected</span></div><span class="agent-state ready"></span></div>
+          <div class="agent-row"><span class="agent-icon">AI</span><div><strong>Enemy AI</strong><span>Verified</span></div><span class="agent-state ready"></span></div>
+          <div class="agent-row"><span class="agent-icon">QA</span><div><strong>QA Engineer</strong><span>Monitoring</span></div><span class="agent-state ready"></span></div>
+        </div>
+
+        <button class="approval-card hidden" id="approvalCard" type="button">
+          <div class="approval-icon">!</div>
+          <div><strong>Approval required</strong><span id="approvalText">High-impact action</span></div>
+          <span class="approval-action">Review</span>
+        </button>
+      </aside>
+    </section>
+
+    <footer class="statusbar">
+      <div><span class="footer-dot"></span><span id="footerHealth">All critical systems healthy</span></div>
+      <div class="footer-center">MARIA × SEIS · local prototype</div>
+      <div><span>Routing</span><strong id="routingLabel">Local-first</strong></div>
+    </footer>
+  </main>
+
+  <div class="popover hidden" id="contextPopover" role="menu" aria-label="Bağlam seç">
+    <button type="button" data-context="Deadly Evil">Deadly Evil <span>Active</span></button>
+    <button type="button" data-context="SEIS">SEIS Core</button>
+    <button type="button" data-context="Portfolio">Portfolio</button>
+  </div>
+
+  <div class="sheet hidden" id="settingsSheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="sheet-panel">
+      <div class="sheet-head"><h2 id="settingsTitle">System settings</h2><button class="icon-btn" id="closeSettings" type="button" aria-label="Kapat">×</button></div>
+      <div class="setting-row"><div><strong>Local-first routing</strong><span>Sensitive and lightweight tasks prefer local capability.</span></div><button class="toggle on" type="button"><span></span></button></div>
+      <div class="setting-row"><div><strong>Wake word · Maria</strong><span>Prototype state only; no background microphone capture.</span></div><button class="toggle on" type="button"><span></span></button></div>
+      <div class="setting-row"><div><strong>Ambient context</strong><span>Use project context in the local UI session.</span></div><button class="toggle" type="button"><span></span></button></div>
+    </div>
+  </div>
+
+  <script src="./src/app.js"></script>
+</body>
+</html>
