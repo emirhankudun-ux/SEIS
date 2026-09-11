@@ -76,6 +76,19 @@ from .recovery_candidate import (
     RecoveryCandidateView,
 )
 from .recovery_dashboard import RecoveryDashboardBuilder, RecoveryDashboardSnapshot
+from .recovery_dashboard_wire import (
+    RecoveryDashboardWireCodec,
+    RecoveryDashboardWireError,
+    RecoveryDashboardWireRow,
+    RecoveryDashboardWireSnapshot,
+)
+from .recovery_native_bridge import (
+    RecoveryNativeBridgeAdapter,
+    RecoveryNativeBridgeError,
+    RecoveryNativeRow,
+    RecoveryNativeSeverity,
+    RecoveryNativeSnapshot,
+)
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouteDecision, ModelRouter
 from .safety import CommandPolicy
@@ -121,10 +134,12 @@ __all__ = [
     "ProbeOutcome", "ProjectContextEngine", "ProjectContextRetriever", "ProjectProfile", "ProjectRegistry", "PromptCache",
     "ProviderRegistry", "ProviderSpec", "ProviderStatus", "RecoveryAnchor", "RecoveryAssessment", "RecoveryCatalogEntry",
     "RecoveryCandidateDisposition", "RecoveryCandidateInspector", "RecoveryCandidateView", "RecoveryDashboardBuilder",
-    "RecoveryDashboardSnapshot", "RecoveryDisposition", "RecoveryReconciler", "RecoveryReconciliationAssessment",
-    "RecoveryReconciliationDisposition", "RouteDecision", "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus",
-    "TextNormalizer", "ToolSpec", "ToolStatus", "UnifiedCapabilityRouter", "WorkMode", "WorkPlanCheckpoint",
-    "WorkPlanExecutionResult", "WorkPlanExecutor", "WorkRoutePlan", "WorkRouteStep", "WorkStepExecutionEvidence",
-    "WorkStepExecutionPolicy", "WorkStepExecutionResult", "WorkStepRequest", "WorkStepRunResult", "WorkStepRunner",
-    "WorkStepState", "default_project_registry", "default_provider_registry",
+    "RecoveryDashboardSnapshot", "RecoveryDashboardWireCodec", "RecoveryDashboardWireError", "RecoveryDashboardWireRow",
+    "RecoveryDashboardWireSnapshot", "RecoveryDisposition", "RecoveryNativeBridgeAdapter", "RecoveryNativeBridgeError",
+    "RecoveryNativeRow", "RecoveryNativeSeverity", "RecoveryNativeSnapshot", "RecoveryReconciler",
+    "RecoveryReconciliationAssessment", "RecoveryReconciliationDisposition", "RouteDecision", "RouteKind",
+    "RuntimeProbeState", "RuntimeProbeStatus", "TextNormalizer", "ToolSpec", "ToolStatus", "UnifiedCapabilityRouter",
+    "WorkMode", "WorkPlanCheckpoint", "WorkPlanExecutionResult", "WorkPlanExecutor", "WorkRoutePlan", "WorkRouteStep",
+    "WorkStepExecutionEvidence", "WorkStepExecutionPolicy", "WorkStepExecutionResult", "WorkStepRequest",
+    "WorkStepRunResult", "WorkStepRunner", "WorkStepState", "default_project_registry", "default_provider_registry",
 ]

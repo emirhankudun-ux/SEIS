@@ -25,6 +25,7 @@ struct SeisAppleNativeShellApp: App {
     private var showsQualityGates = SeisAppleShellSettingsContract.appleNativeShell.defaultShowsQualityGates
 
     #if os(macOS)
+    @Environment(\.openWindow) private var openWindow
     @NSApplicationDelegateAdaptor(SeisAppleNativeShellAppDelegate.self) private var appDelegate
     #endif
 
@@ -128,10 +129,19 @@ struct SeisAppleNativeShellApp: App {
                 }
                 .keyboardShortcut("r", modifiers: [.command, .shift])
                 .help("Refresh all Apple diagnostics and runtime readiness snapshots.")
+                Divider()
+                Button("MARIA Oturum Kayıtları") {
+                    openWindow(id: "maria-recovery")
+                }
             }
         }
         #endif
         #if os(macOS)
+        Window("MARIA · Oturum kayıtları", id: "maria-recovery") {
+            SeisMariaRecoveryView()
+        }
+        .defaultSize(width: 660, height: 560)
+
         Settings {
             AppleShellSettingsView()
         }
