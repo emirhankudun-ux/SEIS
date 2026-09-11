@@ -77,6 +77,13 @@ from .mcp_work_runner import (
     MCPWorkStepBinding,
     MCPWorkStepRunner,
 )
+from .model_work_runner import (
+    ModelAdapterResult,
+    ModelWorkAdapter,
+    ModelWorkInput,
+    ModelWorkStepBinding,
+    ModelWorkStepRunner,
+)
 from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
 from .projects import ProjectProfile, ProjectRegistry, WorkMode, default_project_registry
@@ -154,10 +161,15 @@ __all__ = [
     "MCPWorkInvocationExecutor",
     "MCPWorkStepBinding",
     "MCPWorkStepRunner",
+    "ModelAdapterResult",
     "ModelRegistry",
     "ModelRouteDecision",
     "ModelRouter",
     "ModelSpec",
+    "ModelWorkAdapter",
+    "ModelWorkInput",
+    "ModelWorkStepBinding",
+    "ModelWorkStepRunner",
     "MultiStepWorkRouter",
     "PermissionDecision",
     "PermissionEngine",
