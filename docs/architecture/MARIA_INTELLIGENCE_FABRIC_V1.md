@@ -4,13 +4,13 @@
 
 Active draft foundation on `feature/maria-intelligence-fabric-v1`.
 
-The branch now implements verified provider/model discovery metadata, bounded local-runtime discovery for LM Studio and Ollama, native-to-canonical capability normalization, evidence-backed model routing, repository federation foundations, redacted MCP config import, trust/approval evaluation, bounded MCP process supervision, MCP protocol negotiation/framing, a bounded local stdio transport, one-shot environment resolution, a read-only macOS Keychain secret source, permission-gated short-lived single-use MCP invocation, bounded multi-step cognition/tool routing, dependency-aware work execution, fresh-authorized MCP work attempts, and bounded model cognition adapters.
+The branch now implements verified provider/model discovery metadata, bounded local-runtime discovery for LM Studio and Ollama, native-to-canonical capability normalization, evidence-backed model routing, repository federation foundations, redacted MCP config import, trust/approval evaluation, bounded MCP process supervision, MCP protocol negotiation/framing, a bounded local stdio transport, one-shot environment resolution, a read-only macOS Keychain secret source, permission-gated short-lived single-use MCP invocation, bounded multi-step cognition/tool routing, dependency-aware work execution, fresh-authorized MCP work attempts, bounded model cognition adapters, cooperative work cancellation, redacted work checkpoints, and runtime output redaction for diagnostic representations.
 
 Nothing in this branch automatically calls a real external project MCP method, installs packages, resolves cloud credentials, performs model downloads, mutates GitHub/Unreal/Blender, automates GUIs, deploys, publishes, bills, or creates uncontrolled background agents. Model execution requires an explicitly supplied bounded adapter; this foundation does not silently connect one.
 
 ## Purpose
 
-MARIA is the human-facing intelligence of SEIS. The Intelligence Fabric is the provider + tool boundary that lets MARIA combine multiple AI providers and integrations without hard-wiring the product to one vendor or treating discovery, competence, approval, or routing as execution authority.
+MARIA is the human-facing intelligence of SEIS. The Intelligence Fabric is the provider + tool boundary that lets MARIA combine multiple AI providers and integrations without hard-wiring the product to one vendor or treating discovery, competence, approval, routing, cancellation, or checkpointing as execution authority.
 
 Initial logical provider families are:
 
@@ -43,6 +43,8 @@ MARIA
   |     +-- Unified Capability Router
   |     +-- Multi-Step Work Router
   |     +-- WorkPlanExecutor
+  |     |     +-- cooperative cancellation
+  |     |     +-- redacted WorkPlanCheckpoint
   |     |     +-- ModelWorkStepRunner → explicit bounded ModelWorkAdapter
   |     |     +-- MCPWorkStepRunner → fresh approval/permission per attempt
   |     |
@@ -60,7 +62,7 @@ MARIA
   +-- Verification / Redacted Evidence
 ```
 
-The core rule is simple: **observation, normalization, routing, approval, process launch, cognition execution, and external tool execution are separate trust domains.** Passing one boundary never implicitly grants the next.
+The core rule is simple: **observation, normalization, routing, approval, process launch, cognition execution, external tool execution, cancellation, and retained evidence are separate trust domains.** Passing one boundary never implicitly grants the next.
 
 ## Provider and model discovery
 
@@ -100,7 +102,7 @@ Unknown native labels remain visible as discovery evidence but do not automatica
 
 `LocalRuntimeSnapshotBuilder` exposes frozen redacted UI-safe status facts. `ModelRouter.explain_select()` returns inspectable route evidence without leaking provider payloads or credentials.
 
-## Capability routing, planning, and bounded execution
+## Capability routing, planning, bounded execution, and cancellation
 
 `UnifiedCapabilityRouter` keeps cognition and execution separate.
 
@@ -114,6 +116,10 @@ A language model cannot satisfy an execution request simply because it advertise
 `WorkPlanExecutor` consumes only that pre-routed plan. Before any runner is invoked it revalidates route/request authority, dependency order, execution flags, policy references, bounded per-step attempts, and total attempt budget. A failed or blocked dependency prevents downstream execution.
 
 Tool retries are fail-closed unless the step is explicitly declared idempotent and receives a stable idempotency key. Model retries occur only for runner-declared and allowlisted transient failures.
+
+An optional cooperative cancellation callback is checked before every step and retry attempt. Cancellation-source errors or invalid outputs fail closed and are normalized without retaining source exception text. Cancellation preserves already-completed successes and marks not-yet-started work `CANCELLED` rather than pretending it failed dependency checks.
+
+`WorkPlanExecutionResult.checkpoint()` returns an evidence-only `WorkPlanCheckpoint` with state counts and the first cancelled step as the next safe step. Transient prompts/results/parameters are never copied into that checkpoint. This is a UI/status-safe checkpoint summary, not raw crash-resume persistence.
 
 See `docs/architecture/MARIA_WORK_ROUTING.md` for the complete execution contract.
 
@@ -131,7 +137,7 @@ Before invocation it revalidates:
 
 After invocation it rechecks reported output-token and total-context usage. Adapter exceptions and arbitrary provider failures are normalized without retaining raw exception text or provider response bodies. Only a fixed transient category set can request retry.
 
-Input payloads and model outputs are transient work data and are not copied into retained execution evidence.
+Input payloads and model outputs are transient work data and are not copied into retained execution evidence. Model-work input payloads, adapter output, and work-step result fields are also excluded from normal dataclass `repr` output.
 
 ## MCP import and gateway
 
@@ -209,6 +215,8 @@ The transport negotiates MCP protocol state, performs bounded correlated JSON-RP
 
 For a retry to be permitted, the stable idempotency key must also be explicitly injected into a concrete MCP method parameter. A declaration of idempotency alone is insufficient.
 
+MCP invocation result payloads remain transient and are excluded from normal dataclass `repr`; retained MCP evidence contains lifecycle facts rather than tool output.
+
 ## Harmless end-to-end fixture
 
 The test suite includes `test/fixtures/mcp_fixture_server.py`, a purpose-built local process that performs no filesystem, network, environment, subprocess, repository, or external-service mutation. It implements only modern protocol discovery and a read-only `fixture.echo` method.
@@ -225,13 +233,15 @@ Retainable execution evidence may include only normalized lifecycle facts such a
 - action class when applicable;
 - permission allowed state;
 - request ID where applicable;
-- success/failure category;
+- success/failure/cancellation category;
 - attempt count;
 - dependency IDs;
 - response byte count/duration where produced by the bounded executor;
 - numeric JSON-RPC error code when available.
 
 It must not persist request parameters, permission targets, prompts, dependency payloads, raw model/tool results, secret values, server error messages/data, stdout/stderr content, or exception text.
+
+Diagnostic representations follow the same direction: transient model/tool/work payload fields are explicitly hidden from `repr` rather than relying on developers to avoid logging them manually.
 
 ## Current safety boundary
 
@@ -247,13 +257,13 @@ Still deliberately excluded:
 - GUI automation;
 - deployment/publication/billing;
 - uncontrolled autonomous background agents;
-- crash-resumable persistence of raw work payloads.
+- raw work-payload persistence merely for resume.
 
 ## Next slices
 
-1. In-memory cancellation and redacted checkpoint summaries for longer `WorkPlanExecutor` runs, without persisting raw intermediate payloads.
-2. Explicit bounded `ModelWorkAdapter` implementations, beginning with already-verified local runtimes and retaining the same context/output/failure contracts.
-3. SwiftUI Integration Center for provider/MCP/runtime status, imports, approvals, health evidence, route explanations, Keychain state, and work-plan visibility after the current macOS app boundaries are confirmed.
-4. Cloud provider discovery/auth adapters preserving the same redacted evidence model.
-5. Explicit user/admin provisioning UX for Keychain-backed integration secrets without storing secret values in repository configuration.
-6. Carefully selected real MCP integration pilots after fixture-backed trust, live-approval, idempotency, and execution contracts remain green.
+1. Explicit bounded `ModelWorkAdapter` implementations, beginning with already-verified local runtimes and retaining the same context/output/failure/redaction contracts.
+2. SwiftUI Integration Center for provider/MCP/runtime status, imports, approvals, health evidence, route explanations, Keychain state, cancellation, and checkpoint visibility after the current macOS app boundaries are confirmed.
+3. Cloud provider discovery/auth adapters preserving the same redacted evidence model.
+4. Explicit user/admin provisioning UX for Keychain-backed integration secrets without storing secret values in repository configuration.
+5. Define a durable resume manifest only for reconstructible safe metadata; do not serialize raw transient prompts/results.
+6. Carefully selected real MCP integration pilots after fixture-backed trust, live-approval, idempotency, cancellation, redaction, and execution contracts remain green.
