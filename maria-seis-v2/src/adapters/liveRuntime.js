@@ -20,10 +20,7 @@ export class LiveRuntimeAdapter {
       ok:receipt.ok===true,
       runtime:this.name,
       mode:this.mode,
-      providerId:provider.id,
-      runId:plan.runId,
-      projectId:plan.projectId,
-      intent:plan.intent,
+      transportProviderId:provider.id,
       evidence:Array.isArray(receipt.evidence)?receipt.evidence:[],
       outcomeVerified:receipt.outcomeVerified===true
     };
