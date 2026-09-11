@@ -11,8 +11,13 @@ from .providers import ProviderRegistry, ProviderStatus
 class ModelDiscoveryFact:
     """A redacted, externally verified observation about one model endpoint.
 
-    This structure intentionally stores only routing metadata. Credentials,
-    tokens, headers, and raw secret values are never accepted here.
+    ``capabilities`` retains the provider-declared capability vocabulary for
+    discovery evidence and backwards compatibility. ``routing_capabilities``
+    may provide a separately normalized SEIS capability vocabulary when the
+    provider uses transport/runtime-specific names. This prevents native labels
+    from silently becoming routing authority.
+
+    Credentials, tokens, headers, and raw secret values are never accepted here.
     """
 
     provider_id: str
@@ -29,12 +34,18 @@ class ModelDiscoveryFact:
     auth_present: bool = False
     evidence_sample_count: int | None = None
     evidence_source: str | None = None
+    routing_capabilities: tuple[str, ...] | None = None
 
     def __post_init__(self) -> None:
         if not self.provider_id.strip() or not self.name.strip():
             raise ValueError("provider_id and model name are required")
         if not self.capabilities or any(not item.strip() for item in self.capabilities):
             raise ValueError("model capabilities must be non-empty")
+        if self.routing_capabilities is not None:
+            if any(not item.strip() for item in self.routing_capabilities):
+                raise ValueError("routing capabilities must contain non-empty strings")
+            if len(set(self.routing_capabilities)) != len(self.routing_capabilities):
+                raise ValueError("routing capabilities cannot contain duplicates")
         if self.context_size <= 0:
             raise ValueError("context_size must be positive")
         if not 0.0 <= self.reliability <= 1.0:
@@ -54,6 +65,12 @@ class ModelDiscoveryFact:
             raise ValueError("evidence_source must be non-empty when present")
         if (self.evidence_sample_count is None) != (self.evidence_source is None):
             raise ValueError("evidence_sample_count and evidence_source must be supplied together")
+
+    @property
+    def effective_routing_capabilities(self) -> tuple[str, ...]:
+        if self.routing_capabilities is None:
+            return self.capabilities
+        return self.routing_capabilities
 
 
 @dataclass(frozen=True)
@@ -111,7 +128,7 @@ class ProviderDiscoveryAdapter:
             name=fact.name,
             provider=fact.provider_id,
             local=fact.local,
-            capabilities=fact.capabilities,
+            capabilities=fact.effective_routing_capabilities,
             context_size=fact.context_size,
             reliability=fact.reliability,
             latency_ms=fact.latency_ms,
