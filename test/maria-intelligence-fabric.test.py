@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
 
 from maria_runtime.mcp_config import MCPConfigImporter
+from maria_runtime.provider_discovery import ModelDiscoveryFact, ProviderDiscoveryAdapter
 from maria_runtime.providers import ProviderStatus, default_provider_registry
 from maria_runtime.registry import ToolStatus
 
@@ -44,6 +45,90 @@ class MariaIntelligenceFabricTests(unittest.TestCase):
         self.assertIn("ollama", local)
         self.assertIn("lm-studio", local)
         self.assertNotEqual(registry.for_capability("coding"), [])
+
+    def test_provider_discovery_converts_verified_local_fact_to_routable_model(self):
+        adapter = ProviderDiscoveryAdapter(default_provider_registry())
+        result = adapter.discover((
+            ModelDiscoveryFact(
+                provider_id="ollama",
+                name="qwen-local",
+                capabilities=("coding", "reasoning"),
+                context_size=32768,
+                reliability=0.86,
+                latency_ms=420,
+                input_cost_per_million=0.0,
+                output_cost_per_million=0.0,
+                local=True,
+                verified=True,
+                reachable=True,
+            ),
+        ))
+
+        model = result.models.get("qwen-local")
+        self.assertIsNotNone(model)
+        self.assertTrue(model.available)
+        self.assertTrue(model.local)
+        self.assertEqual(model.privacy_level, "local")
+        self.assertEqual(result.provider_status["ollama"], ProviderStatus.AVAILABLE)
+
+    def test_provider_discovery_fails_closed_for_missing_cloud_auth_and_unverified_facts(self):
+        adapter = ProviderDiscoveryAdapter(default_provider_registry())
+        result = adapter.discover((
+            ModelDiscoveryFact(
+                provider_id="openai",
+                name="cloud-no-auth",
+                capabilities=("coding",),
+                context_size=64000,
+                reliability=0.95,
+                latency_ms=500,
+                input_cost_per_million=1.0,
+                output_cost_per_million=4.0,
+                local=False,
+                verified=True,
+                reachable=True,
+                auth_present=False,
+            ),
+            ModelDiscoveryFact(
+                provider_id="gemini",
+                name="unverified-gemini",
+                capabilities=("vision",),
+                context_size=64000,
+                reliability=0.90,
+                latency_ms=600,
+                input_cost_per_million=1.0,
+                output_cost_per_million=4.0,
+                local=False,
+                verified=False,
+                reachable=True,
+                auth_present=True,
+            ),
+        ))
+
+        self.assertFalse(result.models.get("cloud-no-auth").available)
+        self.assertFalse(result.models.get("unverified-gemini").available)
+        self.assertEqual(result.provider_status["openai"], ProviderStatus.AUTH_REQUIRED)
+        self.assertEqual(result.provider_status["gemini"], ProviderStatus.DISCOVERY_REQUIRED)
+        self.assertEqual(result.models.available(), [])
+
+    def test_provider_discovery_rejects_unknown_provider(self):
+        adapter = ProviderDiscoveryAdapter(default_provider_registry())
+        with self.assertRaises(ValueError):
+            adapter.discover((
+                ModelDiscoveryFact(
+                    provider_id="unknown-provider",
+                    name="mystery",
+                    capabilities=("coding",),
+                    context_size=4096,
+                    reliability=0.5,
+                    latency_ms=1000,
+                    input_cost_per_million=0.0,
+                    output_cost_per_million=0.0,
+                    local=False,
+                    verified=True,
+                    reachable=True,
+                    auth_present=True,
+                ),
+            ))
 
     def test_mcp_import_preview_redacts_secret_values_and_never_enables_unverified_server(self):
         importer = MCPConfigImporter()
