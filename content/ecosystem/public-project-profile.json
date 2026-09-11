@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "contractId": "ecosystem-project-profile-v1",
+  "projectId": "seis",
+  "displayName": "SEIS",
+  "role": "platform-runtime",
+  "repository": "emirhankudun-ux/SEIS",
+  "visibility": "public",
+  "summary": "Apple-first platform runtime coordinating supervised AI, agents, tools, local workspaces, evidence, and public-safe engineering demonstrations.",
+  "capabilityGroups": [
+    {
+      "id": "platform-foundation",
+      "label": "Platform Foundation",
+      "status": "source-declared",
+      "capabilities": [
+        "workspace-runtime",
+        "native-platform",
+        "search-and-files",
+        "command-center",
+        "desktop-shell"
+      ]
+    },
+    {
+      "id": "ai-orchestration",
+      "label": "AI Orchestration",
+      "status": "source-declared",
+      "capabilities": [
+        "ai-core",
+        "agent-runtime",
+        "provider-registry",
+        "model-router",
+        "prompt-engine",
+        "tool-policy",
+        "mcp-governance"
+      ]
+    },
+    {
+      "id": "evidence-security",
+      "label": "Evidence and Security",
+      "status": "source-declared",
+      "capabilities": [
+        "evidence-ledger",
+        "public-private-boundary",
+        "release-gates",
+        "security-scanning"
+      ]
+    },
+    {
+      "id": "developer-ecosystem",
+      "label": "Developer Ecosystem",
+      "status": "source-declared",
+      "capabilities": [
+        "plugin-registry",
+        "shared-contracts",
+        "ci-automation",
+        "documentation-system"
+      ]
+    }
+  ],
+  "publicBoundary": {
+    "exportEnabled": true,
+    "containsPrivateMemory": false,
+    "containsPrivateData": false,
+    "containsClientData": false,
+    "credentialsRequired": false,
+    "runtimeAuthority": false,
+    "crossRepositoryWrite": false
+  },
+  "verification": {
+    "commands": [
+      "node scripts/check-public-project-profile.mjs"
+    ],
+    "evidenceState": "not-recorded"
+  }
+}

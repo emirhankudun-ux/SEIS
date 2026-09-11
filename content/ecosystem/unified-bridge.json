@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "contractId": "unified-ecosystem-bridge-v1",
+  "project": {
+    "id": "seis",
+    "displayName": "SEIS",
+    "role": "platform-runtime",
+    "sourceRepository": "emirhankudun-ux/SEIS"
+  },
+  "federation": {
+    "mode": "curated",
+    "sourceRemainsCanonical": true,
+    "crossRepositoryWrites": false,
+    "historyImportRequired": false
+  },
+  "sharedContracts": [
+    "agent-runtime",
+    "intelligence-router",
+    "tool-and-mcp-boundary",
+    "knowledge-exchange",
+    "design-system-tokens",
+    "evidence-and-verification"
+  ],
+  "peers": [
+    {"id": "seis", "role": "platform-runtime"},
+    {"id": "eleni-neferi", "role": "creative-intelligence"},
+    {"id": "pantechnoepistemonoesis", "role": "research-intelligence"},
+    {"id": "portfolio-surface", "role": "public-presentation"}
+  ],
+  "publicExport": {
+    "enabled": true,
+    "policy": "public-safe-curated-only",
+    "contractId": "ecosystem-module-export-v1",
+    "schemaVersion": 1,
+    "manifestPath": "content/ecosystem/public-module-export.json",
+    "schemaOwner": "unified-flagship",
+    "forbidSecrets": true,
+    "forbidPrivateClientData": true,
+    "forbidUnverifiedCapabilityClaims": true
+  },
+  "projectProfile": {
+    "declared": true,
+    "contractId": "ecosystem-project-profile-v1",
+    "schemaVersion": 1,
+    "manifestPath": "content/ecosystem/public-project-profile.json",
+    "schemaOwner": "unified-flagship"
+  },
+  "status": "foundation-expanded",
+  "notes": "Defines interoperability and a public-safe project profile only. It does not merge repositories, grant write authority, or claim live cross-repository execution."
+}

@@ -1,0 +1,37 @@
+name: Unified Ecosystem Bridge
+
+on:
+  pull_request:
+    paths:
+      - 'content/ecosystem/unified-bridge.json'
+      - 'content/ecosystem/public-module-export.json'
+      - 'content/ecosystem/public-project-profile.json'
+      - 'scripts/check-unified-ecosystem-bridge.mjs'
+      - 'scripts/check-public-module-export.mjs'
+      - 'scripts/check-public-project-profile.mjs'
+      - 'test/public-module-export.test.mjs'
+      - 'test/public-project-profile.test.mjs'
+      - 'docs/architecture/UNIFIED_ECOSYSTEM_BRIDGE.md'
+      - 'docs/architecture/ECOSYSTEM_MODULE_EXPORT.md'
+      - 'docs/architecture/ECOSYSTEM_PROJECT_PROFILE.md'
+      - '.github/workflows/unified-ecosystem-bridge.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: node --test test/public-module-export.test.mjs
+      - run: node --test test/public-project-profile.test.mjs
+      - run: node scripts/check-unified-ecosystem-bridge.mjs
+      - run: node scripts/check-public-module-export.mjs
+      - run: node scripts/check-public-project-profile.mjs
