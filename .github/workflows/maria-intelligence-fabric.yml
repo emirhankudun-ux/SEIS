@@ -6,6 +6,7 @@ on:
       - 'packages/maria-runtime/**'
       - 'test/maria-intelligence-fabric.test.py'
       - 'test/maria-mcp-invocation-guard.test.py'
+      - 'test/maria-mcp-executor.test.py'
       - 'test/maria-mcp-process-supervisor.test.py'
       - 'test/maria-mcp-process-path-policy.test.py'
       - 'test/maria-mcp-protocol-negotiation.test.py'
@@ -19,6 +20,7 @@ on:
       - 'docs/architecture/MARIA_INTELLIGENCE_FABRIC_V1.md'
       - 'docs/architecture/MARIA_LOCAL_RUNTIME_PROBES.md'
       - 'docs/architecture/MARIA_MCP_PROCESS_SUPERVISOR.md'
+      - 'docs/architecture/MARIA_MCP_STDIO_TRANSPORT.md'
       - '.github/workflows/maria-intelligence-fabric.yml'
 
 permissions:
@@ -37,6 +39,7 @@ jobs:
           python-version: '3.12'
       - run: python3 test/maria-intelligence-fabric.test.py
       - run: python3 test/maria-mcp-invocation-guard.test.py
+      - run: python3 test/maria-mcp-executor.test.py
       - run: python3 test/maria-mcp-process-supervisor.test.py
       - run: python3 test/maria-mcp-process-path-policy.test.py
       - run: python3 test/maria-mcp-protocol-negotiation.test.py
