@@ -64,6 +64,12 @@ from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
 from .projects import ProjectProfile, ProjectRegistry, WorkMode, default_project_registry
 from .providers import ProviderRegistry, ProviderSpec, ProviderStatus, default_provider_registry
+from .recovery_reconciliation import (
+    RecoveryAnchor,
+    RecoveryReconciler,
+    RecoveryReconciliationAssessment,
+    RecoveryReconciliationDisposition,
+)
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouteDecision, ModelRouter
 from .safety import CommandPolicy
@@ -107,10 +113,11 @@ __all__ = [
     "ModelWorkInput", "ModelWorkStepBinding", "ModelWorkStepRunner", "MultiStepWorkRouter", "OllamaModelWorkAdapter",
     "PermissionDecision", "PermissionEngine", "ProbeHealthSummary", "ProbeObservation", "ProbeOutcome",
     "ProjectContextEngine", "ProjectContextRetriever", "ProjectProfile", "ProjectRegistry", "PromptCache",
-    "ProviderRegistry", "ProviderSpec", "ProviderStatus", "RecoveryAssessment", "RecoveryCatalogEntry",
-    "RecoveryDisposition", "RouteDecision", "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus", "TextNormalizer",
-    "ToolSpec", "ToolStatus", "UnifiedCapabilityRouter", "WorkMode", "WorkPlanCheckpoint", "WorkPlanExecutionResult",
-    "WorkPlanExecutor", "WorkRoutePlan", "WorkRouteStep", "WorkStepExecutionEvidence", "WorkStepExecutionPolicy",
+    "ProviderRegistry", "ProviderSpec", "ProviderStatus", "RecoveryAnchor", "RecoveryAssessment", "RecoveryCatalogEntry",
+    "RecoveryDisposition", "RecoveryReconciler", "RecoveryReconciliationAssessment", "RecoveryReconciliationDisposition",
+    "RouteDecision", "RouteKind", "RuntimeProbeState", "RuntimeProbeStatus", "TextNormalizer", "ToolSpec", "ToolStatus",
+    "UnifiedCapabilityRouter", "WorkMode", "WorkPlanCheckpoint", "WorkPlanExecutionResult", "WorkPlanExecutor",
+    "WorkRoutePlan", "WorkRouteStep", "WorkStepExecutionEvidence", "WorkStepExecutionPolicy",
     "WorkStepExecutionResult", "WorkStepRequest", "WorkStepRunResult", "WorkStepRunner", "WorkStepState",
     "default_project_registry", "default_provider_registry",
 ]
