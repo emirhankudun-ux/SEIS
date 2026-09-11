@@ -223,7 +223,13 @@ class GitWorkspaceEvidenceSource:
         if branch.endswith(".") or branch.endswith(".lock"):
             return False
         parts = branch.split("/")
-        if any(not part or part in {".", ".."} or part.startswith(".") for part in parts):
+        if any(
+            not part
+            or part in {".", ".."}
+            or part.startswith(".")
+            or part.endswith(".lock")
+            for part in parts
+        ):
             return False
         return all(
             ord(character) >= 32
