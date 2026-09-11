@@ -1,61 +1,25 @@
 # MARIA × SEIS — bounded web simulation and host-adapter contracts
 
-MARIA owns interaction and truthful result presentation. This web package explores SEIS contracts without replacing the repository's Apple-native direction. Native execution, voice, models, durable memory and MCP still require concrete implementations.
-
-## Execution boundary
-
 Default browser path:
+`input → plan → permission → provider selection → simulator → simulation verification → truthful UI`
 
-`validate input → immutable plan → permission → provider selection → simulator → response-contract check → truthful UI`
+Trusted-host path:
+`input → plan → permission → fresh provider readiness → live runtime → host adapter execute → attributed receipt → live verification`
 
-Trusted-host live path:
+`createProviderSupervisor` owns time-bounded readiness evidence. `createHostAdapterManager` owns the versioned connect/health/execute/disconnect contract. `LiveRuntimeAdapter` bridges a selected provider into orchestration. `verifyLiveReceipt` proves execution identity and evidence. These are separate boundaries by design: readiness ≠ authorization ≠ execution ≠ verification.
 
-`validate input → immutable plan → permission → fresh provider readiness → injected live runtime → host adapter execute → attributed receipt → live verification → truthful result`
+The shipped browser app uses simulation. Concrete transports remain external to this package until individually implemented and verified.
 
-`createOrchestrator` permits dependency injection. The shipped default instance uses only the simulator. `executionMode:'live'` never silently falls back to a mock. A timeout/cancellation is not completion. Late progress after settlement is ignored. External adapters must implement host-side cancellation/reconciliation because Promise.race alone cannot stop a remote side effect.
 
-## Authorization
+## Alpha.5 local OpenAI-compatible adapter
 
-Unrecognized risk fails closed. Project changes require an explicit write policy with safe mode disabled. High-impact operations remain approval-gated. Dismissing a notice is not consent. Text classification is advisory, not a security boundary.
+`src/adapters/localOpenAICompatible.js` implements the first concrete trusted-host provider transport. It is intentionally narrow: model discovery via `/v1/models`, chat inference via `/v1/chat/completions`, bounded cancellation/timeout handling, canonical provider-id binding, and attributable receipts. It contains no secret storage and is not auto-enabled by the browser UI.
 
-Plans and provider selections cannot be changed by UI observers. Event subscribers receive isolated payloads. Subscriber failures are bounded and normalized.
+End-to-end live inference remains dependency-injected: `local adapter → HostAdapterManager → LiveRuntimeAdapter → orchestrator → verifyLiveReceipt`. A valid HTTP response proves that a specific local provider returned a receipt; it does not prove that the model's natural-language answer is factually correct.
 
-## Capability truth
 
-Provider eligibility requires implemented, connected and health-verified state plus capability coverage. Catalog presence is never connectivity. `createProviderSupervisor` maintains bounded probe evidence with TTL and capability anti-escalation. `createHostAdapterManager` owns a versioned `connect → health → execute → disconnect` contract for an actual trusted host adapter. A provider must be ready before execute and only verified capabilities may be invoked.
+## Alpha.9 durable audit and recovery
 
-The two layers are intentionally separate: **readiness is not execution permission, and execution is not outcome verification**.
+Live host execution now has an audit lifecycle in addition to execution/verification: `provider selected → journal begin → execute → verify → journal complete`. The default in-memory journal preserves the existing bounded API; trusted hosts may inject `createPersistentExecutionJournal` with an explicit storage adapter. A live run does not begin when its audit-start record cannot be committed. If terminal audit persistence fails after an externally verified result, the public outcome is downgraded to `unverified` so a clean completion is not claimed without durable evidence.
 
-## Verification
-
-`verifyPrototype` checks only the simulator identity, result, intent, project, run identity and side-effect boundary. Its `verified` field remains false.
-
-`verifyLiveReceipt` checks a live host receipt. It requires:
-
-- runtime identity `host-runtime-v1` and mode `live`;
-- selected provider attribution;
-- matching intent, run ID and project ID;
-- explicit `outcomeVerified:true`;
-- non-empty external evidence.
-
-Only when every check passes may the orchestrator return `verified` and journal `verifiedExternalAction:true`.
-
-## Source of truth
-
-Fact resolution excludes desired user instructions and rejects unverified runtime claims. Equal-priority differing values return an explicit conflict with preserved candidates. Instruction selection is opt-in and does not override security or authorization.
-
-## Plugin boundary
-
-Plugin Host v2 validates API compatibility, identity, unique capability names, requested permissions and risk. Invocation requires all manifest permissions to be explicitly granted and is bounded by a timeout. Plugin exceptions are normalized. A valid manifest is not a sandbox or execution grant.
-
-## Persistence and audit
-
-`src/core/persistence.js` stores only an allowlist of non-secret UI/routing preferences. Tokens, credentials, prompts and arbitrary memory are excluded.
-
-`src/core/executionJournal.js` stores a bounded in-memory audit trail. Secret-shaped fields are redacted. Simulation evidence can never become an external-success claim.
-
-## Alpha.4 provider supervision + live runtime contract
-
-`src/core/providerSupervisor.js` handles time-bounded readiness probes, health expiry, cancellation and deduplication. `src/adapters/hostAdapter.js` defines the trusted-host adapter API and enforces health/capability readiness before execute. `src/adapters/liveRuntime.js` bridges the selected ready provider into orchestration through dependency injection.
-
-No concrete OpenAI/local-model/MCP/macOS/Unreal/Blender transport is configured by the shipped browser app. The architecture is ready for one verified end-to-end adapter without claiming that integration exists today.
+`findInterruptedRuns` only identifies durable runs whose latest state remains `running`. It does not replay them and returns `resumeAllowed: false`. Resumption is intentionally deferred until each consequential adapter has idempotency keys, side-effect reconciliation and explicit human authorization rules. The included file journal store is a host reference with bounded atomic writes, not the final Apple-native persistence layer.

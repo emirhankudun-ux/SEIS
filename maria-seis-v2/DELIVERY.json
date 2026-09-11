@@ -1,25 +1,24 @@
 {
-  "version": "4.0.0-alpha.8",
+  "version": "4.0.0-alpha.9",
   "repository": "emirhankudun-ux/SEIS",
   "branch": "maria-seis-v4-platform",
-  "baseCommit": "28ba01d3a730d78e7ea62624df881cad82af4ca4",
+  "parentCommit": "be324d8e76ac65b8a2c3bde0707a962525a374b3",
   "packagePath": "maria-seis-v2",
-  "scope": "web simulation plus real local read-only MCP subprocess check",
+  "scope": "alpha.8 real read-only MCP check plus durable redacted audit/recovery foundation",
   "verification": {
     "nodeTests": {
-      "passed": 152,
+      "passed": 161,
       "failed": 0
     },
     "browserOffline": {
       "passed": 17,
       "viewports": 7
     },
-    "httpBrowser": "blocked by environment policy; not verified",
-    "realMcp": "included reference server over OS pipes; package.json SHA-256 checked independently; child closed",
+    "realMcp": "verified: included read-only package inspector over OS pipes; independent SHA-256/byte match; child closed",
+    "recovery": "verified: real child exit left durable running marker; reload detected it; no auto-resume; explicit reconciliation cleared candidate",
+    "httpBrowser": "not rerun; prior environment policy blocked loopback navigation",
     "externalModels": "not tested against a real model process",
     "nativePlatforms": "not verified"
   },
-  "notes": "This is a standalone package distribution, not a full repository export. Archive checksums are in CHECKSUMS.sha256. Local verification does not certify repository-wide CI/security or third-party interoperability.",
-  "initialBaseCommit": "7146f65f5a53459b76074c50a93b513381b23040",
-  "publicationParent": "97c230ab245da35f1238b4353244ead1b03bc53e"
+  "notes": "No automatic resume. Interrupted live work requires reconciliation; persistent audit failure prevents a clean verified completion claim."
 }

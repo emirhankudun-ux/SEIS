@@ -1,19 +1,33 @@
-# MARIA × SEIS — 4.0.0-alpha.8
+# MARIA × SEIS — 4.0.0-alpha.9
 
-A premium web simulation plus a **real, narrowly scoped local MCP host check**. This is an engineering alpha, not a finished desktop operator. The SEIS Apple-first / Swift-first product direction is unchanged; this Node host is a small integration reference, not a replacement native architecture.
+A premium web simulation plus narrowly scoped **real local host verification** for MCP and execution recovery. This is an engineering alpha, not a finished desktop operator. The SEIS Apple-first / Swift-first direction is unchanged; the Node host remains an integration reference rather than the final native architecture.
 
-## Run the real local check
+## Run the verified local checks
 
-Use Node.js 22 or newer. No npm installation, model download, account, API key or runtime dependency is required for this command.
+Use Node.js 22 or newer. No npm installation, model download, account or API key is required.
 
 ```sh
 npm test
 npm run mcp:check
+npm run recovery:check
 ```
 
-Run these commands inside this package (`maria-seis-v2/` on GitHub). `mcp:check` starts the included MCP server in a separate Node process, negotiates protocol 2025-06-18, discovers `package.inspect`, authorizes that exact operation, and reads this package's `package.json`. The parent independently compares its bytes and SHA-256. It prints a JSON report and exits with status zero only when verification and child-process cleanup both succeed.
+`mcp:check` launches the included read-only MCP server over OS pipes, authorizes only `package.inspect`, independently checks this package's `package.json` bytes and SHA-256, then reaps the child process.
 
-This is real subprocess communication and real read-only filesystem inspection, **not an injected HTTP response**. It is not validation of a third-party MCP server, an LM Studio/Ollama installation, or macOS/Unreal/Blender control. No arbitrary CLI arguments, shell commands, user-selected file paths or network endpoints are accepted by the check.
+`recovery:check` launches a separate process that durably records a live run as `running` and exits before terminal completion. A new journal instance then detects the interrupted run, keeps `resumeAllowed: false`, records an explicit reconciliation result, reloads the journal and verifies that no interrupted run remains. The check never replays or resumes the interrupted action automatically.
+
+These are real subprocess and filesystem checks, not injected transport responses. They do not validate a third-party MCP server, real LM Studio/Ollama inference, macOS automation, Unreal, Blender or deployment.
+
+## Alpha.9 recovery and audit hardening
+
+- Persistent execution journal contract with redact-before-write behavior.
+- Atomic file-backed host store with bounded size and existing-target symlink refusal.
+- Corrupt audit history fails closed instead of silently resetting.
+- Journal start and terminal completion are a lifecycle: successful completion replaces the in-progress marker; an interrupted process leaves a recoverable `running` marker.
+- Live execution refuses to start when its audit-start record cannot be persisted.
+- If a live result is externally verified but the terminal audit commit fails, the orchestrator downgrades the public status to `unverified` and requires reconciliation rather than claiming clean completion.
+- Recovery scanning never auto-resumes side effects; candidates are marked `resumeAllowed: false`.
+- The existing MCP authorization, protocol negotiation, receipt identity and simulation/live separation remain intact.
 
 ## Preview the interface
 
@@ -21,26 +35,14 @@ This is real subprocess communication and real read-only filesystem inspection, 
 npm run dev
 ```
 
-The existing Python 3 development server binds to `http://127.0.0.1:4173`. The browser remains explicitly in simulation mode. Running the host check does not silently turn on live browser controls. Do not expose this development server to the public internet.
+The Python 3 development server binds to `http://127.0.0.1:4173`. The browser remains simulation-first and is not connected to the host recovery or MCP acceptance commands.
 
-## What changed
+## Verification boundaries
 
-- Bounded Node stdio transport with JSON-RPC framing, response correlation, cancellation, timeouts, crash handling and process cleanup.
-- Modern 2026-07-28 discovery/per-request metadata retained from the concurrent update, with explicit legacy version pinning, initialized notification, bounded atomic discovery and host authorization. The reference CLI pins 2025-06-18.
-- Host authorization defaults to deny. A discovered tool is not automatically authorized.
-- Malformed/empty results fail closed. Transport success and independently verified outcomes remain distinct.
-- Old discovery replies cannot replace newer discovery state; disconnect invalidates pending results.
-- Known host credential values are redacted from returned MCP data. Child environment does not inherit the parent's secrets.
-- Local-model receipts now preserve their provider, run, project and intent identity. Local-model network tests still use injected responses.
+Local verification for alpha.9 covers the Node suite, the real read-only MCP subprocess path, the real crash-marker/reload/reconciliation path, and the existing offline Chromium acceptance suite. HTTP browser navigation remains subject to the execution environment policy and is not claimed as verified when blocked.
 
-Existing provider supervision, preferences, plugin contracts, journal, source-of-truth resolver and simulation UI are preserved. A plugin contract is not an OS sandbox, and a health check is not task completion.
+A persistent journal is an audit/recovery primitive, not a full resumable workflow engine. Automatic side-effect replay is intentionally absent. Real local-model inference, third-party MCP interoperability, native Apple permissions, durable user memory, voice, vision, computer control, Unreal/Blender adapters and production deployment remain separate gates.
 
-## Verification and limits
+See [alpha.9 recovery verification](docs/ALPHA9-RECOVERY-JOURNAL.md), [alpha.8 MCP verification](docs/ALPHA8-MCP-STDIO.md), [architecture](ARCHITECTURE.md), [security](SECURITY.md) and [roadmap](docs/ROADMAP.md).
 
-The alpha.8 local package passed **152 Node tests** and **17 offline Chromium acceptance checks**. The included reference MCP server was launched and checked through real OS pipes and real files. Desktop and mobile screenshots show the actual rendered simulation UI.
-
-HTTP browser navigation was attempted but blocked by the execution environment (`ERR_BLOCKED_BY_ADMINISTRATOR`); it is not reported as passing. macOS/Windows native execution, cloud providers, real local-model inference, third-party MCP interoperability and deployment are not verified here.
-
-See [the alpha.8 verification record](docs/ALPHA8-MCP-STDIO.md), [architecture](ARCHITECTURE.md), [security](SECURITY.md) and [roadmap](docs/ROADMAP.md). Historical verification documents describe their named releases, not the current one. GitHub CI is a separate gate; local checks do not imply repository-wide security readiness.
-
-The Creative & Advertising Agency layer remains after core platform acceptance. ChatGPT app connections and credentials are not imported by this code. MIT license.
+The Creative & Advertising Agency layer remains gated behind the core platform acceptance criteria. MIT license.

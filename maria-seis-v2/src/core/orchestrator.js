@@ -10,7 +10,13 @@ let sequence = 0;
 /** Runtime is dependency-injected. The shipped app uses only the simulator; trusted hosts may inject an explicit live runtime. */
 export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = eventBus, timeoutMs = 10000, journal = executionJournal, providerRegistry = null } = {}) {
   if (!Number.isFinite(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) throw new TypeError('Invalid timeoutMs');
-  const writeJournal = entry => { try { journal?.append?.(entry); } catch { bus.emit('JOURNAL_FAILED',{runId:entry?.runId ?? null}); } };
+  const writeJournal = (entry,method='append') => {
+    try {
+      const writer=typeof journal?.[method]==='function' ? journal[method].bind(journal) : journal?.append?.bind(journal);
+      if (!writer) throw new Error('journal unavailable');
+      writer(entry); return true;
+    } catch { bus.emit('JOURNAL_FAILED',{runId:entry?.runId ?? null,phase:method}); return false; }
+  };
   return async function run(command, projectId, hooks = {}, policy = {}, options = {}) {
     let plan;
     const notify = (name, data) => {
@@ -40,6 +46,13 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
     const selectedProviders = Object.freeze(selectProviders(plan, {...policy,executionMode:mode}, providerRegistry ?? undefined));
     if (!selectedProviders.length) { const out={status:'unavailable',plan,reason:'Kullanılabilir bir yürütücü yok.'}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,verifiedExternalAction:false,evidence:[]}); return out; }
     bus.emit('PROVIDERS_SELECTED', {plan,selectedProviders}); notify('onProviders', selectedProviders);
+    const providerId=selectedProviders[0]?.id ?? null;
+    const auditStarted=writeJournal({runId:plan.runId,status:'running',executionMode:mode,provider:providerId,verifiedExternalAction:false,evidence:[]},'begin');
+    if (mode==='live' && !auditStarted) {
+      const out={status:'unavailable',plan,selectedProviders,reason:'Canlı yürütme denetim günlüğü olmadan başlatılmadı.',auditRecorded:false};
+      bus.emit('LIVE_EXECUTION_BLOCKED', {runId:plan.runId,reason:'audit-unavailable'});
+      return out;
+    }
     const controller = new AbortController();
     let timedOut = false;
     let settled = false;
@@ -63,12 +76,16 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
         : verifyPrototype(result, plan);
       bus.emit(mode === 'live' ? 'LIVE_EXECUTION_FINISHED' : 'SIMULATION_FINISHED', {plan,verification});
       const status = mode === 'live' ? (verification.verified ? 'verified' : 'unverified') : (verification.contractVerified ? 'simulated' : 'unverified');
-      const out={status,plan,selectedProviders,result,verification}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,provider:selectedProviders[0]?.id ?? null,verifiedExternalAction:verification.verifiedExternalAction === true,evidence:verification.evidence ?? []}); return out;
+      const terminal={runId:plan.runId,status,executionMode:mode,provider:providerId,verifiedExternalAction:verification.verifiedExternalAction === true,evidence:verification.evidence ?? []};
+      const auditRecorded=writeJournal(terminal,'complete');
+      if (mode==='live' && !auditRecorded) return {status:'unverified',plan,selectedProviders,result,verification,auditRecorded:false,reason:'Canlı sonuç doğrulandı ancak denetim günlüğü tamamlanamadı; sonuç yeniden uzlaştırılmalı.'};
+      return {status,plan,selectedProviders,result,verification,auditRecorded};
     } catch {
       const status = timedOut ? 'timed-out' : controller.signal.aborted ? 'cancelled' : 'error';
       const reason = { 'timed-out':'İşlem süre sınırında durduruldu.', cancelled:'İşlem iptal edildi.', error:'Yürütücü başarısız oldu; sonuç doğrulanmadı.' }[status];
       bus.emit('EXECUTION_STOPPED', {runId:plan.runId,status});
-      const out={status,plan,reason}; writeJournal({runId:plan.runId,status,executionMode:mode,provider:selectedProviders?.[0]?.id ?? null,verifiedExternalAction:false,evidence:[]}); return out;
+      const auditRecorded=writeJournal({runId:plan.runId,status,executionMode:mode,provider:providerId,verifiedExternalAction:false,evidence:[]},'complete');
+      return {status,plan,reason,auditRecorded};
     } finally {
       settled = true;
       clearTimeout(timer);

@@ -1,49 +1,39 @@
 # Next bounded milestones
 
-## Current checkpoint — alpha.7
+## Current checkpoint — alpha.9
 
-Truthful simulation/live separation, fail-closed permission policy, cancellation, bounded execution, isolated observers, conflict-aware facts, strict plugin metadata, provider supervision, host-adapter lifecycle, attributed live-receipt verification, an OpenAI-compatible local-model adapter contract, and a modernized MCP client contract.
+The core now includes truthful simulation/live separation, provider supervision, host-adapter contracts, strict live receipt identity, OpenAI-compatible local-model transport contracts, modern/legacy MCP lifecycle support, one real read-only MCP subprocess check, and a durable execution-journal/recovery primitive.
 
-## Completed alpha.7 scope
+## Completed alpha.9 scope
 
-- provider lifecycle contract and health state transitions;
-- safe preference persistence;
-- permission-enforced Plugin Host v2;
-- bounded plugin timeouts and crash isolation;
-- execution journal with redaction;
-- provider supervisor with bounded probe timeout, capability anti-escalation, health TTL, cancellation and per-provider probe deduplication;
-- host adapter API v2 (`connect`, `health`, `execute`, `disconnect`);
-- capability-gated execution through `createHostAdapterManager`;
-- dependency-injected `LiveRuntimeAdapter`;
-- attributed live receipt verification and journal evidence;
-- OpenAI-compatible local-model adapter contract with `/v1/models` discovery, `/v1/chat/completions`, timeout/cancellation and canonical `local` provider binding;
-- MCP `2026-07-28` discovery with per-request protocol/client metadata;
-- safe fallback to legacy MCP initialization when `server/discover` is unsupported;
-- required legacy `notifications/initialized` lifecycle signal;
-- negotiated protocol validation, malformed tool-list rejection and malformed tool-result rejection;
-- discovered-tool-only execution, host-side authentication forwarding and cancellation;
-- end-to-end adapter → host manager → live runtime → orchestrator → verifier coverage for local inference;
-- fresh regression suite: **96 Node tests**;
-- offline Chromium acceptance: **17 checks**.
+- all alpha.8 MCP and receipt-identity boundaries remain;
+- persistent redacted execution journal with atomic host file storage;
+- audit `begin` / `complete` lifecycle around actual execution;
+- live fail-closed behavior when audit start cannot be persisted;
+- verified live results downgrade to `unverified` when terminal audit persistence fails;
+- interrupted-run scan after reload with immutable recovery candidates;
+- automatic resume explicitly disabled;
+- real subprocess interruption → durable marker → reload → reconciliation acceptance check.
 
 ## Next highest-value milestone
 
-Connect one **real trusted local-model host** and one **real MCP server** through the existing contracts, then verify reproducible end-to-end execution with attributable evidence. The host must expose real identity, bounded health checks, cancellation and explicit outcome evidence. Transport success must not be presented as semantic correctness or proof of an external side effect.
+Connect one real trusted local-model host available to the runtime and verify reproducible end-to-end inference through `HostAdapterManager → LiveRuntimeAdapter → orchestrator → verifier`, including cancellation and exact receipt identity. In parallel, test the MCP client against one maintained third-party server without widening tool permissions.
 
 ## Core platform gates before broad product expansion
 
-1. Real MCP transport against one trusted server, including permission prompts for consequential tools.
+1. Third-party MCP interoperability against one trusted server, with explicit permission prompts for consequential tools.
 2. Real local-model transport against one trusted local host.
-3. Server-side OpenAI adapter with no browser-side secrets.
+3. Server-side/cloud model adapter with no browser-side secrets.
 4. Native Apple host and scoped macOS permissions with reversible actions.
 5. Real voice with explicit capture indicators, interruption and permission-safe microphone state.
 6. Vision/screen context with structured APIs preferred over brittle coordinate automation.
-7. Unreal/Blender adapters validated against installed versions and a real project.
-8. Durable memory with provenance, deletion, export and conflict handling.
-9. Stoppable scheduling, crash recovery, resumable work and deployment hardening.
-10. Accessibility, performance, security and public-installation acceptance gates.
+7. Computer-control contract with scoped targets, user-visible consent, reversible actions and post-action verification.
+8. Unreal/Blender adapters validated against installed versions and a real project.
+9. Durable user memory with provenance, deletion, export and conflict handling.
+10. Recovery v2: adapter idempotency/reconciliation, resumable non-consequential work, scheduling and multi-process journal coordination.
+11. Accessibility, performance, security and public-installation acceptance gates.
 
-Do not start the full creative/advertising agency implementation until the relevant core platform gates above are stable enough to support real tools, evidence, permissions, memory and recovery.
+Do not start broad Creative & Advertising Agency execution until the relevant core platform gates are stable enough to support real tools, evidence, permissions, memory and recovery.
 
 # Future major layer — MARIA Creative & Advertising Agency
 

@@ -1,0 +1,11 @@
+{
+  "version": "4.0.0-alpha.9",
+  "repository": "emirhankudun-ux/SEIS",
+  "branch": "maria-seis-v4-platform",
+  "pullRequest": 226,
+  "packagePath": "maria-seis-v2",
+  "parentCommit": "be324d8e76ac65b8a2c3bde0707a962525a374b3",
+  "scope": "durable redacted execution audit plus crash-recovery detection; no automatic resume",
+  "publicationCommit": "intentionally derived from Git history; not self-referenced in this file",
+  "ci": "GitHub workflow status must be checked after publication; local verification is separate"
+}
