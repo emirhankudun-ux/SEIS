@@ -2,7 +2,7 @@
 
 ## Status
 
-Foundation slice. Provider metadata, verified model-discovery conversion, safe MCP import preview, and a trust/approval MCP gateway evaluator are implemented. No live provider or MCP process execution is enabled by this document or its companion runtime modules.
+Foundation slice. Provider metadata, verified model-discovery conversion, safe MCP import preview, trust/approval MCP gateway evaluation, unified cognition/execution capability routing, and a per-call MCP permission guard are implemented. No live provider or MCP process execution is enabled by this document or its companion runtime modules.
 
 ## Purpose
 
@@ -35,6 +35,8 @@ MARIA
   |     +-- MCP Config Import Preview (redacted, disabled)
   |     +-- MCP Gateway (trust/schema/provenance/approval evaluation)
   |     +-- Capability Registry (verified tools)
+  |     +-- Unified Capability Router (cognition vs real execution boundary)
+  |     +-- MCP Invocation Guard (fresh per-call permission check)
   |
   +-- Permission Engine (per action)
   +-- Verification / Evidence
@@ -113,6 +115,31 @@ The gateway fails closed:
 
 There are therefore two distinct approval boundaries: **server enablement** and **per-action execution**. Enabling a server never grants blanket mutation authority.
 
+## Unified capability routing rules
+
+`UnifiedCapabilityRouter` deliberately separates cognition from external execution instead of treating every matching capability label as interchangeable.
+
+For cognition requests, the router delegates to `ModelRouter` and therefore preserves verified model availability, context fit, reliability, cost/latency scoring, and local-first privacy behavior for sensitive work.
+
+For execution requests, the router delegates only to `CapabilityRegistry`. A model is never allowed to satisfy an execution request merely because it advertises the same capability string. This prevents a language model from being mistaken for authority to inspect or mutate a real external system.
+
+Execution routes also preserve project support constraints. A tool approved for `Deadly Evil` does not silently become a valid route for another project unless that support is explicitly declared.
+
+## Per-call MCP invocation guard
+
+`MCPInvocationGuard` is the final pure policy boundary before a future executor. It still does not start a process or perform an MCP call.
+
+For every planned invocation it requires:
+
+1. the MCP tool to already be `AVAILABLE` from the trust/enablement gateway;
+2. the requested capability to exist in the exact discovered method permission map;
+3. a fresh `PermissionEngine` evaluation for the concrete target;
+4. fresh explicit approval when the action class requires it.
+
+Low-risk read actions may be ready without extra approval. `MODIFY`, `EXTERNAL`, `DESTRUCTIVE`, `FINANCIAL`, and `PRIVACY_SENSITIVE` actions remain blocked until that specific call is explicitly approved. Prior server enablement does not count as per-call approval.
+
+Unknown methods fail closed and cannot be invoked through an enabled server.
+
 ## Secret boundary
 
 Secret values must not be committed to repository configuration or returned in public manifests. Future live adapters should resolve credentials through an external secure secret store (for macOS, Keychain is the preferred native direction) and pass only the minimum required credential material to a provider process or request.
@@ -121,18 +148,18 @@ The current MCP importer intentionally discards environment values even when the
 
 ## Why MCP process execution remains disabled
 
-A healthy MCP descriptor plus discovery evidence still does not itself provide a process supervisor, credential resolver, retry/circuit-breaker runtime, or per-call executor. Those are separate implementation surfaces that must preserve the trust decisions above.
+A healthy MCP descriptor plus discovery evidence still does not itself provide a bounded process supervisor, credential resolver, retry/circuit-breaker runtime, transport framing, timeout policy, output-size limits, or verified executor. Those remain separate implementation surfaces.
 
-The current foundation can determine whether a server is eligible for explicit enablement and how each discovered method must be permission-classified, but it intentionally does not launch or invoke the server.
+The current foundation can determine whether a server is eligible for explicit enablement, how each discovered method must be permission-classified, whether a specific call is currently permitted, and whether a cognitive or execution request should route to a verified model or tool. It intentionally stops before launching or invoking the server.
 
 ## Next slices
 
-1. Provider-specific discovery sources for Ollama, LM Studio, and selected cloud providers that emit redacted `ModelDiscoveryFact` records.
-2. MCP process supervisor with bounded launch, health probes, schema capture, retries/circuit breakers, and evidence recording.
-3. Per-call MCP executor that re-checks `PermissionEngine` before every invocation.
-4. Unified capability routing that combines model requirements with verified tool requirements.
+1. Provider-specific discovery sources for Ollama and LM Studio that emit redacted `ModelDiscoveryFact` records without credentials.
+2. MCP process supervisor with bounded launch, health probes, schema capture, retries/circuit breakers, timeouts, and evidence recording.
+3. MCP executor that can only consume a ready `MCPInvocationPlan`, re-checks runtime health, and records invocation evidence.
+4. Multi-step work routing that can compose a cognitive model route with one or more permission-gated tool routes without collapsing the two trust domains.
 5. Project-aware policy profiles for SEIS, Deadly Evil, Eleni-Neferi, Pantechnoepistemonoesis, PANTECHNOSYNI, and Portfolio.
-6. SwiftUI Integration Center for provider/MCP status, import preview, approvals, and health evidence.
+6. SwiftUI Integration Center for provider/MCP status, import preview, approvals, health evidence, and route explanations.
 
 ## Non-goals of v1
 
