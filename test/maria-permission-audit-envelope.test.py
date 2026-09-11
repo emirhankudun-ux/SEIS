@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
 
 from maria_runtime import (
     ActionClass,
+    PermissionDecision,
     PermissionEngine,
     ResolvedTargetEvidence,
     permission_decision_audit_envelope,
@@ -107,6 +108,33 @@ class MariaPermissionAuditEnvelopeTests(unittest.TestCase):
     def test_envelope_rejects_non_decision_input(self):
         with self.assertRaises(TypeError):
             permission_decision_audit_envelope({"allowed": True})
+
+    def test_serializer_fails_closed_for_noncanonical_direct_decisions(self):
+        valid = {
+            "action_class": ActionClass.MODIFY,
+            "target": self.target,
+            "allowed": True,
+            "requires_approval": True,
+            "reason": "explicit approval recorded",
+            "reversible": False,
+            "target_evidence": self.evidence,
+        }
+        invalid_overrides = [
+            {"action_class": "modify"},
+            {"target": f" {self.target}"},
+            {"allowed": "true"},
+            {"requires_approval": 1},
+            {"reason": ""},
+            {"reason": "unsafe\nreason"},
+            {"reversible": "false"},
+            {"target_evidence": {"target": self.target}},
+        ]
+
+        for override in invalid_overrides:
+            with self.subTest(override=override):
+                decision = PermissionDecision(**(valid | override))
+                with self.assertRaisesRegex(TypeError, "permission decision is not canonical"):
+                    permission_decision_audit_envelope(decision)
 
     def test_shared_schema_matches_the_runtime_envelope_contract(self):
         schema_path = ROOT / "schemas" / "maria-permission-audit-envelope-v1.schema.json"
