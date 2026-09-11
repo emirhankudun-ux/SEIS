@@ -44,6 +44,10 @@ Before persistence, the shared validator now requires tuple collections, a boole
 
 Tests compare the previous file byte-for-byte after each rejected save, reload the valid baseline, and check that no temporary files remain. Each invalid subcase resets only its synthetic fixture so a RED write cannot contaminate the next case.
 
+### Fault injection for the existing write path
+
+Four additional acceptance tests cover synthetic file-flush failure before replacement, replacement failure, best-effort directory-flush failure, and private POSIX file modes. The first two require the original checkpoint bytes to survive unchanged and temporary files to be removed. The directory-flush test preserves the documented best-effort behavior after a successful replacement. This verifies existing write-path behavior rather than claiming a new defect or a simulated power-loss durability proof; filesystem and hardware guarantees remain outside these tests.
+
 ## Test-first evidence
 
 All four behavioral groups had hosted RED evidence before their implementation:
@@ -57,7 +61,7 @@ All four behavioral groups had hosted RED evidence before their implementation:
 
 These are four failure classes with many subcases, not a claim that every failed subcase is a different security vulnerability. Final acceptance must use the PR's current-head checks, not a prior green commit.
 
-Focused commands (33 unittest methods, with additional subcases):
+Focused commands (37 unittest methods, with additional subcases):
 
 ```sh
 python3 test/maria-recovery-dashboard-race.test.py

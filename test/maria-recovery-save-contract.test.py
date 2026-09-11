@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import os
 from pathlib import Path
+import stat
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
@@ -101,6 +104,49 @@ class RecoverySaveContractTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.store.save("OTHER", "new", replace(self.original, complete=1))
         self.assertFalse((self.root / "OTHER").exists())
+
+    def updated_checkpoint(self):
+        step = replace(self.original.steps[0], target_name="fixture-updated")
+        return replace(self.original, steps=(step,))
+
+    def assert_original_survives_failed_write(self):
+        self.assertEqual(self.path.read_bytes(), self.original_bytes)
+        self.assertEqual(self.store.load("SEIS", "existing"), self.original)
+        self.assertEqual(list(self.root.rglob("*.tmp")), [])
+
+    def test_file_flush_failure_preserves_previous_checkpoint_and_cleans_temp(self):
+        with patch("maria_runtime.work_recovery.os.fsync", side_effect=OSError("synthetic flush failure")):
+            with self.assertRaises(OSError):
+                self.store.save("SEIS", "existing", self.updated_checkpoint())
+        self.assert_original_survives_failed_write()
+
+    def test_replace_failure_preserves_previous_checkpoint_and_cleans_temp(self):
+        with patch("maria_runtime.work_recovery.os.replace", side_effect=OSError("synthetic replace failure")):
+            with self.assertRaises(OSError):
+                self.store.save("SEIS", "existing", self.updated_checkpoint())
+        self.assert_original_survives_failed_write()
+
+    @unittest.skipUnless(os.name == "posix", "directory fsync is a POSIX contract")
+    def test_directory_flush_failure_retains_documented_best_effort_behavior(self):
+        real_fsync = os.fsync
+        directory_flushes = []
+
+        def fail_directory_only(fd):
+            if stat.S_ISDIR(os.fstat(fd).st_mode):
+                directory_flushes.append(fd)
+                raise OSError("synthetic directory flush failure")
+            return real_fsync(fd)
+
+        updated = self.updated_checkpoint()
+        with patch("maria_runtime.work_recovery.os.fsync", side_effect=fail_directory_only):
+            self.store.save("SEIS", "existing", updated)
+        self.assertEqual(len(directory_flushes), 1)
+        self.assertEqual(self.store.load("SEIS", "existing"), updated)
+        self.assertEqual(list(self.root.rglob("*.tmp")), [])
+
+    @unittest.skipUnless(os.name == "posix", "file mode privacy is a POSIX contract")
+    def test_persisted_checkpoint_is_not_readable_by_group_or_others(self):
+        self.assertEqual(stat.S_IMODE(self.path.stat().st_mode) & 0o077, 0)
 
 
 if __name__ == "__main__":
