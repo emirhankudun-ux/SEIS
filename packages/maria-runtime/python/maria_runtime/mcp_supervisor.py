@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+import ntpath
+import posixpath
 from typing import Protocol
 
 from .mcp_config import MCPServerDescriptor
@@ -31,9 +33,9 @@ class MCPProcessPolicy:
     """Fail-closed process launch policy for one supervised MCP boundary.
 
     The policy deliberately requires exact executable and provenance allowlists.
-    Dynamic package-manager launch and environment resolution are disabled by
-    default because both can introduce code or secrets outside the reviewed
-    descriptor/provenance boundary.
+    PATH lookup, dynamic package-manager launch, and environment resolution are
+    disabled by default because each can introduce executable or secret state
+    outside the reviewed descriptor/provenance boundary.
     """
 
     allowed_commands: tuple[str, ...]
@@ -45,6 +47,7 @@ class MCPProcessPolicy:
     max_arg_bytes: int = 4_096
     circuit_failure_threshold: int = 2
     max_attempts: int = 3
+    allow_path_lookup: bool = False
     allow_dynamic_package_manager: bool = False
 
     def __post_init__(self) -> None:
@@ -171,7 +174,7 @@ class MCPProcessSupervisor:
 
         try:
             result = self._transport.start(plan)
-        except BaseException:
+        except Exception:
             return self._record_failure(("transport-failure",), startup_latency_ms=None)
 
         failures: list[str] = []
@@ -251,6 +254,10 @@ class MCPProcessSupervisor:
             blockers.append("provenance-id-missing")
         elif evaluation.provenance_id not in self._policy.allowed_provenance_ids:
             blockers.append("provenance-not-allowlisted")
+
+        command_is_absolute = posixpath.isabs(descriptor.command) or ntpath.isabs(descriptor.command)
+        if not command_is_absolute and not self._policy.allow_path_lookup:
+            blockers.append("path-lookup-disabled")
 
         executable = descriptor.command.replace("\\", "/").rsplit("/", 1)[-1].lower()
         if executable in _DYNAMIC_PACKAGE_MANAGERS and not self._policy.allow_dynamic_package_manager:
