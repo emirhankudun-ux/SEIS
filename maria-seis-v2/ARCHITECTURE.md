@@ -28,4 +28,18 @@ Fact resolution excludes desired user instructions and rejects unverified claims
 
 ## Plugin boundary
 
-The SDK validates identity, version shape, unique capability names, risk and callable factories. Capability arrays are defensively copied and frozen. A valid manifest neither authorizes execution nor isolates arbitrary JavaScript. No third-party plugin loader is shipped.
+The original SDK validates identity, version shape, unique capability names, risk and callable factories. Alpha.3 adds Plugin Host v2: API-version compatibility, explicit permission declaration and grants, duplicate registration protection, bounded invocation timeout and exception isolation. It is still not an OS sandbox for arbitrary third-party JavaScript.
+
+## Alpha.3 runtime contracts
+
+### Provider lifecycle
+`src/core/providerLifecycle.js` owns explicit provider transitions and health evidence. Catalog presence is not connectivity. `ready` is only meaningful when trusted host code supplies verified health evidence.
+
+### Safe preference persistence
+`src/core/persistence.js` persists only an allowlist of non-secret UI/routing preferences. Credentials, tokens, prompts, arbitrary memory and execution evidence are excluded.
+
+### Execution journal
+`src/core/executionJournal.js` stores a bounded in-memory audit trail. The orchestrator records terminal outcomes and never converts simulation evidence into an external-success claim. Secret-shaped keys are redacted before storage.
+
+### Next architectural gate
+The next live capability should be one real provider adapter with an explicit handshake and health check. It should use these contracts rather than bypassing them.
