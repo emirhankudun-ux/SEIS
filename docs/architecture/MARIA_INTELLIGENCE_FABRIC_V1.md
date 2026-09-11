@@ -2,7 +2,7 @@
 
 ## Status
 
-Foundation slice. Provider metadata, verified model-discovery conversion, schema-aware local runtime discovery parsing for LM Studio and Ollama, safe MCP import preview, trust/approval MCP gateway evaluation, unified cognition/execution capability routing, and a per-call MCP permission guard are implemented. No live provider or MCP process execution is enabled by this document or its companion runtime modules.
+Foundation slice. Provider metadata, verified model-discovery conversion, bounded/provenance-bound local runtime discovery for LM Studio and Ollama, redacted local health evidence, safe MCP import preview, trust/approval MCP gateway evaluation, unified cognition/execution capability routing, and a per-call MCP permission guard are implemented. No cloud-provider execution, local-model inference, runtime auto-launch, MCP process execution, or external mutation is enabled by this document or its companion runtime modules.
 
 ## Purpose
 
@@ -30,7 +30,9 @@ MARIA
   |
   +-- Intelligence Fabric
   |     +-- Provider Registry (metadata only)
-  |     +-- Local Runtime Discovery Parsers (successful response -> redacted facts)
+  |     +-- Local Runtime Probe (bounded localhost metadata only)
+  |     +-- Local Discovery Coordinator (provenance + health gate)
+  |     +-- Local Runtime Discovery Parsers (verified response -> redacted facts)
   |     +-- Provider Discovery Adapter (verified redacted facts -> ModelSpec)
   |     +-- Model Registry / Router (verified model facts)
   |     +-- MCP Config Import Preview (redacted, disabled)
@@ -80,19 +82,30 @@ A separate discovery source must collect a redacted `ModelDiscoveryFact`. The ad
 6. local discovered models are marked with local privacy metadata;
 7. only routing metadata is accepted: credentials, tokens, headers, and secret values have no field in the discovery schema.
 
-This separates *observation* from *routing*. A later adapter may inspect a local or cloud runtime, but it must return redacted facts before the central runtime can use them.
+This separates *observation* from *routing*. A discovery source may inspect a local or cloud runtime, but it must return redacted facts before the central runtime can use them.
 
-## Local runtime discovery parsing
+## Local runtime discovery and orchestration
 
-The current local discovery layer remains side-effect free. It parses successful responses that were collected elsewhere; it does not open sockets or start local runtimes itself.
+`LocalRuntimeProbe` provides a bounded HTTP metadata path for already-running LM Studio and Ollama services on literal `127.0.0.1`. It cannot accept arbitrary hosts, URLs, methods, headers, credentials, redirects, or unbounded response sizes and never launches a runtime.
 
-`LMStudioV1DiscoverySource` consumes the current native `GET /api/v1/models` response shape. It only emits LLM facts, requires an explicit positive `max_context_length`, and derives only capabilities exposed by LM Studio itself (`vision`, tool-use, reasoning) plus the generic `chat` capability. Embedding models are ignored by this routing slice rather than misclassified as chat models.
+`LMStudioV1DiscoverySource` consumes the native `GET /api/v1/models` response shape. It only emits LLM facts, requires an explicit positive `max_context_length`, and derives only capabilities exposed by LM Studio itself (`vision`, tool-use, reasoning) plus the generic `chat` capability. Embedding models are ignored by this routing slice rather than misclassified as chat models.
 
-`OllamaShowDiscoverySource` consumes a successful `POST /api/show` response for a named model. It requires Ollama-reported capability strings and extracts context only from explicit `*.context_length` metadata. It does not infer a coding or reasoning capability from the model name, family, parameter count, or quantization.
+`OllamaTagsDiscoverySource` consumes `GET /api/tags` and produces non-routable `LocalModelCandidate` inventory records. `OllamaShowDiscoverySource` consumes a successful `POST /api/show` response for a named model, requires Ollama-reported capability strings, and extracts context only from explicit `*.context_length` metadata. It does not infer coding, vision, reasoning, or tool capability from a model name, family, parameter count, or quantization.
 
-Both parsers require measured latency and reliability evidence from the future probe/health layer and emit only redacted local `ModelDiscoveryFact` records with zero provider usage cost. Missing context metadata or malformed capability metadata fails closed.
+`LocalDiscoveryCoordinator` binds these pieces together:
 
-This keeps model-name heuristics out of the trust boundary and prevents SEIS from claiming that a local model can perform coding, vision, reasoning, or tool-use unless the runtime or another verified capability source actually reports that fact.
+1. an Ollama inventory refresh revokes the previous in-memory inventory first;
+2. the new inventory becomes current only after the bounded tags probe and parser both succeed;
+3. automatic show probes may target only names from that current inventory;
+4. a name outside the inventory requires an explicit user-selection boundary;
+5. transport failures are recorded through typed, redacted failure categories rather than raw exception text;
+6. provider-specific payload parsing must succeed before an HTTP 200 observation is counted as a health success;
+7. `ModelDiscoveryFact` is withheld until the health ledger reaches its minimum evidence threshold;
+8. only then is observed reliability attached to the model fact for downstream routing.
+
+This prevents HTTP reachability, inventory presence, a single successful response, or model-name heuristics from being mistaken for durable capability/reliability evidence.
+
+See `docs/architecture/MARIA_LOCAL_RUNTIME_PROBES.md` for the detailed local trust boundary.
 
 ## MCP import rules
 
@@ -157,23 +170,26 @@ Unknown methods fail closed and cannot be invoked through an enabled server.
 
 Secret values must not be committed to repository configuration or returned in public manifests. Future live adapters should resolve credentials through an external secure secret store (for macOS, Keychain is the preferred native direction) and pass only the minimum required credential material to a provider process or request.
 
-The current MCP importer intentionally discards environment values even when they are present in imported JSON. Provider discovery similarly accepts only an `auth_present` boolean rather than credential material.
+The current MCP importer intentionally discards environment values even when they are present in imported JSON. Provider discovery similarly accepts only an `auth_present` boolean rather than credential material. Local metadata probes send no authentication headers.
 
-## Why live execution remains disabled
+## Why broader live execution remains disabled
 
-Successful model-response parsing does not itself provide a bounded HTTP probe layer, runtime-start policy, authentication policy, health history, or endpoint allowlist. Likewise, a healthy MCP descriptor plus discovery evidence still does not itself provide a bounded process supervisor, credential resolver, retry/circuit-breaker runtime, transport framing, timeout policy, output-size limits, or verified executor.
+The local runtime slice now has a bounded metadata probe, provenance-bound orchestration, typed failure evidence, and a minimum-reliability gate, but it intentionally stops before inference, model loading, runtime launch, downloads, or arbitrary provider traffic.
 
-The current foundation can convert already-collected local model metadata into redacted facts, determine whether an MCP server is eligible for explicit enablement, classify discovered method permissions, determine whether a specific call is currently permitted, and distinguish cognitive model routing from real external execution. It intentionally stops before launching runtimes, opening provider connections, or invoking MCP methods.
+Likewise, a healthy MCP descriptor plus discovery evidence still does not itself provide a bounded process supervisor, credential resolver, retry/circuit-breaker runtime, transport framing, timeout policy, output-size limits, or verified executor.
+
+The foundation can determine which observed local models are safe to expose to routing metadata, whether an MCP server is eligible for explicit enablement, classify discovered method permissions, determine whether a specific call is currently permitted, and distinguish cognitive model routing from real external execution. It intentionally stops before granting new execution authority.
 
 ## Next slices
 
-1. Bounded localhost discovery probes for LM Studio and Ollama with strict endpoint allowlists, timeouts, response-size limits, latency measurement, and no implicit runtime launch.
-2. MCP process supervisor with bounded launch, health probes, schema capture, retries/circuit breakers, timeouts, and evidence recording.
-3. MCP executor that can only consume a ready `MCPInvocationPlan`, re-checks runtime health, and records invocation evidence.
-4. Verified capability enrichment for local models, so coding/design/vision/reasoning routing is based on evidence rather than model-name heuristics.
-5. Multi-step work routing that can compose a cognitive model route with one or more permission-gated tool routes without collapsing the two trust domains.
-6. SwiftUI Integration Center for provider/MCP status, import preview, approvals, health evidence, and route explanations.
+1. End-to-end local model routing contract: coordinator evidence → `ProviderDiscoveryAdapter` → `ModelRouter`, including route explanations and minimum-evidence rejection.
+2. Immutable local-runtime status snapshots for the future SwiftUI Integration Center without exposing raw payloads or secrets.
+3. Bounded MCP process supervisor with launch allowlists, health/schema evidence, retries/circuit breakers, timeouts, output limits, and provenance recording.
+4. MCP executor that can only consume a ready `MCPInvocationPlan`, re-checks runtime health, and records invocation evidence.
+5. Verified capability enrichment for local models where runtime metadata is insufficient, without model-name heuristics.
+6. Multi-step work routing that can compose a cognitive model route with one or more permission-gated tool routes without collapsing the two trust domains.
+7. SwiftUI Integration Center for provider/MCP/runtime status, import preview, approvals, health evidence, and route explanations.
 
 ## Non-goals of v1
 
-This slice does not include provider API calls, OAuth, model downloads, automatic runtime launch, MCP process launch, plugin installation, filesystem mutation, Git mutation, Unreal/Blender mutation, GUI automation, deployment, publication, billing actions, or uncontrolled background agents.
+This slice does not include cloud provider API calls, OAuth, model downloads, automatic runtime launch, model inference, MCP process launch, plugin installation, filesystem mutation, Git mutation, Unreal/Blender mutation, GUI automation, deployment, publication, billing actions, or uncontrolled background agents.
