@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented as a bounded discovery slice for MARIA Intelligence Fabric v1.
+Implemented as a bounded discovery + redacted health-evidence slice for MARIA Intelligence Fabric v1.
 
 The probe layer can inspect already-running LM Studio and Ollama services on the local machine. It does **not** start, install, download, authenticate to, or mutate a runtime.
 
@@ -44,6 +44,21 @@ The tags parser rejects duplicate model names, missing identity metadata, non-po
 
 The LM Studio models request is a body-free GET with only an `Accept: application/json` header. It is intended for local model metadata discovery, not inference.
 
+## Redacted health evidence
+
+`LocalHealthEvidenceLedger` keeps a bounded in-memory history per supported probe. `ProbeObservation` intentionally has no raw body, header, prompt, model output, exception-message, or credential field.
+
+Supported normalized outcomes are limited to success, timeout, transport error, HTTP error, policy rejection, and invalid response. The ledger:
+
+- keeps only the latest configured number of samples per probe;
+- never invents reliability from insufficient data;
+- exposes `reliability=None` until a minimum sample threshold is met;
+- derives reliability from the observed success ratio once enough samples exist;
+- derives median latency only from successful observations;
+- keeps provider/probe combinations on an explicit allowlist.
+
+This allows the later discovery coordinator to supply evidence-backed reliability to `LMStudioV1DiscoverySource` / `OllamaShowDiscoverySource` instead of passing a guessed constant.
+
 ## Failure behavior
 
 Redirects, non-200 responses, non-JSON media types, invalid UTF-8/JSON, array/scalar roots, oversized responses, invalid configuration, transport errors, and timeouts fail closed through `LocalProbeError` or configuration `ValueError`.
@@ -60,6 +75,10 @@ already-running local runtime
 LocalRuntimeProbe
         ↓
 LocalProbeResult
+        ├──────────────→ LocalHealthEvidenceLedger
+        │                       ↓
+        │                evidence-backed reliability
+        │
         ↓
 LM Studio: LMStudioV1DiscoverySource
         ↓
@@ -86,8 +105,6 @@ ModelRouter / UnifiedCapabilityRouter
 
 This separation prevents HTTP reachability or inventory presence from being mistaken for model capability. The show/models parsers still require explicit runtime-reported context/capability metadata, and routing still requires verified discovery facts.
 
-Reliability history is intentionally not invented from one successful probe. A later health/evidence layer should aggregate repeated observations and supply reliability to the parser.
-
 ## Security non-goals
 
 This slice does not:
@@ -100,23 +117,25 @@ This slice does not:
 - download or load models;
 - perform inference;
 - read or write credentials;
+- persist raw response bodies or exception messages in health evidence;
 - mutate filesystem, Git, Unreal, Blender, or external services.
 
 ## Verification
 
-The focused test suite verifies fixed loopback targets, request method/body/header minimality, timeout and size propagation, latency measurement, malformed/oversized/redirect/non-success failure behavior, port validation, model-name validation, Ollama inventory parsing, duplicate/incomplete candidate rejection, and the non-routable candidate boundary.
+The focused test suite verifies fixed loopback targets, request method/body/header minimality, timeout and size propagation, latency measurement, malformed/oversized/redirect/non-success failure behavior, port validation, model-name validation, Ollama inventory parsing, duplicate/incomplete candidate rejection, the non-routable candidate boundary, bounded health history, minimum-evidence reliability, and redacted observation schemas.
 
-Two test-first cycles cover this slice:
+Three test-first cycles cover this local-runtime slice:
 
 1. the hosted MARIA Intelligence Fabric workflow failed because `maria_runtime.local_probe` did not exist, then passed after the bounded probe implementation was added;
-2. the hosted workflow failed because `LocalModelCandidate` / `OllamaTagsDiscoverySource` did not exist, then passed after inventory parsing and `probe_ollama_tags()` were added.
+2. the hosted workflow failed because `LocalModelCandidate` / `OllamaTagsDiscoverySource` did not exist, then passed after inventory parsing and `probe_ollama_tags()` were added;
+3. the hosted workflow failed because `maria_runtime.local_health` did not exist, then passed after the bounded redacted health ledger was implemented.
 
 ## Next safe slice
 
-The next highest-value local-runtime step is health and provenance evidence:
+The next highest-value local-runtime step is provenance-bound discovery orchestration:
 
-1. record repeated probe observations in a bounded redacted evidence ledger;
-2. derive reliability from recent evidence rather than a guessed constant;
-3. require inventory-to-show provenance so automatic Ollama `/api/show` probes only target names returned by verified enumeration (or an explicitly user-selected model);
+1. require automatic Ollama `/api/show` probes to target names returned by the current verified `/api/tags` inventory (or an explicitly user-selected model);
+2. connect successful/failed probe outcomes to the redacted health ledger without storing raw error text;
+3. feed reliability into discovery parsers only after the minimum evidence threshold is met;
 4. expose verified local model state to the Integration Center without auto-launching runtimes;
 5. keep inference and model loading as separately permissioned capabilities.
