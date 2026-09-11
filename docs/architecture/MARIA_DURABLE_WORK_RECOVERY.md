@@ -41,15 +41,25 @@ Writes are performed to a temporary file in the target directory, flushed and `f
 Reads are fail-closed. The loader checks:
 
 - project/work identifiers before path construction;
+- configured root and project-directory storage shape;
+- symbolic-link aliases on the project directory and checkpoint file;
 - regular-file status and maximum byte size before JSON parsing;
-- UTF-8 JSON validity;
+- a no-follow final file open on hosts that provide `O_NOFOLLOW`;
+- strict UTF-8 JSON validity, including rejection of duplicate object keys and `NaN`, `Infinity`, and `-Infinity`;
+- finite positive save timestamps;
 - exact envelope/body/step schemas;
 - schema version and identity match;
 - bounded step count and fields;
 - aggregate count consistency;
 - completion/next-step consistency.
 
+Saving likewise rejects a symbolic-link checkpoint root or project directory instead of writing through an alias outside the configured recovery root. JSON emission uses `allow_nan=False` so the store never intentionally writes non-standard non-finite JSON values.
+
 A corrupt or incompatible checkpoint raises `CheckpointCorruptError`; it is never silently treated as trusted recovery state.
+
+### Filesystem trust boundary
+
+The symlink checks protect against pre-existing filesystem aliases and the final checkpoint-file open is no-follow where the operating system supports it. This store is **not** a hostile multi-user filesystem sandbox: the configured recovery root must remain private to the trusted SEIS/MARIA host account. A principal that can concurrently replace directories inside that root already has filesystem authority outside this checkpoint contract.
 
 ## Recovery semantics
 
@@ -71,4 +81,6 @@ The archived MARIA/SEIS Python intake contained a useful crash-recovery prototyp
 
 Focused contract: `test/maria-work-checkpoint-recovery.test.py`.
 
-The contract was committed before implementation. Hosted CI first failed because `maria_runtime.work_recovery` did not exist. The implementation was then added and the MARIA regression job passed the focused recovery tests together with the existing MARIA script suite.
+The original contract was committed before the durable-store implementation and hosted CI first failed because `maria_runtime.work_recovery` did not exist. The storage-hardening follow-up was also test-first: hosted MARIA regression CI failed on the new non-finite/symlink requirements before the implementation was changed. A second focused red/green cycle then proved that duplicate JSON object keys were accepted before strict object-pair parsing was added.
+
+The hardened contract covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, duplicate-key rejection, non-finite timestamp rejection, symbolic-link rejection, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.

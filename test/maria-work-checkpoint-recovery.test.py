@@ -108,6 +108,19 @@ class DurableCheckpointRecoveryTests(unittest.TestCase):
         with self.assertRaises(CheckpointCorruptError):
             self.store.load("SEIS", "work-001")
 
+    def test_duplicate_json_keys_fail_closed(self):
+        self.store.save("SEIS", "work-001", checkpoint(evidence("plan", WorkStepState.SUCCEEDED)))
+        path = self.store.path_for("SEIS", "work-001")
+        serialized = path.read_text("utf-8")
+        serialized = serialized.replace(
+            '"project_id":"SEIS"',
+            '"project_id":"OTHER","project_id":"SEIS"',
+            1,
+        )
+        path.write_text(serialized, "utf-8")
+        with self.assertRaises(CheckpointCorruptError):
+            self.store.load("SEIS", "work-001")
+
     def test_unknown_schema_version_fails_closed(self):
         self.store.save("SEIS", "work-001", checkpoint(evidence("plan", WorkStepState.SUCCEEDED)))
         path = self.store.path_for("SEIS", "work-001")
@@ -132,6 +145,42 @@ class DurableCheckpointRecoveryTests(unittest.TestCase):
         path.write_text("{" + ("x" * 512) + "}", "utf-8")
         with self.assertRaises(CheckpointCorruptError):
             small.load("SEIS", "work-001")
+
+    def test_non_finite_checkpoint_timestamp_fails_closed(self):
+        self.store.save("SEIS", "work-001", checkpoint(evidence("plan", WorkStepState.SUCCEEDED)))
+        path = self.store.path_for("SEIS", "work-001")
+        payload = json.loads(path.read_text("utf-8"))
+        for non_finite in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(non_finite=non_finite):
+                payload["saved_at"] = non_finite
+                path.write_text(json.dumps(payload), "utf-8")
+                with self.assertRaises(CheckpointCorruptError):
+                    self.store.load("SEIS", "work-001")
+
+    def test_load_rejects_checkpoint_symlink_instead_of_following_it(self):
+        original = checkpoint(evidence("plan", WorkStepState.SUCCEEDED))
+        path = self.store.save("SEIS", "work-001", original)
+        serialized = path.read_bytes()
+        path.unlink()
+
+        with tempfile.TemporaryDirectory(dir=self.root.parent) as external_dir:
+            external = Path(external_dir) / "work-001.json"
+            external.write_bytes(serialized)
+            path.symlink_to(external)
+            with self.assertRaises(CheckpointCorruptError):
+                self.store.load("SEIS", "work-001")
+
+    def test_save_rejects_symlinked_project_directory(self):
+        with tempfile.TemporaryDirectory(dir=self.root.parent) as external_dir:
+            project_dir = self.root / "SEIS"
+            project_dir.symlink_to(Path(external_dir), target_is_directory=True)
+            with self.assertRaises(ValueError):
+                self.store.save(
+                    "SEIS",
+                    "work-001",
+                    checkpoint(evidence("plan", WorkStepState.SUCCEEDED)),
+                )
+            self.assertFalse((Path(external_dir) / "work-001.json").exists())
 
     def test_completed_checkpoint_is_not_a_recovery_candidate(self):
         self.store.save("SEIS", "work-001", checkpoint(evidence("plan", WorkStepState.SUCCEEDED)))
