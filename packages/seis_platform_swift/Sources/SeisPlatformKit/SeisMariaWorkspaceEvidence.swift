@@ -220,7 +220,9 @@ public enum SeisMariaWorkspaceEvidenceSource {
     private static func parseSymbolicHead(_ raw: String) throws -> (refName: String, branch: String) {
         let value: String
         if raw.hasSuffix("\r\n") {
-            value = String(raw.dropLast(2))
+            // CRLF is one Swift Character but two metadata scalars. Removing two
+            // Characters would also delete the branch's final grapheme cluster.
+            value = String(raw.unicodeScalars.dropLast(2))
         } else if raw.hasSuffix("\n") {
             value = String(raw.dropLast())
         } else {
