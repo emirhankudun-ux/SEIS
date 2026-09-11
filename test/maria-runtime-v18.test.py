@@ -70,11 +70,15 @@ class MariaRuntimeV18Tests(unittest.TestCase):
                     engine.evaluate(ActionClass.MODIFY, target="source", approved=approved)
 
         denied = engine.evaluate(ActionClass.MODIFY, target="source", approved=False)
-        granted = engine.evaluate(ActionClass.MODIFY, target="source", approved=True)
+        approved_without_target_evidence = engine.evaluate(
+            ActionClass.MODIFY,
+            target="source",
+            approved=True,
+        )
         self.assertFalse(denied.allowed)
         self.assertTrue(denied.requires_approval)
-        self.assertTrue(granted.allowed)
-        self.assertTrue(granted.requires_approval)
+        self.assertFalse(approved_without_target_evidence.allowed)
+        self.assertTrue(approved_without_target_evidence.requires_approval)
 
     def test_permission_engine_rejects_non_boolean_reversibility_evidence(self):
         engine = PermissionEngine()

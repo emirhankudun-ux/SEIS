@@ -8,7 +8,7 @@ from .cache import PromptCache
 from .context import ContextFact, ProjectContextEngine
 from .continuation import ContinuationBrief, ContinuationResolver
 from .models import ModelRegistry, ModelSpec
-from .permissions import ActionClass, PermissionDecision, PermissionEngine
+from .permissions import ActionClass, PermissionDecision, PermissionEngine, ResolvedTargetEvidence
 from .projects import ProjectProfile, ProjectRegistry, WorkMode, default_project_registry
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouter
@@ -30,6 +30,7 @@ __all__ = [
     "ProjectProfile",
     "ProjectRegistry",
     "PromptCache",
+    "ResolvedTargetEvidence",
     "ToolSpec",
     "ToolStatus",
     "WorkMode",
