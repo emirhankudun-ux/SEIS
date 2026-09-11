@@ -81,6 +81,18 @@ class MCPProtocolNegotiationTests(unittest.TestCase):
         self.assertFalse(decision.fallback_used)
         self.assertEqual(decision.reason, "modern-version-error")
 
+    def test_modern_version_error_without_mutual_version_fails_closed(self):
+        with self.assertRaises(LookupError):
+            self.negotiator.decide_after_probe({
+                "jsonrpc": "2.0",
+                "id": "discover-1",
+                "error": {
+                    "code": -32022,
+                    "message": "unsupported protocol version",
+                    "data": {"supported": ["2099-01-01"]},
+                },
+            })
+
     def test_timeout_or_unrecognized_error_falls_back_to_latest_legacy_initialize(self):
         timeout = self.negotiator.decide_after_probe(None)
         self.assertEqual(timeout.era, MCPProtocolEra.LEGACY)
