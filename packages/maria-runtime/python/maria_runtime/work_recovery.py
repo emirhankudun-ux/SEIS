@@ -108,6 +108,7 @@ class DurableWorkCheckpointStore:
     _MAX_STEPS = 256
     _MAX_DISCOVERY_FILES = 256
     _MAX_DISCOVERY_LIMIT = 256
+    _MAX_DISCOVERY_ENTRIES = 1024
     _STEP_FIELDS = {
         "step_id",
         "route_kind",
@@ -428,7 +429,9 @@ class DurableWorkCheckpointStore:
 
         Discovery is read-only and returns advisory metadata only. It never
         authorizes execution or returns a partial result when the caller's bound
-        would be exceeded.
+        would be exceeded. Enumeration stops on the first entry beyond either
+        the JSON-candidate or total-directory-entry budget, before sorting or
+        loading any candidate. Non-JSON entries consume the scan budget too.
         """
 
         project = self._validated_id(project_id, field_name="project_id")
@@ -445,15 +448,23 @@ class DurableWorkCheckpointStore:
         if parent is None:
             return ()
 
+        candidates: list[Path] = []
         try:
-            candidates = sorted(
-                (path for path in parent.iterdir() if path.suffix == ".json"),
-                key=lambda path: path.name,
-            )
+            # scandir streams names; collecting all entries first would defeat
+            # the resource bound even if an overflow were rejected afterwards.
+            with os.scandir(parent) as directory:
+                for index, entry in enumerate(directory):
+                    if index >= self._MAX_DISCOVERY_ENTRIES:
+                        raise CheckpointCorruptError("recovery catalog exceeds trusted entry bound")
+                    candidate = parent / entry.name
+                    if candidate.suffix != ".json":
+                        continue
+                    if len(candidates) >= self._MAX_DISCOVERY_FILES:
+                        raise CheckpointCorruptError("recovery catalog exceeds trusted file bound")
+                    candidates.append(candidate)
         except OSError as exc:
             raise CheckpointCorruptError("recovery catalog cannot be enumerated") from exc
-        if len(candidates) > self._MAX_DISCOVERY_FILES:
-            raise CheckpointCorruptError("recovery catalog exceeds trusted file bound")
+        candidates.sort(key=lambda path: path.name)
 
         entries: list[RecoveryCatalogEntry] = []
         for candidate in candidates:
@@ -596,6 +607,18 @@ class DurableWorkCheckpointStore:
         def fail(message: str) -> None:
             raise error_type(message)
 
+        # Validate runtime types before equality, iteration, hashing or JSON
+        # emission. Otherwise bool/int aliases can save a record we cannot load.
+        if not isinstance(checkpoint.steps, tuple):
+            fail("checkpoint steps must be a tuple")
+        if type(checkpoint.complete) is not bool:
+            fail("checkpoint complete flag must be boolean")
+        for field_name in (
+            "succeeded_steps", "failed_steps", "blocked_steps", "cancelled_steps"
+        ):
+            count = getattr(checkpoint, field_name)
+            if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+                fail("invalid checkpoint count")
         if len(checkpoint.steps) > cls._MAX_STEPS:
             fail("checkpoint contains too many steps")
         states = {
@@ -609,6 +632,10 @@ class DurableWorkCheckpointStore:
         for step in checkpoint.steps:
             if not isinstance(step, WorkStepExecutionEvidence):
                 fail("checkpoint contains invalid step evidence")
+            if not isinstance(step.route_kind, RouteKind):
+                fail("invalid checkpoint route kind")
+            if not isinstance(step.state, WorkStepState):
+                fail("invalid checkpoint step state")
             if not isinstance(step.step_id, str) or not step.step_id or len(step.step_id) > 128:
                 fail("invalid step id")
             if step.step_id in seen:
@@ -617,6 +644,8 @@ class DurableWorkCheckpointStore:
                 fail("invalid target name")
             if isinstance(step.attempts, bool) or not isinstance(step.attempts, int) or step.attempts < 0:
                 fail("invalid attempt count")
+            if not isinstance(step.depends_on, tuple):
+                fail("checkpoint dependencies must be a tuple")
             if len(step.depends_on) > cls._MAX_STEPS or any(
                 not isinstance(dep, str) or not dep or len(dep) > 128 for dep in step.depends_on
             ):
@@ -625,7 +654,10 @@ class DurableWorkCheckpointStore:
                 fail("checkpoint contains duplicate dependency ids")
             if any(dependency not in seen for dependency in step.depends_on):
                 fail("checkpoint dependency must reference an earlier step")
-            if step.failure is not None and cls._SAFE_FAILURE_RE.fullmatch(step.failure) is None:
+            if step.failure is not None and (
+                not isinstance(step.failure, str)
+                or cls._SAFE_FAILURE_RE.fullmatch(step.failure) is None
+            ):
                 fail("failure category is not a bounded safe identifier")
             if step.state not in states:
                 fail("invalid checkpoint step state")

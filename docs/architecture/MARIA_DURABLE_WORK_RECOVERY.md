@@ -47,7 +47,7 @@ Checkpoint evidence remains limited to fields already present in `WorkPlanCheckp
 - step identifier;
 - route kind and target name;
 - normalized step state;
-- bounded attempt count;
+- attempt count with state/evidence validation;
 - dependency identifiers;
 - bounded normalized failure category;
 - aggregate step counts;
@@ -72,6 +72,8 @@ A failure category must be a bounded identifier. Free-form exception strings are
 ## Atomicity and corruption handling
 
 Writes are performed to a temporary file in the target directory, flushed and `fsync`'d, then moved into place with `os.replace`. The directory is best-effort `fsync`'d where supported. Temporary files are removed on failed writes.
+
+Runtime shape is validated before creating directories or emitting JSON. Step and dependency collections must be tuples, completion must be a real boolean, counts must be non-negative integers rather than boolean/float aliases, and route/state values must be their declared enums. Failure values are type-checked before regular-expression matching. Invalid caller-created evidence raises `ValueError` before it can replace a valid checkpoint with a record the loader would reject.
 
 Reads are fail-closed. The loader checks:
 
@@ -111,12 +113,15 @@ Discovery is deliberately fail-closed:
 - each filename must encode a valid work identifier;
 - every candidate is reloaded through the same strict checkpoint parser and filesystem checks;
 - both schema v1 and v2 records are validated through their exact envelope contracts;
-- the project directory has a fixed trusted candidate-file ceiling;
+- enumeration stops at the first excess candidate beyond 256 JSON names or the first excess entry beyond 1024 total directory entries;
+- the scan uses a context-managed `os.scandir` iterator; neither sorting nor checkpoint loading begins before enumeration bounds pass;
 - the caller supplies a bounded result `limit`;
 - exceeding that result limit raises instead of returning a partial catalog;
-- unrelated non-JSON files are ignored and no cleanup is performed.
+- unrelated non-JSON entries consume the scan budget, but their contents are ignored and no cleanup is performed.
 
 If a trusted concurrent cleanup removes a candidate between directory enumeration and loading, that vanished record is skipped because absence is not resumable evidence. Discovery never repairs, deletes, rewrites, resumes, or executes a checkpoint.
+
+The dashboard also reapplies visibility after its final inspection: a record completed after discovery is still excluded when `include_complete=False`. This is not a cross-file atomic snapshot or a guarantee that context cannot change after the result is returned.
 
 ## Recovery reconciliation
 
@@ -146,12 +151,16 @@ The archived MARIA/SEIS Python intake contained a useful crash-recovery prototyp
 
 Focused contracts include:
 
-- `test/maria-work-checkpoint-recovery.test.py`;
-- `test/maria-recovery-catalog.test.py`;
-- `test/maria-recovery-invariants.test.py`;
+- `test/maria-work-checkpoint-recovery.test.py` (including catalog discovery);
+- `test/maria-work-checkpoint-invariants.test.py`;
 - `test/maria-recovery-reconciliation.test.py`;
-- `test/maria-recovery-anchor-persistence.test.py`.
+- `test/maria-recovery-anchor-persistence.test.py`;
+- `test/maria-recovery-catalog-bounds.test.py`;
+- `test/maria-recovery-dashboard-race.test.py`;
+- `test/maria-recovery-save-contract.test.py`.
 
 The schema-v2 migration was specified test-first. Hosted MARIA regression CI was red while `DurableRecoveryRecord`, `load_record()`, and anchor-aware v2 persistence were absent. The implementation then added v2 writes, v1 reads, strict anchor parsing, and the public record API without weakening catalog discovery, durable invariants, or the no-execution-authority boundary.
 
-The combined recovery contract now covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, duplicate-key rejection, non-finite timestamp rejection, symbolic-link rejection, semantic graph/state integrity, bounded deterministic catalog discovery, checkpoint/context drift reconciliation, v1 compatibility, v2 anchor persistence, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.
+The combined recovery contract covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, duplicate-key rejection, non-finite timestamp rejection, symbolic-link rejection, semantic graph/state integrity, bounded deterministic catalog discovery, checkpoint/context drift reconciliation, v1 compatibility, v2 anchor persistence, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.
+
+The focused quality follow-up, reproduction evidence and remaining limitations are documented in [MARIA Recovery Input Consistency](MARIA_RECOVERY_INPUT_CONSISTENCY.md).
