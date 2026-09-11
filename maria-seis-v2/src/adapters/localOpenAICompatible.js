@@ -71,7 +71,8 @@ export function createLocalOpenAICompatibleAdapter({id='local-openai-compatible'
       const receiptId=payload?.id;
       if (typeof output!=='string' || !output.trim() || typeof receiptId!=='string' || !receiptId.trim()) throw new Error('invalid completion response');
       return {
-        ok:true,output:output.trim(),providerReceiptId:receiptId,model:payload?.model||configuredModel,
+        ok:true,providerId:id,runId:requestPayload?.runId ?? null,projectId:requestPayload?.projectId ?? null,intent:requestPayload?.intent ?? null,
+        output:output.trim(),providerReceiptId:receiptId,model:payload?.model||configuredModel,
         usage:payload?.usage??null,outcomeVerified:true,
         evidence:[`model:${payload?.model||configuredModel}`,`provider-receipt:${receiptId}`]
       };
