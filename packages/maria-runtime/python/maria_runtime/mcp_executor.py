@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import math
+import threading
 import time
-from typing import Any, Mapping, Protocol
+from typing import Any, Callable, Mapping, Protocol
 
 from .mcp_invocation import MCPInvocationPlan
 from .permissions import ActionClass
@@ -56,20 +58,34 @@ class MCPInvocationResult:
 
 
 class MCPInvocationExecutor:
-    """Execute one already-approved MCP invocation through a healthy transport.
+    """Execute one fresh, single-use MCP invocation through a healthy transport.
 
     This is intentionally downstream of ``MCPInvocationGuard``. The executor
-    treats a ready plan as a capability token for exactly one call and checks its
-    internal permission invariants again before touching the transport. It also
-    binds the plan's ``mcp:<server>`` identity to the currently running child.
+    treats a ready plan as a short-lived capability token for exactly one
+    transport attempt and checks its internal permission invariants again before
+    touching the transport. It also binds the plan's ``mcp:<server>`` identity
+    to the currently running child.
 
-    No retry is performed here: repeating a method could duplicate mutations or
-    external side effects. Retry policy, when safe, belongs above this boundary
-    and must obtain a fresh invocation plan/permission decision.
+    A plan is consumed immediately before the transport request. Transport
+    failures, JSON-RPC errors and malformed responses therefore never make the
+    same authorization reusable. Callers that want to retry must obtain a fresh
+    permission decision and invocation plan.
     """
 
-    def __init__(self, transport: MCPInvocationTransport) -> None:
+    MAX_PLAN_TTL_SECONDS = 300.0
+
+    def __init__(
+        self,
+        transport: MCPInvocationTransport,
+        *,
+        clock: Callable[[], float] = time.monotonic,
+    ) -> None:
         self._transport = transport
+        self._clock = clock
+        self._claim_lock = threading.Lock()
+        # Keep only unexpired consumed identifiers. This bounds replay state by
+        # the maximum authorization lifetime rather than process lifetime.
+        self._consumed_until: dict[str, float] = {}
 
     def execute(
         self,
@@ -81,8 +97,10 @@ class MCPInvocationExecutor:
         max_response_bytes: int = 64 * 1024,
     ) -> MCPInvocationResult:
         self._validate_plan(plan)
+        now = self._validate_lifecycle(plan)
         self._validate_request(params, request_id, timeout_ms, max_response_bytes)
         self._validate_transport(plan)
+        self._claim_plan(plan, now=now)
 
         started_at = time.monotonic()
         try:
@@ -163,6 +181,33 @@ class MCPInvocationExecutor:
         if not plan.permission.target.strip():
             raise PermissionError("MCP invocation permission target is empty")
 
+    def _validate_lifecycle(self, plan: MCPInvocationPlan) -> float:
+        if not isinstance(plan.plan_id, str) or not plan.plan_id.strip():
+            raise PermissionError("MCP invocation plan has invalid lifecycle identity")
+
+        issued = plan.issued_at_monotonic
+        expires = plan.expires_at_monotonic
+        for value in (issued, expires):
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise PermissionError("MCP invocation plan has invalid lifecycle timestamp")
+            if not math.isfinite(float(value)):
+                raise PermissionError("MCP invocation plan has invalid lifecycle timestamp")
+
+        issued = float(issued)
+        expires = float(expires)
+        ttl = expires - issued
+        if issued < 0 or ttl <= 0 or ttl > self.MAX_PLAN_TTL_SECONDS:
+            raise PermissionError("MCP invocation plan lifetime is invalid")
+
+        now = float(self._clock())
+        if not math.isfinite(now) or now < 0:
+            raise RuntimeError("monotonic clock returned an invalid value")
+        if issued > now:
+            raise PermissionError("MCP invocation plan was issued in the future")
+        if expires <= now:
+            raise PermissionError("MCP invocation plan has expired")
+        return now
+
     @staticmethod
     def _validate_request(
         params: Mapping[str, Any],
@@ -191,6 +236,20 @@ class MCPInvocationExecutor:
             raise RuntimeError("MCP invocation transport is not running")
         if getattr(snapshot, "failure", None) is not None:
             raise RuntimeError("MCP invocation transport has unresolved failure evidence")
+
+    def _claim_plan(self, plan: MCPInvocationPlan, *, now: float) -> None:
+        with self._claim_lock:
+            stale = [
+                plan_id
+                for plan_id, expires_at in self._consumed_until.items()
+                if expires_at <= now
+            ]
+            for plan_id in stale:
+                del self._consumed_until[plan_id]
+
+            if plan.plan_id in self._consumed_until:
+                raise PermissionError("MCP invocation plan has already been consumed")
+            self._consumed_until[plan.plan_id] = float(plan.expires_at_monotonic)
 
     @staticmethod
     def _measure_response(response: Mapping[str, Any]) -> int:
