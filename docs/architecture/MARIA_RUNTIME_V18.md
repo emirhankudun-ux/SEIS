@@ -56,6 +56,12 @@ Approval is no longer derived only from an LLM-generated numeric risk level. The
 
 Permission target identity is exact at this boundary. `target` must be an actual string, must already be non-empty without leading or trailing whitespace, and must not contain ASCII control characters such as NUL, tabs, CR or LF. The runtime does not trim, normalize or rewrite a target before recording the decision; ordinary interior spaces are preserved. This prevents a host, log or later adapter from silently authorizing one textual identity and presenting another after coercion or record framing.
 
+Explicit approval is necessary but is no longer sufficient to grant an approval-required action. A granted `MODIFY`, `EXTERNAL`, `DESTRUCTIVE`, `FINANCIAL`, or `PRIVACY_SENSITIVE` decision must also carry a `ResolvedTargetEvidence` record whose target exactly matches the requested target. The evidence source must be an exact non-empty control-free string, `verified` must be an exact boolean, and `observed_at` must be a timezone-aware `datetime`.
+
+The permission gate accepts target evidence only when it is verified, not future-dated, and no older than 60 seconds according to the engine clock. Missing, stale, future, unverified, or target-mismatched evidence therefore leaves an otherwise approved high-impact action denied. The clock is injectable at engine construction for deterministic testing; it is not supplied per authorization decision, so a request cannot widen its own freshness window. Existing low-risk `READ` / `SAFE_EXECUTE` behavior and the ordinary no-approval denial path remain unchanged.
+
+`ResolvedTargetEvidence` is a typed boundary claim, not cryptographic proof that a resource exists or that the named source really produced the record. The current Python runtime has no live adapter capable of establishing that fact. A future host or adapter must resolve the real resource from its own structured API state, construct fresh evidence from that resolution, retain appropriate audit provenance, and invoke the permission gate again immediately before the actual effect. This slice deliberately does not grant execution authority or add an adapter.
+
 Approval evidence is also type-strict at this boundary: `approved` must be an exact boolean. Serialized strings such as `"false"` / `"true"`, integers, null-like values, containers, or other truthy/falsy objects are rejected rather than interpreted through Python truthiness. This keeps model/tool payload coercion from becoming authorization.
 
 Reversibility evidence is a separate tri-state safety contract: `reversible` may be exact `True`, exact `False`, or `None` when unknown. Strings, numbers, containers, and other coercible values are rejected instead of being preserved as ambiguous rollback metadata. Reversibility remains descriptive evidence only and never grants execution authority.
@@ -90,6 +96,7 @@ The v17 prompt cache hashes only the first two messages with MD5. v18 hashes the
 
 ```bash
 python3 test/maria-runtime-v18.test.py
+python3 test/maria-permission-target-evidence.test.py
 python3 scripts/check-maria-runtime-v18.py
 python3 apps/maria-desktop/maria.py --doctor
 python3 apps/maria-desktop/maria.py --status
