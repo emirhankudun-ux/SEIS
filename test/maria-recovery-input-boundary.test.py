@@ -115,6 +115,24 @@ class RecoveryInputBoundaryTests(unittest.TestCase):
 
     def test_durable_schema_version_must_fit_native_signed_integer(self):
         native_max = (1 << 63) - 1
+
+        payload = self.payload()
+        payload["rows"][0]["schema_version"] = native_max
+        decoded = self.codec.decode(json.dumps(payload).encode())
+        self.assertEqual(decoded.rows[0].schema_version, native_max)
+        self.assertEqual(
+            RecoveryNativeBridgeAdapter().adapt(decoded).rows[0].durable_schema_version,
+            native_max,
+        )
+        encoded_source = replace(
+            self.source,
+            rows=(replace(self.source.rows[0], schema_version=native_max),),
+        )
+        self.assertEqual(
+            self.codec.decode(self.codec.encode(encoded_source)).rows[0].schema_version,
+            native_max,
+        )
+
         for value in (native_max + 1, 1 << 100):
             with self.subTest(path="decode", value=value):
                 payload = self.payload()
