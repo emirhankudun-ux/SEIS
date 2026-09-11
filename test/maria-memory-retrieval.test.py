@@ -92,6 +92,66 @@ class MariaMemoryRetrievalTests(unittest.TestCase):
         self.assertTrue(hits[0].fact.verified)
         self.assertEqual(hits[0].fact.source, "runtime-probe")
 
+    def test_context_retriever_uses_resolved_fact_per_key_by_default(self):
+        engine = ProjectContextEngine(
+            (
+                ContextFact(
+                    key="active-branch",
+                    value="feature/obsolete-memory-branch",
+                    source="github",
+                    project="SEIS",
+                    confidence=0.99,
+                    verified=True,
+                    observed_at="2026-09-11T07:00:00Z",
+                ),
+                ContextFact(
+                    key="active-branch",
+                    value="feature/current-memory-branch",
+                    source="github",
+                    project="SEIS",
+                    confidence=0.99,
+                    verified=True,
+                    observed_at="2026-09-11T08:00:00Z",
+                ),
+            )
+        )
+        retriever = ProjectContextRetriever(engine)
+
+        self.assertEqual(retriever.search("obsolete memory", project="SEIS"), [])
+        hits = retriever.search("current memory", project="SEIS")
+        self.assertEqual(len(hits), 1)
+        self.assertIn("current-memory-branch", str(hits[0].fact.value))
+
+    def test_context_retriever_can_explicitly_search_history(self):
+        engine = ProjectContextEngine(
+            (
+                ContextFact(
+                    key="active-branch",
+                    value="feature/obsolete-memory-branch",
+                    source="github",
+                    project="SEIS",
+                    confidence=0.99,
+                    verified=True,
+                    observed_at="2026-09-11T07:00:00Z",
+                ),
+                ContextFact(
+                    key="active-branch",
+                    value="feature/current-memory-branch",
+                    source="github",
+                    project="SEIS",
+                    confidence=0.99,
+                    verified=True,
+                    observed_at="2026-09-11T08:00:00Z",
+                ),
+            )
+        )
+        retriever = ProjectContextRetriever(engine)
+
+        hits = retriever.search("obsolete memory", project="SEIS", include_history=True)
+
+        self.assertEqual(len(hits), 1)
+        self.assertIn("obsolete-memory-branch", str(hits[0].fact.value))
+
     def test_empty_query_returns_no_hits(self):
         index = BM25Index()
         index.add("one", "some useful text")
