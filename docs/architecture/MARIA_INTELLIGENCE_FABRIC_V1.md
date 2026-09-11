@@ -2,7 +2,7 @@
 
 ## Status
 
-Foundation slice. Provider metadata, verified model-discovery conversion, bounded/provenance-bound local runtime discovery for LM Studio and Ollama, redacted local health evidence, safe MCP import preview, trust/approval MCP gateway evaluation, unified cognition/execution capability routing, and a per-call MCP permission guard are implemented. No cloud-provider execution, local-model inference, runtime auto-launch, MCP process execution, or external mutation is enabled by this document or its companion runtime modules.
+Foundation slice. Provider metadata, verified model-discovery conversion, bounded/provenance-bound local runtime discovery for LM Studio and Ollama, immutable local-runtime status snapshots, redacted local health evidence, evidence-backed model route explanations, safe MCP import preview, trust/approval MCP gateway evaluation, unified cognition/execution capability routing, and a per-call MCP permission guard are implemented. No cloud-provider execution, local-model inference, runtime auto-launch, MCP process execution, or external mutation is enabled by this document or its companion runtime modules.
 
 ## Purpose
 
@@ -32,9 +32,11 @@ MARIA
   |     +-- Provider Registry (metadata only)
   |     +-- Local Runtime Probe (bounded localhost metadata only)
   |     +-- Local Discovery Coordinator (provenance + health gate)
+  |     +-- Local Runtime Status Snapshot (immutable/redacted UI boundary)
   |     +-- Local Runtime Discovery Parsers (verified response -> redacted facts)
   |     +-- Provider Discovery Adapter (verified redacted facts -> ModelSpec)
   |     +-- Model Registry / Router (verified model facts)
+  |     +-- Model Route Decision (evidence-backed route explanation)
   |     +-- MCP Config Import Preview (redacted, disabled)
   |     +-- MCP Gateway (trust/schema/provenance/approval evaluation)
   |     +-- Capability Registry (verified tools)
@@ -49,7 +51,7 @@ Provider metadata answers: "Which provider families could satisfy this class of 
 
 Discovery facts answer: "What has the current environment actually verified about a concrete model endpoint?"
 
-Model metadata answers: "Which concrete discovered model is currently usable, with what context, reliability, latency, cost, locality, and capability facts?"
+Model metadata answers: "Which concrete discovered model is currently usable, with what context, reliability, latency, cost, locality, capability facts, and evidence provenance?"
 
 The router must choose from verified model facts. The default provider catalog must never be interpreted as a permanent ranking or a claim that a remote account is connected.
 
@@ -80,7 +82,8 @@ A separate discovery source must collect a redacted `ModelDiscoveryFact`. The ad
 4. verified reachable cloud endpoints without confirmed authentication become `auth-required`;
 5. only verified, reachable, authentication-ready facts become routable `ModelSpec` records;
 6. local discovered models are marked with local privacy metadata;
-7. only routing metadata is accepted: credentials, tokens, headers, and secret values have no field in the discovery schema.
+7. only routing metadata is accepted: credentials, tokens, headers, and secret values have no field in the discovery schema;
+8. optional evidence provenance is normalized into an evidence source identifier plus a positive sample count, never a raw payload or secret-bearing log.
 
 This separates *observation* from *routing*. A discovery source may inspect a local or cloud runtime, but it must return redacted facts before the central runtime can use them.
 
@@ -101,11 +104,37 @@ This separates *observation* from *routing*. A discovery source may inspect a lo
 5. transport failures are recorded through typed, redacted failure categories rather than raw exception text;
 6. provider-specific payload parsing must succeed before an HTTP 200 observation is counted as a health success;
 7. `ModelDiscoveryFact` is withheld until the health ledger reaches its minimum evidence threshold;
-8. only then is observed reliability attached to the model fact for downstream routing.
+8. once the threshold is reached, observed reliability, the bounded sample count, and a normalized evidence-source identifier are attached to the model fact for downstream routing;
+9. `status_snapshot()` exposes current inventory and probe state through frozen redacted dataclasses without handing presentation code the mutable ledger or raw transport evidence.
 
 This prevents HTTP reachability, inventory presence, a single successful response, or model-name heuristics from being mistaken for durable capability/reliability evidence.
 
 See `docs/architecture/MARIA_LOCAL_RUNTIME_PROBES.md` for the detailed local trust boundary.
+
+## Local runtime status snapshot
+
+`LocalRuntimeSnapshotBuilder` creates a deterministic point-in-time presentation contract from the bounded health ledger plus the current Ollama inventory. It performs no I/O and cannot launch or mutate a runtime.
+
+Each known probe is represented by `RuntimeProbeStatus` with only normalized aggregate fields: provider, probe name, state, sample/success/failure counts, reliability when mature, median successful latency, and the latest normalized outcome.
+
+States are deliberately conservative:
+
+- `unknown`: no evidence exists;
+- `warming`: the latest observation succeeded but the reliability threshold is not yet mature;
+- `ready`: the latest observation succeeded and the configured reliability threshold is mature;
+- `degraded`: the latest observation failed, even if older evidence still yields a historical reliability value.
+
+The snapshot intentionally omits raw response bodies, response sizes, headers, prompts, model output, exception text, and credentials. It is the intended boundary for a future SwiftUI Integration Center rather than direct UI access to runtime internals.
+
+## Evidence-backed model route explanations
+
+`ModelRouter.explain_select()` preserves the existing deterministic selection behavior while returning a frozen `ModelRouteDecision` suitable for UI/debug display.
+
+A route decision includes the selected model, sorted required capabilities, context estimate, the final candidate pool, whether sensitive-work local bias was applied, the computed score, and the normalized evidence sample count/source carried by the selected model when available.
+
+`ModelRouter.select()` remains backward-compatible and returns only the selected `ModelSpec` by delegating to the explained route.
+
+This makes routing inspectable without exposing hidden prompts, raw provider payloads, credentials, or mutable health-ledger state.
 
 ## MCP import rules
 
@@ -174,21 +203,20 @@ The current MCP importer intentionally discards environment values even when the
 
 ## Why broader live execution remains disabled
 
-The local runtime slice now has a bounded metadata probe, provenance-bound orchestration, typed failure evidence, and a minimum-reliability gate, but it intentionally stops before inference, model loading, runtime launch, downloads, or arbitrary provider traffic.
+The local runtime slice now has a bounded metadata probe, provenance-bound orchestration, typed failure evidence, a minimum-reliability gate, immutable UI-safe status snapshots, and inspectable routing evidence, but it intentionally stops before inference, model loading, runtime launch, downloads, or arbitrary provider traffic.
 
 Likewise, a healthy MCP descriptor plus discovery evidence still does not itself provide a bounded process supervisor, credential resolver, retry/circuit-breaker runtime, transport framing, timeout policy, output-size limits, or verified executor.
 
-The foundation can determine which observed local models are safe to expose to routing metadata, whether an MCP server is eligible for explicit enablement, classify discovered method permissions, determine whether a specific call is currently permitted, and distinguish cognitive model routing from real external execution. It intentionally stops before granting new execution authority.
+The foundation can determine which observed local models are safe to expose to routing metadata, explain why a model was selected, expose runtime health without raw evidence leakage, determine whether an MCP server is eligible for explicit enablement, classify discovered method permissions, determine whether a specific call is currently permitted, and distinguish cognitive model routing from real external execution. It intentionally stops before granting new execution authority.
 
 ## Next slices
 
-1. End-to-end local model routing contract: coordinator evidence → `ProviderDiscoveryAdapter` → `ModelRouter`, including route explanations and minimum-evidence rejection.
-2. Immutable local-runtime status snapshots for the future SwiftUI Integration Center without exposing raw payloads or secrets.
-3. Bounded MCP process supervisor with launch allowlists, health/schema evidence, retries/circuit breakers, timeouts, output limits, and provenance recording.
-4. MCP executor that can only consume a ready `MCPInvocationPlan`, re-checks runtime health, and records invocation evidence.
-5. Verified capability enrichment for local models where runtime metadata is insufficient, without model-name heuristics.
-6. Multi-step work routing that can compose a cognitive model route with one or more permission-gated tool routes without collapsing the two trust domains.
-7. SwiftUI Integration Center for provider/MCP/runtime status, import preview, approvals, health evidence, and route explanations.
+1. Bounded MCP process supervisor with executable/provenance allowlists, health/schema evidence, retries/circuit breakers, timeouts, output limits, and lifecycle evidence.
+2. MCP executor that can only consume a ready `MCPInvocationPlan`, re-checks runtime health, and records invocation evidence.
+3. Verified capability enrichment for local models where runtime metadata is insufficient, without model-name heuristics.
+4. Multi-step work routing that can compose a cognitive model route with one or more permission-gated tool routes without collapsing the two trust domains.
+5. SwiftUI Integration Center for provider/MCP/runtime status, import preview, approvals, health evidence, and route explanations.
+6. Cloud provider discovery/auth adapters that preserve the same redacted evidence model and never expose credential material to routing metadata.
 
 ## Non-goals of v1
 
