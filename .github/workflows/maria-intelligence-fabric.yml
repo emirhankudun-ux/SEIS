@@ -12,6 +12,7 @@ on:
       - 'test/maria-mcp-e2e-fixture.test.py'
       - 'test/fixtures/mcp_fixture_server.py'
       - 'test/maria-work-routing.test.py'
+      - 'test/maria-work-execution.test.py'
       - 'test/maria-mcp-process-supervisor.test.py'
       - 'test/maria-mcp-process-path-policy.test.py'
       - 'test/maria-mcp-protocol-negotiation.test.py'
@@ -28,6 +29,7 @@ on:
       - 'docs/architecture/MARIA_MCP_PROCESS_SUPERVISOR.md'
       - 'docs/architecture/MARIA_MCP_STDIO_TRANSPORT.md'
       - 'docs/architecture/MARIA_MCP_INVOCATION_EXECUTOR.md'
+      - 'docs/architecture/MARIA_WORK_ROUTING.md'
       - '.github/workflows/maria-intelligence-fabric.yml'
 
 permissions:
@@ -51,6 +53,7 @@ jobs:
       - run: python3 test/maria-mcp-keychain-source.test.py
       - run: python3 test/maria-mcp-e2e-fixture.test.py
       - run: python3 test/maria-work-routing.test.py
+      - run: python3 test/maria-work-execution.test.py
       - run: python3 test/maria-mcp-process-supervisor.test.py
       - run: python3 test/maria-mcp-process-path-policy.test.py
       - run: python3 test/maria-mcp-protocol-negotiation.test.py
