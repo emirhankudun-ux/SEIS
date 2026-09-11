@@ -50,17 +50,20 @@ class WorkStepRunResult:
 
     succeeded: bool
     result: Any | None = None
-    failure: str | None = None
+    failure_category: str | None = None
     retryable: bool = False
 
     def __post_init__(self) -> None:
         if self.succeeded:
-            if self.failure is not None:
+            if self.failure_category is not None:
                 raise ValueError("successful step result cannot carry failure evidence")
             if self.retryable:
                 raise ValueError("successful step result cannot be retryable")
         else:
-            if not isinstance(self.failure, str) or not self.failure.strip():
+            if (
+                not isinstance(self.failure_category, str)
+                or not self.failure_category.strip()
+            ):
                 raise ValueError("failed step result requires a normalized failure category")
 
     @classmethod
@@ -77,7 +80,7 @@ class WorkStepRunResult:
         return cls(
             succeeded=False,
             result=None,
-            failure=failure,
+            failure_category=failure,
             retryable=bool(retryable),
         )
 
@@ -350,6 +353,6 @@ class WorkPlanExecutor:
                 state=WorkStepState.FAILED,
                 attempts=attempts,
                 depends_on=step.depends_on,
-                failure=final.failure,
+                failure=final.failure_category,
             ),
         )
