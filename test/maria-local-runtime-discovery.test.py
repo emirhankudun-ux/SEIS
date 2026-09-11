@@ -8,6 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
 
 from maria_runtime.local_discovery import LMStudioV1DiscoverySource, OllamaShowDiscoverySource
+from maria_runtime.local_probe import (
+    LocalProbeError,
+    LocalProbeResponse,
+    LocalRuntimeProbe,
+)
 
 
 class LocalRuntimeDiscoveryTests(unittest.TestCase):
@@ -99,6 +104,116 @@ class LocalRuntimeDiscoveryTests(unittest.TestCase):
                 latency_ms=1,
                 reliability=0.8,
             )
+
+
+class LocalRuntimeProbeTests(unittest.TestCase):
+    def test_lm_studio_probe_is_fixed_to_loopback_and_records_bounded_evidence(self):
+        requests = []
+        ticks = iter([10.000, 10.042])
+
+        def transport(request):
+            requests.append(request)
+            return LocalProbeResponse(
+                status_code=200,
+                content_type="application/json; charset=utf-8",
+                body=b'{"models":[]}',
+            )
+
+        probe = LocalRuntimeProbe(
+            transport=transport,
+            clock=lambda: next(ticks),
+            timeout_seconds=0.75,
+            max_response_bytes=256,
+        )
+
+        result = probe.probe_lm_studio_models()
+
+        self.assertEqual(len(requests), 1)
+        request = requests[0]
+        self.assertEqual(request.provider_id, "lm-studio")
+        self.assertEqual(request.url, "http://127.0.0.1:1234/api/v1/models")
+        self.assertEqual(request.method, "GET")
+        self.assertIsNone(request.body)
+        self.assertEqual(dict(request.headers), {"Accept": "application/json"})
+        self.assertEqual(request.timeout_seconds, 0.75)
+        self.assertEqual(request.max_response_bytes, 256)
+        self.assertEqual(result.provider_id, "lm-studio")
+        self.assertEqual(result.payload, {"models": []})
+        self.assertEqual(result.latency_ms, 42)
+        self.assertEqual(result.response_bytes, len(b'{"models":[]}'))
+
+    def test_ollama_show_probe_uses_fixed_loopback_endpoint_and_minimal_body(self):
+        requests = []
+        ticks = iter([20.0, 20.005])
+
+        def transport(request):
+            requests.append(request)
+            return LocalProbeResponse(
+                status_code=200,
+                content_type="application/json",
+                body=b'{"model_info":{"qwen.context_length":32768},"capabilities":["completion"]}',
+            )
+
+        probe = LocalRuntimeProbe(transport=transport, clock=lambda: next(ticks))
+        result = probe.probe_ollama_show("qwen:14b")
+
+        request = requests[0]
+        self.assertEqual(request.provider_id, "ollama")
+        self.assertEqual(request.url, "http://127.0.0.1:11434/api/show")
+        self.assertEqual(request.method, "POST")
+        self.assertEqual(
+            dict(request.headers),
+            {"Accept": "application/json", "Content-Type": "application/json"},
+        )
+        self.assertEqual(request.body, b'{"model":"qwen:14b"}')
+        self.assertNotIn(b"token", request.body.lower())
+        self.assertEqual(result.provider_id, "ollama")
+        self.assertEqual(result.latency_ms, 5)
+
+    def test_probe_fails_closed_on_redirect_non_json_oversize_bad_status_or_bad_payload(self):
+        cases = [
+            LocalProbeResponse(302, "application/json", b"{}", redirected=True),
+            LocalProbeResponse(200, "text/html", b"{}"),
+            LocalProbeResponse(200, "application/json", b"x" * 17),
+            LocalProbeResponse(503, "application/json", b"{}"),
+            LocalProbeResponse(200, "application/json", b"[]"),
+        ]
+
+        for response in cases:
+            with self.subTest(response=response):
+                ticks = iter([1.0, 1.001])
+                probe = LocalRuntimeProbe(
+                    transport=lambda _request, response=response: response,
+                    clock=lambda: next(ticks),
+                    max_response_bytes=16,
+                )
+                with self.assertRaises(LocalProbeError):
+                    probe.probe_lm_studio_models()
+
+    def test_probe_validates_limits_ports_and_model_name_before_transport(self):
+        calls = []
+
+        def transport(request):
+            calls.append(request)
+            return LocalProbeResponse(200, "application/json", b"{}")
+
+        for kwargs in [
+            {"timeout_seconds": 0},
+            {"max_response_bytes": 0},
+            {"lm_studio_port": 0},
+            {"ollama_port": 70000},
+        ]:
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaises(ValueError):
+                    LocalRuntimeProbe(transport=transport, **kwargs)
+
+        probe = LocalRuntimeProbe(transport=transport)
+        for model_name in ["", "   ", "x" * 513]:
+            with self.subTest(model_name=model_name):
+                with self.assertRaises(ValueError):
+                    probe.probe_ollama_show(model_name)
+
+        self.assertEqual(calls, [])
 
 
 if __name__ == "__main__":
