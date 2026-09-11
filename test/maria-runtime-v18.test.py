@@ -76,6 +76,20 @@ class MariaRuntimeV18Tests(unittest.TestCase):
         self.assertTrue(granted.allowed)
         self.assertTrue(granted.requires_approval)
 
+    def test_permission_engine_rejects_non_boolean_reversibility_evidence(self):
+        engine = PermissionEngine()
+        for reversible in ("false", "true", 1, 0, [], {}):
+            with self.subTest(reversible=repr(reversible)):
+                with self.assertRaises(TypeError):
+                    engine.evaluate(ActionClass.MODIFY, target="source", reversible=reversible)
+
+        unknown = engine.evaluate(ActionClass.READ, target="repo", reversible=None)
+        reversible = engine.evaluate(ActionClass.READ, target="repo", reversible=True)
+        irreversible = engine.evaluate(ActionClass.READ, target="repo", reversible=False)
+        self.assertIsNone(unknown.reversible)
+        self.assertIs(reversible.reversible, True)
+        self.assertIs(irreversible.reversible, False)
+
     def test_context_engine_prefers_current_verified_evidence_over_stale_memory(self):
         context = ProjectContextEngine()
         context.put(ContextFact(
