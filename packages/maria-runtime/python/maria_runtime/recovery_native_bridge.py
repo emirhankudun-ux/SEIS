@@ -170,6 +170,7 @@ class RecoveryNativeBridgeAdapter:
             isinstance(schema_version, bool)
             or not isinstance(schema_version, int)
             or schema_version <= 0
+            or schema_version > RecoveryDashboardWireCodec.MAX_NATIVE_INTEGER
         ):
             raise RecoveryNativeBridgeError("invalid durable recovery schema version")
 
