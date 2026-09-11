@@ -8,7 +8,7 @@ from .local_discovery import (
     OllamaShowDiscoverySource,
     OllamaTagsDiscoverySource,
 )
-from .local_health import LocalHealthEvidenceLedger, ProbeObservation, ProbeOutcome
+from .local_health import LocalHealthEvidenceLedger, ProbeHealthSummary, ProbeObservation, ProbeOutcome
 from .local_probe import LocalProbeError, LocalProbeFailureKind, LocalProbeResult, LocalRuntimeProbe
 from .local_status import LocalRuntimeSnapshotBuilder, LocalRuntimeStatusSnapshot
 from .provider_discovery import ModelDiscoveryFact
@@ -119,8 +119,13 @@ class LocalDiscoveryCoordinator:
             raise
 
         self._record_probe_success("ollama", "show", result)
-        reliability = self._required_reliability("ollama", "show")
-        return replace(provisional, reliability=reliability)
+        summary = self._required_health_summary("ollama", "show")
+        return replace(
+            provisional,
+            reliability=summary.reliability,
+            evidence_sample_count=summary.sample_count,
+            evidence_source="local-health:ollama/show",
+        )
 
     def discover_lm_studio_models(self) -> tuple[ModelDiscoveryFact, ...]:
         try:
@@ -146,8 +151,16 @@ class LocalDiscoveryCoordinator:
             raise
 
         self._record_probe_success("lm-studio", "models", result)
-        reliability = self._required_reliability("lm-studio", "models")
-        return tuple(replace(fact, reliability=reliability) for fact in provisional)
+        summary = self._required_health_summary("lm-studio", "models")
+        return tuple(
+            replace(
+                fact,
+                reliability=summary.reliability,
+                evidence_sample_count=summary.sample_count,
+                evidence_source="local-health:lm-studio/models",
+            )
+            for fact in provisional
+        )
 
     def _record_probe_success(
         self,
@@ -174,10 +187,10 @@ class LocalDiscoveryCoordinator:
             _FAILURE_OUTCOMES[error.kind],
         ))
 
-    def _required_reliability(self, provider_id: str, probe_name: str) -> float:
+    def _required_health_summary(self, provider_id: str, probe_name: str) -> ProbeHealthSummary:
         summary = self._health.summary(provider_id, probe_name)
         if summary.reliability is None:
             raise LookupError(
                 f"insufficient health evidence for {provider_id}/{probe_name}; model remains non-routable"
             )
-        return summary.reliability
+        return summary
