@@ -108,6 +108,7 @@ class DurableWorkCheckpointStore:
     _MAX_STEPS = 256
     _MAX_DISCOVERY_FILES = 256
     _MAX_DISCOVERY_LIMIT = 256
+    _MAX_DISCOVERY_ENTRIES = 1024
     _STEP_FIELDS = {
         "step_id",
         "route_kind",
@@ -428,7 +429,9 @@ class DurableWorkCheckpointStore:
 
         Discovery is read-only and returns advisory metadata only. It never
         authorizes execution or returns a partial result when the caller's bound
-        would be exceeded.
+        would be exceeded. Enumeration stops on the first entry beyond either
+        the JSON-candidate or total-directory-entry budget, before sorting or
+        loading any candidate. Non-JSON entries consume the scan budget too.
         """
 
         project = self._validated_id(project_id, field_name="project_id")
@@ -445,15 +448,23 @@ class DurableWorkCheckpointStore:
         if parent is None:
             return ()
 
+        candidates: list[Path] = []
         try:
-            candidates = sorted(
-                (path for path in parent.iterdir() if path.suffix == ".json"),
-                key=lambda path: path.name,
-            )
+            # scandir streams names; collecting all entries first would defeat
+            # the resource bound even if an overflow were rejected afterwards.
+            with os.scandir(parent) as directory:
+                for index, entry in enumerate(directory):
+                    if index >= self._MAX_DISCOVERY_ENTRIES:
+                        raise CheckpointCorruptError("recovery catalog exceeds trusted entry bound")
+                    candidate = parent / entry.name
+                    if candidate.suffix != ".json":
+                        continue
+                    if len(candidates) >= self._MAX_DISCOVERY_FILES:
+                        raise CheckpointCorruptError("recovery catalog exceeds trusted file bound")
+                    candidates.append(candidate)
         except OSError as exc:
             raise CheckpointCorruptError("recovery catalog cannot be enumerated") from exc
-        if len(candidates) > self._MAX_DISCOVERY_FILES:
-            raise CheckpointCorruptError("recovery catalog exceeds trusted file bound")
+        candidates.sort(key=lambda path: path.name)
 
         entries: list[RecoveryCatalogEntry] = []
         for candidate in candidates:
