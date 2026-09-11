@@ -2,6 +2,18 @@ import Foundation
 import Testing
 @testable import SeisPlatformKit
 
+// Test-only observation shared by sync worker closures and async assertions.
+// All mutable state is protected by a short synchronous lock; no await or I/O
+// occurs while holding it. The only semaphore waits remain in the deliberately
+// synchronous, bounded fixture operation, never in the async test context.
+final class SeisMariaRecoveryTestObservation: @unchecked Sendable {
+    private let lock = NSLock()
+    private var recorded = false
+
+    func record() { lock.withLock { recorded = true } }
+    var wasRecorded: Bool { lock.withLock { recorded } }
+}
+
 struct SeisMariaRecoveryCancellationTests {
     private static let wire = Data(#"{"schema_version":1,"project_id":"SEIS","rows":[],"total_candidates":0,"replan_required":0,"drift_detected":0,"evidence_required":0,"anchor_missing":0,"aligned_replan_required":0,"complete":0,"execution_authorized":false}"#.utf8)
 
@@ -53,36 +65,36 @@ struct SeisMariaRecoveryCancellationTests {
     }
 
     @Test func alreadyCancelledImportNeverStartsItsReadOperation() async {
-        let started = DispatchSemaphore(value: 0)
+        let started = SeisMariaRecoveryTestObservation()
         let task = Task {
             withUnsafeCurrentTask { $0?.cancel() }
             return try await SeisMariaRecoveryFileReader.readForImport(
                 URL(fileURLWithPath: "/not-read.json"), operation: { _ in
-                    started.signal()
+                    started.record()
                     return try SeisMariaRecoveryDecoder.decode(Self.wire)
                 }
             )
         }
         await #expect(throws: CancellationError.self) { try await task.value }
-        #expect(started.wait(timeout: .now()) == .timedOut)
+        #expect(!started.wasRecorded)
     }
 
     @Test(.timeLimit(.minutes(1)))
     func callerCancellationReachesWorkerAndWaitsForCleanup() async throws {
         let (started, signal) = AsyncStream<Void>.makeStream()
         let release = DispatchSemaphore(value: 0)
-        let cleaned = DispatchSemaphore(value: 0)
-        let cancellationObserved = DispatchSemaphore(value: 0)
+        let cleaned = SeisMariaRecoveryTestObservation()
+        let cancellationObserved = SeisMariaRecoveryTestObservation()
         let task = Task {
             try await SeisMariaRecoveryFileReader.readForImport(
                 URL(fileURLWithPath: "/not-read.json"), operation: { _ in
-                    defer { cleaned.signal() }
+                    defer { cleaned.record() }
                     signal.yield(())
                     signal.finish()
                     guard release.wait(timeout: .now() + 5) == .success else {
                         throw SeisMariaRecoveryError.unreadableFile
                     }
-                    if Task.isCancelled { cancellationObserved.signal() }
+                    if Task.isCancelled { cancellationObserved.record() }
                     try Task.checkCancellation()
                     return try SeisMariaRecoveryDecoder.decode(Self.wire)
                 }
@@ -93,19 +105,19 @@ struct SeisMariaRecoveryCancellationTests {
         task.cancel()
         release.signal()
         await #expect(throws: CancellationError.self) { try await task.value }
-        #expect(cancellationObserved.wait(timeout: .now()) == .success)
-        #expect(cleaned.wait(timeout: .now()) == .success)
+        #expect(cancellationObserved.wasRecorded)
+        #expect(cleaned.wasRecorded)
     }
 
     @Test(.timeLimit(.minutes(1)))
     func cancelledCallerRejectsLateSuccessFromUncooperativeWorker() async {
         let (started, signal) = AsyncStream<Void>.makeStream()
         let release = DispatchSemaphore(value: 0)
-        let cleaned = DispatchSemaphore(value: 0)
+        let cleaned = SeisMariaRecoveryTestObservation()
         let task = Task {
             try await SeisMariaRecoveryFileReader.readForImport(
                 URL(fileURLWithPath: "/not-read.json"), operation: { _ in
-                    defer { cleaned.signal() }
+                    defer { cleaned.record() }
                     signal.yield(())
                     signal.finish()
                     guard release.wait(timeout: .now() + 5) == .success else {
@@ -121,7 +133,7 @@ struct SeisMariaRecoveryCancellationTests {
         task.cancel()
         release.signal()
         await #expect(throws: CancellationError.self) { try await task.value }
-        #expect(cleaned.wait(timeout: .now()) == .success)
+        #expect(cleaned.wasRecorded)
     }
 
     @Test func asyncImportPreservesTypedErrorsWithoutLeakingDiagnostics() async {
@@ -136,13 +148,13 @@ struct SeisMariaRecoveryCancellationTests {
 
     @Test @MainActor
     func readOperationDoesNotRunOnMainThread() async throws {
-        let wasMain = DispatchSemaphore(value: 0)
+        let wasMain = SeisMariaRecoveryTestObservation()
         _ = try await SeisMariaRecoveryFileReader.readForImport(
             URL(fileURLWithPath: "/not-read.json"), operation: { _ in
-                if Thread.isMainThread { wasMain.signal() }
+                if Thread.isMainThread { wasMain.record() }
                 return try SeisMariaRecoveryDecoder.decode(Self.wire)
             }
         )
-        #expect(wasMain.wait(timeout: .now()) == .timedOut)
+        #expect(!wasMain.wasRecorded)
     }
 }
