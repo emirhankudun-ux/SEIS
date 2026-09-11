@@ -56,7 +56,8 @@ Before accepting evidence, the source verifies:
 - `HEAD` and loose-ref payloads are capped at 4 KiB;
 - `packed-refs` is capped at 256 KiB;
 - data remains within the byte ceiling even if a file changes size after metadata inspection;
-- `HEAD` is UTF-8 and loose/packed object-id metadata is ASCII.
+- `HEAD` and `packed-refs` are decoded as UTF-8 because Git ref names may contain valid non-ASCII identity; loose ref payloads remain ASCII because they contain only an object id;
+- every accepted object id is still independently restricted to 40 or 64 ASCII hexadecimal characters.
 
 The selected workspace is still expected to belong to the trusted SEIS/MARIA host account. These checks reduce path-alias and stale-metadata mistakes; they are not a hostile multi-user filesystem sandbox.
 
@@ -74,6 +75,8 @@ The native branch predicate intentionally mirrors the conservative Python worksp
 - a `.lock` suffix on **every** slash-separated component.
 
 Otherwise-valid non-ASCII branch identity is preserved. In particular, symbolic `HEAD` removes only one terminal LF or CRLF metadata ending; it does not call generic Unicode whitespace trimming. A Git-valid branch ending in U+00A0 therefore remains that exact branch.
+
+The same identity preservation applies after Git packs a loose branch ref. `packed-refs` contains both an ASCII object id and the ref name; decoding the entire file as ASCII would make a valid Unicode branch disappear from the evidence layer after ordinary ref packing. Both Python and native sources therefore decode bounded `packed-refs` metadata as UTF-8 and still validate the object-id token separately as ASCII hexadecimal data.
 
 Loose refs intentionally use different whitespace semantics: leading whitespace before the object id fails closed, while Git-accepted trailing ASCII whitespace/blank lines may follow the id.
 
@@ -111,20 +114,24 @@ The feature was specified before its native source existed.
 
 - Test-only checkpoint `66c96190480a35a757e6346c83ad1de49433bb48` produced the intended hosted RED state in `MARIA Swift Recovery` run `34616573879`: the existing app build succeeded, then Swift tests failed to compile because `SeisMariaWorkspaceEvidenceSnapshot`, `SeisMariaWorkspaceEvidenceSource`, and `SeisMariaWorkspaceEvidenceError` did not exist.
 - Implementation checkpoint `89a7975ab97fb12c98cab5fe199e0fa445f7576f` then passed `MARIA Swift Recovery` run `34616866965`, including the native shell build, the full Swift package suite, Thread Sanitizer cancellation regression coverage, mutation sensitivity checks, and retained synthetic recovery renders.
-- A follow-up timestamp-parity test checkpoint `bac4d10507c590f436e41b98cb942d5978015d02` intentionally went RED in run `34617288781` because the first native validator rejected MARIA's timezone-less ISO observation form. The focused correction preserves the original evidence string while validating its UTC-equivalent form. Current-head CI remains the acceptance source for that correction.
+- A follow-up timestamp-parity test checkpoint `bac4d10507c590f436e41b98cb942d5978015d02` intentionally went RED in run `34617288781` because the first native validator rejected MARIA's timezone-less ISO observation form. The focused correction preserves the original evidence string while validating its UTC-equivalent form.
+- Packed-ref Unicode parity was specified before implementation at `56a85af0260be3b4895035c637b8d868c71e8322`. `MARIA Learning Fabric` run `34619800000` failed because Python attempted to decode the packed ref name with ASCII, and `MARIA Swift Recovery` run `34619799936` failed its single new native test with `invalidMetadataEncoding`. The existing native shell still built successfully in that RED run. The minimal correction changes only packed-ref decoding to UTF-8 in each implementation; loose object-id decoding and object-id validation remain unchanged.
 
 Focused native tests are under:
 
 - `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidenceTests.swift`;
-- `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidenceTimestampTests.swift`.
+- `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidenceTimestampTests.swift`;
+- `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidencePackedRefUnicodeTests.swift`.
+
+The Python counterpart is covered by `test/maria-workspace-packed-ref-unicode.test.py` in addition to the existing current-workspace evidence contracts.
 
 ## Rollback
 
-The work is isolated on `feature/maria-native-workspace-evidence-v1`, stacked on the current workspace-evidence correction branch. Rollback means closing the draft PR or reverting its focused commits. Never delete or rewrite a user's repository, `.git` directory, recovery snapshots, or checkpoints to roll back this code.
+The work is isolated on `feature/maria-native-workspace-evidence-v1`, with packed-ref Unicode parity maintained in a focused stacked follow-up. Rollback means closing the relevant draft PR or reverting its focused commits. Never delete or rewrite a user's repository, `.git` directory, recovery snapshots, or checkpoints to roll back this code.
 
 ## Next safe step
 
-Only after this native source is green and reviewed should the macOS recovery presentation gain an explicit **user-selected workspace** action. That follow-up should:
+Only after this native source and its stacked parity corrections are green and reviewed should the macOS recovery presentation gain an explicit **user-selected workspace** action. That follow-up should:
 
 - keep the existing JSON-file mode;
 - make workspace source and observation/freshness state visible;
