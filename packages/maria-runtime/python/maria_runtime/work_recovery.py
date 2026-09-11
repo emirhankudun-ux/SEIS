@@ -266,10 +266,19 @@ class DurableWorkCheckpointStore:
         def reject_non_finite_constant(_: str) -> None:
             raise ValueError("non-finite JSON constant")
 
+        def reject_duplicate_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+            result: dict[str, Any] = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError("duplicate JSON object key")
+                result[key] = value
+            return result
+
         try:
             payload = json.loads(
                 raw.decode("utf-8"),
                 parse_constant=reject_non_finite_constant,
+                object_pairs_hook=reject_duplicate_object,
             )
         except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
             raise CheckpointCorruptError("checkpoint is not strict UTF-8 JSON") from exc
