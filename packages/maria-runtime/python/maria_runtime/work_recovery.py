@@ -16,6 +16,7 @@ from .fabric_router import RouteKind
 from .work_execution import (
     WorkPlanCheckpoint,
     WorkStepExecutionEvidence,
+    WorkStepExecutionPolicy,
     WorkStepState,
 )
 
@@ -414,6 +415,7 @@ class DurableWorkCheckpointStore:
             WorkStepState.CANCELLED: 0,
         }
         seen: set[str] = set()
+        first_cancelled_step_id: str | None = None
         for step in checkpoint.steps:
             if not isinstance(step, WorkStepExecutionEvidence):
                 fail("checkpoint contains invalid step evidence")
@@ -421,18 +423,28 @@ class DurableWorkCheckpointStore:
                 fail("invalid step id")
             if step.step_id in seen:
                 fail("checkpoint contains duplicate step ids")
-            seen.add(step.step_id)
             if not isinstance(step.target_name, str) or not step.target_name or len(step.target_name) > 256:
                 fail("invalid target name")
-            if isinstance(step.attempts, bool) or not isinstance(step.attempts, int) or step.attempts < 0:
+            if (
+                isinstance(step.attempts, bool)
+                or not isinstance(step.attempts, int)
+                or not 0 <= step.attempts <= WorkStepExecutionPolicy.MAX_ATTEMPTS
+            ):
                 fail("invalid attempt count")
             if len(step.depends_on) > cls._MAX_STEPS or any(
                 not isinstance(dep, str) or not dep or len(dep) > 128 for dep in step.depends_on
             ):
                 fail("invalid checkpoint dependency")
+            if len(set(step.depends_on)) != len(step.depends_on):
+                fail("checkpoint contains duplicate dependencies")
+            if any(dep not in seen for dep in step.depends_on):
+                fail("checkpoint dependency must reference an earlier step")
             if step.failure is not None and cls._SAFE_FAILURE_RE.fullmatch(step.failure) is None:
                 fail("failure category is not a bounded safe identifier")
+            seen.add(step.step_id)
             states[step.state] += 1
+            if step.state is WorkStepState.CANCELLED and first_cancelled_step_id is None:
+                first_cancelled_step_id = step.step_id
 
         actual = (
             states[WorkStepState.SUCCEEDED],
@@ -453,9 +465,8 @@ class DurableWorkCheckpointStore:
         if checkpoint.next_step_id is not None:
             if checkpoint.next_step_id not in seen:
                 fail("next step id is not present in checkpoint")
-            matching = next(step for step in checkpoint.steps if step.step_id == checkpoint.next_step_id)
-            if matching.state is not WorkStepState.CANCELLED:
-                fail("next step must identify a cancelled step")
+            if checkpoint.next_step_id != first_cancelled_step_id:
+                fail("next step must identify the first cancelled step")
         elif not checkpoint.complete:
             fail("incomplete checkpoint requires a next step")
 
