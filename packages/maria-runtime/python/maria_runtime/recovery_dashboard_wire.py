@@ -77,7 +77,11 @@ class RecoveryDashboardWireCodec:
         "missing_context",
         "execution_authorized",
     }
-    _DISPOSITIONS = {item.value for item in RecoveryCandidateDisposition}
+    _DASHBOARD_DISPOSITIONS = {
+        item.value
+        for item in RecoveryCandidateDisposition
+        if item is not RecoveryCandidateDisposition.NOT_FOUND
+    }
 
     def encode(self, snapshot: RecoveryDashboardSnapshot) -> bytes:
         if not isinstance(snapshot, RecoveryDashboardSnapshot):
@@ -95,10 +99,7 @@ class RecoveryDashboardWireCodec:
             "complete": snapshot.complete,
             "execution_authorized": False,
         }
-        restored = self._payload_to_snapshot(payload)
-        # Revalidation above ensures host-created snapshots cannot serialize an
-        # internally inconsistent public view.
-        del restored
+        self._payload_to_snapshot(payload)
         encoded = json.dumps(
             payload,
             ensure_ascii=True,
@@ -156,7 +157,12 @@ class RecoveryDashboardWireCodec:
     def _payload_to_snapshot(cls, payload: Any) -> RecoveryDashboardWireSnapshot:
         if not isinstance(payload, dict) or set(payload) != cls._ROOT_FIELDS:
             raise RecoveryDashboardWireError("dashboard wire envelope schema mismatch")
-        if payload.get("schema_version") != cls.SCHEMA_VERSION:
+        schema_version = payload.get("schema_version")
+        if (
+            isinstance(schema_version, bool)
+            or not isinstance(schema_version, int)
+            or schema_version != cls.SCHEMA_VERSION
+        ):
             raise RecoveryDashboardWireError("unsupported dashboard wire schema version")
         if payload.get("execution_authorized") is not False:
             raise RecoveryDashboardWireError("dashboard wire cannot authorize execution")
@@ -166,6 +172,9 @@ class RecoveryDashboardWireCodec:
         if not isinstance(raw_rows, list) or len(raw_rows) > cls.MAX_ROWS:
             raise RecoveryDashboardWireError("dashboard rows are outside trusted bounds")
         rows = tuple(cls._payload_to_row(value, project_id=project_id) for value in raw_rows)
+        work_ids = tuple(row.work_id for row in rows)
+        if len(set(work_ids)) != len(work_ids) or work_ids != tuple(sorted(work_ids)):
+            raise RecoveryDashboardWireError("dashboard rows must have unique sorted work ids")
 
         counters = {
             name: cls._counter(payload.get(name), name)
@@ -191,14 +200,26 @@ class RecoveryDashboardWireCodec:
                 }
                 for row in rows
             ),
-            "drift_detected": sum(row.disposition == RecoveryCandidateDisposition.DRIFT_DETECTED.value for row in rows),
-            "evidence_required": sum(row.disposition == RecoveryCandidateDisposition.EVIDENCE_REQUIRED.value for row in rows),
-            "anchor_missing": sum(row.disposition == RecoveryCandidateDisposition.ANCHOR_MISSING.value for row in rows),
+            "drift_detected": sum(
+                row.disposition == RecoveryCandidateDisposition.DRIFT_DETECTED.value
+                for row in rows
+            ),
+            "evidence_required": sum(
+                row.disposition == RecoveryCandidateDisposition.EVIDENCE_REQUIRED.value
+                for row in rows
+            ),
+            "anchor_missing": sum(
+                row.disposition == RecoveryCandidateDisposition.ANCHOR_MISSING.value
+                for row in rows
+            ),
             "aligned_replan_required": sum(
                 row.disposition == RecoveryCandidateDisposition.ALIGNED_REPLAN_REQUIRED.value
                 for row in rows
             ),
-            "complete": sum(row.disposition == RecoveryCandidateDisposition.COMPLETE.value for row in rows),
+            "complete": sum(
+                row.disposition == RecoveryCandidateDisposition.COMPLETE.value
+                for row in rows
+            ),
         }
         if counters != actual:
             raise RecoveryDashboardWireError("dashboard aggregate counters do not match rows")
@@ -227,7 +248,7 @@ class RecoveryDashboardWireCodec:
             raise RecoveryDashboardWireError("dashboard row project does not match envelope")
         work_id = cls._bounded_string(value.get("work_id"), "work_id")
         disposition = value.get("disposition")
-        if disposition not in cls._DISPOSITIONS:
+        if disposition not in cls._DASHBOARD_DISPOSITIONS:
             raise RecoveryDashboardWireError("unknown dashboard row disposition")
 
         schema_version = value.get("schema_version")
