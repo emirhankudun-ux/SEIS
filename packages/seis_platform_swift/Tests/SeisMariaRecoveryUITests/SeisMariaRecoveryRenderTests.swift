@@ -6,8 +6,9 @@ import SwiftUI
 import Testing
 @testable import SeisAppleNativeShell
 
-/// Off-screen rendering of the actual view, using synthetic records only.
-/// This is not a screenshot of a user's desktop or an interactive GUI test.
+/// Renders the actual view through AppKit using synthetic records only.
+/// ImageRenderer omits native buttons/lists, so it is not sufficient evidence.
+/// These are view bitmaps, not captures of the user's desktop or interactive tests.
 @MainActor
 struct SeisMariaRecoveryRenderTests {
     @Test func renderEmptyLoadedAndInvalidStatesInBothAppearances() throws {
@@ -25,30 +26,50 @@ struct SeisMariaRecoveryRenderTests {
         invalid.finishImport(token: invalidToken, result: .failure(.invalidJSON))
         let states = [("unloaded", SeisMariaRecoveryImportState()), ("loaded", loaded), ("invalid", invalid)]
         for (name, state) in states {
-            for (appearanceName, appearance) in [("light", NSAppearance.Name.aqua), ("dark", NSAppearance.Name.darkAqua)] {
+            for (appearance, scheme) in [("light", ColorScheme.light), ("dark", ColorScheme.dark)] {
                 let view = SeisMariaRecoveryView(initialState: state)
                     .frame(width: 660, height: 640)
-                let bitmap = try render(view, appearance: appearance)
+                    .environment(\.colorScheme, scheme)
+                let bounds = NSRect(x: 0, y: 0, width: 660, height: 640)
+                let host = NSHostingView(rootView: view)
+                let window = NSWindow(contentRect: bounds, styleMask: [.borderless], backing: .buffered, defer: false)
+                window.isReleasedWhenClosed = false
+                window.appearance = NSAppearance(named: scheme == .dark ? .darkAqua : .aqua)
+                window.contentView = host
+                host.frame = bounds
+                window.orderFront(nil)
+                defer { window.orderOut(nil); window.close() }
+                RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                host.layoutSubtreeIfNeeded()
+                window.displayIfNeeded()
+                let bitmap = try #require(host.bitmapImageRepForCachingDisplay(in: host.bounds))
+                host.cacheDisplay(in: host.bounds, to: bitmap)
+                #expect(bitmap.pixelsWide >= 660)
+                #expect(bitmap.pixelsHigh >= 640)
+                try rejectUnsupportedRenderPlaceholder(bitmap)
                 if let directory = ProcessInfo.processInfo.environment["MARIA_UI_EVIDENCE_DIR"] {
                     let destination = URL(fileURLWithPath: directory, isDirectory: true)
                     try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
                     let png = try #require(bitmap.representation(using: .png, properties: [:]))
-                    try png.write(to: destination.appendingPathComponent("recovery-\(name)-\(appearanceName).png"))
+                    try png.write(to: destination.appendingPathComponent("recovery-\(name)-\(appearance).png"))
                 }
             }
         }
     }
 
-    private func render<V: View>(_ view: V, appearance: NSAppearance.Name) throws -> NSBitmapImageRep {
-        let hosting = NSHostingView(rootView: view)
-        hosting.frame = NSRect(x: 0, y: 0, width: 660, height: 640)
-        hosting.appearance = NSAppearance(named: appearance)
-        hosting.layoutSubtreeIfNeeded()
-        let bitmap = try #require(hosting.bitmapImageRepForCachingDisplay(in: hosting.bounds))
-        hosting.cacheDisplay(in: hosting.bounds, to: bitmap)
-        #expect(bitmap.pixelsWide > 0)
-        #expect(bitmap.pixelsHigh > 0)
-        return bitmap
+    private func rejectUnsupportedRenderPlaceholder(_ bitmap: NSBitmapImageRep) throws {
+        var unsupported = 0
+        var samples = 0
+        for y in stride(from: 0, to: bitmap.pixelsHigh, by: 8) {
+            for x in stride(from: 0, to: bitmap.pixelsWide, by: 8) {
+                let color = try #require(bitmap.colorAt(x: x, y: y)?.usingColorSpace(.deviceRGB))
+                if color.redComponent > 0.9 && color.greenComponent > 0.6 && color.blueComponent < 0.2 {
+                    unsupported += 1
+                }
+                samples += 1
+            }
+        }
+        #expect(unsupported * 200 < samples, "Native view contains an unsupported-render placeholder")
     }
 }
 #endif
