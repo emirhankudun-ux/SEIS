@@ -6,5 +6,5 @@ if(build.intent!=='build'||build.risk!=='safe') throw new Error('build routing f
 const risky=classifyIntent('production deploy yap','seis');
 if(!evaluatePermission(risky).approval) throw new Error('approval gate failed');
 const result=await runCommand('Enemy AI testlerini çalıştır','deadly-evil');
-if(result.status!=='complete'||!result.verification.verified) throw new Error('orchestration failed');
+if(result.status!=='simulated'||!result.verification.contractVerified||result.verification.verified) throw new Error('orchestration failed');
 console.log('core: ok');

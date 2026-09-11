@@ -1,9 +1,15 @@
-export function verifyPrototype(result) {
+/** Checks the simulator's response contract, not a build, a model, or an external tool. */
+export function verifyPrototype(result, expected = {}) {
+  const effects = result?.sideEffects === false ? 'none' : result?.sideEffects === true ? 'reported' : 'unknown';
   const checks = [
-    { id:'runtime-result', pass:result?.ok === true, evidence:`runtime:${result?.runtime ?? 'unknown'}` },
-    { id:'intent-preserved', pass:Boolean(result?.intent), evidence:`intent:${result?.intent ?? 'missing'}` },
-    { id:'side-effects', pass:result?.sideEffects === false, evidence:'side-effects:none' }
+    { id:'runtime-result', pass:result?.ok === true, evidence:result?.ok === true ? 'runtime:ok' : 'runtime:not-ok' },
+    { id:'simulation', pass:result?.runtime === 'mock-runtime-v4' && result?.mode === 'simulation', evidence:`mode:${result?.mode === 'simulation' ? 'simulation' : 'unknown'}` },
+    { id:'intent-preserved', pass:!!expected.intent && result?.intent === expected.intent, evidence:`intent:${result?.intent === expected.intent && !!expected.intent ? 'matched' : 'unmatched'}` },
+    { id:'run-matched', pass:!!expected.runId && result?.runId === expected.runId, evidence:`run:${!!expected.runId && result?.runId === expected.runId ? 'matched' : 'unmatched'}` },
+    { id:'project-matched', pass:!!expected.projectId && result?.projectId === expected.projectId, evidence:`project:${!!expected.projectId && result?.projectId === expected.projectId ? 'matched' : 'unmatched'}` },
+    { id:'side-effects', pass:result?.sideEffects === false, evidence:`side-effects:${effects}` }
   ];
-  const verified = checks.every(c=>c.pass);
-  return { verified, checks, evidence:checks.map(c=>c.evidence), summary:verified ? 'Workflow verified inside the safe prototype runtime.' : 'Workflow finished but verification did not fully pass.' };
+  const contractVerified = checks.every(check => check.pass);
+  return { verified:false, contractVerified, scope:'simulation', checks, evidence:checks.map(c => c.evidence),
+    summary:contractVerified ? 'Simülasyon sözleşmesi doğrulandı. Harici işlem yapılmadı.' : 'Simülasyon sonucu doğrulanamadı. Gerçek başarı iddiası yok.' };
 }

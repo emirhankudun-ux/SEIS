@@ -1,26 +1,20 @@
-# MARIA × SEIS Roadmap
+# Next bounded milestones
 
-## Foundation — implemented in v4 alpha
-- modular orchestration pipeline
-- permission engine
-- provider router
-- event bus
-- source-of-truth resolver
-- plugin SDK manifest validation
-- capability and provider registries
-- safe mock runtime
-- verification evidence model
-- responsive Maria desktop UI
+## Current checkpoint — alpha.2
 
-## Production adapters — next
-1. Voice adapter: wake word, STT, TTS, interruption.
-2. Model adapters: OpenAI plus local LM Studio/Ollama-compatible endpoints.
-3. MCP gateway: discovery, health, permissions, schema validation.
-4. macOS adapter: Accessibility / Shortcuts / CLI with explicit grants.
-5. Unreal adapter and Blender adapter.
-6. Durable project memory + provenance-backed retrieval.
-7. Automation scheduler + event-driven task engine.
-8. Signed plugin packages and trust store.
+Truthful simulation/live separation, fail-closed demo policy, cancellation, bounded execution, isolated observers, conflict-aware facts, strict plugin metadata and regression/browser checks.
 
-## Release gate
-A feature may move from `adapter-ready` to `ready` only when execution and verification have reproducible evidence.
+## Next highest-value milestone
+
+Connect one real local-model adapter through a trusted host. Verify availability with a real health check, obtain model capabilities rather than guessing, return an attributable response and handle disconnect/cancellation. Keep the existing UI and independently test the full request path. Do not claim it is present today.
+
+## Subsequent gates
+
+1. Native Apple host and OS permissions with scoped, reversible actions.
+2. Real voice and explicit capture indicators; no fake listening states.
+3. MCP discovery, authenticated tools, per-action authorization and actual outcome checks.
+4. Unreal/Blender adapters validated against an installed engine and real project.
+5. Durable memory with provenance, deletion and export.
+6. Stoppable scheduling, recovery and deployment hardening.
+
+Prefer one verified end-to-end capability over many ready-looking but unconnected catalogs. Testing remains part of implementation, not only a final percentage of a time budget.

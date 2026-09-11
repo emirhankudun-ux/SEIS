@@ -1,36 +1,31 @@
-# MARIA × SEIS Architecture — v4 Alpha
+# MARIA × SEIS — bounded web simulation
 
-## Product boundary
-**MARIA** owns interaction, presence, voice/vision UX and result communication.
-**SEIS** owns context, policies, routing, orchestration, adapters, observability and verification.
+MARIA owns interaction and truthful result presentation. This web package explores SEIS contracts without replacing the repository's Apple-native direction. Native execution, voice, models, memory and MCP still require separate implementations.
 
-## Execution path
-`Intent → Context → Source of Truth → Risk → Permission → Provider Router → Agent Router → Adapter → Observation → Verification → Report`
+## Execution boundary
 
-## Core invariants
-- One coherent user-facing intelligence.
-- Real execution is never simulated in user-facing claims.
-- Provider-specific logic stays behind adapters.
-- Least privilege for agents/plugins/tools.
-- High-impact actions require approval.
-- Current verified runtime state outranks stale memory.
-- Builder output is not completion until independently verifiable evidence passes.
-- Degraded providers do not collapse the system.
+`validate input → immutable plan → permission → observers → simulator selection → bounded execution → response-contract check → truthful UI`
 
-## Source-of-truth priority
-1. Current explicit user instruction
-2. Current verified runtime/repository state
-3. Canonical project governance
-4. Latest approved project decisions
-5. Persistent project memory
-6. Conversation history
-7. Model inference
+`createOrchestrator` permits dependency injection for contract tests. The shipped release only executes a simulator. `executionMode:'live'` returns `unavailable`; it never silently falls back to a mock. A timeout/cancellation is not completion. Late progress after settlement is ignored. A future external adapter must implement host-side cancellation and reconcile actual side effects; Promise.race alone cannot stop a remote tool.
 
-## Plugin contract
-Plugins declare identity, semantic version, capabilities and risk. Invalid manifests are rejected before activation. Future signed packages should add publisher identity, checksums and trust policy.
+## Authorization
 
-## Provider policy
-The router scores providers by capability coverage, availability, priority, privacy policy and locality. Local-first adds preference; it does not blindly force a weaker local model when the task requires unsupported capability.
+Unrecognized risk fails closed. Project changes require an explicit write policy with safe mode disabled; the UI grants no such write policy. High-impact operations remain blocked pending approval and have no executable approval path in the demo. Dismissing a notice is not consent. Text classification is advisory, not a security boundary.
+
+Plans and provider selections cannot be changed by UI observers. Event subscribers receive independent snapshots. Subscriber failures are isolated and diagnostics are bounded and do not include raw exception messages.
+
+## Capability truth
+
+Provider eligibility requires implemented, connected and health-verified flags plus full capability coverage. These metadata fields are not proof by themselves and must eventually be maintained by a trusted host. Every external shipped provider is unconfigured or disabled. Only the local simulator is active. Catalog roles are not spawned agents; session state is not durable memory.
 
 ## Verification
-Every meaningful execution returns machine-readable checks and evidence. A feature may only present itself as production-ready after the relevant adapter has reproducible verification.
+
+`verifyPrototype` checks the simulator identity, result, intent, project, run identity and reported side-effect boundary. `contractVerified` only covers that contract. `verified` is always false in this simulator: it does not verify builds, apps, model answers or real tools. Evidence reports unknown or reported effects rather than inventing `side-effects:none`.
+
+## Source of truth
+
+Fact resolution excludes desired user instructions and rejects unverified claims labeled as runtime facts. Equal-priority differing values return an explicit conflict with preserved candidates. Instruction selection is opt-in and does not override security or authorization. This utility is not yet a durable knowledge store.
+
+## Plugin boundary
+
+The SDK validates identity, version shape, unique capability names, risk and callable factories. Capability arrays are defensively copied and frozen. A valid manifest neither authorizes execution nor isolates arbitrary JavaScript. No third-party plugin loader is shipped.

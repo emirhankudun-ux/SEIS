@@ -1,57 +1,48 @@
-# MARIA × SEIS v4 Alpha — Personal Intelligence Operating System
+# MARIA × SEIS — 4.0.0-alpha.2
 
-A public, modular, local-first foundation for a premium personal intelligence desktop experience.
+A modular **web simulation** of the MARIA personal-intelligence experience. This is an engineering alpha, not a finished desktop operator. The existing SEIS Apple-first / Swift-first direction is unchanged.
 
-MARIA is the human-facing layer. SEIS is the orchestration and verification core beneath it.
+## What works
 
-## Included now
-- Premium responsive desktop/mobile UI
-- Natural-language command surface
-- Intent + risk classification
-- Permission gate with explicit high-impact approval
-- Agent routing contracts
-- Provider router with local-first policy
-- Capability / model / connector registry
-- Event bus
-- Source-of-truth resolver
-- Plugin SDK manifest validation
-- Verification evidence model
-- Voice/Vision state surfaces
-- Project + operating-mode switching
-- Provider/connector status panel
-- Safe mock runtime with **zero external side effects**
-- Node-based smoke/core/platform tests
-- MIT license + contribution/security docs
+The command interface, project context, role catalog, advisory intent classification, fail-closed permission checks, provider eligibility checks, cancellable simulation, bounded execution timeout, event isolation, source conflict detection and plugin-manifest validator run locally. Keyboard navigation and responsive views are included.
 
-## Truthful capability status
-This alpha does not pretend to control OpenAI, macOS, Unreal, Blender, or MCP servers until their real adapters are connected and verified. `adapter-ready` means the contract exists; `ready` should only be used after reproducible execution evidence exists.
+A simulation result is **not** a completed build, AI answer, file edit or external action. Voice, vision, model inference, MCP, macOS control, Unreal, Blender, persistent memory and scheduling remain unconnected. Their presence in the catalog does not enable them.
 
 ## Run
-```bash
-cd maria-seis-v2
-python3 -m http.server 4173
+
+Use Node.js 22 or newer for tests and Python 3 for local serving. No runtime npm dependencies or API keys are required.
+
+From this package directory (`maria-seis-v2` on the GitHub branch):
+
+```sh
+npm test
+npm run dev
 ```
-Open `http://localhost:4173`.
+
+Then open `http://127.0.0.1:4173`. The server binds only to loopback. Do not expose this development server as a production service.
 
 ## Test
-```bash
+
+```sh
 npm test
+# Optional: requires Python Playwright and Chromium
+python3 tests/browser_smoke.py
+# Network-free rendering of the same local modules
+python3 tests/browser_smoke.py --offline --output ./qa-artifacts
 ```
 
-## Architecture
-`Emirhan → Maria Experience → SEIS Core → Policy → Router → Provider/Plugin/Adapter → Observation → Verification → Maria`
+See [verification evidence and limitations](docs/VERIFICATION.md). The browser harness replaces only module import specifiers with an import map in offline mode; it does not supply fake application logic.
 
-See `ARCHITECTURE.md` and `docs/ROADMAP.md`.
+## Release behavior changes
 
-## Public extension model
-Third-party integrations should use the plugin manifest contract in `src/plugins/sdk.js`. Provider-specific behavior belongs in adapters, not in the UI or orchestration core.
+`runCommand` now returns `simulated`, not `complete`, for the demo. The simulator's verifier exposes `contractVerified` for structural checks; `verified` remains false because no external outcome was verified. Other outcomes include `approval`, `blocked`, `unavailable`, `invalid`, `unverified`, `cancelled`, `timed-out` and `error`.
 
-## Next production work
-1. Real-time voice adapter
-2. OpenAI + local model adapters
-3. MCP gateway implementation
-4. macOS control bridge
-5. Unreal/Blender adapters
-6. Durable memory with provenance
-7. Automation scheduler
-8. Signed plugin trust layer
+The source-of-truth resolver defaults to factual evidence. A desired user instruction does not rewrite an observed result. Equal-ranked conflicting values remain unresolved. An explicit `{domain:'instruction'}` is available for instruction selection, not for permission bypasses.
+
+## Extending it
+
+Keep provider behavior behind adapters. Do not convert a catalog flag into a connection, execute arbitrary plugins, or place credentials in the browser. A real adapter requires a trusted host, scoped authorization, cancellation/reconciliation and independently checked results. `defineMariaPlugin` validates metadata only; it is not a sandbox.
+
+ChatGPT app connections are not imported by this code. Future integrations need their own supported authorization flow. See [architecture](ARCHITECTURE.md), [security](SECURITY.md) and [roadmap](docs/ROADMAP.md).
+
+MIT license. No deployment or production readiness is claimed by this package.

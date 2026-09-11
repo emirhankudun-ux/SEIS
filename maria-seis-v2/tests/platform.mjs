@@ -4,7 +4,7 @@ import { resolveTruth } from '../src/core/sourceOfTruth.js';
 import { validatePluginManifest } from '../src/plugins/sdk.js';
 const plan={intent:'creative-review'};
 const selected=selectProviders(plan,{localFirst:true});
-assert.ok(selected.length>=1);
+assert.deepEqual(selected.map(provider=>provider.id),['simulation']);
 const truth=resolveTruth([{source:'model-inference',value:'old'},{source:'verified-runtime-state',value:'current',verified:true}]);
 assert.equal(truth.value,'current');
 assert.equal(validatePluginManifest({id:'x',name:'X',version:'1.0.0',capabilities:['demo'],risk:'safe'}).valid,true);
