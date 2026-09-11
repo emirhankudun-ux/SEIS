@@ -54,6 +54,8 @@ class PermissionEngine:
             action_class = ActionClass(action_class)
         if type(approved) is not bool:
             raise TypeError("approved must be bool")
+        if reversible is not None and type(reversible) is not bool:
+            raise TypeError("reversible must be bool or None")
 
         requires = action_class in self._APPROVAL_REQUIRED
         if requires and not approved:
