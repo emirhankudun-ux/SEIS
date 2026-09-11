@@ -29,3 +29,11 @@ Live host execution now has an audit lifecycle in addition to execution/verifica
 `verifyLiveReceipt` now distinguishes a verified transport/attribution contract from an independently verified external outcome. `verifiedTransport` is the baseline live-receipt gate; `verifiedExternalAction` is stricter and only becomes true for `verificationScope: external-outcome` after transport identity also passes. This prevents a model's own response from being mislabeled as proof that its natural-language answer is correct or that an external side effect succeeded.
 
 `host/openAIReferenceServer.mjs` and `host/checkLocalModel.mjs` provide a bounded acceptance path for the OpenAI-compatible adapter using real loopback HTTP and a separate process. The reference server is not a model. The check exercises `LocalOpenAICompatibleAdapter → HostAdapterManager → LiveRuntimeAdapter → orchestrator → verifyLiveReceipt`, exact model identity, cancellation, audit recording, and child cleanup. A maintained real model host remains a separate acceptance gate.
+
+## Alpha.10 native Ollama readiness
+
+`src/adapters/localOllama.js` adds a separate native Ollama transport using `GET /api/tags` for exact-model discovery/fresh health and `POST /api/chat` with `stream: false` for model responses. It keeps the same host-adapter v2 boundary, timeout/cancellation behavior and simulation/live separation rather than translating native Ollama into a browser capability.
+
+Native Ollama responses are classified as `model-response-transport`: a completed response with exact model identity may establish `verifiedTransport`, while `outcomeVerified` and `verifiedExternalAction` remain false. Because the native response has no provider-issued unique completion id equivalent to an OpenAI `chatcmpl-*` receipt, the adapter keeps `providerReceiptId` null instead of manufacturing evidence. `host/checkOllama.mjs` is the real-host acceptance entry point and requires an operator-supplied exact model through `MARIA_OLLAMA_MODEL`.
+
+The bundled focused tests include real loopback HTTP protocol coverage, but that fixture is not Ollama and is not an AI model. Real Ollama inference remains unverified until `npm run ollama:check` succeeds against a trusted running Ollama process.
