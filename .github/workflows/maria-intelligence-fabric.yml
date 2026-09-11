@@ -9,6 +9,8 @@ on:
       - 'test/maria-mcp-executor.test.py'
       - 'test/maria-mcp-secret-resolution.test.py'
       - 'test/maria-mcp-keychain-source.test.py'
+      - 'test/maria-mcp-e2e-fixture.test.py'
+      - 'test/fixtures/mcp_fixture_server.py'
       - 'test/maria-mcp-process-supervisor.test.py'
       - 'test/maria-mcp-process-path-policy.test.py'
       - 'test/maria-mcp-protocol-negotiation.test.py'
@@ -45,6 +47,7 @@ jobs:
       - run: python3 test/maria-mcp-executor.test.py
       - run: python3 test/maria-mcp-secret-resolution.test.py
       - run: python3 test/maria-mcp-keychain-source.test.py
+      - run: python3 test/maria-mcp-e2e-fixture.test.py
       - run: python3 test/maria-mcp-process-supervisor.test.py
       - run: python3 test/maria-mcp-process-path-policy.test.py
       - run: python3 test/maria-mcp-protocol-negotiation.test.py
