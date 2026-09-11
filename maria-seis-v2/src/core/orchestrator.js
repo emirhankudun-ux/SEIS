@@ -58,7 +58,9 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
       });
       const result = await Promise.race([execution,cancellation]);
       if (controller.signal.aborted) throw new Error('execution stopped');
-      const verification = mode === 'live' ? verifyLiveReceipt(result, plan) : verifyPrototype(result, plan);
+      const verification = mode === 'live'
+        ? verifyLiveReceipt(result, {...plan,providerId:selectedProviders[0]?.id})
+        : verifyPrototype(result, plan);
       bus.emit(mode === 'live' ? 'LIVE_EXECUTION_FINISHED' : 'SIMULATION_FINISHED', {plan,verification});
       const status = mode === 'live' ? (verification.verified ? 'verified' : 'unverified') : (verification.contractVerified ? 'simulated' : 'unverified');
       const out={status,plan,selectedProviders,result,verification}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,provider:selectedProviders[0]?.id ?? null,verifiedExternalAction:verification.verifiedExternalAction === true,evidence:verification.evidence ?? []}); return out;
