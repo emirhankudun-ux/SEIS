@@ -17,6 +17,8 @@ class ModelSpec:
     output_cost_per_million: float
     available: bool = True
     privacy_level: str = "standard"
+    evidence_sample_count: int | None = None
+    evidence_source: str | None = None
 
     def __post_init__(self) -> None:
         if not self.name.strip() or not self.provider.strip():
@@ -29,6 +31,17 @@ class ModelSpec:
             raise ValueError("latency cannot be negative")
         if self.input_cost_per_million < 0 or self.output_cost_per_million < 0:
             raise ValueError("model costs cannot be negative")
+        if self.evidence_sample_count is not None:
+            if (
+                isinstance(self.evidence_sample_count, bool)
+                or not isinstance(self.evidence_sample_count, int)
+                or self.evidence_sample_count <= 0
+            ):
+                raise ValueError("evidence_sample_count must be a positive integer when present")
+        if self.evidence_source is not None and not self.evidence_source.strip():
+            raise ValueError("evidence_source must be non-empty when present")
+        if (self.evidence_sample_count is None) != (self.evidence_source is None):
+            raise ValueError("evidence_sample_count and evidence_source must be supplied together")
 
 
 class ModelRegistry:
