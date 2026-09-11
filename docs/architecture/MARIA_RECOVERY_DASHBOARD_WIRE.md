@@ -18,9 +18,13 @@ Wire schema version `1` contains:
 
 It deliberately contains no checkpoint body, recovery anchor, prompt, model response, tool parameters/output, credentials, permission decisions, arbitrary workspace data, or execution token.
 
+`schema_version` is a strict integer identity. JSON booleans are rejected even though Python normally treats `True == 1`. Dashboard rows must have unique work identifiers in deterministic ascending order. The `not-found` disposition is rejected at the wire boundary because `RecoveryDashboardBuilder` deliberately omits candidates that disappear before inspection.
+
 ## Encoding
 
 `RecoveryDashboardWireCodec.encode()` emits deterministic compact UTF-8 JSON with sorted keys, no non-finite numeric values, and a hard 64 KiB payload ceiling. The source snapshot is revalidated before serialization so an internally inconsistent host-created dashboard cannot be exported.
+
+Encoding also verifies the same row-order, row-identity, disposition and aggregate invariants required during decoding. A caller cannot manufacture an unsorted or duplicate dashboard snapshot and have the codec normalize it silently.
 
 ## Decoding and trust boundary
 
@@ -30,11 +34,12 @@ It deliberately contains no checkpoint body, recovery anchor, prompt, model resp
 - invalid UTF-8 or JSON;
 - duplicate object keys;
 - `NaN`, `Infinity`, and `-Infinity`;
-- unknown schema versions;
+- unknown, non-integer, or boolean schema versions;
 - missing or extra envelope/row fields;
 - any attempt to set `execution_authorized` true;
-- unknown dispositions;
+- unknown dispositions and the dashboard-ineligible `not-found` disposition;
 - invalid or unbounded identifiers;
+- duplicate or non-deterministically ordered work identifiers;
 - duplicate/unbounded drift or missing-context names;
 - invalid durable schema versions;
 - rows belonging to a different project;
@@ -56,4 +61,6 @@ This module performs no checkpoint writes, migration write-back, replay, rollbac
 
 Focused contract: `test/maria-recovery-dashboard-wire.test.py`.
 
-The contract is test-first: the first stacked commit referenced the absent wire module so hosted MARIA regression CI could prove the requirement was red before implementation.
+The contract is test-first. The initial specification commit referenced the absent wire module, and hosted `MARIA Learning Fabric` run `34587400506` failed in the MARIA regression sweep with the expected missing-module error before implementation.
+
+A second red/green hardening cycle added strict schema-type, dashboard-disposition, and deterministic row-identity requirements. Hosted run `34587537065` failed exactly three focused tests before the codec rejected boolean schema versions, `not-found` rows, and unsorted/duplicate work identifiers. The minimal invariant implementation restored the regression suite without widening the execution or persistence boundary.
