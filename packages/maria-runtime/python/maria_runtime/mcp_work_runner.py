@@ -28,10 +28,10 @@ class MCPWorkInvocationExecutor(Protocol):
 class MCPWorkStepBinding:
     """Ephemeral runtime binding from a routed work step to an approved MCP.
 
-    The binding stores policy metadata and a parameter factory, not invocation
-    parameters themselves. Permission targets and parameter-factory internals
-    are excluded from ``repr`` to avoid turning diagnostics into an accidental
-    data store.
+    The binding stores policy metadata and factories, not invocation parameters
+    or a durable approval bit. Permission targets, parameter factories, and live
+    approval providers are excluded from ``repr`` so diagnostics cannot become
+    an accidental sensitive-data store.
     """
 
     evaluation: MCPGatewayEvaluation
@@ -40,7 +40,11 @@ class MCPWorkStepBinding:
         repr=False,
         compare=False,
     )
-    approved: bool = False
+    approval_provider: Callable[[int], bool] | None = field(
+        default=None,
+        repr=False,
+        compare=False,
+    )
     reversible: bool | None = None
     timeout_ms: int = 5_000
     max_response_bytes: int = 64 * 1024
@@ -53,6 +57,8 @@ class MCPWorkStepBinding:
             raise ValueError("MCP work target must be non-empty")
         if not callable(self.params_factory):
             raise TypeError("params_factory must be callable")
+        if self.approval_provider is not None and not callable(self.approval_provider):
+            raise TypeError("approval_provider must be callable when present")
         if isinstance(self.timeout_ms, bool) or not isinstance(self.timeout_ms, int) or self.timeout_ms <= 0:
             raise ValueError("timeout_ms must be a positive integer")
         if (
@@ -74,8 +80,9 @@ class MCPWorkStepRunner:
 
     Each ``run`` call invokes ``MCPInvocationGuard.plan`` again. The runner does
     not accept a pre-built ``MCPInvocationPlan`` and therefore cannot replay an
-    authorization across work attempts. The downstream executor still performs
-    its own single-use lifecycle and live transport-health checks.
+    authorization across work attempts. Approval-required actions have no static
+    approved flag: an optional live ``approval_provider`` is re-read for every
+    attempt, and absence/failure means approval is false.
 
     A transport-level failure is marked retryable only when the caller supplied
     an idempotency key *and* this binding explicitly injects that key into the
@@ -136,13 +143,16 @@ class MCPWorkStepRunner:
             dependency_results=dependency_results,
             idempotency_key=idempotency_key,
         )
+        approval = self._approval_for_attempt(binding, attempt=attempt)
+        if isinstance(approval, WorkStepRunResult):
+            return approval
 
         # Fresh permission evaluation and fresh short-lived plan on every attempt.
         plan = self._guard.plan(
             binding.evaluation,
             capability=step.route.capability,
             target=binding.target,
-            approved=binding.approved,
+            approved=approval,
             reversible=binding.reversible,
         )
         if not plan.ready or not plan.permission.allowed:
@@ -182,6 +192,23 @@ class MCPWorkStepRunner:
             and binding.idempotency_parameter is not None
         )
         return WorkStepRunResult.failure(failure, retryable=retryable)
+
+    @staticmethod
+    def _approval_for_attempt(
+        binding: MCPWorkStepBinding,
+        *,
+        attempt: int,
+    ) -> bool | WorkStepRunResult:
+        provider = binding.approval_provider
+        if provider is None:
+            return False
+        try:
+            approved = provider(attempt)
+        except Exception:
+            return WorkStepRunResult.failure("approval-source-failure", retryable=False)
+        if not isinstance(approved, bool):
+            return WorkStepRunResult.failure("approval-source-invalid", retryable=False)
+        return approved
 
     @staticmethod
     def _validate_binding_identity(
