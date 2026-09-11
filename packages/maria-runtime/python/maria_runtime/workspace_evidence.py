@@ -108,14 +108,32 @@ class GitWorkspaceEvidenceSource:
         if self._is_symlink(git_dir) or not git_dir.is_dir():
             raise WorkspaceEvidenceError("workspace .git must be an ordinary directory")
 
-        head = self._read_regular_file(git_dir / "HEAD", self.MAX_HEAD_BYTES, encoding="utf-8")
-        ref_name, branch = self._parse_symbolic_head(head)
-        revision = self._resolve_ref(git_dir, ref_name)
+        first_head = self._read_regular_file(
+            git_dir / "HEAD", self.MAX_HEAD_BYTES, encoding="utf-8"
+        )
+        first_ref, first_branch = self._parse_symbolic_head(first_head)
+        first_revision = self._resolve_ref(git_dir, first_ref)
+
+        # HEAD and its branch ref are separate files. Sample both twice so a
+        # branch switch or ref move during capture is not certified as one
+        # coherent observation. This is a bounded consistency check, not a
+        # filesystem transaction or a promise that Git cannot change later.
+        second_head = self._read_regular_file(
+            git_dir / "HEAD", self.MAX_HEAD_BYTES, encoding="utf-8"
+        )
+        second_ref, second_branch = self._parse_symbolic_head(second_head)
+        second_revision = self._resolve_ref(git_dir, second_ref)
+        if (
+            first_ref != second_ref
+            or first_branch != second_branch
+            or first_revision != second_revision
+        ):
+            raise WorkspaceEvidenceError("workspace identity changed during capture")
 
         return WorkspaceEvidenceSnapshot(
             project=project,
-            current_branch=branch,
-            repository_revision=revision,
+            current_branch=second_branch,
+            repository_revision=second_revision,
             observed_at=observed_at,
         )
 
