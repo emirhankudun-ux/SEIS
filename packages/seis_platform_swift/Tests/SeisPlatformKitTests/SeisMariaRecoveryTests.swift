@@ -155,4 +155,23 @@ struct SeisMariaRecoveryTests {
         let pretty = try JSONSerialization.data(withJSONObject: payload, options: [.prettyPrinted])
         #expect(try SeisMariaRecoveryDecoder.decode(pretty) == SeisMariaRecoveryDecoder.decode(wire()))
     }
+    @Test func canonicallyEquivalentPythonIDsHaveDistinctNativeIdentity() throws {
+        let data = try changed { payload in
+            var rows = payload["rows"] as! [[String: Any]]
+            rows[0]["work_id"] = "e\u{301}"
+            rows[4]["work_id"] = "\u{e9}"
+            payload["rows"] = rows
+        }
+        let snapshot = try SeisMariaRecoveryDecoder.decode(data)
+        #expect(snapshot.rows[0].id != snapshot.rows[4].id)
+    }
+
+    @Test func payloadBoundaryIsMeasuredInBytes() throws {
+        var data = try wire()
+        data.append(Data(repeating: 32, count: SeisMariaRecoveryDecoder.maximumBytes - data.count))
+        #expect(try SeisMariaRecoveryDecoder.decode(data).totalCandidates == 5)
+        data.append(32)
+        #expect(throws: SeisMariaRecoveryError.self) { try SeisMariaRecoveryDecoder.decode(data) }
+    }
+
 }

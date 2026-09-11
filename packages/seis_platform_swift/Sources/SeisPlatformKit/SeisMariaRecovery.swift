@@ -4,6 +4,7 @@ import Foundation
 public enum SeisMariaRecoveryError: String, Error, Sendable {
     case invalidPayloadSize, invalidJSON, unsupportedVersion, invalidSchema
     case invalidRow, inconsistentSummary, wrongProject
+    case unreadableFile, notRegularFile
 }
 
 public enum SeisMariaRecoverySeverity: String, Sendable {
@@ -55,7 +56,8 @@ public struct SeisMariaRecoveryRow: Equatable, Identifiable, Sendable {
     public let durableSchemaVersion: Int
     public let nextStepID: String?
     public let detailFields: [String]
-    public var id: String { workID }
+    // Swift String equality normalizes canonical equivalents; Python IDs do not.
+    public var id: Data { Data(workID.utf8) }
     public var replanRequired: Bool { disposition != .complete }
     public var executionAuthorized: Bool { false }
 }
