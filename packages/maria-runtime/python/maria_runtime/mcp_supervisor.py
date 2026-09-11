@@ -8,6 +8,7 @@ from typing import Protocol
 
 from .mcp_config import MCPServerDescriptor
 from .mcp_gateway import MCPGatewayEvaluation
+from .mcp_secrets import MCPResolvedEnvironmentLease
 from .registry import ToolStatus
 
 
@@ -33,9 +34,9 @@ class MCPProcessPolicy:
     """Fail-closed process launch policy for one supervised MCP boundary.
 
     The policy deliberately requires exact executable and provenance allowlists.
-    PATH lookup, dynamic package-manager launch, and environment resolution are
-    disabled by default because each can introduce executable or secret state
-    outside the reviewed descriptor/provenance boundary.
+    PATH lookup and dynamic package-manager launch are disabled by default.
+    Environment material must arrive through a reviewed one-shot resolution
+    lease whose key set exactly matches the imported descriptor.
     """
 
     allowed_commands: tuple[str, ...]
@@ -81,6 +82,7 @@ class MCPProcessLaunchPlan:
     startup_timeout_ms: int
     max_stdout_bytes: int
     max_stderr_bytes: int
+    environment_lease: MCPResolvedEnvironmentLease | None = None
 
 
 @dataclass(frozen=True)
@@ -124,11 +126,12 @@ class MCPProcessTransport(Protocol):
 class MCPProcessSupervisor:
     """Bounded lifecycle/circuit-breaker core for reviewed MCP processes.
 
-    The supervisor does not implement subprocess spawning, environment/secret
-    resolution, package installation, or schema discovery. A concrete transport
-    must be injected explicitly. This keeps process authority separate from the
-    policy/gateway layer while still defining exact launch bounds and redacted
-    lifecycle evidence.
+    The supervisor does not implement subprocess spawning, package installation,
+    secret lookup, or schema discovery. Secret values may enter only through an
+    already-resolved ``MCPResolvedEnvironmentLease`` whose reviewed key set
+    exactly matches the descriptor. A concrete transport must be injected
+    explicitly. This keeps process authority separate from policy/trust while
+    still defining exact launch bounds and redacted lifecycle evidence.
     """
 
     def __init__(self, *, policy: MCPProcessPolicy, transport: MCPProcessTransport) -> None:
@@ -154,8 +157,14 @@ class MCPProcessSupervisor:
         self,
         descriptor: MCPServerDescriptor,
         evaluation: MCPGatewayEvaluation,
+        *,
+        environment_lease: MCPResolvedEnvironmentLease | None = None,
     ) -> MCPProcessSnapshot:
-        blockers = self._preflight_blockers(descriptor, evaluation)
+        blockers = self._preflight_blockers(
+            descriptor,
+            evaluation,
+            environment_lease=environment_lease,
+        )
         if blockers:
             if self._state is not MCPProcessState.CIRCUIT_OPEN:
                 self._state = MCPProcessState.BLOCKED
@@ -169,6 +178,7 @@ class MCPProcessSupervisor:
             startup_timeout_ms=self._policy.startup_timeout_ms,
             max_stdout_bytes=self._policy.max_stdout_bytes,
             max_stderr_bytes=self._policy.max_stderr_bytes,
+            environment_lease=environment_lease,
         )
         self._attempt_count += 1
 
@@ -229,6 +239,8 @@ class MCPProcessSupervisor:
         self,
         descriptor: MCPServerDescriptor,
         evaluation: MCPGatewayEvaluation,
+        *,
+        environment_lease: MCPResolvedEnvironmentLease | None,
     ) -> list[str]:
         blockers: list[str] = []
 
@@ -264,7 +276,18 @@ class MCPProcessSupervisor:
             blockers.append("dynamic-package-manager-disabled")
 
         if descriptor.env_keys:
-            blockers.append("environment-resolution-required")
+            if environment_lease is None:
+                blockers.append("environment-resolution-required")
+            elif environment_lease.consumed:
+                blockers.append("environment-resolution-consumed")
+            elif not environment_lease.matches(
+                server_name=descriptor.name,
+                keys=descriptor.env_keys,
+            ):
+                blockers.append("environment-resolution-mismatch")
+        elif environment_lease is not None and environment_lease.keys:
+            blockers.append("environment-not-declared")
+
         if len(descriptor.args) > self._policy.max_args:
             blockers.append("argument-count-exceeded")
         for arg in descriptor.args:
