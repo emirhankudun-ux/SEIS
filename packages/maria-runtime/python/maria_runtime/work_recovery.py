@@ -508,6 +508,7 @@ class DurableWorkCheckpointStore:
             WorkStepState.CANCELLED: 0,
         }
         seen: set[str] = set()
+        first_cancelled_step_id: str | None = None
         for step in checkpoint.steps:
             if not isinstance(step, WorkStepExecutionEvidence):
                 fail("checkpoint contains invalid step evidence")
@@ -515,7 +516,6 @@ class DurableWorkCheckpointStore:
                 fail("invalid step id")
             if step.step_id in seen:
                 fail("checkpoint contains duplicate step ids")
-            seen.add(step.step_id)
             if not isinstance(step.target_name, str) or not step.target_name or len(step.target_name) > 256:
                 fail("invalid target name")
             if isinstance(step.attempts, bool) or not isinstance(step.attempts, int) or step.attempts < 0:
@@ -524,9 +524,36 @@ class DurableWorkCheckpointStore:
                 not isinstance(dep, str) or not dep or len(dep) > 128 for dep in step.depends_on
             ):
                 fail("invalid checkpoint dependency")
+            if len(set(step.depends_on)) != len(step.depends_on):
+                fail("checkpoint contains duplicate dependency ids")
+            if any(dependency not in seen for dependency in step.depends_on):
+                fail("checkpoint dependency must reference an earlier step")
             if step.failure is not None and cls._SAFE_FAILURE_RE.fullmatch(step.failure) is None:
                 fail("failure category is not a bounded safe identifier")
+            if step.state not in states:
+                fail("invalid checkpoint step state")
+            if step.state is WorkStepState.SUCCEEDED:
+                if step.attempts < 1:
+                    fail("succeeded step requires at least one attempt")
+                if step.failure is not None:
+                    fail("succeeded step cannot carry failure evidence")
+            elif step.state is WorkStepState.FAILED:
+                if step.attempts < 1:
+                    fail("failed step requires at least one attempt")
+                if step.failure is None:
+                    fail("failed step requires failure evidence")
+            elif step.state is WorkStepState.BLOCKED:
+                if step.attempts != 0:
+                    fail("blocked step cannot have execution attempts")
+                if step.failure is None:
+                    fail("blocked step requires failure evidence")
+            elif step.state is WorkStepState.CANCELLED:
+                if step.failure is None:
+                    fail("cancelled step requires failure evidence")
+            if first_cancelled_step_id is None and step.state is WorkStepState.CANCELLED:
+                first_cancelled_step_id = step.step_id
             states[step.state] += 1
+            seen.add(step.step_id)
 
         actual = (
             states[WorkStepState.SUCCEEDED],
@@ -545,11 +572,10 @@ class DurableWorkCheckpointStore:
         if checkpoint.complete != (checkpoint.cancelled_steps == 0):
             fail("checkpoint completion flag is inconsistent")
         if checkpoint.next_step_id is not None:
-            if checkpoint.next_step_id not in seen:
-                fail("next step id is not present in checkpoint")
-            matching = next(step for step in checkpoint.steps if step.step_id == checkpoint.next_step_id)
-            if matching.state is not WorkStepState.CANCELLED:
-                fail("next step must identify a cancelled step")
+            if first_cancelled_step_id is None:
+                fail("next step requires a cancelled step")
+            if checkpoint.next_step_id != first_cancelled_step_id:
+                fail("next step must identify the first cancelled step")
         elif not checkpoint.complete:
             fail("incomplete checkpoint requires a next step")
 
