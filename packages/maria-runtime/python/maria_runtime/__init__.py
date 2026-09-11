@@ -23,6 +23,12 @@ from .local_probe import (
     LocalProbeResult,
     LocalRuntimeProbe,
 )
+from .local_status import (
+    LocalRuntimeSnapshotBuilder,
+    LocalRuntimeStatusSnapshot,
+    RuntimeProbeState,
+    RuntimeProbeStatus,
+)
 from .mcp_config import MCPConfigImporter, MCPImportPreview, MCPServerDescriptor
 from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
@@ -47,6 +53,8 @@ __all__ = [
     "LocalProbeResponse",
     "LocalProbeResult",
     "LocalRuntimeProbe",
+    "LocalRuntimeSnapshotBuilder",
+    "LocalRuntimeStatusSnapshot",
     "MCPConfigImporter",
     "MCPImportPreview",
     "MCPServerDescriptor",
@@ -65,6 +73,8 @@ __all__ = [
     "ProviderRegistry",
     "ProviderSpec",
     "ProviderStatus",
+    "RuntimeProbeState",
+    "RuntimeProbeStatus",
     "ToolSpec",
     "ToolStatus",
     "WorkMode",
