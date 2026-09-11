@@ -37,7 +37,9 @@ test('execute returns attributable verified receipt from chat completions', asyn
   assert.equal(receipt.ok,true);
   assert.equal(receipt.output,'ready');
   assert.equal(receipt.providerReceiptId,'chatcmpl-local-1');
-  assert.equal(receipt.outcomeVerified,true);
+  assert.equal(receipt.transportVerified,true);
+  assert.equal(receipt.outcomeVerified,false);
+  assert.equal(receipt.verificationScope,'model-response-transport');
   assert.ok(receipt.evidence.includes('model:qwen-local'));
   assert.ok(receipt.evidence.includes('provider-receipt:chatcmpl-local-1'));
 });
@@ -73,4 +75,13 @@ test('execute forwards cancellation to fetch', async()=>{
 test('adapter can bind to the canonical local provider id for host routing', async()=>{
   const adapter=createLocalOpenAICompatibleAdapter({id:'local',baseUrl:'http://127.0.0.1:1234',model:'qwen-local',fetchImpl:async()=>response({data:[{id:'qwen-local'}]})});
   assert.equal(adapter.id,'local');
+});
+
+test('completion model identity must match the configured local model', async()=>{
+  const fetchImpl=async url=>String(url).endsWith('/v1/models')
+    ? response({data:[{id:'qwen-local'}]})
+    : response({id:'chatcmpl-wrong-model',model:'other-model',choices:[{message:{role:'assistant',content:'ready'}}]});
+  const adapter=createLocalOpenAICompatibleAdapter({baseUrl:'http://127.0.0.1:1234',model:'qwen-local',fetchImpl});
+  const session=await adapter.connect();
+  await assert.rejects(()=>adapter.execute({command:'status?',projectId:'seis',runId:'run-model',intent:'general'},{capability:'reasoning',sessionId:session.sessionId}),/completion model mismatch/);
 });

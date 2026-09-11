@@ -27,10 +27,34 @@ test('live verifier accepts only matching attributed evidence', () => {
   const expected={providerId:'local',runId:'r1',projectId:'seis',intent:'general'};
   const good=verifyLiveReceipt({
     ok:true,mode:'live',runtime:'host-runtime-v1',providerId:'local',runId:'r1',projectId:'seis',intent:'general',
-    outcomeVerified:true,evidence:['model:health-ok','response:attributed']
+    transportVerified:true,outcomeVerified:true,verificationScope:'external-outcome',evidence:['model:health-ok','response:attributed']
   },expected);
   assert.equal(good.verified,true);
+  assert.equal(good.verifiedTransport,true);
   assert.equal(good.verifiedExternalAction,true);
+});
+
+test('live verifier can verify transport without claiming an external outcome', () => {
+  const expected={providerId:'local',runId:'r1',projectId:'seis',intent:'general'};
+  const receipt=verifyLiveReceipt({
+    ok:true,mode:'live',runtime:'host-runtime-v1',providerId:'local',runId:'r1',projectId:'seis',intent:'general',
+    transportVerified:true,outcomeVerified:false,verificationScope:'model-response-transport',evidence:['model:qwen-local','provider-receipt:chatcmpl-1']
+  },expected);
+  assert.equal(receipt.verified,true);
+  assert.equal(receipt.verifiedTransport,true);
+  assert.equal(receipt.verifiedExternalAction,false);
+  assert.equal(receipt.scope,'model-response-transport');
+});
+
+test('self-asserted outcome without transport verification fails closed', () => {
+  const expected={providerId:'local',runId:'r1',projectId:'seis',intent:'general'};
+  const receipt=verifyLiveReceipt({
+    ok:true,mode:'live',runtime:'host-runtime-v1',providerId:'local',runId:'r1',projectId:'seis',intent:'general',
+    transportVerified:false,outcomeVerified:true,verificationScope:'external-outcome',evidence:['response:self-asserted']
+  },expected);
+  assert.equal(receipt.verified,false);
+  assert.equal(receipt.verifiedTransport,false);
+  assert.equal(receipt.verifiedExternalAction,false);
 });
 
 test('live runtime routes intent through ready host adapter', async () => {
@@ -44,7 +68,7 @@ test('live runtime routes intent through ready host adapter', async () => {
 });
 
 test('orchestrator can use injected live runtime without falling back to simulation', async () => {
-  const manager=readyManager({receipt:{ok:true,outcomeVerified:true,evidence:['health:ok','response:checked']}});
+  const manager=readyManager({receipt:{ok:true,transportVerified:true,outcomeVerified:true,verificationScope:'external-outcome',evidence:['health:ok','response:checked']}});
   await manager.connect('local');
   const runtime=new LiveRuntimeAdapter({manager,intentCapabilities:{general:'reasoning'}});
   const journal=createExecutionJournal({limit:10});
@@ -59,7 +83,7 @@ test('orchestrator can use injected live runtime without falling back to simulat
 });
 
 for (const key of ['providerId','runId','projectId','intent']) test(`runtime does not forge or repair mismatched ${key}`, async()=>{
-  const manager=readyManager({receipt:{ok:true,[key]:'wrong',outcomeVerified:true,evidence:['response:checked']}});
+  const manager=readyManager({receipt:{ok:true,[key]:'wrong',transportVerified:true,outcomeVerified:true,verificationScope:'external-outcome',evidence:['response:checked']}});
   await manager.connect('local');const runtime=new LiveRuntimeAdapter({manager,intentCapabilities:{general:'reasoning'}});
   const plan={runId:'r1',projectId:'seis',intent:'general'};
   const result=await runtime.execute(plan,null,{providers:[{id:'local'}]});

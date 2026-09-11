@@ -1,24 +1,25 @@
 {
-  "version": "4.0.0-alpha.9",
+  "version": "4.0.0-alpha.10",
   "repository": "emirhankudun-ux/SEIS",
   "branch": "maria-seis-v4-platform",
-  "parentCommit": "be324d8e76ac65b8a2c3bde0707a962525a374b3",
+  "parentCommit": "7768f272bb7610eca9130330d0439f374fee6761",
   "packagePath": "maria-seis-v2",
-  "scope": "alpha.8 real read-only MCP check plus durable redacted audit/recovery foundation",
+  "scope": "alpha.9 durable recovery plus verification-scope hardening and a real loopback OpenAI-compatible reference transport check",
   "verification": {
     "nodeTests": {
-      "passed": 161,
+      "passed": 165,
       "failed": 0
     },
     "browserOffline": {
       "passed": 17,
       "viewports": 7
     },
-    "realMcp": "verified: included read-only package inspector over OS pipes; independent SHA-256/byte match; child closed",
-    "recovery": "verified: real child exit left durable running marker; reload detected it; no auto-resume; explicit reconciliation cleared candidate",
-    "httpBrowser": "not rerun; prior environment policy blocked loopback navigation",
-    "externalModels": "not tested against a real model process",
+    "realMcp": "verified: included read-only package inspector over OS pipes; independent package byte/SHA-256 match; child closed",
+    "recovery": "verified: child exit left one durable running marker; reload detected it; no auto-resume; explicit reconciliation cleared candidate",
+    "localModelTransport": "verified: real loopback HTTP/OpenAI-compatible reference process; exact model/receipt identity, cancellation, audit and child cleanup; transport only, not model semantics",
+    "externalModels": "not tested against a real LM Studio/Ollama/model process",
+    "thirdPartyMcp": "not tested against a maintained external MCP server",
     "nativePlatforms": "not verified"
   },
-  "notes": "No automatic resume. Interrupted live work requires reconciliation; persistent audit failure prevents a clean verified completion claim."
+  "notes": "A verified model transport receipt does not become verifiedExternalAction. Semantic model correctness and real model availability remain separate gates."
 }

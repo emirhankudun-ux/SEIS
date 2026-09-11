@@ -14,18 +14,39 @@ export function verifyPrototype(result, expected = {}) {
     summary:contractVerified ? 'Simülasyon sözleşmesi doğrulandı. Harici işlem yapılmadı.' : 'Simülasyon sonucu doğrulanamadı. Gerçek başarı iddiası yok.' };
 }
 
-/** Verifies attribution and identity for a live adapter receipt. This is intentionally stricter than adapter health. */
+/** Verifies transport attribution separately from independently checked external outcomes. */
 export function verifyLiveReceipt(result, expected = {}) {
   const evidence=Array.isArray(result?.evidence) ? result.evidence.filter(item=>typeof item==='string' && item.trim()).slice(0,32) : [];
-  const checks=[
+  const allowedScopes=new Set(['live-transport','model-response-transport','tool-response-transport','external-outcome']);
+  const scope=allowedScopes.has(result?.verificationScope) ? result.verificationScope : 'live-transport';
+  const identityChecks=[
     {id:'runtime-result',pass:result?.ok===true,evidence:result?.ok===true?'runtime:ok':'runtime:not-ok'},
     {id:'live-runtime',pass:result?.runtime==='host-runtime-v1' && result?.mode==='live',evidence:`mode:${result?.mode==='live'?'live':'unknown'}`},
     {id:'provider-matched',pass:!!expected.providerId && result?.providerId===expected.providerId,evidence:`provider:${!!expected.providerId&&result?.providerId===expected.providerId?'matched':'unmatched'}`},
     {id:'intent-preserved',pass:!!expected.intent && result?.intent===expected.intent,evidence:`intent:${!!expected.intent&&result?.intent===expected.intent?'matched':'unmatched'}`},
     {id:'run-matched',pass:!!expected.runId && result?.runId===expected.runId,evidence:`run:${!!expected.runId&&result?.runId===expected.runId?'matched':'unmatched'}`},
-    {id:'project-matched',pass:!!expected.projectId && result?.projectId===expected.projectId,evidence:`project:${!!expected.projectId&&result?.projectId===expected.projectId?'matched':'unmatched'}`},
-    {id:'external-verification',pass:result?.outcomeVerified===true && evidence.length>0,evidence:`external:${result?.outcomeVerified===true&&evidence.length?'verified':'unverified'}`}
+    {id:'project-matched',pass:!!expected.projectId && result?.projectId===expected.projectId,evidence:`project:${!!expected.projectId&&result?.projectId===expected.projectId?'matched':'unmatched'}`}
   ];
-  const verified=checks.every(check=>check.pass);
-  return {verified,verifiedExternalAction:verified,contractVerified:verified,scope:'live',checks,evidence:[...checks.map(c=>c.evidence),...evidence],summary:verified?'Canlı yürütme kimliği ve dış doğrulama kanıtı eşleşti.':'Canlı sonuç tam doğrulanamadı; başarı iddiası yok.'};
+  const identityVerified=identityChecks.every(check=>check.pass);
+  const transportVerified=identityVerified && result?.transportVerified===true && evidence.length>0;
+  const externalOutcomeVerified=transportVerified && scope==='external-outcome' && result?.outcomeVerified===true;
+  const checks=[...identityChecks,
+    {id:'transport-verification',pass:transportVerified,evidence:`transport:${transportVerified?'verified':'unverified'}`},
+    {id:'external-outcome',pass:externalOutcomeVerified,evidence:`external:${externalOutcomeVerified?'verified':'unverified'}`}
+  ];
+  const summary=externalOutcomeVerified
+    ? 'Canlı yürütme kimliği, taşıma yolu ve bağımsız dış sonuç kanıtı eşleşti.'
+    : transportVerified
+      ? 'Canlı taşıma ve yanıt kimliği doğrulandı; dış sonuç veya semantik doğruluk iddiası yok.'
+      : 'Canlı sonuç kimliği veya taşıma kanıtı doğrulanamadı; başarı iddiası yok.';
+  return {
+    verified:transportVerified,
+    verifiedTransport:transportVerified,
+    verifiedExternalAction:externalOutcomeVerified,
+    contractVerified:transportVerified,
+    scope,
+    checks,
+    evidence:[...checks.map(c=>c.evidence),...evidence],
+    summary
+  };
 }

@@ -70,12 +70,13 @@ export function createLocalOpenAICompatibleAdapter({id='local-openai-compatible'
       const output=payload?.choices?.[0]?.message?.content;
       const receiptId=payload?.id;
       if (typeof output!=='string' || !output.trim() || typeof receiptId!=='string' || !receiptId.trim()) throw new Error('invalid completion response');
+      if (payload?.model!==configuredModel) throw new Error('completion model mismatch');
       return {
         ok:true,output:output.trim(),providerReceiptId:receiptId,model:payload?.model||configuredModel,
         providerId:id,runId:requestPayload?.runId??null,projectId:requestPayload?.projectId??null,intent:requestPayload?.intent??null,
         verificationScope:'model-response-transport',
-        usage:payload?.usage??null,outcomeVerified:true,
-        evidence:[`model:${payload?.model||configuredModel}`,`provider-receipt:${receiptId}`]
+        usage:payload?.usage??null,transportVerified:true,outcomeVerified:false,
+        evidence:[`transport:openai-compatible`,`model:${configuredModel}`,`provider-receipt:${receiptId}`]
       };
     },
     async disconnect({sessionId:activeSessionId}={}){

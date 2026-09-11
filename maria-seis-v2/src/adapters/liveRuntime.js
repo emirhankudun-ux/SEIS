@@ -22,7 +22,9 @@ export class LiveRuntimeAdapter {
       mode:this.mode,
       transportProviderId:provider.id,
       evidence:Array.isArray(receipt.evidence)?receipt.evidence:[],
-      outcomeVerified:receipt.outcomeVerified===true
+      transportVerified:receipt.transportVerified===true,
+      outcomeVerified:receipt.outcomeVerified===true,
+      verificationScope:typeof receipt.verificationScope==='string'?receipt.verificationScope:'live-transport'
     };
   }
 }

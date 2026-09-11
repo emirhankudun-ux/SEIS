@@ -1,28 +1,28 @@
 # Next bounded milestones
 
-## Current checkpoint — alpha.9
+## Current checkpoint — alpha.10
 
-The core now includes truthful simulation/live separation, provider supervision, host-adapter contracts, strict live receipt identity, OpenAI-compatible local-model transport contracts, modern/legacy MCP lifecycle support, one real read-only MCP subprocess check, and a durable execution-journal/recovery primitive.
+The core now includes truthful simulation/live separation, provider supervision, host-adapter contracts, strict receipt identity, modern/legacy MCP support, one real read-only MCP subprocess check, durable execution audit/recovery, and a real loopback OpenAI-compatible **transport** acceptance path that does not pretend the reference server is an AI model.
 
-## Completed alpha.9 scope
+## Completed alpha.10 scope
 
-- all alpha.8 MCP and receipt-identity boundaries remain;
-- persistent redacted execution journal with atomic host file storage;
-- audit `begin` / `complete` lifecycle around actual execution;
-- live fail-closed behavior when audit start cannot be persisted;
-- verified live results downgrade to `unverified` when terminal audit persistence fails;
-- interrupted-run scan after reload with immutable recovery candidates;
-- automatic resume explicitly disabled;
-- real subprocess interruption → durable marker → reload → reconciliation acceptance check.
+- all alpha.9 audit/recovery and alpha.8 MCP boundaries remain;
+- live verification separates transport identity from independently checked external outcomes;
+- local model receipts can be transport-verified without becoming `verifiedExternalAction`;
+- exact completion-model identity is required;
+- real loopback HTTP/OpenAI-compatible reference process exercises model discovery, completion transport, host manager, live runtime, orchestrator, verifier and audit;
+- cancellation is verified across the live local-model transport path;
+- reference child cleanup is verified;
+- no semantic-model correctness or real LM Studio/Ollama claim is made.
 
 ## Next highest-value milestone
 
-Connect one real trusted local-model host available to the runtime and verify reproducible end-to-end inference through `HostAdapterManager → LiveRuntimeAdapter → orchestrator → verifier`, including cancellation and exact receipt identity. In parallel, test the MCP client against one maintained third-party server without widening tool permissions.
+Connect the existing local-model adapter to one **real trusted model host** available to the runtime (LM Studio, Ollama, or another explicitly configured OpenAI-compatible host) and verify reproducible end-to-end inference with exact model identity and cancellation. In parallel, test the MCP client against one maintained third-party server without widening tool permissions.
 
 ## Core platform gates before broad product expansion
 
 1. Third-party MCP interoperability against one trusted server, with explicit permission prompts for consequential tools.
-2. Real local-model transport against one trusted local host.
+2. Real local-model transport against one trusted model process; the alpha.10 reference server does not satisfy this gate.
 3. Server-side/cloud model adapter with no browser-side secrets.
 4. Native Apple host and scoped macOS permissions with reversible actions.
 5. Real voice with explicit capture indicators, interruption and permission-safe microphone state.

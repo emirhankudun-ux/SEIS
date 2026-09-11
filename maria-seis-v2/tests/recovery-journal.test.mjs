@@ -71,7 +71,7 @@ test('live execution fails closed when audit start cannot be persisted',async()=
 test('verified live result is downgraded when terminal audit commit fails',async()=>{
   let appends=0;
   const journal={append(){appends+=1;if(appends===2) throw new Error('disk full')}};
-  const runtime={mode:'live',execute:async plan=>({ok:true,runtime:'host-runtime-v1',mode:'live',providerId:'local',runId:plan.runId,projectId:plan.projectId,intent:plan.intent,outcomeVerified:true,evidence:['external:checked']})};
+  const runtime={mode:'live',execute:async plan=>({ok:true,runtime:'host-runtime-v1',mode:'live',providerId:'local',runId:plan.runId,projectId:plan.projectId,intent:plan.intent,transportVerified:true,outcomeVerified:true,verificationScope:'external-outcome',evidence:['external:checked']})};
   const registry=[{id:'local',label:'Local',kind:'local-model',status:'available',implemented:true,connected:true,healthVerified:true,capabilities:['reasoning'],priority:100}];
   const run=createOrchestrator({runtime,journal,providerRegistry:registry});
   const out=await run('SEIS durumunu kontrol et','seis',{}, {executionMode:'live',localFirst:true,safeMode:true});

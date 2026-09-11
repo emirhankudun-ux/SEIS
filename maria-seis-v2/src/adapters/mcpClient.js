@@ -50,7 +50,7 @@ export function createMcpAdapter({providerId = 'mcp', transport, authToken = nul
     const useModern = modernVersion ?? (lifecycle === 'modern' ? negotiatedProtocol : null);
     const requestParams = useModern && !notification ? {...params, _meta:{
       'io.modelcontextprotocol/protocolVersion':useModern,
-      'io.modelcontextprotocol/clientInfo':{name:'MARIA-SEIS',version:'4.0.0-alpha.8'},
+      'io.modelcontextprotocol/clientInfo':{name:'MARIA-SEIS',version:'4.0.0-alpha.10'},
       'io.modelcontextprotocol/clientCapabilities':{}
     }} : params;
     const message = {jsonrpc:'2.0', ...(notification ? {} : {id:`mcp-${++sequence}`}), method, params:requestParams,
@@ -94,7 +94,7 @@ export function createMcpAdapter({providerId = 'mcp', transport, authToken = nul
             if (!legacy) { failure = 'unsupported-protocol-version'; throw new Error(failure); }
           }
         }
-        const result = await send('initialize', {protocolVersion:legacy, capabilities:{}, clientInfo:{name:'MARIA-SEIS',version:'4.0.0-alpha.8'}}, signal, generation);
+        const result = await send('initialize', {protocolVersion:legacy, capabilities:{}, clientInfo:{name:'MARIA-SEIS',version:'4.0.0-alpha.10'}}, signal, generation);
         if (!object(result) || !LEGACY.includes(result.protocolVersion) || strict && result.protocolVersion !== legacy) {
           failure = 'unsupported-protocol-version'; throw new Error(failure);
         }
@@ -159,6 +159,7 @@ export function createMcpAdapter({providerId = 'mcp', transport, authToken = nul
       const safe = authToken ? redact(result) : result;
       return {ok, providerId, protocolVersion:negotiatedProtocol, tool, runId:request.runId ?? null, projectId:request.projectId ?? null,
         intent:request.intent ?? null, result:safe, transportVerified:true, outcomeVerified,
+        verificationScope:outcomeVerified?'external-outcome':'tool-response-transport',
         evidence:[`mcp-tool:${tool}`, `mcp-result:${ok ? 'ok' : 'error'}`, `outcome:${outcomeVerified ? 'host-checked' : 'unverified'}`]};
     },
     async disconnect() {
