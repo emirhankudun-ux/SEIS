@@ -4,11 +4,13 @@ import { verifyPrototype } from './verification.js';
 import { selectProviders } from './providerRouter.js';
 import { eventBus } from './eventBus.js';
 import { MockRuntimeAdapter } from '../adapters/runtime.js';
+import { executionJournal } from './executionJournal.js';
 let sequence = 0;
 
 /** Injectable for contract tests. Only the simulator is executable in this release. */
-export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = eventBus, timeoutMs = 10000 } = {}) {
+export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = eventBus, timeoutMs = 10000, journal = executionJournal } = {}) {
   if (!Number.isFinite(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) throw new TypeError('Invalid timeoutMs');
+  const writeJournal = entry => { try { journal?.append?.(entry); } catch { bus.emit('JOURNAL_FAILED',{runId:entry?.runId ?? null}); } };
   return async function run(command, projectId, hooks = {}, policy = {}, options = {}) {
     let plan;
     const notify = (name, data) => {
@@ -21,21 +23,21 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
     try {
       plan = Object.freeze({...classifyIntent(command, projectId), runId:`run-${Date.now()}-${++sequence}`});
     } catch { return {status:'invalid',reason:'Komut 1–4000 karakter olmalı ve bir proje seçilmeli.'}; }
-    if (!policy || typeof policy !== 'object' || Array.isArray(policy)) return {status:'blocked',plan,reason:'Geçersiz yürütme politikası.'};
+    if (!policy || typeof policy !== 'object' || Array.isArray(policy)) { const out={status:'blocked',plan,reason:'Geçersiz yürütme politikası.'}; writeJournal({runId:plan.runId,status:out.status,executionMode:'unknown',verifiedExternalAction:false,evidence:[]}); return out; }
     const mode = policy.executionMode ?? 'simulation';
-    if (!['simulation','live'].includes(mode)) return {status:'blocked',plan,reason:'Bilinmeyen yürütme modu.'};
+    if (!['simulation','live'].includes(mode)) { const out={status:'blocked',plan,reason:'Bilinmeyen yürütme modu.'}; writeJournal({runId:plan.runId,status:out.status,executionMode:String(mode),verifiedExternalAction:false,evidence:[]}); return out; }
     // Authorization precedes observers. A UI hook cannot mutate the plan or grant consent.
     const permission = evaluatePermission(plan, policy);
     bus.emit('PLAN_CREATED', plan); notify('onPlan', plan);
     if (!permission.allowed) {
       bus.emit(permission.approval ? 'APPROVAL_REQUIRED' : 'ACTION_BLOCKED', {plan,permission});
-      return {status:permission.approval ? 'approval' : 'blocked',plan,permission,reason:permission.reason};
+      const out={status:permission.approval ? 'approval' : 'blocked',plan,permission,reason:permission.reason}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,verifiedExternalAction:false,evidence:[]}); return out;
     }
     if (mode === 'live' || runtime?.mode !== 'simulation' || typeof runtime?.execute !== 'function') {
-      return {status:'unavailable',plan,reason:'Gerçek yürütme adaptörü bağlı değil. Simülasyona sessizce geçilmedi.'};
+      const out={status:'unavailable',plan,reason:'Gerçek yürütme adaptörü bağlı değil. Simülasyona sessizce geçilmedi.'}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,verifiedExternalAction:false,evidence:[]}); return out;
     }
     const selectedProviders = Object.freeze(selectProviders(plan, {...policy,executionMode:mode}));
-    if (!selectedProviders.length) return {status:'unavailable',plan,reason:'Kullanılabilir bir yürütücü yok.'};
+    if (!selectedProviders.length) { const out={status:'unavailable',plan,reason:'Kullanılabilir bir yürütücü yok.'}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,verifiedExternalAction:false,evidence:[]}); return out; }
     bus.emit('PROVIDERS_SELECTED', {plan,selectedProviders}); notify('onProviders', selectedProviders);
     const controller = new AbortController();
     let timedOut = false;
@@ -57,12 +59,12 @@ export function createOrchestrator({ runtime = new MockRuntimeAdapter(), bus = e
       if (controller.signal.aborted) throw new Error('execution stopped');
       const verification = verifyPrototype(result, plan);
       bus.emit('SIMULATION_FINISHED', {plan,verification});
-      return {status:verification.contractVerified ? 'simulated' : 'unverified',plan,selectedProviders,result,verification};
+      const out={status:verification.contractVerified ? 'simulated' : 'unverified',plan,selectedProviders,result,verification}; writeJournal({runId:plan.runId,status:out.status,executionMode:mode,provider:selectedProviders[0]?.id ?? null,verifiedExternalAction:false,evidence:verification.evidence ?? []}); return out;
     } catch {
       const status = timedOut ? 'timed-out' : controller.signal.aborted ? 'cancelled' : 'error';
       const reason = { 'timed-out':'İşlem süre sınırında durduruldu.', cancelled:'İşlem iptal edildi.', error:'Yürütücü başarısız oldu; sonuç doğrulanmadı.' }[status];
       bus.emit('EXECUTION_STOPPED', {runId:plan.runId,status});
-      return {status,plan,reason};
+      const out={status,plan,reason}; writeJournal({runId:plan.runId,status,executionMode:mode,provider:selectedProviders?.[0]?.id ?? null,verifiedExternalAction:false,evidence:[]}); return out;
     } finally {
       settled = true;
       clearTimeout(timer);
