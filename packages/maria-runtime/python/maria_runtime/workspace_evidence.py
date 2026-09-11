@@ -33,6 +33,8 @@ class WorkspaceEvidenceSnapshot:
             raise WorkspaceEvidenceError("invalid current branch")
         if not GitWorkspaceEvidenceSource._is_revision(self.repository_revision):
             raise WorkspaceEvidenceError("invalid repository revision")
+        if not isinstance(self.observed_at, str) or not self.observed_at.strip() or len(self.observed_at) > 128:
+            raise WorkspaceEvidenceError("invalid observed_at")
         # Reuse ContextFact's timestamp contract so emitted evidence is always
         # admissible to ProjectContextEngine without a second time grammar.
         try:
@@ -45,7 +47,7 @@ class WorkspaceEvidenceSnapshot:
                 verified=True,
                 observed_at=self.observed_at,
             )
-        except (TypeError, ValueError) as exc:
+        except (TypeError, ValueError, AttributeError) as exc:
             raise WorkspaceEvidenceError("invalid observed_at") from exc
 
     @property
@@ -118,14 +120,32 @@ class GitWorkspaceEvidenceSource:
         )
 
     def _resolve_ref(self, git_dir: Path, ref_name: str) -> str:
-        ref_path = git_dir.joinpath(*ref_name.split("/"))
-        try:
-            revision = self._read_regular_file(ref_path, self.MAX_REF_BYTES, encoding="ascii").strip()
-        except FileNotFoundError:
+        ref_path = self._loose_ref_path(git_dir, ref_name)
+        if ref_path is None:
             revision = self._resolve_packed_ref(git_dir, ref_name)
+        else:
+            try:
+                revision = self._read_regular_file(ref_path, self.MAX_REF_BYTES, encoding="ascii").strip()
+            except FileNotFoundError:
+                revision = self._resolve_packed_ref(git_dir, ref_name)
         if not self._is_revision(revision):
             raise WorkspaceEvidenceError("branch ref contains an invalid revision")
         return revision.lower()
+
+    def _loose_ref_path(self, git_dir: Path, ref_name: str) -> Path | None:
+        parts = ref_name.split("/")
+        current = git_dir
+        for component in parts[:-1]:
+            current = current / component
+            try:
+                metadata = current.lstat()
+            except FileNotFoundError:
+                return None
+            except OSError as exc:
+                raise WorkspaceEvidenceError("branch ref parent cannot be inspected") from exc
+            if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISDIR(metadata.st_mode):
+                raise WorkspaceEvidenceError("branch ref parent must be an ordinary directory")
+        return current / parts[-1]
 
     def _resolve_packed_ref(self, git_dir: Path, ref_name: str) -> str:
         try:
