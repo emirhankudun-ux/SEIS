@@ -76,6 +76,8 @@ The native branch predicate intentionally mirrors the conservative Python worksp
 
 Otherwise-valid non-ASCII branch identity is preserved. In particular, symbolic `HEAD` removes only one terminal LF or CRLF metadata ending; it does not call generic Unicode whitespace trimming. A Git-valid branch ending in U+00A0 therefore remains that exact branch.
 
+HEAD's terminal CRLF is removed in **Unicode-scalar units**, not Swift `Character` units. CR and LF form one extended grapheme cluster: `dropLast(2)` on the string would also remove the branch's final character. With both `feature/maria` and `feature/mari` present, that mistake could successfully certify the wrong branch and object id, not merely report a missing ref. The correction removes exactly the two CR/LF scalars and leaves branch validation, LF/no-ending handling, metadata byte limits and read-only behavior unchanged. Repeated line endings and invalid branch suffixes remain errors; they are never repaired into another branch.
+
 The same identity preservation applies after Git packs a loose branch ref. `packed-refs` contains both an ASCII object id and the ref name; decoding the entire file as ASCII would make a valid Unicode branch disappear from the evidence layer after ordinary ref packing. Both Python and native sources therefore decode bounded `packed-refs` metadata as UTF-8 and still validate the object-id token separately as ASCII hexadecimal data.
 
 Packed-ref record parsing is also deliberately narrower than a language's generic “line” API. Git accepts Unicode scalars such as U+2028 inside ref names, while Python `str.splitlines()` and Foundation newline character sets treat that scalar as a line boundary. The evidence sources therefore split packed metadata only on literal ASCII LF and remove an optional preceding CR. Unicode line-separator scalars remain part of the exact branch identity instead of being reinterpreted as record delimiters.
@@ -122,18 +124,28 @@ The feature was specified before its native source existed.
 - Packed-ref Unicode parity was specified before implementation at `56a85af0260be3b4895035c637b8d868c71e8322`. `MARIA Learning Fabric` run `34619800000` failed because Python attempted to decode the packed ref name with ASCII, and `MARIA Swift Recovery` run `34619799936` failed its single new native test with `invalidMetadataEncoding`. The existing native shell still built successfully in that RED run. The minimal correction changed only packed-ref decoding to UTF-8 in each implementation; loose object-id decoding and object-id validation remained unchanged.
 - The deeper Git-valid separator case was specified at `d0ccaba703487ef661afe714b0ebc1b366e20abd`. `MARIA Learning Fabric` run `34620777492` failed because Python `str.splitlines()` divided U+2028 inside the branch name and reported malformed packed metadata. `MARIA Swift Recovery` run `34620777540` likewise built the native shell successfully, then failed exactly one new Swift test with `malformedPackedRefs`. The focused correction at `f7ce60a4000a008ac17bfc09e9f1defa529c3b4e` splits records only on ASCII LF/CRLF metadata delimiters.
 - Scalar-exact packed-ref identity was specified at `6b93e8d0980cbe38d0c82148608e67797e2e4fd7`. `MARIA Learning Fabric` run `34622625567` stayed green because Python already used scalar-exact equality. `MARIA Swift Recovery` run `34622625551` built `SeisAppleNativeShell`, then failed exactly the new native expectation: Swift returned the decomposed `feature/cafe\u0301` snapshot even though `packed-refs` contained only the canonically equivalent precomposed `feature/café` name. The minimal source correction at `68706f90968ce3dc15da4cdc8111c0f70fcec854` replaced user-facing `String ==` with the existing Unicode-scalar comparator for packed-ref lookup; run `34622912546` returned green. Follow-up positive controls at `370e3b2e3ecc8c7e90ddfba90312956c5d9098d1` verify that an exact decomposed packed ref still round-trips without normalization; final native run `34623251315`, Learning run `34623251399`, and Foundation run `34623251418` all passed.
+- HEAD CRLF identity was specified at `8237b4ce5616dc562724a25a7891177b20568e80` in draft PR #239. Native run `34624593510` built the shell, then failed three new tests with four issues: a different existing branch/object id was returned, a Unicode-ending ref disappeared, and repeated CRLF metadata was accepted. The same failures were reproduced locally against Git-blob-verified source; a synthetic Git 2.47.3 oracle independently preserved the selected branch with LF, CRLF and no ending. The one-statement source correction at `b45b00f98fc6c53f7e36756f86cb61335956c66e` returned native run `34624953873` to green. Additional tests at `fe16e55e0145c3e2663659a83f50f2ce2eabc656` cover invalid final branch characters and unchanged HEAD/packed-ref bytes. The session-local Swift 6.2.1 Linux harness also detected three compiled behavioral mutations (Character-counted removal, broad Unicode trimming and one-scalar removal) and passed again on unchanged corrected source. Those local checks are not a substitute for the full hosted macOS workflow.
 
 Focused native tests are under:
 
 - `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidenceTests.swift`;
 - `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidenceTimestampTests.swift`;
-- `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidencePackedRefUnicodeTests.swift`.
+- `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidencePackedRefUnicodeTests.swift`;
+- `packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisMariaWorkspaceEvidenceHeadLineEndingTests.swift`.
 
 The Python counterpart is covered by `test/maria-workspace-packed-ref-unicode.test.py` in addition to the existing current-workspace evidence contracts.
 
+To rerun the focused HEAD regressions from a supported repository checkout:
+
+```sh
+swift test --package-path packages/seis_platform_swift --filter SeisMariaWorkspaceEvidenceHeadLineEndingTests
+```
+
+The six HEAD tests cover loose-ref aliasing, LF/no-ending controls, Unicode and single-character branch endings, extra metadata endings, forbidden branch suffixes, and read-only packed fallback. The packed fixture uses LF records: this HEAD correction does not change packed-record parsing, general branch grammar, filesystem trust assumptions or execution authority.
+
 ## Rollback
 
-The work is isolated on `feature/maria-native-workspace-evidence-v1`, with packed-ref Unicode parity maintained in focused stacked follow-ups. Rollback means closing the relevant draft PR or reverting its focused commits. Never delete or rewrite a user's repository, `.git` directory, recovery snapshots, or checkpoints to roll back this code.
+The work is isolated on `feature/maria-native-workspace-evidence-v1`, with packed-ref Unicode parity and HEAD line-ending corrections maintained in focused stacked follow-ups. Rollback means closing the relevant draft PR or reverting its focused commits. Never delete or rewrite a user's repository, `.git` directory, recovery snapshots, or checkpoints to roll back this code.
 
 ## Next safe step
 
