@@ -8,6 +8,7 @@ explicit, capability-discovered, and permission-gated.
 from .cache import PromptCache
 from .context import ContextFact, ProjectContextEngine
 from .continuation import ContinuationBrief, ContinuationResolver
+from .local_coordinator import LocalDiscoveryCoordinator
 from .local_health import (
     LocalHealthEvidenceLedger,
     ProbeHealthSummary,
@@ -16,6 +17,7 @@ from .local_health import (
 )
 from .local_probe import (
     LocalProbeError,
+    LocalProbeFailureKind,
     LocalProbeRequest,
     LocalProbeResponse,
     LocalProbeResult,
@@ -37,8 +39,10 @@ __all__ = [
     "ContextFact",
     "ContinuationBrief",
     "ContinuationResolver",
+    "LocalDiscoveryCoordinator",
     "LocalHealthEvidenceLedger",
     "LocalProbeError",
+    "LocalProbeFailureKind",
     "LocalProbeRequest",
     "LocalProbeResponse",
     "LocalProbeResult",
