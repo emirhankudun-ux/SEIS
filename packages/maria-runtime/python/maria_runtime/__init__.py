@@ -4,6 +4,7 @@ This package intentionally exposes policy and routing contracts only. Live tool
 adapters remain separate, explicit, and permission-gated.
 """
 
+from .audit import PERMISSION_AUDIT_SCHEMA_VERSION, permission_decision_audit_envelope
 from .cache import PromptCache
 from .context import ContextFact, ProjectContextEngine
 from .continuation import ContinuationBrief, ContinuationResolver
@@ -24,6 +25,7 @@ __all__ = [
     "ModelRegistry",
     "ModelRouter",
     "ModelSpec",
+    "PERMISSION_AUDIT_SCHEMA_VERSION",
     "PermissionDecision",
     "PermissionEngine",
     "ProjectContextEngine",
@@ -35,4 +37,5 @@ __all__ = [
     "ToolStatus",
     "WorkMode",
     "default_project_registry",
+    "permission_decision_audit_envelope",
 ]
