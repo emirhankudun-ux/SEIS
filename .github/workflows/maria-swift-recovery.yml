@@ -35,6 +35,11 @@ jobs:
         env:
           MARIA_UI_EVIDENCE_DIR: ${{ runner.temp }}/maria-recovery-render
         run: swift test --package-path packages/seis_platform_swift
+      - name: Verify recovery import concurrency with Thread Sanitizer
+        run: >-
+          swift test --package-path packages/seis_platform_swift
+          --sanitize=thread --disable-xctest
+          --filter 'SeisMariaRecovery(Cancellation|AsyncReader)Tests'
       - name: Retain synthetic recovery render evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:

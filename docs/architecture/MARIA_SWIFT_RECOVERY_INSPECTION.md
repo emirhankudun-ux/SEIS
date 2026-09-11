@@ -121,11 +121,19 @@ The focused hosted workflow is `.github/workflows/maria-swift-recovery.yml`. On 
 1. records the Swift/Xcode toolchain;
 2. verifies the shared Python-to-Swift fixture against the real Python wire/native-adapter path;
 3. builds the existing `SeisAppleNativeShell` product;
-4. runs the `SeisPlatformKit` Swift test suite.
+4. runs the full Swift package test suite, including XCTest and Swift Testing, and renders recovery views;
+5. separately runs the cancellation and async reader suites under Thread Sanitizer;
+6. retains the six synthetic light/dark render artifacts.
+
+The sanitizer step uses `--disable-xctest` only for its focused Swift Testing run. The earlier full package test step still runs XCTest and every existing suite; no baseline test or safety gate is skipped. The sanitizer step introduces no suppression options or permission changes.
 
 Focused tests cover strict JSON/schema handling, Python presentation parity, authorization rejection, counter and row invariants, Unicode identity behavior, byte bounds, explicit-file read-only behavior, symlink/directory/FIFO rejection and stale import-completion handling.
 
 `SeisMariaRecoveryCancellationTests` exercises pre-cancelled reads, cancellation before a missing-file open, ordinary sync/async read-only imports, parent-to-child cancellation, child cleanup, late-success rejection, typed error propagation and off-main execution. Race tests use an explicit start signal and bounded gate rather than timing sleeps.
+
+`SeisMariaRecoveryAsyncReaderTests` also exercises the actual public async entry point against synthetic local files: the exact 64 KiB boundary and one-byte overflow, invalid UTF-8/JSON, forged authorization/counters, symlink/directory/FIFO/missing-file rejection, non-local URL rejection, Unicode paths and independent imports when 12 of 24 concurrent calls are pre-cancelled. It checks that selected bytes and sibling file lists are not rewritten.
+
+The first native implementation run exposed a test portability error: Darwin marks semaphore waits unavailable in async contexts, including immediate observation checks that compiled under the Linux toolchain. The observations now use short, scoped `NSLock` access; only the deliberately synchronous fixture operation uses a bounded semaphore gate. No concurrency diagnostics were disabled and no test was removed.
 
 The original two regressions were observed both in a Git-blob-verified Linux extraction and on the unchanged macOS PR checkout (MARIA Swift Recovery run `34592421655`). The native shell built and the other Swift tests passed; the cancellation tests returned a snapshot or `unreadableFile` instead of `CancellationError`.
 
