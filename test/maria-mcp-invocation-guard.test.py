@@ -83,6 +83,30 @@ class MCPInvocationGuardTests(unittest.TestCase):
                 approved=True,
             )
 
+    def test_plan_carries_short_lived_non_reusable_lifecycle_identity(self):
+        guard = MCPInvocationGuard(
+            PermissionEngine(),
+            clock=lambda: 42.0,
+            nonce_factory=lambda: "deterministic-plan-id",
+            ttl_seconds=15.0,
+        )
+        plan = guard.plan(
+            self._approved_evaluation(),
+            capability="unreal.inspect_actors",
+            target="Deadly Evil:actors",
+        )
+
+        self.assertEqual(plan.plan_id, "deterministic-plan-id")
+        self.assertEqual(plan.issued_at_monotonic, 42.0)
+        self.assertEqual(plan.expires_at_monotonic, 57.0)
+
+    def test_guard_rejects_unbounded_lifecycle_ttl(self):
+        with self.assertRaises(ValueError):
+            MCPInvocationGuard(
+                PermissionEngine(),
+                ttl_seconds=MCPInvocationGuard.MAX_TTL_SECONDS + 1,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
