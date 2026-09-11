@@ -55,15 +55,32 @@ class LocalRoutingIntegrationTests(unittest.TestCase):
         self.assertTrue(model.local)
         self.assertEqual(model.privacy_level, "local")
         self.assertEqual(model.reliability, 1.0)
+        self.assertEqual(model.evidence_sample_count, 1)
+        self.assertEqual(model.evidence_source, "local-health:ollama/show")
 
-        selected = ModelRouter(discovery.models).select(
+        router = ModelRouter(discovery.models)
+        decision = router.explain_select(
             required_capabilities={"tools"},
             sensitive=True,
             estimated_context_tokens=16_384,
         )
+        selected = decision.model
         self.assertEqual(selected.name, "qwen3:14b")
         self.assertEqual(selected.provider, "ollama")
         self.assertTrue(selected.local)
+        self.assertTrue(decision.local_privacy_bias_applied)
+        self.assertEqual(decision.evidence_sample_count, 1)
+        self.assertEqual(decision.evidence_source, "local-health:ollama/show")
+        self.assertEqual(decision.required_capabilities, ("tools",))
+        self.assertEqual(decision.candidate_names, ("qwen3:14b",))
+        self.assertGreater(decision.score, 0.0)
+
+        selected_legacy = router.select(
+            required_capabilities={"tools"},
+            sensitive=True,
+            estimated_context_tokens=16_384,
+        )
+        self.assertEqual(selected_legacy, selected)
 
     def test_tags_inventory_alone_never_creates_a_routable_model(self):
         ticks = iter([1.0, 1.001])
