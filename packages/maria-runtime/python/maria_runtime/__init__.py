@@ -30,6 +30,15 @@ from .local_status import (
     RuntimeProbeStatus,
 )
 from .mcp_config import MCPConfigImporter, MCPImportPreview, MCPServerDescriptor
+from .mcp_supervisor import (
+    MCPProcessLaunchPlan,
+    MCPProcessPolicy,
+    MCPProcessSnapshot,
+    MCPProcessStartResult,
+    MCPProcessState,
+    MCPProcessSupervisor,
+    MCPProcessTransport,
+)
 from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
 from .projects import ProjectProfile, ProjectRegistry, WorkMode, default_project_registry
@@ -57,6 +66,13 @@ __all__ = [
     "LocalRuntimeStatusSnapshot",
     "MCPConfigImporter",
     "MCPImportPreview",
+    "MCPProcessLaunchPlan",
+    "MCPProcessPolicy",
+    "MCPProcessSnapshot",
+    "MCPProcessStartResult",
+    "MCPProcessState",
+    "MCPProcessSupervisor",
+    "MCPProcessTransport",
     "MCPServerDescriptor",
     "ModelRegistry",
     "ModelRouteDecision",
