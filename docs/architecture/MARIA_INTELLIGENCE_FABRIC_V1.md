@@ -2,7 +2,7 @@
 
 ## Status
 
-Foundation slice. Provider metadata, verified model-discovery conversion, and safe MCP import preview are implemented. No live provider or MCP execution is enabled by this document or its companion runtime modules.
+Foundation slice. Provider metadata, verified model-discovery conversion, safe MCP import preview, and a trust/approval MCP gateway evaluator are implemented. No live provider or MCP process execution is enabled by this document or its companion runtime modules.
 
 ## Purpose
 
@@ -33,9 +33,10 @@ MARIA
   |     +-- Provider Discovery Adapter (verified redacted facts -> ModelSpec)
   |     +-- Model Registry / Router (verified model facts)
   |     +-- MCP Config Import Preview (redacted, disabled)
+  |     +-- MCP Gateway (trust/schema/provenance/approval evaluation)
   |     +-- Capability Registry (verified tools)
   |
-  +-- Permission Engine
+  +-- Permission Engine (per action)
   +-- Verification / Evidence
 ```
 
@@ -94,34 +95,44 @@ The importer:
 
 This means importing a configuration cannot silently create execution authority.
 
+## MCP gateway rules
+
+`MCPGateway` consumes a redacted `MCPDiscoveryFact`; it does not start a process or call a tool. Discovery sources remain separate from trust decisions.
+
+The gateway fails closed:
+
+- descriptor/discovery server-name mismatches are rejected;
+- shell-wrapper/manual-review descriptors cannot be enabled by an approval flag alone;
+- unverified discovery remains disabled;
+- unreachable servers become unavailable;
+- invalid or empty schemas become incompatible;
+- unverified provenance remains disabled;
+- duplicate discovered capabilities are rejected;
+- a fully verified server is still disabled until explicit enablement approval is recorded;
+- after enablement, every discovered method retains its own `ActionClass` mapping for the `PermissionEngine` to evaluate again at call time.
+
+There are therefore two distinct approval boundaries: **server enablement** and **per-action execution**. Enabling a server never grants blanket mutation authority.
+
 ## Secret boundary
 
 Secret values must not be committed to repository configuration or returned in public manifests. Future live adapters should resolve credentials through an external secure secret store (for macOS, Keychain is the preferred native direction) and pass only the minimum required credential material to a provider process or request.
 
 The current MCP importer intentionally discards environment values even when they are present in imported JSON. Provider discovery similarly accepts only an `auth_present` boolean rather than credential material.
 
-## Why MCP servers remain disabled
+## Why MCP process execution remains disabled
 
-An MCP server definition only describes how a process might be launched. It does not prove that:
+A healthy MCP descriptor plus discovery evidence still does not itself provide a process supervisor, credential resolver, retry/circuit-breaker runtime, or per-call executor. Those are separate implementation surfaces that must preserve the trust decisions above.
 
-- the executable exists;
-- the package/version is trusted;
-- authentication is configured;
-- the server is compatible;
-- its schemas are valid;
-- its capabilities match its claims;
-- it is safe for the active project;
-- the user has approved requested mutation authority.
-
-Therefore imported servers become disabled discovery records until a later gateway performs health checks, schema discovery, permission mapping, provenance review, and explicit enablement.
+The current foundation can determine whether a server is eligible for explicit enablement and how each discovered method must be permission-classified, but it intentionally does not launch or invoke the server.
 
 ## Next slices
 
 1. Provider-specific discovery sources for Ollama, LM Studio, and selected cloud providers that emit redacted `ModelDiscoveryFact` records.
-2. MCP Gateway v2 with process health, schema discovery, retries, circuit breakers, provenance, and per-call permissions.
-3. Unified capability routing that combines model requirements with verified tool requirements.
-4. Project-aware policy profiles for SEIS, Deadly Evil, Eleni-Neferi, Pantechnoepistemonoesis, PANTECHNOSYNI, and Portfolio.
-5. SwiftUI Integration Center for provider/MCP status, import preview, approvals, and health evidence.
+2. MCP process supervisor with bounded launch, health probes, schema capture, retries/circuit breakers, and evidence recording.
+3. Per-call MCP executor that re-checks `PermissionEngine` before every invocation.
+4. Unified capability routing that combines model requirements with verified tool requirements.
+5. Project-aware policy profiles for SEIS, Deadly Evil, Eleni-Neferi, Pantechnoepistemonoesis, PANTECHNOSYNI, and Portfolio.
+6. SwiftUI Integration Center for provider/MCP status, import preview, approvals, and health evidence.
 
 ## Non-goals of v1
 
