@@ -175,7 +175,7 @@ public enum SeisMariaWorkspaceEvidenceSource {
         guard let raw = try readRegularFile(
             gitDirectory.appendingPathComponent("packed-refs"),
             maximumBytes: maximumPackedRefsBytes,
-            encoding: .ascii,
+            encoding: .utf8,
             allowMissing: true
         ) else {
             throw SeisMariaWorkspaceEvidenceError.missingBranchRef
