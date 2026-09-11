@@ -21,6 +21,7 @@ on:
       - 'docs/architecture/MARIA_LOCAL_RUNTIME_PROBES.md'
       - 'docs/architecture/MARIA_MCP_PROCESS_SUPERVISOR.md'
       - 'docs/architecture/MARIA_MCP_STDIO_TRANSPORT.md'
+      - 'docs/architecture/MARIA_MCP_INVOCATION_EXECUTOR.md'
       - '.github/workflows/maria-intelligence-fabric.yml'
 
 permissions:
