@@ -63,7 +63,7 @@ jobs:
       - run: python3 test/maria-model-work-runner.test.py
       - run: python3 test/maria-runtime-output-redaction.test.py
       - run: python3 test/maria-mcp-secret-resolution.test.py
-      - run: python3 test/maria-mcp-keychain-source.test.py'
+      - run: python3 test/maria-mcp-keychain-source.test.py
       - run: python3 test/maria-mcp-e2e-fixture.test.py
       - run: python3 test/maria-work-routing.test.py
       - run: python3 test/maria-work-execution.test.py
