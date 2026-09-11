@@ -291,13 +291,22 @@ public enum SeisMariaWorkspaceEvidenceSource {
               value.unicodeScalars.count <= 128 else {
             return false
         }
+
         let wholeSeconds = ISO8601DateFormatter()
-        if wholeSeconds.date(from: value) != nil {
-            return true
-        }
         let fractional = ISO8601DateFormatter()
         fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return fractional.date(from: value) != nil
+
+        // MARIA's Python ContextFact accepts ISO timestamps without an explicit
+        // timezone and interprets them as UTC. Preserve the original evidence
+        // string, but validate that same common form by testing an equivalent Z
+        // suffix rather than silently rewriting the stored observation.
+        for candidate in [value, value + "Z"] {
+            if wholeSeconds.date(from: candidate) != nil
+                || fractional.date(from: candidate) != nil {
+                return true
+            }
+        }
+        return false
     }
 
     private static func scalarEqual(_ lhs: String, _ rhs: String) -> Bool {
