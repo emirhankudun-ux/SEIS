@@ -27,6 +27,8 @@ class ModelDiscoveryFact:
     verified: bool
     reachable: bool
     auth_present: bool = False
+    evidence_sample_count: int | None = None
+    evidence_source: str | None = None
 
     def __post_init__(self) -> None:
         if not self.provider_id.strip() or not self.name.strip():
@@ -41,6 +43,17 @@ class ModelDiscoveryFact:
             raise ValueError("latency cannot be negative")
         if self.input_cost_per_million < 0 or self.output_cost_per_million < 0:
             raise ValueError("model costs cannot be negative")
+        if self.evidence_sample_count is not None:
+            if (
+                isinstance(self.evidence_sample_count, bool)
+                or not isinstance(self.evidence_sample_count, int)
+                or self.evidence_sample_count <= 0
+            ):
+                raise ValueError("evidence_sample_count must be a positive integer when present")
+        if self.evidence_source is not None and not self.evidence_source.strip():
+            raise ValueError("evidence_source must be non-empty when present")
+        if (self.evidence_sample_count is None) != (self.evidence_source is None):
+            raise ValueError("evidence_sample_count and evidence_source must be supplied together")
 
 
 @dataclass(frozen=True)
@@ -106,6 +119,8 @@ class ProviderDiscoveryAdapter:
             output_cost_per_million=fact.output_cost_per_million,
             available=status is ProviderStatus.AVAILABLE,
             privacy_level="local" if fact.local else "standard",
+            evidence_sample_count=fact.evidence_sample_count,
+            evidence_source=fact.evidence_source,
         )
 
     @staticmethod
