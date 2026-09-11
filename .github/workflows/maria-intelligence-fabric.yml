@@ -6,6 +6,7 @@ on:
       - 'packages/maria-runtime/**'
       - 'test/maria-intelligence-fabric.test.py'
       - 'test/maria-mcp-invocation-guard.test.py'
+      - 'test/maria-local-runtime-discovery.test.py'
       - 'docs/architecture/MARIA_INTELLIGENCE_FABRIC_V1.md'
       - '.github/workflows/maria-intelligence-fabric.yml'
 
@@ -25,4 +26,5 @@ jobs:
           python-version: '3.12'
       - run: python3 test/maria-intelligence-fabric.test.py
       - run: python3 test/maria-mcp-invocation-guard.test.py
+      - run: python3 test/maria-local-runtime-discovery.test.py
       - run: python3 test/maria-runtime-v18.test.py
