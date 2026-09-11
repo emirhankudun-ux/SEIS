@@ -182,7 +182,13 @@ public enum SeisMariaWorkspaceEvidenceSource {
         }
 
         var match: String?
-        for line in raw.components(separatedBy: .newlines) {
+        // packed-refs records use ASCII LF (with optional CRLF metadata endings).
+        // CharacterSet.newlines also recognizes Git-valid Unicode line-separator
+        // scalars that may be part of a ref name, so split only on literal LF.
+        for rawLine in raw.split(separator: "\n", omittingEmptySubsequences: false) {
+            let line = rawLine.last == "\r"
+                ? String(rawLine.dropLast())
+                : String(rawLine)
             if line.isEmpty || line.hasPrefix("#") || line.hasPrefix("^") {
                 continue
             }
