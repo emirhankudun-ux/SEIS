@@ -56,6 +56,8 @@ Approval is no longer derived only from an LLM-generated numeric risk level. The
 
 Approval evidence is also type-strict at this boundary: `approved` must be an exact boolean. Serialized strings such as `"false"` / `"true"`, integers, null-like values, containers, or other truthy/falsy objects are rejected rather than interpreted through Python truthiness. This keeps model/tool payload coercion from becoming authorization.
 
+Reversibility evidence is a separate tri-state safety contract: `reversible` may be exact `True`, exact `False`, or `None` when unknown. Strings, numbers, containers, and other coercible values are rejected instead of being preserved as ambiguous rollback metadata. Reversibility remains descriptive evidence only and never grants execution authority.
+
 ### Project context and memory provenance
 
 Project facts carry source, project, confidence, verification state, observation time and fact type. Resolution gives current verified evidence priority over stale unverified memory. This supports the intended interaction: “Maria, Deadly Evil'e devam et” can resolve the current goal, branch, app, blocker and next safe action without replaying an entire conversation transcript.
