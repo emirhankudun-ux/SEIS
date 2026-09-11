@@ -13,6 +13,7 @@ import time
 from typing import Any
 
 from .fabric_router import RouteKind
+from .recovery_reconciliation import RecoveryAnchor
 from .work_execution import (
     WorkPlanCheckpoint,
     WorkStepExecutionEvidence,
@@ -64,6 +65,19 @@ class RecoveryCatalogEntry:
         return False
 
 
+@dataclass(frozen=True)
+class DurableRecoveryRecord:
+    """Versioned durable recovery evidence without execution authority."""
+
+    checkpoint: WorkPlanCheckpoint
+    recovery_anchor: RecoveryAnchor | None
+    schema_version: int
+
+    @property
+    def execution_authorized(self) -> bool:
+        return False
+
+
 class DurableWorkCheckpointStore:
     """Persist redacted ``WorkPlanCheckpoint`` evidence atomically.
 
@@ -74,6 +88,11 @@ class DurableWorkCheckpointStore:
     external action. A recovery candidate must be re-planned and freshly
     authorized by the normal routing/execution path.
 
+    Schema v2 may also persist a bounded ``RecoveryAnchor`` so restart-time
+    reconciliation can compare checkpoint-time project/repository identity with
+    current verified context. Schema v1 remains readable but has no anchor and
+    therefore cannot fabricate one after the fact.
+
     The configured checkpoint root and each project directory must be ordinary
     directories, not symbolic links. Persisted checkpoint files are opened
     without following the final path symlink where the host supports
@@ -81,7 +100,8 @@ class DurableWorkCheckpointStore:
     boundary instead of silently trusting filesystem aliases.
     """
 
-    SCHEMA_VERSION = 1
+    LEGACY_SCHEMA_VERSION = 1
+    SCHEMA_VERSION = 2
     DEFAULT_MAX_BYTES = 256 * 1024
     _ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
     _SAFE_FAILURE_RE = re.compile(r"^[a-z0-9][a-z0-9._:-]{0,127}$")
@@ -106,13 +126,21 @@ class DurableWorkCheckpointStore:
         "cancelled_steps",
         "next_step_id",
     }
-    _ROOT_FIELDS = {
+    _ANCHOR_FIELDS = {
+        "project",
+        "active_goal",
+        "current_repo",
+        "current_branch",
+        "repository_revision",
+    }
+    _ROOT_FIELDS_V1 = {
         "schema_version",
         "project_id",
         "work_id",
         "saved_at",
         "checkpoint",
     }
+    _ROOT_FIELDS_V2 = _ROOT_FIELDS_V1 | {"recovery_anchor"}
 
     def __init__(self, root: str | os.PathLike[str], *, max_bytes: int = DEFAULT_MAX_BYTES) -> None:
         if isinstance(max_bytes, bool) or not isinstance(max_bytes, int) or max_bytes < 128:
@@ -183,12 +211,23 @@ class DurableWorkCheckpointStore:
         parent = self._prepare_project_parent(project) if create_parent else self.root / project
         return parent / f"{work}.json"
 
-    def save(self, project_id: str, work_id: str, checkpoint: WorkPlanCheckpoint) -> Path:
+    def save(
+        self,
+        project_id: str,
+        work_id: str,
+        checkpoint: WorkPlanCheckpoint,
+        *,
+        recovery_anchor: RecoveryAnchor | None = None,
+    ) -> Path:
         if not isinstance(checkpoint, WorkPlanCheckpoint):
             raise TypeError("checkpoint must be WorkPlanCheckpoint")
+        if recovery_anchor is not None and not isinstance(recovery_anchor, RecoveryAnchor):
+            raise TypeError("recovery_anchor must be RecoveryAnchor when present")
         project = self._validated_id(project_id, field_name="project_id")
         work = self._validated_id(work_id, field_name="work_id")
         self._validate_checkpoint(checkpoint, error_type=ValueError)
+        if recovery_anchor is not None and recovery_anchor.project != project:
+            raise ValueError("recovery anchor project does not match checkpoint project")
 
         payload = {
             "schema_version": self.SCHEMA_VERSION,
@@ -196,6 +235,11 @@ class DurableWorkCheckpointStore:
             "work_id": work,
             "saved_at": time.time(),
             "checkpoint": self._checkpoint_to_dict(checkpoint),
+            "recovery_anchor": (
+                self._anchor_to_dict(recovery_anchor)
+                if recovery_anchor is not None
+                else None
+            ),
         }
         encoded = json.dumps(
             payload,
@@ -234,6 +278,10 @@ class DurableWorkCheckpointStore:
         return path
 
     def load(self, project_id: str, work_id: str) -> WorkPlanCheckpoint | None:
+        record = self.load_record(project_id, work_id)
+        return None if record is None else record.checkpoint
+
+    def load_record(self, project_id: str, work_id: str) -> DurableRecoveryRecord | None:
         project = self._validated_id(project_id, field_name="project_id")
         work = self._validated_id(work_id, field_name="work_id")
         parent = self._existing_project_parent(project)
@@ -303,10 +351,19 @@ class DurableWorkCheckpointStore:
         except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
             raise CheckpointCorruptError("checkpoint is not strict UTF-8 JSON") from exc
 
-        if not isinstance(payload, dict) or set(payload) != self._ROOT_FIELDS:
+        if not isinstance(payload, dict):
             raise CheckpointCorruptError("checkpoint envelope schema mismatch")
-        if payload.get("schema_version") != self.SCHEMA_VERSION:
+        schema_version = payload.get("schema_version")
+        if isinstance(schema_version, bool) or not isinstance(schema_version, int):
             raise CheckpointCorruptError("unsupported checkpoint schema version")
+        if schema_version == self.LEGACY_SCHEMA_VERSION:
+            expected_root_fields = self._ROOT_FIELDS_V1
+        elif schema_version == self.SCHEMA_VERSION:
+            expected_root_fields = self._ROOT_FIELDS_V2
+        else:
+            raise CheckpointCorruptError("unsupported checkpoint schema version")
+        if set(payload) != expected_root_fields:
+            raise CheckpointCorruptError("checkpoint envelope schema mismatch")
         if payload.get("project_id") != project or payload.get("work_id") != work:
             raise CheckpointCorruptError("checkpoint identity mismatch")
         saved_at = payload.get("saved_at")
@@ -327,7 +384,25 @@ class DurableWorkCheckpointStore:
             raise
         except (TypeError, ValueError, KeyError) as exc:
             raise CheckpointCorruptError("checkpoint evidence is invalid") from exc
-        return restored
+
+        restored_anchor: RecoveryAnchor | None = None
+        if schema_version == self.SCHEMA_VERSION:
+            anchor_data = payload.get("recovery_anchor")
+            if anchor_data is not None:
+                try:
+                    restored_anchor = self._anchor_from_dict(anchor_data)
+                except (TypeError, ValueError, KeyError) as exc:
+                    raise CheckpointCorruptError("recovery anchor evidence is invalid") from exc
+                if restored_anchor.project != project:
+                    raise CheckpointCorruptError(
+                        "recovery anchor project does not match checkpoint project"
+                    )
+
+        return DurableRecoveryRecord(
+            checkpoint=restored,
+            recovery_anchor=restored_anchor,
+            schema_version=schema_version,
+        )
 
     def assess(self, project_id: str, work_id: str) -> RecoveryAssessment:
         checkpoint = self.load(project_id, work_id)
@@ -492,6 +567,28 @@ class DurableWorkCheckpointStore:
             blocked_steps=counts[2],
             cancelled_steps=counts[3],
             next_step_id=next_step_id,
+        )
+
+    @classmethod
+    def _anchor_to_dict(cls, anchor: RecoveryAnchor) -> dict[str, Any]:
+        return {
+            "project": anchor.project,
+            "active_goal": anchor.active_goal,
+            "current_repo": anchor.current_repo,
+            "current_branch": anchor.current_branch,
+            "repository_revision": anchor.repository_revision,
+        }
+
+    @classmethod
+    def _anchor_from_dict(cls, value: Any) -> RecoveryAnchor:
+        if not isinstance(value, dict) or set(value) != cls._ANCHOR_FIELDS:
+            raise CheckpointCorruptError("recovery anchor schema mismatch")
+        return RecoveryAnchor(
+            project=value["project"],
+            active_goal=value["active_goal"],
+            current_repo=value["current_repo"],
+            current_branch=value["current_branch"],
+            repository_revision=value["repository_revision"],
         )
 
     @classmethod
