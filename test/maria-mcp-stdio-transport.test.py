@@ -3,6 +3,7 @@ from __future__ import annotations
 import io
 import subprocess
 import sys
+import time
 from pathlib import Path
 import unittest
 
@@ -23,10 +24,30 @@ class _InputSink(io.BytesIO):
         self.flush()
 
 
+class _BlockingStdout:
+    def __init__(self, delay_seconds: float) -> None:
+        self.delay_seconds = delay_seconds
+        self.closed = False
+
+    def readline(self, limit=-1):
+        time.sleep(self.delay_seconds)
+        return b""
+
+    def close(self):
+        self.closed = True
+
+
 class _FakeProcess:
-    def __init__(self, *, stdout: bytes, stderr: bytes = b"", wait_timeouts: int = 0) -> None:
+    def __init__(
+        self,
+        *,
+        stdout: bytes | None = b"",
+        stderr: bytes = b"",
+        wait_timeouts: int = 0,
+        stdout_stream=None,
+    ) -> None:
         self.stdin = _InputSink()
-        self.stdout = io.BytesIO(stdout)
+        self.stdout = stdout_stream if stdout_stream is not None else io.BytesIO(stdout or b"")
         self.stderr = io.BytesIO(stderr)
         self.returncode = None
         self._wait_timeouts = wait_timeouts
@@ -127,6 +148,24 @@ class MCPStdioProcessTransportTests(unittest.TestCase):
         self.assertIn(b'"method":"server/discover"', sent)
         self.assertIn(b'"method":"initialize"', sent)
 
+    def test_probe_timeout_fails_closed_without_spawning_a_second_child(self):
+        process = _FakeProcess(stdout_stream=_BlockingStdout(delay_seconds=0.2))
+        factory = _Factory(process)
+        transport = MCPStdioProcessTransport(
+            negotiator=self.negotiator,
+            process_factory=factory,
+            environment={},
+            shutdown_timeout_ms=10,
+        )
+
+        result = transport.start(self.plan)
+
+        self.assertTrue(result.started)
+        self.assertFalse(result.ready)
+        self.assertEqual(len(factory.calls), 1)
+        self.assertEqual(transport.snapshot().failure, "probe-timeout")
+        self.assertFalse(transport.is_running)
+
     def test_oversized_stderr_fails_closed_without_retaining_stderr_content(self):
         secret = b"SUPER_SECRET_TOKEN" * 256
         response = (
@@ -168,6 +207,29 @@ class MCPStdioProcessTransportTests(unittest.TestCase):
         self.assertEqual(snapshot.state, MCPStdioShutdownState.TERMINATED)
         self.assertEqual(process.terminate_calls, 1)
         self.assertEqual(process.kill_calls, 0)
+        self.assertFalse(transport.is_running)
+
+    def test_shutdown_kills_child_when_terminate_does_not_finish(self):
+        response = (
+            b'{"jsonrpc":"2.0","id":"seis-discover-1","result":'
+            b'{"supportedVersions":["2026-07-28"]}}\n'
+        )
+        process = _FakeProcess(stdout=response, wait_timeouts=2)
+        transport = MCPStdioProcessTransport(
+            negotiator=self.negotiator,
+            process_factory=_Factory(process),
+            environment={},
+            shutdown_timeout_ms=10,
+            terminate_timeout_ms=10,
+            kill_timeout_ms=10,
+        )
+        self.assertTrue(transport.start(self.plan).ready)
+
+        snapshot = transport.shutdown()
+
+        self.assertEqual(snapshot.state, MCPStdioShutdownState.KILLED)
+        self.assertEqual(process.terminate_calls, 1)
+        self.assertEqual(process.kill_calls, 1)
         self.assertFalse(transport.is_running)
 
 
