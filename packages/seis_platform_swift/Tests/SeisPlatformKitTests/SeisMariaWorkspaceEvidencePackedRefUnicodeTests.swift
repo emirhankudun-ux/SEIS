@@ -51,6 +51,14 @@ struct SeisMariaWorkspaceEvidencePackedRefUnicodeTests {
         #expect(!snapshot.executionAuthorized)
     }
 
+    @Test func decomposedRefNameRoundTripsWithoutNormalization() throws {
+        let branch = "feature/cafe\u{301}"
+        let snapshot = try capturePacked(branch)
+        #expect(snapshot.currentBranch.unicodeScalars.elementsEqual(branch.unicodeScalars))
+        #expect(snapshot.repositoryRevision == revision)
+        #expect(!snapshot.executionAuthorized)
+    }
+
     @Test func canonicallyEquivalentRefNamesRemainDistinctIdentities() throws {
         // Git ref identity is byte/scalar exact. Swift String equality treats
         // NFC/NFD spellings as canonically equivalent, so packed-ref matching
