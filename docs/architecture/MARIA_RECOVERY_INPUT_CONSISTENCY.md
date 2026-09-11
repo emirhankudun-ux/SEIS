@@ -2,7 +2,7 @@
 
 ## Scope
 
-PR #227 hardens the existing recovery path on top of the native reader in #225. It does not introduce a second recovery engine, new wire version, dependency, background service, or execution surface. The isolated integration follow-up in PR #229 additionally verifies this hardening together with the Swift cancellation path from #228 and closes one cross-language integer-range gap discovered during that joint review.
+PR #227 hardens the existing recovery path on top of the native reader in #225. It does not introduce a second recovery engine, new wire version, dependency, background service, or execution surface. The isolated integration follow-up in PR #229 additionally verifies this hardening together with the Swift cancellation path from #228 and closes cross-language contract gaps discovered during that joint review.
 
 The retained architecture is:
 
@@ -36,6 +36,14 @@ Python integers are arbitrary precision, while the supported native Apple client
 
 The test was committed first at `a12766ebef49b2794c6b6aad626c58307f9b85e3`. Hosted `MARIA Learning Fabric` run `34598480718` reproduced six expected failures covering decode, encode and direct typed-native construction at `2^63` and `2^100`. The bounded implementation then restored the full MARIA regression sweep.
 
+### Dashboard rows require concrete durable schema evidence
+
+`RecoveryCandidateView.schema_version` remains optional because the pre-dashboard `NOT_FOUND` state has no durable record. A dashboard row is different: `RecoveryDashboardBuilder` omits `NOT_FOUND`, every surviving row came from a validated durable checkpoint, and the Swift presentation model requires a concrete `Int` schema version. The Python wire row nevertheless still annotated and decoded that field as `int | None`, allowing JSON `null` to pass the wire decoder before failing at the native bridge.
+
+The wire boundary now makes this invariant explicit. `RecoveryDashboardWireRow.schema_version` is a concrete `int`, and a shared `_durable_schema_version()` validator is used by both host-created encoding and JSON decoding. `null`, booleans, non-integers, non-positive values and values above the signed native range are rejected before a wire row is constructed. The pre-dashboard candidate model remains unchanged, so absence can still be represented only where it is semantically valid.
+
+The contract was added test-first at `ffa7d6c5fb5a08d97240d70b4bfcb7d9d5e583e7`. Hosted `MARIA Learning Fabric` run `34599068696` failed specifically because `schema_version=null` was still accepted by the wire decoder. The minimal wire-model/validator change at `a6d81c87ca7228eb9422b8af782020073555adb6` restored the MARIA Python regression sweep without changing wire field names or execution authority.
+
 ### Bounded directory enumeration, not just bounded output
 
 The previous catalog sorted the entire directory's JSON candidate list before applying its 256-file ceiling. It also had no total-entry ceiling for ignored files.
@@ -67,10 +75,11 @@ The hardening groups have hosted RED evidence before their implementations:
 | Enumeration budgets | `534d4d61d0cc2784ea5833648e61ce2bbc7b7e0e` | `34593108306` |
 | Isolated invalid-save inputs | `2460af21b56c82b671c998a529e71044ea436789` | `34593740201` |
 | Native signed-integer parity | `a12766ebef49b2794c6b6aad626c58307f9b85e3` | `34598480718` |
+| Concrete dashboard schema version | `ffa7d6c5fb5a08d97240d70b4bfcb7d9d5e583e7` | `34599068696` |
 
 These are failure classes with multiple subcases, not a claim that every failed subcase is a different security vulnerability. Final acceptance must use the integration PR's current-head checks, not a prior green commit.
 
-Focused commands (38 unittest methods, with additional subcases):
+Focused commands (39 unittest methods, with additional subcases):
 
 ```sh
 python3 test/maria-recovery-dashboard-race.test.py
@@ -100,13 +109,13 @@ The existing native workflow retains six synthetic renders: loaded, unloaded and
 
 ## Compatibility, authority and rollback
 
-Valid wire-v1 field names and JSON formatting are unchanged. Durable schema v1 remains readable and new writes remain v2. No migration write-back is introduced. Host-created dataclasses must obey their existing annotated collection/scalar roles rather than rely on accidental coercion. Durable schema version metadata is additionally constrained to the signed 64-bit range shared with the supported Swift native consumer.
+Valid wire-v1 field names and JSON formatting are unchanged. Durable schema v1 remains readable and new writes remain v2. No migration write-back is introduced. Host-created dataclasses must obey their existing annotated collection/scalar roles rather than rely on accidental coercion. Once a candidate is admitted to the dashboard, durable schema version metadata must be concrete and fit the signed 64-bit range shared with the supported Swift native consumer.
 
 All recovery, wire and native presentation objects remain non-authorizing. In particular, aligned context is not execution permission and a complete checkpoint is not proof that all work succeeded. No resume button, command, model invocation, credential access, permission change or external-account operation is added.
 
 The storage root still belongs to a trusted private host account. The scanner is not a hostile-filesystem sandbox; the dashboard is not an atomic transaction across files. Imported UI snapshots still do not prove freshness or source authenticity. Arbitrary hostile Python subclasses are outside these JSON/data-shape boundaries.
 
-Rollback for the original #227 hardening is limited to its focused commits; the signed-integer parity follow-up is isolated on `integration/maria-recovery-hardening-cancellation-v1`. Existing source branches and `main` are unchanged by the integration work. Do not delete user checkpoints to roll back code.
+Rollback for the original #227 hardening is limited to its focused commits; the signed-integer and concrete-schema follow-ups are isolated on `integration/maria-recovery-hardening-cancellation-v1`. Existing source branches and `main` are unchanged by the integration work. Do not delete user checkpoints to roll back code.
 
 ## Next safe step
 
