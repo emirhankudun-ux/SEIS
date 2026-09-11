@@ -1,0 +1,38 @@
+name: MARIA Learning Fabric
+
+on:
+  pull_request:
+    paths:
+      - 'packages/maria-runtime/**'
+      - 'test/maria-*.test.py'
+      - 'test/fixtures/mcp_fixture_server.py'
+      - 'docs/architecture/MARIA_LEARNING_FABRIC.md'
+      - '.github/workflows/maria-learning-fabric.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+        with:
+          python-version: '3.12'
+      - name: Run learning admission and plugin evidence contracts
+        run: python3 test/maria-learning-fabric.test.py
+      - name: Run MARIA regression scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test_file in test/maria-*.test.py; do
+            if [[ "$test_file" == "test/maria-learning-fabric.test.py" ]]; then
+              continue
+            fi
+            printf '\nVerifying %s\n' "$test_file"
+            python3 "$test_file"
+          done
