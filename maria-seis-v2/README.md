@@ -2,9 +2,9 @@
 
 A modular **web simulation and trusted-host adapter foundation** for the MARIA personal-intelligence experience. This is an engineering alpha, not a finished desktop operator. The existing SEIS Apple-first / Swift-first direction is unchanged.
 
-## Alpha.7 MCP lifecycle hardening
+## Alpha.7 MCP lifecycle and live-receipt hardening
 
-This checkpoint makes the MCP client contract current and fail-closed across both modern and legacy protocol eras:
+This checkpoint makes the MCP client contract current and fail-closed across both modern and legacy protocol eras while tightening live execution identity:
 
 - defaults to MCP `2026-07-28` discovery through `server/discover`;
 - stamps modern requests with protocol/client capability metadata;
@@ -14,7 +14,10 @@ This checkpoint makes the MCP client contract current and fail-closed across bot
 - rejects malformed `tools/list` results;
 - requires a valid `CallToolResult` shape before a tool response can be marked successful;
 - preserves discovered-tool-only execution, host-side auth forwarding and cancellation;
-- includes the negotiated MCP protocol in attributable execution evidence.
+- includes the negotiated MCP protocol in attributable execution evidence;
+- binds live verification to the provider actually selected by the router;
+- preserves adapter-supplied provider/run/project/intent receipt identity instead of rewriting stale or mismatched receipts into valid-looking results;
+- makes the OpenAI-compatible local adapter emit request-bound identity for strict end-to-end verification.
 
 The browser UI still starts in simulation mode. No real external MCP server, local model process, OpenAI endpoint, macOS automation bridge, Unreal instance or Blender instance is claimed connected by this package.
 
@@ -48,16 +51,16 @@ npm test
 python3 tests/browser_smoke.py --offline --output ./qa-artifacts
 ```
 
-Fresh local verification for alpha.7: **96/96 Node tests** and **17/17 offline Chromium acceptance checks**. These MCP tests use deterministic injected transports; they verify protocol behavior and fail-closed boundaries, not a real remote MCP server or external side effect.
+Fresh local verification for alpha.7: **98/98 Node tests** and **17/17 offline Chromium acceptance checks**. These local-model and MCP tests use deterministic injected transports; they verify protocol behavior, attribution and fail-closed boundaries, not a real remote MCP server, real local model process or external side effect.
 
 ## Execution truth
 
 The default `runCommand` instance uses only the simulator. Live execution is possible only through explicit dependency injection of a live runtime and a verified provider registry. There is no silent fallback from live mode to simulation.
 
-`verifyPrototype` validates only the simulator contract. `verifyLiveReceipt` requires host-runtime identity, provider attribution, matching run/project/intent identity, explicit external verification evidence and a verified receipt before returning `verified`.
+`verifyPrototype` validates only the simulator contract. `verifyLiveReceipt` requires host-runtime identity, an exact routed-provider match, matching run/project/intent identity, explicit external verification evidence and a verified receipt before returning `verified`.
 
 Keep provider behavior behind trusted-host adapters. Do not convert a catalog flag into a connection, execute arbitrary plugins, or place credentials in the browser. MCP discovery is capability discovery, not authorization; consequential tool calls still require the surrounding permission policy.
 
-See [architecture](ARCHITECTURE.md), [security](SECURITY.md), and [roadmap](docs/ROADMAP.md).
+See [architecture](ARCHITECTURE.md), [security](SECURITY.md), [roadmap](docs/ROADMAP.md), and [alpha.7 verification](docs/ALPHA7-VERIFICATION.md).
 
 MIT license. No deployment or production readiness is claimed by this package.
