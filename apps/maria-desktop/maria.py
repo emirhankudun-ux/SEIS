@@ -30,6 +30,12 @@ from maria_runtime import (
     ToolStatus,
 )
 
+from maria_runtime.command_preview import (
+    MAX_COMMAND_BYTES,
+    CommandPreviewError,
+    preview_legacy_command,
+)
+
 VERSION = "18.0-foundation"
 
 
@@ -119,13 +125,46 @@ def demo_context(project: str) -> dict:
     return engine.snapshot(project=project)
 
 
+def command_preview_from_stdin(*, show_argument: bool) -> int:
+    """Read a bounded UTF-8 record; never send it to an execution adapter."""
+    try:
+        payload = sys.stdin.buffer.read(MAX_COMMAND_BYTES + 1)
+        if len(payload) > MAX_COMMAND_BYTES:
+            raise CommandPreviewError("command-too-large")
+        preview = preview_legacy_command(payload.decode("utf-8"))
+    except (CommandPreviewError, UnicodeDecodeError, OSError) as exc:
+        if isinstance(exc, CommandPreviewError):
+            code = str(exc)
+        elif isinstance(exc, UnicodeDecodeError):
+            code = "invalid-command-encoding"
+        else:
+            code = "command-input-unavailable"
+        print(json.dumps({
+            "mode": "preview-only",
+            "error": code,
+            "execution_authorized": False,
+        }), file=sys.stderr)
+        return 2
+    print(json.dumps(preview.to_dict(include_argument=show_argument), indent=2))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="MARIA × SEIS v18 foundation")
     parser.add_argument("--status", action="store_true", help="show runtime foundation status")
     parser.add_argument("--doctor", action="store_true", help="run read-only foundation checks")
     parser.add_argument("--context", metavar="PROJECT", help="show a sample provenance-aware project context")
     parser.add_argument("--permission", choices=[item.value for item in ActionClass], help="inspect permission policy")
+    parser.add_argument("--preview-command", action="store_true", help="preview one UTF-8 command from stdin without executing it")
+    parser.add_argument("--show-argument", action="store_true", help="explicitly include private argument text in command preview output")
     args = parser.parse_args()
+
+    if args.show_argument and not args.preview_command:
+        parser.error("--show-argument requires --preview-command")
+    if args.preview_command:
+        if args.status or args.doctor or args.context is not None or args.permission is not None:
+            parser.error("--preview-command cannot be combined with other actions")
+        return command_preview_from_stdin(show_argument=args.show_argument)
 
     if args.context:
         print(json.dumps(demo_context(args.context), indent=2, ensure_ascii=False))
