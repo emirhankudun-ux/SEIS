@@ -7,6 +7,7 @@ on:
       - 'test/maria-intelligence-fabric.test.py'
       - 'test/maria-mcp-invocation-guard.test.py'
       - 'test/maria-mcp-executor.test.py'
+      - 'test/maria-mcp-secret-resolution.test.py'
       - 'test/maria-mcp-process-supervisor.test.py'
       - 'test/maria-mcp-process-path-policy.test.py'
       - 'test/maria-mcp-protocol-negotiation.test.py'
@@ -41,6 +42,7 @@ jobs:
       - run: python3 test/maria-intelligence-fabric.test.py
       - run: python3 test/maria-mcp-invocation-guard.test.py
       - run: python3 test/maria-mcp-executor.test.py
+      - run: python3 test/maria-mcp-secret-resolution.test.py
       - run: python3 test/maria-mcp-process-supervisor.test.py
       - run: python3 test/maria-mcp-process-path-policy.test.py
       - run: python3 test/maria-mcp-protocol-negotiation.test.py
