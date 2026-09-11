@@ -52,7 +52,7 @@ class LocalRuntimeDiscoveryTests(unittest.TestCase):
             reliability=0.91,
         )
 
-        self.assertEqual(len(facts), 1)
+        self.assertEqual(len(facts), 2)
         fact = facts[0]
         self.assertEqual(fact.provider_id, "lm-studio")
         self.assertEqual(fact.name, "google/gemma-4-26b-a4b")
@@ -64,6 +64,15 @@ class LocalRuntimeDiscoveryTests(unittest.TestCase):
         self.assertIn("vision", fact.capabilities)
         self.assertIn("reasoning", fact.capabilities)
         self.assertIn("tool-use", fact.capabilities)
+
+        embedding = facts[1]
+        self.assertEqual(embedding.provider_id, "lm-studio")
+        self.assertEqual(embedding.name, "text-embedding-model")
+        self.assertEqual(embedding.context_size, 2048)
+        self.assertEqual(embedding.capabilities, ("embedding",))
+        self.assertTrue(embedding.local)
+        self.assertTrue(embedding.verified)
+        self.assertTrue(embedding.reachable)
 
     def test_ollama_tags_are_candidates_not_routable_model_facts(self):
         payload = {
