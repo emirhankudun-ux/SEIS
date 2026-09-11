@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "contractId": "seis-sovereign-product-track-v1",
+  "project": {
+    "id": "seis",
+    "displayName": "SEIS",
+    "repository": "emirhankudun-ux/SEIS",
+    "visibility": "public",
+    "productClass": "apple-first-creative-engineering-operating-system",
+    "canonicalOwner": true
+  },
+  "mission": "Build an Apple-first, AI-native creative engineering operating system with supervised agents, durable workspaces, explicit tool permissions, and evidence-bound delivery.",
+  "ownedDomains": [
+    "desktop-runtime",
+    "ai-core-orchestration",
+    "supervised-agent-runtime",
+    "tool-and-mcp-governance",
+    "workspace-and-vfs",
+    "apple-native-platform",
+    "security-and-release-evidence",
+    "project-and-second-brain-memory"
+  ],
+  "explicitNonOwnership": [
+    {
+      "projectId": "eleni-neferi",
+      "domains": [
+        "brand-and-taste-memory",
+        "creative-atelier-rituals",
+        "private-creative-memory"
+      ]
+    },
+    {
+      "projectId": "pantechnoepistemonoesis",
+      "domains": [
+        "research-programs",
+        "evaluation-protocols",
+        "scientific-knowledge-ontology"
+      ]
+    },
+    {
+      "projectId": "pantechnosyni",
+      "domains": [
+        "interdisciplinary-synthesis-atlas",
+        "public-synthesis-workflows",
+        "pantechnosyni-brand"
+      ]
+    }
+  ],
+  "deliveryTracks": [
+    {
+      "id": "desktop-and-workspaces",
+      "status": "active",
+      "purpose": "Provide the primary SEIS desktop, workspace, files, command-center, and recovery experience.",
+      "evidence": ["AGENTS.md", "docs/SEIS_GOAL_TRACKING.md"],
+      "nextAction": "Consolidate the single-entry desktop experience without absorbing sibling product identities."
+    },
+    {
+      "id": "ai-core-and-routing",
+      "status": "active",
+      "purpose": "Own supervised model routing, agent coordination, provider boundaries, and local/cloud policy.",
+      "evidence": ["docs/SEIS_GOAL_TRACKING.md"],
+      "nextAction": "Deepen read-only routing evidence and keep provider execution approval-gated."
+    },
+    {
+      "id": "apple-native-platform",
+      "status": "planned",
+      "purpose": "Evolve reusable Swift contracts and future macOS, iPadOS, and iOS product surfaces.",
+      "evidence": ["AGENTS.md", "project.ecosystem.yaml"],
+      "nextAction": "Select one bounded Swift-first product slice with tests before adding native UI breadth."
+    },
+    {
+      "id": "security-release-and-plugins",
+      "status": "active",
+      "purpose": "Own public-safe security gates, plugin lifecycle, release evidence, and rollback contracts.",
+      "evidence": ["AGENTS.md", "docs/SEIS_GOAL_TRACKING.md"],
+      "nextAction": "Resolve historical security blockers without weakening scanners or rewriting history without approval."
+    }
+  ],
+  "interoperability": {
+    "mode": "contract-only",
+    "sourceRepositoriesRemainCanonical": true,
+    "crossRepositoryWrites": false,
+    "sourceCodeImport": false,
+    "runtimeAuthorityTransfer": false
+  },
+  "policy": {
+    "appleFirst": true,
+    "swiftFirstWhenNative": true,
+    "humanApprovalRequired": true,
+    "liveProviderExecution": false,
+    "externalWrites": false,
+    "automaticDeployment": false,
+    "automaticClaims": false
+  }
+}
