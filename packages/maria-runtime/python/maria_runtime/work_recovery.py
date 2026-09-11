@@ -607,6 +607,18 @@ class DurableWorkCheckpointStore:
         def fail(message: str) -> None:
             raise error_type(message)
 
+        # Validate runtime types before equality, iteration, hashing or JSON
+        # emission. Otherwise bool/int aliases can save a record we cannot load.
+        if not isinstance(checkpoint.steps, tuple):
+            fail("checkpoint steps must be a tuple")
+        if type(checkpoint.complete) is not bool:
+            fail("checkpoint complete flag must be boolean")
+        for field_name in (
+            "succeeded_steps", "failed_steps", "blocked_steps", "cancelled_steps"
+        ):
+            count = getattr(checkpoint, field_name)
+            if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+                fail("invalid checkpoint count")
         if len(checkpoint.steps) > cls._MAX_STEPS:
             fail("checkpoint contains too many steps")
         states = {
@@ -620,6 +632,10 @@ class DurableWorkCheckpointStore:
         for step in checkpoint.steps:
             if not isinstance(step, WorkStepExecutionEvidence):
                 fail("checkpoint contains invalid step evidence")
+            if not isinstance(step.route_kind, RouteKind):
+                fail("invalid checkpoint route kind")
+            if not isinstance(step.state, WorkStepState):
+                fail("invalid checkpoint step state")
             if not isinstance(step.step_id, str) or not step.step_id or len(step.step_id) > 128:
                 fail("invalid step id")
             if step.step_id in seen:
@@ -628,6 +644,8 @@ class DurableWorkCheckpointStore:
                 fail("invalid target name")
             if isinstance(step.attempts, bool) or not isinstance(step.attempts, int) or step.attempts < 0:
                 fail("invalid attempt count")
+            if not isinstance(step.depends_on, tuple):
+                fail("checkpoint dependencies must be a tuple")
             if len(step.depends_on) > cls._MAX_STEPS or any(
                 not isinstance(dep, str) or not dep or len(dep) > 128 for dep in step.depends_on
             ):
@@ -636,7 +654,10 @@ class DurableWorkCheckpointStore:
                 fail("checkpoint contains duplicate dependency ids")
             if any(dependency not in seen for dependency in step.depends_on):
                 fail("checkpoint dependency must reference an earlier step")
-            if step.failure is not None and cls._SAFE_FAILURE_RE.fullmatch(step.failure) is None:
+            if step.failure is not None and (
+                not isinstance(step.failure, str)
+                or cls._SAFE_FAILURE_RE.fullmatch(step.failure) is None
+            ):
                 fail("failure category is not a bounded safe identifier")
             if step.state not in states:
                 fail("invalid checkpoint step state")
