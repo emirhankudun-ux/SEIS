@@ -36,6 +36,8 @@ Therefore the schema declares `x-seis-persistence: host-classified`. Before dura
 
 For an unchanged `PermissionDecision`, serialization is deterministic and returns a fresh mapping each time. The serializer does not mutate the decision or its evidence. The JavaScript consumer likewise returns an isolated frozen copy rather than retaining caller-owned mutable objects.
 
+Canonical `observedAt` values are the exact UTC form emitted by Python `datetime.isoformat()` after UTC normalization: `YYYY-MM-DDTHH:MM:SSZ` when microseconds are zero, or exactly six fractional digits when microseconds are present. The JavaScript boundary rejects alternate offsets, year zero, `24:00:00`, impossible Gregorian dates such as February 30, and shortened fractional forms such as `.1Z`. This avoids accepting timestamps that JavaScript `Date.parse()` would silently normalize into a different instant. The shared schema narrows the lexical shape; the JavaScript validator additionally performs calendar-validity checks because JSON Schema `format` support can be annotation-only depending on the consumer.
+
 `maria.permission-audit.v1` is a semantic boundary. Consumers validate supported schema versions explicitly and fail closed rather than silently reinterpret a future incompatible envelope. Additive or breaking changes must be reflected in the shared schema and focused compatibility tests.
 
 ## Current limitation
