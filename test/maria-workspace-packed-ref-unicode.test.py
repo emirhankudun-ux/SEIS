@@ -8,7 +8,10 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
 
-from maria_runtime.workspace_evidence import GitWorkspaceEvidenceSource
+from maria_runtime.workspace_evidence import (
+    GitWorkspaceEvidenceSource,
+    WorkspaceEvidenceError,
+)
 
 
 PROJECT = "SEIS"
@@ -17,7 +20,7 @@ OBSERVED = "2026-09-11T18:55:00+03:00"
 
 
 class WorkspacePackedRefUnicodeTests(unittest.TestCase):
-    def capture_packed(self, branch: str):
+    def capture_packed(self, branch: str, *, packed_branch: str | None = None):
         tmp = tempfile.TemporaryDirectory()
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name) / "workspace"
@@ -30,7 +33,7 @@ class WorkspacePackedRefUnicodeTests(unittest.TestCase):
         (git / "packed-refs").write_bytes(
             (
                 "# pack-refs with: peeled fully-peeled sorted \n"
-                f"{REVISION} refs/heads/{branch}\n"
+                f"{REVISION} refs/heads/{packed_branch or branch}\n"
             ).encode("utf-8")
         )
         return GitWorkspaceEvidenceSource().capture(
@@ -55,6 +58,15 @@ class WorkspacePackedRefUnicodeTests(unittest.TestCase):
         self.assertEqual(snapshot.current_branch, branch)
         self.assertEqual(snapshot.repository_revision, REVISION)
         self.assertFalse(snapshot.execution_authorized)
+
+    def test_canonically_equivalent_ref_names_remain_distinct_identities(self) -> None:
+        # Git ref identity is byte/scalar exact. NFC/NFD spellings are distinct
+        # refs even though some native string equality operations consider them
+        # canonically equivalent.
+        head_branch = "feature/cafe\u0301"
+        packed_branch = "feature/café"
+        with self.assertRaises(WorkspaceEvidenceError):
+            self.capture_packed(head_branch, packed_branch=packed_branch)
 
 
 if __name__ == "__main__":
