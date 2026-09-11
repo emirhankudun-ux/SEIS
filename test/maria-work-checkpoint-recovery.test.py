@@ -108,6 +108,19 @@ class DurableCheckpointRecoveryTests(unittest.TestCase):
         with self.assertRaises(CheckpointCorruptError):
             self.store.load("SEIS", "work-001")
 
+    def test_duplicate_json_keys_fail_closed(self):
+        self.store.save("SEIS", "work-001", checkpoint(evidence("plan", WorkStepState.SUCCEEDED)))
+        path = self.store.path_for("SEIS", "work-001")
+        serialized = path.read_text("utf-8")
+        serialized = serialized.replace(
+            '"project_id":"SEIS"',
+            '"project_id":"OTHER","project_id":"SEIS"',
+            1,
+        )
+        path.write_text(serialized, "utf-8")
+        with self.assertRaises(CheckpointCorruptError):
+            self.store.load("SEIS", "work-001")
+
     def test_unknown_schema_version_fails_closed(self):
         self.store.save("SEIS", "work-001", checkpoint(evidence("plan", WorkStepState.SUCCEEDED)))
         path = self.store.path_for("SEIS", "work-001")
