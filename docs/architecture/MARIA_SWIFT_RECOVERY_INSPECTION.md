@@ -123,7 +123,8 @@ The focused hosted workflow is `.github/workflows/maria-swift-recovery.yml`. On 
 3. builds the existing `SeisAppleNativeShell` product;
 4. runs the full Swift package test suite, including XCTest and Swift Testing, and renders recovery views;
 5. separately runs the cancellation and async reader suites under Thread Sanitizer;
-6. retains the six synthetic light/dark render artifacts.
+6. verifies the two cancellation mutations in an isolated selected-source package;
+7. retains the six synthetic light/dark render artifacts.
 
 The sanitizer step uses `--disable-xctest` only for its focused Swift Testing run. The earlier full package test step still runs XCTest and every existing suite; no baseline test or safety gate is skipped. The sanitizer step introduces no suppression options or permission changes.
 
@@ -138,6 +139,14 @@ The first native implementation run exposed a test portability error: Darwin mar
 The original two regressions were observed both in a Git-blob-verified Linux extraction and on the unchanged macOS PR checkout (MARIA Swift Recovery run `34592421655`). The native shell built and the other Swift tests passed; the cancellation tests returned a snapshot or `unreadableFile` instead of `CancellationError`.
 
 Local targeted mutation checks confirmed that replacing the structured child with a detached task, or removing the post-result cancellation check, breaks the corresponding regression test. These are fault-injection checks, not a claim of exhaustive mutation coverage or independent review. The focused Linux extraction does not replace the full hosted macOS build/test lane.
+
+To reproduce the focused mutation check locally, run:
+
+```sh
+python3 scripts/check-maria-swift-cancellation-mutations.py
+```
+
+The checker requires an installed Swift toolchain and uses only Python's standard library. It copies the three named recovery source files and two focused test files into a private temporary Swift package with no external dependencies or package plugins. It verifies a passing baseline, one expected test failure per mutation, a passing restored implementation, and unchanged source-checkout bytes. A compiler error, timeout, missing test run, changed mutation anchor or unexpected test result fails verification; none is accepted as proof that a mutation was detected. The temporary package is removed on exit. This checker does not replace full-package macOS tests, app rendering, sandbox entitlement validation or user-acceptance testing.
 
 Repository-wide MARIA Learning Fabric, SEIS System Gates and Foundation Check remain independent regression gates.
 
