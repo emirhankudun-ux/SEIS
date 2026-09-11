@@ -39,6 +39,11 @@ from .mcp_protocol import (
     MCPProtocolProbe,
 )
 from .mcp_stdio import MCPStdioFrameCodec, MCPStdioFrameError, MCPStdioFrameFailure
+from .mcp_stdio_transport import (
+    MCPStdioProcessTransport,
+    MCPStdioShutdownState,
+    MCPStdioTransportSnapshot,
+)
 from .mcp_supervisor import (
     MCPProcessLaunchPlan,
     MCPProcessPolicy,
@@ -92,6 +97,9 @@ __all__ = [
     "MCPStdioFrameCodec",
     "MCPStdioFrameError",
     "MCPStdioFrameFailure",
+    "MCPStdioProcessTransport",
+    "MCPStdioShutdownState",
+    "MCPStdioTransportSnapshot",
     "ModelRegistry",
     "ModelRouteDecision",
     "ModelRouter",
