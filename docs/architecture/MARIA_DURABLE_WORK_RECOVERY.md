@@ -50,12 +50,15 @@ Reads are fail-closed. The loader checks:
 - exact envelope/body/step schemas;
 - schema version and identity match;
 - bounded step count and fields;
+- per-step attempt counts within `WorkStepExecutionPolicy.MAX_ATTEMPTS`;
+- unique dependency identifiers that reference only earlier checkpoint steps;
 - aggregate count consistency;
-- completion/next-step consistency.
+- completion/next-step consistency;
+- `next_step_id` matching the first cancelled step emitted by the executor.
 
 Saving likewise rejects a symbolic-link checkpoint root or project directory instead of writing through an alias outside the configured recovery root. JSON emission uses `allow_nan=False` so the store never intentionally writes non-standard non-finite JSON values.
 
-A corrupt or incompatible checkpoint raises `CheckpointCorruptError`; it is never silently treated as trusted recovery state.
+A corrupt, semantically impossible, or incompatible checkpoint raises `CheckpointCorruptError`; it is never silently treated as trusted recovery state. The same semantic validator is used before save and after load, so malformed host-created evidence and tampered persisted evidence fail under one contract.
 
 ### Filesystem trust boundary
 
@@ -67,7 +70,7 @@ The symlink checks protect against pre-existing filesystem aliases and the final
 
 - `NOT_FOUND`: no checkpoint exists;
 - `COMPLETE`: the persisted work checkpoint is complete;
-- `REPLAN_REQUIRED`: the checkpoint is incomplete/cancelled and identifies the next cancelled step.
+- `REPLAN_REQUIRED`: the checkpoint is incomplete/cancelled and identifies the first cancelled step.
 
 `RecoveryAssessment.execution_authorized` is always `False`.
 
@@ -83,4 +86,6 @@ Focused contract: `test/maria-work-checkpoint-recovery.test.py`.
 
 The original contract was committed before the durable-store implementation and hosted CI first failed because `maria_runtime.work_recovery` did not exist. The storage-hardening follow-up was also test-first: hosted MARIA regression CI failed on the new non-finite/symlink requirements before the implementation was changed. A second focused red/green cycle then proved that duplicate JSON object keys were accepted before strict object-pair parsing was added.
 
-The hardened contract covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, duplicate-key rejection, non-finite timestamp rejection, symbolic-link rejection, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.
+The semantic-integrity follow-up was likewise committed test-first. Hosted MARIA regression CI failed while dependency ordering, retry-attempt bounds, and first-cancelled-step identity were not enforced; the shared checkpoint validator then became the single fail-closed boundary for those invariants.
+
+The hardened contract covers round-trip redaction, atomic writes, bounded identifiers and size, corruption/schema failure, duplicate-key rejection, non-finite timestamp rejection, symbolic-link rejection, dependency-graph integrity, attempt bounds, recovery dispositions, and the invariant that persisted recovery evidence never authorizes execution.
