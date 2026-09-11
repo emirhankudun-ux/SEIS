@@ -92,6 +92,7 @@ from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouteDecision, ModelRouter
 from .safety import CommandPolicy
 from .work_execution import (
+    WorkPlanCheckpoint,
     WorkPlanExecutionResult,
     WorkPlanExecutor,
     WorkStepExecutionEvidence,
@@ -191,6 +192,7 @@ __all__ = [
     "ToolStatus",
     "UnifiedCapabilityRouter",
     "WorkMode",
+    "WorkPlanCheckpoint",
     "WorkPlanExecutionResult",
     "WorkPlanExecutor",
     "WorkRoutePlan",
