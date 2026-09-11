@@ -8,6 +8,13 @@ explicit, capability-discovered, and permission-gated.
 from .cache import PromptCache
 from .context import ContextFact, ProjectContextEngine
 from .continuation import ContinuationBrief, ContinuationResolver
+from .local_probe import (
+    LocalProbeError,
+    LocalProbeRequest,
+    LocalProbeResponse,
+    LocalProbeResult,
+    LocalRuntimeProbe,
+)
 from .mcp_config import MCPConfigImporter, MCPImportPreview, MCPServerDescriptor
 from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
@@ -24,6 +31,11 @@ __all__ = [
     "ContextFact",
     "ContinuationBrief",
     "ContinuationResolver",
+    "LocalProbeError",
+    "LocalProbeRequest",
+    "LocalProbeResponse",
+    "LocalProbeResult",
+    "LocalRuntimeProbe",
     "MCPConfigImporter",
     "MCPImportPreview",
     "MCPServerDescriptor",
