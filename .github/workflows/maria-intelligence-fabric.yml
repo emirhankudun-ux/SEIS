@@ -8,6 +8,7 @@ on:
       - 'test/maria-mcp-invocation-guard.test.py'
       - 'test/maria-mcp-process-supervisor.test.py'
       - 'test/maria-mcp-process-path-policy.test.py'
+      - 'test/maria-mcp-protocol-negotiation.test.py'
       - 'test/maria-local-runtime-discovery.test.py'
       - 'test/maria-local-runtime-health.test.py'
       - 'test/maria-local-discovery-coordinator.test.py'
@@ -36,6 +37,7 @@ jobs:
       - run: python3 test/maria-mcp-invocation-guard.test.py
       - run: python3 test/maria-mcp-process-supervisor.test.py
       - run: python3 test/maria-mcp-process-path-policy.test.py
+      - run: python3 test/maria-mcp-protocol-negotiation.test.py
       - run: python3 test/maria-local-runtime-discovery.test.py
       - run: python3 test/maria-local-runtime-health.test.py
       - run: python3 test/maria-local-discovery-coordinator.test.py
