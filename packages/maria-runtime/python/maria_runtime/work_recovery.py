@@ -46,6 +46,24 @@ class RecoveryAssessment:
         return False
 
 
+@dataclass(frozen=True)
+class RecoveryCatalogEntry:
+    """Public-safe discovery metadata for one persisted work checkpoint."""
+
+    project_id: str
+    work_id: str
+    disposition: RecoveryDisposition
+    next_step_id: str | None = None
+
+    @property
+    def replan_required(self) -> bool:
+        return self.disposition is RecoveryDisposition.REPLAN_REQUIRED
+
+    @property
+    def execution_authorized(self) -> bool:
+        return False
+
+
 class DurableWorkCheckpointStore:
     """Persist redacted ``WorkPlanCheckpoint`` evidence atomically.
 
@@ -68,6 +86,8 @@ class DurableWorkCheckpointStore:
     _ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
     _SAFE_FAILURE_RE = re.compile(r"^[a-z0-9][a-z0-9._:-]{0,127}$")
     _MAX_STEPS = 256
+    _MAX_DISCOVERY_FILES = 256
+    _MAX_DISCOVERY_LIMIT = 256
     _STEP_FIELDS = {
         "step_id",
         "route_kind",
@@ -321,6 +341,80 @@ class DurableWorkCheckpointStore:
             RecoveryDisposition.REPLAN_REQUIRED,
             next_step_id=checkpoint.next_step_id,
         )
+
+    def discover(
+        self,
+        project_id: str,
+        *,
+        include_complete: bool = False,
+        limit: int = 64,
+    ) -> tuple[RecoveryCatalogEntry, ...]:
+        """Discover bounded durable recovery evidence for one project.
+
+        Discovery is read-only and returns advisory metadata only. It never
+        authorizes execution or returns a partial result when the caller's bound
+        would be exceeded.
+        """
+
+        project = self._validated_id(project_id, field_name="project_id")
+        if type(include_complete) is not bool:
+            raise TypeError("include_complete must be boolean")
+        if isinstance(limit, bool) or not isinstance(limit, int):
+            raise TypeError("limit must be an integer")
+        if not 1 <= limit <= self._MAX_DISCOVERY_LIMIT:
+            raise ValueError(
+                f"limit must be between 1 and {self._MAX_DISCOVERY_LIMIT}"
+            )
+
+        parent = self._existing_project_parent(project)
+        if parent is None:
+            return ()
+
+        try:
+            candidates = sorted(
+                (path for path in parent.iterdir() if path.suffix == ".json"),
+                key=lambda path: path.name,
+            )
+        except OSError as exc:
+            raise CheckpointCorruptError("recovery catalog cannot be enumerated") from exc
+        if len(candidates) > self._MAX_DISCOVERY_FILES:
+            raise CheckpointCorruptError("recovery catalog exceeds trusted file bound")
+
+        entries: list[RecoveryCatalogEntry] = []
+        for candidate in candidates:
+            work_id = candidate.stem
+            try:
+                self._validated_id(work_id, field_name="work_id")
+            except ValueError as exc:
+                raise CheckpointCorruptError(
+                    "recovery catalog contains an invalid work id"
+                ) from exc
+
+            assessment = self.assess(project, work_id)
+            if assessment.disposition is RecoveryDisposition.NOT_FOUND:
+                # A concurrent trusted cleanup may remove a candidate between
+                # enumeration and load. Absence is not resumable evidence.
+                continue
+            if (
+                assessment.disposition is RecoveryDisposition.COMPLETE
+                and not include_complete
+            ):
+                continue
+
+            entries.append(
+                RecoveryCatalogEntry(
+                    project_id=project,
+                    work_id=work_id,
+                    disposition=assessment.disposition,
+                    next_step_id=assessment.next_step_id,
+                )
+            )
+            if len(entries) > limit:
+                raise CheckpointCorruptError(
+                    "recovery catalog exceeds requested limit"
+                )
+
+        return tuple(entries)
 
     @classmethod
     def _checkpoint_to_dict(cls, checkpoint: WorkPlanCheckpoint) -> dict[str, Any]:
