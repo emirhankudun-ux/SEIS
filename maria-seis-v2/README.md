@@ -1,4 +1,4 @@
-# MARIA × SEIS — 4.0.0-alpha.2
+# MARIA × SEIS — 4.0.0-alpha.3
 
 A modular **web simulation** of the MARIA personal-intelligence experience. This is an engineering alpha, not a finished desktop operator. The existing SEIS Apple-first / Swift-first direction is unchanged.
 
@@ -6,7 +6,9 @@ A modular **web simulation** of the MARIA personal-intelligence experience. This
 
 The command interface, project context, role catalog, advisory intent classification, fail-closed permission checks, provider eligibility checks, cancellable simulation, bounded execution timeout, event isolation, source conflict detection and plugin-manifest validator run locally. Keyboard navigation and responsive views are included.
 
-A simulation result is **not** a completed build, AI answer, file edit or external action. Voice, vision, model inference, MCP, macOS control, Unreal, Blender, persistent memory and scheduling remain unconnected. Their presence in the catalog does not enable them.
+Alpha.3 also adds explicit provider lifecycle state transitions, safe allowlisted preference persistence, a permission-enforced Plugin Host v2 with bounded invocation timeout, and a bounded execution journal that records truthful terminal outcomes while redacting secret-shaped fields.
+
+A simulation result is **not** a completed build, AI answer, file edit or external action. Voice, vision, model inference, MCP, macOS control, Unreal, Blender, durable project memory and scheduling remain unconnected. Their presence in the catalog does not enable them.
 
 ## Run
 
@@ -31,17 +33,21 @@ python3 tests/browser_smoke.py
 python3 tests/browser_smoke.py --offline --output ./qa-artifacts
 ```
 
-See [verification evidence and limitations](docs/VERIFICATION.md). The browser harness replaces only module import specifiers with an import map in offline mode; it does not supply fake application logic.
+Fresh alpha.3 evidence: 64/64 Node tests passed and 17/17 offline Chromium acceptance checks passed. HTTP navigation was blocked by the execution environment administrator policy and is not claimed as verified. See `docs/VERIFICATION-ALPHA3.md`.
 
-## Release behavior changes
+## Release behavior
 
-`runCommand` now returns `simulated`, not `complete`, for the demo. The simulator's verifier exposes `contractVerified` for structural checks; `verified` remains false because no external outcome was verified. Other outcomes include `approval`, `blocked`, `unavailable`, `invalid`, `unverified`, `cancelled`, `timed-out` and `error`.
+`runCommand` returns `simulated`, not `complete`, for the demo. The simulator's verifier exposes `contractVerified` for structural checks; `verified` remains false because no external outcome was verified. Other outcomes include `approval`, `blocked`, `unavailable`, `invalid`, `unverified`, `cancelled`, `timed-out` and `error`.
 
-The source-of-truth resolver defaults to factual evidence. A desired user instruction does not rewrite an observed result. Equal-ranked conflicting values remain unresolved. An explicit `{domain:'instruction'}` is available for instruction selection, not for permission bypasses.
+The execution journal records terminal status, execution mode, selected provider where applicable, verification evidence and whether an external action was actually verified. Simulation records always keep `verifiedExternalAction:false`.
+
+Safe preferences persist only allowlisted non-secret values such as selected project, mode and routing preferences. Credentials, tokens, arbitrary memory and prompts are not persisted by this layer.
 
 ## Extending it
 
-Keep provider behavior behind adapters. Do not convert a catalog flag into a connection, execute arbitrary plugins, or place credentials in the browser. A real adapter requires a trusted host, scoped authorization, cancellation/reconciliation and independently checked results. `defineMariaPlugin` validates metadata only; it is not a sandbox.
+Keep provider behavior behind adapters. Do not convert a catalog flag into a connection, execute arbitrary plugins, or place credentials in the browser. A real adapter requires a trusted host, scoped authorization, cancellation/reconciliation and independently checked results.
+
+Plugin Host v2 validates API compatibility, declared capabilities and permissions. Invocation requires explicit permission grants and uses bounded timeouts, but this is still not an OS sandbox for arbitrary third-party code.
 
 ChatGPT app connections are not imported by this code. Future integrations need their own supported authorization flow. See [architecture](ARCHITECTURE.md), [security](SECURITY.md) and [roadmap](docs/ROADMAP.md).
 
