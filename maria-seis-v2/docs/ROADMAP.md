@@ -1,10 +1,10 @@
 # Next bounded milestones
 
-## Current checkpoint — alpha.5
+## Current checkpoint — alpha.7
 
-Truthful simulation/live separation, fail-closed permission policy, cancellation, bounded execution, isolated observers, conflict-aware facts, strict plugin metadata, provider supervision, host-adapter lifecycle, attributed live-receipt verification and an OpenAI-compatible local-model adapter contract.
+Truthful simulation/live separation, fail-closed permission policy, cancellation, bounded execution, isolated observers, conflict-aware facts, strict plugin metadata, provider supervision, host-adapter lifecycle, attributed live-receipt verification, an OpenAI-compatible local-model adapter contract, and a modernized MCP client contract.
 
-## Completed alpha.5 scope
+## Completed alpha.7 scope
 
 - provider lifecycle contract and health state transitions;
 - safe preference persistence;
@@ -17,25 +17,31 @@ Truthful simulation/live separation, fail-closed permission policy, cancellation
 - dependency-injected `LiveRuntimeAdapter`;
 - attributed live receipt verification and journal evidence;
 - OpenAI-compatible local-model adapter contract with `/v1/models` discovery, `/v1/chat/completions`, timeout/cancellation and canonical `local` provider binding;
-- end-to-end adapter → host manager → live runtime → orchestrator → verifier coverage;
-- fresh regression suite: **87 Node tests**;
+- MCP `2026-07-28` discovery with per-request protocol/client metadata;
+- safe fallback to legacy MCP initialization when `server/discover` is unsupported;
+- required legacy `notifications/initialized` lifecycle signal;
+- negotiated protocol validation, malformed tool-list rejection and malformed tool-result rejection;
+- discovered-tool-only execution, host-side authentication forwarding and cancellation;
+- end-to-end adapter → host manager → live runtime → orchestrator → verifier coverage for local inference;
+- fresh regression suite: **96 Node tests**;
 - offline Chromium acceptance: **17 checks**.
 
 ## Next highest-value milestone
 
-Connect the local-model adapter to **one real trusted local host** and verify a reproducible end-to-end inference path before adding another live provider. The host must expose real model identity, bounded health checks, cancellation, attributable responses and explicit evidence. Do not treat transport success as semantic correctness.
+Connect one **real trusted local-model host** and one **real MCP server** through the existing contracts, then verify reproducible end-to-end execution with attributable evidence. The host must expose real identity, bounded health checks, cancellation and explicit outcome evidence. Transport success must not be presented as semantic correctness or proof of an external side effect.
 
 ## Core platform gates before broad product expansion
 
-1. MCP capability discovery + authenticated tool execution through the same host contract.
-2. Server-side OpenAI adapter with no browser-side secrets.
-3. Native Apple host and scoped macOS permissions with reversible actions.
-4. Real voice with explicit capture indicators, interruption and permission-safe microphone state.
-5. Vision/screen context with structured APIs preferred over brittle coordinate automation.
-6. Unreal/Blender adapters validated against installed versions and a real project.
-7. Durable memory with provenance, deletion, export and conflict handling.
-8. Stoppable scheduling, crash recovery, resumable work and deployment hardening.
-9. Accessibility, performance, security and public-installation acceptance gates.
+1. Real MCP transport against one trusted server, including permission prompts for consequential tools.
+2. Real local-model transport against one trusted local host.
+3. Server-side OpenAI adapter with no browser-side secrets.
+4. Native Apple host and scoped macOS permissions with reversible actions.
+5. Real voice with explicit capture indicators, interruption and permission-safe microphone state.
+6. Vision/screen context with structured APIs preferred over brittle coordinate automation.
+7. Unreal/Blender adapters validated against installed versions and a real project.
+8. Durable memory with provenance, deletion, export and conflict handling.
+9. Stoppable scheduling, crash recovery, resumable work and deployment hardening.
+10. Accessibility, performance, security and public-installation acceptance gates.
 
 Do not start the full creative/advertising agency implementation until the relevant core platform gates above are stable enough to support real tools, evidence, permissions, memory and recovery.
 
