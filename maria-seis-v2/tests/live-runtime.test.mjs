@@ -23,6 +23,16 @@ test('live verifier rejects unattributed or self-asserted success', () => {
   assert.equal(bad.verifiedExternalAction,false);
 });
 
+test('live verifier rejects evidence attributed to a different provider', () => {
+  const expected={runId:'r1',projectId:'seis',intent:'general',providerId:'local'};
+  const bad=verifyLiveReceipt({
+    ok:true,mode:'live',runtime:'host-runtime-v1',providerId:'other-provider',runId:'r1',projectId:'seis',intent:'general',
+    outcomeVerified:true,evidence:['response:attributed']
+  },expected);
+  assert.equal(bad.verified,false);
+  assert.equal(bad.verifiedExternalAction,false);
+});
+
 test('live verifier accepts only matching attributed evidence', () => {
   const expected={runId:'r1',projectId:'seis',intent:'general',providerId:'local'};
   const good=verifyLiveReceipt({
