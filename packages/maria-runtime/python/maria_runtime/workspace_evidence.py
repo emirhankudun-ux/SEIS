@@ -182,7 +182,7 @@ class GitWorkspaceEvidenceSource:
             raw = self._read_regular_file(
                 git_dir / "packed-refs",
                 self.MAX_PACKED_REFS_BYTES,
-                encoding="ascii",
+                encoding="utf-8",
             )
         except FileNotFoundError as exc:
             raise WorkspaceEvidenceError("selected branch ref is missing") from exc
