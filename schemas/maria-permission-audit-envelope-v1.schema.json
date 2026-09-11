@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/maria-permission-audit-envelope-v1.schema.json",
+  "title": "MARIA Permission Audit Envelope v1",
+  "description": "Descriptive, non-authorizing serialization contract for a MARIA permission decision and its resolved-target evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "x-seis-authority": "descriptive-only",
+  "x-seis-persistence": "host-classified",
+  "required": [
+    "schemaVersion",
+    "actionClass",
+    "target",
+    "allowed",
+    "requiresApproval",
+    "reason",
+    "reversible",
+    "targetEvidence"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "maria.permission-audit.v1"
+    },
+    "actionClass": {
+      "type": "string",
+      "enum": [
+        "read",
+        "safe-execute",
+        "modify",
+        "external",
+        "destructive",
+        "financial",
+        "privacy-sensitive"
+      ]
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "requiresApproval": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reversible": {
+      "type": ["boolean", "null"]
+    },
+    "targetEvidence": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/targetEvidence"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "targetEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "source",
+        "observedAt",
+        "verified"
+      ],
+      "properties": {
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verified": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
