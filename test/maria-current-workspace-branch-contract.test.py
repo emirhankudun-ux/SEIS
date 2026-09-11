@@ -37,6 +37,9 @@ class CurrentWorkspaceBranchContractTests(unittest.TestCase):
         ref_path.parent.mkdir(parents=True, exist_ok=True)
         ref_path.write_text(f"{REVISION}\n", encoding="ascii")
 
+    def ref_path(self, branch: str) -> Path:
+        return self.root / ".git" / "refs" / "heads" / branch
+
     def capture(self):
         return GitWorkspaceEvidenceSource().capture(
             self.root,
@@ -106,6 +109,21 @@ class CurrentWorkspaceBranchContractTests(unittest.TestCase):
             observed_at=OBSERVED,
         )
         self.write_branch(branch)
+        snapshot = self.capture()
+        self.assertEqual(snapshot.current_branch, branch)
+        self.assertEqual(snapshot.repository_revision, REVISION)
+
+    def test_loose_ref_rejects_leading_ascii_whitespace_before_revision(self):
+        branch = "feature/maria-leading-space-ref"
+        self.write_branch(branch)
+        self.ref_path(branch).write_text(f" {REVISION}\n", encoding="ascii")
+        with self.assertRaises(WorkspaceEvidenceError):
+            self.capture()
+
+    def test_loose_ref_keeps_git_accepted_trailing_ascii_whitespace_behavior(self):
+        branch = "feature/maria-trailing-space-ref"
+        self.write_branch(branch)
+        self.ref_path(branch).write_text(f"{REVISION}   \n\n", encoding="ascii")
         snapshot = self.capture()
         self.assertEqual(snapshot.current_branch, branch)
         self.assertEqual(snapshot.repository_revision, REVISION)
