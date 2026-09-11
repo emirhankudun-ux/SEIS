@@ -1,0 +1,50 @@
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from typing import Any
+
+from .permissions import PermissionDecision
+
+
+PERMISSION_AUDIT_SCHEMA_VERSION = "maria.permission-audit.v1"
+
+
+def _utc_timestamp(value: datetime) -> str:
+    """Return an RFC 3339/JSON-friendly UTC timestamp with a stable Z suffix."""
+
+    return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def permission_decision_audit_envelope(decision: PermissionDecision) -> dict[str, Any]:
+    """Serialize one immutable permission decision into a shared audit envelope.
+
+    This function is intentionally side-effect free. The returned mapping is
+    descriptive audit context only: it does not authorize execution, persist
+    data, revalidate evidence, contact a provider, or make the payload safe for
+    durable logging. Hosts remain responsible for classification/redaction at
+    their persistence boundary.
+    """
+
+    if type(decision) is not PermissionDecision:
+        raise TypeError("decision must be PermissionDecision")
+
+    evidence = decision.target_evidence
+    serialized_evidence: dict[str, Any] | None = None
+    if evidence is not None:
+        serialized_evidence = {
+            "target": evidence.target,
+            "source": evidence.source,
+            "observedAt": _utc_timestamp(evidence.observed_at),
+            "verified": evidence.verified,
+        }
+
+    return {
+        "schemaVersion": PERMISSION_AUDIT_SCHEMA_VERSION,
+        "actionClass": decision.action_class.value,
+        "target": decision.target,
+        "allowed": decision.allowed,
+        "requiresApproval": decision.requires_approval,
+        "reason": decision.reason,
+        "reversible": decision.reversible,
+        "targetEvidence": serialized_evidence,
+    }
