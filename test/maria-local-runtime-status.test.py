@@ -7,8 +7,10 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
 
+from maria_runtime.local_coordinator import LocalDiscoveryCoordinator
 from maria_runtime.local_discovery import LocalModelCandidate
 from maria_runtime.local_health import LocalHealthEvidenceLedger, ProbeObservation, ProbeOutcome
+from maria_runtime.local_probe import LocalProbeResponse, LocalRuntimeProbe
 from maria_runtime.local_status import LocalRuntimeSnapshotBuilder, RuntimeProbeState
 
 
@@ -87,6 +89,32 @@ class LocalRuntimeStatusSnapshotTests(unittest.TestCase):
         duplicate = LocalModelCandidate("ollama", "qwen3:14b", "sha256:x", 1, "now")
         with self.assertRaises(ValueError):
             builder.build(ollama_inventory=(duplicate, duplicate))
+
+    def test_coordinator_exposes_snapshot_without_leaking_mutable_ledger(self):
+        ticks = iter([1.0, 1.002])
+
+        def transport(_request):
+            return LocalProbeResponse(
+                200,
+                "application/json",
+                (
+                    b'{"models":[{"name":"qwen3:14b","model":"qwen3:14b",'
+                    b'"modified_at":"2026-09-11T02:00:00Z","size":8000000000,'
+                    b'"digest":"sha256:qwen"}]}'
+                ),
+            )
+
+        coordinator = LocalDiscoveryCoordinator(
+            probe=LocalRuntimeProbe(transport=transport, clock=lambda: next(ticks)),
+            health=LocalHealthEvidenceLedger(minimum_reliability_samples=1),
+        )
+        coordinator.refresh_ollama_inventory()
+
+        snapshot = coordinator.status_snapshot()
+        self.assertEqual([item.name for item in snapshot.ollama_inventory], ["qwen3:14b"])
+        tags = next(item for item in snapshot.probes if item.provider_id == "ollama" and item.probe_name == "tags")
+        self.assertEqual(tags.state, RuntimeProbeState.READY)
+        self.assertEqual(tags.reliability, 1.0)
 
 
 if __name__ == "__main__":
