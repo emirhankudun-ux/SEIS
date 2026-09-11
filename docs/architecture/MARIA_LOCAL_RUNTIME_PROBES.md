@@ -2,9 +2,9 @@
 
 ## Status
 
-Implemented as a bounded discovery + redacted health-evidence slice for MARIA Intelligence Fabric v1.
+Implemented as a bounded discovery, provenance-binding, and redacted health-evidence slice for MARIA Intelligence Fabric v1.
 
-The probe layer can inspect already-running LM Studio and Ollama services on the local machine. It does **not** start, install, download, authenticate to, or mutate a runtime.
+The local runtime layer can inspect already-running LM Studio and Ollama services on the local machine. It does **not** start, install, download, authenticate to, perform inference through, or mutate a runtime.
 
 ## Trust boundary
 
@@ -15,6 +15,8 @@ The probe layer can inspect already-running LM Studio and Ollama services on the
 - `probe_ollama_show(model_name)` → `POST http://127.0.0.1:<port>/api/show`
 
 Callers cannot supply an arbitrary host, URL, path, HTTP method, request header set, or credential through this API. Configurable ports are validated to the TCP range and the built-in transport independently requires the literal IPv4 loopback address.
+
+`LocalDiscoveryCoordinator` is the orchestration boundary above the raw probe. It binds transport evidence to provider-specific parsers, health evidence, and current inventory provenance before a local model can become a `ModelDiscoveryFact`.
 
 ## Bounded behavior
 
@@ -32,17 +34,37 @@ Every probe has:
 
 The built-in HTTP transport reads at most `max_response_bytes + 1`, which lets the policy layer detect an oversized response without buffering an unbounded body.
 
+## Typed failure evidence
+
+`LocalProbeError` now carries a bounded `LocalProbeFailureKind` instead of forcing callers to interpret exception text. Supported kinds are:
+
+- timeout;
+- transport error;
+- HTTP error;
+- policy rejection;
+- invalid response.
+
+The coordinator maps those values directly to the redacted `ProbeOutcome` schema. Raw response bodies, exception messages, request headers, tokens, prompts, and model output are not copied into health evidence.
+
+Redirects and oversized responses are treated as policy rejections. Non-200 responses are HTTP errors. Invalid media types, JSON, UTF-8, or root shapes are invalid responses. Transport timeouts are distinguished from other transport failures.
+
 ## Ollama inventory and show policy
 
 The Ollama tags request is a body-free GET. `OllamaTagsDiscoverySource` converts its response into `LocalModelCandidate` records containing only provider ID, model name, digest, size, and modified timestamp. These candidates intentionally have no context or capability fields and are **not routable models**.
 
-Candidate names can then be inspected through the bounded show request. The Ollama show request body contains exactly one user-derived field: the normalized model name. Empty names, control characters, and names longer than 512 characters are rejected before transport. No token, API key, arbitrary option map, or generation prompt is accepted.
+`LocalDiscoveryCoordinator.refresh_ollama_inventory()` is the only automatic path that marks an inventory as current. A refresh first revokes the prior in-memory inventory, then repopulates it only after both the bounded HTTP probe and the tags parser succeed. Therefore a failed refresh cannot silently leave an older inventory trusted as current.
+
+Automatic `discover_ollama_model(name)` calls are permitted only when `name` exists in that current verified inventory. A caller may bypass inventory membership only by explicitly setting the user-selection boundary; this is intended for a model name the user deliberately chose rather than autonomous probing of arbitrary names.
+
+The Ollama show request body contains exactly one user-derived field: the normalized model name. Empty names, control characters, and names longer than 512 characters are rejected before transport. No token, API key, arbitrary option map, or generation prompt is accepted.
 
 The tags parser rejects duplicate model names, missing identity metadata, non-positive sizes, and mismatched `name` / `model` identifiers. This prevents inventory data from silently becoming ambiguous capability evidence.
 
 ## LM Studio request policy
 
 The LM Studio models request is a body-free GET with only an `Accept: application/json` header. It is intended for local model metadata discovery, not inference.
+
+`LocalDiscoveryCoordinator.discover_lm_studio_models()` validates the runtime payload before recording a successful health sample and only returns model facts after the configured minimum reliability evidence exists.
 
 ## Redacted health evidence
 
@@ -57,42 +79,49 @@ Supported normalized outcomes are limited to success, timeout, transport error, 
 - derives median latency only from successful observations;
 - keeps provider/probe combinations on an explicit allowlist.
 
-This allows the later discovery coordinator to supply evidence-backed reliability to `LMStudioV1DiscoverySource` / `OllamaShowDiscoverySource` instead of passing a guessed constant.
+The coordinator validates provider-specific payloads before recording an HTTP 200 result as a health success. A structurally invalid tags/show/models payload becomes `INVALID_RESPONSE`, not a success.
+
+For model discovery, a successful parsed payload is first represented with provisional routing metadata, then the coordinator records the successful observation and reads the ledger summary. If the minimum evidence threshold has not been reached, discovery raises `LookupError` and the model remains non-routable. Once the threshold is reached, the evidence-backed reliability value is written into the returned `ModelDiscoveryFact`.
+
+This prevents a single lucky localhost response from being treated as durable model reliability.
 
 ## Failure behavior
 
-Redirects, non-200 responses, non-JSON media types, invalid UTF-8/JSON, array/scalar roots, oversized responses, invalid configuration, transport errors, and timeouts fail closed through `LocalProbeError` or configuration `ValueError`.
+Redirects, non-200 responses, non-JSON media types, invalid UTF-8/JSON, array/scalar roots, oversized responses, invalid configuration, transport errors, timeouts, malformed provider metadata, stale inventory provenance, and insufficient health evidence all fail closed.
 
 Raw transport exceptions are not surfaced as trusted discovery evidence.
 
 ## Relationship to discovery parsers
 
-The probe and parser layers remain separate:
+The runtime path is now:
 
 ```text
 already-running local runtime
         ↓
 LocalRuntimeProbe
         ↓
-LocalProbeResult
+LocalProbeResult / typed LocalProbeError
+        ↓
+LocalDiscoveryCoordinator
         ├──────────────→ LocalHealthEvidenceLedger
         │                       ↓
         │                evidence-backed reliability
         │
-        ↓
-LM Studio: LMStudioV1DiscoverySource
-        ↓
-ModelDiscoveryFact
-
-Ollama: OllamaTagsDiscoverySource
-        ↓
-LocalModelCandidate
-        ↓
-probe_ollama_show(candidate.name)
-        ↓
-OllamaShowDiscoverySource
-        ↓
-ModelDiscoveryFact
+        ├── LM Studio models parser
+        │       ↓
+        │   ModelDiscoveryFact
+        │
+        └── Ollama tags parser
+                ↓
+          current verified inventory
+                ↓
+        provenance check / explicit selection
+                ↓
+          bounded Ollama show probe
+                ↓
+          Ollama show parser
+                ↓
+          ModelDiscoveryFact
 
 ModelDiscoveryFact
         ↓
@@ -103,7 +132,7 @@ ModelSpec
 ModelRouter / UnifiedCapabilityRouter
 ```
 
-This separation prevents HTTP reachability or inventory presence from being mistaken for model capability. The show/models parsers still require explicit runtime-reported context/capability metadata, and routing still requires verified discovery facts.
+This separation prevents HTTP reachability or inventory presence from being mistaken for model capability. The show/models parsers still require explicit runtime-reported context/capability metadata, and routing still requires verified discovery facts with sufficient reliability evidence.
 
 ## Security non-goals
 
@@ -122,20 +151,21 @@ This slice does not:
 
 ## Verification
 
-The focused test suite verifies fixed loopback targets, request method/body/header minimality, timeout and size propagation, latency measurement, malformed/oversized/redirect/non-success failure behavior, port validation, model-name validation, Ollama inventory parsing, duplicate/incomplete candidate rejection, the non-routable candidate boundary, bounded health history, minimum-evidence reliability, and redacted observation schemas.
+The focused test suite verifies fixed loopback targets, request method/body/header minimality, timeout and size propagation, latency measurement, malformed/oversized/redirect/non-success failure behavior, port validation, model-name validation, typed failure categories, Ollama inventory parsing, duplicate/incomplete candidate rejection, the non-routable candidate boundary, current-inventory provenance, stale-inventory revocation, explicit user-selection override, bounded health history, minimum-evidence routing gates, and redacted observation schemas.
 
-Three test-first cycles cover this local-runtime slice:
+Four test-first cycles cover this local-runtime slice:
 
 1. the hosted MARIA Intelligence Fabric workflow failed because `maria_runtime.local_probe` did not exist, then passed after the bounded probe implementation was added;
 2. the hosted workflow failed because `LocalModelCandidate` / `OllamaTagsDiscoverySource` did not exist, then passed after inventory parsing and `probe_ollama_tags()` were added;
-3. the hosted workflow failed because `maria_runtime.local_health` did not exist, then passed after the bounded redacted health ledger was implemented.
+3. the hosted workflow failed because `maria_runtime.local_health` did not exist, then passed after the bounded redacted health ledger was implemented;
+4. the hosted workflow failed because `maria_runtime.local_coordinator` did not exist, then passed after provenance-bound coordination and typed health integration were implemented.
 
 ## Next safe slice
 
-The next highest-value local-runtime step is provenance-bound discovery orchestration:
+The next highest-value local-runtime step is to expose this verified state to the rest of MARIA without expanding authority:
 
-1. require automatic Ollama `/api/show` probes to target names returned by the current verified `/api/tags` inventory (or an explicitly user-selected model);
-2. connect successful/failed probe outcomes to the redacted health ledger without storing raw error text;
-3. feed reliability into discovery parsers only after the minimum evidence threshold is met;
-4. expose verified local model state to the Integration Center without auto-launching runtimes;
-5. keep inference and model loading as separately permissioned capabilities.
+1. add an immutable local-runtime status snapshot suitable for the future SwiftUI Integration Center;
+2. feed verified coordinator facts through `ProviderDiscoveryAdapter` and the existing model router in an end-to-end contract test;
+3. preserve route explanations showing provider, locality, capability evidence, reliability sample count, and why a model remained non-routable;
+4. keep inference, model loading, runtime launch, downloads, and credential handling as separately permissioned future capabilities;
+5. in parallel, begin the bounded MCP process-supervisor slice behind the already-existing MCP trust and per-call permission gates.
