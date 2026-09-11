@@ -27,12 +27,39 @@ function replaceEntries(target,next) {
   target.splice(0,target.length,...next);
 }
 
+function activeRunIndexes(entries) {
+  const seen=new Set();
+  const active=new Set();
+  for (let index=entries.length-1; index>=0; index-=1) {
+    const entry=entries[index];
+    const runId=entry?.runId;
+    if (typeof runId!=='string' || !runId || seen.has(runId)) continue;
+    seen.add(runId);
+    if (entry.status==='running') active.add(index);
+  }
+  return active;
+}
+
+function boundEntries(next,limit,{protectedIndex=-1}={}) {
+  if (next.length<=limit) return next;
+  const discardCount=next.length-limit;
+  const active=activeRunIndexes(next);
+  const removable=[];
+  for (let index=0; index<next.length; index+=1) {
+    if (index===protectedIndex || active.has(index)) continue;
+    removable.push(index);
+  }
+  if (removable.length<discardCount) throw new Error('journal-active-capacity-exhausted');
+  const discarded=new Set(removable.slice(0,discardCount));
+  return next.filter((_,index)=>!discarded.has(index));
+}
+
 function lifecycleApi({entries,limit,clock,persist}) {
   const commit=next=>{ persist?.(next); replaceEntries(entries,next); };
-  const bounded=next=>next.length>limit ? next.slice(next.length-limit) : next;
   const add=record=>{
     const safe=prepareRecord(record,clock);
-    commit(bounded([...entries,safe]));
+    const next=[...entries,safe];
+    commit(boundEntries(next,limit,{protectedIndex:next.length-1}));
     return safe;
   };
   return Object.freeze({
@@ -45,7 +72,7 @@ function lifecycleApi({entries,limit,clock,persist}) {
       const index=entries.findLastIndex(entry=>entry.runId===safe.runId && entry.status==='running');
       const next=[...entries];
       if (index>=0) next[index]=safe; else next.push(safe);
-      commit(bounded(next));
+      commit(boundEntries(next,limit,{protectedIndex:index>=0 ? index : next.length-1}));
       return safe;
     },
     list() { return entries.map(entry=>deepFreeze(structuredClone(entry))); },
@@ -72,7 +99,7 @@ export function createPersistentExecutionJournal({storage,limit=200,clock=()=>ne
       parsed=value.map(record=>prepareRecord(record,clock,{preserveTimestamp:true}));
     }
   } catch { throw new Error('journal-storage-corrupt'); }
-  const entries=parsed.length>limit ? parsed.slice(parsed.length-limit) : parsed;
+  const entries=boundEntries(parsed,limit);
   const persist=next=>{
     try { storage.write(JSON.stringify(next)); }
     catch { throw new Error('journal-persist-failed'); }
