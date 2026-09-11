@@ -60,7 +60,7 @@ class LocalRoutingIntegrationTests(unittest.TestCase):
 
         router = ModelRouter(discovery.models)
         decision = router.explain_select(
-            required_capabilities={"tools"},
+            required_capabilities={"tool-use"},
             sensitive=True,
             estimated_context_tokens=16_384,
         )
@@ -71,12 +71,12 @@ class LocalRoutingIntegrationTests(unittest.TestCase):
         self.assertTrue(decision.local_privacy_bias_applied)
         self.assertEqual(decision.evidence_sample_count, 1)
         self.assertEqual(decision.evidence_source, "local-health:ollama/show")
-        self.assertEqual(decision.required_capabilities, ("tools",))
+        self.assertEqual(decision.required_capabilities, ("tool-use",))
         self.assertEqual(decision.candidate_names, ("qwen3:14b",))
         self.assertGreater(decision.score, 0.0)
 
         selected_legacy = router.select(
-            required_capabilities={"tools"},
+            required_capabilities={"tool-use"},
             sensitive=True,
             estimated_context_tokens=16_384,
         )
