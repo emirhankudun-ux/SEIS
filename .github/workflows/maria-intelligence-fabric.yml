@@ -18,6 +18,7 @@ on:
       - 'test/maria-mcp-stdio-framing.test.py'
       - 'test/maria-mcp-stdio-transport.test.py'
       - 'test/maria-local-runtime-discovery.test.py'
+      - 'test/maria-local-capability-normalization.test.py'
       - 'test/maria-local-runtime-health.test.py'
       - 'test/maria-local-discovery-coordinator.test.py'
       - 'test/maria-local-routing-integration.test.py'
@@ -56,6 +57,7 @@ jobs:
       - run: python3 test/maria-mcp-stdio-framing.test.py
       - run: python3 test/maria-mcp-stdio-transport.test.py
       - run: python3 test/maria-local-runtime-discovery.test.py
+      - run: python3 test/maria-local-capability-normalization.test.py
       - run: python3 test/maria-local-runtime-health.test.py
       - run: python3 test/maria-local-discovery-coordinator.test.py
       - run: python3 test/maria-local-routing-integration.test.py
