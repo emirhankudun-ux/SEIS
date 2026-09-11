@@ -31,14 +31,18 @@ def evidence(
     state: WorkStepState,
     *,
     failure: str | None = None,
+    depends_on: tuple[str, ...] = (),
+    attempts: int | None = None,
 ) -> WorkStepExecutionEvidence:
+    if attempts is None:
+        attempts = 1 if state is not WorkStepState.CANCELLED else 0
     return WorkStepExecutionEvidence(
         step_id=step_id,
         route_kind=RouteKind.MODEL,
         target_name="fixture-model",
         state=state,
-        attempts=1 if state is not WorkStepState.CANCELLED else 0,
-        depends_on=(),
+        attempts=attempts,
+        depends_on=depends_on,
         failure=failure,
     )
 
@@ -214,6 +218,41 @@ class DurableCheckpointRecoveryTests(unittest.TestCase):
         )
         with self.assertRaises(ValueError):
             self.store.save("SEIS", "work-001", unsafe)
+
+    def test_dependencies_must_be_unique_and_reference_earlier_steps(self):
+        cases = (
+            checkpoint(evidence("build", WorkStepState.SUCCEEDED, depends_on=("missing",))),
+            checkpoint(evidence("build", WorkStepState.SUCCEEDED, depends_on=("build",))),
+            checkpoint(
+                evidence("plan", WorkStepState.SUCCEEDED, depends_on=("build",)),
+                evidence("build", WorkStepState.SUCCEEDED),
+            ),
+            checkpoint(
+                evidence("plan", WorkStepState.SUCCEEDED),
+                evidence("build", WorkStepState.SUCCEEDED, depends_on=("plan", "plan")),
+            ),
+        )
+        for index, invalid in enumerate(cases):
+            with self.subTest(case=index):
+                with self.assertRaises(ValueError):
+                    self.store.save("SEIS", f"work-deps-{index}", invalid)
+
+    def test_step_attempts_cannot_exceed_executor_policy_limit(self):
+        invalid = checkpoint(
+            evidence("build", WorkStepState.SUCCEEDED, attempts=4),
+        )
+        with self.assertRaises(ValueError):
+            self.store.save("SEIS", "work-attempts", invalid)
+
+    def test_next_step_must_be_first_cancelled_step(self):
+        invalid = checkpoint(
+            evidence("plan", WorkStepState.SUCCEEDED),
+            evidence("build", WorkStepState.CANCELLED, failure="cancelled"),
+            evidence("verify", WorkStepState.CANCELLED, failure="cancelled"),
+            next_step_id="verify",
+        )
+        with self.assertRaises(ValueError):
+            self.store.save("SEIS", "work-next", invalid)
 
 
 if __name__ == "__main__":
