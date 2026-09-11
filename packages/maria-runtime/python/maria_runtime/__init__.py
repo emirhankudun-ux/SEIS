@@ -8,6 +8,12 @@ explicit, capability-discovered, and permission-gated.
 from .cache import PromptCache
 from .context import ContextFact, ProjectContextEngine
 from .continuation import ContinuationBrief, ContinuationResolver
+from .fabric_router import (
+    CapabilityRequest,
+    RouteDecision,
+    RouteKind,
+    UnifiedCapabilityRouter,
+)
 from .local_coordinator import LocalDiscoveryCoordinator
 from .local_health import (
     LocalHealthEvidenceLedger,
@@ -73,10 +79,17 @@ from .providers import ProviderRegistry, ProviderSpec, ProviderStatus, default_p
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouteDecision, ModelRouter
 from .safety import CommandPolicy
+from .work_routing import (
+    MultiStepWorkRouter,
+    WorkRoutePlan,
+    WorkRouteStep,
+    WorkStepRequest,
+)
 
 __all__ = [
     "ActionClass",
     "CapabilityRegistry",
+    "CapabilityRequest",
     "CommandPolicy",
     "ContextFact",
     "ContinuationBrief",
@@ -127,6 +140,7 @@ __all__ = [
     "ModelRouteDecision",
     "ModelRouter",
     "ModelSpec",
+    "MultiStepWorkRouter",
     "PermissionDecision",
     "PermissionEngine",
     "ProbeHealthSummary",
@@ -139,11 +153,17 @@ __all__ = [
     "ProviderRegistry",
     "ProviderSpec",
     "ProviderStatus",
+    "RouteDecision",
+    "RouteKind",
     "RuntimeProbeState",
     "RuntimeProbeStatus",
     "ToolSpec",
     "ToolStatus",
+    "UnifiedCapabilityRouter",
     "WorkMode",
+    "WorkRoutePlan",
+    "WorkRouteStep",
+    "WorkStepRequest",
     "default_project_registry",
     "default_provider_registry",
 ]
