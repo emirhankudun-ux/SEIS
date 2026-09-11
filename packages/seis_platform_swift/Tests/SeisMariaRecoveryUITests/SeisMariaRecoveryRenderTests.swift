@@ -27,8 +27,11 @@ struct SeisMariaRecoveryRenderTests {
         let states = [("unloaded", SeisMariaRecoveryImportState()), ("loaded", loaded), ("invalid", invalid)]
         for (name, state) in states {
             for (appearance, scheme) in [("light", ColorScheme.light), ("dark", ColorScheme.dark)] {
+                // cacheDisplay captures the view, not NSWindow's background.
+                // Supply the native window canvas in the test, not production UI.
                 let view = SeisMariaRecoveryView(initialState: state)
                     .frame(width: 660, height: 640)
+                    .background(Color(nsColor: .windowBackgroundColor))
                     .environment(\.colorScheme, scheme)
                 let bounds = NSRect(x: 0, y: 0, width: 660, height: 640)
                 let host = NSHostingView(rootView: view)
@@ -46,6 +49,7 @@ struct SeisMariaRecoveryRenderTests {
                 host.cacheDisplay(in: host.bounds, to: bitmap)
                 #expect(bitmap.pixelsWide >= 660)
                 #expect(bitmap.pixelsHigh >= 640)
+                #expect(bitmap.colorAt(x: 0, y: 0)?.alphaComponent == 1.0)
                 try rejectUnsupportedRenderPlaceholder(bitmap)
                 if let directory = ProcessInfo.processInfo.environment["MARIA_UI_EVIDENCE_DIR"] {
                     let destination = URL(fileURLWithPath: directory, isDirectory: true)
