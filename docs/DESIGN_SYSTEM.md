@@ -8,6 +8,12 @@ SEIS uses a premium, calm, cinematic, structured visual language with deep
 black, graphite, charcoal, warm gray, off-white, restrained cyan and violet,
 small amber accents, green for healthy states, and red for critical warnings.
 
+The canonical MARIA × SEIS Home workspace direction is defined in
+`docs/MARIA_SEIS_HOME_UI_SPEC.md`. Product surfaces should inherit its hierarchy,
+material discipline, interaction priorities, responsive behavior, and data
+integrity rules where applicable without forcing every screen into the same
+composition.
+
 ## Tokens
 
 Color, typography, spacing, radius, elevation, icon, motion, and state values
