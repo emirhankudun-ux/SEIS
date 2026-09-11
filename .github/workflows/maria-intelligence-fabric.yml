@@ -7,6 +7,7 @@ on:
       - 'test/maria-intelligence-fabric.test.py'
       - 'test/maria-mcp-invocation-guard.test.py'
       - 'test/maria-mcp-executor.test.py'
+      - 'test/maria-mcp-work-runner.test.py'
       - 'test/maria-mcp-secret-resolution.test.py'
       - 'test/maria-mcp-keychain-source.test.py'
       - 'test/maria-mcp-e2e-fixture.test.py'
@@ -49,6 +50,7 @@ jobs:
       - run: python3 test/maria-intelligence-fabric.test.py
       - run: python3 test/maria-mcp-invocation-guard.test.py
       - run: python3 test/maria-mcp-executor.test.py
+      - run: python3 test/maria-mcp-work-runner.test.py
       - run: python3 test/maria-mcp-secret-resolution.test.py
       - run: python3 test/maria-mcp-keychain-source.test.py
       - run: python3 test/maria-mcp-e2e-fixture.test.py
