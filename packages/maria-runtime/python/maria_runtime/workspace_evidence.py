@@ -182,13 +182,17 @@ class GitWorkspaceEvidenceSource:
             raw = self._read_regular_file(
                 git_dir / "packed-refs",
                 self.MAX_PACKED_REFS_BYTES,
-                encoding="ascii",
+                encoding="utf-8",
             )
         except FileNotFoundError as exc:
             raise WorkspaceEvidenceError("selected branch ref is missing") from exc
 
         matches: list[str] = []
-        for line in raw.splitlines():
+        # packed-refs records are delimited by ASCII LF (or CRLF metadata
+        # endings). Python str.splitlines() also splits Git-valid Unicode line
+        # separator characters that may legitimately belong to a ref name.
+        for raw_line in raw.split("\n"):
+            line = raw_line[:-1] if raw_line.endswith("\r") else raw_line
             if not line or line.startswith("#") or line.startswith("^"):
                 continue
             parts = line.split(" ", 1)
