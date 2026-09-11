@@ -46,9 +46,24 @@ class _FakeTransport:
         return response
 
 
+class _FailingTransport(_FakeTransport):
+    def request(self, **kwargs):
+        self.calls.append(kwargs)
+        raise RuntimeError("sensitive transport details must not escape")
+
+
 class MCPInvocationExecutorTests(unittest.TestCase):
     @staticmethod
-    def _plan(*, ready=True, allowed=True, tool_name="mcp:unreal", capability="unreal.inspect_actors"):
+    def _plan(
+        *,
+        ready=True,
+        allowed=True,
+        tool_name="mcp:unreal",
+        capability="unreal.inspect_actors",
+        plan_id="plan-1",
+        issued_at_monotonic=100.0,
+        expires_at_monotonic=130.0,
+    ):
         permission = PermissionDecision(
             action_class=ActionClass.READ,
             target="Deadly Evil:actors",
@@ -63,11 +78,18 @@ class MCPInvocationExecutorTests(unittest.TestCase):
             action_class=ActionClass.READ,
             permission=permission,
             ready=ready,
+            plan_id=plan_id,
+            issued_at_monotonic=issued_at_monotonic,
+            expires_at_monotonic=expires_at_monotonic,
         )
+
+    @staticmethod
+    def _executor(transport, *, now=110.0):
+        return MCPInvocationExecutor(transport, clock=lambda: now)
 
     def test_executes_only_ready_allowed_plan_on_matching_healthy_transport(self):
         transport = _FakeTransport()
-        executor = MCPInvocationExecutor(transport)
+        executor = self._executor(transport)
 
         result = executor.execute(
             self._plan(),
@@ -96,7 +118,7 @@ class MCPInvocationExecutorTests(unittest.TestCase):
             self._plan(allowed=False),
         ):
             transport = _FakeTransport()
-            executor = MCPInvocationExecutor(transport)
+            executor = self._executor(transport)
             with self.assertRaises(PermissionError):
                 executor.execute(plan, params={}, request_id="blocked")
             self.assertEqual(transport.calls, [])
@@ -104,14 +126,14 @@ class MCPInvocationExecutorTests(unittest.TestCase):
     def test_rejects_transport_server_mismatch_or_unhealthy_child(self):
         mismatched = _FakeTransport(server_name="blender")
         with self.assertRaises(PermissionError):
-            MCPInvocationExecutor(mismatched).execute(
+            self._executor(mismatched).execute(
                 self._plan(), params={}, request_id="mismatch"
             )
         self.assertEqual(mismatched.calls, [])
 
         stopped = _FakeTransport(running=False)
         with self.assertRaises(RuntimeError):
-            MCPInvocationExecutor(stopped).execute(
+            self._executor(stopped).execute(
                 self._plan(), params={}, request_id="stopped"
             )
         self.assertEqual(stopped.calls, [])
@@ -123,7 +145,7 @@ class MCPInvocationExecutorTests(unittest.TestCase):
             "id": "invoke-1",
             "error": {"code": -32000, "message": secret, "data": {"secret": secret}},
         })
-        result = MCPInvocationExecutor(transport).execute(
+        result = self._executor(transport).execute(
             self._plan(), params={}, request_id="invoke-1"
         )
 
@@ -141,7 +163,7 @@ class MCPInvocationExecutorTests(unittest.TestCase):
                 return {"jsonrpc": "2.0", "id": "wrong", "result": {}}
 
         with self.assertRaises(ValueError):
-            MCPInvocationExecutor(_BadIdTransport()).execute(
+            self._executor(_BadIdTransport()).execute(
                 self._plan(), params={}, request_id="expected"
             )
 
@@ -151,9 +173,65 @@ class MCPInvocationExecutorTests(unittest.TestCase):
                 return {"jsonrpc": "1.0", "id": kwargs["request_id"], "result": {}}
 
         with self.assertRaises(ValueError):
-            MCPInvocationExecutor(_BadVersionTransport()).execute(
+            self._executor(_BadVersionTransport()).execute(
                 self._plan(), params={}, request_id="expected"
             )
+
+    def test_expired_plan_is_rejected_before_transport_call(self):
+        transport = _FakeTransport()
+        executor = self._executor(transport, now=131.0)
+
+        with self.assertRaises(PermissionError):
+            executor.execute(self._plan(), params={}, request_id="expired")
+
+        self.assertEqual(transport.calls, [])
+
+    def test_plan_is_single_use_and_replay_is_rejected(self):
+        transport = _FakeTransport()
+        executor = self._executor(transport)
+        plan = self._plan(plan_id="single-use")
+
+        first = executor.execute(plan, params={}, request_id="first")
+        self.assertTrue(first.success)
+
+        with self.assertRaises(PermissionError):
+            executor.execute(plan, params={}, request_id="replay")
+
+        self.assertEqual(len(transport.calls), 1)
+
+    def test_transport_attempt_consumes_plan_even_when_transport_fails(self):
+        transport = _FailingTransport()
+        executor = self._executor(transport)
+        plan = self._plan(plan_id="attempt-once")
+
+        first = executor.execute(plan, params={}, request_id="first")
+        self.assertFalse(first.success)
+        self.assertEqual(first.evidence.failure, "transport-failure")
+
+        with self.assertRaises(PermissionError):
+            executor.execute(plan, params={}, request_id="retry")
+
+        self.assertEqual(len(transport.calls), 1)
+
+    def test_rejects_forged_overlong_or_future_plan(self):
+        transport = _FakeTransport()
+        executor = self._executor(transport, now=110.0)
+
+        with self.assertRaises(PermissionError):
+            executor.execute(
+                self._plan(issued_at_monotonic=100.0, expires_at_monotonic=1_000.0),
+                params={},
+                request_id="overlong",
+            )
+
+        with self.assertRaises(PermissionError):
+            executor.execute(
+                self._plan(issued_at_monotonic=120.0, expires_at_monotonic=130.0),
+                params={},
+                request_id="future",
+            )
+
+        self.assertEqual(transport.calls, [])
 
 
 if __name__ == "__main__":
