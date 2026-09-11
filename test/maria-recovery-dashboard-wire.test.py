@@ -112,6 +112,12 @@ class RecoveryDashboardWireTests(unittest.TestCase):
         with self.assertRaises(RecoveryDashboardWireError):
             self.codec.decode(json.dumps(payload).encode("utf-8"))
 
+    def test_decode_rejects_boolean_schema_version(self):
+        payload = json.loads(self.codec.encode(dashboard()).decode("utf-8"))
+        payload["schema_version"] = True
+        with self.assertRaises(RecoveryDashboardWireError):
+            self.codec.decode(json.dumps(payload).encode("utf-8"))
+
     def test_decode_rejects_duplicate_keys_non_finite_json_and_oversize_input(self):
         encoded = self.codec.encode(dashboard()).decode("utf-8")
         duplicate = encoded.replace('"project_id":"SEIS"', '"project_id":"OTHER","project_id":"SEIS"', 1)
@@ -133,6 +139,35 @@ class RecoveryDashboardWireTests(unittest.TestCase):
 
         payload = json.loads(self.codec.encode(dashboard()).decode("utf-8"))
         payload["rows"][0]["project_id"] = "OTHER"
+        with self.assertRaises(RecoveryDashboardWireError):
+            self.codec.decode(json.dumps(payload).encode("utf-8"))
+
+    def test_decode_rejects_not_found_rows_that_dashboard_builder_never_surfaces(self):
+        payload = json.loads(self.codec.encode(dashboard()).decode("utf-8"))
+        payload["rows"][0]["disposition"] = "not-found"
+        payload["replan_required"] = 1
+        payload["drift_detected"] = 0
+        with self.assertRaises(RecoveryDashboardWireError):
+            self.codec.decode(json.dumps(payload).encode("utf-8"))
+
+    def test_encode_and_decode_reject_unsorted_or_duplicate_work_ids(self):
+        source = dashboard()
+        unsorted = RecoveryDashboardSnapshot(
+            project_id=source.project_id,
+            rows=tuple(reversed(source.rows)),
+            total_candidates=source.total_candidates,
+            replan_required=source.replan_required,
+            drift_detected=source.drift_detected,
+            evidence_required=source.evidence_required,
+            anchor_missing=source.anchor_missing,
+            aligned_replan_required=source.aligned_replan_required,
+            complete=source.complete,
+        )
+        with self.assertRaises(RecoveryDashboardWireError):
+            self.codec.encode(unsorted)
+
+        payload = json.loads(self.codec.encode(source).decode("utf-8"))
+        payload["rows"][1]["work_id"] = payload["rows"][0]["work_id"]
         with self.assertRaises(RecoveryDashboardWireError):
             self.codec.decode(json.dumps(payload).encode("utf-8"))
 
