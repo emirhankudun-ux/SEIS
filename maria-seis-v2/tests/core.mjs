@@ -1,0 +1,10 @@
+import { classifyIntent } from '../src/core/router.js';
+import { evaluatePermission } from '../src/core/permissions.js';
+import { runCommand } from '../src/core/orchestrator.js';
+const build=classifyIntent('Son build durumunu kontrol et','deadly-evil');
+if(build.intent!=='build'||build.risk!=='safe') throw new Error('build routing failed');
+const risky=classifyIntent('production deploy yap','seis');
+if(!evaluatePermission(risky).approval) throw new Error('approval gate failed');
+const result=await runCommand('Enemy AI testlerini çalıştır','deadly-evil');
+if(result.status!=='complete'||!result.verification.verified) throw new Error('orchestration failed');
+console.log('core: ok');
