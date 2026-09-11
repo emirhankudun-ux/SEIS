@@ -23,7 +23,8 @@ const ENVELOPE_KEYS = [
 
 const EVIDENCE_KEYS = ['target', 'source', 'observedAt', 'verified'];
 const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
-const UTC_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$/;
+const UTC_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{6}))?Z$/;
+const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 function invalid() {
   throw new TypeError('permission-audit-envelope-invalid');
@@ -58,8 +59,26 @@ function boolean(value) {
   return value;
 }
 
+function isLeapYear(year) {
+  return year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+}
+
 function canonicalUtcTimestamp(value) {
-  if (typeof value !== 'string' || !UTC_TIMESTAMP.test(value) || Number.isNaN(Date.parse(value))) invalid();
+  if (typeof value !== 'string') invalid();
+  const match = UTC_TIMESTAMP.exec(value);
+  if (!match) invalid();
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+
+  if (year < 1 || month < 1 || month > 12 || hour > 23 || minute > 59 || second > 59) invalid();
+  const maxDay = month === 2 && isLeapYear(year) ? 29 : DAYS_IN_MONTH[month - 1];
+  if (day < 1 || day > maxDay) invalid();
+
   return value;
 }
 
