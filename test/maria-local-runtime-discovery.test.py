@@ -7,7 +7,12 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packages" / "maria-runtime" / "python"))
 
-from maria_runtime.local_discovery import LMStudioV1DiscoverySource, OllamaShowDiscoverySource
+from maria_runtime.local_discovery import (
+    LMStudioV1DiscoverySource,
+    LocalModelCandidate,
+    OllamaShowDiscoverySource,
+    OllamaTagsDiscoverySource,
+)
 from maria_runtime.local_probe import (
     LocalProbeError,
     LocalProbeResponse,
@@ -59,6 +64,79 @@ class LocalRuntimeDiscoveryTests(unittest.TestCase):
         self.assertIn("vision", fact.capabilities)
         self.assertIn("reasoning", fact.capabilities)
         self.assertIn("tool-use", fact.capabilities)
+
+    def test_ollama_tags_are_candidates_not_routable_model_facts(self):
+        payload = {
+            "models": [
+                {
+                    "name": "qwen3:14b",
+                    "model": "qwen3:14b",
+                    "modified_at": "2026-09-10T20:00:00Z",
+                    "size": 8_200_000_000,
+                    "digest": "sha256:qwen",
+                },
+                {
+                    "name": "gemma4:12b",
+                    "model": "gemma4:12b",
+                    "modified_at": "2026-09-09T20:00:00Z",
+                    "size": 7_100_000_000,
+                    "digest": "sha256:gemma",
+                },
+            ]
+        }
+
+        candidates = OllamaTagsDiscoverySource().parse_models(payload)
+
+        self.assertEqual(
+            candidates,
+            (
+                LocalModelCandidate(
+                    provider_id="ollama",
+                    name="gemma4:12b",
+                    digest="sha256:gemma",
+                    size_bytes=7_100_000_000,
+                    modified_at="2026-09-09T20:00:00Z",
+                ),
+                LocalModelCandidate(
+                    provider_id="ollama",
+                    name="qwen3:14b",
+                    digest="sha256:qwen",
+                    size_bytes=8_200_000_000,
+                    modified_at="2026-09-10T20:00:00Z",
+                ),
+            ),
+        )
+        self.assertFalse(hasattr(candidates[0], "capabilities"))
+        self.assertFalse(hasattr(candidates[0], "context_size"))
+
+    def test_ollama_tags_fail_closed_on_duplicate_or_incomplete_candidates(self):
+        malformed_payloads = [
+            {"models": "not-a-list"},
+            {"models": [{"name": "qwen3:14b"}]},
+            {
+                "models": [
+                    {
+                        "name": "qwen3:14b",
+                        "model": "qwen3:14b",
+                        "modified_at": "2026-09-10T20:00:00Z",
+                        "size": 1,
+                        "digest": "sha256:a",
+                    },
+                    {
+                        "name": "qwen3:14b",
+                        "model": "qwen3:14b",
+                        "modified_at": "2026-09-10T21:00:00Z",
+                        "size": 2,
+                        "digest": "sha256:b",
+                    },
+                ]
+            },
+        ]
+
+        for payload in malformed_payloads:
+            with self.subTest(payload=payload):
+                with self.assertRaises(ValueError):
+                    OllamaTagsDiscoverySource().parse_models(payload)
 
     def test_ollama_show_uses_reported_context_and_capabilities_without_guessing(self):
         payload = {
@@ -141,6 +219,30 @@ class LocalRuntimeProbeTests(unittest.TestCase):
         self.assertEqual(result.payload, {"models": []})
         self.assertEqual(result.latency_ms, 42)
         self.assertEqual(result.response_bytes, len(b'{"models":[]}'))
+
+    def test_ollama_tags_probe_is_fixed_to_loopback_and_body_free(self):
+        requests = []
+        ticks = iter([15.0, 15.003])
+
+        def transport(request):
+            requests.append(request)
+            return LocalProbeResponse(
+                status_code=200,
+                content_type="application/json",
+                body=b'{"models":[]}',
+            )
+
+        probe = LocalRuntimeProbe(transport=transport, clock=lambda: next(ticks))
+        result = probe.probe_ollama_tags()
+
+        request = requests[0]
+        self.assertEqual(request.provider_id, "ollama")
+        self.assertEqual(request.url, "http://127.0.0.1:11434/api/tags")
+        self.assertEqual(request.method, "GET")
+        self.assertIsNone(request.body)
+        self.assertEqual(dict(request.headers), {"Accept": "application/json"})
+        self.assertEqual(result.payload, {"models": []})
+        self.assertEqual(result.latency_ms, 3)
 
     def test_ollama_show_probe_uses_fixed_loopback_endpoint_and_minimal_body(self):
         requests = []
