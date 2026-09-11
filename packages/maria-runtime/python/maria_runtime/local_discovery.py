@@ -1,0 +1,120 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any
+
+from .provider_discovery import ModelDiscoveryFact
+
+
+class LMStudioV1DiscoverySource:
+    """Parse a successful LM Studio `/api/v1/models` response into redacted facts.
+
+    Network I/O remains outside this class. Callers must supply measured latency
+    and a reliability observation from the surrounding health/evidence layer.
+    """
+
+    def parse_models(
+        self,
+        payload: Mapping[str, Any],
+        *,
+        latency_ms: int,
+        reliability: float,
+    ) -> tuple[ModelDiscoveryFact, ...]:
+        models = payload.get("models")
+        if not isinstance(models, list):
+            raise ValueError("LM Studio models response must contain a models list")
+
+        facts: list[ModelDiscoveryFact] = []
+        for item in models:
+            if not isinstance(item, Mapping):
+                raise ValueError("LM Studio model entry must be an object")
+            if item.get("type") != "llm":
+                continue
+
+            name = item.get("key")
+            context_size = item.get("max_context_length")
+            if not isinstance(name, str) or not name.strip():
+                raise ValueError("LM Studio LLM entry requires a non-empty key")
+            if not isinstance(context_size, int) or context_size <= 0:
+                raise ValueError("LM Studio LLM entry requires max_context_length")
+
+            capabilities = {"chat"}
+            declared = item.get("capabilities")
+            if declared is not None:
+                if not isinstance(declared, Mapping):
+                    raise ValueError("LM Studio capabilities must be an object")
+                if declared.get("vision") is True:
+                    capabilities.add("vision")
+                if declared.get("trained_for_tool_use") is True:
+                    capabilities.add("tool-use")
+                reasoning = declared.get("reasoning")
+                if reasoning is not None:
+                    if not isinstance(reasoning, Mapping):
+                        raise ValueError("LM Studio reasoning capability must be an object")
+                    capabilities.add("reasoning")
+
+            facts.append(ModelDiscoveryFact(
+                provider_id="lm-studio",
+                name=name,
+                capabilities=tuple(sorted(capabilities)),
+                context_size=context_size,
+                reliability=reliability,
+                latency_ms=latency_ms,
+                input_cost_per_million=0.0,
+                output_cost_per_million=0.0,
+                local=True,
+                verified=True,
+                reachable=True,
+            ))
+
+        return tuple(facts)
+
+
+class OllamaShowDiscoverySource:
+    """Parse one successful Ollama `/api/show` response into a redacted fact."""
+
+    def parse_model(
+        self,
+        model_name: str,
+        payload: Mapping[str, Any],
+        *,
+        latency_ms: int,
+        reliability: float,
+    ) -> ModelDiscoveryFact:
+        if not model_name.strip():
+            raise ValueError("Ollama model name must be non-empty")
+
+        model_info = payload.get("model_info")
+        if not isinstance(model_info, Mapping):
+            raise ValueError("Ollama show response must contain model_info")
+
+        context_lengths = [
+            value
+            for key, value in model_info.items()
+            if isinstance(key, str)
+            and key.endswith(".context_length")
+            and isinstance(value, int)
+            and value > 0
+        ]
+        if not context_lengths:
+            raise ValueError("Ollama show response does not report a context length")
+
+        declared = payload.get("capabilities")
+        if not isinstance(declared, list) or not declared:
+            raise ValueError("Ollama show response must report capabilities")
+        if any(not isinstance(item, str) or not item.strip() for item in declared):
+            raise ValueError("Ollama capabilities must be non-empty strings")
+
+        return ModelDiscoveryFact(
+            provider_id="ollama",
+            name=model_name,
+            capabilities=tuple(sorted(set(declared))),
+            context_size=max(context_lengths),
+            reliability=reliability,
+            latency_ms=latency_ms,
+            input_cost_per_million=0.0,
+            output_cost_per_million=0.0,
+            local=True,
+            verified=True,
+            reachable=True,
+        )
