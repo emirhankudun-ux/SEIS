@@ -10,7 +10,7 @@ import time
 from typing import Any, BinaryIO, Callable, Mapping
 
 from .mcp_protocol import MCPProtocolEra, MCPProtocolNegotiator
-from .mcp_stdio import MCPStdioFrameCodec, MCPStdioFrameError
+from .mcp_stdio import MCPStdioFrameCodec, MCPStdioFrameError, MCPStdioFrameFailure
 from .mcp_supervisor import MCPProcessLaunchPlan, MCPProcessStartResult
 
 
@@ -31,7 +31,7 @@ class MCPStdioTransportSnapshot:
     protocol_version: str | None
     stdout_bytes: int
     stderr_bytes: int
-    shutdown_state: MCPStdioShutdownState
+    state: MCPStdioShutdownState
     failure: str | None
 
 
@@ -108,7 +108,7 @@ class MCPStdioProcessTransport:
             protocol_version=self._protocol_version,
             stdout_bytes=self._stdout_bytes,
             stderr_bytes=self._stderr_bytes,
-            shutdown_state=self._shutdown_state,
+            state=self._shutdown_state,
             failure=self._failure,
         )
 
@@ -167,7 +167,6 @@ class MCPStdioProcessTransport:
             self._protocol_version = decision.protocol_version
 
             if decision.era is MCPProtocolEra.MODERN:
-                # A real discover result proves schema-aware modern readiness.
                 ready = isinstance(response.get("result"), Mapping)
                 schema_valid = ready
                 if not ready:
@@ -319,7 +318,7 @@ class MCPStdioProcessTransport:
 
     def _read_line(self, *, timeout_ms: int, remaining_stdout_bytes: int) -> bytes | None:
         if remaining_stdout_bytes <= 0:
-            raise MCPStdioFrameError.__mro__[1]("stdout limit exhausted")
+            raise MCPStdioFrameError(MCPStdioFrameFailure.FRAME_TOO_LARGE)
         process = self._process
         stream: BinaryIO | None = getattr(process, "stdout", None) if process is not None else None
         if stream is None:
@@ -344,9 +343,9 @@ class MCPStdioProcessTransport:
             raise OSError("MCP child stdout read failed")
         if not value:
             raise OSError("MCP child stdout reached EOF")
+        if len(value) > remaining_stdout_bytes:
+            raise MCPStdioFrameError(MCPStdioFrameFailure.FRAME_TOO_LARGE)
         self._stdout_bytes += len(value)
-        if self._stdout_bytes > remaining_stdout_bytes + (self._stdout_bytes - len(value)):
-            raise ValueError("stdout limit exceeded")
         return value
 
     def _start_stderr_drainer(self, stream: BinaryIO | None, limit: int) -> None:
