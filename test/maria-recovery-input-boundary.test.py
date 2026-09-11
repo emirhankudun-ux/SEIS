@@ -113,6 +113,21 @@ class RecoveryInputBoundaryTests(unittest.TestCase):
         with self.assertRaises(RecoveryNativeBridgeError):
             RecoveryNativeBridgeAdapter().adapt(replace(original, rows=(row,)))
 
+    def test_dashboard_rows_require_concrete_durable_schema_version(self):
+        payload = self.payload()
+        payload["rows"][0]["schema_version"] = None
+        with self.assertRaises(RecoveryDashboardWireError):
+            self.codec.decode(json.dumps(payload).encode())
+
+        row = replace(self.source.rows[0], schema_version=None)
+        with self.assertRaises(RecoveryDashboardWireError):
+            self.codec.encode(replace(self.source, rows=(row,)))
+
+        original = self.codec.decode(self.codec.encode(self.source))
+        typed_row = replace(original.rows[0], schema_version=None)
+        with self.assertRaises(RecoveryNativeBridgeError):
+            RecoveryNativeBridgeAdapter().adapt(replace(original, rows=(typed_row,)))
+
     def test_durable_schema_version_must_fit_native_signed_integer(self):
         native_max = (1 << 63) - 1
 
