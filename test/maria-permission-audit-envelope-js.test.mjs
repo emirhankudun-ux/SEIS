@@ -73,6 +73,10 @@ const invalidCases = [
   ['extra evidence field', {...validEnvelope(), targetEvidence: {...validEnvelope().targetEvidence, receipt: 'token'}}],
   ['offset timestamp', {...validEnvelope(), targetEvidence: {...validEnvelope().targetEvidence, observedAt: '2026-09-11T23:00:00+03:00'}}],
   ['invalid timestamp', {...validEnvelope(), targetEvidence: {...validEnvelope().targetEvidence, observedAt: 'not-a-date'}}],
+  ['impossible calendar timestamp', {...validEnvelope(), targetEvidence: {...validEnvelope().targetEvidence, observedAt: '2026-02-30T20:00:00Z'}}],
+  ['24-hour timestamp', {...validEnvelope(), targetEvidence: {...validEnvelope().targetEvidence, observedAt: '2026-09-11T24:00:00Z'}}],
+  ['year-zero timestamp', {...validEnvelope(), targetEvidence: {...validEnvelope().targetEvidence, observedAt: '0000-01-01T00:00:00Z'}}],
+  ['non-canonical fractional timestamp', {...validEnvelope(), targetEvidence: {...validEnvelope().targetEvidence, observedAt: '2026-09-11T20:00:00.1Z'}}],
   ['string verified', {...validEnvelope(), targetEvidence: {...validEnvelope().targetEvidence, verified: 'true'}}],
 ];
 
@@ -81,6 +85,12 @@ for (const [name, value] of invalidCases) {
     assert.throws(() => validatePermissionAuditEnvelope(value), /permission-audit-envelope-invalid/);
   });
 }
+
+test('validation accepts the six-digit fractional precision emitted by Python datetime.isoformat', () => {
+  const envelope = validEnvelope();
+  envelope.targetEvidence.observedAt = '2026-09-11T20:00:00.123456Z';
+  assert.equal(validatePermissionAuditEnvelope(envelope).targetEvidence.observedAt, '2026-09-11T20:00:00.123456Z');
+});
 
 test('validation does not execute getters while inspecting unexpected properties', () => {
   const envelope = validEnvelope();
