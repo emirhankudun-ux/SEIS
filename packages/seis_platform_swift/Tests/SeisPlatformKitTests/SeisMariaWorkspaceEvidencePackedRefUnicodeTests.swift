@@ -7,7 +7,10 @@ struct SeisMariaWorkspaceEvidencePackedRefUnicodeTests {
     private let revision = "0123456789abcdef0123456789abcdef01234567"
     private let observedAt = "2026-09-11T18:55:00+03:00"
 
-    private func capturePacked(_ branch: String) throws -> SeisMariaWorkspaceEvidenceSnapshot {
+    private func capturePacked(
+        _ branch: String,
+        packedBranch: String? = nil
+    ) throws -> SeisMariaWorkspaceEvidenceSnapshot {
         let root = FileManager.default.temporaryDirectory
             .appendingPathComponent("seis-packed-unicode-\(UUID().uuidString)", isDirectory: true)
         let git = root.appendingPathComponent(".git", isDirectory: true)
@@ -19,7 +22,7 @@ struct SeisMariaWorkspaceEvidencePackedRefUnicodeTests {
         try Data(
             (
                 "# pack-refs with: peeled fully-peeled sorted \n" +
-                "\(revision) refs/heads/\(branch)\n"
+                "\(revision) refs/heads/\(packedBranch ?? branch)\n"
             ).utf8
         ).write(to: git.appendingPathComponent("packed-refs"))
 
@@ -46,5 +49,24 @@ struct SeisMariaWorkspaceEvidencePackedRefUnicodeTests {
         #expect(snapshot.currentBranch == branch)
         #expect(snapshot.repositoryRevision == revision)
         #expect(!snapshot.executionAuthorized)
+    }
+
+    @Test func decomposedRefNameRoundTripsWithoutNormalization() throws {
+        let branch = "feature/cafe\u{301}"
+        let snapshot = try capturePacked(branch)
+        #expect(snapshot.currentBranch.unicodeScalars.elementsEqual(branch.unicodeScalars))
+        #expect(snapshot.repositoryRevision == revision)
+        #expect(!snapshot.executionAuthorized)
+    }
+
+    @Test func canonicallyEquivalentRefNamesRemainDistinctIdentities() throws {
+        // Git ref identity is byte/scalar exact. Swift String equality treats
+        // NFC/NFD spellings as canonically equivalent, so packed-ref matching
+        // must compare Unicode scalars rather than user-facing String equality.
+        let headBranch = "feature/cafe\u{301}"
+        let packedBranch = "feature/café"
+        #expect(throws: SeisMariaWorkspaceEvidenceError.missingBranchRef) {
+            try capturePacked(headBranch, packedBranch: packedBranch)
+        }
     }
 }
