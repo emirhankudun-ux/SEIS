@@ -30,6 +30,14 @@ from .local_status import (
     RuntimeProbeStatus,
 )
 from .mcp_config import MCPConfigImporter, MCPImportPreview, MCPServerDescriptor
+from .mcp_protocol import (
+    MCP_LEGACY_PROTOCOL_VERSION,
+    MCP_MODERN_PROTOCOL_VERSION,
+    MCPProtocolDecision,
+    MCPProtocolEra,
+    MCPProtocolNegotiator,
+    MCPProtocolProbe,
+)
 from .mcp_supervisor import (
     MCPProcessLaunchPlan,
     MCPProcessPolicy,
@@ -66,6 +74,8 @@ __all__ = [
     "LocalRuntimeStatusSnapshot",
     "MCPConfigImporter",
     "MCPImportPreview",
+    "MCP_LEGACY_PROTOCOL_VERSION",
+    "MCP_MODERN_PROTOCOL_VERSION",
     "MCPProcessLaunchPlan",
     "MCPProcessPolicy",
     "MCPProcessSnapshot",
@@ -73,6 +83,10 @@ __all__ = [
     "MCPProcessState",
     "MCPProcessSupervisor",
     "MCPProcessTransport",
+    "MCPProtocolDecision",
+    "MCPProtocolEra",
+    "MCPProtocolNegotiator",
+    "MCPProtocolProbe",
     "MCPServerDescriptor",
     "ModelRegistry",
     "ModelRouteDecision",
