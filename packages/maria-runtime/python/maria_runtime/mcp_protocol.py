@@ -49,9 +49,11 @@ class MCPProtocolNegotiator:
 
     A discovery result proves the server understands the modern era. In that
     case, lack of a mutually supported modern version fails closed rather than
-    silently downgrading. Timeouts and ordinary JSON-RPC errors may fall back to
-    the latest configured legacy revision, matching the stdio compatibility
-    rules for pre-2026 servers.
+    silently downgrading. A structured modern version-error with a ``supported``
+    list is also treated as proof of the modern era and cannot trigger legacy
+    fallback when no mutually supported modern revision exists. Timeouts and
+    ordinary JSON-RPC errors may fall back to the latest configured legacy
+    revision, matching the stdio compatibility rules for pre-2026 servers.
     """
 
     def __init__(
@@ -133,13 +135,14 @@ class MCPProtocolNegotiator:
             if isinstance(data, Mapping) and "supported" in data:
                 supported = self._version_list(data.get("supported"), field="error.data.supported")
                 selected = self._select_preferred(self._modern_versions, supported)
-                if selected is not None:
-                    return MCPProtocolDecision(
-                        era=MCPProtocolEra.MODERN,
-                        protocol_version=selected,
-                        fallback_used=False,
-                        reason="modern-version-error",
-                    )
+                if selected is None:
+                    raise LookupError("modern MCP version error has no mutually supported modern protocol version")
+                return MCPProtocolDecision(
+                    era=MCPProtocolEra.MODERN,
+                    protocol_version=selected,
+                    fallback_used=False,
+                    reason="modern-version-error",
+                )
             return self._legacy_decision("legacy-probe-error")
 
         raise ValueError("probe response must contain either result or error")
