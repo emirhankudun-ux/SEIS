@@ -2,37 +2,35 @@
 
 ## Current checkpoint — alpha.4
 
-Truthful simulation/live separation, fail-closed demo policy, cancellation, bounded execution, isolated observers, conflict-aware facts, strict plugin metadata and regression/browser checks.
+Truthful simulation/live separation, fail-closed permission policy, cancellation, bounded execution, isolated observers, conflict-aware facts, strict plugin metadata, provider supervision, host-adapter lifecycle and attributed live-receipt verification.
+
+## Completed alpha.4 scope
+
+- provider lifecycle contract and health state transitions;
+- safe preference persistence;
+- permission-enforced Plugin Host v2;
+- bounded plugin timeouts and crash isolation;
+- execution journal with redaction;
+- provider supervisor with bounded probe timeout, capability anti-escalation, health TTL, cancellation and per-provider probe deduplication;
+- host adapter API v2 (`connect`, `health`, `execute`, `disconnect`);
+- capability-gated execution through `createHostAdapterManager`;
+- dependency-injected `LiveRuntimeAdapter`;
+- attributed live receipt verification and journal evidence;
+- fresh combined regression suite: **80 Node tests**;
+- offline Chromium acceptance: **17 checks**.
 
 ## Next highest-value milestone
 
-Connect one real local-model adapter through a trusted host **using the alpha.4 provider supervisor**. The supervisor now covers bounded handshake/health evidence, capability discovery, expiry and failure isolation; the missing piece is a real host adapter plus attributable execution/verification. Keep the existing UI and independently test the full request path. Do not claim it is present today.
+Connect **one real local-model adapter** through a trusted host. Reuse the provider supervisor for fresh readiness evidence and the host-adapter manager for execution. The adapter must expose actual health/model identity, verified capabilities, cancellation, attributable responses and explicit evidence. Do not add a second live provider until the first path is reproducible end to end.
 
 ## Subsequent gates
 
-1. Native Apple host and OS permissions with scoped, reversible actions.
-2. Real voice and explicit capture indicators; no fake listening states.
-3. MCP discovery, authenticated tools, per-action authorization and actual outcome checks.
-4. Unreal/Blender adapters validated against an installed engine and real project.
-5. Durable memory with provenance, deletion and export.
-6. Stoppable scheduling, recovery and deployment hardening.
+1. MCP capability discovery + authenticated tool execution through the same host contract.
+2. Server-side OpenAI adapter with no browser-side secrets.
+3. Native Apple host and scoped macOS permissions with reversible actions.
+4. Real voice with explicit capture indicators and interruption.
+5. Unreal/Blender adapters validated against installed versions and a real project.
+6. Durable memory with provenance, deletion and export.
+7. Stoppable scheduling, crash recovery and deployment hardening.
 
 Prefer one verified end-to-end capability over many ready-looking but unconnected catalogs. Testing remains part of implementation, not only a final percentage of a time budget.
-
-
-### Alpha.4 completed scope
-- provider lifecycle contract and health state transitions
-- safe preference persistence
-- permission-enforced Plugin Host v2
-- bounded plugin timeouts and crash isolation
-- orchestrator execution journal
-- expanded regression suite (71 Node tests)
-- provider supervisor with bounded probe timeout, capability anti-escalation, health TTL, cancellation and per-provider probe deduplication
-- offline Chromium acceptance (17 checks)
-
-### Next highest-value work
-1. connect a real local-model adapter to the provider supervisor through a trusted host;
-2. MCP capability discovery adapter;
-3. server-side OpenAI adapter (no browser secrets);
-4. local-model adapter;
-5. native macOS permission bridge after the web contract is stable.
