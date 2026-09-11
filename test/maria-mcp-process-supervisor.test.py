@@ -32,7 +32,7 @@ class FakeTransport:
         return result
 
 
-def approved_evaluation(*, command="node", args=("server.mjs",), provenance_id="sha256:trusted"):
+def approved_evaluation(*, command="/usr/bin/node", args=("server.mjs",), provenance_id="sha256:trusted"):
     preview = MCPConfigImporter().preview_json(json.dumps({
         "mcpServers": {
             "seis": {"command": command, "args": list(args)}
@@ -67,7 +67,7 @@ class MCPProcessSupervisorTests(unittest.TestCase):
             stderr_bytes=0,
         ),))
         policy = MCPProcessPolicy(
-            allowed_commands=("node",),
+            allowed_commands=("/usr/bin/node",),
             allowed_provenance_ids=("sha256:trusted",),
             startup_timeout_ms=2_000,
             max_stdout_bytes=4_096,
@@ -83,7 +83,7 @@ class MCPProcessSupervisorTests(unittest.TestCase):
         self.assertEqual(snapshot.blockers, ())
         self.assertEqual(len(transport.plans), 1)
         plan = transport.plans[0]
-        self.assertEqual(plan.argv, ("node", "server.mjs"))
+        self.assertEqual(plan.argv, ("/usr/bin/node", "server.mjs"))
         self.assertEqual(plan.server_name, "seis")
         self.assertEqual(plan.provenance_id, "sha256:trusted")
         self.assertEqual(plan.startup_timeout_ms, 2_000)
@@ -109,7 +109,7 @@ class MCPProcessSupervisorTests(unittest.TestCase):
         transport = FakeTransport(())
         supervisor = MCPProcessSupervisor(
             policy=MCPProcessPolicy(
-                allowed_commands=("node",),
+                allowed_commands=("/usr/bin/node",),
                 allowed_provenance_ids=("sha256:trusted",),
             ),
             transport=transport,
@@ -122,11 +122,11 @@ class MCPProcessSupervisorTests(unittest.TestCase):
         self.assertEqual(transport.plans, [])
 
     def test_blocks_dynamic_package_manager_launch_and_unresolved_environment_by_default(self):
-        descriptor, evaluation = approved_evaluation(command="npx", args=("-y", "some-mcp"))
+        descriptor, evaluation = approved_evaluation(command="/usr/bin/npx", args=("-y", "some-mcp"))
         transport = FakeTransport(())
         supervisor = MCPProcessSupervisor(
             policy=MCPProcessPolicy(
-                allowed_commands=("npx",),
+                allowed_commands=("/usr/bin/npx",),
                 allowed_provenance_ids=("sha256:trusted",),
             ),
             transport=transport,
@@ -137,7 +137,7 @@ class MCPProcessSupervisorTests(unittest.TestCase):
 
         env_preview = MCPConfigImporter().preview_json(json.dumps({
             "mcpServers": {
-                "seis": {"command": "node", "args": ["server.mjs"], "env": {"LOG_LEVEL": "info"}}
+                "seis": {"command": "/usr/bin/node", "args": ["server.mjs"], "env": {"LOG_LEVEL": "info"}}
             }
         }))
         env_descriptor = env_preview.servers[0]
@@ -171,7 +171,7 @@ class MCPProcessSupervisorTests(unittest.TestCase):
         ),))
         supervisor = MCPProcessSupervisor(
             policy=MCPProcessPolicy(
-                allowed_commands=("node",),
+                allowed_commands=("/usr/bin/node",),
                 allowed_provenance_ids=("sha256:trusted",),
                 max_stdout_bytes=1_024,
                 circuit_failure_threshold=3,
@@ -194,7 +194,7 @@ class MCPProcessSupervisorTests(unittest.TestCase):
         transport = FakeTransport((RuntimeError("sensitive raw transport failure"), RuntimeError("again")))
         supervisor = MCPProcessSupervisor(
             policy=MCPProcessPolicy(
-                allowed_commands=("node",),
+                allowed_commands=("/usr/bin/node",),
                 allowed_provenance_ids=("sha256:trusted",),
                 circuit_failure_threshold=2,
                 max_attempts=3,
