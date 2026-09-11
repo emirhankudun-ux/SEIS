@@ -182,6 +182,70 @@ class DurableCheckpointRecoveryTests(unittest.TestCase):
                 )
             self.assertFalse((Path(external_dir) / "work-001.json").exists())
 
+    def test_discover_defaults_to_incomplete_recovery_candidates(self):
+        self.store.save(
+            "SEIS",
+            "work-complete",
+            checkpoint(evidence("plan", WorkStepState.SUCCEEDED)),
+        )
+        self.store.save(
+            "SEIS",
+            "work-recover",
+            checkpoint(
+                evidence("plan", WorkStepState.SUCCEEDED),
+                evidence("build", WorkStepState.CANCELLED, failure="cancelled"),
+                next_step_id="build",
+            ),
+        )
+
+        entries = self.store.discover("SEIS")
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].project_id, "SEIS")
+        self.assertEqual(entries[0].work_id, "work-recover")
+        self.assertEqual(entries[0].disposition, RecoveryDisposition.REPLAN_REQUIRED)
+        self.assertEqual(entries[0].next_step_id, "build")
+        self.assertTrue(entries[0].replan_required)
+        self.assertFalse(entries[0].execution_authorized)
+
+    def test_discover_can_include_complete_records_in_deterministic_order(self):
+        self.store.save(
+            "SEIS",
+            "work-z",
+            checkpoint(
+                evidence("build", WorkStepState.CANCELLED, failure="cancelled"),
+                next_step_id="build",
+            ),
+        )
+        self.store.save(
+            "SEIS",
+            "work-a",
+            checkpoint(evidence("plan", WorkStepState.SUCCEEDED)),
+        )
+
+        entries = self.store.discover("SEIS", include_complete=True)
+        self.assertEqual([entry.work_id for entry in entries], ["work-a", "work-z"])
+        self.assertEqual(entries[0].disposition, RecoveryDisposition.COMPLETE)
+        self.assertEqual(entries[1].disposition, RecoveryDisposition.REPLAN_REQUIRED)
+
+    def test_discover_limit_fails_closed_instead_of_returning_partial_catalog(self):
+        for work_id in ("work-a", "work-b"):
+            self.store.save(
+                "SEIS",
+                work_id,
+                checkpoint(
+                    evidence("build", WorkStepState.CANCELLED, failure="cancelled"),
+                    next_step_id="build",
+                ),
+            )
+        with self.assertRaises(CheckpointCorruptError):
+            self.store.discover("SEIS", limit=1)
+
+    def test_discover_rejects_untrusted_json_filename(self):
+        parent = self.store.path_for("SEIS", "seed", create_parent=True).parent
+        (parent / "bad name.json").write_text("{}", "utf-8")
+        with self.assertRaises(CheckpointCorruptError):
+            self.store.discover("SEIS")
+
     def test_completed_checkpoint_is_not_a_recovery_candidate(self):
         self.store.save("SEIS", "work-001", checkpoint(evidence("plan", WorkStepState.SUCCEEDED)))
         assessment = self.store.assess("SEIS", "work-001")
