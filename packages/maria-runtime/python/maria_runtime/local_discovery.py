@@ -1,9 +1,26 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from dataclasses import dataclass
 from typing import Any
 
 from .provider_discovery import ModelDiscoveryFact
+
+
+@dataclass(frozen=True)
+class LocalModelCandidate:
+    """A local model identity discovered before capability verification.
+
+    Candidates are intentionally not routable `ModelSpec` records. They only
+    carry inventory metadata that can be used to request a deeper, bounded
+    metadata probe such as Ollama `/api/show`.
+    """
+
+    provider_id: str
+    name: str
+    digest: str
+    size_bytes: int
+    modified_at: str
 
 
 class LMStudioV1DiscoverySource:
@@ -68,6 +85,52 @@ class LMStudioV1DiscoverySource:
             ))
 
         return tuple(facts)
+
+
+class OllamaTagsDiscoverySource:
+    """Parse Ollama `/api/tags` into non-routable local model candidates."""
+
+    def parse_models(self, payload: Mapping[str, Any]) -> tuple[LocalModelCandidate, ...]:
+        models = payload.get("models")
+        if not isinstance(models, list):
+            raise ValueError("Ollama tags response must contain a models list")
+
+        candidates: list[LocalModelCandidate] = []
+        seen_names: set[str] = set()
+        for item in models:
+            if not isinstance(item, Mapping):
+                raise ValueError("Ollama tags model entry must be an object")
+
+            name = item.get("name")
+            model = item.get("model")
+            digest = item.get("digest")
+            size_bytes = item.get("size")
+            modified_at = item.get("modified_at")
+
+            if not isinstance(name, str) or not name.strip():
+                raise ValueError("Ollama tags entry requires a non-empty name")
+            normalized_name = name.strip()
+            if not isinstance(model, str) or model.strip() != normalized_name:
+                raise ValueError("Ollama tags entry model must match name")
+            if not isinstance(digest, str) or not digest.strip():
+                raise ValueError("Ollama tags entry requires a non-empty digest")
+            if isinstance(size_bytes, bool) or not isinstance(size_bytes, int) or size_bytes <= 0:
+                raise ValueError("Ollama tags entry requires a positive size")
+            if not isinstance(modified_at, str) or not modified_at.strip():
+                raise ValueError("Ollama tags entry requires modified_at")
+            if normalized_name in seen_names:
+                raise ValueError(f"duplicate Ollama model candidate: {normalized_name}")
+            seen_names.add(normalized_name)
+
+            candidates.append(LocalModelCandidate(
+                provider_id="ollama",
+                name=normalized_name,
+                digest=digest.strip(),
+                size_bytes=size_bytes,
+                modified_at=modified_at.strip(),
+            ))
+
+        return tuple(sorted(candidates, key=lambda item: item.name))
 
 
 class OllamaShowDiscoverySource:
