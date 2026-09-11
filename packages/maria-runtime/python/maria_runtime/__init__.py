@@ -35,7 +35,7 @@ from .permissions import ActionClass, PermissionDecision, PermissionEngine
 from .projects import ProjectProfile, ProjectRegistry, WorkMode, default_project_registry
 from .providers import ProviderRegistry, ProviderSpec, ProviderStatus, default_provider_registry
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
-from .routing import ModelRouter
+from .routing import ModelRouteDecision, ModelRouter
 from .safety import CommandPolicy
 
 __all__ = [
@@ -59,6 +59,7 @@ __all__ = [
     "MCPImportPreview",
     "MCPServerDescriptor",
     "ModelRegistry",
+    "ModelRouteDecision",
     "ModelRouter",
     "ModelSpec",
     "PermissionDecision",
