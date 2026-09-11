@@ -128,6 +128,33 @@ class MCPStdioProcessTransportTests(unittest.TestCase):
         self.assertIn(b'"method":"server/discover"', process.stdin.getvalue())
         self.assertTrue(transport.is_running)
 
+    def test_ready_modern_transport_can_issue_bounded_correlated_request(self):
+        responses = (
+            b'{"jsonrpc":"2.0","id":"seis-discover-1","result":'
+            b'{"supportedVersions":["2026-07-28"]}}\n'
+            b'{"jsonrpc":"2.0","id":"invoke-42","result":{"actors":12}}\n'
+        )
+        process = _FakeProcess(stdout=responses)
+        transport = MCPStdioProcessTransport(
+            negotiator=self.negotiator,
+            process_factory=_Factory(process),
+            environment={},
+        )
+        self.assertTrue(transport.start(self.plan).ready)
+
+        response = transport.request(
+            method="unreal.inspect_actors",
+            params={"level": "/Game/Maps/Hotel"},
+            request_id="invoke-42",
+            timeout_ms=100,
+            max_response_bytes=4_096,
+        )
+
+        self.assertEqual(response["result"], {"actors": 12})
+        sent = process.stdin.getvalue()
+        self.assertIn(b'"method":"unreal.inspect_actors"', sent)
+        self.assertIn(b'"io.modelcontextprotocol/protocolVersion":"2026-07-28"', sent)
+
     def test_legacy_probe_error_falls_back_to_initialize_on_same_child(self):
         responses = (
             b'{"jsonrpc":"2.0","id":"seis-discover-1","error":{"code":-32601,"message":"unknown"}}\n'
