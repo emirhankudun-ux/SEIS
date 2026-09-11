@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
+from enum import Enum
 import http.client
 import json
 import time
@@ -9,8 +10,24 @@ from typing import Any
 from urllib.parse import urlsplit
 
 
+class LocalProbeFailureKind(str, Enum):
+    TIMEOUT = "timeout"
+    TRANSPORT_ERROR = "transport-error"
+    HTTP_ERROR = "http-error"
+    POLICY_REJECTED = "policy-rejected"
+    INVALID_RESPONSE = "invalid-response"
+
+
 class LocalProbeError(RuntimeError):
-    """Raised when bounded localhost discovery evidence cannot be trusted."""
+    """Raised when bounded localhost discovery evidence cannot be trusted.
+
+    `kind` is deliberately small and secret-free so callers can record health
+    evidence without persisting transport exception messages or response bodies.
+    """
+
+    def __init__(self, message: str, *, kind: LocalProbeFailureKind) -> None:
+        super().__init__(message)
+        self.kind = kind
 
 
 @dataclass(frozen=True)
@@ -51,13 +68,25 @@ class _LoopbackHTTPTransport:
     def __call__(self, request: LocalProbeRequest) -> LocalProbeResponse:
         parsed = urlsplit(request.url)
         if parsed.scheme != "http" or parsed.hostname != "127.0.0.1":
-            raise LocalProbeError("local runtime target must use literal IPv4 loopback")
+            raise LocalProbeError(
+                "local runtime target must use literal IPv4 loopback",
+                kind=LocalProbeFailureKind.POLICY_REJECTED,
+            )
         if parsed.username is not None or parsed.password is not None:
-            raise LocalProbeError("local runtime target must not contain credentials")
+            raise LocalProbeError(
+                "local runtime target must not contain credentials",
+                kind=LocalProbeFailureKind.POLICY_REJECTED,
+            )
         if parsed.port is None:
-            raise LocalProbeError("local runtime target requires an explicit port")
+            raise LocalProbeError(
+                "local runtime target requires an explicit port",
+                kind=LocalProbeFailureKind.POLICY_REJECTED,
+            )
         if parsed.fragment:
-            raise LocalProbeError("local runtime target must not contain a fragment")
+            raise LocalProbeError(
+                "local runtime target must not contain a fragment",
+                kind=LocalProbeFailureKind.POLICY_REJECTED,
+            )
 
         path = parsed.path or "/"
         if parsed.query:
@@ -83,8 +112,16 @@ class _LoopbackHTTPTransport:
                 body=body,
                 redirected=300 <= response.status < 400,
             )
-        except (TimeoutError, OSError, http.client.HTTPException) as exc:
-            raise LocalProbeError("local runtime probe transport failed") from exc
+        except TimeoutError as exc:
+            raise LocalProbeError(
+                "local runtime probe timed out",
+                kind=LocalProbeFailureKind.TIMEOUT,
+            ) from exc
+        except (OSError, http.client.HTTPException) as exc:
+            raise LocalProbeError(
+                "local runtime probe transport failed",
+                kind=LocalProbeFailureKind.TRANSPORT_ERROR,
+            ) from exc
         finally:
             connection.close()
 
@@ -195,28 +232,54 @@ class LocalRuntimeProbe:
             response = self._transport(request)
         except LocalProbeError:
             raise
+        except TimeoutError as exc:
+            raise LocalProbeError(
+                "local runtime probe timed out",
+                kind=LocalProbeFailureKind.TIMEOUT,
+            ) from exc
         except Exception as exc:
-            raise LocalProbeError("local runtime probe transport failed") from exc
+            raise LocalProbeError(
+                "local runtime probe transport failed",
+                kind=LocalProbeFailureKind.TRANSPORT_ERROR,
+            ) from exc
         finished_at = self._clock()
 
         if response.redirected or 300 <= response.status_code < 400:
-            raise LocalProbeError("local runtime probe redirects are not allowed")
+            raise LocalProbeError(
+                "local runtime probe redirects are not allowed",
+                kind=LocalProbeFailureKind.POLICY_REJECTED,
+            )
         if response.status_code != 200:
-            raise LocalProbeError("local runtime probe returned a non-success status")
+            raise LocalProbeError(
+                "local runtime probe returned a non-success status",
+                kind=LocalProbeFailureKind.HTTP_ERROR,
+            )
         if len(response.body) > self._max_response_bytes:
-            raise LocalProbeError("local runtime probe response exceeded the size limit")
+            raise LocalProbeError(
+                "local runtime probe response exceeded the size limit",
+                kind=LocalProbeFailureKind.POLICY_REJECTED,
+            )
 
         media_type = response.content_type.split(";", 1)[0].strip().lower()
         if media_type != "application/json":
-            raise LocalProbeError("local runtime probe response must be application/json")
+            raise LocalProbeError(
+                "local runtime probe response must be application/json",
+                kind=LocalProbeFailureKind.INVALID_RESPONSE,
+            )
 
         try:
             decoded = response.body.decode("utf-8")
             payload = json.loads(decoded)
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-            raise LocalProbeError("local runtime probe returned invalid JSON") from exc
+            raise LocalProbeError(
+                "local runtime probe returned invalid JSON",
+                kind=LocalProbeFailureKind.INVALID_RESPONSE,
+            ) from exc
         if not isinstance(payload, Mapping):
-            raise LocalProbeError("local runtime probe JSON root must be an object")
+            raise LocalProbeError(
+                "local runtime probe JSON root must be an object",
+                kind=LocalProbeFailureKind.INVALID_RESPONSE,
+            )
 
         elapsed_seconds = max(0.0, finished_at - started_at)
         return LocalProbeResult(
