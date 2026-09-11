@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "id": "seis-full-technology-command-center",
+  "status": "browser-local-prototype",
+  "sourceOfTruth": [
+    "content/development/seis-full-technology-registry.json",
+    "content/development/seis-technology-tool-catalog.json",
+    "content/development/seis-engine-capability-registry.json",
+    "content/development/seis-workbench-composer.json",
+    "content/development/seis-cube-runtime-contract.json"
+  ],
+  "evidenceSources": [
+    "content/development/seis-full-technology-demo-acceptance.json",
+    "apps/seis-core/full-technology-runtime.js",
+    "apps/seis-core/full-technology-service-worker.js",
+    "apps/seis-core/test/full-technology-runtime.test.js",
+    "apps/seis-core/test/full-technology-experience.test.js",
+    "apps/seis-core/test/full-technology-offline.test.js",
+    ".github/workflows/seis-full-technology-foundation.yml"
+  ],
+  "summary": {
+    "domainCount": 16,
+    "capabilityCount": 96,
+    "toolCount": 48,
+    "engineFamilyCount": 4,
+    "workbenchCount": 12,
+    "cubeFaceCount": 6,
+    "browserLocalExperienceCount": 5,
+    "verifiedRuntimeClaims": 0,
+    "goalBinding": "requested-SEIS-GOAL-021-unresolved",
+    "offlineMode": "same-origin-cache-fallback"
+  },
+  "primarySections": [
+    {"id":"technology-atlas","title":"Technology Atlas","view":"searchable-list","purpose":"Browse domains, capabilities and first-wave tools without card overload."},
+    {"id":"cube-runtime","title":"Cube Navigator","view":"accessible-six-face-projection","purpose":"Navigate all 16 canonical domains through six source-backed technology faces."},
+    {"id":"workbench-composer","title":"Workbench Composer","view":"intent-and-preset","purpose":"Turn intent into a focused set of tools with permissions resolved before activation."},
+    {"id":"engine-foundation","title":"Engine Foundation","view":"split-inspector","purpose":"Inspect Game, Reality, 3D and Digital Human contracts and maturity."},
+    {"id":"evidence-boundary","title":"Evidence Boundary","view":"status-table","purpose":"Keep proposed, contract-validated, browser-local and runtime-validated states visibly distinct."}
+  ],
+  "implementedExperience": [
+    {"id":"technology-atlas","state":"browser-local-validated","execution":"read-only"},
+    {"id":"cube-navigator","state":"browser-local-validated","execution":"read-only"},
+    {"id":"workbench-composer","state":"browser-local-validated","execution":"zero-tool-execution"},
+    {"id":"review-snapshot","state":"browser-local-validated","execution":"local-file-export"},
+    {"id":"offline-cache","state":"browser-local-validated","execution":"same-origin-get-only"}
+  ],
+  "featuredWorkbenches": ["digital-human","game-scene-optimize","shader-debug","world-authoring","ai-evaluation","security-review"],
+  "experienceRules": {
+    "defaultDensity": "comfortable",
+    "primaryNavigation": "icon-rail-and-keyboard",
+    "toolSearch": "always-available",
+    "maxPrimaryActionsPerSurface": 5,
+    "preferListsTablesInspectorsOverCards": true,
+    "reducedMotion": true,
+    "keyboardFirst": true,
+    "colorOnlyStatus": false,
+    "persistBrowserLocalState": true,
+    "autoExecuteTools": false
+  },
+  "truthBoundary": {
+    "countsGeneratedFromSources": true,
+    "browserLocalInteractionValidated": true,
+    "engineRuntimeValidated": false,
+    "runtimeMetricsFabricated": false,
+    "providerConnectivityFabricated": false,
+    "pluginConnectivityFabricated": false,
+    "crossPlatformBuildFabricated": false,
+    "offlineCacheStoresCredentials": false
+  }
+}

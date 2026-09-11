@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.local/schemas/seis-technology-tool.schema.json",
+  "title": "SEIS Technology Tool Record",
+  "type": "object",
+  "required": ["id", "name", "domain", "capability", "implementationClass", "maturity", "status", "permissions", "platforms", "validationState"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]+$"},
+    "name": {"type": "string", "minLength": 2},
+    "domain": {"type": "string"},
+    "capability": {"type": "string"},
+    "implementationClass": {"enum": ["native-core", "native-tool", "adapter", "plugin", "research"]},
+    "maturity": {"enum": ["concept", "research", "prototype", "experimental", "alpha", "beta", "stable", "lts", "legacy", "deprecated"]},
+    "status": {"enum": ["proposed", "available-local-demo", "experimental", "restricted", "blocked", "unavailable", "deprecated"]},
+    "permissions": {
+      "type": "object",
+      "required": ["filesystem", "network", "secrets", "externalWrite"],
+      "properties": {
+        "filesystem": {"enum": ["none", "read", "workspace-write"]},
+        "network": {"enum": ["none", "local-loopback", "approval-required"]},
+        "secrets": {"enum": ["none", "reference-only", "approval-required"]},
+        "externalWrite": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "platforms": {"type": "array", "items": {"enum": ["macos", "windows", "linux", "web", "ios", "ipados", "android", "xr"]}, "minItems": 1, "uniqueItems": true},
+    "validationState": {"enum": ["unverified", "contract-validated", "runtime-validated", "blocked"]},
+    "fallback": {"type": "string"},
+    "owner": {"type": "string"},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": false
+}

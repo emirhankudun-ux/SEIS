@@ -17,6 +17,7 @@ final class SeisAppleNativeShellAppDelegate: NSObject, NSApplicationDelegate {
 struct SeisAppleNativeShellApp: App {
     @StateObject private var demoShellState = SeisDemoNativeShellState()
     @State private var activePanel: SeisAppleNativeShellPanel = .demo
+    @State private var shellRoute: SeisAppleNativeShellRoute = .defaultRoute
     @AppStorage(SeisAppleShellSettingsContract.appleNativeShell.lowMotionKey)
     private var lowMotion = SeisAppleShellSettingsContract.appleNativeShell.defaultLowMotion
     @AppStorage(SeisAppleShellSettingsContract.appleNativeShell.preferredFocusKey)
@@ -30,12 +31,14 @@ struct SeisAppleNativeShellApp: App {
 
     var body: some Scene {
         WindowGroup("SEIS Apple Native") {
-            SeisAppleNativeShellZeroToDemoView(
+            SeisAppleNativeShellWorkspaceRouter(
                 demoShellState: demoShellState,
                 repositoryPath: repositoryRoot,
-                activePanel: $activePanel
+                activePanel: $activePanel,
+                route: $shellRoute
             )
             .onOpenURL { url in
+                shellRoute = .demo
                 demoShellState.handleDeepLink(url)
             }
             .onAppear {
@@ -43,6 +46,7 @@ struct SeisAppleNativeShellApp: App {
                 if let index = args.firstIndex(of: "--open-demo-url"),
                    index + 1 < args.count,
                    let url = URL(string: args[index + 1]) {
+                    shellRoute = .demo
                     demoShellState.handleDeepLink(url)
                 }
             }
@@ -56,6 +60,8 @@ struct SeisAppleNativeShellApp: App {
         .commands {
             CommandMenu("SEIS") {
                 Button("Open Demo Home") {
+                    shellRoute = .demo
+                    activePanel = .demo
                     demoShellState.applyRoute("/")
                 }
                 .keyboardShortcut("1", modifiers: [.command])
@@ -68,27 +74,34 @@ struct SeisAppleNativeShellApp: App {
                 .keyboardShortcut("w", modifiers: [.command])
 
                 Button("Show Demo") {
+                    shellRoute = .demo
                     activePanel = .demo
                 }
                 .keyboardShortcut("2", modifiers: [.command])
 
                 Button("Show Platform") {
+                    shellRoute = .platform
                     activePanel = .applePlatform
                 }
                 .keyboardShortcut("3", modifiers: [.command])
 
                 Button("Open Demo") {
+                    shellRoute = .demo
+                    activePanel = .demo
                     demoShellState.applyRoute("/demo")
                 }
                 .keyboardShortcut("4", modifiers: [.command])
 
                 Button("Open Sample Result") {
+                    shellRoute = .demo
+                    activePanel = .demo
                     demoShellState.applyRoute("/results/demo-home")
                 }
                 .keyboardShortcut("5", modifiers: [.command])
 
                 Button("Run First Scenario") {
                     if let firstScenario = demoShellState.contract.scenarios.first {
+                        shellRoute = .demo
                         activePanel = .demo
                         demoShellState.startScenario(firstScenario.id)
                     }
@@ -97,6 +110,7 @@ struct SeisAppleNativeShellApp: App {
 
                 Button("Open Active Result") {
                     if let activeRun = demoShellState.activeRun {
+                        shellRoute = .demo
                         activePanel = .demo
                         demoShellState.applyRoute("/results/\(activeRun.id)")
                     }
@@ -112,7 +126,21 @@ struct SeisAppleNativeShellApp: App {
 
                 Divider()
 
+                Button("Show Technology Center") {
+                    shellRoute = .technologyCenter
+                }
+                .keyboardShortcut("t", modifiers: [.command, .shift])
+
+                Button("Show Universal Workspace") {
+                    shellRoute = .universalWorkspace
+                }
+                .keyboardShortcut("u", modifiers: [.command, .shift])
+
+                Divider()
+
                 Button("Retry Demo") {
+                    shellRoute = .demo
+                    activePanel = .demo
                     demoShellState.reset(reason: "menu_retry")
                 }
 
@@ -129,6 +157,8 @@ struct SeisAppleNativeShellApp: App {
                 .keyboardShortcut("r", modifiers: [.command, .shift])
                 .help("Refresh all Apple diagnostics and runtime readiness snapshots.")
             }
+
+            SeisUniversalWorkspaceCommands()
         }
         #endif
         #if os(macOS)
