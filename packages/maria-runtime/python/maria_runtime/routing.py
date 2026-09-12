@@ -93,15 +93,19 @@ class ModelRouteDecision:
         ):
             raise ValueError("selected model contradicts routing eligibility")
         _validate_max_age(self.max_metadata_age_seconds)
-        if (self.max_metadata_age_seconds is None) != (self.evaluated_at is None):
-            raise ValueError("freshness policy and reference time must be provided together")
-        if self.max_metadata_age_seconds is not None:
+        age_evaluated = self.reason in (ModelRouteReason.SELECTED, ModelRouteReason.METADATA_STALE)
+        if self.max_metadata_age_seconds is None:
+            if self.evaluated_at is not None or self.reason is ModelRouteReason.METADATA_STALE:
+                raise ValueError("freshness evidence requires an active policy")
+        elif age_evaluated:
+            if self.evaluated_at is None:
+                raise ValueError("age-evaluated decision requires a reference time")
             instant = _as_utc(self.evaluated_at)
             object.__setattr__(self, "evaluated_at", instant)
             if self.model is not None and not _has_fresh_metadata(self.model, self.max_metadata_age_seconds, instant):
                 raise ValueError("selected model contradicts metadata freshness policy")
-        elif self.reason is ModelRouteReason.METADATA_STALE:
-            raise ValueError("stale metadata reason requires an active freshness policy")
+        elif self.evaluated_at is not None:
+            raise ValueError("a pre-freshness blocker must not claim an age evaluation")
 
     def to_dict(self) -> dict[str, object]:
         """Return a fresh summary without identities, requests or execution rights."""
@@ -118,7 +122,7 @@ class ModelRouteDecision:
             summary["schema_version"] = "maria.routing-decision.v2"
             summary["metadata_freshness"] = {
                 "max_age_seconds": self.max_metadata_age_seconds,
-                "evaluated_at": self.evaluated_at.isoformat(),
+                "evaluated_at": self.evaluated_at.isoformat() if self.evaluated_at is not None else None,
                 "selected_observed_at": self.model.observed_at if self.model else None,
                 "selected_source": "host-supplied" if self.model else None,
             }
@@ -187,11 +191,15 @@ class ModelRouter:
                 raise ValueError("a reference time requires an active freshness policy")
             instant = None
         else:
-            instant = _as_utc(_utc_now() if now is None else now)
+            # Validate caller-supplied time before metadata access, but defer
+            # reading the host clock until the age gate is actually reached.
+            instant = _as_utc(now) if now is not None else None
 
         def result(reason: ModelRouteReason, model: Optional[ModelSpec] = None) -> ModelRouteDecision:
             """Carry the same evaluated policy into every descriptive outcome."""
-            return ModelRouteDecision(reason, sensitive, model, max_metadata_age_seconds, instant)
+            age_evaluated = reason in (ModelRouteReason.SELECTED, ModelRouteReason.METADATA_STALE)
+            return ModelRouteDecision(reason, sensitive, model, max_metadata_age_seconds,
+                                      instant if age_evaluated else None)
 
         candidates = self.registry.all()
         if not candidates:
@@ -212,6 +220,8 @@ class ModelRouter:
             return result(ModelRouteReason.CONTEXT_EXCEEDED)
 
         if max_metadata_age_seconds is not None:
+            if instant is None:
+                instant = _as_utc(_utc_now())
             candidates = [model for model in candidates
                           if _has_fresh_metadata(model, max_metadata_age_seconds, instant)]
             if not candidates:

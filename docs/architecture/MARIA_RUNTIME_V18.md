@@ -220,8 +220,11 @@ ineligible; if no candidate remains, the reason is `metadata_stale`. That
 code means freshness was not established, not that a real model was probed
 and found offline. Previous first-blocker reasons retain their precedence.
 
-A single UTC reference is used for each decision. Injected clocks must be
-aware datetimes and are permitted only with an enabled policy. UTC conversion
+The host clock is read once only after a candidate reaches the freshness gate.
+Earlier blockers return without reading it, so a broken clock cannot mask an
+empty registry, privacy denial or another earlier eligibility reason. Injected
+clocks are validated before metadata access; they must be aware datetimes and
+are permitted only with an enabled policy. UTC conversion
 precedes comparison, including daylight-saving folds. Elapsed microseconds
 are compared as integers rather than floating-point seconds. An unavailable
 or malformed clock fails rather than falling back to unchecked selection.
@@ -229,7 +232,8 @@ Host clock reliability remains an assumption; this is not signed time,
 a monotonic cross-process clock or protection against a hostile host.
 
 Enabled calls emit `maria.routing-decision.v2` with `metadata_freshness`:
-`max_age_seconds`, normalized `evaluated_at`, `selected_observed_at` (null
+`max_age_seconds`, normalized `evaluated_at` (null when an earlier gate blocks
+and age was not evaluated), `selected_observed_at` (null
 when blocked), and `selected_source` (`host-supplied` when selected, otherwise
 null). The arbitrary source label, provider/model names and request text are
 never copied into this safe summary. `evidence_basis` remains
@@ -253,12 +257,18 @@ network call, retry, cloud fallback, persistent observation or UI/orb change.
 Omitting the flag retains v1 output. Invalid usage exits 2; a valid metadata
 selection exits 0 without authorizing execution.
 
-Verification: `python3 test/maria-router-freshness.test.py` adds 26 tests for
+Verification: `python3 test/maria-router-freshness.test.py` adds 28 tests for
 legacy defaults, sourced age boundaries, subsecond precision, timezone offsets,
 a daylight-saving fold, future/missing data, clock failure, redaction, direct
 result consistency, privacy-preserving selection and the actual launcher.
 The first 24-test suite reported 26 assertion failures on unchanged #251 code;
 it passed after implementation, then gained the two clock regression tests.
+Partial automated review identified that a failing clock could mask earlier
+blockers. This was reproduced, then two further tests (five failing subcases
+and one direct-construction error before the fix) established deferred clock
+reading and null evaluation timestamps for unreached freshness gates. The
+new decision consistency check now requires time only for age-evaluated
+results; earlier-blocker summaries must not claim an age evaluation.
 Existing 24 diagnostics, 19 privacy and 9 foundation tests remain unchanged.
 The runtime workflow adds the new suite to its existing Ubuntu/macOS matrix.
 

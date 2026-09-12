@@ -227,6 +227,35 @@ class FreshnessTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "fixture clock failure"):
                 self.explain([record], now=None)
 
+    def test_prior_blockers_do_not_read_the_clock(self):
+        """Clock failure must not mask the first closed eligibility gate."""
+        cases = [([], "no_models"), ([legacy_model(local=False)], "no_local_models"),
+                 ([legacy_model(available=False)], "models_unavailable"),
+                 ([legacy_model(capabilities=("vision",))], "capability_unavailable"),
+                 ([legacy_model(context_size=1024)], "context_exceeded")]
+        for records, reason in cases:
+            with self.subTest(reason=reason), \
+                 patch("maria_runtime.routing._utc_now", side_effect=RuntimeError("clock failure")) as clock:
+                try:
+                    decision = self.explain(records, now=None)
+                except RuntimeError:
+                    self.fail("clock failure masked an earlier eligibility blocker")
+                self.assertEqual(decision.reason.value, reason)
+                self.assertIsNone(decision.evaluated_at)
+                self.assertIsNone(decision.to_dict()["metadata_freshness"]["evaluated_at"])
+                self.assertIs(decision.to_dict()["execution_authorized"], False)
+                clock.assert_not_called()
+
+    def test_unevaluated_freshness_is_not_given_an_invented_timestamp(self):
+        """An earlier blocker carries the requested policy, not a performed age check."""
+        decision = ModelRouteDecision(ModelRouteReason.NO_MODELS, True, max_metadata_age_seconds=60)
+        self.assertIsNone(decision.to_dict()["metadata_freshness"]["evaluated_at"])
+        with self.assertRaises(ValueError):
+            ModelRouteDecision(ModelRouteReason.NO_MODELS, True,
+                               max_metadata_age_seconds=60, evaluated_at=NOW)
+        with self.assertRaises(ValueError):
+            ModelRouteDecision(ModelRouteReason.METADATA_STALE, True, max_metadata_age_seconds=60)
+
     def test_guarded_summary_is_versioned_and_redacted(self):
         """Expose timestamp and source category, never the arbitrary source label."""
         record = self.observed()
@@ -261,7 +290,7 @@ class FreshnessTests(unittest.TestCase):
             ModelRouteDecision(ModelRouteReason.SELECTED, True, record,
                                max_metadata_age_seconds=60, evaluated_at=NOW)
         with self.assertRaises(ValueError):
-            ModelRouteDecision(ModelRouteReason.NO_MODELS, True, max_metadata_age_seconds=60)
+            ModelRouteDecision(ModelRouteReason.METADATA_STALE, True, max_metadata_age_seconds=60)
         with self.assertRaises(ValueError):
             ModelRouteDecision(ModelRouteReason.NO_MODELS, True, evaluated_at=NOW)
 
