@@ -19,6 +19,10 @@ class ModelSpec:
     privacy_level: str = "standard"
 
     def __post_init__(self) -> None:
+        if type(self.local) is not bool or type(self.available) is not bool:
+            raise TypeError("model local and available must be booleans")
+        if type(self.context_size) is not int:
+            raise TypeError("context_size must be an integer")
         if not self.name.strip() or not self.provider.strip():
             raise ValueError("model name and provider are required")
         if self.context_size <= 0:
