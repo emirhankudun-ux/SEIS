@@ -192,6 +192,87 @@ consume this decision contract rather than create a second routing algorithm;
 retain the union of #249, #250 and this branch's test paths/commands when
 integrating. Actual model/endpoint probing remains separately permissioned.
 
+### Opt-in routing metadata freshness
+
+Status: implemented in a proposed branch based on #251. The existing router
+accepts optional `max_metadata_age_seconds` and a host-supplied aware `now`
+instant. With the default `None`, selection and the exact seven-field v1
+summary remain unchanged; the router does not read a clock. The host must
+explicitly enable this policy for any future live provider integration.
+
+`ModelSpec` appends optional `observed_at` and `source` fields. Observations
+use a deliberately strict ISO subset: `YYYY-MM-DDTHH:MM:SS`, optional one to six
+fractional digits, then `Z` or a numeric `+/-HH:MM` offset. They normalize to
+UTC without rounding. Naive, malformed, overprecision and unrepresentable
+timestamps are rejected without echoing their input. Source labels are exact
+printable strings of 1-128 characters without surrounding whitespace. Both
+fields are omitted from the model repr; generic dataclass serialization is
+**not** the approved public summary and can still expose them.
+
+The optional gate runs after privacy, availability, capability and context
+eligibility, before ranking. It accepts only records with **both** an
+observation and source, and an exact elapsed age in the inclusive range
+`0 <= age <= max_metadata_age_seconds`. Seconds must be a nonnegative integer,
+not a boolean or float. Zero enables an exact-instant policy; it does not
+mean disabled. Future observations are rejected with no clock-skew tolerance.
+Missing provenance, missing time, future time or excessive age leave a record
+ineligible; if no candidate remains, the reason is `metadata_stale`. That
+code means freshness was not established, not that a real model was probed
+and found offline. Previous first-blocker reasons retain their precedence.
+
+A single UTC reference is used for each decision. Injected clocks must be
+aware datetimes and are permitted only with an enabled policy. UTC conversion
+precedes comparison, including daylight-saving folds. Elapsed microseconds
+are compared as integers rather than floating-point seconds. An unavailable
+or malformed clock fails rather than falling back to unchecked selection.
+Host clock reliability remains an assumption; this is not signed time,
+a monotonic cross-process clock or protection against a hostile host.
+
+Enabled calls emit `maria.routing-decision.v2` with `metadata_freshness`:
+`max_age_seconds`, normalized `evaluated_at`, `selected_observed_at` (null
+when blocked), and `selected_source` (`host-supplied` when selected, otherwise
+null). The arbitrary source label, provider/model names and request text are
+never copied into this safe summary. `evidence_basis` remains
+`configured-metadata-only` and `execution_authorized` remains false, even when
+fresh. This is temporal eligibility of a host claim, not source verification,
+endpoint-locality proof, an approval token or permission to send private data.
+The selected timestamp may itself be sensitive operational metadata; hosts
+still control who receives even the restricted summary.
+
+The CLI enables the policy explicitly:
+
+```sh
+python3 apps/maria-desktop/maria.py --route-check coding --route-max-metadata-age-seconds 60
+```
+
+It still uses the existing built-in demo registry. The unavailable example
+therefore reports `models_unavailable` (exit 3), with the enabled v2 policy,
+`registry_source: built-in-demo-fixture` and `live_probe_performed: false`.
+There is no installed-model scan, timestamp fabrication, environment-key read,
+network call, retry, cloud fallback, persistent observation or UI/orb change.
+Omitting the flag retains v1 output. Invalid usage exits 2; a valid metadata
+selection exits 0 without authorizing execution.
+
+Verification: `python3 test/maria-router-freshness.test.py` adds 26 tests for
+legacy defaults, sourced age boundaries, subsecond precision, timezone offsets,
+a daylight-saving fold, future/missing data, clock failure, redaction, direct
+result consistency, privacy-preserving selection and the actual launcher.
+The first 24-test suite reported 26 assertion failures on unchanged #251 code;
+it passed after implementation, then gained the two clock regression tests.
+Existing 24 diagnostics, 19 privacy and 9 foundation tests remain unchanged.
+The runtime workflow adds the new suite to its existing Ubuntu/macOS matrix.
+
+Reference: [Python datetime semantics](https://docs.python.org/3.12/library/datetime.html)
+for timezone awareness, UTC normalization and exact timedelta components.
+The existing context parser deliberately is not reused: it accepts naive
+values as UTC, which is incompatible with this opt-in model boundary. No
+context/recovery behavior or the separate workspace-evidence PR #231 is changed.
+
+Rollback is the focused freshness commit. Integration must retain the union
+of #249/#250/#251 and these tests. Every eventual provider call still needs
+fresh target evidence and authorization at execution time: do not turn an
+old selection into a reusable capability or silently disable its age policy.
+
 ### Cache correctness
 
 The v17 prompt cache hashes only the first two messages with MD5. v18 hashes the complete request, model, temperature and extra generation parameters with SHA-256 so two requests sharing an initial prefix cannot collide at the cache-policy level.
