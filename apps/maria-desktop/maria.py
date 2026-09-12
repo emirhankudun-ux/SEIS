@@ -132,9 +132,12 @@ def main() -> int:
                         help="route-check policy (default: local-only; not cloud consent)")
     parser.add_argument("--route-context-tokens", type=int, metavar="N",
                         help="route-check context estimate (default: 0)")
+    parser.add_argument("--route-max-metadata-age-seconds", type=int, metavar="N",
+                        help="opt-in maximum sourced metadata age; default: no freshness filtering")
     args = parser.parse_args()
 
-    if args.route_check is None and (args.route_privacy is not None or args.route_context_tokens is not None):
+    if args.route_check is None and (args.route_privacy is not None or args.route_context_tokens is not None
+                                     or args.route_max_metadata_age_seconds is not None):
         parser.error("route-specific options require --route-check")
     if args.route_check is not None:
         if args.status or args.doctor or args.context is not None or args.permission is not None:
@@ -142,6 +145,8 @@ def main() -> int:
         tokens = 0 if args.route_context_tokens is None else args.route_context_tokens
         if tokens < 0:
             parser.error("--route-context-tokens must be nonnegative")
+        if args.route_max_metadata_age_seconds is not None and args.route_max_metadata_age_seconds < 0:
+            parser.error("--route-max-metadata-age-seconds must be nonnegative")
         if any(not value or value != value.strip() or
                any(ord(char) < 32 or ord(char) == 127 for char in value)
                for value in args.route_check):
@@ -150,6 +155,7 @@ def main() -> int:
             required_capabilities=set(args.route_check),
             sensitive=args.route_privacy != "standard",
             estimated_context_tokens=tokens,
+            max_metadata_age_seconds=args.route_max_metadata_age_seconds,
         )
         report = decision.to_dict()
         report.update(registry_source="built-in-demo-fixture", live_probe_performed=False)

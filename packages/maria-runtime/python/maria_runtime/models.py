@@ -1,7 +1,27 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+import re
 from typing import Iterable, Optional
+
+
+_OBSERVED_TIME = re.compile(
+    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}"
+    r"(?:\.[0-9]{1,6})?(?:Z|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])"
+)
+
+
+def _parse_model_observed_at(value: str) -> datetime:
+    """Parse bounded, offset-aware model metadata without echoing input on error."""
+    if type(value) is not str:
+        raise TypeError("observed_at must be an ISO timestamp string")
+    if len(value) > 32 or _OBSERVED_TIME.fullmatch(value) is None:
+        raise ValueError("observed_at must include seconds, a timezone and at most six fractional digits")
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+    except (ValueError, OverflowError):
+        raise ValueError("observed_at is not a representable UTC instant") from None
 
 
 @dataclass(frozen=True)
@@ -17,8 +37,18 @@ class ModelSpec:
     output_cost_per_million: float
     available: bool = True
     privacy_level: str = "standard"
+    observed_at: Optional[str] = field(default=None, repr=False)
+    source: Optional[str] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
+        """Validate model metadata; optional observation is normalized to UTC."""
+        if self.source is not None:
+            if type(self.source) is not str:
+                raise TypeError("model metadata source must be a string")
+            if not 1 <= len(self.source) <= 128 or self.source != self.source.strip() or not self.source.isprintable():
+                raise ValueError("model metadata source must be a bounded nonempty printable label")
+        if self.observed_at is not None:
+            object.__setattr__(self, "observed_at", _parse_model_observed_at(self.observed_at).isoformat())
         if type(self.local) is not bool or type(self.available) is not bool:
             raise TypeError("model local and available must be booleans")
         if type(self.context_size) is not int:
