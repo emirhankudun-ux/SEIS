@@ -54,6 +54,8 @@ The v17 prototype exposes a general terminal tool using `subprocess.run(..., she
 
 Approval is no longer derived only from an LLM-generated numeric risk level. The execution boundary uses explicit action classes: `READ`, `SAFE_EXECUTE`, `MODIFY`, `EXTERNAL`, `DESTRUCTIVE`, `FINANCIAL`, and `PRIVACY_SENSITIVE`. Mutating and higher-impact classes require explicit owner approval by default.
 
+Approval evidence is also type-strict at this boundary: `approved` must be an exact boolean. Serialized strings such as `"false"` / `"true"`, integers, null-like values, containers, or other truthy/falsy objects are rejected rather than interpreted through Python truthiness. This keeps model/tool payload coercion from becoming authorization.
+
 ### Project context and memory provenance
 
 Project facts carry source, project, confidence, verification state, observation time and fact type. Resolution gives current verified evidence priority over stale unverified memory. This supports the intended interaction: “Maria, Deadly Evil'e devam et” can resolve the current goal, branch, app, blocker and next safe action without replaying an entire conversation transcript.

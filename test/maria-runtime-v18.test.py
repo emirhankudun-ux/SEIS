@@ -62,6 +62,20 @@ class MariaRuntimeV18Tests(unittest.TestCase):
         self.assertTrue(engine.evaluate(ActionClass.DESTRUCTIVE, target="asset").requires_approval)
         self.assertTrue(engine.evaluate(ActionClass.FINANCIAL, target="subscription").requires_approval)
 
+    def test_permission_engine_rejects_non_boolean_approval_evidence(self):
+        engine = PermissionEngine()
+        for approved in ("false", "true", 1, 0, None, [], {}):
+            with self.subTest(approved=repr(approved)):
+                with self.assertRaises(TypeError):
+                    engine.evaluate(ActionClass.MODIFY, target="source", approved=approved)
+
+        denied = engine.evaluate(ActionClass.MODIFY, target="source", approved=False)
+        granted = engine.evaluate(ActionClass.MODIFY, target="source", approved=True)
+        self.assertFalse(denied.allowed)
+        self.assertTrue(denied.requires_approval)
+        self.assertTrue(granted.allowed)
+        self.assertTrue(granted.requires_approval)
+
     def test_context_engine_prefers_current_verified_evidence_over_stale_memory(self):
         context = ProjectContextEngine()
         context.put(ContextFact(
