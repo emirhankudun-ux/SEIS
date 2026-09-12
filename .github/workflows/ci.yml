@@ -43,14 +43,14 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: npm ci
-
+      # Keep this job dependency-free. `npm ci` rewrites historically tracked
+      # node_modules entries, which makes a clean checkout look dirty and
+      # defeats the publish-readiness worktree gate before it can report truth.
       - name: Generate publish readiness report
         continue-on-error: ${{ github.event_name == 'pull_request' }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: npm run automation:publish-readiness -- --ci --json
+        run: node scripts/automation-publish-readiness.cjs --ci --json
 
       - name: Append publish readiness summary
         if: always()
