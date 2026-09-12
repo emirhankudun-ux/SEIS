@@ -8,6 +8,8 @@ on:
       - 'scripts/check-maria-runtime-v18.py'
       - 'test/maria-runtime-v18.test.py'
       - 'test/maria-cache-memory.test.py'
+      - 'test/maria-cache-pressure.test.py'
+      - 'scripts/benchmark-maria-cache-admission.py'
       - 'docs/architecture/MARIA_PROMPT_CACHE_MEMORY.md'
       - 'docs/architecture/MARIA_RUNTIME_V18.md'
       - 'docs/superpowers/specs/2026-09-11-maria-runtime-v18-foundation-design.md'
@@ -34,4 +36,6 @@ jobs:
           python-version: '3.12'
       - run: python3 test/maria-runtime-v18.test.py
       - run: python3 test/maria-cache-memory.test.py
+      - run: python3 test/maria-cache-pressure.test.py
+      - run: python3 scripts/benchmark-maria-cache-admission.py --runs 1
       - run: python3 scripts/check-maria-runtime-v18.py

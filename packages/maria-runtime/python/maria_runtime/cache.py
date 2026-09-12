@@ -13,7 +13,9 @@ class _Uncacheable(Exception):
     """Internal signal: optional cache admission exceeded its safety budget."""
 
 
-def _estimated_size(value: Any, limit: int) -> Optional[int]:
+def _estimated_size(
+    value: Any, limit: int, *, string_keys_only: bool = False
+) -> Optional[int]:
     """Bounded, conservative size of plain data; never inspect user objects.
 
     Repeated references count more than once. Container/allocator overhead
@@ -36,6 +38,8 @@ def _estimated_size(value: Any, limit: int) -> Optional[int]:
             raise _Uncacheable
         if kind is dict:
             for key, child in item.items():
+                if string_keys_only and type(key) is not str:
+                    raise _Uncacheable
                 visit(key, depth + 1)
                 visit(child, depth + 1)
         elif kind in (list, tuple):
@@ -63,6 +67,8 @@ class PromptCache:
     Unsupported or oversized data bypasses caching, not model execution.
     Budgets are read-only; clear() lets a host release entries under pressure.
     Callers must not mutate input objects concurrently with get()/put().
+    Recoverable allocation failures release optional entries and become misses
+    or skipped writes; this is not a guarantee against process-wide OOM.
     """
 
     def __init__(
@@ -84,6 +90,7 @@ class PromptCache:
         self._estimated_bytes = 0
         self._evictions = 0
         self._skipped = 0
+        self._allocation_failures = 0
         self._lock = Lock()
         self.hits = 0
         self.misses = 0
@@ -126,22 +133,33 @@ class PromptCache:
             "temperature": temperature,
             "extra": {} if extra is None else extra,
         }
-        if _estimated_size(request, self.max_request_bytes) is None:
+        if _estimated_size(request, self.max_request_bytes, string_keys_only=True) is None:
             return None
         try:
-            canonical = json.dumps(
-                request,
+            encoder = json.JSONEncoder(
                 ensure_ascii=False,
                 sort_keys=True,
                 separators=(",", ":"),
                 allow_nan=False,
             )
-            encoded = canonical.encode("utf-8")
+            digest = hashlib.sha256()
+            encoded_size = 0
+            for chunk in encoder.iterencode(request):
+                # Even ASCII cannot fit if the character count exceeds the
+                # remaining byte budget. Do not allocate its UTF-8 copy.
+                if len(chunk) > self.max_request_bytes - encoded_size:
+                    return None
+                # iterencode may yield an entire large string literal. Slice
+                # before UTF-8 conversion: at most 16 KiB per encoded block.
+                for offset in range(0, len(chunk), 4096):
+                    block = chunk[offset:offset + 4096].encode("utf-8")
+                    encoded_size += len(block)
+                    if encoded_size > self.max_request_bytes:
+                        return None
+                    digest.update(block)
+            return digest.hexdigest()
         except (TypeError, ValueError, UnicodeError, RecursionError):
             return None
-        if len(encoded) > self.max_request_bytes:
-            return None
-        return hashlib.sha256(encoded).hexdigest()
 
     def get(
         self,
@@ -151,14 +169,24 @@ class PromptCache:
         temperature: float,
         extra: Optional[dict[str, Any]] = None,
     ) -> Any:
-        key = self._key(messages, model=model, temperature=temperature, extra=extra)
         with self._lock:
-            if key is None or key not in self._cache:
+            try:
+                key = self._key(messages, model=model, temperature=temperature, extra=extra)
+                if key is None or key not in self._cache:
+                    self.misses += 1
+                    return None
+                isolated = deepcopy(self._cache[key][0])
+                self._cache.move_to_end(key)
+                self.hits += 1
+                return isolated
+            except MemoryError:
+                # Optional acceleration must not fabricate a hit on copy failure.
+                # Recovery is best-effort; sustained process OOM is not containable.
+                isolated = None
+                self._clear_locked()
+                self._allocation_failures += 1
                 self.misses += 1
                 return None
-            self.hits += 1
-            self._cache.move_to_end(key)
-            return deepcopy(self._cache[key][0])
 
     def _discard(self, key: str) -> None:
         previous = self._cache.pop(key, None)
@@ -174,40 +202,52 @@ class PromptCache:
         temperature: float,
         extra: Optional[dict[str, Any]] = None,
     ) -> None:
-        key = self._key(messages, model=model, temperature=temperature, extra=extra)
         with self._lock:
-            if key is None:
+            try:
+                key = self._key(messages, model=model, temperature=temperature, extra=extra)
+                if key is None:
+                    self._skipped += 1
+                    return
+                # A non-admitted replacement must not leave an older response usable.
+                self._discard(key)
+                key_bytes = sys.getsizeof(key)
+                limit = self.max_entry_bytes - key_bytes
+                if _estimated_size(response, limit) is None:
+                    self._skipped += 1
+                    return
+                isolated = deepcopy(response)
+                # A copied container can have different allocation overhead.
+                size = _estimated_size(isolated, limit)
+                if size is None:
+                    self._skipped += 1
+                    return
+                cost = size + key_bytes
+                while self._cache and (
+                    len(self._cache) >= self.max_size
+                    or self._estimated_bytes + cost > self.max_bytes
+                ):
+                    _, (_, removed_cost) = self._cache.popitem(last=False)
+                    self._estimated_bytes -= removed_cost
+                    self._evictions += 1
+                self._cache[key] = (isolated, cost)
+                self._estimated_bytes += cost
+            except MemoryError:
+                isolated = None
+                # Even a failed key allocation could be replacing an older
+                # response. Clear optional state to avoid retaining stale data.
+                self._clear_locked()
+                self._allocation_failures += 1
                 self._skipped += 1
-                return
-            # A non-admitted replacement must not leave an older response usable.
-            self._discard(key)
-            key_bytes = sys.getsizeof(key)
-            limit = self.max_entry_bytes - key_bytes
-            if _estimated_size(response, limit) is None:
-                self._skipped += 1
-                return
-            isolated = deepcopy(response)
-            # A copied container can have different allocation overhead.
-            size = _estimated_size(isolated, limit)
-            if size is None:
-                self._skipped += 1
-                return
-            cost = size + key_bytes
-            while self._cache and (
-                len(self._cache) >= self.max_size
-                or self._estimated_bytes + cost > self.max_bytes
-            ):
-                _, (_, removed_cost) = self._cache.popitem(last=False)
-                self._estimated_bytes -= removed_cost
-                self._evictions += 1
-            self._cache[key] = (isolated, cost)
-            self._estimated_bytes += cost
+
+    def _clear_locked(self) -> None:
+        """Caller owns the non-reentrant lock; do not call public clear() here."""
+        self._cache.clear()
+        self._estimated_bytes = 0
 
     def clear(self) -> None:
-        """Release cached references; lifetime hit/miss/eviction counters remain."""
+        """Release cached references; lifetime diagnostic counters remain."""
         with self._lock:
-            self._cache.clear()
-            self._estimated_bytes = 0
+            self._clear_locked()
 
     def stats(self) -> dict[str, float | int]:
         with self._lock:
@@ -222,4 +262,5 @@ class PromptCache:
                 "max_entry_bytes": self.max_entry_bytes,
                 "evictions": self._evictions,
                 "skipped": self._skipped,
+                "allocation_failures": self._allocation_failures,
             }
