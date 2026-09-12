@@ -120,12 +120,41 @@ def demo_context(project: str) -> dict:
 
 
 def main() -> int:
+    """Run one read-only foundation operation; route checks never probe providers."""
     parser = argparse.ArgumentParser(description="MARIA × SEIS v18 foundation")
     parser.add_argument("--status", action="store_true", help="show runtime foundation status")
     parser.add_argument("--doctor", action="store_true", help="run read-only foundation checks")
     parser.add_argument("--context", metavar="PROJECT", help="show a sample provenance-aware project context")
     parser.add_argument("--permission", choices=[item.value for item in ActionClass], help="inspect permission policy")
+    parser.add_argument("--route-check", metavar="CAPABILITY", action="append",
+                        help="explain model routing from demo metadata only; repeat for multiple capabilities")
+    parser.add_argument("--route-privacy", choices=("local-only", "standard"),
+                        help="route-check policy (default: local-only; not cloud consent)")
+    parser.add_argument("--route-context-tokens", type=int, metavar="N",
+                        help="route-check context estimate (default: 0)")
     args = parser.parse_args()
+
+    if args.route_check is None and (args.route_privacy is not None or args.route_context_tokens is not None):
+        parser.error("route-specific options require --route-check")
+    if args.route_check is not None:
+        if args.status or args.doctor or args.context is not None or args.permission is not None:
+            parser.error("--route-check cannot be combined with another launcher action")
+        tokens = 0 if args.route_context_tokens is None else args.route_context_tokens
+        if tokens < 0:
+            parser.error("--route-context-tokens must be nonnegative")
+        if any(not value or value != value.strip() or
+               any(ord(char) < 32 or ord(char) == 127 for char in value)
+               for value in args.route_check):
+            parser.error("route capabilities must be exact nonempty identifiers without control characters")
+        decision = ModelRouter(build_demo_models()).explain(
+            required_capabilities=set(args.route_check),
+            sensitive=args.route_privacy != "standard",
+            estimated_context_tokens=tokens,
+        )
+        report = decision.to_dict()
+        report.update(registry_source="built-in-demo-fixture", live_probe_performed=False)
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return 0 if decision.model is not None else 3
 
     if args.context:
         print(json.dumps(demo_context(args.context), indent=2, ensure_ascii=False))

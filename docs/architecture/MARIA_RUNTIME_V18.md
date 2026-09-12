@@ -111,6 +111,87 @@ Design references: [OWASP deny by default](https://cheatsheetseries.owasp.org/ch
 and [Python runtime type-annotation limits](https://docs.python.org/3.12/library/typing.html).
 These support explicit checks; neither reference proves SEIS is secure.
 
+### Routing explanations and command-line checks
+
+Status: implemented on the route-diagnostics branch stacked on PR #250; not a
+live provider or native app release. This extends the existing Python router,
+not the independent Node/MCP router or the cache implementation.
+
+`ModelRouter.explain(...)` returns a frozen `ModelRouteDecision` using one
+configured-registry list snapshot. `select(...)` delegates to the same path,
+preserving its model-object return, ranking weights and existing `LookupError`
+messages. Filtering is ordered; the explanation names the first stage that
+leaves no eligible candidate, not an exhaustive analysis of every model:
+
+| Reason code | Meaning within configured metadata |
+| --- | --- |
+| `no_models` | The registry contains no model records. |
+| `no_local_models` | Local-only policy excludes every registered model. |
+| `models_unavailable` | No privacy-eligible record is marked available. |
+| `capability_unavailable` | No available eligible record covers every requested capability. |
+| `context_exceeded` | No remaining record has enough context capacity. |
+| `selected` | An eligible metadata record wins the existing rank. |
+
+`ModelRegistry.all()` returns a sorted list copy including unavailable records;
+that is necessary to distinguish absence from disabled metadata. Model records
+are retained by reference. This is not a deep immutable, locked or
+cross-process snapshot: the trusted host owns registration concurrency and
+freshness. Custom registries used with the router must implement this complete
+snapshot contract, not supply a filtering override of `available()`.
+
+The decision's `model` reference is for trusted in-process callers only. The
+supported `to_dict()` summary emits exactly seven fields: `schema_version`
+(`maria.routing-decision.v1`), `outcome`, `reason`, fixed English `message`,
+`privacy_mode`, `evidence_basis` (`configured-metadata-only`) and
+`execution_authorized` (always false). It deliberately omits request text,
+capability identifiers, model/provider names, endpoints, credentials and the
+rest of the registry. Localized interfaces should map stable reason codes;
+no translated UI is claimed here. Do not use generic dataclass serialization
+as a substitute for this restricted summary: it can include the model object.
+
+Direct construction rejects contradictory selected/blocked results and basic
+type/eligibility mismatches. That validation does not prove provenance,
+authorization, health, actuality of locality, or validity for a later action.
+Recheck host policy and actual endpoint facts before any real provider call.
+
+The existing launcher now runs a read-only diagnostic:
+
+```sh
+python3 apps/maria-desktop/maria.py --route-check coding --route-context-tokens 4096
+python3 apps/maria-desktop/maria.py --route-check coding --route-check reasoning --route-privacy standard
+```
+
+The CLI defaults to local-only policy and zero estimated context tokens. It
+uses **only the existing built-in demo registry**, not installed-model
+discovery, imported files, environment credentials, local endpoints or cloud.
+It adds `registry_source: built-in-demo-fixture` and `live_probe_performed:
+false` to every output. With the shipped unavailable demo record, the first
+command reports `models_unavailable` and exits **3**, not a live outage or an
+inference failure. Exit **0** means a metadata selection, never execution
+permission; exit **2** means invalid CLI usage. Route options without a route
+check and conflicting launcher actions are rejected. Existing doctor/status
+operations are preserved. Capability arguments are identifiers, not prompts.
+
+Verification: `python3 test/maria-route-diagnostics.test.py` exercises the real
+router and launcher, including a 32-case gate matrix, selected-object parity,
+identifier-free output, consistent exit codes, blocked/selected summaries,
+immutable decision fields, one-snapshot evaluation and invalid inputs. The
+original 19 privacy and 9 foundation tests are unchanged. The first 24-test
+diagnostic suite reported 52 assertion failures against unmodified #250 code
+(subtests contribute multiple failures); no import error hid the missing API.
+The same suite passed after implementation. CI runs all three suites on
+Ubuntu and macOS. No model inference, permissions, persistent storage, UI,
+orb, network adapter, cache lifecycle, merge or deployment is added.
+
+References: Python [argparse](https://docs.python.org/3.12/library/argparse.html)
+and [dataclasses](https://docs.python.org/3.12/library/dataclasses.html).
+These describe implementation primitives, not proof of product readiness.
+
+Rollback is the focused diagnostic commit. Future host integration should
+consume this decision contract rather than create a second routing algorithm;
+retain the union of #249, #250 and this branch's test paths/commands when
+integrating. Actual model/endpoint probing remains separately permissioned.
+
 ### Cache correctness
 
 The v17 prompt cache hashes only the first two messages with MD5. v18 hashes the complete request, model, temperature and extra generation parameters with SHA-256 so two requests sharing an initial prefix cannot collide at the cache-policy level.
