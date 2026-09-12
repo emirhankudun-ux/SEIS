@@ -52,6 +52,24 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/automation-publish-readiness.cjs --ci --json
 
+      - name: Verify PR readiness keeps a clean worktree
+        if: github.event_name == 'pull_request'
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync('reports/publish-readiness-report.json', 'utf8'));
+          if (report.gitState?.worktreeClean !== true) {
+            throw new Error(`publish-readiness dirtied the PR checkout: ${(report.gitState?.dirtyFiles || []).join(', ')}`);
+          }
+          const blockers = report.blockers || [];
+          const expectedBranchOnly = blockers.length === 1
+            && blockers[0].area === 'git'
+            && blockers[0].reason === 'active branch is not main';
+          if (!expectedBranchOnly) {
+            throw new Error(`unexpected PR publish-readiness blocker set: ${JSON.stringify(blockers)}`);
+          }
+          NODE
+
       - name: Append publish readiness summary
         if: always()
         run: |
