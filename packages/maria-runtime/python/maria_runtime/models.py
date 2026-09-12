@@ -46,6 +46,14 @@ class ModelRegistry:
             raise ValueError(f"model already registered: {model.name}")
         self._models[model.name] = model
 
+    def all(self) -> list[ModelSpec]:
+        """Return a sorted list copy of configured records, including unavailable ones.
+
+        The host owns registration concurrency and metadata freshness. This list
+        is not a live provider probe or an atomic cross-process snapshot.
+        """
+        return sorted(self._models.values(), key=lambda model: model.name)
+
     def available(self) -> list[ModelSpec]:
         return sorted(
             (model for model in self._models.values() if model.available),

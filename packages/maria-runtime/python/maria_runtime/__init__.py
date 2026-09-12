@@ -11,7 +11,7 @@ from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
 from .projects import ProjectProfile, ProjectRegistry, WorkMode, default_project_registry
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
-from .routing import ModelRouter
+from .routing import ModelRouteDecision, ModelRouteReason, ModelRouter
 from .safety import CommandPolicy
 
 __all__ = [
@@ -22,6 +22,8 @@ __all__ = [
     "ContinuationBrief",
     "ContinuationResolver",
     "ModelRegistry",
+    "ModelRouteDecision",
+    "ModelRouteReason",
     "ModelRouter",
     "ModelSpec",
     "PermissionDecision",
