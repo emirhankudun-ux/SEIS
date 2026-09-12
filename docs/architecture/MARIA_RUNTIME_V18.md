@@ -68,6 +68,10 @@ Models declare provider, local/cloud location, capabilities, context capacity, r
 
 ### Cache correctness
 
+`PromptCache` also enforces count, retained-payload and request-admission budgets.
+See [Prompt cache memory contract](MARIA_PROMPT_CACHE_MEMORY.md) for defaults,
+cache-miss compatibility, pressure-release behavior and scoped verification.
+
 The v17 prompt cache hashes only the first two messages with MD5. v18 hashes the complete request, model, temperature and extra generation parameters with SHA-256 so two requests sharing an initial prefix cannot collide at the cache-policy level.
 
 ## Future vertical slices
