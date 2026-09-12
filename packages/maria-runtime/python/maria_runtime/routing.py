@@ -4,7 +4,11 @@ from .models import ModelRegistry, ModelSpec
 
 
 class ModelRouter:
-    """Capability-aware model selection with explicit local-first privacy bias."""
+    """Select eligible models; sensitive requests require a local candidate.
+
+    This is a metadata decision, not permission to call a provider. The host
+    owns sensitivity classification and must authorize any actual execution.
+    """
 
     def __init__(self, registry: ModelRegistry) -> None:
         self.registry = registry
@@ -16,21 +20,24 @@ class ModelRouter:
         sensitive: bool,
         estimated_context_tokens: int,
     ) -> ModelSpec:
+        if type(sensitive) is not bool:
+            raise TypeError("sensitive must be a boolean")
+        if type(estimated_context_tokens) is not int:
+            raise TypeError("estimated_context_tokens must be an integer")
         if estimated_context_tokens < 0:
             raise ValueError("estimated_context_tokens cannot be negative")
 
         candidates = [
             model for model in self.registry.available()
-            if required_capabilities.issubset(set(model.capabilities))
+            if (not sensitive or model.local is True)
+            and required_capabilities.issubset(set(model.capabilities))
             and model.context_size >= estimated_context_tokens
         ]
         if not candidates:
+            # Privacy is an eligibility boundary, never a scoring preference.
+            if sensitive:
+                raise LookupError("no local model satisfies capability/context requirements")
             raise LookupError("no model satisfies capability/context requirements")
-
-        if sensitive:
-            local = [model for model in candidates if model.local]
-            if local:
-                candidates = local
 
         def score(model: ModelSpec) -> tuple[float, str]:
             context_headroom = min(1.0, model.context_size / max(1, estimated_context_tokens * 4))

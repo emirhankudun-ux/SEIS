@@ -64,7 +64,52 @@ Tools declare capabilities, health, method rank, reliability, latency, cost, per
 
 ### Model routing
 
-Models declare provider, local/cloud location, capabilities, context capacity, reliability, latency and cost. Sensitive work prefers a capable local model when one is available; otherwise routing fails or uses an authorized cloud candidate only when the policy permits it in a future adapter layer.
+Models declare provider, local/cloud location, capabilities, context capacity,
+reliability, latency and cost. In this Python foundation, `sensitive=True` is a
+**hard local-only constraint**, not a scoring preference. Locality, availability,
+required capabilities and context capacity are eligibility checks before ranking.
+A missing, disabled, incapable or undersized local candidate raises `LookupError`
+without selecting a cloud fallback, even if cloud quality or context is higher.
+
+`sensitive=False` preserves ordinary local/cloud ranking; it is **not consent**
+to disclose data. Any eventual provider call still requires the host's privacy,
+permission and actual-target checks. There is no cloud-consent override in this
+router; a future exception requires a separately reviewed policy/approval flow,
+not a silent retry with `sensitive=False`.
+
+The host must supply an exact boolean sensitivity classification. Model `local`
+and `available` flags require exact booleans rather than truthy strings or
+integers. Requested context tokens require an exact nonnegative integer; model
+context capacity requires an exact positive integer. Invalid boundary values
+fail before ranking. A free-form `privacy_level="local"` label cannot turn a
+nonlocal model into a local candidate. Error messages contain no model/provider
+identifiers or prompt data.
+
+**Evidence and limits:** On main `550c54c460347528bec4fef18c6cdb7650dc991e`,
+a synthetic cloud-only registry returned a cloud model for `sensitive=True`;
+a string `local="false"` was also accepted as truthy metadata. These were
+reproduced offline, not observed live data transfers. The 19 focused regression
+tests cover missing/disabled/incapable/undersized local candidates, strict
+boundary types, deterministic ranking, unchanged non-sensitive controls and a
+32-case eligibility matrix. Run `python3 test/maria-router-privacy.test.py`
+alongside the existing foundation suite and `scripts/check-maria-runtime-v18.py`.
+
+This is still metadata-only selection. A valid boolean does not prove actual
+execution locality, model availability, endpoint ownership, freshness, network
+isolation or inference correctness. Trusted host adapters must resolve those
+facts and recheck policy at the effect boundary. A compromised host can lie;
+this class is not a sandbox for arbitrary Python code. It neither loads a
+model nor creates an endpoint, queue, retry, SSH connection or cloud request.
+
+The older provider-neutral Node/MCP router in open PR #156 remains a separate
+unmerged surface; its no-cloud-on-local-only intent is consistent with this
+fix, but its code is not copied and no cross-runtime consolidation is claimed.
+PR #249's cache changes remain separate. When integrating these independent
+PRs, retain the **union** of their runtime-workflow test paths and commands.
+
+Design references: [OWASP deny by default](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html#deny-by-default)
+and [Python runtime type-annotation limits](https://docs.python.org/3.12/library/typing.html).
+These support explicit checks; neither reference proves SEIS is secure.
 
 ### Cache correctness
 
