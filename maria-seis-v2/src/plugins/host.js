@@ -26,8 +26,8 @@ export function createPluginHost({apiVersion='2',timeoutMs=3000,resourceProfile=
       else if (entry.dispose && instance) {
         // Managed late instances cannot execute, but still need their owner cleanup.
         entry.instance=instance;entry.cleanupRequired=true;
-      } else {
-        // Without an enforceable cleanup path, retrying can duplicate detached side effects.
+      } else if (pending.controller.signal.reason==='plugin-timeout') {
+        // Re-running a factory that exceeded its host budget can duplicate detached side effects.
         entry.cleanupFailed=true;
       }
       return instance;
@@ -72,17 +72,17 @@ export function createPluginHost({apiVersion='2',timeoutMs=3000,resourceProfile=
       const interruption=new Promise((_,reject)=>{ rejectInterruption=reject; });
       // Registration can invoke cancellation synchronously, before a race exists.
       interruption.catch(()=>{});
-      const releaseInitialization=()=>{
+      const releaseInitialization=(reason='plugin-initialization-abandoned')=>{
         if (!initialization) return;
         const pending=initialization;initialization=null;
         pending.waiters-=1;
-        if (!pending.settled && pending.waiters===0) pending.controller.abort('plugin-initialization-abandoned');
+        if (!pending.settled && pending.waiters===0) pending.controller.abort(reason);
       };
       const interrupt=reason=>{
         if (controller.signal.aborted) return;
         rejectInterruption(new Error(reason));
         controller.abort(reason);
-        releaseInitialization();
+        releaseInitialization(reason);
       };
       const cancel=()=>interrupt('plugin-cancelled');
       const check=()=>{
