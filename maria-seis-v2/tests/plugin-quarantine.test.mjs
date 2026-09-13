@@ -11,25 +11,23 @@ const manifest={
   permissions:['project.read'],
   risk:'observe'
 };
-const context=signal=>({grantedPermissions:['project.read'],...(signal?{signal}:{})});
+const context=()=>({grantedPermissions:['project.read']});
 const gate=()=>{let resolve;const promise=new Promise(done=>{resolve=done;});return {promise,resolve};};
 const turn=()=>new Promise(resolve=>setImmediate(resolve));
 
-test('abandoned initialization without a disposer is quarantined after late settlement',async()=>{
+test('timed out initialization without a disposer is quarantined after late settlement',async()=>{
   const ready=gate();
   let calls=0;
-  const host=createPluginHost({timeoutMs:1000});
+  const host=createPluginHost({timeoutMs:20});
   host.register(manifest,async()=>{
     calls+=1;
     if(calls===1) await ready.promise;
     return {inspect:()=>calls===1?'stale':'fresh'};
   });
 
-  const controller=new AbortController();
-  const pending=host.invoke('uncooperative','inspect',{},context(controller.signal));
+  const pending=host.invoke('uncooperative','inspect',{},context());
   await turn();
-  controller.abort();
-  assert.deepEqual(await pending,{status:'cancelled',reason:'plugin-cancelled'});
+  assert.deepEqual(await pending,{status:'failed',reason:'plugin-timeout'});
 
   ready.resolve();
   await turn();
