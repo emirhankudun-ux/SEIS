@@ -11,7 +11,8 @@ Keep contributions modular, truthful, permission-bounded and provider-agnostic.
 - Prefer small pull requests with a clear acceptance criterion.
 
 ## Local verification
+Run from the `maria-seis-v2` package directory.
 ```bash
 npm test
-python3 -m http.server 4173
+python3 -m http.server 4173 --bind 127.0.0.1
 ```

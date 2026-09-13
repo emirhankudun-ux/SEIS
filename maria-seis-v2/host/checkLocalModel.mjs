@@ -33,14 +33,34 @@ function startReferenceServer(){
       }catch{reject(new Error('invalid-reference-ready'));}
     });
   });
-  const close=async()=>{
-    if(child.exitCode!==null || child.signalCode!==null)return {closed:true,code:child.exitCode,signal:child.signalCode};
-    child.kill('SIGTERM');
-    const closed=await Promise.race([
-      new Promise(resolveClose=>child.once('exit',(code,signal)=>resolveClose({closed:true,code,signal}))),
-      new Promise(resolveClose=>setTimeout(()=>{child.kill('SIGKILL');resolveClose({closed:false});},1500))
-    ]);
-    return closed;
+  let closePromise;
+  const close=()=>{
+    if(closePromise)return closePromise;
+    if(child.exitCode!==null || child.signalCode!==null)
+      return Promise.resolve({closed:true,code:child.exitCode,signal:child.signalCode});
+    closePromise=new Promise(resolveClose=>{
+      let forceTimer,exitTimer,settled=false;
+      const finish=result=>{
+        if(settled)return;
+        settled=true;
+        clearTimeout(forceTimer);clearTimeout(exitTimer);
+        child.removeListener('exit',onExit);child.removeListener('error',onError);
+        resolveClose(result);
+      };
+      const onExit=(code,signal)=>finish({closed:true,code,signal});
+      const onError=()=>finish({closed:false});
+      // Observe before sending any signal; kill() returning true is not exit proof.
+      child.once('exit',onExit);child.on('error',onError);
+      forceTimer=setTimeout(()=>{
+        if(child.exitCode!==null || child.signalCode!==null){onExit(child.exitCode,child.signalCode);return;}
+        // Keep the original TERM grace; allow a separate bounded exit observation
+        // after KILL. A child that still has not exited must remain unclosed.
+        exitTimer=setTimeout(()=>finish({closed:false}),1500);
+        try{child.kill('SIGKILL');}catch{finish({closed:false});}
+      },1500);
+      try{child.kill('SIGTERM');}catch{finish({closed:false});}
+    });
+    return closePromise;
   };
   return {child,ready,close,getStderr:()=>stderr};
 }
@@ -80,7 +100,7 @@ export async function runLocalModelCheck(){
   finally{
     if(manager)await manager.disconnect('local');
     if(processHandle)report.cleanup=await processHandle.close();else report.cleanup={closed:true};
-    if(!report.cleanup.closed)report.status='unverified';
+    if(!report.cleanup.closed && report.status==='verified')report.status='unverified';
   }
   return report;
 }

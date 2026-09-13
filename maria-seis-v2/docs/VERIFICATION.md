@@ -1,8 +1,18 @@
-# Verification — 4.0.0-alpha.4
+# Verification index
+
+This branch is an engineering alpha, not a released/native application.
+Current follow-up: [host cleanup and review reconciliation](ALPHA10-HOST-CLEANUP.md).
+Prior full-package checkpoint: [provider deadlines and reference shutdown](ALPHA10-LOCAL-PROVIDER-DEADLINES.md).
+`DELIVERY.json` identifies its own exact historical verification commit. Do not
+apply old counts, health observations or permissions to a newer branch head.
+
+---
+
+## Historical verification — 4.0.0-alpha.4
 
 Date: 2026-09-11. Scope: this standalone web package and provider-readiness contracts only. No native runtime or external provider action has been verified.
 
-## Fresh local results
+## Results recorded at that historical checkpoint
 
 - `npm test`: **71 passed, 0 failed**.
 - `python3 tests/browser_smoke.py --offline`: browser acceptance is rerun for each delivery checkpoint; see `docs/VERIFICATION-ALPHA4.md` for the fresh result.

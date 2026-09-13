@@ -77,3 +77,63 @@ test('disconnect clears verified session state', async () => {
   assert.equal(state.sessionId,null);
   assert.deepEqual(state.capabilities,[]);
 });
+
+test('a throwing health check retains only the connected session for later cleanup', async () => {
+  const manager = createHostAdapterManager();
+  let disconnected;
+  let executions = 0;
+  manager.register({id:'health-failure',apiVersion:'2',capabilities:['reasoning'],
+    connect:async()=>({sessionId:'cleanup-session'}),
+    health:async()=>{throw new Error('synthetic private health error')},
+    execute:async()=>{executions++},
+    disconnect:async context=>{disconnected=context.sessionId}
+  });
+  const result = await manager.connect('health-failure');
+  assert.equal(result.status,'failed');
+  assert.equal(result.sessionId,'cleanup-session');
+  assert.equal(result.healthVerified,false);
+  assert.deepEqual(result.capabilities,[]);
+  assert.equal(result.lastError,'connect-failed');
+  assert.equal((await manager.execute('health-failure','reasoning',{})).status,'unavailable');
+  await manager.disconnect('health-failure');
+  assert.equal(disconnected,'cleanup-session');
+  assert.equal(executions,0);
+  assert.equal(manager.get('health-failure').sessionId,null);
+});
+
+test('a session is retained while health is pending without granting readiness', async () => {
+  const manager = createHostAdapterManager();
+  let release;
+  const health = new Promise(resolve=>{release=resolve});
+  manager.register({id:'pending-health',apiVersion:'2',capabilities:['reasoning'],
+    connect:async()=>({sessionId:'pending-session'}),health:()=>health,
+    execute:async()=>({ok:true}),disconnect:async()=>{}
+  });
+  const connecting=manager.connect('pending-health');
+  await Promise.resolve();
+  const pending=manager.get('pending-health');
+  release({ok:false});
+  await connecting;
+  assert.equal(pending.sessionId,'pending-session');
+  assert.equal(pending.status,'connecting');
+  assert.equal(pending.healthVerified,false);
+  assert.deepEqual(pending.capabilities,[]);
+});
+
+test('failed health cleanup releases the actual Ollama adapter session', async () => {
+  const {createLocalOllamaAdapter}=await import('../src/adapters/localOllama.js');
+  let requests=0;
+  const adapter=createLocalOllamaAdapter({model:'fixture-model',fetchImpl:async()=>{
+    requests++;
+    if(requests===1)return {ok:true,json:async()=>({models:[{name:'fixture-model'}]})};
+    throw new Error('synthetic offline health');
+  }});
+  const manager=createHostAdapterManager(); manager.register(adapter);
+  const state=await manager.connect(adapter.id);
+  assert.equal(state.status,'failed');
+  assert.equal(typeof state.sessionId,'string');
+  await manager.disconnect(adapter.id);
+  const health=await adapter.health({session:{sessionId:state.sessionId}});
+  assert.equal(health.reason,'session-unavailable');
+  assert.equal(requests,2,'disconnected session attempted another network probe');
+});

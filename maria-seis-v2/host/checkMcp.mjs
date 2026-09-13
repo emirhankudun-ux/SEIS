@@ -57,7 +57,7 @@ export async function runPackageCheck({root=resolve(home,'..'),signal}={}){
   finally{
     if(manager)await manager.disconnect('mcp');
     report.cleanup=wire?await wire.close():{closed:true};
-    if(!report.cleanup.closed)report.status='unverified';
+    if(!report.cleanup.closed && report.status==='verified')report.status='unverified';
   }
   return report;
 }

@@ -42,6 +42,8 @@ export function createHostAdapterManager({apiVersion='2'}={}) {
       set(id,{status:'connecting',healthVerified:false,lastError:null,capabilities:[]});
       try {
         const session=await adapter.connect(context) ?? {};
+        // Keep cleanup ownership even when the following health probe throws.
+        set(id,{sessionId:session.sessionId ?? null});
         const health=await adapter.health({...context,session});
         if (!health?.ok) return set(id,{status:'degraded',healthVerified:false,sessionId:session.sessionId ?? null,lastError:health?.reason ?? 'health-check-failed',capabilities:[]});
         const verifiedCaps=(Array.isArray(health.capabilities)?health.capabilities:adapter.capabilities)

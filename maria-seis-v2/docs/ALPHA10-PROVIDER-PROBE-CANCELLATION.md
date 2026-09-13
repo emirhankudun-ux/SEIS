@@ -19,7 +19,8 @@ This made cancellation identity inconsistent with provider readiness and could c
 
 The supervisor now separates **shared probe execution** from **per-caller waiting**:
 
-- one provider still has at most one adapter probe in flight;
+- concurrent callers share one supervisor-side in-flight entry per provider;
+- an adapter that ignores cancellation may outlive that entry and overlap a later probe; this is logical deduplication, not physical single-flight containment;
 - every caller gets an independent waiter;
 - cancelling one waiter returns `probe-cancelled` only to that caller while other waiters remain;
 - the shared host-owned `AbortController` is aborted only when the last active waiter cancels;

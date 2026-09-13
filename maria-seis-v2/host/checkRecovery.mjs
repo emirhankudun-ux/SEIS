@@ -37,7 +37,7 @@ export function runRecoveryCheck(){
   } catch {
     report.reason='recovery-check-failed';
   } finally {
-    try { rmSync(directory,{recursive:true,force:true}); report.cleanup=true; } catch { report.cleanup=false; report.status='unverified'; }
+    try { rmSync(directory,{recursive:true,force:true}); report.cleanup=true; } catch { report.cleanup=false; if(report.status==='verified')report.status='unverified'; }
   }
   return report;
 }

@@ -4,10 +4,10 @@
   "branch": "maria-seis-v4-platform",
   "parentCommit": "7768f272bb7610eca9130330d0439f374fee6761",
   "packagePath": "maria-seis-v2",
-  "scope": "alpha.9 durable recovery plus verification-scope hardening and a real loopback OpenAI-compatible reference transport check",
+  "scope": "alpha.10 platform, response-lifetime protection, and owned reference HTTP shutdown; historical verified checkpoint",
   "verification": {
     "nodeTests": {
-      "passed": 165,
+      "passed": 253,
       "failed": 0
     },
     "browserOffline": {
@@ -21,5 +21,8 @@
     "thirdPartyMcp": "not tested against a maintained external MCP server",
     "nativePlatforms": "not verified"
   },
-  "notes": "A verified model transport receipt does not become verifiedExternalAction. Semantic model correctness and real model availability remain separate gates."
+  "notes": "A verified model transport receipt does not become verifiedExternalAction. Semantic model correctness and real model availability remain separate gates. The counts in this file apply only to verificationCommit, not later branch heads. Follow currentEvidence and exact-head CI for subsequent work.",
+  "verificationCommit": "df2b7a8743b1b496210faac8ec34da18eccb698e",
+  "evidenceStatus": "historical-checkpoint-not-current-branch",
+  "currentEvidence": "docs/ALPHA10-HOST-CLEANUP.md"
 }
