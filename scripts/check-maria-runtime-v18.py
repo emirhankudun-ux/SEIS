@@ -11,6 +11,7 @@ PKG = ROOT / "packages" / "maria-runtime" / "python" / "maria_runtime"
 LAUNCHER = ROOT / "apps" / "maria-desktop" / "maria.py"
 TEST = ROOT / "test" / "maria-runtime-v18.test.py"
 DOC = ROOT / "docs" / "architecture" / "MARIA_RUNTIME_V18.md"
+PROVIDER_ROUTE_DOC = ROOT / "docs" / "architecture" / "MARIA_PROVIDER_ROUTE_PRIVACY.md"
 
 required = [
     PKG / "__init__.py",
@@ -21,11 +22,13 @@ required = [
     PKG / "permissions.py",
     PKG / "models.py",
     PKG / "routing.py",
+    PKG / "provider_routes.py",
     PKG / "cache.py",
     PKG / "safety.py",
     LAUNCHER,
     TEST,
     DOC,
+    PROVIDER_ROUTE_DOC,
 ]
 
 errors: list[str] = []
