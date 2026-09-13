@@ -1,7 +1,8 @@
 # Verification index
 
 This branch is an engineering alpha, not a released/native application.
-Current follow-up: [host cleanup and review reconciliation](ALPHA10-HOST-CLEANUP.md).
+Current follow-up: [shared plugin initialization](ALPHA10-PLUGIN-CANCELLATION.md#2026-09-13-shared-initialization-ownership) and [provider refresh cancellation](ALPHA10-PROVIDER-PROBE-CANCELLATION.md#2026-09-13-cancellation-is-not-a-health-observation).
+Prior follow-up: [host cleanup and review reconciliation](ALPHA10-HOST-CLEANUP.md).
 Prior full-package checkpoint: [provider deadlines and reference shutdown](ALPHA10-LOCAL-PROVIDER-DEADLINES.md).
 `DELIVERY.json` identifies its own exact historical verification commit. Do not
 apply old counts, health observations or permissions to a newer branch head.

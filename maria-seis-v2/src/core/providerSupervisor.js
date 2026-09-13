@@ -31,7 +31,7 @@ export function createProviderSupervisor({definitions=[],probeTimeoutMs=3000,hea
   };
   const failHealth=(id,reason)=>{
     const current=life.get(id);
-    if (current.status==='unconfigured' || current.status==='failed' || current.status==='disabled') {
+    if (current.status==='unconfigured' || current.status==='failed' || current.status==='disabled' || current.status==='degraded') {
       if (current.status!=='failed') life.transition(id,'connecting');
     }
     life.markHealth(id,{ok:false,reason});
@@ -44,8 +44,8 @@ export function createProviderSupervisor({definitions=[],probeTimeoutMs=3000,hea
     if (!adapter) return {status:'unavailable',reason:'adapter-not-registered'};
     if (signal?.aborted) return {status:'cancelled',reason:'probe-cancelled'};
 
-    const before=life.get(id);
-    if (before.status!=='ready') life.transition(id,'connecting');
+    // Probing is work in flight, not a health observation. Keep the last
+    // observed lifecycle/TTL until a real success or failure can be committed.
     const controller=new AbortController();
     let timedOut=false;
     let cancelled=false;
@@ -77,13 +77,15 @@ export function createProviderSupervisor({definitions=[],probeTimeoutMs=3000,hea
         return {status:'failed',reason:'undeclared-capability'};
       }
       const current=life.get(id);
-      if (current.status==='connecting') life.transition(id,'ready',{healthVerified:true,capabilities});
-      else life.markHealth(id,{ok:true,capabilities});
+      if (current.status!=='ready') {
+        life.transition(id,'connecting');
+        life.transition(id,'ready',{healthVerified:true,capabilities,lastError:null});
+      } else life.markHealth(id,{ok:true,capabilities});
       const meta=runtime.get(id); meta.connected=true; meta.implemented=true; meta.lastHealthAt=clock();
       return {status:'ready',provider:routingRecord(id)};
     } catch {
       const reason=timedOut ? 'probe-timeout' : cancelled || signal?.aborted ? 'probe-cancelled' : 'probe-failed';
-      failHealth(id,reason);
+      if (reason!=='probe-cancelled') failHealth(id,reason);
       return {status:reason==='probe-cancelled'?'cancelled':'failed',reason};
     } finally {
       clearTimeout(timer);
