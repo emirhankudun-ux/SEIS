@@ -11,6 +11,7 @@ This package is still an engineering alpha, not a security-reviewed native agent
 - Transport verification and external-outcome verification are distinct claims.
 - A model response can verify transport/identity without becoming a verified external action or a claim of semantic correctness.
 - A locally returned model identifier must exactly match the configured model before the OpenAI-compatible adapter accepts the response.
+- Local model HTTP JSON bodies are byte-bounded: 4 MiB by default, configurable up to a hard 16 MiB ceiling; declared and streamed over-limit responses are aborted and rejected before adapter parsing.
 - MCP tool discovery is not authorization; host authorization defaults to deny.
 - MCP malformed results, unsupported lifecycle/version states and stale discovery replies fail closed.
 - Child MCP and reference-server processes are shell-disabled and receive a deliberately minimal environment.
@@ -23,6 +24,8 @@ This package is still an engineering alpha, not a security-reviewed native agent
 ## Important limits
 
 The OpenAI-compatible reference server is a protocol fixture bound to loopback. It is not a model, does not attest LM Studio/Ollama, and does not validate generated-answer correctness. A real model host still requires explicit discovery, bounded health checks, cancellation, exact model identity, and truthful response evidence.
+
+The response byte budget bounds raw HTTP body consumption, not total process RSS. JSON decoding/parsing still needs transient memory inside that budget. The strict streaming guarantee applies to real Fetch `Response` bodies; a deliberately injected trusted test/host fetch object that exposes only `json()` cannot be preemptively byte-counted and remains part of the trusted host boundary.
 
 The persistent journal is not proof that an interrupted external side effect did or did not happen. Adapter-specific reconciliation and idempotency are required before resumable consequential work can be safe. The host file store is not a sandbox and does not provide multi-process locking, full directory trust validation, disk encryption or OS identity attestation.
 

@@ -1,4 +1,4 @@
-import { requestLocalJson } from './localProviderRequest.js';
+import { DEFAULT_LOCAL_RESPONSE_BYTES, requestLocalJson, validateResponseByteBudget } from './localProviderRequest.js';
 
 const trimBase=value=>{
   const url=new URL(value);
@@ -7,17 +7,18 @@ const trimBase=value=>{
 };
 const sessionId=()=>`local-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
 
-export function createLocalOpenAICompatibleAdapter({id='local-openai-compatible',baseUrl='http://127.0.0.1:1234',model,fetchImpl=globalThis.fetch,requestTimeoutMs=10000}={}){
+export function createLocalOpenAICompatibleAdapter({id='local-openai-compatible',baseUrl='http://127.0.0.1:1234',model,fetchImpl=globalThis.fetch,requestTimeoutMs=10000,maxResponseBytes=DEFAULT_LOCAL_RESPONSE_BYTES}={}){
   if (typeof fetchImpl!=='function') throw new TypeError('fetch implementation required');
   if (typeof model!=='string' || !model.trim()) throw new TypeError('model required');
   if (!Number.isFinite(requestTimeoutMs) || requestTimeoutMs<10 || requestTimeoutMs>60000) throw new TypeError('invalid request timeout');
+  validateResponseByteBudget(maxResponseBytes);
   if (typeof id!=='string' || !/^[a-z][a-z0-9-]{0,63}$/.test(id)) throw new TypeError('invalid adapter id');
   const base=trimBase(baseUrl);
   const configuredModel=model.trim();
   const sessions=new Map();
 
   const request=(path,label,options={},signal)=>requestLocalJson(`${base}${path}`,{
-    fetchImpl,options,signal,timeoutMs:requestTimeoutMs,label
+    fetchImpl,options,signal,timeoutMs:requestTimeoutMs,label,maxResponseBytes
   });
 
   return Object.freeze({

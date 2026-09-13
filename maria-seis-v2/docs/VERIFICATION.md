@@ -1,7 +1,8 @@
 # Verification index
 
 This branch is an engineering alpha, not a released/native application.
-Current follow-up: [adapter session ownership](ALPHA10-SESSION-OWNERSHIP.md).
+Current follow-up: [local provider response budgets](ALPHA10-LOCAL-PROVIDER-RESPONSE-BUDGETS.md).
+Prior follow-up: [adapter session ownership](ALPHA10-SESSION-OWNERSHIP.md).
 Prior follow-up: [shared plugin initialization](ALPHA10-PLUGIN-CANCELLATION.md#2026-09-13-shared-initialization-ownership) and [provider refresh cancellation](ALPHA10-PROVIDER-PROBE-CANCELLATION.md#2026-09-13-cancellation-is-not-a-health-observation).
 Prior follow-up: [host cleanup and review reconciliation](ALPHA10-HOST-CLEANUP.md).
 Prior full-package checkpoint: [provider deadlines and reference shutdown](ALPHA10-LOCAL-PROVIDER-DEADLINES.md).
