@@ -80,6 +80,11 @@ def manifest(**changes):
         policy_revision="fixture-policy-v1",
     )
     values.update(changes)
+    # Keep the synthetic manifest structurally coherent when a test changes
+    # only the requested route identity. Explicit chains are never rewritten,
+    # so malformed-chain validation remains independently testable.
+    if "requested_provider" in changes and "processor_chain" not in changes:
+        values["processor_chain"] = (values["requested_provider"], values["resolved_provider"])
     return ProviderRouteManifest(**values)
 
 
@@ -146,7 +151,12 @@ class ProviderRoutePrivacyTests(unittest.TestCase):
         )
         self.assertIs(decision.reason, ProviderRoutePrivacyReason.PROCESSOR_NOT_ALLOWED)
 
-    def test_resolved_provider_must_be_present_in_processor_chain(self):
+    def test_requested_and_resolved_providers_must_be_present_in_processor_chain(self):
+        with self.assertRaises(ValueError):
+            manifest(
+                requested_provider="other-gateway",
+                processor_chain=("fixture-gateway", "fixture-processor"),
+            )
         with self.assertRaises(ValueError):
             manifest(processor_chain=("fixture-gateway",))
 
