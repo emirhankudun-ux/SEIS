@@ -1,0 +1,30 @@
+name: MARIA Runtime v18 Foundation
+
+on:
+  pull_request:
+    paths:
+      - 'apps/maria-desktop/**'
+      - 'packages/maria-runtime/**'
+      - 'scripts/check-maria-runtime-v18.py'
+      - 'test/maria-runtime-v18.test.py'
+      - 'docs/architecture/MARIA_RUNTIME_V18.md'
+      - 'docs/superpowers/specs/2026-09-11-maria-runtime-v18-foundation-design.md'
+      - 'docs/superpowers/plans/2026-09-11-maria-runtime-v18-foundation-implementation-plan.md'
+      - '.github/workflows/maria-runtime-v18-foundation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+        with:
+          python-version: '3.12'
+      - run: python3 test/maria-runtime-v18.test.py
+      - run: python3 scripts/check-maria-runtime-v18.py

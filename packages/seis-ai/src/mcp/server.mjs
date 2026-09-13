@@ -11,6 +11,7 @@ import {
   i18nGet,
   i18nSearch,
   i18nStatus,
+  copyDictionaryStatus,
   loadTranslations,
   perfAudit,
   runAllChecks,
@@ -298,6 +299,19 @@ export function buildServer() {
     async () => {
       try {
         return jsonResult(i18nStatus(webRoot));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    "copy_dictionary_status",
+    "Key-parity report for the COPY and PROOF dictionaries inside script.js — the i18n layer index.html actually renders from via data-copy-key. Reports per-locale key counts, keys missing from a locale, empty values, and data-copy-key attributes with no dictionary entry. Distinct from i18n_status, which covers translations.json.",
+    {},
+    async () => {
+      try {
+        return jsonResult(copyDictionaryStatus(webRoot));
       } catch (error) {
         return errorResult(error);
       }

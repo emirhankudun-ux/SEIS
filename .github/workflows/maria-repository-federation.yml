@@ -1,0 +1,25 @@
+name: MARIA Repository Federation
+
+on:
+  pull_request:
+    paths:
+      - "packages/maria-runtime/python/maria_runtime/repositories.py"
+      - "test/maria-repository-federation.test.py"
+      - "docs/superpowers/specs/2026-09-11-seis-repository-federation-design.md"
+      - ".github/workflows/maria-repository-federation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+        with:
+          python-version: "3.12"
+      - run: python3 test/maria-repository-federation.test.py

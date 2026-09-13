@@ -1,0 +1,166 @@
+name: SEIS Full Technology Foundation
+
+on:
+  push:
+    branches:
+      - feature/seis-full-technology-foundation
+      - feature/seis-full-technology-experience
+      - feature/seis-full-technology-experience-red
+    paths:
+      - 'content/development/seis-full-technology-registry.json'
+      - 'content/development/seis-engine-capability-registry.json'
+      - 'content/development/seis-cube-runtime-contract.json'
+      - 'content/development/seis-workbench-composer.json'
+      - 'content/development/seis-technology-tool-catalog.json'
+      - 'content/development/seis-full-technology-command-center.json'
+      - 'content/development/seis-full-technology-demo-acceptance.json'
+      - 'schemas/seis-technology-tool.schema.json'
+      - 'scripts/check-seis-full-technology-foundation.mjs'
+      - 'test/seis-full-technology-foundation.test.mjs'
+      - 'test/seis-full-technology-native-app-contract.test.mjs'
+      - 'test/seis-universal-workspace-search-contract.test.mjs'
+      - 'test/seis-universal-workspace-tabs-contract.test.mjs'
+      - 'test/seis-universal-workspace-selection-shelf-contract.test.mjs'
+      - 'test/seis-universal-workspace-focused-pin-contract.test.mjs'
+      - 'apps/seis-core/full-technology.html'
+      - 'apps/seis-core/full-technology-center.js'
+      - 'apps/seis-core/full-technology-runtime.js'
+      - 'apps/seis-core/full-technology-service-worker.js'
+      - 'apps/seis-core/full-technology-center.css'
+      - 'apps/seis-core/manifest.webmanifest'
+      - 'apps/seis-core/README.md'
+      - 'apps/seis-core/test/full-technology-center.test.js'
+      - 'apps/seis-core/test/full-technology-experience.test.js'
+      - 'apps/seis-core/test/full-technology-runtime.test.js'
+      - 'apps/seis-core/test/full-technology-offline.test.js'
+      - 'apps/seis-core/test/full-technology-http-smoke.test.js'
+      - 'packages/seis_platform_swift/Package.swift'
+      - 'packages/seis_platform_swift/Sources/**'
+      - 'packages/seis_platform_swift/Tests/**'
+      - 'docs/platform/seis-full-technology-foundation.md'
+      - '.github/workflows/seis-full-technology-foundation.yml'
+  pull_request:
+    paths:
+      - 'content/development/seis-full-technology-registry.json'
+      - 'content/development/seis-engine-capability-registry.json'
+      - 'content/development/seis-cube-runtime-contract.json'
+      - 'content/development/seis-workbench-composer.json'
+      - 'content/development/seis-technology-tool-catalog.json'
+      - 'content/development/seis-full-technology-command-center.json'
+      - 'content/development/seis-full-technology-demo-acceptance.json'
+      - 'schemas/seis-technology-tool.schema.json'
+      - 'scripts/check-seis-full-technology-foundation.mjs'
+      - 'test/seis-full-technology-foundation.test.mjs'
+      - 'test/seis-full-technology-native-app-contract.test.mjs'
+      - 'test/seis-universal-workspace-search-contract.test.mjs'
+      - 'test/seis-universal-workspace-tabs-contract.test.mjs'
+      - 'test/seis-universal-workspace-selection-shelf-contract.test.mjs'
+      - 'test/seis-universal-workspace-focused-pin-contract.test.mjs'
+      - 'apps/seis-core/full-technology.html'
+      - 'apps/seis-core/full-technology-center.js'
+      - 'apps/seis-core/full-technology-runtime.js'
+      - 'apps/seis-core/full-technology-service-worker.js'
+      - 'apps/seis-core/full-technology-center.css'
+      - 'apps/seis-core/manifest.webmanifest'
+      - 'apps/seis-core/README.md'
+      - 'apps/seis-core/test/full-technology-center.test.js'
+      - 'apps/seis-core/test/full-technology-experience.test.js'
+      - 'apps/seis-core/test/full-technology-runtime.test.js'
+      - 'apps/seis-core/test/full-technology-offline.test.js'
+      - 'apps/seis-core/test/full-technology-http-smoke.test.js'
+      - 'packages/seis_platform_swift/Package.swift'
+      - 'packages/seis_platform_swift/Sources/**'
+      - 'packages/seis_platform_swift/Tests/**'
+      - 'docs/platform/seis-full-technology-foundation.md'
+      - '.github/workflows/seis-full-technology-foundation.yml'
+
+concurrency:
+  group: seis-full-technology-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Full Technology contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '20'
+
+      - name: Validate contracts and acceptance
+        run: node scripts/check-seis-full-technology-foundation.mjs
+
+      - name: Run foundation contract tests
+        run: node --test test/seis-full-technology-foundation.test.mjs
+
+      - name: Run native app contract tests
+        run: node --test test/seis-full-technology-native-app-contract.test.mjs
+
+      - name: Run Universal Workspace search contract
+        run: node --test test/seis-universal-workspace-search-contract.test.mjs
+
+      - name: Run Universal Workspace tab contract
+        run: node --test test/seis-universal-workspace-tabs-contract.test.mjs
+
+      - name: Run Universal Workspace selection shelf contract
+        run: node --test test/seis-universal-workspace-selection-shelf-contract.test.mjs
+
+      - name: Run Universal Workspace focused pin contract
+        run: node --test test/seis-universal-workspace-focused-pin-contract.test.mjs
+
+      - name: Run deterministic runtime tests
+        run: node --test apps/seis-core/test/full-technology-runtime.test.js
+
+      - name: Run browser-local surface tests
+        run: node --test apps/seis-core/test/full-technology-center.test.js apps/seis-core/test/full-technology-experience.test.js
+
+      - name: Run offline-first boundary tests
+        run: node --test apps/seis-core/test/full-technology-offline.test.js
+
+      - name: Run repository-root HTTP smoke
+        run: node --test apps/seis-core/test/full-technology-http-smoke.test.js
+
+      - name: Check scoped diff hygiene
+        run: git diff --check origin/${{ github.base_ref || 'main' }}...HEAD
+
+  native-contracts:
+    name: Validate native Swift contracts
+    runs-on: macos-15
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Record Swift toolchain and architecture
+        run: |
+          swift --version
+          uname -m
+
+      - name: Run Full Technology native tests
+        run: swift test --package-path packages/seis_platform_swift --filter SeisFullTechnology
+
+      - name: Run Universal Workspace tests
+        run: swift test --package-path packages/seis_platform_swift --filter SeisUniversalWorkspace
+
+      - name: Run complete Swift package test suite
+        run: swift test --package-path packages/seis_platform_swift
+
+      - name: Build native Full Technology app
+        run: swift build --package-path packages/seis_platform_swift --product SeisFullTechnologyMac
+
+      - name: Build Apple native shell
+        run: swift build --package-path packages/seis_platform_swift --product SeisAppleNativeShell

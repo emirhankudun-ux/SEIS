@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 35 tools, 3 prompts, 31 resources", async () => {
+  it("initializes and lists 36 tools, 3 prompts, 31 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -90,6 +90,7 @@ describe("seis-mcp stdio smoke", () => {
     const tools = responses.get(2).result.tools.map((t) => t.name).sort();
     assert.deepEqual(tools, [
       "a11y_check",
+      "copy_dictionary_status",
       "drawings_catalog",
       "i18n_add_key",
       "i18n_get",

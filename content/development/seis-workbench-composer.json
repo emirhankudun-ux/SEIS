@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "id": "seis-workbench-composer",
+  "requestedGoalId": "SEIS-GOAL-021",
+  "canonicalGoalBinding": "unresolved",
+  "status": "prototype",
+  "mode": "deterministic-local-demo",
+  "purpose": "Compose a focused workspace from canonical SEIS capabilities instead of exposing thousands of tools at once.",
+  "presets": [
+    {"id":"shader-debug","intent":"debug shader","domains":["software","reality"],"tools":["code-editor","shader-graph","material-preview","gpu-profiler","universal-inspector"]},
+    {"id":"digital-human","intent":"work on digital human","domains":["digital-life","creation","reality"],"tools":["3d-viewport","anatomy-inspector","groom-editor","rig-editor","animation-editor","voice-inspector","performance-profiler"]},
+    {"id":"game-scene-optimize","intent":"optimize game scene","domains":["game","reality","software"],"tools":["world-editor","frame-graph","cpu-profiler","gpu-profiler","asset-residency","physics-debugger","ai-debugger","benchmark-view"]},
+    {"id":"robot-debug","intent":"debug robot","domains":["robotics-autonomy","reality","software"],"tools":["3d-viewport","sensor-view","ros-graph","code-editor","telemetry-view","simulation-view"]},
+    {"id":"poster-design","intent":"design poster","domains":["creation"],"tools":["canvas","layers","typography","color-system","asset-browser","export-inspector"]},
+    {"id":"gameplay-debug","intent":"debug gameplay","domains":["game","software"],"tools":["gameplay-recorder","state-inspector","ai-debugger","navigation-debugger","physics-debugger","replay-timeline","log-view"]},
+    {"id":"world-authoring","intent":"author world","domains":["reality","game","creation"],"tools":["world-editor","terrain-editor","procedural-content-graph","vegetation-editor","weather-editor","lighting-editor","world-streaming-view"]},
+    {"id":"material-authoring","intent":"author material","domains":["creation","reality"],"tools":["material-graph","texture-foundry","3d-preview","shader-inspector","color-management","performance-profiler"]},
+    {"id":"ai-evaluation","intent":"evaluate ai model","domains":["intelligence","data-knowledge"],"tools":["model-registry","evaluation-arena","dataset-view","route-explainer","latency-profiler","cost-view","evidence-view"]},
+    {"id":"security-review","intent":"review security","domains":["security-privacy","software","governance-research"],"tools":["permission-graph","dependency-view","secret-boundary","threat-model","audit-timeline","evidence-view"]},
+    {"id":"scientific-simulation","intent":"run scientific simulation","domains":["science-math","reality","data-knowledge"],"tools":["simulation-setup","solver-registry","parameter-inspector","timeline","scientific-visualization","dataset-view","evidence-view"]},
+    {"id":"mobile-product-review","intent":"review mobile product","domains":["platform","creation","software"],"tools":["device-preview","accessibility-inspector","layout-inspector","performance-view","localization-view","design-token-view"]}
+  ],
+  "rules": {
+    "source": "canonical-capability-registry",
+    "maxVisiblePrimaryTools": 10,
+    "minimumPrimaryTools": 3,
+    "preserveUserLayout": true,
+    "autoExecuteTools": false,
+    "externalActionsRequireApproval": true,
+    "permissionsResolvedBeforeToolActivation": true,
+    "unavailableToolsRemainVisibleAsUnavailable": true,
+    "fallback": "show capability search and explicit unavailable states"
+  }
+}

@@ -10,10 +10,15 @@ let package = Package(
     ],
     products: [
         .library(name: "SeisPlatformKit", targets: ["SeisPlatformKit"]),
-        .executable(name: "SeisAppleNativeShell", targets: ["SeisAppleNativeShell"])
+        .executable(name: "SeisAppleNativeShell", targets: ["SeisAppleNativeShell"]),
+        .executable(name: "SeisFullTechnologyMac", targets: ["SeisFullTechnologyMac"])
     ],
     targets: [
         .target(name: "SeisPlatformKit"),
+        .executableTarget(
+            name: "SeisFullTechnologyMac",
+            dependencies: ["SeisPlatformKit"]
+        ),
         .executableTarget(
             name: "SeisAppleNativeShell",
             dependencies: ["SeisPlatformKit"],

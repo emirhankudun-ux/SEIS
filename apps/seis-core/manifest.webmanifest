@@ -3,6 +3,7 @@
   "short_name": "SEIS Center",
   "description": "Central AI-native operating system interface for the SEIS ecosystem.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f6f7f9",
   "theme_color": "#101218",
@@ -11,6 +12,21 @@
       "src": "icon.svg",
       "sizes": "128x128",
       "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Full Technology Center",
+      "short_name": "Technology",
+      "description": "Open the registry-backed Technology Atlas, Cube Navigator and Workbench Composer.",
+      "url": "./full-technology.html",
+      "icons": [
+        {
+          "src": "icon.svg",
+          "sizes": "128x128",
+          "type": "image/svg+xml"
+        }
+      ]
     }
   ]
 }

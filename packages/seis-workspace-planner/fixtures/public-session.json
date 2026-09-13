@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "contractId": "seis-workspace-session-input-v1",
+  "sessionId": "seis-desktop-focus-session",
+  "mode": "local-planning",
+  "mission": {
+    "title": "SEIS Desktop Focus Session",
+    "objective": "Turn one bounded SEIS-owned workspace improvement into a verified, documented, and recoverable delivery checkpoint."
+  },
+  "timeboxMinutes": 120,
+  "availableCapabilities": [
+    "documentation",
+    "local-files",
+    "repository-read",
+    "test-runner"
+  ],
+  "tasks": [
+    {
+      "id": "inspect-current-state",
+      "label": "Inspect current state",
+      "stage": "prepare",
+      "durationMinutes": 15,
+      "dependsOn": [],
+      "requiredCapabilities": ["repository-read"],
+      "approval": "none",
+      "evidence": ["repository-status", "relevant-architecture-notes"]
+    },
+    {
+      "id": "define-bounded-scope",
+      "label": "Define bounded scope",
+      "stage": "prepare",
+      "durationMinutes": 10,
+      "dependsOn": ["inspect-current-state"],
+      "requiredCapabilities": ["documentation"],
+      "approval": "none",
+      "evidence": ["scope-contract", "rollback-note"]
+    },
+    {
+      "id": "implement-focused-slice",
+      "label": "Implement focused slice",
+      "stage": "build",
+      "durationMinutes": 45,
+      "dependsOn": ["define-bounded-scope"],
+      "requiredCapabilities": ["local-files"],
+      "approval": "none",
+      "evidence": ["focused-diff", "implementation-notes"]
+    },
+    {
+      "id": "run-focused-checks",
+      "label": "Run focused checks",
+      "stage": "verify",
+      "durationMinutes": 20,
+      "dependsOn": ["implement-focused-slice"],
+      "requiredCapabilities": ["test-runner"],
+      "approval": "none",
+      "evidence": ["test-output", "failure-count"]
+    },
+    {
+      "id": "review-boundaries",
+      "label": "Review security and ownership boundaries",
+      "stage": "verify",
+      "durationMinutes": 15,
+      "dependsOn": ["implement-focused-slice"],
+      "requiredCapabilities": ["documentation", "repository-read"],
+      "approval": "none",
+      "evidence": ["security-review", "ownership-review"]
+    },
+    {
+      "id": "prepare-handoff",
+      "label": "Prepare recoverable handoff",
+      "stage": "handoff",
+      "durationMinutes": 15,
+      "dependsOn": ["run-focused-checks", "review-boundaries"],
+      "requiredCapabilities": ["documentation"],
+      "approval": "none",
+      "evidence": ["verification-summary", "next-action", "rollback-instruction"]
+    }
+  ],
+  "policy": {
+    "providerExecution": false,
+    "externalWrites": false,
+    "deployment": false,
+    "privateData": false,
+    "automaticExecution": false,
+    "humanApprovalRequired": true
+  }
+}
