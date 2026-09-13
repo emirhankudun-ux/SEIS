@@ -10,6 +10,15 @@ from .continuation import ContinuationBrief, ContinuationResolver
 from .models import ModelRegistry, ModelSpec
 from .permissions import ActionClass, PermissionDecision, PermissionEngine
 from .projects import ProjectProfile, ProjectRegistry, WorkMode, default_project_registry
+from .provider_routes import (
+    ProviderPrivacyPolicy,
+    ProviderRetention,
+    ProviderRouteManifest,
+    ProviderRoutePrivacyDecision,
+    ProviderRoutePrivacyReason,
+    ProviderTrainingUse,
+    evaluate_provider_route_privacy,
+)
 from .registry import CapabilityRegistry, ToolSpec, ToolStatus
 from .routing import ModelRouteDecision, ModelRouteReason, ModelRouter
 from .safety import CommandPolicy
@@ -32,8 +41,15 @@ __all__ = [
     "ProjectProfile",
     "ProjectRegistry",
     "PromptCache",
+    "ProviderPrivacyPolicy",
+    "ProviderRetention",
+    "ProviderRouteManifest",
+    "ProviderRoutePrivacyDecision",
+    "ProviderRoutePrivacyReason",
+    "ProviderTrainingUse",
     "ToolSpec",
     "ToolStatus",
     "WorkMode",
     "default_project_registry",
+    "evaluate_provider_route_privacy",
 ]
