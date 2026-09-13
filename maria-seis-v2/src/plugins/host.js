@@ -26,6 +26,9 @@ export function createPluginHost({apiVersion='2',timeoutMs=3000,resourceProfile=
       else if (entry.dispose && instance) {
         // Managed late instances cannot execute, but still need their owner cleanup.
         entry.instance=instance;entry.cleanupRequired=true;
+      } else {
+        // Without an enforceable cleanup path, retrying can duplicate detached side effects.
+        entry.cleanupFailed=true;
       }
       return instance;
     }).finally(()=>{
