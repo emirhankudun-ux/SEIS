@@ -11,7 +11,8 @@
     "mcp:check": "node host/checkMcp.mjs",
     "recovery:check": "node host/checkRecovery.mjs",
     "local-model:check": "node host/checkLocalModel.mjs",
-    "ollama:check": "node host/checkOllama.mjs"
+    "ollama:check": "node host/checkOllama.mjs",
+    "plugins:check": "node host/checkPlugins.mjs"
   },
   "license": "MIT",
   "engines": {

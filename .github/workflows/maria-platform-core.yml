@@ -37,3 +37,4 @@ jobs:
       - run: npm run mcp:check
       - run: npm run recovery:check
       - run: npm run local-model:check
+      - run: npm run plugins:check
