@@ -59,7 +59,12 @@ if(process.argv[1] && import.meta.url===pathToFileURL(path.resolve(process.argv[
   else{
     const {server,port,model}=await runReferenceServer();
     process.stdout.write(`${JSON.stringify({type:'ready',port,model})}\n`);
-    const close=()=>server.close(()=>process.exit(0));
+    const close=()=>{
+      // This child owns only reference-test connections. Stop accepting before
+      // closing active/partial requests; an aborted fetch may still be in flight.
+      server.close(()=>process.exit(0));
+      server.closeAllConnections();
+    };
     process.once('SIGINT',close);process.once('SIGTERM',close);
   }
 }

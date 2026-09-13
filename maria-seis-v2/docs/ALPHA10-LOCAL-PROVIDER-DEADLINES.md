@@ -88,3 +88,27 @@ user data or schema migration is required.
 Reference: [WHATWG Fetch abort semantics](https://fetch.spec.whatwg.org/#abort-fetch).
 The standard explains the lifecycle; regression results establish this patch's
 limited tested behavior, not overall product security.
+
+## Hosted-CI follow-up: owned reference child shutdown
+
+The first push workflow on `1c1899921a8a70b8f44fa5ef2f30ed124c0012e0`
+failed on both hosted operating systems. All 21 deadline regressions passed;
+the existing local-model process acceptance reported `cleanup.closed: false`
+on Ubuntu, and macOS failed the same local-model acceptance command after its
+full test suite passed. This was not hidden with a rerun, disabled assertion,
+longer timeout, or older pinned Node.
+
+The loopback reference child used `server.close()` alone. Active requests can
+still exist while cancellation propagates, and that method waits for them.
+Two added real child/HTTP regressions (incomplete request body and delayed
+completion) reproduced shutdown exceeding its bounded grace period before the
+fix. The reference CLI now stops accepting requests and then explicitly closes
+its own active HTTP connections before acknowledging process exit. Both new
+tests pass without weakening cleanup evidence. Only the owned protocol-fixture
+server receives this shutdown change; no external model/server is terminated.
+
+The complete local package now has **253 tests**. Hosted results for the new
+follow-up head must still be verified; previous green local results do not
+establish CI success. See the PR checkpoint for exact-head verification.
+
+Reference: [Node HTTP server shutdown](https://nodejs.org/docs/latest-v22.x/api/http.html#servercloseallconnections).
