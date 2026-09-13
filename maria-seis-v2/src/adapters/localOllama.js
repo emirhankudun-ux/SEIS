@@ -1,23 +1,11 @@
+import { requestLocalJson } from './localProviderRequest.js';
+
 const trimBase=value=>{
   const url=new URL(value);
   if (!['http:','https:'].includes(url.protocol)) throw new TypeError('baseUrl must be http(s)');
   return url.toString().replace(/\/$/,'');
 };
 const sessionId=()=>`ollama-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
-
-function linkedSignal(external,timeoutMs){
-  const controller=new AbortController();
-  let timedOut=false;
-  const abort=()=>controller.abort();
-  external?.addEventListener('abort',abort,{once:true});
-  const timer=setTimeout(()=>{timedOut=true;controller.abort();},timeoutMs);
-  return {signal:controller.signal,timedOut:()=>timedOut,cleanup(){clearTimeout(timer);external?.removeEventListener('abort',abort);}};
-}
-
-async function readJson(response,label){
-  if (!response?.ok) throw new Error(`${label} request failed`);
-  try { return await response.json(); } catch { throw new Error(`${label} response invalid`); }
-}
 
 export function createLocalOllamaAdapter({id='local-ollama',baseUrl='http://127.0.0.1:11434',model,fetchImpl=globalThis.fetch,requestTimeoutMs=10000}={}){
   if (typeof fetchImpl!=='function') throw new TypeError('fetch implementation required');
@@ -28,19 +16,12 @@ export function createLocalOllamaAdapter({id='local-ollama',baseUrl='http://127.
   const configuredModel=model.trim();
   const sessions=new Map();
 
-  const request=async(path,options={},externalSignal)=>{
-    if (externalSignal?.aborted) throw new Error('request cancelled');
-    const linked=linkedSignal(externalSignal,requestTimeoutMs);
-    try { return await fetchImpl(`${base}${path}`,{...options,signal:linked.signal}); }
-    catch {
-      if (externalSignal?.aborted) throw new Error('request cancelled');
-      if (linked.timedOut()) throw new Error('request timed out');
-      throw new Error('local provider unavailable');
-    } finally { linked.cleanup(); }
-  };
+  const request=(path,label,options={},signal)=>requestLocalJson(`${base}${path}`,{
+    fetchImpl,options,signal,timeoutMs:requestTimeoutMs,label
+  });
 
   const listModels=async signal=>{
-    const payload=await readJson(await request('/api/tags',{},signal),'models');
+    const payload=await request('/api/tags','models',{},signal);
     if (!Array.isArray(payload?.models)) throw new Error('models response invalid');
     return payload.models.flatMap(item=>[item?.name,item?.model]).filter(value=>typeof value==='string' && value.trim());
   };
@@ -70,11 +51,10 @@ export function createLocalOllamaAdapter({id='local-ollama',baseUrl='http://127.
       if (!['reasoning','coding'].includes(capability)) throw new Error('capability unavailable');
       const command=typeof requestPayload?.command==='string'?requestPayload.command.trim():'';
       if (!command) throw new Error('command required');
-      const response=await request('/api/chat',{
+      const payload=await request('/api/chat','chat',{
         method:'POST',headers:{'content-type':'application/json'},
         body:JSON.stringify({model:configuredModel,messages:[{role:'user',content:command}],stream:false,options:{temperature:0.2}})
       },signal);
-      const payload=await readJson(response,'chat');
       if (payload?.model!==configuredModel) throw new Error('ollama model mismatch');
       const output=payload?.message?.content;
       const createdAt=payload?.created_at;
