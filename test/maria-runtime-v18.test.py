@@ -90,6 +90,36 @@ class MariaRuntimeV18Tests(unittest.TestCase):
         self.assertIs(reversible.reversible, True)
         self.assertIs(irreversible.reversible, False)
 
+    def test_permission_engine_requires_exact_unambiguous_target_identity(self):
+        engine = PermissionEngine()
+
+        for target in (None, 1, False, [], {}):
+            with self.subTest(target=repr(target)):
+                with self.assertRaises(TypeError):
+                    engine.evaluate(ActionClass.READ, target=target)
+
+        for target in (
+            "",
+            " ",
+            "\t",
+            "\n",
+            " repo",
+            "repo ",
+            "repo\t",
+            "repo\r",
+            "repo\n",
+            "repo\x00main",
+            "repo\rmain",
+            "repo\nmain",
+        ):
+            with self.subTest(target=repr(target)):
+                with self.assertRaises(ValueError):
+                    engine.evaluate(ActionClass.READ, target=target)
+
+        exact = "workspace:User Documents/SEIS"
+        decision = engine.evaluate(ActionClass.READ, target=exact)
+        self.assertEqual(decision.target, exact)
+
     def test_context_engine_prefers_current_verified_evidence_over_stale_memory(self):
         context = ProjectContextEngine()
         context.put(ContextFact(

@@ -54,6 +54,8 @@ The v17 prototype exposes a general terminal tool using `subprocess.run(..., she
 
 Approval is no longer derived only from an LLM-generated numeric risk level. The execution boundary uses explicit action classes: `READ`, `SAFE_EXECUTE`, `MODIFY`, `EXTERNAL`, `DESTRUCTIVE`, `FINANCIAL`, and `PRIVACY_SENSITIVE`. Mutating and higher-impact classes require explicit owner approval by default.
 
+Permission target identity is exact at this boundary. `target` must be an actual string, must already be non-empty without leading or trailing whitespace, and must not contain ASCII control characters such as NUL, tabs, CR or LF. The runtime does not trim, normalize or rewrite a target before recording the decision; ordinary interior spaces are preserved. This prevents a host, log or later adapter from silently authorizing one textual identity and presenting another after coercion or record framing.
+
 Approval evidence is also type-strict at this boundary: `approved` must be an exact boolean. Serialized strings such as `"false"` / `"true"`, integers, null-like values, containers, or other truthy/falsy objects are rejected rather than interpreted through Python truthiness. This keeps model/tool payload coercion from becoming authorization.
 
 Reversibility evidence is a separate tri-state safety contract: `reversible` may be exact `True`, exact `False`, or `None` when unknown. Strings, numbers, containers, and other coercible values are rejected instead of being preserved as ambiguous rollback metadata. Reversibility remains descriptive evidence only and never grants execution authority.
