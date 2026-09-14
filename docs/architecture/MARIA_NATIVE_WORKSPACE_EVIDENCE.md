@@ -80,6 +80,8 @@ The same identity preservation applies after Git packs a loose branch ref. `pack
 
 Packed-ref record parsing is also deliberately narrower than a language's generic “line” API. Git accepts Unicode scalars such as U+2028 inside ref names, while Python `str.splitlines()` and Foundation newline character sets treat that scalar as a line boundary. The evidence sources therefore split packed metadata only on literal ASCII LF and remove an optional preceding CR. Unicode line-separator scalars remain part of the exact branch identity instead of being reinterpreted as record delimiters.
 
+Packed-ref **name matching is scalar-exact**. Git stores ref identity as exact bytes/scalars, so NFC/NFD spellings such as `café` and `cafe\u0301` are distinct packed refs. Swift `String ==` intentionally treats canonically equivalent spellings as equal for normal user-facing text; that behavior is not appropriate for Git identity. The native source therefore compares packed-ref names through Unicode-scalar equality and never normalizes the branch before lookup. An exact decomposed ref round-trips unchanged, while a canonically equivalent but scalar-distinct packed entry is treated as a missing branch rather than silently certifying another ref.
+
 Loose refs intentionally use different whitespace semantics: leading whitespace before the object id fails closed, while Git-accepted trailing ASCII whitespace/blank lines may follow the id.
 
 Repository revisions must be 40- or 64-character hexadecimal object ids and are normalized to lowercase.
@@ -119,6 +121,7 @@ The feature was specified before its native source existed.
 - A follow-up timestamp-parity test checkpoint `bac4d10507c590f436e41b98cb942d5978015d02` intentionally went RED in run `34617288781` because the first native validator rejected MARIA's timezone-less ISO observation form. The focused correction preserves the original evidence string while validating its UTC-equivalent form.
 - Packed-ref Unicode parity was specified before implementation at `56a85af0260be3b4895035c637b8d868c71e8322`. `MARIA Learning Fabric` run `34619800000` failed because Python attempted to decode the packed ref name with ASCII, and `MARIA Swift Recovery` run `34619799936` failed its single new native test with `invalidMetadataEncoding`. The existing native shell still built successfully in that RED run. The minimal correction changed only packed-ref decoding to UTF-8 in each implementation; loose object-id decoding and object-id validation remained unchanged.
 - The deeper Git-valid separator case was specified at `d0ccaba703487ef661afe714b0ebc1b366e20abd`. `MARIA Learning Fabric` run `34620777492` failed because Python `str.splitlines()` divided U+2028 inside the branch name and reported malformed packed metadata. `MARIA Swift Recovery` run `34620777540` likewise built the native shell successfully, then failed exactly one new Swift test with `malformedPackedRefs`. The focused correction at `f7ce60a4000a008ac17bfc09e9f1defa529c3b4e` splits records only on ASCII LF/CRLF metadata delimiters.
+- Scalar-exact packed-ref identity was specified at `6b93e8d0980cbe38d0c82148608e67797e2e4fd7`. `MARIA Learning Fabric` run `34622625567` stayed green because Python already used scalar-exact equality. `MARIA Swift Recovery` run `34622625551` built `SeisAppleNativeShell`, then failed exactly the new native expectation: Swift returned the decomposed `feature/cafe\u0301` snapshot even though `packed-refs` contained only the canonically equivalent precomposed `feature/café` name. The minimal source correction at `68706f90968ce3dc15da4cdc8111c0f70fcec854` replaced user-facing `String ==` with the existing Unicode-scalar comparator for packed-ref lookup; run `34622912546` returned green. Follow-up positive controls at `370e3b2e3ecc8c7e90ddfba90312956c5d9098d1` verify that an exact decomposed packed ref still round-trips without normalization; final native run `34623251315`, Learning run `34623251399`, and Foundation run `34623251418` all passed.
 
 Focused native tests are under:
 
@@ -130,7 +133,7 @@ The Python counterpart is covered by `test/maria-workspace-packed-ref-unicode.te
 
 ## Rollback
 
-The work is isolated on `feature/maria-native-workspace-evidence-v1`, with packed-ref Unicode parity maintained in a focused stacked follow-up. Rollback means closing the relevant draft PR or reverting its focused commits. Never delete or rewrite a user's repository, `.git` directory, recovery snapshots, or checkpoints to roll back this code.
+The work is isolated on `feature/maria-native-workspace-evidence-v1`, with packed-ref Unicode parity maintained in focused stacked follow-ups. Rollback means closing the relevant draft PR or reverting its focused commits. Never delete or rewrite a user's repository, `.git` directory, recovery snapshots, or checkpoints to roll back this code.
 
 ## Next safe step
 

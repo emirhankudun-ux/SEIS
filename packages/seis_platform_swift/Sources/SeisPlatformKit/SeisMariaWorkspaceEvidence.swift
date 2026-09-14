@@ -201,7 +201,7 @@ public enum SeisMariaWorkspaceEvidenceSource {
             guard !revision.isEmpty, !name.isEmpty else {
                 throw SeisMariaWorkspaceEvidenceError.malformedPackedRefs
             }
-            if name == refName {
+            if scalarEqual(name, refName) {
                 guard match == nil else {
                     throw SeisMariaWorkspaceEvidenceError.duplicatePackedRef
                 }
