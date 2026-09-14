@@ -42,6 +42,10 @@ The reader is fail-closed and applies the following limits before accepting evid
 
 The `.lock` rule is component-scoped rather than whole-branch-only. For example, `release.lock/hotfix` is invalid even though the complete branch string does not end in `.lock`. This mirrors Git's refname contract and prevents the evidence layer from certifying an identity Git itself reserves for lock-file semantics.
 
+Symbolic `HEAD` parsing preserves branch identity exactly. Only one terminal `LF` or `CRLF` metadata line ending is removed; generic Unicode whitespace stripping is forbidden because Git accepts non-ASCII whitespace bytes in refnames. A branch such as `feature/maria-unicode\u00a0` must remain that exact branch, not be silently retargeted to `feature/maria-unicode`. Additional embedded `CR`/`LF` characters fail closed.
+
+Loose ref parsing follows the relevant Git distinction in the opposite direction: trailing ASCII whitespace and blank lines may follow the object id, but leading whitespace before the object id is invalid. The evidence source therefore checks the first decoded ASCII character before trimming trailing metadata. It must not convert a ref payload Git rejects, such as ` 0123...`, into a trusted revision by calling `strip()` first.
+
 The storage path is still expected to belong to the trusted SEIS/MARIA host account. These checks reduce accidental aliasing and stale-path mistakes; they are not a hostile multi-user filesystem sandbox and cannot eliminate every directory-replacement race by another principal with filesystem authority.
 
 ## Freshness semantics
@@ -95,7 +99,9 @@ A follow-up regression test intentionally exercised a valid Unicode branch ident
 
 A further branch-component regression was specified first at `94f02f3666f5efcf0c772ce01a9890c2cf50523b`. `MARIA Learning Fabric` run `34611023871` failed because `release.lock/hotfix` was accepted: the predicate checked `.lock` only at the end of the complete branch string. The minimal implementation at `eafd6d78568a54da8d342e15950c8f28090628b0` applies the suffix rule to every slash-separated component. Run `34611225451` then passed the six branch-contract tests and the full MARIA regression sweep without narrowing valid Unicode identities.
 
-Final PR-head CI remains the acceptance source; no prior green run substitutes for the current head.
+The exact symbolic-HEAD regression was then specified at `1dc8cb29aa3fa78d6942ba26e56a39001c10e706`. `MARIA Learning Fabric` run `34613956558` failed because Python `str.strip()` removed the trailing `U+00A0` from a Git-valid branch name, after which capture looked up a different ref. The minimal implementation at `cfc92250d747a4e1d795f278b62019b209808ed9` removes only `LF`/`CRLF` metadata endings and rejects extra line breaks.
+
+A separate loose-ref regression was specified at `23f4be21e7df2a05040283c62aaff2af6614e2b5`. `MARIA Learning Fabric` run `34614283105` failed because a ref payload with a leading ASCII space was normalized by `strip()` and accepted even though Git rejects that object-id line. The fix at `0429013522076a8400b305cfe456594e8f22a767` validates the first ASCII character before retaining Git's accepted trailing-whitespace behavior. Current-head CI, not these earlier runs, remains the acceptance source.
 
 ## Rollback
 
