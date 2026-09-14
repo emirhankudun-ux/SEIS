@@ -13,6 +13,9 @@ export function selectProviders(plan, policy = {}, registry = providers) {
   if (mode !== 'live' || !Object.hasOwn(intentNeeds, plan.intent)) return [];
   const needs = intentNeeds[plan.intent];
   return ready.filter(p => p.kind !== 'simulation')
+    // localOnly is an execution boundary, not a preference. Providers without
+    // explicit locality evidence fail closed rather than being guessed local.
+    .filter(p => policy.localOnly !== true || p.locality === 'local')
     .filter(p => p.kind !== 'cloud-model' || policy.allowCloud === true)
     .filter(p => needs.every(capability => p.capabilities.includes(capability)))
     .sort((a,b) => {
