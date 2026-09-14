@@ -7,7 +7,9 @@ on:
       - 'packages/maria-runtime/**'
       - 'scripts/check-maria-runtime-v18.py'
       - 'test/maria-runtime-v18.test.py'
+      - 'test/maria-command-preview.test.py'
       - 'docs/architecture/MARIA_RUNTIME_V18.md'
+      - 'docs/architecture/MARIA_COMMAND_PREVIEW.md'
       - 'docs/superpowers/specs/2026-09-11-maria-runtime-v18-foundation-design.md'
       - 'docs/superpowers/plans/2026-09-11-maria-runtime-v18-foundation-implementation-plan.md'
       - '.github/workflows/maria-runtime-v18-foundation.yml'
@@ -17,7 +19,11 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-15]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -27,4 +33,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 test/maria-runtime-v18.test.py
+      - run: python3 test/maria-command-preview.test.py
+      - run: python3 -m compileall -q apps/maria-desktop packages/maria-runtime/python
       - run: python3 scripts/check-maria-runtime-v18.py
