@@ -52,6 +52,8 @@ class PermissionEngine:
             raise ValueError("permission target must be non-empty")
         if not isinstance(action_class, ActionClass):
             action_class = ActionClass(action_class)
+        if type(approved) is not bool:
+            raise TypeError("approved must be bool")
 
         requires = action_class in self._APPROVAL_REQUIRED
         if requires and not approved:
