@@ -1,0 +1,40 @@
+name: MARIA Platform Core
+
+on:
+  pull_request:
+    paths:
+      - 'maria-seis-v2/**'
+      - '.github/workflows/maria-platform-core.yml'
+  push:
+    branches: [maria-seis-v4-platform, main]
+    paths:
+      - 'maria-seis-v2/**'
+      - '.github/workflows/maria-platform-core.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: maria-seis-v2
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version: '22'
+      # This package has no dependencies; installing root dependencies is unnecessary.
+      - run: npm test
+      - run: npm run mcp:check
+      - run: npm run recovery:check
+      - run: npm run local-model:check
+      - run: npm run plugins:check

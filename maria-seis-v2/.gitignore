@@ -1,0 +1,6 @@
+node_modules/
+qa-artifacts/
+__pycache__/
+*.pyc
+.DS_Store
+*.log
